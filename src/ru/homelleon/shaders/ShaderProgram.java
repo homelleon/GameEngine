@@ -76,7 +76,7 @@ public abstract class ShaderProgram {
 		if(GL20.glGetShaderi(shaderID, GL20.GL_COMPILE_STATUS)==GL11.GL_FALSE){
 			System.out.println(GL20.glGetShaderInfoLog(shaderID, 500));
 			System.err.println("Couldn't compile shader!");
-			System.exit(-1); //Comment for git
+			System.exit(-1);
 		}
 		return shaderID;
 	
