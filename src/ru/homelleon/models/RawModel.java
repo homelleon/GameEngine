@@ -1,4 +1,4 @@
-package ru.homelleon.renderEngine;
+package ru.homelleon.models;
 
 public class RawModel {
 	

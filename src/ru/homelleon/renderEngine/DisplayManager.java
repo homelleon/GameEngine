@@ -15,14 +15,14 @@ public class DisplayManager {
 	
 	public static void creatDisplay(){
 		
-		ContextAttribs attribs = new ContextAttribs(3,2).withForwardCompatible(true).withProfileCore(true);
-		attribs.withForwardCompatible(true);
-		attribs.withProfileCore(true);
+		ContextAttribs attribs = new ContextAttribs(3,2)
+		.withForwardCompatible(true)
+		.withProfileCore(true);
 		
 		try {
 			Display.setDisplayMode(new DisplayMode(WIDTH,HEIGHT));
 			Display.create(new PixelFormat(), attribs);
-			Display.setTitle("MyDisplay");
+			Display.setTitle("MyGame");
 		} catch (LWJGLException e) {
 			e.printStackTrace();
 		}
