@@ -1,4 +1,4 @@
-package ru.homelleon.textures;
+package textures;
 
 public class ModelTexture {
 

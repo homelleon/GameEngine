@@ -1,4 +1,4 @@
-package ru.homelleon.shaders;
+package shaders;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

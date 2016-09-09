@@ -1,4 +1,4 @@
-package ru.homelleon.renderEngine;
+package renderEngine;
 
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.ContextAttribs;

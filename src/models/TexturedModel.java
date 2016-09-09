@@ -1,7 +1,6 @@
-package ru.homelleon.renderEngine;
+package models;
 
-import ru.homelleon.models.RawModel;
-import ru.homelleon.textures.ModelTexture;
+import textures.ModelTexture;
 
 public class TexturedModel {
 	

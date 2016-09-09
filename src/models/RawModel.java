@@ -1,4 +1,4 @@
-package ru.homelleon.models;
+package models;
 
 public class RawModel {
 	

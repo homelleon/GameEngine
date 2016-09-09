@@ -1,4 +1,4 @@
-package ru.homelleon.renderEngine;
+package renderEngine;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -16,7 +16,7 @@ import org.lwjgl.opengl.GL30;
 import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
 
-import ru.homelleon.models.RawModel;
+import models.RawModel;
 
 public class Loader {
 	
