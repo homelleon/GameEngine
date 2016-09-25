@@ -20,6 +20,7 @@ import models.RawModel;
 import models.TexturedModel;
 import objConverter.ModelData;
 import objConverter.OBJFileLoader;
+import renderEngine.DisplayManager;
 import renderEngine.Loader;
 import renderEngine.MasterRenderer;
 import terrains.Terrain;
@@ -30,9 +31,15 @@ import textures.TerrainTexturePack;
 public class sceneRenderer {
 
 	
+	final static float SUN_MAX_HEIGHT = 4000; 
+	final static float SUN_MIN_HEIGHT = -4000;
+	final static float TIME_SPEED = 200;
+	
 	private Loader loader;
 	private MasterRenderer renderer;
 	private Source ambientSource;
+	private float time = 0;
+	private boolean isMidday = true;
 	
 	private List<GuiTexture> guis;
 	private GuiRenderer guiRenderer;
@@ -42,6 +49,7 @@ public class sceneRenderer {
 	private Entity cubeEntity;
 	private List<Entity> grassList;
 	private List<Light> lights;
+	private Light sun;
 	private Camera camera; 
 	
 	public sceneRenderer(){
@@ -128,7 +136,7 @@ public class sceneRenderer {
 		}
 			
 		this.lights = new ArrayList<Light>();
-		Light sun = new Light(new Vector3f(100,2000,100),new Vector3f(0.4f,0.4f,0.4f));
+		this.sun = new Light(new Vector3f(100,-100,2000),new Vector3f(1,1,1));
 		lights.add(sun);
 		lights.add(new Light(new Vector3f(100,2,100),new Vector3f(10,0,0), new Vector3f(1, 0.01f, 0.002f)));
 		lights.add(new Light(new Vector3f(20,2,20),new Vector3f(0,10,0), new Vector3f(1, 0.01f, 0.002f)));
@@ -153,6 +161,19 @@ public class sceneRenderer {
 		//entity.increaseRotation(0, 1, 0);
 		camera.move();	
 		player.move(terrain);
+		if(!isMidday){
+			time += DisplayManager.getFrameTimeSeconds() * TIME_SPEED;
+		}else{
+			time -= DisplayManager.getFrameTimeSeconds() * TIME_SPEED;
+		}
+		if(time >= SUN_MAX_HEIGHT){
+			isMidday = true;
+		}
+        if(time <= SUN_MIN_HEIGHT){
+        	isMidday = false;
+        }
+		sun.setPosition(new Vector3f(sun.getPosition().x,time,sun.getPosition().z));
+		System.out.println(sun.getPosition().y);
 		renderer.processEntity(player);
 		renderer.processTerrain(terrain);
 		//renderer.processTerrain(terrain2);
