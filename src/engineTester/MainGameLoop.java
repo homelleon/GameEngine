@@ -3,14 +3,14 @@ package engineTester;
 import org.lwjgl.opengl.Display;
 
 import renderEngine.DisplayManager;
-import scene.sceneRenderer;
+import scene.SceneRenderer;
 
 public class MainGameLoop {
 
 	public static void main(String[] args) {
 				
 		DisplayManager.creatDisplay();
-		sceneRenderer scene = new sceneRenderer();	
+		SceneRenderer scene = new SceneRenderer();	
 		
 
 		while(!Display.isCloseRequested()){

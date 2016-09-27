@@ -22,6 +22,7 @@ import org.newdawn.slick.opengl.TextureLoader;
 import de.matthiasmann.twl.utils.PNGDecoder;
 import de.matthiasmann.twl.utils.PNGDecoder.Format;
 import models.RawModel;
+import scene.Settings;
 import textures.TextureData;
 
 public class Loader {
@@ -49,10 +50,10 @@ public class Loader {
 		
 	}
 	
-	public int loadTexture(String fileName){
+	public int loadTexture(String textureType, String fileName){
 		Texture texture = null;
 		try {
-			texture = TextureLoader.getTexture("PNG", new FileInputStream("res/"+fileName+".png"));
+			texture = TextureLoader.getTexture("PNG", new FileInputStream(getTexturePath(textureType)+fileName+".png"));
 			GL30.glGenerateMipmap(GL11.GL_TEXTURE_2D);
 			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR_MIPMAP_LINEAR);
 			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL14.GL_TEXTURE_LOD_BIAS, -1);
@@ -82,13 +83,13 @@ public class Loader {
 		}
 	}
 	
-	public int loadCubeMap(String[] textureFiles){
+	public int loadCubeMap(String textureType, String[] textureFiles){
 		int texID = GL11.glGenTextures();
 		GL13.glActiveTexture(GL13.GL_TEXTURE0);
 		GL11.glBindTexture(GL13.GL_TEXTURE_CUBE_MAP, texID);
 		
 		for(int i=0;i<textureFiles.length;i++){
-			TextureData data = decodeTextureFile("res/" + textureFiles[i] + ".png");
+			TextureData data = decodeTextureFile(getTexturePath(textureType) + textureFiles[i] + ".png");
 			GL11.glTexImage2D(GL13.GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL11.GL_RGBA, 
 					data.getWidth(), data.getHeight(), 0, GL11.GL_RGBA,
 					GL11.GL_UNSIGNED_BYTE, data.getBuffer());
@@ -170,6 +171,37 @@ public class Loader {
 		buffer.put(data);
 		buffer.flip();
 		return buffer;
+	}
+	
+	private String getTexturePath(String textureType){
+		String path = null;
+		switch(textureType){
+		case "root":
+			path = Settings.RES_PATH;
+			break;
+		case "model":
+			path = Settings.MODEL_TEXTURE_PATH;
+			break;
+		case "terrain":
+			path = Settings.TERRAIN_TEXTURE_PATH;
+			break;
+		case "GUI":
+			path = Settings.INTERFACE_TEXTURE_PATH;
+			break;
+		case "blendMap":
+			path = Settings.BLEND_MAP_PATH;
+			break;
+		case "heightMap":
+			path = Settings.HEIGHT_MAP_PATH;
+			break;
+		case "skyBox":
+			path = Settings.SKYBOX_TEXTURE_PATH;
+			break;
+		//default:
+			//path = Settings.RES_PATH;
+			//System.out.println("Error textureType in TextureLoad model!");			
+		}
+		return path;
 	}
 
 }
