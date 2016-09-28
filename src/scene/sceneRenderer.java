@@ -20,7 +20,6 @@ import models.RawModel;
 import models.TexturedModel;
 import objConverter.ModelData;
 import objConverter.OBJFileLoader;
-import renderEngine.DisplayManager;
 import renderEngine.Loader;
 import renderEngine.MasterRenderer;
 import terrains.Terrain;
@@ -46,7 +45,7 @@ public class SceneRenderer {
 	private GuiRenderer guiRenderer;
 	private Terrain terrain;
 	private Player player;
-	private Entity entity;
+	private Entity stall;
 	private Entity cubeEntity;
 	private List<Entity> grasses;
 	private List<Light> lights;
@@ -56,8 +55,12 @@ public class SceneRenderer {
 	
 	public SceneRenderer(){
 		
-
+		//*******************TOOLS*************
+		ObjectGenerator generator = new ObjectGenerator();
+		this.loader = new Loader();
+		
 		//*******************AUDIO*************
+		
 		AudioMaster.init();
 		AudioMaster.setListenerData(0,0,0);
 		AL10.alDistanceModel(AL11.AL_EXPONENT_DISTANCE);
@@ -68,9 +71,7 @@ public class SceneRenderer {
 		ambientSource.setVolume(0.2f);
 		ambientSource.play(buffer);
 		float xPos = 8;
-		
-		
-		this.loader = new Loader();
+				
 		
 		//***************GUI***********
 		this.guis = new ArrayList<GuiTexture>();
@@ -92,13 +93,10 @@ public class SceneRenderer {
 		this.terrain = new Terrain(0,0,loader,texturePack, blendMap, "heightMap");		
 				
 		//****************************************
-	    ModelData data = OBJFileLoader.loadOBJ("stall");
 		
-		RawModel stallModel = loader.loadToVAO(data.getVertices(), data.getTextureCoords(), data.getNormals(), data.getIndices());	
-	    TexturedModel staticModel = new TexturedModel(stallModel,new ModelTexture(loader.loadTexture("model","stallTexture")));
-		//ModelTexture texture = staticModel.getTexture();
-		staticModel.getTexture().setShineDamper(5);
-		staticModel.getTexture().setReflectivity(1);
+	    TexturedModel stallModel = generator.loadStaticModel("stall", "stallTexture");
+	    stallModel.getTexture().setShineDamper(5);
+	    stallModel.getTexture().setReflectivity(1);
 		
 		ModelData dataCube = OBJFileLoader.loadOBJ("cube");
 		RawModel cube = loader.loadToVAO(dataCube.getVertices(), dataCube.getTextureCoords(), dataCube.getNormals(), dataCube.getIndices());
@@ -107,13 +105,15 @@ public class SceneRenderer {
 		staticCube.getTexture().setReflectivity(1);
 		staticCube.getTexture().setHasTransparency(true);
 		staticCube.getTexture().setUseFakeLighting(true);
-		SceneObjects object = new SceneObjects();
-		this.grasses = object.CreateGrassField(50, 50, 20, 1);
+		
+		//************GRASS*********************//
+		this.grasses = generator.createGrassField(50, 50, 200, 1, (float) 0.3);
         for(int i=0;i<grasses.size();i++){
         	spreadOnHeights(grasses.get(i));
         }
+        //***********GAME OBJECTS****************//
 					
-		this.entity = new Entity(staticModel, new Vector3f(50,terrain.getHeightOfTerrain(50, 50),50),0,0,0,1);
+		this.stall = new Entity(stallModel, new Vector3f(50,terrain.getHeightOfTerrain(50, 50),50),0,0,0,1);
 		this.cubeEntity = new Entity(staticCube, new Vector3f(100,terrain.getHeightOfTerrain(100, 10),10),0,0,0,1);
 		
 			
@@ -157,7 +157,7 @@ public class SceneRenderer {
 		renderer.processEntity(player);
 		renderer.processTerrain(terrain);
 		//renderer.processTerrain(terrain2);
-	    renderer.processEntity(entity);
+	    renderer.processEntity(stall);
 	    renderer.processEntity(cubeEntity);
 	    for(Integer i = 0; i < grasses.size(); i++){
 	     renderer.processEntity(grasses.get(i));
