@@ -8,6 +8,8 @@ import org.lwjgl.openal.AL;
 import org.lwjgl.openal.AL10;
 import org.lwjgl.util.WaveData;
 
+import scene.Settings;
+
 
 public class AudioMaster {
 	
@@ -29,7 +31,8 @@ public class AudioMaster {
 	public static int loadSound(String file){
 		int buffer = AL10.alGenBuffers(); 
 		buffers.add(buffer);
-		WaveData waveFile = WaveData.create("audio/"+file);
+		
+		WaveData waveFile = WaveData.create("audio/" + file);
 		AL10.alBufferData(buffer, waveFile.format, waveFile.data, waveFile.samplerate);
 		waveFile.dispose();
 		return buffer;

@@ -14,7 +14,6 @@ public class MainGameLoop {
 		
 
 		while(!Display.isCloseRequested()){
-			//game logic
 			scene.render();
 			DisplayManager.updateDisplay();    
 			
