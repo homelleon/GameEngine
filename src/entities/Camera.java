@@ -4,6 +4,8 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.util.vector.Vector3f;
 
+import scene.Settings;
+
 public class Camera {
 	
 	private static final float maxDistanceFromPlayer = 100;
@@ -140,12 +142,11 @@ public class Camera {
 	}
 	
 	private void calculatePitch(){
-		if(Mouse.isButtonDown(2)){
-			float pitchChange = Mouse.getDY() * 0.1f;
+
+			float pitchChange = Mouse.getY() * 0.1f;
 			if(((pitch<maxPitch)&&(pitchChange<0))||((pitch>minPitch)&&(pitchChange>0))){
 				pitch -= pitchChange;
 			}
-		}
 	}
 	
 	private void calculateAngleAroundPlayer(){
@@ -156,13 +157,15 @@ public class Camera {
 	}
 	
 	private void calculatePitchAndAngle(){
-		if(Mouse.isButtonDown(2)){
-			float pitchChange = Mouse.getDY() * 0.1f;
-			float angleChange = Mouse.getDX() * 0.2f;
-			if(((pitch<maxPitch)&&(pitchChange<0))||((pitch>minPitch)&&(pitchChange>0))){
-				pitch -= pitchChange;
-			}
+		float pitchChange = (Mouse.getY() - Settings.HEIGHT/2) * 0.1f;
+		if(((pitch<maxPitch)&&(pitchChange<0))||((pitch>minPitch)&&(pitchChange>0))){
+			pitch -= pitchChange;
+		}
+		if(Mouse.isButtonDown(2)){	
+			float angleChange = (Mouse.getX() - Settings.WIDTH/2) * 0.2f;
 			angleAroundPlayer -= angleChange;		
+		}else{
+			angleAroundPlayer = 0;
 		}
 	}
 

@@ -3,8 +3,8 @@ package scene;
 public class Settings {
 	
 	//*****************DISPLAY SETTINGS**********************************//
-	public static final int WIDTH = 1280;
-	public static final int HEIGHT = 720; 
+	public static final int WIDTH = 1024;
+	public static final int HEIGHT = 768; 
 	public static final int FPS_CAP = 120;
 	
 	//*****************SIMULATION SETTINGS*************************************//

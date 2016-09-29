@@ -6,17 +6,19 @@ import org.lwjgl.util.vector.Vector3f;
 
 import models.TexturedModel;
 import renderEngine.DisplayManager;
+import scene.Settings;
 import terrains.Terrain;
 
 public class Player extends Entity {
 	
 	private static final float MOVE_SPEED = 20;
 	private static final float RUN_SPEED = 40;
-	private static final float TURN_SPEED = 0.5f;
+	private static final float TURN_SPEED = 40;
 	private static final float GRAVITY = -50;
 	private static final float JUMP_POWER = 30;
 	
-	private float currentSpeed = 0;
+	private float currentForwardSpeed = 0;
+	private float currentStrafeSpeed = 0;
 	private float currentTurnSpeed = 0;
 	private float upwardsSpeed = 0;
 	
@@ -29,11 +31,10 @@ public class Player extends Entity {
 	
 	public void move(Terrain terrain){
 		checkInputs();
-		super.setRotY(currentTurnSpeed);
-		
-		//super.increaseRotation(0, currentTurnSpeed * DisplayManager.getFrameTimeSeconds(), 0);
-		//super.increaseRotation(0, currentTurnSpeed * DisplayManager.getFrameTimeSeconds(), 0);
-		float distance = currentSpeed * DisplayManager.getFrameTimeSeconds();
+		//super.setRotY(currentTurnSpeed);
+		//super.setRotY(currentTurnSpeed);
+		super.increaseRotation(0, currentTurnSpeed * DisplayManager.getFrameTimeSeconds(), 0);
+		float distance = currentForwardSpeed * DisplayManager.getFrameTimeSeconds();
 		float dx = (float) (distance * Math.sin(Math.toRadians(super.getRotY())));
 		float dz = (float) (distance * Math.cos(Math.toRadians(super.getRotY())));
 		super.increasePosition(dx, 0, dz);
@@ -56,20 +57,27 @@ public class Player extends Entity {
 	
 	private void checkInputs(){
 		if((Keyboard.isKeyDown(Keyboard.KEY_W)) && (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)||Keyboard.isKeyDown(Keyboard.KEY_RSHIFT))){
-			this.currentSpeed = RUN_SPEED;
+			this.currentForwardSpeed = RUN_SPEED;
 		}else if(Keyboard.isKeyDown(Keyboard.KEY_W)){
-			this.currentSpeed = MOVE_SPEED;			
+			this.currentForwardSpeed = MOVE_SPEED;			
 		}else if(Keyboard.isKeyDown(Keyboard.KEY_S)){
-			this.currentSpeed = -MOVE_SPEED;	
+			this.currentForwardSpeed = -MOVE_SPEED; 
 		}else{
-			this.currentSpeed = 0;
+			this.currentForwardSpeed = 0;	
 		}
 		
-	    if(Mouse.getDX()!=0){
-		 this.currentTurnSpeed = -TURN_SPEED * Mouse.getX();
-	    }else{
-	    	//this.currentTurnSpeed = 0;
-	    }
+		if(Keyboard.isKeyDown(Keyboard.KEY_A)){
+			this.currentStrafeSpeed = -MOVE_SPEED;
+		}else if(Keyboard.isKeyDown(Keyboard.KEY_D)){
+			this.currentStrafeSpeed = MOVE_SPEED;
+		}else{
+			this.currentStrafeSpeed = 0;
+		}
+		
+		if(!Mouse.isButtonDown(2)){
+		 this.currentTurnSpeed = -TURN_SPEED * (Mouse.getX()-Settings.WIDTH/2);
+		}
+		Mouse.setCursorPosition(Settings.WIDTH/2,Settings.HEIGHT/2 );
 		
 		if(Keyboard.isKeyDown(Keyboard.KEY_SPACE)){
 			jump();
