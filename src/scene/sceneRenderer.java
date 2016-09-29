@@ -111,6 +111,7 @@ public class SceneRenderer {
         for(int i=0;i<grasses.size();i++){
         	spreadOnHeights(grasses.get(i));
         }
+        
         //***********GAME OBJECTS****************//
 					
 		this.stall = new Entity(stallModel, new Vector3f(50,terrain.getHeightOfTerrain(50, 50),50),0,0,0,1);
