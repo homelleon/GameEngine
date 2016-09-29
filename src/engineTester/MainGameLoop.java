@@ -1,5 +1,6 @@
 package engineTester;
 
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 
 import renderEngine.DisplayManager;
@@ -15,7 +16,10 @@ public class MainGameLoop {
 
 		while(!Display.isCloseRequested()){
 			scene.render();
-			DisplayManager.updateDisplay();    
+			DisplayManager.updateDisplay(); 
+			if(Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)){
+				break;
+			}
 			
 		}
 		

@@ -88,7 +88,7 @@ public class Camera {
 			if(Keyboard.isKeyDown(Keyboard.KEY_LEFT)){
 				yaw-=0.5f;
 		  	}
-	    		if(Keyboard.isKeyDown(Keyboard.KEY_UP)){
+	    	if(Keyboard.isKeyDown(Keyboard.KEY_UP)){
 	 			pitch-=0.1f;
 			}
 			if(Keyboard.isKeyDown(Keyboard.KEY_DOWN)){
