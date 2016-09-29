@@ -154,7 +154,7 @@ public class SceneRenderer {
 		player.move(terrain);
 		time.start();  
 		sun.setPosition(new Vector3f(sun.getPosition().x,-2000 + time.getSunTime(),sun.getPosition().z));
-		System.out.println(sun.getPosition().y);
+		//System.out.println(sun.getPosition().y);
 		renderer.processEntity(player);
 		renderer.processTerrain(terrain);
 		//renderer.processTerrain(terrain2);
