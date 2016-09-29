@@ -7,8 +7,16 @@ public class Settings {
 	public static final int HEIGHT = 768; 
 	public static final int FPS_CAP = 120;
 	
+	//****************AUIDO SETTINGS****************************************//
+	public static final float MUSIC_VOLUME = 0.05f;
+	public static final float ENVIRONMENT_VOLUME = 0.2f;
+	
+	//****************CONTROLS SETTINGS**************************************//
+	public static final float MOUSE_X_SPEED = 0.2f;
+	public static final float MOUSE_Y_SPEED = 0.2f;
+	public static final float MOUSE_ZOOM_SPEED = 0.1f;
 	//*****************SIMULATION SETTINGS*************************************//
-	public static final float GRAVITY = 10;
+	public static final float GRAVITY = -50;
 	public static final float TIME_LENGTH = 1;
 	
 	//*****************PATH SETTINGS*************************************//
@@ -18,7 +26,7 @@ public class Settings {
 	public final static String INTERFACE_TEXTURE_PATH = "res/textures/interface/";
 	public final static String BLEND_MAP_PATH = "res/textures/blendMaps/";
 	public final static String HEIGHT_MAP_PATH = "res/textures/heightMaps/";
-	public final static String SKYBOX_TEXTURE_PATH = "res/textures/skyBox/";
+	public final static String SKYBOX_TEXTURE_PATH = "res/textures/skybox/";
 	public final static String AUDIO_PATH = "res/audio/";
 	public final static String OBJECT_PATH = "res/objFiles/";
 	public final static String SHADER_PATH = "src/shaders/";

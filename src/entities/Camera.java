@@ -135,7 +135,7 @@ public class Camera {
 	}
 	
 	private void calculateZoom(){
-		float zoomLevel = Mouse.getDWheel() * 0.1f;
+		float zoomLevel = Mouse.getDWheel() * Settings.MOUSE_ZOOM_SPEED;
 		if(((distanceFromPlayer<maxDistanceFromPlayer)&&(zoomLevel<0))||((distanceFromPlayer>minDistanceFromPlayer)&&(zoomLevel>0))){
 			distanceFromPlayer -= zoomLevel;
 		}
@@ -143,7 +143,7 @@ public class Camera {
 	
 	private void calculatePitch(){
 
-			float pitchChange = Mouse.getY() * 0.1f;
+			float pitchChange = Mouse.getY() * Settings.MOUSE_Y_SPEED;
 			if(((pitch<maxPitch)&&(pitchChange<0))||((pitch>minPitch)&&(pitchChange>0))){
 				pitch -= pitchChange;
 			}
@@ -151,18 +151,19 @@ public class Camera {
 	
 	private void calculateAngleAroundPlayer(){
 		if(Mouse.isButtonDown(2)){
-			float angleChange = Mouse.getDX() * 0.3f;
+			float angleChange = Mouse.getDX() * Settings.MOUSE_X_SPEED;
 			angleAroundPlayer -= angleChange;
 		}
 	}
 	
 	private void calculatePitchAndAngle(){
-		float pitchChange = (Mouse.getY() - Settings.HEIGHT/2) * 0.1f;
+		float pitchChange = (Mouse.getY() - Settings.HEIGHT/2) * Settings.MOUSE_Y_SPEED;
 		if(((pitch<maxPitch)&&(pitchChange<0))||((pitch>minPitch)&&(pitchChange>0))){
 			pitch -= pitchChange;
 		}
+		
 		if(Mouse.isButtonDown(2)){	
-			float angleChange = (Mouse.getX() - Settings.WIDTH/2) * 0.2f;
+			float angleChange = (Mouse.getX() - Settings.WIDTH/2) * Settings.MOUSE_X_SPEED;
 			angleAroundPlayer -= angleChange;		
 		}else{
 			angleAroundPlayer = 0;
