@@ -58,6 +58,11 @@ public class MasterRenderer {
 	public static void disableCulling(){
 		GL11.glDisable(GL11.GL_CULL_FACE);
 	}
+	
+	public Matrix4f getProjectionMatrix(){
+		return projectionMatrix;
+	}
+	
 	public void render(List<Light> lights, Camera camera){
 		prepare();
 		shader.start();

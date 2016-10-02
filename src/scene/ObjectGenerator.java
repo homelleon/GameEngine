@@ -13,7 +13,10 @@ import models.TexturedModel;
 import objConverter.ModelData;
 import objConverter.OBJFileLoader;
 import renderEngine.Loader;
+import terrains.Terrain;
 import textures.ModelTexture;
+import textures.TerrainTexture;
+import textures.TerrainTexturePack;
 
 public class ObjectGenerator {
 	//TODO: ALL individual object creator
@@ -60,11 +63,24 @@ public class ObjectGenerator {
 		
 	}
 	
-	public void CreateForest(List<Entity> forest, float x, float y, float r, float noise){
+	public Terrain createMultiTexTerrain(String basicTexture, String redTexture, String greenTexture, String blueTexture, String blendTexture, String heightTexture){
+		TerrainTexture backgroundTexture = new TerrainTexture(loader.loadTexture("terrain", basicTexture));
+		TerrainTexture rTexture = new TerrainTexture(loader.loadTexture("terrain", redTexture));
+		TerrainTexture gTexture = new TerrainTexture(loader.loadTexture("terrain", greenTexture));
+		TerrainTexture bTexture = new TerrainTexture(loader.loadTexture("terrain", blueTexture));
+		
+		TerrainTexturePack texturePack = new TerrainTexturePack(backgroundTexture, rTexture,
+				gTexture, bTexture);
+		TerrainTexture blendMap = new TerrainTexture(loader.loadTexture("blendMap",blendTexture));
+		Terrain terrain = new Terrain(0,0,loader,texturePack, blendMap, heightTexture);	
+		return terrain;
+	}
+	
+	public void createForest(List<Entity> forest, float x, float y, float r, float noise){
 		
 	}
 	
-	public void CreateSun(Light light){
+	public void createSun(Light light){
 		
 	}
 	

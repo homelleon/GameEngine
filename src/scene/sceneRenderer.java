@@ -3,6 +3,7 @@ package scene;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.openal.AL10;
 import org.lwjgl.openal.AL11;
 import org.lwjgl.util.vector.Vector2f;
@@ -16,16 +17,15 @@ import entities.Light;
 import entities.Player;
 import guis.GuiRenderer;
 import guis.GuiTexture;
-import models.RawModel;
 import models.TexturedModel;
-import objConverter.ModelData;
-import objConverter.OBJFileLoader;
 import renderEngine.Loader;
 import renderEngine.MasterRenderer;
 import terrains.Terrain;
-import textures.ModelTexture;
-import textures.TerrainTexture;
-import textures.TerrainTexturePack;
+import toolbox.MousePicker;
+import water.WaterFrameBuffers;
+import water.WaterRenderer;
+import water.WaterShader;
+import water.WaterTile;
 
 public class SceneRenderer {
 
@@ -34,6 +34,7 @@ public class SceneRenderer {
 	final static float SUN_MIN_HEIGHT = -4000;
 	final static float TIME_SPEED = 200;
 	
+	private boolean gamePaused = false;	
 	private Loader loader;
 	private MasterRenderer renderer;
 	private Source ambientSource;
@@ -43,23 +44,29 @@ public class SceneRenderer {
 	//TODO: Delete unnecessary objects
 	private List<GuiTexture> guis;
 	private GuiRenderer guiRenderer;
-	private Terrain terrain;
+	private List<Terrain> terrains;
+	private List<WaterTile> waters;
+	WaterFrameBuffers fbos;
 	private Player player;
 	private Entity stall;
-	private Entity cubeEntity;
+	private Entity cube;
 	private List<Entity> grasses;
 	private List<Light> lights;
 	private Light sun;
+	private WaterRenderer waterRenderer;
 	private Camera camera;
 	private GameTime time;
+	private MousePicker picker;
 	
 	public SceneRenderer(){
 		
-		//*******************TOOLS*************
+		//***************PRE LOAD TOOLS*************//
 		ObjectGenerator generator = new ObjectGenerator();
 		this.loader = new Loader();
+		this.renderer = new MasterRenderer(loader);
 		
-		//*******************AUDIO*************
+		
+		//*******************AUDIO*************//
 		
 		AudioMaster.init();
 		AudioMaster.setListenerData(0,0,0);
@@ -73,38 +80,42 @@ public class SceneRenderer {
 		float xPos = 8;
 				
 		
-		//***************GUI***********
+		//***************GUI***********//
 		this.guis = new ArrayList<GuiTexture>();
 		GuiTexture gui = new GuiTexture(loader.loadTexture("GUI","helthBar"), new Vector2f(-0.7f, -0.7f), new Vector2f(0.25f, 0.25f));
 		guis.add(gui);
+
 		
 		this.guiRenderer = new GuiRenderer(loader);
 		
-		//***************TERRAIN TEXTURE***********
-		TerrainTexture backgroundTexture = new TerrainTexture(loader.loadTexture("terrain","grass"));
-		TerrainTexture rTexture = new TerrainTexture(loader.loadTexture("terrain","ground"));
-		TerrainTexture gTexture = new TerrainTexture(loader.loadTexture("terrain","floweredGrass"));
-		TerrainTexture bTexture = new TerrainTexture(loader.loadTexture("terrain","road"));
+		//***************TERRAIN********************//
+
+		this.terrains = new ArrayList<Terrain>();
+		Terrain terrain = generator.createMultiTexTerrain("grass", "ground", "floweredGrass", "road", "blendMap", "heightMap");
+		terrains.add(terrain);
 		
-		TerrainTexturePack texturePack = new TerrainTexturePack(backgroundTexture, rTexture,
-				gTexture, bTexture);
-		TerrainTexture blendMap = new TerrainTexture(loader.loadTexture("blendMap","blendMap"));
-		//TerrainTexture blendMap1 = new TerrainTexture(loader.loadTexture("blendMap1"));
-		this.terrain = new Terrain(0,0,loader,texturePack, blendMap, "heightMap");		
-				
-		//****************************************
+		//**************WATER***********************//
+		this.waters = new ArrayList<WaterTile>();
+		WaterShader waterShader = new WaterShader();
+		this.waterRenderer = new WaterRenderer(loader, waterShader, renderer.getProjectionMatrix());
+		waters.add(new WaterTile(100, 120, -5));
+		this.fbos = new WaterFrameBuffers();
 		
+		GuiTexture waterGui = new GuiTexture(fbos.getReflectionTexture(), new Vector2f(-0.5f,0.5f), new Vector2f(0.5f, 0.5f));
+		guis.add(waterGui);
+		
+		
+		//**************TEXTURED MODELS***************//
+		//Stall//
 	    TexturedModel stallModel = generator.loadStaticModel("stall", "stallTexture");
 	    stallModel.getTexture().setShineDamper(5);
 	    stallModel.getTexture().setReflectivity(1);
-		
-		ModelData dataCube = OBJFileLoader.loadOBJ("cube");
-		RawModel cube = loader.loadToVAO(dataCube.getVertices(), dataCube.getTextureCoords(), dataCube.getNormals(), dataCube.getIndices());
-		TexturedModel staticCube = new TexturedModel(cube, new ModelTexture(loader.loadTexture("model","cube1")));
-		staticCube.getTexture().setShineDamper(5);
-		staticCube.getTexture().setReflectivity(1);
-		staticCube.getTexture().setHasTransparency(true);
-		staticCube.getTexture().setUseFakeLighting(true);
+		//Cube//
+		TexturedModel cubeModel = generator.loadStaticModel("cube", "cube1");		
+		cubeModel.getTexture().setShineDamper(5);
+		cubeModel.getTexture().setReflectivity(1);
+		cubeModel.getTexture().setHasTransparency(true);
+		cubeModel.getTexture().setUseFakeLighting(true);
 		
 		//************GRASS*********************//
 		this.grasses = generator.createGrassField(50, 50, 200, 1, (float) 0.3);
@@ -115,7 +126,7 @@ public class SceneRenderer {
         //***********GAME OBJECTS****************//
 					
 		this.stall = new Entity(stallModel, new Vector3f(50,terrain.getHeightOfTerrain(50, 50),50),0,0,0,1);
-		this.cubeEntity = new Entity(staticCube, new Vector3f(100,terrain.getHeightOfTerrain(100, 10),10),0,0,0,1);
+		this.cube = new Entity(cubeModel, new Vector3f(100,terrain.getHeightOfTerrain(100, 10),10),0,0,0,1);
 		
 			
 		this.lights = new ArrayList<Light>();
@@ -123,20 +134,19 @@ public class SceneRenderer {
 		lights.add(sun);
 		lights.add(new Light(new Vector3f(100,2,100),new Vector3f(10,0,0), new Vector3f(1, 0.01f, 0.002f)));
 		lights.add(new Light(new Vector3f(20,2,20),new Vector3f(0,10,0), new Vector3f(1, 0.01f, 0.002f)));
-
 		
-
-
+	//***************PLAYER*************************//
 		
-	//***************PLAYER*************************
+		this.player = new Player(cubeModel, new Vector3f(100, 0, 10), 0, 0, 0, 1);
 		
-		this.player = new Player(staticCube, new Vector3f(100, 0, 10), 0, 0, 0, 1);
-		
-	//****************************************
+	//****************************************//
 		this.camera = new Camera(player);	
 		
-		this.renderer = new MasterRenderer(loader);
+
 		this.time = new GameTime(10);
+		
+	//**************IN GAME TOOLS**************************//	
+		this.picker = new MousePicker(camera, renderer.getProjectionMatrix());
 		
 		
 	}
@@ -144,31 +154,54 @@ public class SceneRenderer {
 	private void spreadOnHeights(Entity entity){
 		float x = entity.getPosition().x;
 		float z = entity.getPosition().z; 
-		entity.setPosition(new Vector3f(x, terrain.getHeightOfTerrain(x, z), z));
+		entity.setPosition(new Vector3f(x, terrains.get(0).getHeightOfTerrain(x, z), z));
 	}
 		
 	public void render(){
-		//entity.increasePosition(0, 0, -0.1f);
-		//entity.increaseRotation(0, 1, 0);
+		if (Keyboard.isKeyDown(Keyboard.KEY_P)){
+			gamePaused = !gamePaused;
+		}
+		if (!gamePaused){
 		camera.move();	
-		player.move(terrain);
+		player.move(terrains.get(0));
+		
 		time.start();  
+		
 		sun.setPosition(new Vector3f(sun.getPosition().x,-2000 + time.getSunTime(),sun.getPosition().z));
-		//System.out.println(sun.getPosition().y);
+		}else{
+			picker.update();
+			System.out.println(picker.getCurrentRay());
+		}
+		
+		fbos.bindReflectionFrameBuffer();
+		
 		renderer.processEntity(player);
-		renderer.processTerrain(terrain);
-		//renderer.processTerrain(terrain2);
+		renderer.processTerrain(terrains.get(0));
 	    renderer.processEntity(stall);
-	    renderer.processEntity(cubeEntity);
+	    renderer.processEntity(cube);
 	    for(Integer i = 0; i < grasses.size(); i++){
 	     renderer.processEntity(grasses.get(i));
 	    } 
 	    renderer.render(lights, camera);
+	    
+	    fbos.unbindCurrentFrameBuffer();
+	    
+	    renderer.processEntity(player);
+		renderer.processTerrain(terrains.get(0));
+	    renderer.processEntity(stall);
+	    renderer.processEntity(cube);
+	    for(Integer i = 0; i < grasses.size(); i++){
+	     renderer.processEntity(grasses.get(i));
+	    } 
+	    renderer.render(lights, camera);
+	    
+	    waterRenderer.render(waters, camera);
 	    guiRenderer.render(guis);
 	}
 	
 	public void cleanUp(){
 		ambientSource.delete();
+		fbos.cleanUp();
 		guiRenderer.cleanUp();
 		AudioMaster.cleanUp();
 		renderer.cleanUp();
