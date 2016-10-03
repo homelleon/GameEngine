@@ -12,7 +12,7 @@ import terrains.Terrain;
 public class Player extends Entity {
 	
 	private static final float MOVE_SPEED = 20;
-	private static final float RUN_SPEED = 40;
+	private static final float RUN_SPEED = 100;
 	private static final float TURN_SPEED = 80;
 	private static final float JUMP_POWER = 30;
 	
@@ -86,10 +86,10 @@ public class Player extends Entity {
 		}
 		
 		if(!Mouse.isButtonDown(2)){
-			this.currentTurnSpeed = -TURN_SPEED * (Mouse.getX()-Settings.WIDTH/2) * Settings.MOUSE_X_SPEED;
+			this.currentTurnSpeed = -TURN_SPEED * (Mouse.getX()-Settings.DISPLAY_WIDTH/2) * Settings.MOUSE_X_SPEED;
 		}		
 		
-		Mouse.setCursorPosition(Settings.WIDTH/2,Settings.HEIGHT/2 );
+		Mouse.setCursorPosition(Settings.DISPLAY_WIDTH/2,Settings.DISPLAY_HEIGHT/2 );
 		
 	}
 

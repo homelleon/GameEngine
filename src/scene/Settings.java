@@ -3,8 +3,8 @@ package scene;
 public class Settings {
 	
 	//*****************DISPLAY SETTINGS**********************************//
-	public static final int WIDTH = 1024;
-	public static final int HEIGHT = 768; 
+	public static final int DISPLAY_WIDTH = 1024;
+	public static final int DISPLAY_HEIGHT = 768; 
 	public static final int FPS_CAP = 120;
 	
 	//****************AUIDO SETTINGS****************************************//
@@ -26,6 +26,9 @@ public class Settings {
 	public final static String INTERFACE_TEXTURE_PATH = "res/textures/interface/";
 	public final static String BLEND_MAP_PATH = "res/textures/blendMaps/";
 	public final static String HEIGHT_MAP_PATH = "res/textures/heightMaps/";
+	public final static String DUDV_MAP_PATH = "res/textures/DUDVs/";
+	public final static String NORMAL_MAP_PATH = "res/textures/normalMaps/";
+	public final static String FONT_PATH = "res/textures/fonts/";
 	public final static String SKYBOX_TEXTURE_PATH = "res/textures/skybox/";
 	public final static String AUDIO_PATH = "res/audio/";
 	public final static String OBJECT_PATH = "res/objFiles/";

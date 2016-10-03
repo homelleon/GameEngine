@@ -1,13 +1,17 @@
 package scene;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.openal.AL10;
 import org.lwjgl.openal.AL11;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
+import org.lwjgl.util.vector.Vector4f;
 
 import audio.AudioMaster;
 import audio.Source;
@@ -15,12 +19,17 @@ import entities.Camera;
 import entities.Entity;
 import entities.Light;
 import entities.Player;
+import fontMeshCreator.FontType;
+import fontMeshCreator.GUIText;
+import fontRendering.TextMaster;
 import guis.GuiRenderer;
 import guis.GuiTexture;
 import models.TexturedModel;
+import normalMappingObjConverter.NormalMappedObjLoader;
 import renderEngine.Loader;
 import renderEngine.MasterRenderer;
 import terrains.Terrain;
+import textures.ModelTexture;
 import toolbox.MousePicker;
 import water.WaterFrameBuffers;
 import water.WaterRenderer;
@@ -45,12 +54,12 @@ public class SceneRenderer {
 	private List<GuiTexture> guis;
 	private GuiRenderer guiRenderer;
 	private List<Terrain> terrains;
+	private List<Entity> entities;
+	private List<Entity> normalMapEntities;
 	private List<WaterTile> waters;
+	FontType font;
 	WaterFrameBuffers fbos;
 	private Player player;
-	private Entity stall;
-	private Entity cube;
-	private List<Entity> grasses;
 	private List<Light> lights;
 	private Light sun;
 	private WaterRenderer waterRenderer;
@@ -64,8 +73,12 @@ public class SceneRenderer {
 		ObjectGenerator generator = new ObjectGenerator();
 		this.loader = new Loader();
 		this.renderer = new MasterRenderer(loader);
+		TextMaster.init(loader);
 		
-		
+		//*******************FONTS*************//
+		this.font = new FontType(loader.loadTexture("font", "tahoma"), new File(Settings.FONT_PATH + "tahoma.fnt"));
+		GUIText text = new GUIText("This is an Alfa-version of the game engine", 1, font, new Vector2f(0.25f, 0), 0.5f, true);
+		text.setColour(1, 0, 0);
 		//*******************AUDIO*************//
 		
 		AudioMaster.init();
@@ -95,15 +108,11 @@ public class SceneRenderer {
 		terrains.add(terrain);
 		
 		//**************WATER***********************//
+		this.fbos = new WaterFrameBuffers();
 		this.waters = new ArrayList<WaterTile>();
 		WaterShader waterShader = new WaterShader();
-		this.waterRenderer = new WaterRenderer(loader, waterShader, renderer.getProjectionMatrix());
-		waters.add(new WaterTile(100, 120, -5));
-		this.fbos = new WaterFrameBuffers();
-		
-		GuiTexture waterGui = new GuiTexture(fbos.getReflectionTexture(), new Vector2f(-0.5f,0.5f), new Vector2f(0.5f, 0.5f));
-		guis.add(waterGui);
-		
+		this.waterRenderer = new WaterRenderer(loader, waterShader, renderer.getProjectionMatrix(), fbos);
+		waters.add(new WaterTile(100, 110, 5));
 		
 		//**************TEXTURED MODELS***************//
 		//Stall//
@@ -117,23 +126,38 @@ public class SceneRenderer {
 		cubeModel.getTexture().setHasTransparency(true);
 		cubeModel.getTexture().setUseFakeLighting(true);
 		
+		this.normalMapEntities = new ArrayList<Entity>();
+		
+		TexturedModel barrelModel = new TexturedModel(NormalMappedObjLoader.loadOBJ("barrel", loader),
+				new ModelTexture(loader.loadTexture("model","barrel")));
+		barrelModel.getTexture().setNormalMap(loader.loadTexture("normalMap", "barrelNormal"));
+		barrelModel.getTexture().setShineDamper(10);
+		barrelModel.getTexture().setReflectivity(0.5f);
+		
+		
+		
+		
+		
 		//************GRASS*********************//
-		this.grasses = generator.createGrassField(50, 50, 200, 1, (float) 0.3);
+		List<Entity> grasses = generator.createGrassField(0, 0, 400, 1, 0.2f);
         for(int i=0;i<grasses.size();i++){
         	spreadOnHeights(grasses.get(i));
         }
         
         //***********GAME OBJECTS****************//
-					
-		this.stall = new Entity(stallModel, new Vector3f(50,terrain.getHeightOfTerrain(50, 50),50),0,0,0,1);
-		this.cube = new Entity(cubeModel, new Vector3f(100,terrain.getHeightOfTerrain(100, 10),10),0,0,0,1);
-		
-			
+		this.entities = new ArrayList<Entity>();
+		Entity stall = new Entity(stallModel, new Vector3f(50,terrain.getHeightOfTerrain(50, 50),50),0,0,0,1);
+		Entity cube = new Entity(cubeModel, new Vector3f(100,terrain.getHeightOfTerrain(100, 10),10),0,0,0,1);
+		Entity barrel = new Entity(barrelModel, new Vector3f(200, terrain.getHeightOfTerrain(200, 200), 200), 0,0,0,1);
+		normalMapEntities.add(barrel);
+		entities.add(cube);
+		entities.add(stall);
+		entities.addAll(grasses);
 		this.lights = new ArrayList<Light>();
 		this.sun = new Light(new Vector3f(100,-2000,2000),new Vector3f(1,1,1));
 		lights.add(sun);
-		lights.add(new Light(new Vector3f(100,2,100),new Vector3f(10,0,0), new Vector3f(1, 0.01f, 0.002f)));
-		lights.add(new Light(new Vector3f(20,2,20),new Vector3f(0,10,0), new Vector3f(1, 0.01f, 0.002f)));
+		//lights.add(new Light(new Vector3f(200,2,200),new Vector3f(10,0,0), new Vector3f(1, 0.01f, 0.002f)));
+		//lights.add(new Light(new Vector3f(20,2,20),new Vector3f(0,10,0), new Vector3f(0, 0.01f, 0.002f)));
 		
 	//***************PLAYER*************************//
 		
@@ -173,40 +197,42 @@ public class SceneRenderer {
 			System.out.println(picker.getCurrentRay());
 		}
 		
-		fbos.bindReflectionFrameBuffer();
+		GL11.glEnable(GL30.GL_CLIP_DISTANCE0);
 		
+		//render reflection texture
+		fbos.bindReflectionFrameBuffer();
+		float distance = 2 * (camera.getPosition().y - waters.get(0).getHeight());
+		camera.getPosition().y -= distance;
+		camera.invertPitch();
 		renderer.processEntity(player);
-		renderer.processTerrain(terrains.get(0));
-	    renderer.processEntity(stall);
-	    renderer.processEntity(cube);
-	    for(Integer i = 0; i < grasses.size(); i++){
-	     renderer.processEntity(grasses.get(i));
-	    } 
-	    renderer.render(lights, camera);
-	    
+		renderer.renderScene(entities, normalMapEntities, terrains, lights, camera, new Vector4f(0, 1, 0, -waters.get(0).getHeight()+0.01f));
+	    camera.getPosition().y += distance;
+	    camera.invertPitch();
+		
+	    //render refraction texture
+		fbos.bindRefractionFrameBuffer();
+		renderer.processEntity(player);
+		renderer.renderScene(entities, normalMapEntities, terrains, lights, camera, new Vector4f(0, -1, 0, waters.get(0).getHeight()));
+
+	    //render to screen
+		GL11.glDisable(GL30.GL_CLIP_DISTANCE0);
 	    fbos.unbindCurrentFrameBuffer();
-	    
 	    renderer.processEntity(player);
-		renderer.processTerrain(terrains.get(0));
-	    renderer.processEntity(stall);
-	    renderer.processEntity(cube);
-	    for(Integer i = 0; i < grasses.size(); i++){
-	     renderer.processEntity(grasses.get(i));
-	    } 
-	    renderer.render(lights, camera);
-	    
-	    waterRenderer.render(waters, camera);
+
+	    renderer.renderScene(entities, normalMapEntities, terrains, lights, camera, new Vector4f(0, -1, 0, 15));
+	    waterRenderer.render(waters, camera, sun);
 	    guiRenderer.render(guis);
+	    TextMaster.render();
 	}
 	
 	public void cleanUp(){
+		TextMaster.cleanUp();
 		ambientSource.delete();
 		fbos.cleanUp();
 		guiRenderer.cleanUp();
 		AudioMaster.cleanUp();
 		renderer.cleanUp();
 		loader.cleanUp();
-		grasses.clear();
 	}
 
 }

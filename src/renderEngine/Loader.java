@@ -42,6 +42,27 @@ public class Loader {
 		
 	}
 	
+	public int loadToVAO(float[] positions,float[] textureCoords){
+		int vaoID = createVAO();
+		storeDataInAttributeList(0, 2, positions);
+		storeDataInAttributeList(1, 2, textureCoords);
+		unbindVAO();
+		return vaoID;
+		
+	}
+	
+	public RawModel loadToVAO(float[] positions,float[] textureCoords,float[] normals, float[] tangents, int[] indices){
+		int vaoID = createVAO();
+		bindIndicesBugger(indices);
+		storeDataInAttributeList(0, 3, positions);
+		storeDataInAttributeList(1, 2, textureCoords);
+		storeDataInAttributeList(2, 3, normals);
+		storeDataInAttributeList(3, 3, tangents);
+		unbindVAO();
+		return new RawModel(vaoID,indices.length);
+		
+	}
+	
 	public RawModel loadToVAO(float[] positions, int dimensions){
 		int vaoID = createVAO();
 		this.storeDataInAttributeList(0,dimensions,positions);
@@ -53,10 +74,16 @@ public class Loader {
 	public int loadTexture(String textureType, String fileName){
 		Texture texture = null;
 		try {
+			float bias;
+			if (textureType == "font"){
+				bias = 0; 
+			}else{
+				bias = -2.4f;
+			}
 			texture = TextureLoader.getTexture("PNG", new FileInputStream(getTexturePath(textureType)+fileName+".png"));
 			GL30.glGenerateMipmap(GL11.GL_TEXTURE_2D);
 			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR_MIPMAP_LINEAR);
-			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL14.GL_TEXTURE_LOD_BIAS, -1);
+			GL11.glTexParameterf(GL11.GL_TEXTURE_2D, GL14.GL_TEXTURE_LOD_BIAS, bias);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -68,6 +95,7 @@ public class Loader {
 		return textureID;
 		
 	}
+	
 	
 	public void cleanUp(){
 		
@@ -196,6 +224,15 @@ public class Loader {
 			break;
 		case "skyBox":
 			path = Settings.SKYBOX_TEXTURE_PATH;
+			break;
+		case "DUDV":
+		    path = Settings.DUDV_MAP_PATH;
+		    break;
+		case "normalMap":
+			path = Settings.NORMAL_MAP_PATH;
+			break;
+		case "font":
+			path = Settings.FONT_PATH;
 			break;
 		//default:
 			//path = Settings.RES_PATH;

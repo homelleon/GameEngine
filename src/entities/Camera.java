@@ -11,7 +11,7 @@ public class Camera {
 	private static final float maxDistanceFromPlayer = 100;
 	private static final float minDistanceFromPlayer = 20;
 	private static final float maxPitch = 90;
-	private static final float minPitch = 5;
+	private static final float minPitch = -90;
 	
 	private float distanceFromPlayer = 50;
 	private float angleAroundPlayer = 0;
@@ -108,6 +108,10 @@ public class Camera {
 	public float getPitch() {
 		return pitch;
 	}
+	
+	public void invertPitch(){
+		this.pitch = -pitch;
+	}
 
 	public float getYaw() {
 		return yaw;
@@ -157,13 +161,13 @@ public class Camera {
 	}
 	
 	private void calculatePitchAndAngle(){
-		float pitchChange = (Mouse.getY() - Settings.HEIGHT/2) * Settings.MOUSE_Y_SPEED;
+		float pitchChange = (Mouse.getY() - Settings.DISPLAY_HEIGHT/2) * Settings.MOUSE_Y_SPEED;
 		if(((pitch<maxPitch)&&(pitchChange<0))||((pitch>minPitch)&&(pitchChange>0))){
 			pitch -= pitchChange;
 		}
 		
 		if(Mouse.isButtonDown(2)){	
-			float angleChange = (Mouse.getX() - Settings.WIDTH/2) * Settings.MOUSE_X_SPEED;
+			float angleChange = (Mouse.getX() - Settings.DISPLAY_WIDTH/2) * Settings.MOUSE_X_SPEED;
 			angleAroundPlayer -= angleChange;		
 		}else{
 			angleAroundPlayer = 0;

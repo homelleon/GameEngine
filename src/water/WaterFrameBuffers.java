@@ -1,29 +1,22 @@
 package water;
  
 import java.nio.ByteBuffer;
- 
+
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
-import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL14;
-import org.lwjgl.opengl.GL15;
-import org.lwjgl.opengl.GL20;
-import org.lwjgl.opengl.GL21;
 import org.lwjgl.opengl.GL30;
-import org.lwjgl.opengl.GL31;
 import org.lwjgl.opengl.GL32;
-import org.lwjgl.opengl.GL33;
-import org.lwjgl.opengl.GL40;
-import org.lwjgl.opengl.GL42;
+
+import scene.Settings;
  
 public class WaterFrameBuffers {
  
     protected static final int REFLECTION_WIDTH = 320;
     private static final int REFLECTION_HEIGHT = 180;
      
-    protected static final int REFRACTION_WIDTH = 1280;
-    private static final int REFRACTION_HEIGHT = 720;
+    protected static final int REFRACTION_WIDTH = 1024;
+    private static final int REFRACTION_HEIGHT = 768;
  
     private int reflectionFrameBuffer;
     private int reflectionTexture;
@@ -52,7 +45,7 @@ public class WaterFrameBuffers {
     }
      
     public void bindRefractionFrameBuffer() {//call before rendering to this FBO
-        bindFrameBuffer(refractionFrameBuffer,REFRACTION_WIDTH,REFRACTION_HEIGHT);
+        bindFrameBuffer(refractionFrameBuffer,Settings.DISPLAY_WIDTH,Settings.DISPLAY_HEIGHT);
     }
      
     public void unbindCurrentFrameBuffer() {//call to switch to default frame buffer

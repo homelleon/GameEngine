@@ -23,14 +23,14 @@ public class DisplayManager {
 		.withProfileCore(true);
 		
 		try {
-			Display.setDisplayMode(new DisplayMode(Settings.WIDTH,Settings.HEIGHT));
-			Display.create(new PixelFormat(), attribs);
+			Display.setDisplayMode(new DisplayMode(Settings.DISPLAY_WIDTH,Settings.DISPLAY_HEIGHT));
+			Display.create(new PixelFormat().withDepthBits(24), attribs);
 			Display.setTitle("MyGame");
 		} catch (LWJGLException e) {
 			e.printStackTrace();
 		}
 		
-		GL11.glViewport(0, 0, Settings.WIDTH, Settings.HEIGHT);
+		GL11.glViewport(0, 0, Settings.DISPLAY_WIDTH, Settings.DISPLAY_HEIGHT);
 		lastFrameTime = getCurrentTime();
 		
 		
