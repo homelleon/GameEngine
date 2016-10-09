@@ -27,6 +27,14 @@ public class GUIText {
 	private FontType font;
 
 	private boolean centerText = false;
+	
+	private float width = 0.5f;
+	private float edge = 0.1f;
+	private float borderWidth = 0.0f;
+	private float borderEdge = 0.4f;
+	
+	private Vector2f offset = new Vector2f(0f, 0f);
+	private Vector3f outlineColour = new Vector3f(0f, 0f, 0f);
 
 	/**
 	 * Creates a new text, loads the text's quads into a VAO, and adds the text
@@ -61,8 +69,82 @@ public class GUIText {
 		this.position = position;
 		this.lineMaxSize = maxLineLength;
 		this.centerText = centered;
+		makeFontSmooth();
 		TextMaster.loadText(this);
 	}
+
+	
+	public float getWidth() {
+		return width;
+	}
+
+
+
+	public void setWidth(float width) {
+		this.width = width;
+	}
+
+
+
+	public float getEdge() {
+		return edge;
+	}
+
+
+
+	public void setEdge(float edge) {
+		this.edge = edge;
+	}
+
+
+
+	public float getBorderWidth() {
+		return borderWidth;
+	}
+
+
+
+	public void setBorderWidth(float borderWidth) {
+		this.borderWidth = borderWidth;
+	}
+
+
+
+	public float getBorderEdge() {
+		return borderEdge;
+	}
+
+
+
+	public void setBorderEdge(float borderEdge) {
+		this.borderEdge = borderEdge;
+	}
+
+
+
+	public Vector2f getOffset() {
+		return offset;
+	}
+
+
+
+	public void setOffset(Vector2f offset) {
+		this.offset = offset;
+	}
+
+
+
+	public Vector3f getOutlineColour() {
+		return outlineColour;
+	}
+
+
+
+	public void setOutlineColour(Vector3f outlineColour) {
+		this.outlineColour = outlineColour;
+	}
+
+
 
 	/**
 	 * Remove the text from the screen.
@@ -182,6 +264,28 @@ public class GUIText {
 	 */
 	protected String getTextString() {
 		return textString;
+	}
+	
+	private void makeFontSmooth(){
+		if (this.fontSize < 4){
+			this.edge = 0.2f;
+			this.width = 0.5f;
+		}else if(this.fontSize < 6){
+			this.edge = 0.05f;
+			this.width = 0.6f;
+		}else if(this.fontSize < 11){
+			this.edge = 0.04f;
+			this.width = 0.6f;
+		}else if(this.fontSize < 15){
+			this.edge = 0.04f;
+			this.width = 0.62f;
+		}else if(this.fontSize<25){
+			this.edge = 0.03f;
+			this.width = 0.62f;
+		}else{
+			this.edge = 0.02f;
+			this.width = 0.62f;
+		}
 	}
 
 }

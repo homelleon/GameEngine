@@ -26,6 +26,9 @@ import guis.GuiRenderer;
 import guis.GuiTexture;
 import models.TexturedModel;
 import normalMappingObjConverter.NormalMappedObjLoader;
+import particles.ParticleMaster;
+import particles.ParticleSystem;
+import particles.ParticleTexture;
 import renderEngine.Loader;
 import renderEngine.MasterRenderer;
 import terrains.Terrain;
@@ -53,6 +56,7 @@ public class SceneRenderer {
 	//TODO: Delete unnecessary objects
 	private List<GuiTexture> guis;
 	private GuiRenderer guiRenderer;
+	private ParticleSystem pSystem;
 	private List<Terrain> terrains;
 	private List<Entity> entities;
 	private List<Entity> normalMapEntities;
@@ -72,12 +76,12 @@ public class SceneRenderer {
 		//***************PRE LOAD TOOLS*************//
 		ObjectGenerator generator = new ObjectGenerator();
 		this.loader = new Loader();
-		this.renderer = new MasterRenderer(loader);
+		this.renderer = new MasterRenderer(loader);		
 		TextMaster.init(loader);
 		
 		//*******************FONTS*************//
-		this.font = new FontType(loader.loadTexture("font", "tahoma"), new File(Settings.FONT_PATH + "tahoma.fnt"));
-		GUIText text = new GUIText("This is an Alfa-version of the game engine", 1, font, new Vector2f(0.25f, 0), 0.5f, true);
+		this.font = new FontType(loader.loadTexture("font", "candara"), new File(Settings.FONT_PATH + "candara.fnt"));
+		GUIText text = new GUIText("This is an Alfa-version of the game engine", 3, font, new Vector2f(0.25f, 0), 0.5f, true);
 		text.setColour(1, 0, 0);
 		//*******************AUDIO*************//
 		
@@ -90,8 +94,7 @@ public class SceneRenderer {
 		ambientSource.setLooping(true);
 		ambientSource.setVolume(0.2f);
 		ambientSource.play(buffer);
-		float xPos = 8;
-				
+		float xPos = 8;				
 		
 		//***************GUI***********//
 		this.guis = new ArrayList<GuiTexture>();
@@ -134,9 +137,18 @@ public class SceneRenderer {
 		barrelModel.getTexture().setShineDamper(10);
 		barrelModel.getTexture().setReflectivity(0.5f);
 		
+		//**************PARTICLES***************//
+		ParticleTexture particleTexture = new ParticleTexture(loader.loadTexture("particles", "particleAtlas"), 4, true);
 		
-		
-		
+		ParticleMaster.init(loader, renderer.getProjectionMatrix());
+		this.pSystem = new ParticleSystem(particleTexture, 50, 25, 0.3f, 4, 1);
+		pSystem.randomizeRotation();
+		pSystem.setDirection(new Vector3f(0, 1, 0), 0.1f);
+		pSystem.setLifeError(0.1f);
+		pSystem.setSpeedError(0.4f);
+		pSystem.setScaleError(0.8f);
+
+				
 		
 		//************GRASS*********************//
 		List<Entity> grasses = generator.createGrassField(0, 0, 400, 1, 0.2f);
@@ -180,23 +192,26 @@ public class SceneRenderer {
 		float z = entity.getPosition().z; 
 		entity.setPosition(new Vector3f(x, terrains.get(0).getHeightOfTerrain(x, z), z));
 	}
+	
+	
 		
 	public void render(){
 		if (Keyboard.isKeyDown(Keyboard.KEY_P)){
 			gamePaused = !gamePaused;
 		}
-		if (!gamePaused){
-		camera.move();	
-		player.move(terrains.get(0));
-		
+		if (gamePaused == false){
 		time.start();  
-		
+		player.move(terrains.get(0));
+		camera.move();	
 		sun.setPosition(new Vector3f(sun.getPosition().x,-2000 + time.getSunTime(),sun.getPosition().z));
 		}else{
 			picker.update();
 			System.out.println(picker.getCurrentRay());
 		}
-		
+		//pSystem.generateParticles(player.getPosition());
+		//pSystem.generateParticles(new Vector3f(10,10,terrains.get(0).getHeightOfTerrain(10, 10)));
+		ParticleMaster.update(camera);
+				
 		GL11.glEnable(GL30.GL_CLIP_DISTANCE0);
 		
 		//render reflection texture
@@ -205,7 +220,7 @@ public class SceneRenderer {
 		camera.getPosition().y -= distance;
 		camera.invertPitch();
 		renderer.processEntity(player);
-		renderer.renderScene(entities, normalMapEntities, terrains, lights, camera, new Vector4f(0, 1, 0, -waters.get(0).getHeight()+0.01f));
+		renderer.renderScene(entities, normalMapEntities, terrains, lights, camera, new Vector4f(0, 1, 0, -waters.get(0).getHeight()+0.02f));
 	    camera.getPosition().y += distance;
 	    camera.invertPitch();
 		
@@ -218,9 +233,12 @@ public class SceneRenderer {
 		GL11.glDisable(GL30.GL_CLIP_DISTANCE0);
 	    fbos.unbindCurrentFrameBuffer();
 	    renderer.processEntity(player);
-
+	   
 	    renderer.renderScene(entities, normalMapEntities, terrains, lights, camera, new Vector4f(0, -1, 0, 15));
 	    waterRenderer.render(waters, camera, sun);
+	 
+	    ParticleMaster.renderParticles(camera);
+	    
 	    guiRenderer.render(guis);
 	    TextMaster.render();
 	}
