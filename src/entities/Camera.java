@@ -49,7 +49,7 @@ public class Camera {
 	}
 	
 	public void move(){
-		if (!perspectiveMode){
+		if (perspectiveMode == false){
 			calculateZoom();
 			calculatePitchAndAngle();
 			float horizontalDistance = calculateHorizontalDistance();

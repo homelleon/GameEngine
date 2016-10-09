@@ -107,7 +107,8 @@ public class SceneRenderer {
 		//***************TERRAIN********************//
 
 		this.terrains = new ArrayList<Terrain>();
-		Terrain terrain = generator.createMultiTexTerrain("grass", "ground", "floweredGrass", "road", "blendMap", "heightMap");
+		Terrain terrain = generator.createMultiTexTerrain("grass", "ground", "floweredGrass", "road", "blendMap");
+		//Terrain terrain = generator.createMultiTexTerrain("grass", "ground", "floweredGrass", "road", "blendMap", "heightMap");
 		terrains.add(terrain);
 		
 		//**************WATER***********************//
@@ -220,7 +221,7 @@ public class SceneRenderer {
 		camera.getPosition().y -= distance;
 		camera.invertPitch();
 		renderer.processEntity(player);
-		renderer.renderScene(entities, normalMapEntities, terrains, lights, camera, new Vector4f(0, 1, 0, -waters.get(0).getHeight()+0.02f));
+		renderer.renderScene(entities, normalMapEntities, terrains, lights, camera, new Vector4f(0, 1, 0, -waters.get(0).getHeight()));
 	    camera.getPosition().y += distance;
 	    camera.invertPitch();
 		

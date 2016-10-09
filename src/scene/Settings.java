@@ -3,8 +3,8 @@ package scene;
 public class Settings {
 	
 	//*****************DISPLAY SETTINGS**********************************//
-	public static final int DISPLAY_WIDTH = 1024;
-	public static final int DISPLAY_HEIGHT = 768; 
+	public static final int DISPLAY_WIDTH = 1920;
+	public static final int DISPLAY_HEIGHT = 1080; 
 	public static final int FPS_CAP = 120;
 	
 	//****************AUIDO SETTINGS****************************************//

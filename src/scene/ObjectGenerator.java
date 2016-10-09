@@ -76,6 +76,19 @@ public class ObjectGenerator {
 		return terrain;
 	}
 	
+	public Terrain createMultiTexTerrain(String basicTexture, String redTexture, String greenTexture, String blueTexture, String blendTexture){
+		TerrainTexture backgroundTexture = new TerrainTexture(loader.loadTexture("terrain", basicTexture));
+		TerrainTexture rTexture = new TerrainTexture(loader.loadTexture("terrain", redTexture));
+		TerrainTexture gTexture = new TerrainTexture(loader.loadTexture("terrain", greenTexture));
+		TerrainTexture bTexture = new TerrainTexture(loader.loadTexture("terrain", blueTexture));
+		
+		TerrainTexturePack texturePack = new TerrainTexturePack(backgroundTexture, rTexture,
+				gTexture, bTexture);
+		TerrainTexture blendMap = new TerrainTexture(loader.loadTexture("blendMap",blendTexture));
+		Terrain terrain = new Terrain(0,0,loader,texturePack, blendMap);	
+		return terrain;
+	}
+	
 	public void createForest(List<Entity> forest, float x, float y, float r, float noise){
 		
 	}

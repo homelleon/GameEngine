@@ -13,10 +13,10 @@ import scene.Settings;
 public class WaterFrameBuffers {
  
     protected static final int REFLECTION_WIDTH = 320;
-    private static final int REFLECTION_HEIGHT = 180;
+    private static final int REFLECTION_HEIGHT = 180;  
      
-    protected static final int REFRACTION_WIDTH = 1024;
-    private static final int REFRACTION_HEIGHT = 768;
+    protected static final int REFRACTION_WIDTH = Settings.DISPLAY_WIDTH;
+    private static final int REFRACTION_HEIGHT = Settings.DISPLAY_HEIGHT;
  
     private int reflectionFrameBuffer;
     private int reflectionTexture;
@@ -30,7 +30,7 @@ public class WaterFrameBuffers {
         initialiseReflectionFrameBuffer();
         initialiseRefractionFrameBuffer();
     }
- 
+
     public void cleanUp() {//call when closing the game
         GL30.glDeleteFramebuffers(reflectionFrameBuffer);
         GL11.glDeleteTextures(reflectionTexture);
