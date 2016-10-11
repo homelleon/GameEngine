@@ -32,6 +32,11 @@ public class StaticShader extends ShaderProgram{
 	private int location_numberOfRows;
 	private int location_offset;
 	private int location_plane;
+	private int location_fogDensity;
+	private int location_toShadowMapSpace;
+	private int location_shadowMap;
+	private int location_shadowDistance;
+	private int location_mapSize;
 	
 	public StaticShader(){
 		super(VERTEX_FILE, FRAGMENT_FILE);
@@ -43,6 +48,10 @@ public class StaticShader extends ShaderProgram{
 		super.bindAttribute(1, "textureCoordinates");
 		super.bindAttribute(2, "normal");
 		
+	}
+	
+	public void connectTextureUnits(){
+		super.loadInt(location_shadowMap, 5);
 	}
 
 
@@ -58,6 +67,10 @@ public class StaticShader extends ShaderProgram{
 		location_numberOfRows = super.getUniformLocation("numberOfRows");
 		location_offset = super.getUniformLocation("offset");
 		location_plane = super.getUniformLocation("plane");
+		location_fogDensity = super.getUniformLocation("fogDensity");
+		location_toShadowMapSpace = super.getUniformLocation("toShadowMapSpace");
+		location_shadowDistance = super.getUniformLocation("shadowDistance");
+		location_mapSize = super.getUniformLocation("mapSize");
 		
 		location_lightPosition = new int[MAX_LIGHTS];
 		location_lightColour = new int[MAX_LIGHTS];
@@ -68,6 +81,18 @@ public class StaticShader extends ShaderProgram{
 			location_attenuation[i] = super.getUniformLocation("attenuation[" + i + "]");
 			
 		}
+	}
+	
+	public void loadToShadowSpaceMatrix(Matrix4f matrix){
+		super.loadMatrix(location_toShadowMapSpace, matrix);
+	}
+	
+	public void loadShadowDistance(float distance){
+		super.loadFloat(location_shadowDistance, distance);
+	}
+	
+	public void loadShadowMapSize(float size){
+		super.loadFloat(location_mapSize, size);
 	}
 	
 	public void loadClipPlane(Vector4f plane){
@@ -93,6 +118,10 @@ public class StaticShader extends ShaderProgram{
 	public void loadShineVariables(float damper, float reflectivity){
 		super.loadFloat(location_shineDamper, damper);
 		super.loadFloat(location_reflectivity, reflectivity);
+	}
+	
+	public void loadFogDensity(float density){
+		super.loadFloat(location_fogDensity, density);
 	}
 	
 	public void loadTranformationMatrix(Matrix4f matrix){

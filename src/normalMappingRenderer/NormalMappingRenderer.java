@@ -16,6 +16,7 @@ import entities.Light;
 import models.RawModel;
 import models.TexturedModel;
 import renderEngine.MasterRenderer;
+import scene.Settings;
 import textures.ModelTexture;
 import toolbox.Maths;
 
@@ -88,7 +89,7 @@ public class NormalMappingRenderer {
 	private void prepare(Vector4f clipPlane, List<Light> lights, Camera camera) {
 		shader.loadClipPlane(clipPlane);
 		//need to be public variables in MasterRenderer
-		shader.loadSkyColour(MasterRenderer.RED, MasterRenderer.GREEN, MasterRenderer.BLUE);
+		shader.loadSkyColour(Settings.DISPLAY_RED, Settings.DISPLAY_GREEN, Settings.DISPLAY_BLUE);
 		Matrix4f viewMatrix = Maths.createViewMatrix(camera);
 		
 		shader.loadLights(lights, viewMatrix);

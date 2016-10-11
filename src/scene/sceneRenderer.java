@@ -46,7 +46,7 @@ public class SceneRenderer {
 	final static float SUN_MIN_HEIGHT = -4000;
 	final static float TIME_SPEED = 200;
 	
-	private boolean gamePaused = false;	
+	public static boolean gamePaused = false;	
 	private Loader loader;
 	private MasterRenderer renderer;
 	private Source ambientSource;
@@ -76,10 +76,78 @@ public class SceneRenderer {
 		//***************PRE LOAD TOOLS*************//
 		ObjectGenerator generator = new ObjectGenerator();
 		this.loader = new Loader();
-		this.renderer = new MasterRenderer(loader);		
-		TextMaster.init(loader);
 		
+		//***************TERRAIN********************//
+
+		this.terrains = new ArrayList<Terrain>();
+		Terrain terrain = generator.createMultiTexTerrain("grass", "ground", "floweredGrass", "road", "blendMap", 100f, 5, 0.5f);
+		//Terrain terrain = generator.createMultiTexTerrain("grass", "ground", "floweredGrass", "road", "blendMap", "heightMap");
+		terrains.add(terrain);
+				
+		//**************TEXTURED MODELS***************//
+		//Stall//
+	    TexturedModel stallModel = generator.loadStaticModel("stall", "stallTexture");
+	    stallModel.getTexture().setShineDamper(5);
+	    stallModel.getTexture().setReflectivity(1);
+		//Cube//
+		TexturedModel cubeModel = generator.loadStaticModel("cube", "cube1");		
+		cubeModel.getTexture().setShineDamper(5);
+		cubeModel.getTexture().setReflectivity(1);
+		cubeModel.getTexture().setHasTransparency(true);
+		cubeModel.getTexture().setUseFakeLighting(true);
+		
+		this.normalMapEntities = new ArrayList<Entity>();
+		
+		TexturedModel barrelModel = new TexturedModel(NormalMappedObjLoader.loadOBJ("barrel", loader),
+				new ModelTexture(loader.loadTexture("model","barrel")));
+		barrelModel.getTexture().setNormalMap(loader.loadTexture("normalMap", "barrelNormal"));
+		barrelModel.getTexture().setShineDamper(10);
+		barrelModel.getTexture().setReflectivity(0.5f);
+	
+
+						
+		
+		//************GRASS*********************//
+		List<Entity> grasses = generator.createGrassField(0, 0, 400, 1, 0.2f);
+        for(int i=0;i<grasses.size();i++){
+        	spreadOnHeights(grasses.get(i));
+        }
+        
+        //***********GAME OBJECTS****************//
+		this.entities = new ArrayList<Entity>();
+		Entity stall = new Entity(stallModel, new Vector3f(50,terrain.getHeightOfTerrain(50, 50),50),0,0,0,1);
+		Entity cube = new Entity(cubeModel, new Vector3f(100,terrain.getHeightOfTerrain(100, 10),10),0,0,0,1);
+		Entity barrel = new Entity(barrelModel, new Vector3f(200, terrain.getHeightOfTerrain(200, 200), 200), 0,0,0,1);
+		normalMapEntities.add(barrel);
+		entities.add(cube);
+		entities.add(stall);
+
+		entities.addAll(grasses);
+		this.lights = new ArrayList<Light>();
+		this.sun = new Light(new Vector3f(0,1500000,-1000),new Vector3f(1.3f,1.3f,1.3f));
+		lights.add(sun);
+		//lights.add(new Light(new Vector3f(200,2,200),new Vector3f(10,0,0), new Vector3f(1, 0.01f, 0.002f)));
+		//lights.add(new Light(new Vector3f(20,2,20),new Vector3f(0,10,0), new Vector3f(0, 0.01f, 0.002f)));
+		
+		this.player = new Player(cubeModel, new Vector3f(100, 0, 10), 0, 0, 0, 1);
+		this.camera = new Camera(player);	
+		this.time = new GameTime(10);
+		
+		this.renderer = new MasterRenderer(loader, camera);		
+		
+		//**************PARTICLES***************//
+		ParticleTexture particleTexture = new ParticleTexture(loader.loadTexture("particles", "particleAtlas"), 4, true);
+		
+		ParticleMaster.init(loader, renderer.getProjectionMatrix());
+		this.pSystem = new ParticleSystem(particleTexture, 50, 25, 0.3f, 4, 1);
+		pSystem.randomizeRotation();
+		pSystem.setDirection(new Vector3f(0, 1, 0), 0.1f);
+		pSystem.setLifeError(0.1f);
+		pSystem.setSpeedError(0.4f);
+		pSystem.setScaleError(0.8f);
+
 		//*******************FONTS*************//
+		TextMaster.init(loader);
 		this.font = new FontType(loader.loadTexture("font", "candara"), new File(Settings.FONT_PATH + "candara.fnt"));
 		GUIText text = new GUIText("This is an Alfa-version of the game engine", 3, font, new Vector2f(0.25f, 0), 0.5f, true);
 		text.setColour(1, 0, 0);
@@ -100,87 +168,28 @@ public class SceneRenderer {
 		this.guis = new ArrayList<GuiTexture>();
 		GuiTexture gui = new GuiTexture(loader.loadTexture("GUI","helthBar"), new Vector2f(-0.7f, -0.7f), new Vector2f(0.25f, 0.25f));
 		guis.add(gui);
+		
+		GuiTexture shadowMap = new GuiTexture(renderer.getShadowMapTexture(), 
+				new Vector2f(0.5f, 0.5f), new Vector2f(0.5f,0.5f));
+		//guis.add(shadowMap);
 
 		
 		this.guiRenderer = new GuiRenderer(loader);
 		
-		//***************TERRAIN********************//
-
-		this.terrains = new ArrayList<Terrain>();
-		Terrain terrain = generator.createMultiTexTerrain("grass", "ground", "floweredGrass", "road", "blendMap");
-		//Terrain terrain = generator.createMultiTexTerrain("grass", "ground", "floweredGrass", "road", "blendMap", "heightMap");
-		terrains.add(terrain);
 		
 		//**************WATER***********************//
 		this.fbos = new WaterFrameBuffers();
-		this.waters = new ArrayList<WaterTile>();
 		WaterShader waterShader = new WaterShader();
 		this.waterRenderer = new WaterRenderer(loader, waterShader, renderer.getProjectionMatrix(), fbos);
-		waters.add(new WaterTile(100, 110, 5));
+		this.waters = new ArrayList<WaterTile>(); 
+		waters.add(new WaterTile(0, 0, -4, 1000));
+		waters.stream().forEach((i) -> i.setTilingSize(0.1f));
+		waters.stream().forEach((i) -> i.setWaterSpeed(0.7f));
+		waters.stream().forEach((i) -> i.setWaveStrength(0.1f));
+		//waters.add(new WaterTile(400, 400, 0));
+		//waters.get(0).setTilingSize(0.004f);
 		
-		//**************TEXTURED MODELS***************//
-		//Stall//
-	    TexturedModel stallModel = generator.loadStaticModel("stall", "stallTexture");
-	    stallModel.getTexture().setShineDamper(5);
-	    stallModel.getTexture().setReflectivity(1);
-		//Cube//
-		TexturedModel cubeModel = generator.loadStaticModel("cube", "cube1");		
-		cubeModel.getTexture().setShineDamper(5);
-		cubeModel.getTexture().setReflectivity(1);
-		cubeModel.getTexture().setHasTransparency(true);
-		cubeModel.getTexture().setUseFakeLighting(true);
 		
-		this.normalMapEntities = new ArrayList<Entity>();
-		
-		TexturedModel barrelModel = new TexturedModel(NormalMappedObjLoader.loadOBJ("barrel", loader),
-				new ModelTexture(loader.loadTexture("model","barrel")));
-		barrelModel.getTexture().setNormalMap(loader.loadTexture("normalMap", "barrelNormal"));
-		barrelModel.getTexture().setShineDamper(10);
-		barrelModel.getTexture().setReflectivity(0.5f);
-		
-		//**************PARTICLES***************//
-		ParticleTexture particleTexture = new ParticleTexture(loader.loadTexture("particles", "particleAtlas"), 4, true);
-		
-		ParticleMaster.init(loader, renderer.getProjectionMatrix());
-		this.pSystem = new ParticleSystem(particleTexture, 50, 25, 0.3f, 4, 1);
-		pSystem.randomizeRotation();
-		pSystem.setDirection(new Vector3f(0, 1, 0), 0.1f);
-		pSystem.setLifeError(0.1f);
-		pSystem.setSpeedError(0.4f);
-		pSystem.setScaleError(0.8f);
-
-				
-		
-		//************GRASS*********************//
-		List<Entity> grasses = generator.createGrassField(0, 0, 400, 1, 0.2f);
-        for(int i=0;i<grasses.size();i++){
-        	spreadOnHeights(grasses.get(i));
-        }
-        
-        //***********GAME OBJECTS****************//
-		this.entities = new ArrayList<Entity>();
-		Entity stall = new Entity(stallModel, new Vector3f(50,terrain.getHeightOfTerrain(50, 50),50),0,0,0,1);
-		Entity cube = new Entity(cubeModel, new Vector3f(100,terrain.getHeightOfTerrain(100, 10),10),0,0,0,1);
-		Entity barrel = new Entity(barrelModel, new Vector3f(200, terrain.getHeightOfTerrain(200, 200), 200), 0,0,0,1);
-		normalMapEntities.add(barrel);
-		entities.add(cube);
-		entities.add(stall);
-		entities.addAll(grasses);
-		this.lights = new ArrayList<Light>();
-		this.sun = new Light(new Vector3f(100,-2000,2000),new Vector3f(1,1,1));
-		lights.add(sun);
-		//lights.add(new Light(new Vector3f(200,2,200),new Vector3f(10,0,0), new Vector3f(1, 0.01f, 0.002f)));
-		//lights.add(new Light(new Vector3f(20,2,20),new Vector3f(0,10,0), new Vector3f(0, 0.01f, 0.002f)));
-		
-	//***************PLAYER*************************//
-		
-		this.player = new Player(cubeModel, new Vector3f(100, 0, 10), 0, 0, 0, 1);
-		
-	//****************************************//
-		this.camera = new Camera(player);	
-		
-
-		this.time = new GameTime(10);
 		
 	//**************IN GAME TOOLS**************************//	
 		this.picker = new MousePicker(camera, renderer.getProjectionMatrix());
@@ -197,13 +206,11 @@ public class SceneRenderer {
 	
 		
 	public void render(){
-		if (Keyboard.isKeyDown(Keyboard.KEY_P)){
-			gamePaused = !gamePaused;
-		}
 		if (gamePaused == false){
 		time.start();  
-		player.move(terrains.get(0));
 		camera.move();	
+		player.move(terrains.get(0));
+	
 		sun.setPosition(new Vector3f(sun.getPosition().x,-2000 + time.getSunTime(),sun.getPosition().z));
 		}else{
 			picker.update();
@@ -212,7 +219,8 @@ public class SceneRenderer {
 		//pSystem.generateParticles(player.getPosition());
 		//pSystem.generateParticles(new Vector3f(10,10,terrains.get(0).getHeightOfTerrain(10, 10)));
 		ParticleMaster.update(camera);
-				
+		
+		renderer.renderShadowMap(entities, player, sun);				
 		GL11.glEnable(GL30.GL_CLIP_DISTANCE0);
 		
 		//render reflection texture

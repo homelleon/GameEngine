@@ -12,6 +12,7 @@ import org.lwjgl.util.vector.Matrix4f;
 import entities.Entity;
 import models.RawModel;
 import models.TexturedModel;
+import scene.Settings;
 import shaders.StaticShader;
 import textures.ModelTexture;
 import toolbox.Maths;
@@ -29,7 +30,10 @@ public class EntityRenderer {
 	
 
 	
-	public void render(Map<TexturedModel, List<Entity>> entities){
+	public void render(Map<TexturedModel, List<Entity>> entities, Matrix4f toShadowMapSpace){
+		shader.loadShadowDistance(Settings.SHADOW_DISTANCE);
+		shader.loadShadowMapSize(Settings.SHADOW_MAP_SIZE);
+		shader.loadToShadowSpaceMatrix(toShadowMapSpace);
 		for(TexturedModel model:entities.keySet()){
 			prepareTexturedModel(model);
 			List<Entity> batch = entities.get(model);

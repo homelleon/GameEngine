@@ -7,29 +7,25 @@ import java.util.Map;
 
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL13;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector4f;
 
 import entities.Camera;
 import entities.Entity;
 import entities.Light;
+import entities.Player;
 import models.TexturedModel;
 import normalMappingRenderer.NormalMappingRenderer;
+import scene.Settings;
 import shaders.StaticShader;
 import shaders.TerrainShader;
+import shadows.ShadowMapMasterRenderer;
 import skybox.SkyboxRenderer;
 import terrains.Terrain;
 
 public class MasterRenderer {
-	
-	private static final float FOV = 70;
-	private static final float NEAR_PLANE = 0.1f;
-	private static final float FAR_PLANE = 2000;
-	
-	public static final float RED = 0.4f;
-	public static final float GREEN = 0.5f;
-	public static final float BLUE = 0.55f;
-	
+		
 	private Matrix4f projectionMatrix;
 	
 	private StaticShader shader = new StaticShader();
@@ -46,14 +42,16 @@ public class MasterRenderer {
 	private List<Terrain> terrains = new ArrayList<Terrain>();
 	
 	private SkyboxRenderer skyboxRenderer;
+	private ShadowMapMasterRenderer shadowMapRenderer;
 	
-	public MasterRenderer(Loader loader){
+	public MasterRenderer(Loader loader, Camera camera){
 		enableCulling();
 		createProjectionMatrix();
 		renderer = new EntityRenderer(shader,projectionMatrix);
 		terrainRenderer = new TerrainRenderer(terrainShader, projectionMatrix);
 		skyboxRenderer = new SkyboxRenderer(loader, projectionMatrix);
 		normalMapRenderer = new NormalMappingRenderer(projectionMatrix);
+		this.shadowMapRenderer = new ShadowMapMasterRenderer(camera);
 	}
 	
 	public static void enableCulling(){
@@ -73,20 +71,22 @@ public class MasterRenderer {
 		prepare();
 		shader.start();
 		shader.loadClipPlane(clipPlane);
-		shader.loadSkyColour(RED, GREEN, BLUE);
+		shader.loadSkyColour(Settings.DISPLAY_RED, Settings.DISPLAY_GREEN, Settings.DISPLAY_BLUE);
+		shader.loadFogDensity(Settings.FOG_DENSITY);
 		shader.loadLights(lights);
 		shader.loadViewMatrix(camera);
-		renderer.render(entities);
+		renderer.render(entities, shadowMapRenderer.getToShadowMapSpaceMatrix());
 		shader.stop();
 		normalMapRenderer.render(normalMapEntities, clipPlane, lights, camera);
 		terrainShader.start();
 		terrainShader.loadClipPlane(clipPlane);
-		terrainShader.loadSkyColour(RED, GREEN, BLUE);
+		terrainShader.loadSkyColour(Settings.DISPLAY_RED, Settings.DISPLAY_GREEN, Settings.DISPLAY_BLUE);
+		terrainShader.loadFogDensity(Settings.FOG_DENSITY);
 		terrainShader.loadLights(lights);
 		terrainShader.loadViewMatrix(camera);
-		terrainRenderer.render(terrains);
+		terrainRenderer.render(terrains, shadowMapRenderer.getToShadowMapSpaceMatrix());
 		terrainShader.stop();
-		skyboxRenderer.render(camera, RED, GREEN, BLUE);
+		skyboxRenderer.render(camera, Settings.DISPLAY_RED, Settings.DISPLAY_GREEN, Settings.DISPLAY_BLUE);
 		terrains.clear();
 		entities.clear();
 		normalMapEntities.clear();
@@ -138,32 +138,46 @@ public class MasterRenderer {
 		render(lights,camera,clipPlane);
 	}
 	
+	public void renderShadowMap(List<Entity> entityList, Player player, Light sun){
+		for(Entity entity : entityList){
+			processEntity(entity);
+		}
+		processEntity(player);
+		shadowMapRenderer.render(entities, sun);
+		entities.clear();
+	}
+	
+	public int getShadowMapTexture(){
+		return shadowMapRenderer.getShadowMap();
+	}
+	
 	public void cleanUp(){
 		shader.cleanUp();
 		terrainShader.cleanUp();
 		normalMapRenderer.cleanUp();
+		shadowMapRenderer.cleanUp();
 	}
 	
 	public void prepare(){
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT|GL11.GL_DEPTH_BUFFER_BIT);
-		GL11.glClearColor(RED, GREEN, BLUE, 1);
-
-		
+		GL11.glClearColor(Settings.DISPLAY_RED, Settings.DISPLAY_GREEN, Settings.DISPLAY_BLUE, 1);
+		GL13.glActiveTexture(GL13.GL_TEXTURE5);
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, getShadowMapTexture());		
 	}
 	
 	private void createProjectionMatrix(){
-		float aspectRatio = (float) Display.getWidth()/(float) Display.getHeight();
-		float y_scale = (float) (1f / Math.tan(Math.toRadians(FOV / 2f))) * aspectRatio;
-		float x_scale = y_scale / aspectRatio;
-		float frustrum_length = FAR_PLANE - NEAR_PLANE;
-		
 		projectionMatrix = new Matrix4f();
+		float aspectRatio = (float) Display.getWidth()/(float) Display.getHeight();
+		float y_scale = (float) (1f / Math.tan(Math.toRadians(Settings.FOV / 2f)));
+		float x_scale = y_scale / aspectRatio;
+		float frustrum_length = Settings.FAR_PLANE - Settings.NEAR_PLANE;
+		
 		projectionMatrix.m00 = x_scale;
 		projectionMatrix.m11 = y_scale;
-		projectionMatrix.m22 = -((FAR_PLANE + NEAR_PLANE) / frustrum_length);
+		projectionMatrix.m22 = -((Settings.FAR_PLANE + Settings.NEAR_PLANE) / frustrum_length);
 		projectionMatrix.m23 = -1;
-		projectionMatrix.m32 = -((2 * NEAR_PLANE * FAR_PLANE) / frustrum_length);
+		projectionMatrix.m32 = -((2 * Settings.NEAR_PLANE * Settings.FAR_PLANE) / frustrum_length);
 		projectionMatrix.m33 = 0;
 	}
 

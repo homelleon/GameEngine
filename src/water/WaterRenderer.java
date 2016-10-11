@@ -14,13 +14,14 @@ import entities.Light;
 import models.RawModel;
 import renderEngine.DisplayManager;
 import renderEngine.Loader;
+import scene.Settings;
 import toolbox.Maths;
  
 public class WaterRenderer {
  
     private static final String DUDV_MAP = "waterDUDV";
     private static final String NORMAL_MAP = "waterNormalMap";
-    private static final float WAVE_SPEED = 0.003f;
+    private static final float WAVE_SPEED = 0.01f;
 	
 	private RawModel quad;
     private WaterShader shader;
@@ -30,6 +31,7 @@ public class WaterRenderer {
     private int normalMap;
     
     private float moveFactor = 0;
+    private float waveStrength = 0;
  
     public WaterRenderer(Loader loader, WaterShader shader, Matrix4f projectionMatrix, WaterFrameBuffers fbos) {
         this.shader = shader;
@@ -38,6 +40,8 @@ public class WaterRenderer {
         normalMap = loader.loadTexture("normalMap", NORMAL_MAP);
         shader.start();
         shader.connectTextureUnits();
+        shader.loadFogDensity(Settings.FOG_DENSITY);
+        shader.loadSkyColour(Settings.DISPLAY_RED, Settings.DISPLAY_GREEN, Settings.DISPLAY_BLUE);
         shader.loadProjectionMatrix(projectionMatrix);
         shader.stop();
         setUpVAO(loader);
@@ -48,8 +52,10 @@ public class WaterRenderer {
         for (WaterTile tile : water) {
             Matrix4f modelMatrix = Maths.createTransformationMatrix(
                     new Vector3f(tile.getX(), tile.getHeight(), tile.getZ()), 0, 0, 0,
-                    WaterTile.TILE_SIZE);
+                    tile.getSize());
             shader.loadModelMatrix(modelMatrix);
+            shader.loadTilingSize(tile.getTilingSize());
+            shader.loadWaveStrength(tile.getWaveStrength());
             GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, quad.getVertexCount());
         }
         unbind();
@@ -88,8 +94,9 @@ public class WaterRenderer {
     }
  
     private void setUpVAO(Loader loader) {
-        // Just x and z vectex positions here, y is set to 0 in v.shader
-        float[] vertices = { -1, -1, -1, 1, 1, -1, 1, -1, -1, 1, 1, 1 };
+        // Just x and z vertex positions here, y is set to 0 in v.shader
+        float[] vertices = { 0, 0, 0, 1, 1, 0, 1, 0, 0, 1, 1, 1 };
+        
         quad = loader.loadToVAO(vertices, 2);
     }
  

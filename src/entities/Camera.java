@@ -161,14 +161,16 @@ public class Camera {
 	}
 	
 	private void calculatePitchAndAngle(){
-		float pitchChange = (Mouse.getY() - Settings.DISPLAY_HEIGHT/2) * Settings.MOUSE_Y_SPEED;
-		if(((pitch<maxPitch)&&(pitchChange<0))||((pitch>minPitch)&&(pitchChange>0))){
-			pitch -= pitchChange;
+		if(!Mouse.isButtonDown(2)){
+			float pitchChange = (Mouse.getY() - Settings.DISPLAY_HEIGHT/2) * Settings.MOUSE_Y_SPEED;
+			if((pitch<maxPitch)||(pitch>minPitch)){
+				pitch -= pitchChange;
+			}
 		}
 		
 		if(Mouse.isButtonDown(2)){	
 			float angleChange = (Mouse.getX() - Settings.DISPLAY_WIDTH/2) * Settings.MOUSE_X_SPEED;
-			angleAroundPlayer -= angleChange;		
+			angleAroundPlayer = -angleChange;		
 		}else{
 			angleAroundPlayer = 0;
 		}

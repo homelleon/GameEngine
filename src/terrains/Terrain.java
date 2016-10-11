@@ -39,12 +39,12 @@ public class Terrain {
 	}
 	
 	public Terrain(int gridX, int gridZ, Loader loader, TerrainTexturePack texturePack,
-			TerrainTexture blendMap){
+			TerrainTexture blendMap, float amplitude, int octaves, float roughness){
 		this.texturePack = texturePack;
 		this.blendMap = blendMap;
 		this.x = gridX * SIZE;
 		this.z = gridZ * SIZE;
-		this.model = generateTerrainByProcedure(loader);
+		this.model = generateTerrainByProcedure(loader, amplitude, octaves, roughness);
 	}
 	
 	public float getX() {
@@ -96,9 +96,7 @@ public class Terrain {
 	}
 
 	private RawModel generateTerrain(Loader loader, String heightMap){
-		
-		HeightsGenerator generator = new HeightsGenerator();
-		
+				
 		BufferedImage image = null;
 		try {
 			image = ImageIO.read(new File("res/textures/heightMaps/"+heightMap+".png"));
@@ -147,9 +145,9 @@ public class Terrain {
 		return loader.loadToVAO(vertices, textureCoords, normals, indices);
 	}
 	
-	private RawModel generateTerrainByProcedure(Loader loader){
+	private RawModel generateTerrainByProcedure(Loader loader, float amp, int oct, float rough){
 		
-		HeightsGenerator generator = new HeightsGenerator();
+		HeightsGenerator generator = new HeightsGenerator(amp, oct, rough);
 		
 		int VERTEX_COUNT = 128;
 		heights = new float[VERTEX_COUNT][VERTEX_COUNT];

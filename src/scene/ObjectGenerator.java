@@ -17,6 +17,7 @@ import terrains.Terrain;
 import textures.ModelTexture;
 import textures.TerrainTexture;
 import textures.TerrainTexturePack;
+import water.WaterTile;
 
 public class ObjectGenerator {
 	//TODO: ALL individual object creator
@@ -63,6 +64,17 @@ public class ObjectGenerator {
 		
 	}
 	
+	public List<WaterTile> createWaterSurfce(float x, float y, float z, int size){
+		List<WaterTile> waters = new ArrayList<WaterTile>();
+		for(int i=0;i<size;i++){
+			for(int j=0;j<size;j++){
+				WaterTile water = new WaterTile(x + WaterTile.TILE_SIZE * i, y + WaterTile.TILE_SIZE * j, z, size);
+				waters.add(water);
+			}
+		}
+		return waters;
+	}
+	
 	public Terrain createMultiTexTerrain(String basicTexture, String redTexture, String greenTexture, String blueTexture, String blendTexture, String heightTexture){
 		TerrainTexture backgroundTexture = new TerrainTexture(loader.loadTexture("terrain", basicTexture));
 		TerrainTexture rTexture = new TerrainTexture(loader.loadTexture("terrain", redTexture));
@@ -76,7 +88,7 @@ public class ObjectGenerator {
 		return terrain;
 	}
 	
-	public Terrain createMultiTexTerrain(String basicTexture, String redTexture, String greenTexture, String blueTexture, String blendTexture){
+	public Terrain createMultiTexTerrain(String basicTexture, String redTexture, String greenTexture, String blueTexture, String blendTexture, float amplitude, int octaves, float roughness){
 		TerrainTexture backgroundTexture = new TerrainTexture(loader.loadTexture("terrain", basicTexture));
 		TerrainTexture rTexture = new TerrainTexture(loader.loadTexture("terrain", redTexture));
 		TerrainTexture gTexture = new TerrainTexture(loader.loadTexture("terrain", greenTexture));
@@ -85,7 +97,7 @@ public class ObjectGenerator {
 		TerrainTexturePack texturePack = new TerrainTexturePack(backgroundTexture, rTexture,
 				gTexture, bTexture);
 		TerrainTexture blendMap = new TerrainTexture(loader.loadTexture("blendMap",blendTexture));
-		Terrain terrain = new Terrain(0,0,loader,texturePack, blendMap);	
+		Terrain terrain = new Terrain(0,0,loader,texturePack, blendMap, amplitude, octaves, roughness);
 		return terrain;
 	}
 	

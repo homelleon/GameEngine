@@ -10,17 +10,23 @@ public class HeightsGenerator {
 	
 	private Random random = new Random();
 	private int seed;
+	private float amplitude;
+	private int octaves;
+	private float roughness;
 	
-	public HeightsGenerator(){
+	public HeightsGenerator(float amplitude, int octaves, float roughness){
 		this.seed = random.nextInt(1000000000);
+		this.amplitude = amplitude;
+		this.octaves = octaves;
+		this.roughness = roughness;
 	}
 	
 	public float generateHeight(int x, int z){
 		float total = 0; 
-		float d = (float) Math.pow(2, OCTAVES - 1);
-		for(int i=0;i<OCTAVES;i++){
+		float d = (float) Math.pow(2, octaves - 1);
+		for(int i=0;i<octaves;i++){
 			float freq = (float) (Math.pow(2, i) / d);
-			float amp = (float) Math.pow(ROUGHNESS, i) * AMPLITUDE;
+			float amp = (float) Math.pow(roughness, i) * amplitude;
 			total += getInterpolatedNoise(x * freq, z * freq) * amp;
 		}
 	

@@ -20,6 +20,9 @@ public class MainGameLoop {
 			if(Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)){
 				break;
 			}
+			if(Keyboard.isKeyDown(Keyboard.KEY_P)){
+				SceneRenderer.gamePaused = !SceneRenderer.gamePaused;
+			}
 			
 		}
 		

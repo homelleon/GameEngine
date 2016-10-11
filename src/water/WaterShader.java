@@ -1,10 +1,12 @@
 package water;
  
 import org.lwjgl.util.vector.Matrix4f;
-import shaders.ShaderProgram;
-import toolbox.Maths;
+import org.lwjgl.util.vector.Vector3f;
+
 import entities.Camera;
 import entities.Light;
+import shaders.ShaderProgram;
+import toolbox.Maths;
  
 public class WaterShader extends ShaderProgram {
  
@@ -23,6 +25,10 @@ public class WaterShader extends ShaderProgram {
     private int location_lightColour;
     private int location_lightPosition;
     private int location_depthMap;
+    private int location_tiling;
+    private int location_skyColour;
+    private int location_fogDenstity;
+    private int location_waveStrength;
     
     public WaterShader() {
         super(VERTEX_FILE, FRAGMENT_FILE);
@@ -47,6 +53,10 @@ public class WaterShader extends ShaderProgram {
         location_lightColour = getUniformLocation("lightColour");
         location_lightPosition = getUniformLocation("lightPosition");
         location_depthMap = getUniformLocation("depthMap");
+        location_tiling = getUniformLocation("tiling");
+        location_skyColour = getUniformLocation("skyColour");
+        location_fogDenstity = getUniformLocation("fogDensity");
+        location_waveStrength = getUniformLocation("waveStrength");
     }
     
     public void connectTextureUnits(){
@@ -65,6 +75,23 @@ public class WaterShader extends ShaderProgram {
     public void loadMoveFactor(float factor){
     	super.loadFloat(location_moveFactor, factor);
     }
+    
+    public void loadTilingSize(float size){
+    	super.loadFloat(location_tiling, size);
+    }
+    
+    public void loadWaveStrength(float strength){
+    	super.loadFloat(location_waveStrength, strength);
+    }
+    
+    public void loadSkyColour(float r, float g, float b){
+    	super.loadVector(location_skyColour, new Vector3f(r,g,b));
+    }
+    
+    public void loadFogDensity(float density){
+    	super.loadFloat(location_fogDenstity, density);
+    }
+    
  
     public void loadProjectionMatrix(Matrix4f projection) {
         loadMatrix(location_projectionMatrix, projection);
