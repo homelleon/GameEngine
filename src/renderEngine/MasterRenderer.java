@@ -139,10 +139,10 @@ public class MasterRenderer {
 	}
 	
 	public void renderShadowMap(List<Entity> entityList, Player player, Light sun){
+		entityList.add(player);
 		for(Entity entity : entityList){
 			processEntity(entity);
 		}
-		processEntity(player);
 		shadowMapRenderer.render(entities, sun);
 		entities.clear();
 	}

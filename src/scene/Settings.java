@@ -27,7 +27,7 @@ public class Settings {
 	public static final float GRAVITY = -50;
 	public static final float TIME_LENGTH = 1;
 	public static final float FOG_DENSITY = 0.002f;
-	public static final float SHADOW_DISTANCE = 150;
+	public static final float SHADOW_DISTANCE = 70;
 	public static final int SHADOW_MAP_SIZE = 4096;
 	
 	//*****************PATH SETTINGS*************************************//
