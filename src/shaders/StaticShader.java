@@ -68,6 +68,7 @@ public class StaticShader extends ShaderProgram{
 		location_offset = super.getUniformLocation("offset");
 		location_plane = super.getUniformLocation("plane");
 		location_fogDensity = super.getUniformLocation("fogDensity");
+		location_shadowMap = super.getUniformLocation("shadowMap");
 		location_toShadowMapSpace = super.getUniformLocation("toShadowMapSpace");
 		location_shadowDistance = super.getUniformLocation("shadowDistance");
 		location_mapSize = super.getUniformLocation("mapSize");

@@ -138,8 +138,9 @@ public class MasterRenderer {
 		render(lights,camera,clipPlane);
 	}
 	
-	public void renderShadowMap(List<Entity> entityList, Player player, Light sun){
+	public void renderShadowMap(List<Entity> entityList, List<Entity> normalEntities, Player player, Light sun){
 		entityList.add(player);
+		entityList.addAll(normalEntities);
 		for(Entity entity : entityList){
 			processEntity(entity);
 		}

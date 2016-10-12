@@ -21,7 +21,7 @@ uniform float shadowDistance;
 
 uniform float fogDensity;
 
-const float gradient = 2.00;
+const float gradient = 2.0;
 
 const float transitionDistance = 10.0;
 

@@ -117,14 +117,14 @@ public class SceneRenderer {
 		this.entities = new ArrayList<Entity>();
 		Entity stall = new Entity(stallModel, new Vector3f(50,terrain.getHeightOfTerrain(50, 50),50),0,0,0,1);
 		Entity cube = new Entity(cubeModel, new Vector3f(100,terrain.getHeightOfTerrain(100, 10),10),0,0,0,1);
-		Entity barrel = new Entity(barrelModel, new Vector3f(200, terrain.getHeightOfTerrain(200, 200), 200), 0,0,0,1);
+		Entity barrel = new Entity(barrelModel, new Vector3f(200, terrain.getHeightOfTerrain(200, 200)+10, 200), 0,0,0,1);
 		normalMapEntities.add(barrel);
 		entities.add(cube);
 		entities.add(stall);
 
 		entities.addAll(grasses);
 		this.lights = new ArrayList<Light>();
-		this.sun = new Light(new Vector3f(0,1500000,-1000),new Vector3f(1.3f,1.3f,1.3f));
+		this.sun = new Light(new Vector3f(100000,1500000,-1000),new Vector3f(1.3f,1.3f,1.3f));
 		lights.add(sun);
 		//lights.add(new Light(new Vector3f(200,2,200),new Vector3f(10,0,0), new Vector3f(1, 0.01f, 0.002f)));
 		//lights.add(new Light(new Vector3f(20,2,20),new Vector3f(0,10,0), new Vector3f(0, 0.01f, 0.002f)));
@@ -150,6 +150,7 @@ public class SceneRenderer {
 		TextMaster.init(loader);
 		this.font = new FontType(loader.loadTexture("font", "candara"), new File(Settings.FONT_PATH + "candara.fnt"));
 		GUIText text = new GUIText("This is an Alfa-version of the game engine", 3, font, new Vector2f(0.25f, 0), 0.5f, true);
+		
 		text.setColour(1, 0, 0);
 		//*******************AUDIO*************//
 		
@@ -211,7 +212,6 @@ public class SceneRenderer {
 		camera.move();	
 		player.move(terrains.get(0));
 	
-		sun.setPosition(new Vector3f(sun.getPosition().x,-2000 + time.getSunTime(),sun.getPosition().z));
 		}else{
 			picker.update();
 			System.out.println(picker.getCurrentRay());
@@ -220,7 +220,7 @@ public class SceneRenderer {
 		//pSystem.generateParticles(new Vector3f(10,10,terrains.get(0).getHeightOfTerrain(10, 10)));
 		ParticleMaster.update(camera);
 		
-		renderer.renderShadowMap(entities, player, sun);				
+		renderer.renderShadowMap(entities, normalMapEntities, player, sun);				
 		GL11.glEnable(GL30.GL_CLIP_DISTANCE0);
 		
 		//render reflection texture

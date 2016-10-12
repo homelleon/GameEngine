@@ -6,6 +6,7 @@ import org.lwjgl.opengl.ContextAttribs;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.PixelFormat;
 
 import scene.Settings;
@@ -24,8 +25,9 @@ public class DisplayManager {
 		
 		try {
 			Display.setDisplayMode(new DisplayMode(Settings.DISPLAY_WIDTH,Settings.DISPLAY_HEIGHT));
-			Display.create(new PixelFormat().withDepthBits(24), attribs);
+			Display.create(new PixelFormat().withDepthBits(24).withSamples(Settings.MULTISAMPLE), attribs);
 			Display.setTitle("MyGame");
+			GL11.glEnable(GL13.GL_MULTISAMPLE);
 		} catch (LWJGLException e) {
 			e.printStackTrace();
 		}
