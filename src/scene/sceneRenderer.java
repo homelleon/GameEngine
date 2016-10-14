@@ -29,6 +29,7 @@ import normalMappingObjConverter.NormalMappedObjLoader;
 import particles.ParticleMaster;
 import particles.ParticleSystem;
 import particles.ParticleTexture;
+import renderEngine.DisplayManager;
 import renderEngine.Loader;
 import renderEngine.MasterRenderer;
 import terrains.Terrain;
@@ -100,7 +101,7 @@ public class SceneRenderer {
 		barrelModel.getTexture().setReflectivity(0.5f);
 
         //***********GAME OBJECTS****************//
-		List<Entity> grasses = generator.createGrassField(0, 0, 800, 2, 0.25f);
+		List<Entity> grasses = generator.createGrassField(0, 0, 800, 2, 0.1f);
 		this.entities = new ArrayList<Entity>();
 		Entity stall = new Entity(stallModel, new Vector3f(50,0,50),0,0,0,1);
 		Entity cube = new Entity(cubeModel, new Vector3f(100,0,10),0,0,0,1);
@@ -186,17 +187,7 @@ public class SceneRenderer {
 		
 		
 	}
-	
-	private void spreadOnHeights(List<Entity> entities){
-		for(Entity entity : entities){
-			entity.setPosition(new Vector3f(entity.getPosition().x, 
-					terrains.get(0).getHeightOfTerrain(entity.getPosition().x, 
-							entity.getPosition().z), entity.getPosition().z));
-		}
-	}
-	
-	
-		
+			
 	public void render(){
 		if (gamePaused == false){
 			time.start();
@@ -209,12 +200,21 @@ public class SceneRenderer {
 		//pSystem.generateParticles(new Vector3f(10,10,terrains.get(0).getHeightOfTerrain(10, 10)));
 		ParticleMaster.update(camera);
 		
-		renderer.renderShadowMap(entities, normalMapEntities, player, sun);				
+		renderer.renderShadowMap(entities, normalMapEntities, player, sun, camera);				
 		GL11.glEnable(GL30.GL_CLIP_DISTANCE0);
 		renderReflectionTexture();		
 		renderRefractionTexture();
 	    renderToScreen();
 	}
+	
+	private void spreadOnHeights(List<Entity> entities){
+		for(Entity entity : entities){
+			entity.setPosition(new Vector3f(entity.getPosition().x, 
+					terrains.get(0).getHeightOfTerrain(entity.getPosition().x, 
+							entity.getPosition().z), entity.getPosition().z));
+		}
+	}
+	
 	
     private void moves(){
 		camera.move();	
@@ -247,7 +247,10 @@ public class SceneRenderer {
 	    waterRenderer.render(waters, camera, sun);
 	    ParticleMaster.renderParticles(camera);
 	    guiRenderer.render(guis);
+	    GUIText text = createFPSText(1 / DisplayManager.getFrameTimeSeconds());
+	    text.setColour(1, 0, 0);
 	    TextMaster.render();
+	    text.remove();
     }
 	
 	public void cleanUp(){
@@ -258,6 +261,10 @@ public class SceneRenderer {
 		AudioMaster.cleanUp();
 		renderer.cleanUp();
 		loader.cleanUp();
+	}
+	
+	public GUIText createFPSText(float FPS){
+		return new GUIText(String.valueOf(FPS), 3, font, new Vector2f(0.75f, 0), 0.5f, true);
 	}
 
 }
