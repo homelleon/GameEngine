@@ -41,11 +41,6 @@ import water.WaterTile;
 
 public class SceneRenderer {
 
-	//TODO: Delete unnecessary parameters
-	final static float SUN_MAX_HEIGHT = 4000; 
-	final static float SUN_MIN_HEIGHT = -4000;
-	final static float TIME_SPEED = 200;
-	
 	public static boolean gamePaused = false;	
 	private Loader loader;
 	private MasterRenderer renderer;
@@ -99,30 +94,24 @@ public class SceneRenderer {
 		this.normalMapEntities = new ArrayList<Entity>();
 		
 		TexturedModel barrelModel = new TexturedModel(NormalMappedObjLoader.loadOBJ("barrel", loader),
-				new ModelTexture(loader.loadTexture("model","barrel")));
-		barrelModel.getTexture().setNormalMap(loader.loadTexture("normalMap", "barrelNormal"));
+				new ModelTexture(loader.loadTexture(Settings.MODEL_TEXTURE_PATH,"barrel")));
+		barrelModel.getTexture().setNormalMap(loader.loadTexture(Settings.NORMAL_MAP_PATH, "barrelNormal"));
 		barrelModel.getTexture().setShineDamper(10);
 		barrelModel.getTexture().setReflectivity(0.5f);
-	
 
-						
-		
-		//************GRASS*********************//
-		List<Entity> grasses = generator.createGrassField(0, 0, 400, 1, 0.2f);
-        for(int i=0;i<grasses.size();i++){
-        	spreadOnHeights(grasses.get(i));
-        }
-        
         //***********GAME OBJECTS****************//
+		List<Entity> grasses = generator.createGrassField(0, 0, 800, 2, 0.25f);
 		this.entities = new ArrayList<Entity>();
-		Entity stall = new Entity(stallModel, new Vector3f(50,terrain.getHeightOfTerrain(50, 50),50),0,0,0,1);
-		Entity cube = new Entity(cubeModel, new Vector3f(100,terrain.getHeightOfTerrain(100, 10),10),0,0,0,1);
-		Entity barrel = new Entity(barrelModel, new Vector3f(200, terrain.getHeightOfTerrain(200, 200)+10, 200), 0,0,0,1);
+		Entity stall = new Entity(stallModel, new Vector3f(50,0,50),0,0,0,1);
+		Entity cube = new Entity(cubeModel, new Vector3f(100,0,10),0,0,0,1);
+		Entity barrel = new Entity(barrelModel, new Vector3f(200, 0, 200), 0,0,0,1);
 		normalMapEntities.add(barrel);
 		entities.add(cube);
 		entities.add(stall);
-
 		entities.addAll(grasses);
+		
+		spreadOnHeights(entities);
+		
 		this.lights = new ArrayList<Light>();
 		this.sun = new Light(new Vector3f(100000,1500000,-1000),new Vector3f(1.3f,1.3f,1.3f));
 		lights.add(sun);
@@ -136,7 +125,7 @@ public class SceneRenderer {
 		this.renderer = new MasterRenderer(loader, camera);		
 		
 		//**************PARTICLES***************//
-		ParticleTexture particleTexture = new ParticleTexture(loader.loadTexture("particles", "particleAtlas"), 4, true);
+		ParticleTexture particleTexture = new ParticleTexture(loader.loadTexture(Settings.PARTICLE_TEXTURE_PATH, "particleAtlas"), 4, true);
 		
 		ParticleMaster.init(loader, renderer.getProjectionMatrix());
 		this.pSystem = new ParticleSystem(particleTexture, 50, 25, 0.3f, 4, 1);
@@ -148,7 +137,7 @@ public class SceneRenderer {
 
 		//*******************FONTS*************//
 		TextMaster.init(loader);
-		this.font = new FontType(loader.loadTexture("font", "candara"), new File(Settings.FONT_PATH + "candara.fnt"));
+		this.font = new FontType(loader.loadTexture(Settings.FONT_PATH, "candara"), new File(Settings.FONT_PATH + "candara.fnt"));
 		GUIText text = new GUIText("This is an Alfa-version of the game engine", 3, font, new Vector2f(0.25f, 0), 0.5f, true);
 		
 		text.setColour(1, 0, 0);
@@ -167,7 +156,7 @@ public class SceneRenderer {
 		
 		//***************GUI***********//
 		this.guis = new ArrayList<GuiTexture>();
-		GuiTexture gui = new GuiTexture(loader.loadTexture("GUI","helthBar"), new Vector2f(-0.7f, -0.7f), new Vector2f(0.25f, 0.25f));
+		GuiTexture gui = new GuiTexture(loader.loadTexture(Settings.INTERFACE_TEXTURE_PATH,"helthBar"), new Vector2f(-0.7f, -0.7f), new Vector2f(0.25f, 0.25f));
 		guis.add(gui);
 		
 		GuiTexture shadowMap = new GuiTexture(renderer.getShadowMapTexture(), 
@@ -198,20 +187,20 @@ public class SceneRenderer {
 		
 	}
 	
-	private void spreadOnHeights(Entity entity){
-		float x = entity.getPosition().x;
-		float z = entity.getPosition().z; 
-		entity.setPosition(new Vector3f(x, terrains.get(0).getHeightOfTerrain(x, z), z));
+	private void spreadOnHeights(List<Entity> entities){
+		for(Entity entity : entities){
+			entity.setPosition(new Vector3f(entity.getPosition().x, 
+					terrains.get(0).getHeightOfTerrain(entity.getPosition().x, 
+							entity.getPosition().z), entity.getPosition().z));
+		}
 	}
 	
 	
 		
 	public void render(){
 		if (gamePaused == false){
-		time.start();  
-		camera.move();	
-		player.move(terrains.get(0));
-	
+			time.start();
+			moves();	
 		}else{
 			picker.update();
 			System.out.println(picker.getCurrentRay());
@@ -222,9 +211,18 @@ public class SceneRenderer {
 		
 		renderer.renderShadowMap(entities, normalMapEntities, player, sun);				
 		GL11.glEnable(GL30.GL_CLIP_DISTANCE0);
-		
-		//render reflection texture
-		fbos.bindReflectionFrameBuffer();
+		renderReflectionTexture();		
+		renderRefractionTexture();
+	    renderToScreen();
+	}
+	
+    private void moves(){
+		camera.move();	
+		player.move(terrains.get(0));
+    }
+    
+    private void renderReflectionTexture(){
+    	fbos.bindReflectionFrameBuffer();
 		float distance = 2 * (camera.getPosition().y - waters.get(0).getHeight());
 		camera.getPosition().y -= distance;
 		camera.invertPitch();
@@ -232,25 +230,25 @@ public class SceneRenderer {
 		renderer.renderScene(entities, normalMapEntities, terrains, lights, camera, new Vector4f(0, 1, 0, -waters.get(0).getHeight()));
 	    camera.getPosition().y += distance;
 	    camera.invertPitch();
-		
-	    //render refraction texture
-		fbos.bindRefractionFrameBuffer();
+    }
+    
+    private void renderRefractionTexture(){
+    	fbos.bindRefractionFrameBuffer();
 		renderer.processEntity(player);
 		renderer.renderScene(entities, normalMapEntities, terrains, lights, camera, new Vector4f(0, -1, 0, waters.get(0).getHeight()));
 
-	    //render to screen
+    }
+    
+    private void renderToScreen(){
 		GL11.glDisable(GL30.GL_CLIP_DISTANCE0);
 	    fbos.unbindCurrentFrameBuffer();
 	    renderer.processEntity(player);
-	   
 	    renderer.renderScene(entities, normalMapEntities, terrains, lights, camera, new Vector4f(0, -1, 0, 15));
 	    waterRenderer.render(waters, camera, sun);
-	 
 	    ParticleMaster.renderParticles(camera);
-	    
 	    guiRenderer.render(guis);
 	    TextMaster.render();
-	}
+    }
 	
 	public void cleanUp(){
 		TextMaster.cleanUp();
