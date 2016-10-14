@@ -104,16 +104,16 @@ public class Loader {
 		
 	}
 	
-	public int loadTexture(String textureType, String fileName){
+	public int loadTexture(String path, String fileName){
 		Texture texture = null;
 		try {
 			float bias;
-			if (textureType == "font"){
+			if (path == Settings.FONT_PATH){
 				bias = 0; 
 			}else{
 				bias = -2.4f;
 			}
-			texture = TextureLoader.getTexture("PNG", new FileInputStream(getTexturePath(textureType)+fileName+".png"));
+			texture = TextureLoader.getTexture("PNG", new FileInputStream(path+fileName+".png"));
 			GL30.glGenerateMipmap(GL11.GL_TEXTURE_2D);
 			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR_MIPMAP_LINEAR);
 			GL11.glTexParameterf(GL11.GL_TEXTURE_2D, GL14.GL_TEXTURE_LOD_BIAS, bias);
@@ -152,13 +152,13 @@ public class Loader {
 		}
 	}
 	
-	public int loadCubeMap(String textureType, String[] textureFiles){
+	public int loadCubeMap(String path, String[] textureFiles){
 		int texID = GL11.glGenTextures();
 		GL13.glActiveTexture(GL13.GL_TEXTURE0);
 		GL11.glBindTexture(GL13.GL_TEXTURE_CUBE_MAP, texID);
 		
 		for(int i=0;i<textureFiles.length;i++){
-			TextureData data = decodeTextureFile(getTexturePath(textureType) + textureFiles[i] + ".png");
+			TextureData data = decodeTextureFile(path + textureFiles[i] + ".png");
 			GL11.glTexImage2D(GL13.GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL11.GL_RGBA, 
 					data.getWidth(), data.getHeight(), 0, GL11.GL_RGBA,
 					GL11.GL_UNSIGNED_BYTE, data.getBuffer());
@@ -242,47 +242,5 @@ public class Loader {
 		return buffer;
 	}
 	
-	private String getTexturePath(String textureType){
-		String path = null;
-		switch(textureType){
-		case "root":
-			path = Settings.RES_PATH;
-			break;
-		case "model":
-			path = Settings.MODEL_TEXTURE_PATH;
-			break;
-		case "terrain":
-			path = Settings.TERRAIN_TEXTURE_PATH;
-			break;
-		case "GUI":
-			path = Settings.INTERFACE_TEXTURE_PATH;
-			break;
-		case "blendMap":
-			path = Settings.BLEND_MAP_PATH;
-			break;
-		case "heightMap":
-			path = Settings.HEIGHT_MAP_PATH;
-			break;
-		case "skyBox":
-			path = Settings.SKYBOX_TEXTURE_PATH;
-			break;
-		case "DUDV":
-		    path = Settings.DUDV_MAP_PATH;
-		    break;
-		case "normalMap":
-			path = Settings.NORMAL_MAP_PATH;
-			break;
-		case "font":
-			path = Settings.FONT_PATH;
-			break;
-		case "particles":
-			path = Settings.PARTICLE_TEXTURE_PATH;
-			break;
-		default:
-			path = Settings.RES_PATH;
-			System.out.println("Error textureType in TextureLoad model!");			
-		}
-		return path;
-	}
 
 }

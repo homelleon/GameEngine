@@ -29,36 +29,37 @@ public class ObjectGenerator {
 	public TexturedModel loadStaticModel(String objFile, String textureName){
 		ModelData data = OBJFileLoader.loadOBJ(objFile);
 		RawModel rawModel = loader.loadToVAO(data.getVertices(), data.getTextureCoords(), data.getNormals(), data.getIndices());	
-	    TexturedModel staticModel = new TexturedModel(rawModel,new ModelTexture(loader.loadTexture("model",textureName)));
+	    TexturedModel staticModel = new TexturedModel(rawModel,new ModelTexture(loader.loadTexture(Settings.MODEL_TEXTURE_PATH,textureName)));
 	    return staticModel;
 	}
 	
-	public List<Entity> createGrassField(float x, float z, float r, float noise, float density){
+	public List<Entity> createGrassField(float x, float z, float r, float sizeNoise, float density){
 		//TODO: Noise - better using
 		
-			TexturedModel grass = loadStaticModel("grassObject","grassObjAtlas");
-			grass.getTexture().setNumberOfRows(2);
-			grass.getTexture().setShineDamper(1);
-			grass.getTexture().setReflectivity(0);
-			grass.getTexture().setHasTransparency(true);
-			grass.getTexture().setUseFakeLighting(true);	
-			if (density == 0){
-			 density = (float) 0.01;	
-			}
-			r = r*density;
-			density = 1/density;
-			Random random = new Random();
+		TexturedModel grass = loadStaticModel("grassObject","grassObjAtlas");
+		int texIndex = 4;
+		grass.getTexture().setNumberOfRows(2);
+		grass.getTexture().setShineDamper(1);
+		grass.getTexture().setReflectivity(0);
+		grass.getTexture().setHasTransparency(true);
+		grass.getTexture().setUseFakeLighting(true);	
+		if (density == 0){
+		 density = (float) 0.01;	
+		}
+		r = r*density;
+		density = 1/density;
+		Random random = new Random();
 		List<Entity>grasses = new ArrayList<Entity>();
 		for(Integer j = 0; j < r; j++){
 			for(Integer i = 0; i < r; i++){
-				noise = 1 + 2*(float) random.nextDouble();
-				Entity grassEntity = new Entity(grass, 1, new Vector3f(x + density*i, 0, z + density*j), 0, 0, 0, noise);
+				sizeNoise = 1 + 2*(float) random.nextDouble();
+				Entity grassEntity = new Entity(grass, texIndex, new Vector3f(x + density*i, 0, z + density*j), 0, 0, 0, sizeNoise);
 				grasses.add(grassEntity);
-				Entity grassEntity1 = new Entity(grass, 1, new Vector3f((float) (x + density*i), 0, (float) (z + density*j)), 0, 100, 0, noise);
+				Entity grassEntity1 = new Entity(grass, texIndex, new Vector3f((float) (x + density*i), 0, (float) (z + density*j)), 0, 100, 0, sizeNoise);
 				grasses.add(grassEntity1);
 	
 			}
-			}
+		}
 		
 		return grasses;
 		
@@ -76,27 +77,27 @@ public class ObjectGenerator {
 	}
 	
 	public Terrain createMultiTexTerrain(String basicTexture, String redTexture, String greenTexture, String blueTexture, String blendTexture, String heightTexture){
-		TerrainTexture backgroundTexture = new TerrainTexture(loader.loadTexture("terrain", basicTexture));
-		TerrainTexture rTexture = new TerrainTexture(loader.loadTexture("terrain", redTexture));
-		TerrainTexture gTexture = new TerrainTexture(loader.loadTexture("terrain", greenTexture));
-		TerrainTexture bTexture = new TerrainTexture(loader.loadTexture("terrain", blueTexture));
+		TerrainTexture backgroundTexture = new TerrainTexture(loader.loadTexture(Settings.TERRAIN_TEXTURE_PATH, basicTexture));
+		TerrainTexture rTexture = new TerrainTexture(loader.loadTexture(Settings.TERRAIN_TEXTURE_PATH, redTexture));
+		TerrainTexture gTexture = new TerrainTexture(loader.loadTexture(Settings.TERRAIN_TEXTURE_PATH, greenTexture));
+		TerrainTexture bTexture = new TerrainTexture(loader.loadTexture(Settings.TERRAIN_TEXTURE_PATH, blueTexture));
 		
 		TerrainTexturePack texturePack = new TerrainTexturePack(backgroundTexture, rTexture,
 				gTexture, bTexture);
-		TerrainTexture blendMap = new TerrainTexture(loader.loadTexture("blendMap",blendTexture));
+		TerrainTexture blendMap = new TerrainTexture(loader.loadTexture(Settings.BLEND_MAP_PATH,blendTexture));
 		Terrain terrain = new Terrain(0,0,loader,texturePack, blendMap, heightTexture);	
 		return terrain;
 	}
 	
 	public Terrain createMultiTexTerrain(String basicTexture, String redTexture, String greenTexture, String blueTexture, String blendTexture, float amplitude, int octaves, float roughness){
-		TerrainTexture backgroundTexture = new TerrainTexture(loader.loadTexture("terrain", basicTexture));
-		TerrainTexture rTexture = new TerrainTexture(loader.loadTexture("terrain", redTexture));
-		TerrainTexture gTexture = new TerrainTexture(loader.loadTexture("terrain", greenTexture));
-		TerrainTexture bTexture = new TerrainTexture(loader.loadTexture("terrain", blueTexture));
+		TerrainTexture backgroundTexture = new TerrainTexture(loader.loadTexture(Settings.TERRAIN_TEXTURE_PATH, basicTexture));
+		TerrainTexture rTexture = new TerrainTexture(loader.loadTexture(Settings.TERRAIN_TEXTURE_PATH, redTexture));
+		TerrainTexture gTexture = new TerrainTexture(loader.loadTexture(Settings.TERRAIN_TEXTURE_PATH, greenTexture));
+		TerrainTexture bTexture = new TerrainTexture(loader.loadTexture(Settings.TERRAIN_TEXTURE_PATH, blueTexture));
 		
 		TerrainTexturePack texturePack = new TerrainTexturePack(backgroundTexture, rTexture,
 				gTexture, bTexture);
-		TerrainTexture blendMap = new TerrainTexture(loader.loadTexture("blendMap",blendTexture));
+		TerrainTexture blendMap = new TerrainTexture(loader.loadTexture(Settings.BLEND_MAP_PATH,blendTexture));
 		Terrain terrain = new Terrain(0,0,loader,texturePack, blendMap, amplitude, octaves, roughness);
 		return terrain;
 	}

@@ -30,6 +30,7 @@ public class Settings {
 	public static final float FOG_DENSITY = 0.002f;
 	public static final float SHADOW_DISTANCE = 100;
 	public static final int SHADOW_MAP_SIZE = 4096;
+	public static final float RENDERING_DISTANCE = 300;
 	
 	//*****************PATH SETTINGS*************************************//
 	public final static String RES_PATH = "res/";

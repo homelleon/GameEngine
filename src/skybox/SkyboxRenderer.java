@@ -10,6 +10,7 @@ import entities.Camera;
 import models.RawModel;
 import renderEngine.DisplayManager;
 import renderEngine.Loader;
+import scene.Settings;
 
 public class SkyboxRenderer {
 	
@@ -70,8 +71,8 @@ public class SkyboxRenderer {
 	
 	public SkyboxRenderer(Loader loader, Matrix4f projectionMatrix){
 		cube = loader.loadToVAO(VERTICES, 3);
-		texture = loader.loadCubeMap("skyBox",TEXTURE_FILES);
-		nightTexture = loader.loadCubeMap("skyBox",NIGHT_TEXTURE_FILES);
+		texture = loader.loadCubeMap(Settings.SKYBOX_TEXTURE_PATH,TEXTURE_FILES);
+		nightTexture = loader.loadCubeMap(Settings.SKYBOX_TEXTURE_PATH,NIGHT_TEXTURE_FILES);
 		shader = new SkyboxShader();
 		shader.start();
 		shader.connectTextureUnits();
