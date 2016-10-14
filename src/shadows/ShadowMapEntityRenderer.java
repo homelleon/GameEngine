@@ -9,10 +9,12 @@ import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Matrix4f;
 
+import entities.Camera;
 import entities.Entity;
 import models.RawModel;
 import models.TexturedModel;
 import renderEngine.MasterRenderer;
+import scene.Settings;
 import toolbox.Maths;
 
 public class ShadowMapEntityRenderer {
@@ -40,7 +42,7 @@ public class ShadowMapEntityRenderer {
 	 * @param entities
 	 *            - the entities to be rendered to the shadow map.
 	 */
-	protected void render(Map<TexturedModel, List<Entity>> entities) {
+	protected void render(Map<TexturedModel, List<Entity>> entities, Camera camera) {
 		for (TexturedModel model : entities.keySet()) {
 			RawModel rawModel = model.getRawModel();
 			bindModel(rawModel);
@@ -50,9 +52,11 @@ public class ShadowMapEntityRenderer {
 				MasterRenderer.disableCulling();
 			}
 			for (Entity entity : entities.get(model)) {
-				prepareInstance(entity);
-				GL11.glDrawElements(GL11.GL_TRIANGLES, rawModel.getVertexCount(),
-						GL11.GL_UNSIGNED_INT, 0);
+				if(Maths.distanceFromCamera(entity,camera) <= Settings.SHADOW_DISTANCE){
+					prepareInstance(entity);
+					GL11.glDrawElements(GL11.GL_TRIANGLES, rawModel.getVertexCount(),
+							GL11.GL_UNSIGNED_INT, 0);
+				}
 			}
 			if(model.getTexture().isHasTransparency()){
 				MasterRenderer.enableCulling();

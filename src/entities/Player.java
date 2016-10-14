@@ -30,8 +30,6 @@ public class Player extends Entity {
 	
 	public void move(Terrain terrain){
 		checkInputs();
-		//super.setRotY(currentTurnSpeed);
-		//super.setRotY(currentTurnSpeed);
 		super.increaseRotation(0, currentTurnSpeed * DisplayManager.getFrameTimeSeconds(), 0);
 		float fowardDistance = currentForwardSpeed * DisplayManager.getFrameTimeSeconds();
 		float strafeDistance = currentStrafeSpeed * DisplayManager.getFrameTimeSeconds();

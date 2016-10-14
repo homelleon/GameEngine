@@ -9,7 +9,7 @@ import scene.Settings;
 public class Camera {
 	
 	private static final float maxDistanceFromPlayer = 100;
-	private static final float minDistanceFromPlayer = 20;
+	private static final float minDistanceFromPlayer = 0;
 	private static final float maxPitch = 90;
 	private static final float minPitch = -90;
 	
