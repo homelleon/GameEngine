@@ -9,6 +9,7 @@ import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Matrix4f;
 
+import entities.Camera;
 import entities.Entity;
 import models.RawModel;
 import models.TexturedModel;
@@ -25,22 +26,25 @@ public class EntityRenderer {
 		this.shader = shader;
 		shader.start();
 		shader.loadProjectionMatrix(projectionMatrix);
+		shader.connectTextureUnits();
 		shader.stop();
 	}
 	
 
 	
-	public void render(Map<TexturedModel, List<Entity>> entities, Matrix4f toShadowMapSpace){
+	public void render(Map<TexturedModel, List<Entity>> entities, Camera camera, Matrix4f toShadowMapSpace){
+		shader.loadToShadowSpaceMatrix(toShadowMapSpace);
 		shader.loadShadowDistance(Settings.SHADOW_DISTANCE);
 		shader.loadShadowMapSize(Settings.SHADOW_MAP_SIZE);
-		shader.loadToShadowSpaceMatrix(toShadowMapSpace);
 		for(TexturedModel model:entities.keySet()){
 			prepareTexturedModel(model);
 			List<Entity> batch = entities.get(model);
-			for(Entity entity:batch){
-				prepareInstance(entity);
-				GL11.glDrawElements(GL11.GL_TRIANGLES, model.getRawModel().getVertexCount(), 
-						GL11.GL_UNSIGNED_INT, 0);
+			for(Entity entity: batch){
+				if(Maths.distanceFromCamera(entity,camera) <= Settings.RENDERING_DISTANCE){
+					prepareInstance(entity);
+					GL11.glDrawElements(GL11.GL_TRIANGLES, model.getRawModel().getVertexCount(), 
+							GL11.GL_UNSIGNED_INT, 0);				
+				}
 			}
 			unbindTexturedModel();
 		}
@@ -77,7 +81,5 @@ public class EntityRenderer {
 		shader.loadTranformationMatrix(transformationMatrix);
 		shader.loadOffset(entity.getTextureXOffset(), entity.getTextureYOffset());
 	}
-	
-	
 
 }

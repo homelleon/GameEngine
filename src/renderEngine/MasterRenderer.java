@@ -75,7 +75,7 @@ public class MasterRenderer {
 		shader.loadFogDensity(Settings.FOG_DENSITY);
 		shader.loadLights(lights);
 		shader.loadViewMatrix(camera);
-		renderer.render(entities, shadowMapRenderer.getToShadowMapSpaceMatrix());
+		renderer.render(entities, camera, shadowMapRenderer.getToShadowMapSpaceMatrix());
 		shader.stop();
 		normalMapRenderer.render(normalMapEntities, clipPlane, lights, camera);
 		terrainShader.start();
@@ -138,8 +138,9 @@ public class MasterRenderer {
 		render(lights,camera,clipPlane);
 	}
 	
-	public void renderShadowMap(List<Entity> entityList, Player player, Light sun){
+	public void renderShadowMap(List<Entity> entityList, List<Entity> normalEntities, Player player, Light sun){
 		entityList.add(player);
+		//entityList.addAll(normalEntities);
 		for(Entity entity : entityList){
 			processEntity(entity);
 		}
