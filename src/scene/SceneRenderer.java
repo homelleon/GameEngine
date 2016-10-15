@@ -99,22 +99,31 @@ public class SceneRenderer {
 		barrelModel.getTexture().setNormalMap(loader.loadTexture(Settings.NORMAL_MAP_PATH, "barrelNormal"));
 		barrelModel.getTexture().setShineDamper(10);
 		barrelModel.getTexture().setReflectivity(0.5f);
+		TexturedModel boulderModel = new TexturedModel(NormalMappedObjLoader.loadOBJ("boulder", loader),
+				new ModelTexture(loader.loadTexture(Settings.MODEL_TEXTURE_PATH,"boulder")));
+		boulderModel.getTexture().setNormalMap(loader.loadTexture(Settings.NORMAL_MAP_PATH, "boulderNormal"));
+		boulderModel.getTexture().setShineDamper(10);
+		boulderModel.getTexture().setReflectivity(0.5f);
 
         //***********GAME OBJECTS****************//
-		List<Entity> grasses = generator.createGrassField(0, 0, 800, 2, 0.1f);
+		//List<Entity> grasses = generator.createGrassField(0, 0, 800, 2, 0.1f);
 		this.entities = new ArrayList<Entity>();
 		Entity stall = new Entity(stallModel, new Vector3f(50,0,50),0,0,0,1);
 		Entity cube = new Entity(cubeModel, new Vector3f(100,0,10),0,0,0,1);
 		Entity barrel = new Entity(barrelModel, new Vector3f(200, 0, 200), 0,0,0,1);
+		Entity boulder = new Entity(boulderModel, new Vector3f(250,0,250), 0,0,0,1);
 		normalMapEntities.add(barrel);
+		normalMapEntities.add(boulder);
 		entities.add(cube);
 		entities.add(stall);
-		entities.addAll(grasses);
+		//entities.addAll(grasses);
 		
 		spreadOnHeights(entities);
+		spreadOnHeights(normalMapEntities);
+		boulder.increasePosition(0, 10, 0);
 		
 		this.lights = new ArrayList<Light>();
-		this.sun = new Light(new Vector3f(100000,1500000,-1000),new Vector3f(1.3f,1.3f,1.3f));
+		this.sun = new Light(new Vector3f(100000,1500000,-100000),new Vector3f(1.3f,1.3f,1.3f));
 		lights.add(sun);
 		//lights.add(new Light(new Vector3f(200,2,200),new Vector3f(10,0,0), new Vector3f(1, 0.01f, 0.002f)));
 		//lights.add(new Light(new Vector3f(20,2,20),new Vector3f(0,10,0), new Vector3f(0, 0.01f, 0.002f)));
@@ -160,8 +169,8 @@ public class SceneRenderer {
 		GuiTexture gui = new GuiTexture(loader.loadTexture(Settings.INTERFACE_TEXTURE_PATH,"helthBar"), new Vector2f(-0.7f, -0.7f), new Vector2f(0.25f, 0.25f));
 		guis.add(gui);
 		
-		GuiTexture shadowMap = new GuiTexture(renderer.getShadowMapTexture(), 
-				new Vector2f(0.5f, 0.5f), new Vector2f(0.5f,0.5f));
+		//GuiTexture shadowMap = new GuiTexture(renderer.getShadowMapTexture(), 
+		//		new Vector2f(-0.5f, 0.5f), new Vector2f(0.5f,0.5f));
 		//guis.add(shadowMap);
 
 		

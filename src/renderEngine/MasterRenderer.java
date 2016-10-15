@@ -139,13 +139,18 @@ public class MasterRenderer {
 	}
 	
 	public void renderShadowMap(List<Entity> entityList, List<Entity> normalEntities, Player player, Light sun, Camera camera){
+		for(Entity entity :  normalEntities){
+			processEntity(entity);
+		}
 		entityList.add(player);
-		//entityList.addAll(normalEntities);
 		for(Entity entity : entityList){
 			processEntity(entity);
 		}
+		shadowMapRenderer.render(normalMapEntities, sun, camera);
+		normalMapEntities.clear();
 		shadowMapRenderer.render(entities, sun, camera);
 		entities.clear();
+		
 	}
 	
 	public int getShadowMapTexture(){
