@@ -18,6 +18,7 @@ uniform vec3 lightPosition[4];
 
 uniform mat4 toShadowMapSpace;
 uniform float shadowDistance;
+uniform float shadowTransitionDistance;
 
 uniform float useFakeLighting;
 
@@ -27,8 +28,6 @@ uniform vec2 offset;
 uniform float fogDensity;
 
 const float gradient = 2.0;
-
-const float transitionDistance = 10.0;
 
 uniform vec4 plane;
 
@@ -59,8 +58,8 @@ void main(void){
    visibility = exp(-pow((distance*fogDensity),gradient));
    visibility = clamp(visibility,0.0,1.0);
    
-   distance = distance - (shadowDistance - transitionDistance);
-   distance = distance / transitionDistance;
+   distance = distance - (shadowDistance - shadowTransitionDistance);
+   distance = distance / shadowTransitionDistance;
    shadowCoords.w = clamp(1.0 - distance, 0.0, 1.0);
    
 }

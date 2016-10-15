@@ -77,7 +77,7 @@ public class MasterRenderer {
 		shader.loadViewMatrix(camera);
 		renderer.render(entities, camera, shadowMapRenderer.getToShadowMapSpaceMatrix());
 		shader.stop();
-		normalMapRenderer.render(normalMapEntities, clipPlane, lights, camera);
+		normalMapRenderer.render(normalMapEntities, clipPlane, lights, camera,shadowMapRenderer.getToShadowMapSpaceMatrix());
 		terrainShader.start();
 		terrainShader.loadClipPlane(clipPlane);
 		terrainShader.loadSkyColour(Settings.DISPLAY_RED, Settings.DISPLAY_GREEN, Settings.DISPLAY_BLUE);
@@ -142,15 +142,15 @@ public class MasterRenderer {
 		for(Entity entity :  normalEntities){
 			processEntity(entity);
 		}
-		entityList.add(player);
 		for(Entity entity : entityList){
 			processEntity(entity);
 		}
+		processEntity(player);
+		
 		shadowMapRenderer.render(normalMapEntities, sun, camera);
 		normalMapEntities.clear();
 		shadowMapRenderer.render(entities, sun, camera);
 		entities.clear();
-		
 	}
 	
 	public int getShadowMapTexture(){

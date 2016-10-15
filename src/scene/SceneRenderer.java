@@ -81,6 +81,9 @@ public class SceneRenderer {
 		terrains.add(terrain);
 				
 		//**************TEXTURED MODELS***************//
+		//Grass/
+		TexturedModel grassModel = generator.loadStaticModel("grass", "grass");
+		
 		//Stall//
 	    TexturedModel stallModel = generator.loadStaticModel("stall", "stallTexture");
 	    stallModel.getTexture().setShineDamper(5);
@@ -106,7 +109,7 @@ public class SceneRenderer {
 		boulderModel.getTexture().setReflectivity(0.5f);
 
         //***********GAME OBJECTS****************//
-		//List<Entity> grasses = generator.createGrassField(0, 0, 800, 2, 0.1f);
+		List<Entity> grasses = generator.createGrassField(0, 0, 800, 1, 0.3f);
 		this.entities = new ArrayList<Entity>();
 		Entity stall = new Entity(stallModel, new Vector3f(50,0,50),0,0,0,1);
 		Entity cube = new Entity(cubeModel, new Vector3f(100,0,10),0,0,0,1);
@@ -116,7 +119,7 @@ public class SceneRenderer {
 		normalMapEntities.add(boulder);
 		entities.add(cube);
 		entities.add(stall);
-		//entities.addAll(grasses);
+		entities.addAll(grasses);
 		
 		spreadOnHeights(entities);
 		spreadOnHeights(normalMapEntities);

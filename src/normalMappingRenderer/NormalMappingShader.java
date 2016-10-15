@@ -31,6 +31,13 @@ public class NormalMappingShader extends ShaderProgram{
 	private int location_plane;
 	private int location_modelTexture;
 	private int location_normalMap;
+	private int location_shadowCoords;
+	private int location_toShadowMapSpace;
+	private int location_shadowDistance;
+	private int location_shadowMap;
+	private int location_shadowMapSize;
+	private int location_shadowTransitionDistance;
+	private int location_shadowPCFCount;
 
 	public NormalMappingShader() {
 		super(VERTEX_FILE, FRAGMENT_FILE);
@@ -57,6 +64,12 @@ public class NormalMappingShader extends ShaderProgram{
 		location_plane = super.getUniformLocation("plane");
 		location_modelTexture = super.getUniformLocation("modelTexture");
 		location_normalMap = super.getUniformLocation("normalMap");
+		location_toShadowMapSpace = super.getUniformLocation("toShadowMapSpace");
+		location_shadowDistance = super.getUniformLocation("shadowDistance");
+		location_shadowMap = super.getUniformLocation("shadowMap");
+		location_shadowMapSize = super.getUniformLocation("shadowMapSize");
+		location_shadowTransitionDistance = super.getUniformLocation("shadowTransitionDistance");
+		location_shadowPCFCount = super.getUniformLocation("shadowPCFCount");
 		
 		location_lightPositionEyeSpace = new int[MAX_LIGHTS];
 		location_lightColour = new int[MAX_LIGHTS];
@@ -68,9 +81,21 @@ public class NormalMappingShader extends ShaderProgram{
 		}
 	}
 	
+	public void loadToShadowSpaceMatrix(Matrix4f matrix){
+		super.loadMatrix(location_toShadowMapSpace, matrix);
+	}
+	
+	public void loadShadowVariables(float shadowDistance, float size, float transitionDistance, int pcfCount){	
+		super.loadFloat(location_shadowDistance, shadowDistance);
+		super.loadFloat(location_shadowMapSize, size);
+		super.loadFloat(location_shadowTransitionDistance, transitionDistance);
+		super.loadInt(location_shadowPCFCount, pcfCount);
+	}
+	
 	protected void connectTextureUnits(){
 		super.loadInt(location_modelTexture, 0);
 		super.loadInt(location_normalMap, 1);
+		super.loadInt(location_shadowMap, 5);
 	}
 	
 	protected void loadClipPlane(Vector4f plane){

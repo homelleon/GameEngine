@@ -37,7 +37,7 @@ public class ObjectGenerator {
 		//TODO: Noise - better using
 		
 		TexturedModel grass = loadStaticModel("grassObject","grassObjAtlas");
-		int texIndex = 4;
+		int texIndex = 3;
 		grass.getTexture().setNumberOfRows(2);
 		grass.getTexture().setShineDamper(1);
 		grass.getTexture().setReflectivity(0);

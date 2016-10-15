@@ -34,8 +34,7 @@ public class EntityRenderer {
 	
 	public void render(Map<TexturedModel, List<Entity>> entities, Camera camera, Matrix4f toShadowMapSpace){
 		shader.loadToShadowSpaceMatrix(toShadowMapSpace);
-		shader.loadShadowDistance(Settings.SHADOW_DISTANCE);
-		shader.loadShadowMapSize(Settings.SHADOW_MAP_SIZE);
+		shader.loadShadowVariables(Settings.SHADOW_DISTANCE, Settings.SHADOW_MAP_SIZE, Settings.SHADOW_TRANSITION_DISTANCE, Settings.SHADOW_PCF);
 		for(TexturedModel model:entities.keySet()){
 			prepareTexturedModel(model);
 			List<Entity> batch = entities.get(model);

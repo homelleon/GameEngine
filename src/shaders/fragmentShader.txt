@@ -16,18 +16,19 @@ uniform vec3 attenuation[4];
 uniform float shineDamper;
 uniform float reflectivity;
 uniform vec3 skyColour;
-uniform float mapSize;
 
-const int pcfCount = 1;
-const float totalTexels = (pcfCount * 2.0 + 1.0) * (pcfCount * 2.0 + 1.0);
+uniform float shadowMapSize;
+uniform int shadowPCFCount;
 
 void main(void){
 
- float texelSize = 1.0 / mapSize;
+ float totalTexels = (shadowPCFCount * 2.0 + 1.0) * (shadowPCFCount * 2.0 + 1.0);
+
+ float texelSize = 1.0 / shadowMapSize;
    float total = 0.0;
    
-   for(int x=-pcfCount; x<=pcfCount; x++){
-   		for(int y=-pcfCount; y<=pcfCount; y++){
+   for(int x=-shadowPCFCount; x<=shadowPCFCount; x++){
+   		for(int y=-shadowPCFCount; y<=shadowPCFCount; y++){
    				float objectNearestLight = texture(shadowMap, shadowCoords.xy + vec2(x, y) * texelSize).r;
    				if(shadowCoords.z > objectNearestLight + 0.02){
    					total += 1.0;
