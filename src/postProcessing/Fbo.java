@@ -137,6 +137,7 @@ public class Fbo {
 	 */
 	private void initialiseFrameBuffer(int type) {
 		createFrameBuffer();
+		isMultisampled = false; //Debug
 		if(isMultisampled){
 			createMultisampleColourAttachment();
 		}else{

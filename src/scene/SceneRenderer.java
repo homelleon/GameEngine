@@ -269,9 +269,9 @@ public class SceneRenderer {
 	    waterRenderer.render(waters, camera, sun);
 	    ParticleMaster.renderParticles(camera);
 	    multisampleFbo.unbindFrameBuffer();
-	    //multisampleFbo.resolveToFbo(outputFbo);
-	    multisampleFbo.resolveToScreen();
-	    //PostProcessing.doPostProcessing(outputFbo.getColourTexture());
+	    multisampleFbo.resolveToFbo(outputFbo);
+	    //multisampleFbo.resolveToScreen();
+	    PostProcessing.doPostProcessing(outputFbo.getColourTexture());
 	    guiRenderer.render(guis);
 	    GUIText text = createFPSText(1 / DisplayManager.getFrameTimeSeconds());
 	    text.setColour(1, 0, 0);
