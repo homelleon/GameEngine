@@ -4,9 +4,9 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.lwjgl.input.Keyboard;
 import org.lwjgl.openal.AL10;
 import org.lwjgl.openal.AL11;
+import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Vector2f;
@@ -29,6 +29,8 @@ import normalMappingObjConverter.NormalMappedObjLoader;
 import particles.ParticleMaster;
 import particles.ParticleSystem;
 import particles.ParticleTexture;
+import postProcessing.Fbo;
+import postProcessing.PostProcessing;
 import renderEngine.DisplayManager;
 import renderEngine.Loader;
 import renderEngine.MasterRenderer;
@@ -58,7 +60,9 @@ public class SceneRenderer {
 	private List<Entity> normalMapEntities;
 	private List<WaterTile> waters;
 	FontType font;
-	WaterFrameBuffers fbos;
+	WaterFrameBuffers waterFBOs;
+	private Fbo multisampleFbo;	
+	private Fbo outputFbo;
 	private Player player;
 	private List<Light> lights;
 	private Light sun;
@@ -147,6 +151,10 @@ public class SceneRenderer {
 		pSystem.setLifeError(0.1f);
 		pSystem.setSpeedError(0.4f);
 		pSystem.setScaleError(0.8f);
+		
+		this.multisampleFbo = new Fbo(Display.getWidth(),Display.getHeight());
+		this.outputFbo = new Fbo(Display.getWidth(),Display.getHeight(), Fbo.DEPTH_TEXTURE);
+		PostProcessing.init(loader);
 
 		//*******************FONTS*************//
 		TextMaster.init(loader);
@@ -181,9 +189,9 @@ public class SceneRenderer {
 		
 		
 		//**************WATER***********************//
-		this.fbos = new WaterFrameBuffers();
+		this.waterFBOs = new WaterFrameBuffers();
 		WaterShader waterShader = new WaterShader();
-		this.waterRenderer = new WaterRenderer(loader, waterShader, renderer.getProjectionMatrix(), fbos);
+		this.waterRenderer = new WaterRenderer(loader, waterShader, renderer.getProjectionMatrix(), waterFBOs);
 		this.waters = new ArrayList<WaterTile>(); 
 		waters.add(new WaterTile(0, 0, -4, 1000));
 		waters.stream().forEach((i) -> i.setTilingSize(0.1f));
@@ -234,7 +242,7 @@ public class SceneRenderer {
     }
     
     private void renderReflectionTexture(){
-    	fbos.bindReflectionFrameBuffer();
+    	waterFBOs.bindReflectionFrameBuffer();
 		float distance = 2 * (camera.getPosition().y - waters.get(0).getHeight());
 		camera.getPosition().y -= distance;
 		camera.invertPitch();
@@ -245,7 +253,7 @@ public class SceneRenderer {
     }
     
     private void renderRefractionTexture(){
-    	fbos.bindRefractionFrameBuffer();
+    	waterFBOs.bindRefractionFrameBuffer();
 		renderer.processEntity(player);
 		renderer.renderScene(entities, normalMapEntities, terrains, lights, camera, new Vector4f(0, -1, 0, waters.get(0).getHeight()));
 
@@ -253,22 +261,31 @@ public class SceneRenderer {
     
     private void renderToScreen(){
 		GL11.glDisable(GL30.GL_CLIP_DISTANCE0);
-	    fbos.unbindCurrentFrameBuffer();
+		waterFBOs.unbindCurrentFrameBuffer();
+	    
+		multisampleFbo.bindFrameBuffer();
 	    renderer.processEntity(player);
 	    renderer.renderScene(entities, normalMapEntities, terrains, lights, camera, new Vector4f(0, -1, 0, 15));
 	    waterRenderer.render(waters, camera, sun);
 	    ParticleMaster.renderParticles(camera);
+	    multisampleFbo.unbindFrameBuffer();
+	    //multisampleFbo.resolveToFbo(outputFbo);
+	    multisampleFbo.resolveToScreen();
+	    //PostProcessing.doPostProcessing(outputFbo.getColourTexture());
 	    guiRenderer.render(guis);
 	    GUIText text = createFPSText(1 / DisplayManager.getFrameTimeSeconds());
 	    text.setColour(1, 0, 0);
 	    TextMaster.render();
 	    text.remove();
     }
-	
+    	
 	public void cleanUp(){
+		PostProcessing.cleanUp();
+		outputFbo.cleanUp();
+		multisampleFbo.cleanUp();
 		TextMaster.cleanUp();
 		ambientSource.delete();
-		fbos.cleanUp();
+		waterFBOs.cleanUp();
 		guiRenderer.cleanUp();
 		AudioMaster.cleanUp();
 		renderer.cleanUp();

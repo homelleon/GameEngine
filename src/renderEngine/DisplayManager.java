@@ -25,7 +25,7 @@ public class DisplayManager {
 		
 		try {
 			Display.setDisplayMode(new DisplayMode(Settings.DISPLAY_WIDTH,Settings.DISPLAY_HEIGHT));
-			Display.create(new PixelFormat().withDepthBits(24).withSamples(Settings.MULTISAMPLE), attribs);
+			Display.create(new PixelFormat().withDepthBits(24), attribs);
 			Display.setTitle("MyGame");
 			GL11.glEnable(GL13.GL_MULTISAMPLE);
 		} catch (LWJGLException e) {

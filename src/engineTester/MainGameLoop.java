@@ -22,6 +22,7 @@ public class MainGameLoop {
 			}
 			if(Keyboard.isKeyDown(Keyboard.KEY_P)){
 				SceneRenderer.gamePaused = !SceneRenderer.gamePaused;
+				System.out.println(SceneRenderer.gamePaused);
 			}
 			
 		}
