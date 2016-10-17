@@ -12,6 +12,8 @@ import models.RawModel;
 import models.TexturedModel;
 import objConverter.ModelData;
 import objConverter.OBJFileLoader;
+import particles.ParticleSystem;
+import particles.ParticleTexture;
 import renderEngine.Loader;
 import terrains.Terrain;
 import textures.ModelTexture;
@@ -19,24 +21,20 @@ import textures.TerrainTexture;
 import textures.TerrainTexturePack;
 import water.WaterTile;
 
-public class ObjectGenerator {
-	//TODO: ALL individual object creator
+public class SceneObjectTools {
 	
-	public List<Light> lights;
-
-	private Loader loader = new Loader();
-	
-	public TexturedModel loadStaticModel(String objFile, String textureName){
+	public static TexturedModel loadStaticModel(String objFile, String textureName, Loader loader){
 		ModelData data = OBJFileLoader.loadOBJ(objFile);
 		RawModel rawModel = loader.loadToVAO(data.getVertices(), data.getTextureCoords(), data.getNormals(), data.getIndices());	
 	    TexturedModel staticModel = new TexturedModel(rawModel,new ModelTexture(loader.loadTexture(Settings.MODEL_TEXTURE_PATH,textureName)));
 	    return staticModel;
 	}
 	
-	public List<Entity> createGrassField(float x, float z, float r, float sizeNoise, float density){
+	
+	public static List<Entity> createGrassField(float x, float z, float r, float sizeNoise, float density, Loader loader){
 		//TODO: Noise - better using
 		
-		TexturedModel grass = loadStaticModel("grassObject","grassObjAtlas");
+		TexturedModel grass = loadStaticModel("grassObject","grassObjAtlas", loader);
 		int texIndex = 3;
 		grass.getTexture().setNumberOfRows(2);
 		grass.getTexture().setShineDamper(1);
@@ -65,7 +63,7 @@ public class ObjectGenerator {
 		
 	}
 	
-	public List<WaterTile> createWaterSurfce(float x, float y, float z, int size){
+	public static List<WaterTile> createWaterSurfce(float x, float y, float z, int size){
 		List<WaterTile> waters = new ArrayList<WaterTile>();
 		for(int i=0;i<size;i++){
 			for(int j=0;j<size;j++){
@@ -76,7 +74,7 @@ public class ObjectGenerator {
 		return waters;
 	}
 	
-	public Terrain createMultiTexTerrain(String basicTexture, String redTexture, String greenTexture, String blueTexture, String blendTexture, String heightTexture){
+	public static Terrain createMultiTexTerrain(String basicTexture, String redTexture, String greenTexture, String blueTexture, String blendTexture, String heightTexture, Loader loader){
 		TerrainTexture backgroundTexture = new TerrainTexture(loader.loadTexture(Settings.TERRAIN_TEXTURE_PATH, basicTexture));
 		TerrainTexture rTexture = new TerrainTexture(loader.loadTexture(Settings.TERRAIN_TEXTURE_PATH, redTexture));
 		TerrainTexture gTexture = new TerrainTexture(loader.loadTexture(Settings.TERRAIN_TEXTURE_PATH, greenTexture));
@@ -89,7 +87,7 @@ public class ObjectGenerator {
 		return terrain;
 	}
 	
-	public Terrain createMultiTexTerrain(String basicTexture, String redTexture, String greenTexture, String blueTexture, String blendTexture, float amplitude, int octaves, float roughness){
+	public static Terrain createMultiTexTerrain(String basicTexture, String redTexture, String greenTexture, String blueTexture, String blendTexture, float amplitude, int octaves, float roughness, Loader loader){
 		TerrainTexture backgroundTexture = new TerrainTexture(loader.loadTexture(Settings.TERRAIN_TEXTURE_PATH, basicTexture));
 		TerrainTexture rTexture = new TerrainTexture(loader.loadTexture(Settings.TERRAIN_TEXTURE_PATH, redTexture));
 		TerrainTexture gTexture = new TerrainTexture(loader.loadTexture(Settings.TERRAIN_TEXTURE_PATH, greenTexture));
@@ -102,11 +100,7 @@ public class ObjectGenerator {
 		return terrain;
 	}
 	
-	public void createForest(List<Entity> forest, float x, float y, float r, float noise){
-		
-	}
-	
-	public void createSun(Light light){
+	public static void createForest(List<Entity> forest, float x, float y, float r, float noise){
 		
 	}
 	

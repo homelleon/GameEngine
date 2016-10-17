@@ -16,7 +16,7 @@ public class ParticleSystem {
     private boolean randomRotation = false;
     private Vector3f direction;
     private float directionDeviation = 0;
-    
+     
     private ParticleTexture texture;
  
     private Random random = new Random();

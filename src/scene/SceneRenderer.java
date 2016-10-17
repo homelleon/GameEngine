@@ -16,6 +16,7 @@ import org.lwjgl.util.vector.Vector4f;
 import audio.AudioMaster;
 import audio.Source;
 import entities.Camera;
+import entities.EntitiesManager;
 import entities.Entity;
 import entities.Light;
 import entities.Player;
@@ -29,6 +30,7 @@ import normalMappingObjConverter.NormalMappedObjLoader;
 import particles.ParticleMaster;
 import particles.ParticleSystem;
 import particles.ParticleTexture;
+import particles.ParticlesManager;
 import postProcessing.Fbo;
 import postProcessing.PostProcessing;
 import renderEngine.DisplayManager;
@@ -54,7 +56,7 @@ public class SceneRenderer {
 	//TODO: Delete unnecessary objects
 	private List<GuiTexture> guis;
 	private GuiRenderer guiRenderer;
-	private ParticleSystem pSystem;
+	private List<ParticleSystem> pSystem;
 	private List<Terrain> terrains;
 	private List<Entity> entities;
 	private List<Entity> normalMapEntities;
@@ -74,60 +76,29 @@ public class SceneRenderer {
 	public SceneRenderer(){
 		
 		//***************PRE LOAD TOOLS*************//
-		ObjectGenerator generator = new ObjectGenerator();
 		this.loader = new Loader();
 		
 		//***************TERRAIN********************//
 
 		this.terrains = new ArrayList<Terrain>();
-		Terrain terrain = generator.createMultiTexTerrain("grass", "ground", "floweredGrass", "road", "blendMap", 100f, 5, 0.5f);
+		Terrain terrain = SceneObjectTools.createMultiTexTerrain("grass", "ground", "floweredGrass", "road", "blendMap", 100f, 5, 0.5f, loader);
 		//Terrain terrain = generator.createMultiTexTerrain("grass", "ground", "floweredGrass", "road", "blendMap", "heightMap");
 		terrains.add(terrain);
 				
-		//**************TEXTURED MODELS***************//
-		//Grass/
-		TexturedModel grassModel = generator.loadStaticModel("grass", "grass");
-		
-		//Stall//
-	    TexturedModel stallModel = generator.loadStaticModel("stall", "stallTexture");
-	    stallModel.getTexture().setShineDamper(5);
-	    stallModel.getTexture().setReflectivity(1);
-		//Cube//
-		TexturedModel cubeModel = generator.loadStaticModel("cube", "cube1");		
-		cubeModel.getTexture().setShineDamper(5);
-		cubeModel.getTexture().setReflectivity(1);
-		cubeModel.getTexture().setHasTransparency(true);
-		cubeModel.getTexture().setUseFakeLighting(true);
-		
-		this.normalMapEntities = new ArrayList<Entity>();
-		
-		TexturedModel barrelModel = new TexturedModel(NormalMappedObjLoader.loadOBJ("barrel", loader),
-				new ModelTexture(loader.loadTexture(Settings.MODEL_TEXTURE_PATH,"barrel")));
-		barrelModel.getTexture().setNormalMap(loader.loadTexture(Settings.NORMAL_MAP_PATH, "barrelNormal"));
-		barrelModel.getTexture().setShineDamper(10);
-		barrelModel.getTexture().setReflectivity(0.5f);
-		TexturedModel boulderModel = new TexturedModel(NormalMappedObjLoader.loadOBJ("boulder", loader),
-				new ModelTexture(loader.loadTexture(Settings.MODEL_TEXTURE_PATH,"boulder")));
-		boulderModel.getTexture().setNormalMap(loader.loadTexture(Settings.NORMAL_MAP_PATH, "boulderNormal"));
-		boulderModel.getTexture().setShineDamper(10);
-		boulderModel.getTexture().setReflectivity(0.5f);
 
         //***********GAME OBJECTS****************//
-		List<Entity> grasses = generator.createGrassField(0, 0, 800, 1, 0.3f);
-		this.entities = new ArrayList<Entity>();
-		Entity stall = new Entity(stallModel, new Vector3f(50,0,50),0,0,0,1);
-		Entity cube = new Entity(cubeModel, new Vector3f(100,0,10),0,0,0,1);
-		Entity barrel = new Entity(barrelModel, new Vector3f(200, 0, 200), 0,0,0,1);
-		Entity boulder = new Entity(boulderModel, new Vector3f(250,0,250), 0,0,0,1);
-		normalMapEntities.add(barrel);
-		normalMapEntities.add(boulder);
-		entities.add(cube);
-		entities.add(stall);
-		entities.addAll(grasses);
+		
+		this.entities = EntitiesManager.createEntities(loader);
+		this.normalMapEntities = EntitiesManager.createNormalMappedEntities(loader);
 		
 		spreadOnHeights(entities);
 		spreadOnHeights(normalMapEntities);
-		boulder.increasePosition(0, 10, 0);
+		
+		for(Entity entity : normalMapEntities){
+			if(entity.toString() == "boulder"){
+				entity.increasePosition(0, 50, 0);
+			}
+		}
 		
 		this.lights = new ArrayList<Light>();
 		this.sun = new Light(new Vector3f(100000,1500000,-100000),new Vector3f(1.3f,1.3f,1.3f));
@@ -135,6 +106,8 @@ public class SceneRenderer {
 		//lights.add(new Light(new Vector3f(200,2,200),new Vector3f(10,0,0), new Vector3f(1, 0.01f, 0.002f)));
 		//lights.add(new Light(new Vector3f(20,2,20),new Vector3f(0,10,0), new Vector3f(0, 0.01f, 0.002f)));
 		
+		//***********PLAYER****************//
+		TexturedModel cubeModel = SceneObjectTools.loadStaticModel("cube", "cube1", loader);	
 		this.player = new Player(cubeModel, new Vector3f(100, 0, 10), 0, 0, 0, 1);
 		this.camera = new Camera(player);	
 		this.time = new GameTime(10);
@@ -142,15 +115,10 @@ public class SceneRenderer {
 		this.renderer = new MasterRenderer(loader, camera);		
 		
 		//**************PARTICLES***************//
-		ParticleTexture particleTexture = new ParticleTexture(loader.loadTexture(Settings.PARTICLE_TEXTURE_PATH, "particleAtlas"), 4, true);
-		
+		this.pSystem = ParticlesManager.createParticleSystem(loader);		
 		ParticleMaster.init(loader, renderer.getProjectionMatrix());
-		this.pSystem = new ParticleSystem(particleTexture, 50, 25, 0.3f, 4, 1);
-		pSystem.randomizeRotation();
-		pSystem.setDirection(new Vector3f(0, 1, 0), 0.1f);
-		pSystem.setLifeError(0.1f);
-		pSystem.setSpeedError(0.4f);
-		pSystem.setScaleError(0.8f);
+		
+		//******************FBO*******************//
 		
 		this.multisampleFbo = new Fbo(Display.getWidth(),Display.getHeight());
 		this.outputFbo = new Fbo(Display.getWidth(),Display.getHeight(), Fbo.DEPTH_TEXTURE);
@@ -212,10 +180,7 @@ public class SceneRenderer {
 			picker.update();
 			System.out.println(picker.getCurrentRay());
 		}
-		//pSystem.generateParticles(player.getPosition());
-		//pSystem.generateParticles(new Vector3f(10,10,terrains.get(0).getHeightOfTerrain(10, 10)));
-		ParticleMaster.update(camera);
-		
+		renderParticlesToScreen();
 		renderer.renderShadowMap(entities, normalMapEntities, player, sun, camera);				
 		GL11.glEnable(GL30.GL_CLIP_DISTANCE0);
 		renderReflectionTexture();		
@@ -266,13 +231,18 @@ public class SceneRenderer {
 	    ParticleMaster.renderParticles(camera);
 	    multisampleFbo.unbindFrameBuffer();
 	    multisampleFbo.resolveToFbo(outputFbo);
-	    //multisampleFbo.resolveToScreen();
 	    PostProcessing.doPostProcessing(outputFbo.getColourTexture());
 	    guiRenderer.render(guis);
 	    GUIText text = createFPSText(1 / DisplayManager.getFrameTimeSeconds());
 	    text.setColour(1, 0, 0);
 	    TextMaster.render();
 	    text.remove();
+    }
+    
+    public void renderParticlesToScreen(){
+		pSystem.get(0).generateParticles(player.getPosition());
+		pSystem.get(1).generateParticles(new Vector3f(50,terrains.get(0).getHeightOfTerrain(50, 50),50));
+		ParticleMaster.update(camera);
     }
     	
 	public void cleanUp(){

@@ -15,7 +15,7 @@ public class Settings {
 	public static final float DISPLAY_GREEN = 0.5f;
 	public static final float DISPLAY_BLUE = 0.55f;
 	
-	public static final float DISPLAY_CONTRAST = 0.1f;
+	public static final float DISPLAY_CONTRAST = 0.5f;
 	
 	//****************AUIDO SETTINGS****************************************//
 	public static final float MUSIC_VOLUME = 0.05f;
