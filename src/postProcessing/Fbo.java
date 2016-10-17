@@ -137,7 +137,6 @@ public class Fbo {
 	 */
 	private void initialiseFrameBuffer(int type) {
 		createFrameBuffer();
-		isMultisampled = false; //Debug
 		if(isMultisampled){
 			createMultisampleColourAttachment();
 		}else{
@@ -195,7 +194,7 @@ public class Fbo {
 	}
 	
 	private void createMultisampleColourAttachment(){
-		colourBuffer = GL30.glGenFramebuffers();
+		colourBuffer = GL30.glGenRenderbuffers();
 		GL30.glBindRenderbuffer(GL30.GL_RENDERBUFFER, colourBuffer);
 		GL30.glRenderbufferStorageMultisample(GL30.GL_RENDERBUFFER, Settings.MULTISAMPLE, GL11.GL_RGBA8, width, height);
 		GL30.glFramebufferRenderbuffer(GL30.GL_FRAMEBUFFER, GL30.GL_COLOR_ATTACHMENT0, GL30.GL_RENDERBUFFER,

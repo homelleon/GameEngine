@@ -196,11 +196,7 @@ public class SceneRenderer {
 		waters.add(new WaterTile(0, 0, -4, 1000));
 		waters.stream().forEach((i) -> i.setTilingSize(0.1f));
 		waters.stream().forEach((i) -> i.setWaterSpeed(0.7f));
-		waters.stream().forEach((i) -> i.setWaveStrength(0.1f));
-		//waters.add(new WaterTile(400, 400, 0));
-		//waters.get(0).setTilingSize(0.004f);
-		
-		
+		waters.stream().forEach((i) -> i.setWaveStrength(0.1f));		
 		
 	//**************IN GAME TOOLS**************************//	
 		this.picker = new MousePicker(camera, renderer.getProjectionMatrix());
@@ -293,7 +289,7 @@ public class SceneRenderer {
 	}
 	
 	public GUIText createFPSText(float FPS){
-		return new GUIText(String.valueOf(FPS), 3, font, new Vector2f(0.75f, 0), 0.5f, true);
+		return new GUIText("FPS: " + String.valueOf((int)FPS), 2, font, new Vector2f(0.65f, 0), 0.5f, true);
 	}
 
 }
