@@ -52,8 +52,10 @@ public class SceneObjectTools {
 			for(Integer i = 0; i < r; i++){
 				sizeNoise = 1 + 2*(float) random.nextDouble();
 				Entity grassEntity = new Entity(grass, texIndex, new Vector3f(x + density*i, 0, z + density*j), 0, 0, 0, sizeNoise);
+				grassEntity.setIsDetail(true);
 				grasses.add(grassEntity);
 				Entity grassEntity1 = new Entity(grass, texIndex, new Vector3f((float) (x + density*i), 0, (float) (z + density*j)), 0, 100, 0, sizeNoise);
+				grassEntity1.setIsDetail(true);
 				grasses.add(grassEntity1);
 	
 			}

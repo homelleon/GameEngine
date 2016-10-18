@@ -39,6 +39,8 @@ public class NormalMappingShader extends ShaderProgram{
 	private int location_shadowMapSize;
 	private int location_shadowTransitionDistance;
 	private int location_shadowPCFCount;
+	private int location_specularMap;
+	private int location_usesSpecularMap;	
 
 	public NormalMappingShader() {
 		super(VERTEX_FILE, FRAGMENT_FILE);
@@ -71,6 +73,8 @@ public class NormalMappingShader extends ShaderProgram{
 		location_shadowMapSize = super.getUniformLocation("shadowMapSize");
 		location_shadowTransitionDistance = super.getUniformLocation("shadowTransitionDistance");
 		location_shadowPCFCount = super.getUniformLocation("shadowPCFCount");
+		location_specularMap = super.getUniformLocation("specularMap");
+		location_usesSpecularMap = super.getUniformLocation("usesSpecularMap");	
 		
 		location_lightPositionEyeSpace = new int[MAX_LIGHTS];
 		location_lightColour = new int[MAX_LIGHTS];
@@ -86,6 +90,10 @@ public class NormalMappingShader extends ShaderProgram{
 		super.loadMatrix(location_toShadowMapSpace, matrix);
 	}
 	
+	public void loadUseSpecularMap(boolean useMap){
+		super.loadBoolean(location_usesSpecularMap, useMap);
+	}
+	
 	public void loadShadowVariables(float shadowDistance, float size, float transitionDistance, int pcfCount){	
 		super.loadFloat(location_shadowDistance, shadowDistance);
 		super.loadFloat(location_shadowMapSize, size);
@@ -95,7 +103,8 @@ public class NormalMappingShader extends ShaderProgram{
 	
 	protected void connectTextureUnits(){
 		super.loadInt(location_modelTexture, 0);
-		super.loadInt(location_normalMap, 1);
+		super.loadInt(location_specularMap, 1);
+		super.loadInt(location_normalMap, 2);
 		super.loadInt(location_shadowMap, 5);
 	}
 	

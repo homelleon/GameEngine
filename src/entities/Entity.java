@@ -10,6 +10,7 @@ public class Entity {
 	private Vector3f position;
 	private float rotX,rotY,rotZ;
 	private float scale;
+	private boolean isDetail = false;
 	
 	private int textureIndex = 0;
 	
@@ -20,6 +21,14 @@ public class Entity {
 		this.rotY = rotY;
 		this.rotZ = rotZ;
 		this.scale = scale;
+	}
+	
+	public void setIsDetail(boolean value){
+		this.isDetail = value;
+	}
+	
+	public boolean isDetail(){
+		return isDetail;
 	}
 	
 	public float getTextureXOffset(){

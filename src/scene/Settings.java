@@ -34,7 +34,9 @@ public class Settings {
 	public static final int SHADOW_MAP_SIZE = 4096;
 	public static final float SHADOW_TRANSITION_DISTANCE = 80;
 	public static final int SHADOW_PCF = 2;
-	public static final float RENDERING_DISTANCE = 150;
+	public static final float RENDERING_DISTANCE = 500;
+	public static final float DETAIL_DISTANCE = 200;
+
 	
 	//*****************PATH SETTINGS*************************************//
 	public final static String RES_PATH = "res/";
@@ -49,8 +51,12 @@ public class Settings {
 	public final static String NORMAL_MAP_PATH = RES_PATH + "textures/normalMaps/";
 	public final static String FONT_PATH = RES_PATH + "textures/fonts/";
 	public final static String SKYBOX_TEXTURE_PATH = RES_PATH + "textures/skybox/";
+	public final static String SPECULAR_MAP_PATH = RES_PATH + "textures/specularMaps/";
+	
 	public final static String AUDIO_PATH = RES_PATH + "audio/";
 	public final static String OBJECT_PATH = RES_PATH + "objFiles/";
+	public final static String TEXT_PATH = RES_PATH + "texts/";
+	
 	public final static String SHADER_PATH = SORCE_PATH + "shaders/";
 	public final static String GUI_SHADER_PATH = SORCE_PATH + "guis/";
 	public final static String SKYBOX_SHADER_PATH = SORCE_PATH + "skybox/";
@@ -61,7 +67,6 @@ public class Settings {
 	public final static String FONT_SHADER_PATH = SORCE_PATH + "fontRendering/";
 	public final static String POST_PROCESSING_SHADER_PATH = SORCE_PATH + "postProcessing/";
 	public final static String BLUR_SHADER_PATH = SORCE_PATH + "gaussianBlur/";
-	public final static String TEXT_PATH = RES_PATH + "texts/";
 	
 	//*****************RENDER SETTINGS**********************************//
 

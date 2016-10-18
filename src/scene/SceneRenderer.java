@@ -94,12 +94,6 @@ public class SceneRenderer {
 		spreadOnHeights(entities);
 		spreadOnHeights(normalMapEntities);
 		
-		for(Entity entity : normalMapEntities){
-			if(entity.toString() == "boulder"){
-				entity.increasePosition(0, 50, 0);
-			}
-		}
-		
 		this.lights = new ArrayList<Light>();
 		this.sun = new Light(new Vector3f(100000,1500000,-100000),new Vector3f(1.3f,1.3f,1.3f));
 		lights.add(sun);

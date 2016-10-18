@@ -29,14 +29,28 @@ public class EntitiesManager {
 		cubeModel.getTexture().setReflectivity(1);
 		cubeModel.getTexture().setHasTransparency(true);
 		cubeModel.getTexture().setUseFakeLighting(true);
-		
+		//Cherry//
+		TexturedModel cherryModel = SceneObjectTools.loadStaticModel("cherry", "cherry", loader);
+		cherryModel.getTexture().setShineDamper(10);
+		cherryModel.getTexture().setReflectivity(0.5f);
+		cherryModel.getTexture().setSpecularMap(loader.loadTexture(Settings.SPECULAR_MAP_PATH, "cherryS"));
+		//Tree//
+		TexturedModel treeModel = SceneObjectTools.loadStaticModel("tree", "bark", loader);
+		treeModel.getTexture().setShineDamper(10);
+		treeModel.getTexture().setReflectivity(0.5f);
+	
+			
 		//Entities attach
 		List<Entity> grasses = SceneObjectTools.createGrassField(0, 0, 800, 1, 0.3f, loader);
-		Entity stall = new Entity(stallModel, new Vector3f(50,0,50),0,0,0,1);
+		Entity stall = new Entity(stallModel, new Vector3f(50,0,50),0,0,0,4);
 		Entity cube = new Entity(cubeModel, new Vector3f(100,0,10),0,0,0,1);
+		Entity cherry = new Entity(cherryModel, new Vector3f(150, 0, 150), 0,0,0,4);
+		Entity tree = new Entity(treeModel, new Vector3f(10, 0, 10), 0,30,0,4);
 		
 		entities.add(cube);
 		entities.add(stall);
+		entities.add(cherry);
+		entities.add(tree);
 		entities.addAll(grasses);
 		
 		return entities;
@@ -49,6 +63,10 @@ public class EntitiesManager {
 		barrelModel.getTexture().setNormalMap(loader.loadTexture(Settings.NORMAL_MAP_PATH, "barrelNormal"));
 		barrelModel.getTexture().setShineDamper(10);
 		barrelModel.getTexture().setReflectivity(0.5f);
+		barrelModel.getTexture().setSpecularMap(loader.loadTexture(Settings.SPECULAR_MAP_PATH, "barrelS"));
+		
+	
+		
 		TexturedModel boulderModel = new TexturedModel(NormalMappedObjLoader.loadOBJ("boulder", loader),
 				new ModelTexture(loader.loadTexture(Settings.MODEL_TEXTURE_PATH,"boulder")));
 		boulderModel.getTexture().setNormalMap(loader.loadTexture(Settings.NORMAL_MAP_PATH, "boulderNormal"));

@@ -38,11 +38,12 @@ public class EntityRenderer {
 		for(TexturedModel model:entities.keySet()){
 			prepareTexturedModel(model);
 			List<Entity> batch = entities.get(model);
-			for(Entity entity: batch){
-				if(Maths.distanceFromCamera(entity,camera) <= Settings.RENDERING_DISTANCE){
+			for(Entity entity: batch){	
+				if((!entity.isDetail()&&Maths.distanceFromCamera(entity,camera) <= Settings.RENDERING_DISTANCE)||
+						(entity.isDetail()&&Maths.distanceFromCamera(entity,camera) <= Settings.DETAIL_DISTANCE)){
 					prepareInstance(entity);
 					GL11.glDrawElements(GL11.GL_TRIANGLES, model.getRawModel().getVertexCount(), 
-							GL11.GL_UNSIGNED_INT, 0);				
+							GL11.GL_UNSIGNED_INT, 0);
 				}
 			}
 			unbindTexturedModel();
@@ -64,6 +65,11 @@ public class EntityRenderer {
 		shader.loadShineVariables(texture.getShineDamper(), texture.getReflectivity());
 		GL13.glActiveTexture(GL13.GL_TEXTURE0);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, model.getTexture().getID());
+		shader.loadUsesSpecularMap(texture.hasSpecularMap());
+		if(texture.hasSpecularMap()){
+			GL13.glActiveTexture(GL13.GL_TEXTURE1);
+			GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture.getSpecularMap());
+		}
 	}
 	
 	private void unbindTexturedModel(){

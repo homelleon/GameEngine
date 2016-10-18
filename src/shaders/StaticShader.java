@@ -39,6 +39,10 @@ public class StaticShader extends ShaderProgram{
 	private int location_shadowMapSize;
 	private int location_shadowTransitionDistance;
 	private int location_shadowPCFCount;
+	private int location_specularMap;
+	private int location_usesSpecularMap;
+	private int location_modelTexture;
+	
 	
 	
 	public StaticShader(){
@@ -54,7 +58,13 @@ public class StaticShader extends ShaderProgram{
 	}
 	
 	public void connectTextureUnits(){
+		super.loadInt(location_modelTexture, 0);
+		super.loadInt(location_specularMap, 1);
 		super.loadInt(location_shadowMap, 5);
+	}
+	
+	public void loadUsesSpecularMap(boolean useMap){
+		super.loadBoolean(location_usesSpecularMap, useMap);
 	}
 
 
@@ -77,6 +87,9 @@ public class StaticShader extends ShaderProgram{
 		location_shadowMapSize = super.getUniformLocation("shadowMapSize");
 		location_shadowTransitionDistance = super.getUniformLocation("shadowTransitionDistance");
 		location_shadowPCFCount = super.getUniformLocation("shadowPCFCount");
+		location_specularMap = super.getUniformLocation("specularMap");
+		location_usesSpecularMap = super.getUniformLocation("usesSpecularMap");
+		location_modelTexture = super.getUniformLocation("modelTexture");
 		
 		location_lightPosition = new int[MAX_LIGHTS];
 		location_lightColour = new int[MAX_LIGHTS];
