@@ -3,13 +3,15 @@ package engine.engineTester;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 
+import engine.Engine;
 import engine.renderEngine.DisplayManager;
 import engine.scene.SceneRenderer;
 
-public class MainGameLoop {
+public class MainGameLoop implements Engine{
 
-	public static void main(String[] args) {
-				
+	@Override
+	public void run() {
+		
 		DisplayManager.creatDisplay();
 		SceneRenderer scene = new SceneRenderer();	
 		
@@ -29,7 +31,13 @@ public class MainGameLoop {
 		
 		scene.cleanUp();
 		DisplayManager.closeDisplay();
+		
+	}
 
+	@Override
+	public void exit() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
