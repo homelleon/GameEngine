@@ -23,8 +23,11 @@ import engine.entities.Player;
 import engine.fontMeshCreator.FontType;
 import engine.fontMeshCreator.GUIText;
 import engine.fontRendering.TextMaster;
+import engine.guis.GuiManager;
 import engine.guis.GuiRenderer;
 import engine.guis.GuiTexture;
+import engine.maps.Map;
+import engine.maps.MapLoader;
 import engine.models.TexturedModel;
 import engine.particles.ParticleMaster;
 import engine.particles.ParticleSystem;
@@ -35,6 +38,7 @@ import engine.renderEngine.DisplayManager;
 import engine.renderEngine.Loader;
 import engine.renderEngine.MasterRenderer;
 import engine.terrains.Terrain;
+import engine.terrains.TerrainManager;
 import engine.toolbox.MousePicker;
 import engine.water.WaterFrameBuffers;
 import engine.water.WaterRenderer;
@@ -77,20 +81,26 @@ public class SceneRenderer {
 		
 		//***************TERRAIN********************//
 
-		this.terrains = new ArrayList<Terrain>();
-		Terrain terrain = SceneObjectTools.createMultiTexTerrain("grass", "ground", "floweredGrass", "road", "blendMap", 100f, 5, 0.5f, loader);
-		//Terrain terrain = generator.createMultiTexTerrain("grass", "ground", "floweredGrass", "road", "blendMap", "heightMap");
-		terrains.add(terrain);
-				
+		this.terrains = TerrainManager.createTerrain(loader);				
 
         //***********GAME OBJECTS****************//
 		
 		this.entities = EntitiesManager.createEntities(loader);
 		this.normalMapEntities = EntitiesManager.createNormalMappedEntities(loader);
 		
+		Map map = MapLoader.loadMap("map1", loader);
+		
+		entities.addAll(map.entities);
+		
 		spreadOnHeights(entities);
 		spreadOnHeights(normalMapEntities);
+		for(Entity entity : normalMapEntities){
+			if(entity.getName() == "boulder"){
+				entity.increasePosition(0, 20, 0);
+			}
+		}
 		
+		//***********LIGHTS****************//
 		this.lights = new ArrayList<Light>();
 		this.sun = new Light(new Vector3f(100000,1500000,-100000),new Vector3f(1.3f,1.3f,1.3f));
 		lights.add(sun);
@@ -135,18 +145,8 @@ public class SceneRenderer {
 		float xPos = 8;				
 		
 		//***************GUI***********//
-		this.guis = new ArrayList<GuiTexture>();
-		GuiTexture gui = new GuiTexture(loader.loadTexture(Settings.INTERFACE_TEXTURE_PATH,"helthBar"), new Vector2f(-0.7f, -0.7f), new Vector2f(0.25f, 0.25f));
-		guis.add(gui);
-		
-		//GuiTexture shadowMap = new GuiTexture(renderer.getShadowMapTexture(), 
-		//		new Vector2f(-0.5f, 0.5f), new Vector2f(0.5f,0.5f));
-		//guis.add(shadowMap);
-
-		
-		this.guiRenderer = new GuiRenderer(loader);
-		
-		
+		this.guis = GuiManager.createGui(loader);	
+		this.guiRenderer = new GuiRenderer(loader);		
 		//**************WATER***********************//
 		this.waterFBOs = new WaterFrameBuffers();
 		WaterShader waterShader = new WaterShader();
@@ -190,7 +190,7 @@ public class SceneRenderer {
 	
     private void moves(){
 		camera.move();	
-		player.move(terrains.get(0));
+		player.move(terrains);
     }
     
     private void renderReflectionTexture(){

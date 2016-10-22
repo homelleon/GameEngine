@@ -5,6 +5,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 
+import engine.entities.Camera;
 import engine.gaussianBlur.HorizontalBlur;
 import engine.gaussianBlur.VerticalBlur;
 import engine.models.RawModel;

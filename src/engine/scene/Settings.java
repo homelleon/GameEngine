@@ -52,6 +52,7 @@ public class Settings {
 	public final static String FONT_PATH = RES_PATH + "textures/fonts/";
 	public final static String SKYBOX_TEXTURE_PATH = RES_PATH + "textures/skybox/";
 	public final static String SPECULAR_MAP_PATH = RES_PATH + "textures/specularMaps/";
+	public final static String MAP_PATH = RES_PATH + "maps/"; 
 	
 	public final static String AUDIO_PATH = "engine/audio/";
 	public final static String OBJECT_PATH = RES_PATH + "objFiles/";

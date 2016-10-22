@@ -7,6 +7,7 @@ import engine.models.TexturedModel;
 public class Entity {
 	
 	private TexturedModel model;
+	private String name;
 	private Vector3f position;
 	private float rotX,rotY,rotZ;
 	private float scale;
@@ -15,6 +16,17 @@ public class Entity {
 	private int textureIndex = 0;
 	
 	public Entity(TexturedModel model, Vector3f position, float rotX, float rotY, float rotZ, float scale) {
+		this.name = "NoName";
+		this.model = model;
+		this.position = position;
+		this.rotX = rotX;
+		this.rotY = rotY;
+		this.rotZ = rotZ;
+		this.scale = scale;
+	}
+	
+	public Entity(String name, TexturedModel model, Vector3f position, float rotX, float rotY, float rotZ, float scale) {
+		this.name = name;
 		this.model = model;
 		this.position = position;
 		this.rotX = rotX;
@@ -62,6 +74,11 @@ public class Entity {
 		this.rotY += dy;
 		this.rotZ += dz;
 	}
+	
+	public String getName(){
+		return name;
+	}
+	
 	public TexturedModel getModel() {
 		return model;
 	}

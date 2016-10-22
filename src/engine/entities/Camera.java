@@ -25,6 +25,7 @@ public class Camera {
 	private Player player;
 	
 	public boolean perspectiveMode = false;
+	public boolean isUnderWater = false;
 	
 	public Camera(Player player){
 		this.player = player;
@@ -173,6 +174,14 @@ public class Camera {
 			angleAroundPlayer = -angleChange;		
 		}else{
 			angleAroundPlayer = 0;
+		}
+	}
+	
+	private void underWaterCalculate(){
+		if(this.position.y <=0){
+			isUnderWater = true;
+		} else {
+			isUnderWater = false;
 		}
 	}
 

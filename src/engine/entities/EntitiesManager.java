@@ -42,10 +42,10 @@ public class EntitiesManager {
 			
 		//Entities attach
 		List<Entity> grasses = SceneObjectTools.createGrassField(0, 0, 800, 1, 0.3f, loader);
-		Entity stall = new Entity(stallModel, new Vector3f(50,0,50),0,0,0,4);
-		Entity cube = new Entity(cubeModel, new Vector3f(100,0,10),0,0,0,1);
-		Entity cherry = new Entity(cherryModel, new Vector3f(150, 0, 150), 0,0,0,4);
-		Entity tree = new Entity(treeModel, new Vector3f(10, 0, 10), 0,30,0,4);
+		Entity stall = new Entity("stall", stallModel, new Vector3f(50,0,50),0,0,0,4);
+		Entity cube = new Entity("cube", cubeModel, new Vector3f(100,0,10),0,0,0,1);
+		Entity cherry = new Entity("cherry", cherryModel, new Vector3f(150, 0, 150), 0,0,0,4);
+		Entity tree = new Entity("tree", treeModel, new Vector3f(10, 0, 10), 0,30,0,4);
 		
 		entities.add(cube);
 		entities.add(stall);
@@ -72,8 +72,8 @@ public class EntitiesManager {
 		boulderModel.getTexture().setNormalMap(loader.loadTexture(Settings.NORMAL_MAP_PATH, "boulderNormal"));
 		boulderModel.getTexture().setShineDamper(10);
 		boulderModel.getTexture().setReflectivity(0.5f);
-		Entity barrel = new Entity(barrelModel, new Vector3f(200, 0, 200), 0,0,0,1);
-		Entity boulder = new Entity(boulderModel, new Vector3f(250,0,250), 0,0,0,1);
+		Entity barrel = new Entity("barrel", barrelModel, new Vector3f(200, 0, 200), 0,0,0,1);
+		Entity boulder = new Entity("boulder", boulderModel, new Vector3f(250,0,250), 0,0,0,1);
 		
 		entities.add(barrel);
 		entities.add(boulder);
