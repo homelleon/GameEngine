@@ -37,6 +37,8 @@ public class WaterShader extends ShaderProgram {
  
     @Override
     protected void bindAttributes() {
+    	super.bindFragOutput(0, "out_Color");
+		super.bindFragOutput(1, "out_BrightColor");
         bindAttribute(0, "position");
     }
  

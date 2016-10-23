@@ -66,6 +66,7 @@ public class SceneRenderer {
 	WaterFrameBuffers waterFBOs;
 	private Fbo multisampleFbo;	
 	private Fbo outputFbo;
+	private Fbo outputFbo2;
 	private Player player;
 	private List<Light> lights;
 	private Light sun;
@@ -123,6 +124,7 @@ public class SceneRenderer {
 		
 		this.multisampleFbo = new Fbo(Display.getWidth(),Display.getHeight());
 		this.outputFbo = new Fbo(Display.getWidth(),Display.getHeight(), Fbo.DEPTH_TEXTURE);
+		this.outputFbo2 = new Fbo(Display.getWidth(),Display.getHeight(), Fbo.DEPTH_TEXTURE);
 		PostProcessing.isBloomed = true;
 		PostProcessing.isBlured = true;
 		PostProcessing.init(loader);
@@ -223,8 +225,9 @@ public class SceneRenderer {
 	    waterRenderer.render(waters, camera, sun);
 	    ParticleMaster.renderParticles(camera);
 	    multisampleFbo.unbindFrameBuffer();
-	    multisampleFbo.resolveToFbo(outputFbo);
-	    PostProcessing.doPostProcessing(outputFbo.getColourTexture());
+	    multisampleFbo.resolveToFbo(GL30.GL_COLOR_ATTACHMENT0, outputFbo);
+	    multisampleFbo.resolveToFbo(GL30.GL_COLOR_ATTACHMENT1, outputFbo2);
+	    PostProcessing.doPostProcessing(outputFbo.getColourTexture(), outputFbo2.getColourTexture());
 	    guiRenderer.render(guis);
 	    GUIText text = createFPSText(1 / DisplayManager.getFrameTimeSeconds());
 	    text.setColour(1, 0, 0);
@@ -241,6 +244,7 @@ public class SceneRenderer {
 	public void cleanUp(){
 		PostProcessing.cleanUp();
 		outputFbo.cleanUp();
+		outputFbo2.cleanUp();
 		multisampleFbo.cleanUp();
 		TextMaster.cleanUp();
 		ambientSource.delete();

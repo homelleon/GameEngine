@@ -42,11 +42,11 @@ public class PostProcessing {
 		combineFilter = new CombineFilter();		
 	}
 	
-	public static void doPostProcessing(int colourTexture){
+	public static void doPostProcessing(int colourTexture, int brightTexture){
 		start();
 		if(isBloomed && isBlured){
-			brightFilter.render(colourTexture);
-			hBlur2.render(brightFilter.getOutputTexture());
+			//brightFilter.render(colourTexture);
+			hBlur2.render(brightTexture);
 			vBlur2.render(hBlur2.getOutputTexture());
 			hBlur4.render(brightFilter.getOutputTexture());
 			vBlur4.render(hBlur4.getOutputTexture());
