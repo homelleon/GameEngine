@@ -88,9 +88,9 @@ public class SceneRenderer {
 		this.entities = EntitiesManager.createEntities(loader);
 		this.normalMapEntities = EntitiesManager.createNormalMappedEntities(loader);
 		
-		Map map = MapLoader.loadMap("map1", loader);
+		//Map map = MapLoader.loadMap("map1", loader);
 		
-		entities.addAll(map.entities);
+		//entities.addAll(map.entities);
 		
 		spreadOnHeights(entities);
 		spreadOnHeights(normalMapEntities);
@@ -123,6 +123,8 @@ public class SceneRenderer {
 		
 		this.multisampleFbo = new Fbo(Display.getWidth(),Display.getHeight());
 		this.outputFbo = new Fbo(Display.getWidth(),Display.getHeight(), Fbo.DEPTH_TEXTURE);
+		PostProcessing.isBloomed = true;
+		PostProcessing.isBlured = true;
 		PostProcessing.init(loader);
 
 		//*******************FONTS*************//

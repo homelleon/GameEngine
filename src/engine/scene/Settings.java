@@ -40,7 +40,7 @@ public class Settings {
 	
 	//*****************PATH SETTINGS*************************************//
 	public final static String RES_PATH = "res/";
-	public final static String SORCE_PATH = "/engine/";
+	public final static String SOURCE_PATH = "/engine/";
 	public final static String MODEL_TEXTURE_PATH = RES_PATH + "textures/modelTextures/";
 	public final static String TERRAIN_TEXTURE_PATH = RES_PATH + "textures/terrainTextures/";
 	public final static String INTERFACE_TEXTURE_PATH = RES_PATH + "textures/interface/";
@@ -58,16 +58,17 @@ public class Settings {
 	public final static String OBJECT_PATH = RES_PATH + "objFiles/";
 	public final static String TEXT_PATH = RES_PATH + "texts/";
 	
-	public final static String SHADER_PATH = SORCE_PATH + "shaders/";
-	public final static String GUI_SHADER_PATH = SORCE_PATH + "guis/";
-	public final static String SKYBOX_SHADER_PATH = SORCE_PATH + "skybox/";
-	public final static String NORMAL_MAP_SHADER_PATH = SORCE_PATH + "normalMappingRenderer/";
-	public final static String WATER_SHADER_PATH = SORCE_PATH + "water/";
-	public final static String PARTICLE_SHADER_PATH = SORCE_PATH + "particles/";
-	public final static String SHADOW_SHADER_PATH = SORCE_PATH + "shadows/";
-	public final static String FONT_SHADER_PATH = SORCE_PATH + "fontRendering/";
-	public final static String POST_PROCESSING_SHADER_PATH = SORCE_PATH + "postProcessing/";
-	public final static String BLUR_SHADER_PATH = SORCE_PATH + "gaussianBlur/";
+	public final static String SHADER_PATH = SOURCE_PATH + "shaders/";
+	public final static String GUI_SHADER_PATH = SOURCE_PATH + "guis/";
+	public final static String SKYBOX_SHADER_PATH = SOURCE_PATH + "skybox/";
+	public final static String NORMAL_MAP_SHADER_PATH = SOURCE_PATH + "normalMappingRenderer/";
+	public final static String WATER_SHADER_PATH = SOURCE_PATH + "water/";
+	public final static String PARTICLE_SHADER_PATH = SOURCE_PATH + "particles/";
+	public final static String SHADOW_SHADER_PATH = SOURCE_PATH + "shadows/";
+	public final static String FONT_SHADER_PATH = SOURCE_PATH + "fontRendering/";
+	public final static String POST_PROCESSING_SHADER_PATH = SOURCE_PATH + "postProcessing/";
+	public final static String BLUR_SHADER_PATH = SOURCE_PATH + "gaussianBlur/";
+	public final static String BLOOM_SHADER_PATH = SOURCE_PATH + "bloom/";
 	
 	//*****************RENDER SETTINGS**********************************//
 
