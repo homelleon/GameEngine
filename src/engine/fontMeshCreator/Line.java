@@ -44,6 +44,7 @@ public class Line {
 	protected boolean attemptToAddWord(Word word) {
 		double additionalLength = word.getWordWidth();
 		additionalLength += !words.isEmpty() ? spaceSize : 0;
+		
 		if (currentLineLength + additionalLength <= maxLength) {
 			words.add(word);
 			currentLineLength += additionalLength;

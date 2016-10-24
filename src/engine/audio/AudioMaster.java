@@ -24,12 +24,12 @@ public class AudioMaster {
 		}
 	}
 	
-	public static void setListenerData(float x, float y, float z){
+	public static void setListenerData(float x, float y, float z) {
 		AL10.alListener3f(AL10.AL_POSITION, x, y, z);
 		AL10.alListener3f(AL10.AL_VELOCITY, 0, 0, 0);
 	}
 	
-	public static int loadSound(String file){
+	public static int loadSound(String file) {
 		int buffer = AL10.alGenBuffers(); 
 		buffers.add(buffer);
 		
@@ -39,10 +39,11 @@ public class AudioMaster {
 		return buffer;
 	}
 	
-	public static void cleanUp(){
-		for(int buffer : buffers){
+	public static void cleanUp() {
+		for(int buffer : buffers) {
 			AL10.alDeleteBuffers(buffer);
 		}
 		AL.destroy();
 	}
+	
 }

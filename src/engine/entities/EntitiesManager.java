@@ -14,7 +14,7 @@ import engine.textures.ModelTexture;
 
 public class EntitiesManager {
 	
-	public static List<Entity> createEntities(Loader loader){
+	public static List<Entity> createEntities(Loader loader) {
 		List<Entity> entities = new ArrayList<Entity>();
 		//******StaticModels***************//
 		//Grass/
@@ -41,7 +41,7 @@ public class EntitiesManager {
 	
 			
 		//Entities attach
-		List<Entity> grasses = SceneObjectTools.createGrassField(0, 0, 800, 1, 0.3f, loader);
+		List<Entity> grasses = SceneObjectTools.createGrassField(0, 0, 800, 1, 0.2f, loader);
 		Entity stall = new Entity("stall", stallModel, new Vector3f(50,0,50),0,0,0,4);
 		Entity cube = new Entity("cube", cubeModel, new Vector3f(100,0,10),0,0,0,1);
 		Entity cherry = new Entity("cherry", cherryModel, new Vector3f(150, 0, 150), 0,0,0,4);
@@ -56,7 +56,7 @@ public class EntitiesManager {
 		return entities;
 	}
 	
-	public static List<Entity> createNormalMappedEntities(Loader loader){
+	public static List<Entity> createNormalMappedEntities(Loader loader) {
 		List<Entity> entities = new ArrayList<Entity>();
 		TexturedModel barrelModel = new TexturedModel(NormalMappedObjLoader.loadOBJ("barrel", loader),
 				new ModelTexture(loader.loadTexture(Settings.MODEL_TEXTURE_PATH,"barrel")));
@@ -64,14 +64,14 @@ public class EntitiesManager {
 		barrelModel.getTexture().setShineDamper(10);
 		barrelModel.getTexture().setReflectivity(0.5f);
 		barrelModel.getTexture().setSpecularMap(loader.loadTexture(Settings.SPECULAR_MAP_PATH, "barrelS"));
-		
-	
-		
+
 		TexturedModel boulderModel = new TexturedModel(NormalMappedObjLoader.loadOBJ("boulder", loader),
 				new ModelTexture(loader.loadTexture(Settings.MODEL_TEXTURE_PATH,"boulder")));
 		boulderModel.getTexture().setNormalMap(loader.loadTexture(Settings.NORMAL_MAP_PATH, "boulderNormal"));
 		boulderModel.getTexture().setShineDamper(10);
 		boulderModel.getTexture().setReflectivity(0.5f);
+		
+		/*Creating entities*/
 		Entity barrel = new Entity("barrel", barrelModel, new Vector3f(200, 0, 200), 0,0,0,1);
 		Entity boulder = new Entity("boulder", boulderModel, new Vector3f(250,0,250), 0,0,0,1);
 		

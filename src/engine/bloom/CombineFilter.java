@@ -10,7 +10,7 @@ public class CombineFilter {
 	private ImageRenderer renderer;
 	private CombineShader shader;
 	
-	public CombineFilter(){
+	public CombineFilter() {
 		shader = new CombineShader();
 		shader.start();
 		shader.connectTextureUnits();
@@ -18,7 +18,7 @@ public class CombineFilter {
 		renderer = new ImageRenderer();
 	}
 	
-	public void render(int colourTexture, int highlightTexture2, int highlightTexture4, int highlightTexture8){
+	public void render(int colourTexture, int highlightTexture2, int highlightTexture4, int highlightTexture8) {
 		shader.start();
 		GL13.glActiveTexture(GL13.GL_TEXTURE0);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, colourTexture);
@@ -32,7 +32,7 @@ public class CombineFilter {
 		shader.stop();
 	}
 	
-	public void cleanUp(){
+	public void cleanUp() {
 		renderer.cleanUp();
 		shader.cleanUp();
 	}

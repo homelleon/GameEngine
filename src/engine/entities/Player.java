@@ -30,72 +30,76 @@ public class Player extends Entity {
 		super(model, position, rotX, rotY, rotZ, scale);
 	}
 	
-	public void move(List<Terrain> terrains){
+	public void move(List<Terrain> terrains) {
 		checkInputs();
 		super.increaseRotation(0, currentTurnSpeed * DisplayManager.getFrameTimeSeconds(), 0);
 		float fowardDistance = currentForwardSpeed * DisplayManager.getFrameTimeSeconds();
 		float strafeDistance = currentStrafeSpeed * DisplayManager.getFrameTimeSeconds();
 		float speedCorrector = 1;
-		if (fowardDistance !=0 && strafeDistance !=0){
+		
+		if (fowardDistance !=0 && strafeDistance !=0) {
 			speedCorrector = 2;
 		}
-		float dx = (float) (fowardDistance * Math.sin(Math.toRadians(super.getRotY())) + (strafeDistance * Math.sin(Math.toRadians(super.getRotY() + 90))))/speedCorrector;
-		float dz = (float) (fowardDistance * Math.cos(Math.toRadians(super.getRotY())) + (strafeDistance * Math.cos(Math.toRadians(super.getRotY() + 90))))/speedCorrector;
+		
+		float dx = (float) (fowardDistance * Math.sin(Math.toRadians(super.getRotY())) 
+				+ (strafeDistance * Math.sin(Math.toRadians(super.getRotY() + 90)))) / speedCorrector;
+		float dz = (float) (fowardDistance * Math.cos(Math.toRadians(super.getRotY())) 
+				+ (strafeDistance * Math.cos(Math.toRadians(super.getRotY() + 90)))) / speedCorrector;
 		super.increasePosition(dx, 0, dz);
 		upwardsSpeed += Settings.GRAVITY * DisplayManager.getFrameTimeSeconds();
 		super.increasePosition(0, upwardsSpeed * DisplayManager.getFrameTimeSeconds(), 0);
-		for(Terrain terrain : terrains){
-			if ((super.getPosition().x - terrain.getX())>=0){
+		
+		for(Terrain terrain : terrains) {
+			
+			if ((super.getPosition().x - terrain.getX())>=0) {
 				float terrainHeight = terrain.getHeightOfTerrain(super.getPosition().x, super.getPosition().z);
-				if(super.getPosition().y < terrainHeight){
+				
+				if(super.getPosition().y < terrainHeight) {
 					upwardsSpeed = 0;
 					isInAir = false;
 					super.getPosition().y = terrainHeight;
 				}				
 			}
-			
 		}
 	}
 	
-	private void jump(){
-		if(!isInAir){
+	private void jump() {
+		if(!isInAir) {
 			this.upwardsSpeed = JUMP_POWER;
 			isInAir = true;
-		}
+		}	
 	}
 	
-	private void checkInputs(){
-		if (!isInAir){
-			if((Keyboard.isKeyDown(Keyboard.KEY_W)) && (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)||Keyboard.isKeyDown(Keyboard.KEY_RSHIFT))){
+	private void checkInputs() {
+		if (!isInAir) {
+			if((Keyboard.isKeyDown(Keyboard.KEY_W)) 
+					&& (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT))) {
 				this.currentForwardSpeed = RUN_SPEED;
-			}else if(Keyboard.isKeyDown(Keyboard.KEY_W)){
+			}else if(Keyboard.isKeyDown(Keyboard.KEY_W)) {
 				this.currentForwardSpeed = MOVE_SPEED;			
-			}else if(Keyboard.isKeyDown(Keyboard.KEY_S)){
+			}else if(Keyboard.isKeyDown(Keyboard.KEY_S)) {
 				this.currentForwardSpeed = -MOVE_SPEED; 
 			}else{
 				this.currentForwardSpeed = 0;	
 			}
 			
-			if(Keyboard.isKeyDown(Keyboard.KEY_A)){
+			if(Keyboard.isKeyDown(Keyboard.KEY_A)) {
 				this.currentStrafeSpeed = MOVE_SPEED;
-			}else if(Keyboard.isKeyDown(Keyboard.KEY_D)){
+			}else if(Keyboard.isKeyDown(Keyboard.KEY_D)) {
 				this.currentStrafeSpeed = -MOVE_SPEED;
 			}else{
 				this.currentStrafeSpeed = 0;
 			}
 		
-			if(Keyboard.isKeyDown(Keyboard.KEY_SPACE)){
+			if(Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
 				jump();
 			}
-	
 		}
 		
-		if(!Mouse.isButtonDown(2)){
+		if(!Mouse.isButtonDown(2)) {
 			this.currentTurnSpeed = -TURN_SPEED * (Mouse.getX()-Settings.DISPLAY_WIDTH/2) * Settings.MOUSE_X_SPEED;
-			Mouse.setCursorPosition(Settings.DISPLAY_WIDTH/2,Settings.DISPLAY_HEIGHT/2 );
-		}		
-		
-		
+			Mouse.setCursorPosition(Settings.DISPLAY_WIDTH/2,Settings.DISPLAY_HEIGHT/2);
+		}			
 	}
-
+	
 }

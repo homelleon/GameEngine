@@ -27,11 +27,11 @@ public class Camera {
 	public boolean perspectiveMode = false;
 	public boolean isUnderWater = false;
 	
-	public Camera(Player player){
+	public Camera(Player player) {
 		this.player = player;
 	}
 	
-	public Camera(float posX,float posY,float posZ){
+	public Camera(float posX,float posY,float posZ) {
 		this.setPosition(posX, posY, posZ);		
 	}
 	
@@ -41,16 +41,16 @@ public class Camera {
 		this.position.z = posZ;
 	}
 	
-	public void setPitch(float anglePitch){
+	public void setPitch(float anglePitch) {
 		this.pitch = anglePitch;
 	}
 	
-	public void setYaw(float angleYaw){
+	public void setYaw(float angleYaw) {
 		this.yaw = angleYaw;
 	}
 	
-	public void move(){
-		if (perspectiveMode == false){
+	public void move() {
+		if (perspectiveMode == false) {
 			calculateZoom();
 			calculatePitchAndAngle();
 			float horizontalDistance = calculateHorizontalDistance();
@@ -60,46 +60,55 @@ public class Camera {
 		}
 		
 		
-		if (perspectiveMode){
-			if(Keyboard.isKeyDown(Keyboard.KEY_W)){
+		if (perspectiveMode) {
+			if(Keyboard.isKeyDown(Keyboard.KEY_W)) {
 				position.z-=0.5f;
 			}
-			if(Keyboard.isKeyDown(Keyboard.KEY_S)){
+			
+			if(Keyboard.isKeyDown(Keyboard.KEY_S)) {
 				position.z+=0.5f;
 			}
-			if(Keyboard.isKeyDown(Keyboard.KEY_D)){
+			
+			if(Keyboard.isKeyDown(Keyboard.KEY_D)) {
 				position.x+=0.5f;
 			}
-			if(Keyboard.isKeyDown(Keyboard.KEY_SPACE)){
+			
+			if(Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
 				position.y+=0.5f;
 			}
-			if(Keyboard.isKeyDown(Keyboard.KEY_C)){
+			
+			if(Keyboard.isKeyDown(Keyboard.KEY_C)) {
 				position.y-=0.5f;
 			}
-			if(Keyboard.isKeyDown(Keyboard.KEY_A)){
+			
+			if(Keyboard.isKeyDown(Keyboard.KEY_A)) {
 				position.x-=0.5f;
 			}
-			if(Keyboard.isKeyDown(Keyboard.KEY_E)){
+			
+			if(Keyboard.isKeyDown(Keyboard.KEY_E)) {
 				roll+=0.5f;
 			}
-			if(Keyboard.isKeyDown(Keyboard.KEY_Q)){
+			
+			if(Keyboard.isKeyDown(Keyboard.KEY_Q)) {
 				roll-=0.5f;
 			}
-			if(Keyboard.isKeyDown(Keyboard.KEY_RIGHT)){
+			
+			if(Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
 				yaw+=0.5f;
 			}
-			if(Keyboard.isKeyDown(Keyboard.KEY_LEFT)){
+			
+			if(Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
 				yaw-=0.5f;
 		  	}
-	    	if(Keyboard.isKeyDown(Keyboard.KEY_UP)){
+			
+	    	if(Keyboard.isKeyDown(Keyboard.KEY_UP)) {
 	 			pitch-=0.1f;
 			}
-			if(Keyboard.isKeyDown(Keyboard.KEY_DOWN)){
+	    	
+			if(Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
 				pitch+=0.1f;
-			}
-		
-	    }
-		
+			}		
+	    }		
 	}
 
 	public Vector3f getPosition() {
@@ -110,7 +119,7 @@ public class Camera {
 		return pitch;
 	}
 	
-	public void invertPitch(){
+	public void invertPitch() {
 		this.pitch = -pitch;
 	}
 
@@ -122,54 +131,56 @@ public class Camera {
 		return roll;
 	}
 	
-	private void calculateCameraPosition(float horizDistance, float verticDistance){
+	private void calculateCameraPosition(float horizDistance, float verticDistance) {
 		float theta = player.getRotY() + angleAroundPlayer;
 		float offsetX = (float) (horizDistance * Math.sin(Math.toRadians(theta)));
 		float offsetZ = (float) (horizDistance * Math.cos(Math.toRadians(theta)));
 		position.x = player.getPosition().x - offsetX;
 		position.z = player.getPosition().z - offsetZ;
-		position.y = player.getPosition().y + verticDistance;
+		position.y = player.getPosition().y + 5 + verticDistance;
 	}
 	
-	private float calculateHorizontalDistance(){
+	private float calculateHorizontalDistance() {
 		return (float) (distanceFromPlayer * Math.cos(Math.toRadians(pitch)));
 	}
 	
-	private float calculateVerticalDistance(){
+	private float calculateVerticalDistance() {
 		return (float) (distanceFromPlayer * Math.sin(Math.toRadians(pitch)));
 	}
 	
-	private void calculateZoom(){
+	private void calculateZoom() {
 		float zoomLevel = Mouse.getDWheel() * Settings.MOUSE_ZOOM_SPEED;
-		if(((distanceFromPlayer<maxDistanceFromPlayer)&&(zoomLevel<0))||((distanceFromPlayer>minDistanceFromPlayer)&&(zoomLevel>0))){
+		if(((distanceFromPlayer<maxDistanceFromPlayer)&&(zoomLevel<0))
+				||((distanceFromPlayer>minDistanceFromPlayer)&&(zoomLevel>0))) {
 			distanceFromPlayer -= zoomLevel;
 		}
 	}
 	
-	private void calculatePitch(){
+	private void calculatePitch() {
 
 			float pitchChange = Mouse.getY() * Settings.MOUSE_Y_SPEED;
-			if(((pitch<maxPitch)&&(pitchChange<0))||((pitch>minPitch)&&(pitchChange>0))){
+			if(((pitch<maxPitch)&&(pitchChange<0))||((pitch>minPitch)&&(pitchChange>0))) {
 				pitch -= pitchChange;
 			}
 	}
 	
-	private void calculateAngleAroundPlayer(){
-		if(Mouse.isButtonDown(2)){
+	private void calculateAngleAroundPlayer() {
+		if(Mouse.isButtonDown(2)) {
 			float angleChange = Mouse.getDX() * Settings.MOUSE_X_SPEED;
 			angleAroundPlayer -= angleChange;
 		}
 	}
 	
-	private void calculatePitchAndAngle(){
-		if(!Mouse.isButtonDown(2)){
+	private void calculatePitchAndAngle() {
+		if(!Mouse.isButtonDown(2)) {
 			float pitchChange = (Mouse.getY() - Settings.DISPLAY_HEIGHT/2) * Settings.MOUSE_Y_SPEED;
-			if((pitch<maxPitch)||(pitch>minPitch)){
+			
+			if((pitch<maxPitch)||(pitch>minPitch)) {
 				pitch -= pitchChange;
 			}
 		}
 		
-		if(Mouse.isButtonDown(2)){	
+		if(Mouse.isButtonDown(2)) {	
 			float angleChange = (Mouse.getX() - Settings.DISPLAY_WIDTH/2) * Settings.MOUSE_X_SPEED;
 			angleAroundPlayer = -angleChange;		
 		}else{
@@ -177,12 +188,12 @@ public class Camera {
 		}
 	}
 	
-	private void underWaterCalculate(){
-		if(this.position.y <=0){
+	private void underWaterCalculate() {
+		if(this.position.y <=0) {
 			isUnderWater = true;
 		} else {
 			isUnderWater = false;
 		}
 	}
-
+	
 }

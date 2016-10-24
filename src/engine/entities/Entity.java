@@ -35,20 +35,20 @@ public class Entity {
 		this.scale = scale;
 	}
 	
-	public void setIsDetail(boolean value){
+	public void setIsDetail(boolean value) {
 		this.isDetail = value;
 	}
 	
-	public boolean isDetail(){
+	public boolean isDetail() {
 		return isDetail;
 	}
 	
-	public float getTextureXOffset(){
+	public float getTextureXOffset() {
 		int column = textureIndex % model.getTexture().getNumberOfRows();
 		return (float)column/(float)model.getTexture().getNumberOfRows();
 	}
 	
-	public float getTextureYOffset(){
+	public float getTextureYOffset() {
 		int row = textureIndex/model.getTexture().getNumberOfRows();
 		return (float)row/(float)model.getTexture().getNumberOfRows();
 	}
@@ -63,19 +63,19 @@ public class Entity {
 		this.scale = scale;
 	}
 	
-	public void increasePosition(float dx, float dy, float dz){
+	public void increasePosition(float dx, float dy, float dz) {
 		this.position.x+=dx;
 		this.position.y+=dy;
 		this.position.z+=dz;
 	}
 	
-	public void increaseRotation(float dx, float dy, float dz){
+	public void increaseRotation(float dx, float dy, float dz) {
 		this.rotX += dx;
 		this.rotY += dy;
 		this.rotZ += dz;
 	}
 	
-	public String getName(){
+	public String getName() {
 		return name;
 	}
 	

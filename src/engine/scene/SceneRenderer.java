@@ -89,9 +89,9 @@ public class SceneRenderer {
 		this.entities = EntitiesManager.createEntities(loader);
 		this.normalMapEntities = EntitiesManager.createNormalMappedEntities(loader);
 		
-		//Map map = MapLoader.loadMap("map1", loader);
+		Map map = MapLoader.loadMap("map1", loader);
 		
-		//entities.addAll(map.entities);
+		entities.addAll(map.entities);
 		
 		spreadOnHeights(entities);
 		spreadOnHeights(normalMapEntities);

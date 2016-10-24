@@ -26,8 +26,10 @@ public class TextMeshCreator {
 		List<Line> lines = new ArrayList<Line>();
 		Line currentLine = new Line(metaData.getSpaceWidth(), text.getFontSize(), text.getMaxLineSize());
 		Word currentWord = new Word(text.getFontSize());
+		
 		for (char c : chars) {
 			int ascii = (int) c;
+			
 			if (ascii == SPACE_ASCII) {
 				boolean added = currentLine.attemptToAddWord(currentWord);
 				if (!added) {
@@ -47,6 +49,7 @@ public class TextMeshCreator {
 
 	private void completeStructure(List<Line> lines, Line currentLine, Word currentWord, GUIText text) {
 		boolean added = currentLine.attemptToAddWord(currentWord);
+		
 		if (!added) {
 			lines.add(currentLine);
 			currentLine = new Line(metaData.getSpaceWidth(), text.getFontSize(), text.getMaxLineSize());
@@ -61,10 +64,13 @@ public class TextMeshCreator {
 		double curserY = 0f;
 		List<Float> vertices = new ArrayList<Float>();
 		List<Float> textureCoords = new ArrayList<Float>();
+		
 		for (Line line : lines) {
+			
 			if (text.isCentered()) {
 				curserX = (line.getMaxLength() - line.getLineLength()) / 2;
 			}
+			
 			for (Word word : line.getWords()) {
 				for (Character letter : word.getCharacters()) {
 					addVerticesForCharacter(curserX, curserY, letter, text.getFontSize(), vertices);
@@ -126,6 +132,7 @@ public class TextMeshCreator {
 	
 	private static float[] listToArray(List<Float> listOfFloats) {
 		float[] array = new float[listOfFloats.size()];
+		
 		for (int i = 0; i < array.length; i++) {
 			array[i] = listOfFloats.get(i);
 		}

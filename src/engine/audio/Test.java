@@ -22,18 +22,15 @@ public class Test {
 		
 	
 		char c = ' ';
-		while(c != 'q'){
-			
+		while(c != 'q') {
 			xPos -= 0.02f;
 			source.setPosition(xPos, 0, 0);
 			System.out.println(xPos);
 			Thread.sleep(10);
-			
 		}
 		
 		source.delete();
 		AudioMaster.cleanUp();
-
 	}
-
+	
 }

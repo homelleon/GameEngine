@@ -11,6 +11,7 @@ import org.lwjgl.opengl.GL13;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector4f;
 
+import engine.Renderer;
 import engine.entities.Camera;
 import engine.entities.Entity;
 import engine.entities.Light;

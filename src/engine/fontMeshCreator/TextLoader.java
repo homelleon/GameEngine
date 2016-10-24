@@ -10,10 +10,11 @@ import engine.scene.Settings;
 
 public class TextLoader {
 	
-	public static String readText(String fileName, int stringFrom, int stringTo){
+	public static String readText(String fileName, int stringFrom, int stringTo) {
 		String text = null;
 		FileReader isr = null;
 		File textFile = new File(Settings.TEXT_PATH + "fileName"+".txt");
+		
 		try {
 			isr = new FileReader(textFile);
 		} catch (FileNotFoundException e1) {
@@ -21,10 +22,12 @@ public class TextLoader {
 		}
 		String line = null;
 		BufferedReader reader = new BufferedReader(isr);
+		
 		try {
 			line = reader.readLine();
 			System.out.println(line);
-			if(line.startsWith("1:")){
+			
+			if(line.startsWith("1:")) {
 				text = line;
 			}
 		} catch (IOException e) {

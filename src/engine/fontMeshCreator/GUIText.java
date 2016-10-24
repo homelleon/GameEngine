@@ -266,23 +266,23 @@ public class GUIText {
 		return textString;
 	}
 	
-	private void makeFontSmooth(){
-		if (this.fontSize < 4){
+	private void makeFontSmooth() {
+		if (this.fontSize < 4) {
 			this.edge = 0.2f;
 			this.width = 0.5f;
-		}else if(this.fontSize < 6){
+		} else if(this.fontSize < 6) {
 			this.edge = 0.05f;
 			this.width = 0.6f;
-		}else if(this.fontSize < 11){
+		} else if(this.fontSize < 11) {
 			this.edge = 0.04f;
 			this.width = 0.6f;
-		}else if(this.fontSize < 15){
+		} else if(this.fontSize < 15) {
 			this.edge = 0.04f;
 			this.width = 0.62f;
-		}else if(this.fontSize<25){
+		} else if(this.fontSize<25) {
 			this.edge = 0.03f;
 			this.width = 0.62f;
-		}else{
+		} else {
 			this.edge = 0.02f;
 			this.width = 0.62f;
 		}

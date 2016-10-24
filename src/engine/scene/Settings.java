@@ -35,7 +35,7 @@ public class Settings {
 	public static final float SHADOW_TRANSITION_DISTANCE = 80;
 	public static final int SHADOW_PCF = 2;
 	public static final float RENDERING_DISTANCE = 500;
-	public static final float DETAIL_DISTANCE = 200;
+	public static final float DETAIL_DISTANCE = 150;
 
 	
 	//*****************PATH SETTINGS*************************************//

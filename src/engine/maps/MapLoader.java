@@ -18,15 +18,15 @@ import engine.scene.Settings;
 
 public class MapLoader {
 	
-	private final static String ENTITY_POINTER = "ep";
-	private final static String NORMAL_POINTER = "np";
-	private final static String TERRAIN_POINTER = "tr";
-	private final static String END_POINTER = "f";
+	private final static String ENTITY_POINTER = "ep ";
+	private final static String NORMAL_POINTER = "np ";
+	private final static String TERRAIN_POINTER = "tr ";
+	private final static String END_POINTER = "f ";
 	
 	
 	public static Map loadMap(String fileName, Loader loader){
 		FileReader isr = null;
-        File mapFile = new File(Settings.MAP_PATH + fileName + ".map");
+        File mapFile = new File(Settings.MAP_PATH + fileName + ".mp");
 	        
         try {
             isr = new FileReader(mapFile);
@@ -45,9 +45,7 @@ public class MapLoader {
         try {
 	        while (true) {
 	        	
-					line = reader.readLine();
-			
-			
+				line = reader.readLine();
 	       
 	        	if (line.startsWith(ENTITY_POINTER)) {
 	        		
@@ -61,20 +59,17 @@ public class MapLoader {
                             (float) Float.valueOf(currentLine[6]));
                     coords.add(coord);
                     scales.add(Float.valueOf(currentLine[7]));
-                    types.add(String.valueOf(currentLine[8]));
-                    
-	        	}else if(line.startsWith(END_POINTER)){
-	        		
-	        		break;
-	        		
+                    types.add(String.valueOf(currentLine[8]));      
 	        	}
+	        	 reader.close();
 	        }
+	     
         } catch (IOException e) {
-        	e.printStackTrace();
+        	System.err.println("Error reading the file");
         }
-        
+
         List<Entity> entities = new ArrayList<Entity>();
-        for(int i=0;i<=names.size();i++){
+        for(int i=0;i<names.size();i++){
         	TexturedModel model = SceneObjectTools.loadStaticModel(models.get(i), textures.get(i), loader);
         	entities.add(new Entity(names.get(i), model, coords.get(i), 0, 0, 0, scales.get(i)));
         }

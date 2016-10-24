@@ -25,7 +25,7 @@ public class CombineShader extends ShaderProgram {
 		location_highlightTexture8 = super.getUniformLocation("highlightTexture8");
 	}
 	
-	protected void connectTextureUnits(){
+	protected void connectTextureUnits() {
 		super.loadInt(location_colourTexture, 0);
 		super.loadInt(location_highlightTexture2, 1);
 		super.loadInt(location_highlightTexture4, 2);

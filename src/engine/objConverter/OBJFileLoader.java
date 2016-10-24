@@ -25,6 +25,7 @@ public class OBJFileLoader {
         }
         BufferedReader reader = new BufferedReader(isr);
         String line;
+        
         List<Vertex> vertices = new ArrayList<Vertex>();
         List<Vector2f> textures = new ArrayList<Vector2f>();
         List<Vector3f> normals = new ArrayList<Vector3f>();

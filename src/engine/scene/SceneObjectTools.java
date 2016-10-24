@@ -32,7 +32,7 @@ public class SceneObjectTools {
 		//TODO: Noise - better using
 		
 		TexturedModel grass = loadStaticModel("grassObject","grassObjAtlas", loader);
-		int texIndex = 3;
+		int texIndex = 4;
 		grass.getTexture().setNumberOfRows(2);
 		grass.getTexture().setShineDamper(1);
 		grass.getTexture().setReflectivity(0);
