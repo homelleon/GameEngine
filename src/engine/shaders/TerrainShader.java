@@ -11,7 +11,7 @@ import engine.entities.Light;
 import engine.scene.Settings;
 import engine.toolbox.Maths;
 
-public class TerrainShader extends ShaderProgram{
+public class TerrainShader extends ShaderProgram {
 	
 	private static final int MAX_LIGHTS = 4;
 	
@@ -41,18 +41,16 @@ public class TerrainShader extends ShaderProgram{
 	private int location_shadowTransitionDistance;
 	private int location_shadowPCFCount;
 	
-	public TerrainShader(){
+	public TerrainShader() {
 		super(VERTEX_FILE, FRAGMENT_FILE);
 	}
-
 
 	protected void bindAttributes() {
 		super.bindFragOutput(0, "out_Color");
 		super.bindFragOutput(1, "out_BrightColor");
 		super.bindAttribute(0, "position");
 		super.bindAttribute(1, "textureCoordinates");
-		super.bindAttribute(2, "normal");
-		
+		super.bindAttribute(2, "normal");		
 	}
 
 	@Override
@@ -84,12 +82,10 @@ public class TerrainShader extends ShaderProgram{
 			location_lightPosition[i] = super.getUniformLocation("lightPosition[" + i + "]");
 			location_lightColour[i] = super.getUniformLocation("lightColour[" + i + "]");
 			location_attenuation[i] = super.getUniformLocation("attenuation[" + i + "]");
-		}
-		
-		
+		}		
 	}
 	
-	public void connectTextureUnits(){
+	public void connectTextureUnits() {
 		super.loadInt(location_backgroundTexture, 0);
 		super.loadInt(location_rTexture, 1);
 		super.loadInt(location_gTexture, 2);
@@ -98,41 +94,41 @@ public class TerrainShader extends ShaderProgram{
 		super.loadInt(location_shadowMap, 5);
 	}
 	
-	public void loadToShadowSpaceMatrix(Matrix4f matrix){
+	public void loadToShadowSpaceMatrix(Matrix4f matrix) {
 		super.loadMatrix(location_toShadowMapSpace, matrix);
 	}
 	
-	public void loadShadowVariables(float shadowDistance, float size, float transitionDistance, int pcfCount){	
+	public void loadShadowVariables(float shadowDistance, float size, float transitionDistance, int pcfCount) {	
 		super.loadFloat(location_shadowDistance, shadowDistance);
 		super.loadFloat(location_shadowMapSize, size);
 		super.loadFloat(location_shadowTransitionDistance, transitionDistance);
 		super.loadInt(location_shadowPCFCount, pcfCount);
 	}
 	
-	public void loadClipPlane(Vector4f clipPlane){
+	public void loadClipPlane(Vector4f clipPlane) {
 		super.load4DVector(location_plane, clipPlane);
 	}
 	
-	public void loadSkyColour(float r, float g, float b){
+	public void loadSkyColour(float r, float g, float b) {
 		super.loadVector(location_skyColour, new Vector3f(r,g,b));
 	}
 	
-	public void loadShineVariables(float damper, float reflectivity){
+	public void loadShineVariables(float damper, float reflectivity) {
 		super.loadFloat(loaction_shineDamper, damper);
 		super.loadFloat(loaction_reflectivity, reflectivity);
 	}
 	
-	public void loadFogDensity(float density){
+	public void loadFogDensity(float density) {
 		super.loadFloat(location_fogDensity, density);
 	}
 	
-	public void loadTranformationMatrix(Matrix4f matrix){
+	public void loadTranformationMatrix(Matrix4f matrix) {
 		super.loadMatrix(location_transformationMatrix, matrix);
 	}
 	
-	public void loadLights(List <Light> lights){
-		for(int i=0;i<MAX_LIGHTS;i++){
-			if(i<lights.size()){
+	public void loadLights(List <Light> lights) {
+		for(int i=0;i<MAX_LIGHTS;i++) {
+			if(i<lights.size()) {
 				super.loadVector(location_lightPosition[i], lights.get(i).getPosition());
 				super.loadVector(location_lightColour[i], lights.get(i).getColour());
 				super.loadVector(location_attenuation[i], lights.get(i).getAttenuation());
@@ -142,17 +138,15 @@ public class TerrainShader extends ShaderProgram{
 				super.loadVector(location_attenuation[i], new Vector3f(1, 0, 0));
 			}
 		}
-
 	}
 	
-	public void loadViewMatrix(Camera camera){
+	public void loadViewMatrix(Camera camera) {
 		Matrix4f viewMatrix = Maths.createViewMatrix(camera);
 		super.loadMatrix(location_viewMatrix, viewMatrix);
 	}
 	
-	public void loadProjectionMatrix(Matrix4f projection){
+	public void loadProjectionMatrix(Matrix4f projection) {
 		super.loadMatrix(location_projectionMatrix, projection);
 	}
-
 
 }

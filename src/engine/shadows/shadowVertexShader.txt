@@ -10,9 +10,9 @@ uniform mat4 mvpMatrix;
 uniform float numberOfRows;
 uniform vec2 offset;
 
-void main(void){
+void main(void) {
 
 	gl_Position = mvpMatrix * vec4(in_position, 1.0);
-	textureCoords = (in_textureCoords/numberOfRows) + offset;
+	textureCoords = (in_textureCoords / numberOfRows) + offset;
 
 }

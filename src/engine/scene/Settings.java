@@ -75,14 +75,6 @@ public class Settings {
 	
 	//****************GLOBAL WORLD SETTINGS*********************************//
 	public final static float SUN_MAX_HEIGHT = 4000; 
-	public final static float SUN_MIN_HEIGHT = -4000;
-	
-	public Settings() {
-		
-
-	}
-	
-	
-	
+	public final static float SUN_MIN_HEIGHT = -4000;	
 
 }

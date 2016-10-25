@@ -115,7 +115,7 @@ public class Fbo {
 		return depthTexture;
 	}
 	
-	public void resolveToFbo(int readBuffer, Fbo outputFbo){
+	public void resolveToFbo(int readBuffer, Fbo outputFbo) {
 		GL30.glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, outputFbo.frameBuffer);
 		GL30.glBindFramebuffer(GL30.GL_READ_FRAMEBUFFER, this.frameBuffer);
 		GL11.glReadBuffer(readBuffer);
@@ -124,7 +124,7 @@ public class Fbo {
 		this.unbindFrameBuffer();
 	}
 	
-	public void resolveToScreen(){
+	public void resolveToScreen() {
 		GL30.glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, 0);
 		GL30.glBindFramebuffer(GL30.GL_READ_FRAMEBUFFER, this.frameBuffer);
 		GL11.glDrawBuffer(GL11.GL_BACK);
@@ -169,7 +169,7 @@ public class Fbo {
 		determineDrawBuffers();
 	}
 	
-	private void determineDrawBuffers(){
+	private void determineDrawBuffers() {
 		IntBuffer drawBuffers = BufferUtils.createIntBuffer(2);
 		drawBuffers.put(GL30.GL_COLOR_ATTACHMENT0);
 		if(this.isMultisampledAndMultiTaregeted){
@@ -210,7 +210,7 @@ public class Fbo {
 		GL30.glFramebufferTexture2D(GL30.GL_FRAMEBUFFER, GL30.GL_DEPTH_ATTACHMENT, GL11.GL_TEXTURE_2D, depthTexture, 0);
 	}
 	
-	private int createMultisampleColourAttachment(int attachment){
+	private int createMultisampleColourAttachment(int attachment) {
 		int colourBuffer = GL30.glGenRenderbuffers();
 		GL30.glBindRenderbuffer(GL30.GL_RENDERBUFFER, colourBuffer);
 		GL30.glRenderbufferStorageMultisample(GL30.GL_RENDERBUFFER, Settings.MULTISAMPLE, GL11.GL_RGBA8, width, height);

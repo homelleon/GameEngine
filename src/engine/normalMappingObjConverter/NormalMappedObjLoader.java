@@ -22,20 +22,25 @@ public class NormalMappedObjLoader {
 	public static RawModel loadOBJ(String objFileName, Loader loader) {
 		FileReader isr = null;
 		File objFile = new File(Settings.OBJECT_PATH + objFileName + ".obj");
+		
 		try {
 			isr = new FileReader(objFile);
 		} catch (FileNotFoundException e) {
 			System.err.println("File not found in res; don't use any extention");
 		}
+		
 		BufferedReader reader = new BufferedReader(isr);
 		String line;
 		List<VertexNM> vertices = new ArrayList<VertexNM>();
 		List<Vector2f> textures = new ArrayList<Vector2f>();
 		List<Vector3f> normals = new ArrayList<Vector3f>();
 		List<Integer> indices = new ArrayList<Integer>();
+		
 		try {
+			
 			while (true) {
 				line = reader.readLine();
+				
 				if (line.startsWith("v ")) {
 					String[] currentLine = line.split(" ");
 					Vector3f vertex = new Vector3f((float) Float.valueOf(currentLine[1]),
@@ -59,6 +64,7 @@ public class NormalMappedObjLoader {
 					break;
 				}
 			}
+			
 			while (line != null && line.startsWith("f ")) {
 				String[] currentLine = line.split(" ");
 				String[] vertex1 = currentLine[1].split("/");
@@ -113,6 +119,7 @@ public class NormalMappedObjLoader {
 		VertexNM currentVertex = vertices.get(index);
 		int textureIndex = Integer.parseInt(vertex[1]) - 1;
 		int normalIndex = Integer.parseInt(vertex[2]) - 1;
+		
 		if (!currentVertex.isSet()) {
 			currentVertex.setTextureIndex(textureIndex);
 			currentVertex.setNormalIndex(normalIndex);
@@ -136,8 +143,10 @@ public class NormalMappedObjLoader {
 			List<Vector3f> normals, float[] verticesArray, float[] texturesArray,
 			float[] normalsArray, float[] tangentsArray) {
 		float furthestPoint = 0;
+		
 		for (int i = 0; i < vertices.size(); i++) {
 			VertexNM currentVertex = vertices.get(i);
+			
 			if (currentVertex.getLength() > furthestPoint) {
 				furthestPoint = currentVertex.getLength();
 			}
@@ -186,6 +195,7 @@ public class NormalMappedObjLoader {
 	private static void removeUnusedVertices(List<VertexNM> vertices) {
 		for (VertexNM vertex : vertices) {
 			vertex.averageTangents();
+			
 			if (!vertex.isSet()) {
 				vertex.setTextureIndex(0);
 				vertex.setNormalIndex(0);

@@ -17,7 +17,7 @@ uniform vec2 offset;
 
 uniform vec3 outlineColour;
 
-void main(void){
+void main(void) {
 
 	float distance = 1.0 - texture(fontAtlas, pass_textureCoords).a;
 	float alpha = 1.0 - smoothstep(width, width + edge, distance);

@@ -11,7 +11,7 @@ public class WaterTile {
     private float waterSpeed;
     private float waveStrength;
      
-    public WaterTile(float centerX, float centerZ, float height, float size){
+    public WaterTile(float centerX, float centerZ, float height, float size) {
         this.x = centerX;
         this.z = centerZ;
         this.height = height;

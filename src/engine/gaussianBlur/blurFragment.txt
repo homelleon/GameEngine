@@ -6,7 +6,7 @@ in vec2 blurTextureCoords[11];
 
 uniform sampler2D originalTexture;
 
-void main(void){
+void main(void) {
 	
 	out_colour = vec4(0.0);
 	out_colour += texture(originalTexture, blurTextureCoords[0]) * 0.0093;

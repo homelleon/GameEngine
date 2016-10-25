@@ -24,7 +24,7 @@ public class ContrastShader extends ShaderProgram {
 		super.bindAttribute(0, "position");
 	}
 	
-	public void loadDisplayContrast(float value){
+	public void loadDisplayContrast(float value) {
 		super.loadFloat(location_contrast, value);
 	}
 	

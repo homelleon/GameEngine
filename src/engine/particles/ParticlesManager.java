@@ -10,7 +10,7 @@ import engine.scene.Settings;
 
 public class ParticlesManager {
 	
-	public static List<ParticleSystem> createParticleSystem(Loader loader){
+	public static List<ParticleSystem> createParticleSystem(Loader loader) {
 		List<ParticleSystem> pSystem = new ArrayList<ParticleSystem>();
 		ParticleTexture cosmicPTexture = new ParticleTexture(loader.loadTexture(Settings.PARTICLE_TEXTURE_PATH, "cosmic"), 4, true);
 		ParticleSystem cosmicParticle = new ParticleSystem(cosmicPTexture, 50, 25, 0.3f, 4, 1);

@@ -61,7 +61,7 @@ public class WaterRenderer {
         unbind();
     }
      
-    private void prepareRender(Camera camera, Light sun){
+    private void prepareRender(Camera camera, Light sun) {
         shader.start();
         shader.loadViewMatrix(camera);
         moveFactor += WAVE_SPEED * DisplayManager.getFrameTimeSeconds();
@@ -86,7 +86,7 @@ public class WaterRenderer {
         
     }
      
-    private void unbind(){
+    private void unbind() {
     	GL11.glDisable(GL11.GL_BLEND);
         GL20.glDisableVertexAttribArray(0);
         GL30.glBindVertexArray(0);

@@ -29,7 +29,7 @@ public class PostProcessing {
 	public static boolean isBlured = false;
 	public static boolean isBloomed = false;
 
-	public static void init(Loader loader){
+	public static void init(Loader loader) {
 		quad = loader.loadToVAO(POSITIONS, 2);
 		contrastChanger = new ContrastChanger();
 		hBlur2 = new HorizontalBlur(Display.getWidth()/2, Display.getHeight()/2);
@@ -42,9 +42,9 @@ public class PostProcessing {
 		combineFilter = new CombineFilter();		
 	}
 	
-	public static void doPostProcessing(int colourTexture, int brightTexture){
+	public static void doPostProcessing(int colourTexture, int brightTexture) {
 		start();
-		if(isBloomed && isBlured){
+		if(isBloomed && isBlured) {
 			//brightFilter.render(colourTexture);
 			hBlur2.render(brightTexture);
 			vBlur2.render(hBlur2.getOutputTexture());
@@ -64,7 +64,7 @@ public class PostProcessing {
 		end();
 	}
 	
-	private static void doBlur(int colourTexture){
+	private static void doBlur(int colourTexture) {
 		hBlur2.render(colourTexture);
 		vBlur2.render(hBlur2.getOutputTexture());
 		hBlur4.render(vBlur2.getOutputTexture());
@@ -72,11 +72,11 @@ public class PostProcessing {
 		contrastChanger.render(vBlur4.getOutputTexture());	
 	}
 	
-	private static void doContrast(int colourTexture){
+	private static void doContrast(int colourTexture) {
 		contrastChanger.render(colourTexture);
 	}
 	
-	public static void cleanUp(){
+	public static void cleanUp() {
 		contrastChanger.cleanUp();
 		brightFilter.cleanUp();
 		hBlur2.cleanUp();
@@ -88,13 +88,13 @@ public class PostProcessing {
 		combineFilter.cleanUp();
 	}
 	
-	private static void start(){
+	private static void start() {
 		GL30.glBindVertexArray(quad.getVaoID());
 		GL20.glEnableVertexAttribArray(0);
 		GL11.glDisable(GL11.GL_DEPTH_TEST);
 	}
 	
-	private static void end(){
+	private static void end() {
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
 		GL20.glDisableVertexAttribArray(0);
 		GL30.glBindVertexArray(0);

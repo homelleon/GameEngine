@@ -38,32 +38,32 @@ public abstract class ShaderProgram {
 	
 	protected abstract void getAllUniformLocations();
 	
-	protected int getUniformLocation(String uniformName){
+	protected int getUniformLocation(String uniformName) {
 		return GL20.glGetUniformLocation(programID, uniformName);
 	}
 	
-	protected void loadInt(int location, int value){
+	protected void loadInt(int location, int value) {
 		GL20.glUniform1i(location, value);
 	}
 
 	
-	protected void loadFloat(int location, float value){
+	protected void loadFloat(int location, float value) {
 		GL20.glUniform1f(location, value);
 	}
 	
-	protected void loadVector(int location, Vector3f vector){
+	protected void loadVector(int location, Vector3f vector) {
 		GL20.glUniform3f(location,vector.x,vector.y,vector.z);
 	}
 	
-	protected void load2DVector(int location, Vector2f vector){
+	protected void load2DVector(int location, Vector2f vector) {
 		GL20.glUniform2f(location,vector.x,vector.y);
 	}
 	
-	protected void load4DVector(int location, Vector4f vector){
+	protected void load4DVector(int location, Vector4f vector) {
 		GL20.glUniform4f(location,vector.x,vector.y,vector.z,vector.w);
 	}
 	
-	protected void loadBoolean(int location, boolean value){
+	protected void loadBoolean(int location, boolean value) {
 		float toLoad = 0;
 		if(value){
 			toLoad = 1;
@@ -71,25 +71,25 @@ public abstract class ShaderProgram {
 		GL20.glUniform1f(location, toLoad);
 	}
 	
-	protected void loadMatrix(int location, Matrix4f matrix){
+	protected void loadMatrix(int location, Matrix4f matrix) {
 		matrix.store(matrixBuffer);
 		matrixBuffer.flip();
 		GL20.glUniformMatrix4(location,false, matrixBuffer);
 	}
 	
-	public void start(){
+	public void start() {
 		
 		GL20.glUseProgram(programID);
 		
 	}
 	
-	public void stop(){
+	public void stop() {
 		
 		GL20.glUseProgram(0);
 		
 	}
 	
-	public void cleanUp(){
+	public void cleanUp() {
 		stop();
 		GL20.glDetachShader(programID, vertexShaderID);
 		GL20.glDetachShader(programID, fragmentShaderID);
@@ -100,22 +100,22 @@ public abstract class ShaderProgram {
 	
 	protected abstract void bindAttributes();
 	
-	protected void bindAttribute(int attribue, String variableName){
+	protected void bindAttribute(int attribue, String variableName) {
 		GL20.glBindAttribLocation(programID, attribue, variableName);	
 	}
 	
-	protected void bindFragOutput(int attachment, String variableName){
+	protected void bindFragOutput(int attachment, String variableName) {
 		GL30.glBindFragDataLocation(programID, attachment, variableName);
 	}
 	
 	@SuppressWarnings("deprecation")
-	private static int loadShader(String file, int type){
+	private static int loadShader(String file, int type) {
 		StringBuilder shaderSource = new StringBuilder();
 		try {
 			InputStream in = Class.class.getResourceAsStream(file);
 			BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 			String line;
-			while((line = reader.readLine())!=null){
+			while((line = reader.readLine())!=null) {
 				
 				shaderSource.append(line).append("\n");
 		    } 

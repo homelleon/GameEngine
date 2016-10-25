@@ -32,7 +32,7 @@ public class ParticleShader extends ShaderProgram {
 		super.bindAttribute(6, "blendFactor");
 	}
 	
-	protected void loadNumberOfRows(float numberOfRows){
+	protected void loadNumberOfRows(float numberOfRows) {
 		super.loadFloat(location_numberOfRows, numberOfRows);
 	}
 

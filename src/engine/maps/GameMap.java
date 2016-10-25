@@ -5,7 +5,7 @@ import java.util.List;
 import engine.entities.Entity;
 import engine.terrains.Terrain;
 
-public class Map {
+public class GameMap {
 	
 	public String name;
 	public List<Entity> entities;

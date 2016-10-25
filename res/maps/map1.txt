@@ -1,0 +1,15 @@
+#map-file for game engine
+#created by @homelleon
+
+<e> cuby1 cube Cube1 50 0 25 4 no
+<e> cuby2 cube Cube1 20 0 25 4 no
+<e> cuby3 cube Cube1 30 0 25 4 no
+<e> cuby4 cube Cube1 42 0 25 4 no
+<e> cuby5 cube Cube1 44 0 25 4 no
+<e> cuby6 cube Cube1 46 0 25 4 no
+<e> cuby7 cube Cube1 48 0 25 4 no
+<e> tree1 tree bark 55 0 30 1 no
+<e> tree2 tree bark 70 0 30 1 no
+<e> tree3 tree bark 80 0 30 1 no
+<e> tree4 tree bark 90 0 30 1 no
+<end>

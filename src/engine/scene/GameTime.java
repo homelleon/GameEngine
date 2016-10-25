@@ -23,7 +23,7 @@ public class GameTime {
 		return time;
 	}
 	
-	public void start(){
+	public void start() {
 		time += DisplayManager.getFrameTimeSeconds() * timeLength;
 		dayTime = time % 24;
 		if(dayTime < 24){
@@ -36,6 +36,5 @@ public class GameTime {
 	public float getSunTime() {
 		return sunTime;
 	}
-
 	
 }

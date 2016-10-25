@@ -6,10 +6,10 @@ out vec4 out_colour;
 
 uniform sampler2D modelTexture;
 
-void main(void){
+void main(void) {
 
 	float alpha = texture(modelTexture, textureCoords).a;
-	if(alpha < 0.5){
+	if(alpha < 0.5) {
 		discard;
 	}
 

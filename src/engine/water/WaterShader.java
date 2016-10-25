@@ -62,7 +62,7 @@ public class WaterShader extends ShaderProgram {
         location_waveStrength = getUniformLocation("waveStrength");
     }
     
-    public void connectTextureUnits(){
+    public void connectTextureUnits() {
     	super.loadInt(location_reflectionTexture, 0);
     	super.loadInt(location_refractionTexture, 1);
     	super.loadInt(location_dudvMap, 2);
@@ -70,28 +70,28 @@ public class WaterShader extends ShaderProgram {
     	super.loadInt(location_depthMap, 4);
     }
     
-    public void loadLight(Light sun){
+    public void loadLight(Light sun) {
     	super.loadVector(location_lightColour, sun.getColour());
     	super.loadVector(location_lightPosition, sun.getPosition());
     }
     
-    public void loadMoveFactor(float factor){
+    public void loadMoveFactor(float factor) {
     	super.loadFloat(location_moveFactor, factor);
     }
     
-    public void loadTilingSize(float size){
+    public void loadTilingSize(float size) {
     	super.loadFloat(location_tiling, size);
     }
     
-    public void loadWaveStrength(float strength){
+    public void loadWaveStrength(float strength) {
     	super.loadFloat(location_waveStrength, strength);
     }
     
-    public void loadSkyColour(float r, float g, float b){
+    public void loadSkyColour(float r, float g, float b) {
     	super.loadVector(location_skyColour, new Vector3f(r,g,b));
     }
     
-    public void loadFogDensity(float density){
+    public void loadFogDensity(float density) {
     	super.loadFloat(location_fogDenstity, density);
     }
     
@@ -100,13 +100,13 @@ public class WaterShader extends ShaderProgram {
         loadMatrix(location_projectionMatrix, projection);
     }
      
-    public void loadViewMatrix(Camera camera){
+    public void loadViewMatrix(Camera camera) {
         Matrix4f viewMatrix = Maths.createViewMatrix(camera);
         loadMatrix(location_viewMatrix, viewMatrix);
         super.loadVector(location_cameraPosition, camera.getPosition());
     }
  
-    public void loadModelMatrix(Matrix4f modelMatrix){
+    public void loadModelMatrix(Matrix4f modelMatrix) {
         loadMatrix(location_modelMatrix, modelMatrix);
     }
  

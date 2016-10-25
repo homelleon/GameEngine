@@ -48,11 +48,11 @@ public class ShadowMapEntityRenderer {
 			bindModel(rawModel);
 			GL13.glActiveTexture(GL13.GL_TEXTURE0);
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, model.getTexture().getID());
-			if(model.getTexture().isHasTransparency()){
+			if(model.getTexture().isHasTransparency()) {
 				MasterRenderer.disableCulling();
 			}
 			for (Entity entity : entities.get(model)) {
-				if(Maths.distanceFromCamera(entity,camera) <= Settings.SHADOW_DISTANCE){
+				if(Maths.distanceFromCamera(entity,camera) <= Settings.SHADOW_DISTANCE) {
 					prepareInstance(entity);
 					GL11.glDrawElements(GL11.GL_TRIANGLES, rawModel.getVertexCount(),
 							GL11.GL_UNSIGNED_INT, 0);

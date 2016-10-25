@@ -16,17 +16,16 @@ public class ModelTexture {
 	private int numberOfRows = 1;
 	
 
-	public ModelTexture(int id){
-		this.textureID = id;
-		
+	public ModelTexture(int id) {
+		this.textureID = id;		
 	}
 	
-	public void setSpecularMap(int specMap){
+	public void setSpecularMap(int specMap) {
 		this.specularMap = specMap;
 		this.hasSpecularMap = true;
 	}
 	
-	public boolean hasSpecularMap(){
+	public boolean hasSpecularMap() {
 		return hasSpecularMap;
 	}
 	
@@ -90,4 +89,5 @@ public class ModelTexture {
 	public void setReflectivity(float reflectivity) {
 		this.reflectivity = reflectivity;
 	}
+	
 }

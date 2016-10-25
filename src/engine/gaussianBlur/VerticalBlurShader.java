@@ -3,7 +3,7 @@ package engine.gaussianBlur;
 import engine.scene.Settings;
 import engine.shaders.ShaderProgram;
 
-public class VerticalBlurShader extends ShaderProgram{
+public class VerticalBlurShader extends ShaderProgram {
 
 	private static final String VERTEX_FILE = Settings.BLUR_SHADER_PATH + "verticalBlurVertex.txt";
 	private static final String FRAGMENT_FILE = Settings.BLUR_SHADER_PATH + "blurFragment.txt";
@@ -14,7 +14,7 @@ public class VerticalBlurShader extends ShaderProgram{
 		super(VERTEX_FILE, FRAGMENT_FILE);
 	}
 	
-	protected void loadTargetHeight(float height){
+	protected void loadTargetHeight(float height) {
 		super.loadFloat(location_targetHeight, height);
 	}
 

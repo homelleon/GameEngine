@@ -16,17 +16,17 @@ import engine.renderEngine.Loader;
 import engine.scene.SceneObjectTools;
 import engine.scene.Settings;
 
-public class MapLoader {
+public class MapFileLoader {
 	
-	private final static String ENTITY_POINTER = "ep ";
-	private final static String NORMAL_POINTER = "np ";
-	private final static String TERRAIN_POINTER = "tr ";
-	private final static String END_POINTER = "f ";
+	private final static String ENTITY_POINTER = "ep";
+	private final static String NORMAL_POINTER = "np";
+	private final static String TERRAIN_POINTER = "tr";
+	private final static String END_POINTER = "f";
 	
 	
-	public static Map loadMap(String fileName, Loader loader){
+	public static GameMap loadMap(String fileName, Loader loader) {
 		FileReader isr = null;
-        File mapFile = new File(Settings.MAP_PATH + fileName + ".mp");
+        File mapFile = new File(Settings.MAP_PATH + fileName + ".txt");
 	        
         try {
             isr = new FileReader(mapFile);
@@ -42,15 +42,14 @@ public class MapLoader {
         List<Vector3f> coords = new ArrayList<Vector3f>();
         List<Float> scales = new ArrayList<Float>();  
         List<String> types = new ArrayList<String>();
-        try {
-	        while (true) {
-	        	
-				line = reader.readLine();
+        
+        try {        	
+	        while (true) {	      
+				line = reader.readLine(); 
 	       
-	        	if (line.startsWith(ENTITY_POINTER)) {
-	        		
+	        	if (line.startsWith("<e> ")) {
                     String[] currentLine = line.split(" ");
-                    
+            
                     names.add(String.valueOf(currentLine[1]));
                     models.add(String.valueOf(currentLine[2]));
                     textures.add(String.valueOf(currentLine[3]));
@@ -59,22 +58,29 @@ public class MapLoader {
                             (float) Float.valueOf(currentLine[6]));
                     coords.add(coord);
                     scales.add(Float.valueOf(currentLine[7]));
-                    types.add(String.valueOf(currentLine[8]));      
+                    types.add(String.valueOf(currentLine[8])); 
+                    System.out.println("map");   
 	        	}
-	        	 reader.close();
+	        	
+	        	if (line.startsWith("<end>")) {
+	        		break;
+	        	}	        	
 	        }
+	      
+	        reader.close();
 	     
         } catch (IOException e) {
         	System.err.println("Error reading the file");
         }
 
         List<Entity> entities = new ArrayList<Entity>();
-        for(int i=0;i<names.size();i++){
+        
+        for(int i=0;i<names.size();i++) {
         	TexturedModel model = SceneObjectTools.loadStaticModel(models.get(i), textures.get(i), loader);
         	entities.add(new Entity(names.get(i), model, coords.get(i), 0, 0, 0, scales.get(i)));
         }
         
-		Map map = new Map();
+		GameMap map = new GameMap();
 		map.entities = entities;
 		
 		return map;

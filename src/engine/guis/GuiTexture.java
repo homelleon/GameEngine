@@ -16,9 +16,11 @@ public class GuiTexture {
 	public int getTexture() {
 		return texture;
 	}
+	
 	public Vector2f getPosition() {
 		return position;
 	}
+	
 	public Vector2f getScale() {
 		return scale;
 	}

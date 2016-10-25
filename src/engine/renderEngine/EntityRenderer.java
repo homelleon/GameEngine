@@ -23,7 +23,7 @@ public class EntityRenderer {
 
 	private StaticShader shader;
 	
-	public EntityRenderer(StaticShader shader,Matrix4f projectionMatrix){
+	public EntityRenderer(StaticShader shader,Matrix4f projectionMatrix) {
 		this.shader = shader;
 		shader.start();
 		shader.loadProjectionMatrix(projectionMatrix);
@@ -33,15 +33,15 @@ public class EntityRenderer {
 	
 
 	
-	public void render(Map<TexturedModel, List<Entity>> entities, Camera camera, Matrix4f toShadowMapSpace){
+	public void render(Map<TexturedModel, List<Entity>> entities, Camera camera, Matrix4f toShadowMapSpace) {
 		shader.loadToShadowSpaceMatrix(toShadowMapSpace);
 		shader.loadShadowVariables(Settings.SHADOW_DISTANCE, Settings.SHADOW_MAP_SIZE, Settings.SHADOW_TRANSITION_DISTANCE, Settings.SHADOW_PCF);
-		for(TexturedModel model:entities.keySet()){
+		for(TexturedModel model:entities.keySet()) {
 			prepareTexturedModel(model);
 			List<Entity> batch = entities.get(model);
 			for(Entity entity: batch){	
-				if((!entity.isDetail()&&Maths.distanceFromCamera(entity,camera) <= Settings.RENDERING_DISTANCE)||
-						(entity.isDetail()&&Maths.distanceFromCamera(entity,camera) <= Settings.DETAIL_DISTANCE)){
+				if((!entity.isDetail() && Maths.distanceFromCamera(entity,camera) <= Settings.RENDERING_DISTANCE)
+						|| (entity.isDetail() && Maths.distanceFromCamera(entity,camera) <= Settings.DETAIL_DISTANCE)) {
 					prepareInstance(entity);
 					GL11.glDrawElements(GL11.GL_TRIANGLES, model.getRawModel().getVertexCount(), 
 							GL11.GL_UNSIGNED_INT, 0);
@@ -51,7 +51,7 @@ public class EntityRenderer {
 		}
 	}
 	
-	private void prepareTexturedModel(TexturedModel model){
+	private void prepareTexturedModel(TexturedModel model) {
 		RawModel rawModel = model.getRawModel();
 		GL30.glBindVertexArray(rawModel.getVaoID());
 		GL20.glEnableVertexAttribArray(0);
@@ -59,7 +59,7 @@ public class EntityRenderer {
 		GL20.glEnableVertexAttribArray(2);
 		ModelTexture texture = model.getTexture();
 		shader.loadNumberOfRows(texture.getNumberOfRows());
-		if(texture.isHasTransparency()){
+		if(texture.isHasTransparency()) {
 			MasterRenderer.disableCulling();
 		}
 		shader.loadFakeLightingVariable(texture.isUseFakeLighting());
@@ -73,7 +73,7 @@ public class EntityRenderer {
 		}
 	}
 	
-	private void unbindTexturedModel(){
+	private void unbindTexturedModel() {
 		MasterRenderer.enableCulling();
 		GL20.glDisableVertexAttribArray(0);
 		GL20.glDisableVertexAttribArray(1);
@@ -81,7 +81,7 @@ public class EntityRenderer {
 		GL30.glBindVertexArray(0);
 	}
 	
-	private void prepareInstance(Entity entity){
+	private void prepareInstance(Entity entity) {
 		Matrix4f transformationMatrix = Maths.createTransformationMatrix(entity.getPosition(),
 				entity.getRotX(), entity.getRotY(), entity.getRotZ(), entity.getScale());
 		shader.loadTranformationMatrix(transformationMatrix);

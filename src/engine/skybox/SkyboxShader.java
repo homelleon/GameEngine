@@ -9,7 +9,7 @@ import engine.scene.Settings;
 import engine.shaders.ShaderProgram;
 import engine.toolbox.Maths;
  
-public class SkyboxShader extends ShaderProgram{
+public class SkyboxShader extends ShaderProgram {
  
     private static final String VERTEX_FILE = Settings.SKYBOX_SHADER_PATH + "skyboxVertexShader.txt";
     private static final String FRAGMENT_FILE = Settings.SKYBOX_SHADER_PATH + "skyboxFragmentShader.txt";
@@ -29,11 +29,11 @@ public class SkyboxShader extends ShaderProgram{
         super(VERTEX_FILE, FRAGMENT_FILE);
     }
      
-    public void loadProjectionMatrix(Matrix4f matrix){
+    public void loadProjectionMatrix(Matrix4f matrix) {
         super.loadMatrix(location_projectionMatrix, matrix);
     }
  
-    public void loadViewMatrix(Camera camera){
+    public void loadViewMatrix(Camera camera) {
         Matrix4f matrix = Maths.createViewMatrix(camera);
         matrix.m30 = 0;
         matrix.m31 = 0;
@@ -43,16 +43,16 @@ public class SkyboxShader extends ShaderProgram{
         super.loadMatrix(location_viewMatrix, matrix);
     }
        
-    public void loadFogColour(float r, float g, float b){
+    public void loadFogColour(float r, float g, float b) {
     	super.loadVector(location_fogColour, new Vector3f(r, g, b));
     }
     
-    public void connectTextureUnits(){
+    public void connectTextureUnits() {
     	super.loadInt(location_cubeMap, 0);
     	super.loadInt(location_cubeMap2, 1);
     }
     
-    public void loadBlendFactor(float blend){
+    public void loadBlendFactor(float blend) {
     	super.loadFloat(location_blendFactor, blend);
     }
     
@@ -64,7 +64,6 @@ public class SkyboxShader extends ShaderProgram{
         location_blendFactor = super.getUniformLocation("blendFactor");
         location_cubeMap = super.getUniformLocation("cubeMap");
         location_cubeMap2 = super.getUniformLocation("cubeMap2");
-      
     }
  
     @Override

@@ -45,7 +45,7 @@ public class MasterRenderer {
 	private SkyboxRenderer skyboxRenderer;
 	private ShadowMapMasterRenderer shadowMapRenderer;
 	
-	public MasterRenderer(Loader loader, Camera camera){
+	public MasterRenderer(Loader loader, Camera camera) {
 		enableCulling();
 		createProjectionMatrix();
 		renderer = new EntityRenderer(shader,projectionMatrix);
@@ -55,20 +55,20 @@ public class MasterRenderer {
 		this.shadowMapRenderer = new ShadowMapMasterRenderer(camera);
 	}
 	
-	public static void enableCulling(){
+	public static void enableCulling() {
 		GL11.glEnable(GL11.GL_CULL_FACE);
 		GL11.glCullFace(GL11.GL_BACK);
 	}
 	
-	public static void disableCulling(){
+	public static void disableCulling() {
 		GL11.glDisable(GL11.GL_CULL_FACE);
 	}
 	
-	public Matrix4f getProjectionMatrix(){
+	public Matrix4f getProjectionMatrix() {
 		return projectionMatrix;
 	}
 	
-	public void render(List<Light> lights, Camera camera, Vector4f clipPlane){
+	public void render(List<Light> lights, Camera camera, Vector4f clipPlane) {
 		prepare();
 		shader.start();
 		shader.loadClipPlane(clipPlane);
@@ -93,14 +93,14 @@ public class MasterRenderer {
 		normalMapEntities.clear();
 	}
 	
-	public void processTerrain(Terrain terrain){
+	public void processTerrain(Terrain terrain) {
 		terrains.add(terrain);
 	}
 	
-	public void processEntity(Entity entity){
+	public void processEntity(Entity entity) {
 		TexturedModel entityModel = entity.getModel();
 		List<Entity> batch = entities.get(entityModel);
-		if(batch!=null){
+		if(batch!=null) {
 			batch.add(entity);	
 		}else{
 			List<Entity> newBatch = new ArrayList<Entity>();
@@ -111,10 +111,10 @@ public class MasterRenderer {
 		}
 	}
 	
-	public void processNormalMapEntity(Entity entity){
+	public void processNormalMapEntity(Entity entity) {
 		TexturedModel entityModel = entity.getModel();
 		List<Entity> batch = normalMapEntities.get(entityModel);
-		if(batch!=null){
+		if(batch!=null) {
 			batch.add(entity);	
 		}else{
 			List<Entity> newBatch = new ArrayList<Entity>();
@@ -126,24 +126,25 @@ public class MasterRenderer {
 	}
 	
 	public void renderScene(List<Entity> entities, List<Entity> normalEntities, List<Terrain> terrains, List<Light> lights,
-		Camera camera, Vector4f clipPlane){
-		for (Terrain terrain : terrains){
+		Camera camera, Vector4f clipPlane) {
+		for (Terrain terrain : terrains) {
 			processTerrain(terrain);
 		}
-		for (Entity entity : entities){
+		for (Entity entity : entities) {
 			processEntity(entity);
 		}
-		for(Entity entity : normalEntities){
+		for(Entity entity : normalEntities) {
 			processNormalMapEntity(entity);
 		}
 		render(lights,camera,clipPlane);
 	}
 	
-	public void renderShadowMap(List<Entity> entityList, List<Entity> normalEntities, Player player, Light sun, Camera camera){
-		for(Entity entity :  normalEntities){
+	public void renderShadowMap(List<Entity> entityList, List<Entity> normalEntities, Player player, Light sun, 
+			Camera camera) {
+		for(Entity entity :  normalEntities) {
 			processEntity(entity);
 		}
-		for(Entity entity : entityList){
+		for(Entity entity : entityList) {
 			processEntity(entity);
 		}
 		processEntity(player);
@@ -154,11 +155,11 @@ public class MasterRenderer {
 		entities.clear();
 	}
 	
-	public int getShadowMapTexture(){
+	public int getShadowMapTexture() {
 		return shadowMapRenderer.getShadowMap();
 	}
 	
-	public void cleanUp(){
+	public void cleanUp() {
 		shader.cleanUp();
 		terrainShader.cleanUp();
 		normalMapRenderer.cleanUp();
@@ -173,7 +174,7 @@ public class MasterRenderer {
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, getShadowMapTexture());		
 	}
 	
-	private void createProjectionMatrix(){
+	private void createProjectionMatrix() {
 		projectionMatrix = new Matrix4f();
 		float aspectRatio = (float) Display.getWidth()/(float) Display.getHeight();
 		float y_scale = (float) (1f / Math.tan(Math.toRadians(Settings.FOV / 2f)));

@@ -16,7 +16,7 @@ public class ContrastChanger {
 		renderer = new ImageRenderer();
 	}
 	
-	public void render(int texture){
+	public void render(int texture) {
 		shader.start();
 		shader.loadDisplayContrast(Settings.DISPLAY_CONTRAST);
 		GL13.glActiveTexture(GL13.GL_TEXTURE0);
@@ -25,7 +25,7 @@ public class ContrastChanger {
 		shader.stop();
 	}
 	
-	public void cleanUp(){
+	public void cleanUp() {
 		renderer.cleanUp();
 		shader.cleanUp();
 	}

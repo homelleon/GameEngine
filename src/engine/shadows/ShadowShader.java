@@ -27,15 +27,15 @@ public class ShadowShader extends ShaderProgram {
 		
 	}
 	
-	protected void loadMvpMatrix(Matrix4f mvpMatrix){
+	protected void loadMvpMatrix(Matrix4f mvpMatrix) {
 		super.loadMatrix(location_mvpMatrix, mvpMatrix);
 	}
 	
-	public void loadNumberOfRows(int numberOfRows){
+	public void loadNumberOfRows(int numberOfRows) {
 		super.loadFloat(location_numberOfRows, numberOfRows);
 	}
 	
-	public void loadOffset(float x, float y){
+	public void loadOffset(float x, float y) {
 		super.load2DVector(location_offset, new Vector2f(x,y));
 	}
 	

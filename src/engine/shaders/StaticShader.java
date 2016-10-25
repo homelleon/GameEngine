@@ -42,33 +42,28 @@ public class StaticShader extends ShaderProgram{
 	private int location_specularMap;
 	private int location_usesSpecularMap;
 	private int location_modelTexture;
-	
-	
-	
-	public StaticShader(){
+		
+	public StaticShader() {
 		super(VERTEX_FILE, FRAGMENT_FILE);
 	}
-
 
 	protected void bindAttributes() {
 		super.bindFragOutput(0, "out_Color");
 		super.bindFragOutput(1, "out_BrightColor");
 		super.bindAttribute(0, "position");
 		super.bindAttribute(1, "textureCoordinates");
-		super.bindAttribute(2, "normal");
-		
+		super.bindAttribute(2, "normal");	
 	}
 	
-	public void connectTextureUnits(){
+	public void connectTextureUnits() {
 		super.loadInt(location_modelTexture, 0);
 		super.loadInt(location_specularMap, 1);
 		super.loadInt(location_shadowMap, 5);
 	}
 	
-	public void loadUsesSpecularMap(boolean useMap){
+	public void loadUsesSpecularMap(boolean useMap) {
 		super.loadBoolean(location_usesSpecularMap, useMap);
 	}
-
 
 	@Override
 	protected void getAllUniformLocations() {
@@ -100,77 +95,74 @@ public class StaticShader extends ShaderProgram{
 			location_lightPosition[i] = super.getUniformLocation("lightPosition[" + i + "]");
 			location_lightColour[i] = super.getUniformLocation("lightColour[" + i + "]");
 			location_attenuation[i] = super.getUniformLocation("attenuation[" + i + "]");
-			
 		}
 	}
 	
-	public void loadToShadowSpaceMatrix(Matrix4f matrix){
+	public void loadToShadowSpaceMatrix(Matrix4f matrix) {
 		super.loadMatrix(location_toShadowMapSpace, matrix);
 	}
 	
-	public void loadShadowVariables(float shadowDistance, float size, float transitionDistance, int pcfCount){	
+	public void loadShadowVariables(float shadowDistance, float size, float transitionDistance, int pcfCount) {	
 		super.loadFloat(location_shadowDistance, shadowDistance);
 		super.loadFloat(location_shadowMapSize, size);
 		super.loadFloat(location_shadowTransitionDistance, transitionDistance);
 		super.loadInt(location_shadowPCFCount, pcfCount);
 	}
 	
-	public void loadClipPlane(Vector4f plane){
+	public void loadClipPlane(Vector4f plane) {
 		super.load4DVector(location_plane, plane);
 	}
 	
-	public void loadNumberOfRows(int numberOfRows){
+	public void loadNumberOfRows(int numberOfRows) {
 		super.loadFloat(location_numberOfRows, numberOfRows);
 	}
 	
-	public void loadOffset(float x, float y){
+	public void loadOffset(float x, float y) {
 		super.load2DVector(location_offset, new Vector2f(x,y));
 	}
 	
-	public void loadSkyColour(float r, float g, float b){
+	public void loadSkyColour(float r, float g, float b) {
 		super.loadVector(location_skyColour, new Vector3f(r,g,b));
 	}
 	
-	public void loadFakeLightingVariable(boolean useFake){
+	public void loadFakeLightingVariable(boolean useFake) {
 		super.loadBoolean(location_useFakeLighting, useFake);
 	}
 	
-	public void loadShineVariables(float damper, float reflectivity){
+	public void loadShineVariables(float damper, float reflectivity) {
 		super.loadFloat(location_shineDamper, damper);
 		super.loadFloat(location_reflectivity, reflectivity);
 	}
 	
-	public void loadFogDensity(float density){
+	public void loadFogDensity(float density) {
 		super.loadFloat(location_fogDensity, density);
 	}
 	
-	public void loadTranformationMatrix(Matrix4f matrix){
+	public void loadTranformationMatrix(Matrix4f matrix) {
 		super.loadMatrix(location_transformationMatrix, matrix);
 	}
 	
-	public void loadLights(List <Light> lights){
-		for(int i=0;i<MAX_LIGHTS;i++){
-			if(i<lights.size()){
+	public void loadLights(List <Light> lights) {
+		for(int i=0;i<MAX_LIGHTS;i++) {
+			if(i<lights.size()) {
 				super.loadVector(location_lightPosition[i], lights.get(i).getPosition());
 				super.loadVector(location_lightColour[i], lights.get(i).getColour());
 				super.loadVector(location_attenuation[i], lights.get(i).getAttenuation());
-			}else{
+			} else {
 				super.loadVector(location_lightPosition[i], new Vector3f(0, 0, 0));
 				super.loadVector(location_lightColour[i], new Vector3f(0, 0, 0));
 				super.loadVector(location_attenuation[i], new Vector3f(1, 0, 0));
 			}
 		}
-
 	}
 	
-	public void loadViewMatrix(Camera camera){
+	public void loadViewMatrix(Camera camera) {
 		Matrix4f viewMatrix = Maths.createViewMatrix(camera);
 		super.loadMatrix(location_viewMatrix, viewMatrix);
 	}
 	
-	public void loadProjectionMatrix(Matrix4f projection){
+	public void loadProjectionMatrix(Matrix4f projection) {
 		super.loadMatrix(location_projectionMatrix, projection);
 	}
-
 
 }

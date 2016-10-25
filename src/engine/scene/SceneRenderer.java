@@ -26,8 +26,8 @@ import engine.fontRendering.TextMaster;
 import engine.guis.GuiManager;
 import engine.guis.GuiRenderer;
 import engine.guis.GuiTexture;
-import engine.maps.Map;
-import engine.maps.MapLoader;
+import engine.maps.GameMap;
+import engine.maps.MapFileLoader;
 import engine.models.TexturedModel;
 import engine.particles.ParticleMaster;
 import engine.particles.ParticleSystem;
@@ -75,7 +75,7 @@ public class SceneRenderer {
 	private GameTime time;
 	private MousePicker picker;
 	
-	public SceneRenderer(){
+	public SceneRenderer() {
 		
 		//***************PRE LOAD TOOLS*************//
 		this.loader = new Loader();
@@ -89,14 +89,14 @@ public class SceneRenderer {
 		this.entities = EntitiesManager.createEntities(loader);
 		this.normalMapEntities = EntitiesManager.createNormalMappedEntities(loader);
 		
-		Map map = MapLoader.loadMap("map1", loader);
+		GameMap map = MapFileLoader.loadMap("map1", loader);
 		
 		entities.addAll(map.entities);
 		
 		spreadOnHeights(entities);
 		spreadOnHeights(normalMapEntities);
-		for(Entity entity : normalMapEntities){
-			if(entity.getName() == "boulder"){
+		for(Entity entity : normalMapEntities) {
+			if(entity.getName() == "boulder") {
 				entity.increasePosition(0, 20, 0);
 			}
 		}
@@ -131,8 +131,11 @@ public class SceneRenderer {
 
 		//*******************FONTS*************//
 		TextMaster.init(loader);
-		this.font = new FontType(loader.loadTexture(Settings.FONT_PATH, "candara"), new File(Settings.FONT_PATH + "candara.fnt"));
-		GUIText text = new GUIText("This is an Alfa-version of the game engine", 3, font, new Vector2f(0.25f, 0), 0.5f, true);
+		this.font = 
+				new FontType(loader.loadTexture(Settings.FONT_PATH, "candara"),
+						new File(Settings.FONT_PATH + "candara.fnt"));
+		GUIText text = new GUIText("This is an Alfa-version of the game engine", 
+				3, font, new Vector2f(0.25f, 0), 0.5f, true);
 		
 		text.setColour(1, 0, 0);
 		//*******************AUDIO*************//
@@ -167,8 +170,8 @@ public class SceneRenderer {
 		
 	}
 			
-	public void render(){
-		if (gamePaused == false){
+	public void render() {
+		if (gamePaused == false) {
 			time.start();
 			moves();	
 		}else{
@@ -183,8 +186,8 @@ public class SceneRenderer {
 	    renderToScreen();
 	}
 	
-	private void spreadOnHeights(List<Entity> entities){
-		for(Entity entity : entities){
+	private void spreadOnHeights(List<Entity> entities) {
+		for(Entity entity : entities) {
 			entity.setPosition(new Vector3f(entity.getPosition().x, 
 					terrains.get(0).getHeightOfTerrain(entity.getPosition().x, 
 							entity.getPosition().z), entity.getPosition().z));
@@ -192,30 +195,32 @@ public class SceneRenderer {
 	}
 	
 	
-    private void moves(){
+    private void moves() {
 		camera.move();	
 		player.move(terrains);
     }
     
-    private void renderReflectionTexture(){
+    private void renderReflectionTexture() {
     	waterFBOs.bindReflectionFrameBuffer();
 		float distance = 2 * (camera.getPosition().y - waters.get(0).getHeight());
 		camera.getPosition().y -= distance;
 		camera.invertPitch();
 		renderer.processEntity(player);
-		renderer.renderScene(entities, normalMapEntities, terrains, lights, camera, new Vector4f(0, 1, 0, -waters.get(0).getHeight()));
+		renderer.renderScene(entities, normalMapEntities, terrains, lights, 
+				camera, new Vector4f(0, 1, 0, -waters.get(0).getHeight()));
 	    camera.getPosition().y += distance;
 	    camera.invertPitch();
     }
     
-    private void renderRefractionTexture(){
+    private void renderRefractionTexture() {
     	waterFBOs.bindRefractionFrameBuffer();
 		renderer.processEntity(player);
-		renderer.renderScene(entities, normalMapEntities, terrains, lights, camera, new Vector4f(0, -1, 0, waters.get(0).getHeight()));
+		renderer.renderScene(entities, normalMapEntities, terrains, lights, 
+				camera, new Vector4f(0, -1, 0, waters.get(0).getHeight()));
 
     }
     
-    private void renderToScreen(){
+    private void renderToScreen() {
 		GL11.glDisable(GL30.GL_CLIP_DISTANCE0);
 		waterFBOs.unbindCurrentFrameBuffer();
 	    
@@ -235,13 +240,13 @@ public class SceneRenderer {
 	    text.remove();
     }
     
-    public void renderParticlesToScreen(){
+    public void renderParticlesToScreen() {
 		pSystem.get(0).generateParticles(player.getPosition());
 		pSystem.get(1).generateParticles(new Vector3f(50,terrains.get(0).getHeightOfTerrain(50, 50),50));
 		ParticleMaster.update(camera);
     }
     	
-	public void cleanUp(){
+	public void cleanUp() {
 		PostProcessing.cleanUp();
 		outputFbo.cleanUp();
 		outputFbo2.cleanUp();
@@ -255,7 +260,7 @@ public class SceneRenderer {
 		loader.cleanUp();
 	}
 	
-	public GUIText createFPSText(float FPS){
+	public GUIText createFPSText(float FPS) {
 		return new GUIText("FPS: " + String.valueOf((int)FPS), 2, font, new Vector2f(0.65f, 0), 0.5f, true);
 	}
 

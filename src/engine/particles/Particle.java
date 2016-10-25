@@ -70,7 +70,7 @@ public class Particle {
         return scale;
     }
      
-    protected boolean update(Camera camera){
+    protected boolean update(Camera camera) {
         velocity.y += Settings.GRAVITY * gravityEffect * DisplayManager.getFrameTimeSeconds();
         Vector3f change = new Vector3f(velocity);
         change.scale(DisplayManager.getFrameTimeSeconds());
@@ -81,7 +81,7 @@ public class Particle {
         return elapsedTime < lifeLength;
     }
      
-    private void updateTextureCoordInfo(){
+    private void updateTextureCoordInfo() {
         float lifeFactor = elapsedTime / lifeLength;
         int stageCount = texture.getNumberOfRows()*texture.getNumberOfRows();
         float atlasProgression = lifeFactor * stageCount;
@@ -93,13 +93,12 @@ public class Particle {
          
     }
      
-    private void setTextureOffset(Vector2f offset, int index){
+    private void setTextureOffset(Vector2f offset, int index) {
         int column = index % texture.getNumberOfRows();
         int row = index / texture.getNumberOfRows();
         offset.x = (float)column / texture.getNumberOfRows();
         offset.y = (float)row / texture.getNumberOfRows();
     }
-     
-     
+
  
 }

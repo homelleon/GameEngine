@@ -153,7 +153,7 @@ public class OBJFileLoader {
         }
     }
      
-    private static void removeUnusedVertices(List<Vertex> vertices){
+    private static void removeUnusedVertices(List<Vertex> vertices) {
         for(Vertex vertex:vertices){
             if(!vertex.isSet()){
                 vertex.setTextureIndex(0);

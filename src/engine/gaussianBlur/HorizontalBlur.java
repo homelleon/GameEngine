@@ -10,7 +10,7 @@ public class HorizontalBlur {
 	private ImageRenderer renderer;
 	private HorizontalBlurShader shader;
 	
-	public HorizontalBlur(int targetFboWidth, int targetFboHeight){
+	public HorizontalBlur(int targetFboWidth, int targetFboHeight) {
 		shader = new HorizontalBlurShader();
 		shader.start();
 		shader.loadTargetWidth(targetFboWidth);
@@ -18,7 +18,7 @@ public class HorizontalBlur {
 		renderer = new ImageRenderer(targetFboWidth, targetFboHeight);
 	}
 	
-	public void render(int texture){
+	public void render(int texture) {
 		shader.start();
 		GL13.glActiveTexture(GL13.GL_TEXTURE0);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture);
@@ -26,11 +26,11 @@ public class HorizontalBlur {
 		shader.stop();
 	}
 	
-	public int getOutputTexture(){
+	public int getOutputTexture() {
 		return renderer.getOutputTexture();
 	}
 	
-	public void cleanUp(){
+	public void cleanUp() {
 		renderer.cleanUp();
 		shader.cleanUp();
 	}
