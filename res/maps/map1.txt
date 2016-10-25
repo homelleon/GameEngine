@@ -12,4 +12,6 @@
 <e> tree2 tree bark 70 0 30 1 no
 <e> tree3 tree bark 80 0 30 1 no
 <e> tree4 tree bark 90 0 30 1 no
+<t> terrain 1 0 grass ground floweredGrass road blendMap true 100f 5 0.5f
+<t> terrain1 2 0 grass ground floweredGrass road blendMap true 100f 5 0.5f
 <end>

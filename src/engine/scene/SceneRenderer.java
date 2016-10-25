@@ -81,8 +81,8 @@ public class SceneRenderer {
 		this.loader = new Loader();
 		
 		//***************TERRAIN********************//
-
-		this.terrains = TerrainManager.createTerrain(loader);				
+		
+		this.terrains = TerrainManager.createTerrain(loader);
 
         //***********GAME OBJECTS****************//
 		
@@ -92,6 +92,7 @@ public class SceneRenderer {
 		GameMap map = MapFileLoader.loadMap("map1", loader);
 		
 		entities.addAll(map.entities);
+		terrains.addAll(map.terrains);
 		
 		spreadOnHeights(entities);
 		spreadOnHeights(normalMapEntities);

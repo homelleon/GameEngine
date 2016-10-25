@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
 import engine.entities.Entity;
@@ -15,13 +16,14 @@ import engine.models.TexturedModel;
 import engine.renderEngine.Loader;
 import engine.scene.SceneObjectTools;
 import engine.scene.Settings;
+import engine.terrains.Terrain;
 
 public class MapFileLoader {
 	
-	private final static String ENTITY_POINTER = "ep";
-	private final static String NORMAL_POINTER = "np";
-	private final static String TERRAIN_POINTER = "tr";
-	private final static String END_POINTER = "f";
+	private final static String ENTITY_POINTER = "<e> ";
+	private final static String NORMAL_POINTER = "<n> ";
+	private final static String TERRAIN_POINTER = "<t> ";
+	private final static String END_POINTER = "<end>";
 	
 	
 	public static GameMap loadMap(String fileName, Loader loader) {
@@ -36,35 +38,69 @@ public class MapFileLoader {
         BufferedReader reader = new BufferedReader(isr);
         String line;
 	        
-        List<String> names = new ArrayList<String>();
-        List<String> models = new ArrayList<String>();
-        List<String> textures = new ArrayList<String>();
-        List<Vector3f> coords = new ArrayList<Vector3f>();
-        List<Float> scales = new ArrayList<Float>();  
-        List<String> types = new ArrayList<String>();
+        List<String> eNames = new ArrayList<String>();
+        List<String> eModels = new ArrayList<String>();
+        List<String> eTextures = new ArrayList<String>();
+        List<Vector3f> eCoords = new ArrayList<Vector3f>();
+        List<Float> eScales = new ArrayList<Float>();  
+        List<String> eTypes = new ArrayList<String>();
+        
+        List<String> tNames = new ArrayList<String>();
+        List<Vector2f> tCoords = new ArrayList<Vector2f>();
+        List<String> tBaseTexs = new ArrayList<String>();
+        List<String> trTexs = new ArrayList<String>();
+        List<String> tgTexs = new ArrayList<String>();
+        List<String> tbTexs = new ArrayList<String>();
+        List<String> tBlends = new ArrayList<String>();
+        List<Boolean> tProcGens = new ArrayList<Boolean>();
+        List<String> tHeights = new ArrayList<String>();
         
         try {        	
 	        while (true) {	      
 				line = reader.readLine(); 
-	       
-	        	if (line.startsWith("<e> ")) {
+				
+				/*Read entities*/	       
+	        	if (line.startsWith(ENTITY_POINTER)) {
                     String[] currentLine = line.split(" ");
             
-                    names.add(String.valueOf(currentLine[1]));
-                    models.add(String.valueOf(currentLine[2]));
-                    textures.add(String.valueOf(currentLine[3]));
+                    eNames.add(String.valueOf(currentLine[1]));
+                    eModels.add(String.valueOf(currentLine[2]));
+                    eTextures.add(String.valueOf(currentLine[3]));
                     Vector3f coord = new Vector3f((float) Float.valueOf(currentLine[4]),
                             (float) Float.valueOf(currentLine[5]),
                             (float) Float.valueOf(currentLine[6]));
-                    coords.add(coord);
-                    scales.add(Float.valueOf(currentLine[7]));
-                    types.add(String.valueOf(currentLine[8])); 
+                    eCoords.add(coord);
+                    eScales.add(Float.valueOf(currentLine[7]));
+                    eTypes.add(String.valueOf(currentLine[8]));   
+	        	}
+	        	
+	        	/*Read normal mapped entities*/
+	        	//TODO:Implement reader
+	        	
+	        	/*Read terrains*/
+	        	if (line.startsWith(TERRAIN_POINTER)) {
+                    String[] currentLine = line.split(" ");
+            
+                    tNames.add(String.valueOf(currentLine[1]));
+                    Vector2f coord = new Vector2f((int) Integer.valueOf(currentLine[2]),
+                    		(int) Integer.valueOf(currentLine[3]));
+                    tCoords.add(coord);
+                    tBaseTexs.add(String.valueOf(currentLine[4]));
+                    trTexs.add(String.valueOf(currentLine[5]));
+                    tgTexs.add(String.valueOf(currentLine[6]));
+                    tbTexs.add(String.valueOf(currentLine[7])); 
+                    tBlends.add(String.valueOf(currentLine[8]));
+                    tProcGens.add(Boolean.valueOf(currentLine[9]));
+                    tHeights.add(String.valueOf(currentLine[10]));
                     System.out.println("map");   
 	        	}
 	        	
-	        	if (line.startsWith("<end>")) {
+	        	if (line.startsWith(END_POINTER)) {
 	        		break;
-	        	}	        	
+	        	}
+	        	
+	        	/*Read water planes*/
+	        	//TODO:Implement reader
 	        }
 	      
 	        reader.close();
@@ -75,13 +111,26 @@ public class MapFileLoader {
 
         List<Entity> entities = new ArrayList<Entity>();
         
-        for(int i=0;i<names.size();i++) {
-        	TexturedModel model = SceneObjectTools.loadStaticModel(models.get(i), textures.get(i), loader);
-        	entities.add(new Entity(names.get(i), model, coords.get(i), 0, 0, 0, scales.get(i)));
+        for(int i=0;i<eNames.size();i++) {
+        	TexturedModel model = SceneObjectTools.loadStaticModel(eModels.get(i), eTextures.get(i), loader);
+        	entities.add(new Entity(eNames.get(i), model, eCoords.get(i), 0, 0, 0, eScales.get(i)));
+        }
+        
+        List<Terrain> terrains = new ArrayList<Terrain>();
+        
+        for(int i=0;i<tNames.size();i++) {
+        	if (tProcGens.get(i)) {
+	        	terrains.add(SceneObjectTools.createMultiTexTerrain((int) tCoords.get(i).x, 
+	        			(int) tCoords.get(i).y, tBaseTexs.get(i), trTexs.get(i), tgTexs.get(i), 
+	        			tbTexs.get(i), tBlends.get(i), 1f, 1, 1f, loader));
+        	} else {
+        		//TODO: Implement HeightMap generated terrain 
+        	}
         }
         
 		GameMap map = new GameMap();
 		map.entities = entities;
+		map.terrains = terrains;
 		
 		return map;
 	}
