@@ -11,5 +11,9 @@ public class GameMap {
 	public List<Entity> entities;
 	public List<Entity> normalEntities;
 	public List<Terrain> terrains;
+	
+	public void saveMapFile(){
+	
+	}
 
 }

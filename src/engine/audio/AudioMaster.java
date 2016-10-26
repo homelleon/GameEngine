@@ -16,7 +16,7 @@ public class AudioMaster {
 	
 	private static List<Integer> buffers = new ArrayList<Integer>();
 
-	public static void init(){
+	public static void init() {
 		try {
 			AL.create();
 		} catch (LWJGLException e) {

@@ -5,12 +5,14 @@ import org.lwjgl.openal.AL10;
 public class Source {
 	
 	private int sourceId;
+	private String audioBuffer;
+	//TODO: add audioName
 	
-	public Source() {
+	public Source(int maxDistance) {
 		sourceId = AL10.alGenSources();
 		AL10.alSourcef(sourceId, AL10.AL_ROLLOFF_FACTOR, 1);
 		AL10.alSourcef(sourceId, AL10.AL_REFERENCE_DISTANCE, 6);
-		AL10.alSourcef(sourceId, AL10.AL_MAX_DISTANCE, 15);		
+		AL10.alSourcef(sourceId, AL10.AL_MAX_DISTANCE, maxDistance);
 	}
 	
 	public void play(int buffer) {

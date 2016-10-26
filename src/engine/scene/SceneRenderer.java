@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.openal.AL10;
 import org.lwjgl.openal.AL11;
 import org.lwjgl.opengl.Display;
@@ -38,7 +39,6 @@ import engine.renderEngine.DisplayManager;
 import engine.renderEngine.Loader;
 import engine.renderEngine.MasterRenderer;
 import engine.terrains.Terrain;
-import engine.terrains.TerrainManager;
 import engine.toolbox.MousePicker;
 import engine.water.WaterFrameBuffers;
 import engine.water.WaterRenderer;
@@ -55,6 +55,7 @@ public class SceneRenderer {
 	private boolean isMidday = true;
 	
 	//TODO: Delete unnecessary objects
+	private GameMap map;
 	private List<GuiTexture> guis;
 	private GuiRenderer guiRenderer;
 	private List<ParticleSystem> pSystem;
@@ -79,20 +80,19 @@ public class SceneRenderer {
 		
 		//***************PRE LOAD TOOLS*************//
 		this.loader = new Loader();
+		this.map = MapFileLoader.loadMap("map1", loader);
 		
 		//***************TERRAIN********************//
 		
-		this.terrains = TerrainManager.createTerrain(loader);
+		this.terrains = map.terrains;
 
         //***********GAME OBJECTS****************//
 		
 		this.entities = EntitiesManager.createEntities(loader);
 		this.normalMapEntities = EntitiesManager.createNormalMappedEntities(loader);
 		
-		GameMap map = MapFileLoader.loadMap("map1", loader);
-		
 		entities.addAll(map.entities);
-		terrains.addAll(map.terrains);
+
 		
 		spreadOnHeights(entities);
 		spreadOnHeights(normalMapEntities);
@@ -143,14 +143,13 @@ public class SceneRenderer {
 		
 		AudioMaster.init();
 		AudioMaster.setListenerData(0,0,0);
-		AL10.alDistanceModel(AL11.AL_EXPONENT_DISTANCE);
-		this.ambientSource = new Source();
-		int buffer = AudioMaster.loadSound("forest.wav");
-		Source ambientSource = new Source();
+		AL10.alDistanceModel(AL11.AL_LINEAR_DISTANCE_CLAMPED);
+		this.ambientSource = new Source(200);
+		int Audiobuffer = AudioMaster.loadSound("birds006.wav");
 		ambientSource.setLooping(true);
-		ambientSource.setVolume(0.2f);
-		ambientSource.play(buffer);
-		float xPos = 8;				
+		ambientSource.setVolume(0.3f);
+		ambientSource.play(Audiobuffer);
+		ambientSource.setPosition(10, 20, 10);			
 		
 		//***************GUI***********//
 		this.guis = GuiManager.createGui(loader);	
@@ -179,6 +178,11 @@ public class SceneRenderer {
 			picker.update();
 			System.out.println(picker.getCurrentRay());
 		}
+		if(Keyboard.isKeyDown(Keyboard.KEY_T)) {
+			map.saveMapFile();
+			System.out.println("save");
+		}
+		
 		renderParticlesToScreen();
 		renderer.renderShadowMap(entities, normalMapEntities, player, sun, camera);				
 		GL11.glEnable(GL30.GL_CLIP_DISTANCE0);
@@ -197,8 +201,9 @@ public class SceneRenderer {
 	
 	
     private void moves() {
-		camera.move();	
+		camera.move();
 		player.move(terrains);
+		AudioMaster.setListenerData(camera.getPosition().x, camera.getPosition().y, camera.getPosition().z);
     }
     
     private void renderReflectionTexture() {
