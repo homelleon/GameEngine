@@ -1,23 +1,55 @@
 package engine.audio;
 
 import org.lwjgl.openal.AL10;
+import org.lwjgl.util.vector.Vector3f;
 
 public class Source {
 	
+	private String sourceName;
 	private int sourceId;
-	private String audioBuffer;
-	//TODO: add audioName
+	private String pathName;
 	
-	public Source(int maxDistance) {
+	public Source(String name, String path, int maxDistance) {
 		sourceId = AL10.alGenSources();
 		AL10.alSourcef(sourceId, AL10.AL_ROLLOFF_FACTOR, 1);
 		AL10.alSourcef(sourceId, AL10.AL_REFERENCE_DISTANCE, 6);
 		AL10.alSourcef(sourceId, AL10.AL_MAX_DISTANCE, maxDistance);
+		this.sourceName = name;
+		
+		if (!AudioMaster.getBuffers().containsKey(path)){
+			AudioMaster.loadSound(path);
+		}
+		this.pathName = path;
 	}
 	
-	public void play(int buffer) {
+	public Source(String name, String path, int maxDistance, Vector3f coords) {
+		sourceId = AL10.alGenSources();
+		AL10.alSourcef(sourceId, AL10.AL_ROLLOFF_FACTOR, 1);
+		AL10.alSourcef(sourceId, AL10.AL_REFERENCE_DISTANCE, 6);
+		AL10.alSourcef(sourceId, AL10.AL_MAX_DISTANCE, maxDistance);
+		this.sourceName = name;
+		
+		if (!AudioMaster.getBuffers().containsKey(path)){
+			AudioMaster.loadSound(path);
+		}
+		this.pathName = path;
+		this.setPosition(coords.x, coords.y, coords.z);
+	}
+	
+	public Source(String path){
+		sourceId = AL10.alGenSources();
+		AL10.alSourcef(sourceId, AL10.AL_ROLLOFF_FACTOR, 1);
+		AL10.alSourcef(sourceId, AL10.AL_REFERENCE_DISTANCE, 6);
+		AL10.alSourcef(sourceId, AL10.AL_MAX_DISTANCE, 20);
+		this.sourceName = "NoName";
+		if (!AudioMaster.getBuffers().containsKey(path)){
+			AudioMaster.loadSound(path);
+		}
+	}
+	
+	public void play() {
 		stop();
-		AL10.alSourcei(sourceId, AL10.AL_BUFFER, buffer);
+		AL10.alSourcei(sourceId, AL10.AL_BUFFER, AudioMaster.getBuffer(pathName));
 		continuePlaying();
 	}
 	

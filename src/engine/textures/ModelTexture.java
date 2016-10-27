@@ -5,6 +5,7 @@ public class ModelTexture {
 	private int textureID;
 	private int normalMap;
 	private int specularMap;
+	private String name;
 	
 	private float shineDamper = 1;
 	private float reflectivity = 0;
@@ -20,6 +21,16 @@ public class ModelTexture {
 		this.textureID = id;		
 	}
 	
+	public ModelTexture(String name, int id) {
+		this.textureID = id;
+		this.name = name;
+	}
+	
+	public String getName() {
+		return name;
+	}
+
+
 	public void setSpecularMap(int specMap) {
 		this.specularMap = specMap;
 		this.hasSpecularMap = true;

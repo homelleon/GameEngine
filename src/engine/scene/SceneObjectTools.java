@@ -25,9 +25,9 @@ public class SceneObjectTools {
 		ModelData data = OBJFileLoader.loadOBJ(objFile);
 		RawModel rawModel = loader.loadToVAO(data.getVertices(), 
 				data.getTextureCoords(), data.getNormals(), 
-				data.getIndices());	
-	    TexturedModel staticModel = new TexturedModel(rawModel,
-	    		new ModelTexture(loader.loadTexture(Settings.MODEL_TEXTURE_PATH, textureName)));
+				data.getIndices());
+	    TexturedModel staticModel = new TexturedModel(objFile, rawModel,
+	    		new ModelTexture(textureName, loader.loadTexture(Settings.MODEL_TEXTURE_PATH, textureName)));
 	    return staticModel;
 	}
 	

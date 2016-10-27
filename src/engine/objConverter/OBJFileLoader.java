@@ -149,7 +149,6 @@ public class OBJFileLoader {
                 vertices.add(duplicateVertex);
                 indices.add(duplicateVertex.getIndex());
             }
- 
         }
     }
      

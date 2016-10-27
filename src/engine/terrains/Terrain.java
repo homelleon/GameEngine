@@ -27,6 +27,7 @@ public class Terrain {
 	private RawModel model;
 	private TerrainTexturePack texturePack;
 	private TerrainTexture blendMap;
+	private String name;
 	
 	private float[][] heights;
 	
@@ -37,6 +38,7 @@ public class Terrain {
 		this.x = gridX * SIZE;
 		this.z = gridZ * SIZE;
         this.model = generateTerrain(loader, heightMap);
+        this.name = "NoName";
 	}
 	
 	public Terrain(int gridX, int gridZ, Loader loader, TerrainTexturePack texturePack,
@@ -46,6 +48,27 @@ public class Terrain {
 		this.x = gridX * SIZE;
 		this.z = gridZ * SIZE;
 		this.model = generateTerrainByProcedure(loader, amplitude, octaves, roughness);
+		this.name = "NoName";
+	}
+	
+	public Terrain(String name, int gridX, int gridZ, Loader loader, TerrainTexturePack texturePack,
+			TerrainTexture blendMap, String heightMap) {
+		this.texturePack = texturePack;
+		this.blendMap = blendMap;
+		this.x = gridX * SIZE;
+		this.z = gridZ * SIZE;
+        this.model = generateTerrain(loader, heightMap);
+        this.name = name;
+	}
+	
+	public Terrain(String name, int gridX, int gridZ, Loader loader, TerrainTexturePack texturePack,
+			TerrainTexture blendMap, float amplitude, int octaves, float roughness) {
+		this.texturePack = texturePack;
+		this.blendMap = blendMap;
+		this.x = gridX * SIZE;
+		this.z = gridZ * SIZE;
+		this.model = generateTerrainByProcedure(loader, amplitude, octaves, roughness);
+		this.name = name;
 	}
 	
 	public float getX() {
@@ -59,7 +82,10 @@ public class Terrain {
 	public RawModel getModel() {
 		return model;
 	}
-
+	
+	public String getName() {
+		return name;
+	}
 
 	public TerrainTexturePack getTexturePack() {
 		return texturePack;

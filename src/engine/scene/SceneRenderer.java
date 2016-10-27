@@ -80,7 +80,7 @@ public class SceneRenderer {
 		
 		//***************PRE LOAD TOOLS*************//
 		this.loader = new Loader();
-		this.map = MapFileLoader.loadMap("map1", loader);
+		this.map = MapFileLoader.loadMap("map", loader);
 		
 		//***************TERRAIN********************//
 		
@@ -144,11 +144,10 @@ public class SceneRenderer {
 		AudioMaster.init();
 		AudioMaster.setListenerData(0,0,0);
 		AL10.alDistanceModel(AL11.AL_LINEAR_DISTANCE_CLAMPED);
-		this.ambientSource = new Source(200);
-		int Audiobuffer = AudioMaster.loadSound("birds006.wav");
+		this.ambientSource = new Source("birds", "birds006.wav", 200);
 		ambientSource.setLooping(true);
 		ambientSource.setVolume(0.3f);
-		ambientSource.play(Audiobuffer);
+		ambientSource.play();
 		ambientSource.setPosition(10, 20, 10);			
 		
 		//***************GUI***********//

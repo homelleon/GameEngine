@@ -14,10 +14,9 @@ public class Test {
 		AudioMaster.init();
 		AudioMaster.setListenerData(0,0,0);
 		AL10.alDistanceModel(AL11.AL_LINEAR_DISTANCE_CLAMPED);
-		int buffer = AudioMaster.loadSound("forest.wav");
-		Source source = new Source(20);
+		Source source = new Source("audio1", "forest.wav", 20);
 		source.setLooping(true);
-		source.play(buffer);
+		source.play();
 		
 		float xPos = 8;
 		

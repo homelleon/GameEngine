@@ -7,7 +7,9 @@ import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.EXTTextureFilterAnisotropic;
@@ -32,7 +34,7 @@ public class Loader {
 	
 	private List<Integer> vaos = new ArrayList<Integer>();
 	private List<Integer> vbos = new ArrayList<Integer>();
-	private List<Integer> textures = new ArrayList<Integer>();
+	private Map<String, Integer> textures = new HashMap<String, Integer>();
 	
 	public RawModel loadToVAO(float[] positions,float[] textureCoords,float[] normals, int[] indices) {
 		int vaoID = createVAO();
@@ -132,7 +134,7 @@ public class Loader {
 		}
 		
 		int textureID = texture.getTextureID();
-		textures.add(textureID);
+		textures.put(fileName, textureID);
 		return textureID;
 		
 	}
@@ -147,7 +149,7 @@ public class Loader {
 		for (int vbo:vbos){
 			GL15.glDeleteBuffers(vbo);
 		}
-		for (int texture:textures) {
+		for (int texture:textures.values()) {
 			GL11.glDeleteTextures(texture);
 		}
 	}
@@ -165,7 +167,7 @@ public class Loader {
 		}
 		GL11.glTexParameteri(GL13.GL_TEXTURE_CUBE_MAP, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
 		GL11.glTexParameteri(GL13.GL_TEXTURE_CUBE_MAP, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
-		textures.add(texID);
+		textures.put(path, texID);
 		return texID;
 	}
 	
