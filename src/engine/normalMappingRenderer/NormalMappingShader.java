@@ -31,6 +31,7 @@ public class NormalMappingShader extends ShaderProgram{
 	private int location_offset;
 	private int location_plane;
 	private int location_modelTexture;
+	private int location_fogDensity;
 	private int location_normalMap;
 	private int location_shadowCoords;
 	private int location_toShadowMapSpace;
@@ -40,7 +41,7 @@ public class NormalMappingShader extends ShaderProgram{
 	private int location_shadowTransitionDistance;
 	private int location_shadowPCFCount;
 	private int location_specularMap;
-	private int location_usesSpecularMap;	
+	private int location_usesSpecularMap;
 
 	public NormalMappingShader() {
 		super(VERTEX_FILE, FRAGMENT_FILE);
@@ -68,6 +69,7 @@ public class NormalMappingShader extends ShaderProgram{
 		location_offset = super.getUniformLocation("offset");
 		location_plane = super.getUniformLocation("plane");
 		location_modelTexture = super.getUniformLocation("modelTexture");
+		location_fogDensity = super.getUniformLocation("fogDensity");
 		location_normalMap = super.getUniformLocation("normalMap");
 		location_toShadowMapSpace = super.getUniformLocation("toShadowMapSpace");
 		location_shadowDistance = super.getUniformLocation("shadowDistance");
@@ -94,6 +96,10 @@ public class NormalMappingShader extends ShaderProgram{
 	
 	public void loadUseSpecularMap(boolean useMap) {
 		super.loadBoolean(location_usesSpecularMap, useMap);
+	}
+	
+	public void loadFogDensity(float density) {
+		super.loadFloat(location_fogDensity, density);
 	}
 	
 	public void loadShadowVariables(float shadowDistance, float size, float transitionDistance, int pcfCount) {	

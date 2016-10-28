@@ -24,8 +24,8 @@ uniform float shadowTransitionDistance;
 uniform float numberOfRows;
 uniform vec2 offset;
 
-const float density = 0;
-const float gradient = 5.0;
+uniform float fogDensity;
+const float gradient = 2.0;
 
 
 void main(void) {
@@ -58,7 +58,7 @@ void main(void) {
 	toCameraVector = toTangentSpace * (-positionRelativeToCam.xyz);
 	
 	float distance = length(positionRelativeToCam.xyz);
-	visibility = exp(-pow((distance*density),gradient));
+	visibility = exp(-pow((distance*fogDensity),gradient));
 	visibility = clamp(visibility,0.0,1.0);
 
 	distance = distance - (shadowDistance - shadowTransitionDistance);
