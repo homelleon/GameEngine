@@ -14,70 +14,52 @@ import engine.terrains.Terrain;
 
 public class GameMap {
 	
-	public String name;
-	public List<Entity> entities;
-	public List<Entity> normalEntities;
-	public List<Terrain> terrains;
-	public List<Source> audios;
+	private String name;
+	private List<Entity> entities;
+	private List<Entity> normalEntities;
+	private List<Terrain> terrains;
+	private List<Source> audios;
 	
-	public void saveMapFile(){
-		try {
-			File mapFile = new File(Settings.MAP_PATH + "map" + ".txt");
-			BufferedWriter writer = new BufferedWriter(new FileWriter(mapFile));
-			
-			List<String> lines = new ArrayList<String>();
-			
-			if (!entities.isEmpty()){
-				for(Entity entity : entities){
-					String line = "<e> ";
-					line += String.valueOf(entity.getName());
-					line += " ";
-					line += String.valueOf(entity.getModel().getName());
-					line += " ";
-					line += String.valueOf(entity.getModel().getTexture().getName());
-					line += " ";
-					line += String.valueOf(entity.getPosition().x);
-					line += " ";
-					line += String.valueOf(entity.getPosition().y);
-					line += " ";
-					line += String.valueOf(entity.getPosition().z);
-					line += " ";
-					line += String.valueOf(entity.getScale());
-					line += " ";
-					line += String.valueOf(entity.isDetail());
-					lines.add(line);
-				}
-			}
-			
-			if (!terrains.isEmpty()){
-				for(Terrain terrain: terrains){
-					String line = "<t> ";
-					line += String.valueOf(terrain.ge)
-				}
-			}
-			
-			if (!audios.isEmpty()){
-				//line += String.valueOf();
-			}
-			
-			for(String line : lines){
-				writer.write(line);
-				writer.flush();
-				writer.newLine();
-			}
-			
-			
-			writer.write("<end>");
-			writer.flush();
-			writer.close();			
-				
-		} catch (IOException e) {
-			e.printStackTrace();
-			System.err.println("Couldn't create map file!");
-		} 
+	public GameMap(String name){
+		this.name = name;
+	}	
+	
+	public String getName() {
+		return name;
+	}
 		
-		
-		
+	
+
+	public List<Entity> getEntities() {
+		return entities;
+	}
+
+	public void setEntities(List<Entity> entities) {
+		this.entities = entities;
+	}
+
+	public List<Entity> getNormalEntities() {
+		return normalEntities;
+	}
+
+	public void setNormalEntities(List<Entity> normalEntities) {
+		this.normalEntities = normalEntities;
+	}
+
+	public List<Terrain> getTerrains() {
+		return terrains;
+	}
+
+	public void setTerrains(List<Terrain> terrains) {
+		this.terrains = terrains;
+	}
+
+	public List<Source> getAudios() {
+		return audios;
+	}
+
+	public void setAudios(List<Source> audios) {
+		this.audios = audios;
 	}
 
 }

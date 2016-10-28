@@ -29,6 +29,9 @@ import engine.guis.GuiRenderer;
 import engine.guis.GuiTexture;
 import engine.maps.GameMap;
 import engine.maps.MapFileLoader;
+import engine.maps.MapFileWriter;
+import engine.maps.MapLoadable;
+import engine.maps.MapWriteable;
 import engine.models.TexturedModel;
 import engine.particles.ParticleMaster;
 import engine.particles.ParticleSystem;
@@ -55,7 +58,6 @@ public class SceneRenderer {
 	private boolean isMidday = true;
 	
 	//TODO: Delete unnecessary objects
-	private GameMap map;
 	private List<GuiTexture> guis;
 	private GuiRenderer guiRenderer;
 	private List<ParticleSystem> pSystem;
@@ -80,18 +82,19 @@ public class SceneRenderer {
 		
 		//***************PRE LOAD TOOLS*************//
 		this.loader = new Loader();
-		this.map = MapFileLoader.loadMap("map", loader);
+		MapLoadable mapLoader = new MapFileLoader();
+		GameMap map = mapLoader.loadMap("map1", loader);
 		
 		//***************TERRAIN********************//
 		
-		this.terrains = map.terrains;
+		this.terrains = map.getTerrains();
 
         //***********GAME OBJECTS****************//
 		
 		this.entities = EntitiesManager.createEntities(loader);
 		this.normalMapEntities = EntitiesManager.createNormalMappedEntities(loader);
 		
-		entities.addAll(map.entities);
+		entities.addAll(map.getEntities());
 
 		
 		spreadOnHeights(entities);
@@ -144,7 +147,7 @@ public class SceneRenderer {
 		AudioMaster.init();
 		AudioMaster.setListenerData(0,0,0);
 		AL10.alDistanceModel(AL11.AL_LINEAR_DISTANCE_CLAMPED);
-		this.ambientSource = new Source("birds", "birds006.wav", 200);
+		this.ambientSource = new Source("birds", "forest.wav", 200);
 		ambientSource.setLooping(true);
 		ambientSource.setVolume(0.3f);
 		ambientSource.play();
@@ -178,7 +181,11 @@ public class SceneRenderer {
 			System.out.println(picker.getCurrentRay());
 		}
 		if(Keyboard.isKeyDown(Keyboard.KEY_T)) {
-			map.saveMapFile();
+			MapWriteable mapWriter = new MapFileWriter();
+			GameMap map = new GameMap("coolmap");
+			map.setEntities(entities);
+			map.setTerrains(terrains);
+			mapWriter.write(map);
 			System.out.println("save");
 		}
 		
