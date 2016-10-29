@@ -5,7 +5,7 @@ public class Settings {
 	//*****************DISPLAY SETTINGS**********************************//
 	public static final int DISPLAY_WIDTH = 1920;  
 	public static final int DISPLAY_HEIGHT = 1080; 
-	public static final int FAR_PLANE = 100000;
+	public static final int FAR_PLANE = 900000;
 	public static final float NEAR_PLANE = 0.1f;
 	public static final int FPS_CAP = 120;
 	public static final float FOV = 70;
@@ -29,7 +29,7 @@ public class Settings {
 	//*****************SIMULATION SETTINGS*************************************//	
 	public static final float GRAVITY = -50;
 	public static final float TIME_LENGTH = 1;
-	public static final float FOG_DENSITY = 0.004f;
+	public static final float FOG_DENSITY = 0.002f;
 	public static final float SHADOW_DISTANCE = 120;
 	public static final int SHADOW_MAP_SIZE = 4096;
 	public static final float SHADOW_TRANSITION_DISTANCE = 80;
