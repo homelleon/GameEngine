@@ -11,14 +11,14 @@ import water.WaterTile;
 
 public interface WorldGethable {
 
-	public GameMap getMap(String name);
-	public Camera getCamera(String name);
-	public Entity getEntity(String name);
-	public Player getPlayer(String name);
-	public Terrain getTerrain(String name);
-	public WaterTile getWater(String name);
-	public GuiTexture getGui(String name);
-	public ParticleSystem getParticles(String name);
+	public GameMap getMapByName(String name);
+	public Camera getCameraByName(String name);
+	public Entity getEntityByName(String name);
+	public Player getPlayerByName(String name);
+	public Terrain getTerrainByName(String name);
+	public WaterTile getWaterByName(String name);
+	public GuiTexture getGuiByName(String name);
+	public ParticleSystem getParticlesByName(String name);
 	public void render();
 	public void cleanUp();
 	

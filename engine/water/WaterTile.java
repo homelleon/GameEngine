@@ -10,6 +10,8 @@ public class WaterTile {
     private float tilingSize;
     private float waterSpeed;
     private float waveStrength;
+    
+    private String name;
      
     public WaterTile(float centerX, float centerZ, float height, float size) {
         this.x = centerX;
@@ -19,9 +21,25 @@ public class WaterTile {
         this.tilingSize = 0.4f * size;
         this.waterSpeed = 0;
         this.waveStrength = 0;
+        this.name = "NoName";
+    }
+    
+    public WaterTile(String name, float centerX, float centerZ, float height, float size) {
+        this.x = centerX;
+        this.z = centerZ;
+        this.height = height;
+        this.size = size;
+        this.tilingSize = 0.4f * size;
+        this.waterSpeed = 0;
+        this.waveStrength = 0;
+        this.name = name;
     }
  
-    public float getHeight() {
+    public String getName() {
+		return name;
+	}
+
+	public float getHeight() {
         return height;
     }
  

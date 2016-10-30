@@ -22,14 +22,30 @@ public class Camera {
 	private float yaw = 0;
 	private float roll;
 	
+	private String name;
+	
 	private Player player;
 	
 	public boolean perspectiveMode = false;
 	public boolean isUnderWater = false;
 	
+	
+	public String getName() {
+		return name;
+	}
+
+
 	public Camera(Player player) {
 		this.player = player;
+		this.name = "NoName";
 	}
+	
+	public Camera(Player player, String name) {
+		this.player = player;
+		this.name = name;	
+	}
+	
+
 	
 	public Camera(float posX,float posY,float posZ) {
 		this.setPosition(posX, posY, posZ);		

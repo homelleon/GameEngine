@@ -58,6 +58,8 @@ public class SceneRenderer implements WorldGethable {
 	private boolean isMidday = true;
 	
 	//TODO: Delete unnecessary objects
+	private List<Camera> cameras;
+	private List<Player> players;
 	private List<GameMap> maps;
 	private List<GuiTexture> guis;
 	private GuiRenderer guiRenderer;
@@ -71,11 +73,9 @@ public class SceneRenderer implements WorldGethable {
 	private Fbo multisampleFbo;	
 	private Fbo outputFbo;
 	private Fbo outputFbo2;
-	private Player player;
 	private List<Light> lights;
 	private Light sun;
-	private WaterRenderer waterRenderer;
-	private Camera camera;
+	private WaterRenderer waterRenderer;	
 	private GameTime time;
 	private MousePicker picker;
 	
@@ -116,9 +116,13 @@ public class SceneRenderer implements WorldGethable {
 		//lights.add(new Light(new Vector3f(20,2,20),new Vector3f(0,10,0), new Vector3f(0, 0.01f, 0.002f)));
 		
 		//***********PLAYER****************//
-		TexturedModel cubeModel = SceneObjectTools.loadStaticModel("cube", "cube1", loader);	
-		this.player = new Player(cubeModel, new Vector3f(100, 0, 10), 0, 0, 0, 1);
-		this.camera = new Camera(player);	
+		TexturedModel cubeModel = SceneObjectTools.loadStaticModel("cube", "cube1", loader);
+		this.players = new ArrayList<Player>();
+		Player player = new Player(cubeModel, new Vector3f(100, 0, 10), 0, 0, 0, 1);
+		players.add(player);
+		this.cameras = new ArrayList<Camera>();
+		Camera camera = new Camera(player, "Игрок1");
+		cameras.add(camera);
 		this.time = new GameTime(10);
 		
 		this.renderer = new MasterRenderer(loader, camera);		
@@ -164,8 +168,8 @@ public class SceneRenderer implements WorldGethable {
 		WaterShader waterShader = new WaterShader();
 		this.waterRenderer = new WaterRenderer(loader, waterShader, renderer.getProjectionMatrix(), waterFBOs);
 		this.waters = new ArrayList<WaterTile>(); 
-		waters.add(new WaterTile(0, 0, -4, 1000));
-		waters.stream().forEach((i) -> i.setTilingSize(0.1f));
+		waters.add(new WaterTile("Water",0, 0, -4, 1000));
+		waters.stream().forEach((i) -> i.setTilingSize(0.05f));
 		waters.stream().forEach((i) -> i.setWaterSpeed(0.7f));
 		waters.stream().forEach((i) -> i.setWaveStrength(0.1f));		
 		
@@ -193,7 +197,7 @@ public class SceneRenderer implements WorldGethable {
 		}
 		
 		renderParticlesToScreen();
-		renderer.renderShadowMap(entities, normalMapEntities, player, sun, camera);				
+		renderer.renderShadowMap(entities, normalMapEntities, players.get(0), sun, cameras.get(0));				
 		GL11.glEnable(GL30.GL_CLIP_DISTANCE0);
 		renderReflectionTexture();		
 		renderRefractionTexture();
@@ -210,28 +214,28 @@ public class SceneRenderer implements WorldGethable {
 	
 	
     private void moves() {
-		camera.move();
-		player.move(terrains);
-		AudioMaster.setListenerData(camera.getPosition().x, camera.getPosition().y, camera.getPosition().z);
+    	cameras.get(0).move();
+		players.get(0).move(terrains);
+		AudioMaster.setListenerData(cameras.get(0).getPosition().x, cameras.get(0).getPosition().y, cameras.get(0).getPosition().z);
     }
     
     private void renderReflectionTexture() {
     	waterFBOs.bindReflectionFrameBuffer();
-		float distance = 2 * (camera.getPosition().y - waters.get(0).getHeight());
-		camera.getPosition().y -= distance;
-		camera.invertPitch();
-		renderer.processEntity(player);
+		float distance = 2 * (cameras.get(0).getPosition().y - waters.get(0).getHeight());
+		cameras.get(0).getPosition().y -= distance;
+		cameras.get(0).invertPitch();
+		renderer.processEntity(players.get(0));
 		renderer.renderScene(entities, normalMapEntities, terrains, lights, 
-				camera, new Vector4f(0, 1, 0, -waters.get(0).getHeight()));
-	    camera.getPosition().y += distance;
-	    camera.invertPitch();
+				cameras.get(0), new Vector4f(0, 1, 0, -waters.get(0).getHeight()));
+		cameras.get(0).getPosition().y += distance;
+		cameras.get(0).invertPitch();
     }
     
     private void renderRefractionTexture() {
     	waterFBOs.bindRefractionFrameBuffer();
-		renderer.processEntity(player);
+		renderer.processEntity(players.get(0));
 		renderer.renderScene(entities, normalMapEntities, terrains, lights, 
-				camera, new Vector4f(0, -1, 0, waters.get(0).getHeight()));
+				cameras.get(0), new Vector4f(0, -1, 0, waters.get(0).getHeight()+1f));
 
     }
     
@@ -240,10 +244,10 @@ public class SceneRenderer implements WorldGethable {
 		waterFBOs.unbindCurrentFrameBuffer();
 	    
 		multisampleFbo.bindFrameBuffer();
-	    renderer.processEntity(player);
-	    renderer.renderScene(entities, normalMapEntities, terrains, lights, camera, new Vector4f(0, -1, 0, 15));
-	    waterRenderer.render(waters, camera, sun);
-	    ParticleMaster.renderParticles(camera);
+	    renderer.processEntity(players.get(0));
+	    renderer.renderScene(entities, normalMapEntities, terrains, lights, cameras.get(0), new Vector4f(0, -1, 0, 15));
+	    waterRenderer.render(waters, cameras.get(0), sun);
+	    ParticleMaster.renderParticles(cameras.get(0));
 	    multisampleFbo.unbindFrameBuffer();
 	    multisampleFbo.resolveToFbo(GL30.GL_COLOR_ATTACHMENT0, outputFbo);
 	    multisampleFbo.resolveToFbo(GL30.GL_COLOR_ATTACHMENT1, outputFbo2);
@@ -256,9 +260,9 @@ public class SceneRenderer implements WorldGethable {
     }
     
     public void renderParticlesToScreen() {
-		pSystem.get(0).generateParticles(player.getPosition());
+		pSystem.get(0).generateParticles(players.get(0).getPosition());
 		pSystem.get(1).generateParticles(new Vector3f(50,terrains.get(0).getHeightOfTerrain(50, 50),50));
-		ParticleMaster.update(camera);
+		ParticleMaster.update(cameras.get(0));
     }
     	
 	public void cleanUp() {
@@ -280,53 +284,85 @@ public class SceneRenderer implements WorldGethable {
 	}
 
 	@Override
-	public GameMap getMap(String name) {
-		for(GameMap map: maps){
-			if(map.getName() == name){
-				return map;
+	public GameMap getMapByName(String name) {
+		GameMap map = null;
+		for(GameMap currentMap: maps){
+			if(currentMap.getName() == name){
+				map = currentMap;
+				break;
 			}
 		}
-		return null;
+		return map;
 	}
 
 	@Override
-	public Camera getCamera(String name) {
+	public Camera getCameraByName(String name) {
+		Camera camera = null;
+		for(Camera currentCamera: cameras){
+			if(currentCamera.getName() == name){
+				camera = currentCamera;
+				break;
+			}
+		}
+		return camera;
+	}
+
+	@Override
+	public Entity getEntityByName(String name) {
+		Entity entity = null;
+		for(Entity currentEntity: entities){
+			if(currentEntity.getName() == name){
+				entity = currentEntity;
+				break;
+			}
+		}
+		return entity;
+	}
+
+	@Override
+	public Player getPlayerByName(String name) {
+		Player player = null;
+		for(Player currentPlayer: players){
+			if(currentPlayer.getName() == name){
+				player = currentPlayer;
+				break;
+			}
+		}
+		return player;
+	}
+
+	@Override
+	public Terrain getTerrainByName(String name) {
+		Terrain terrain = null;
+		for(Terrain currentTerrain: terrains){
+			if(currentTerrain.getName() == name){
+				terrain = currentTerrain;
+				break;
+			}
+		}
+		return terrain;
+	}
+
+	@Override
+	public WaterTile getWaterByName(String name) {
+		WaterTile water = null;
+		for(WaterTile currentWater: waters){
+			if(currentWater.getName() == name){
+				water = currentWater;
+				break;
+			}
+		}
+		return water;
+	}
+
+	@Override
+	public GuiTexture getGuiByName(String name) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Entity getEntity(String name) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Player getPlayer(String name) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Terrain getTerrain(String name) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public WaterTile getWater(String name) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public GuiTexture getGui(String name) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public ParticleSystem getParticles(String name) {
+	public ParticleSystem getParticlesByName(String name) {
 		// TODO Auto-generated method stub
 		return null;
 	}
