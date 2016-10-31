@@ -5,7 +5,7 @@ import org.lwjgl.util.vector.Vector3f;
 
 public class Source {
 	
-	private String sourceName;
+	private String name;
 	private int sourceId;
 	private String pathName;
 	
@@ -14,7 +14,7 @@ public class Source {
 		AL10.alSourcef(sourceId, AL10.AL_ROLLOFF_FACTOR, 1);
 		AL10.alSourcef(sourceId, AL10.AL_REFERENCE_DISTANCE, 6);
 		AL10.alSourcef(sourceId, AL10.AL_MAX_DISTANCE, maxDistance);
-		this.sourceName = name;
+		this.name = name;
 		
 		if (!AudioMaster.getBuffers().containsKey(path)){
 			AudioMaster.loadSound(path);
@@ -27,7 +27,7 @@ public class Source {
 		AL10.alSourcef(sourceId, AL10.AL_ROLLOFF_FACTOR, 1);
 		AL10.alSourcef(sourceId, AL10.AL_REFERENCE_DISTANCE, 6);
 		AL10.alSourcef(sourceId, AL10.AL_MAX_DISTANCE, maxDistance);
-		this.sourceName = name;
+		this.name = name;
 		
 		if (!AudioMaster.getBuffers().containsKey(path)){
 			AudioMaster.loadSound(path);
@@ -41,12 +41,18 @@ public class Source {
 		AL10.alSourcef(sourceId, AL10.AL_ROLLOFF_FACTOR, 1);
 		AL10.alSourcef(sourceId, AL10.AL_REFERENCE_DISTANCE, 6);
 		AL10.alSourcef(sourceId, AL10.AL_MAX_DISTANCE, 20);
-		this.sourceName = "NoName";
+		this.name = "NoName";
 		if (!AudioMaster.getBuffers().containsKey(path)){
 			AudioMaster.loadSound(path);
 		}
 	}
 	
+	
+	
+	public String getName() {
+		return name;
+	}
+
 	public void play() {
 		stop();
 		AL10.alSourcei(sourceId, AL10.AL_BUFFER, AudioMaster.getBuffer(pathName));

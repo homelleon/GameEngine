@@ -31,26 +31,6 @@ public class Terrain {
 	
 	private float[][] heights;
 	
-	public Terrain(int gridX, int gridZ, Loader loader, TerrainTexturePack texturePack,
-			TerrainTexture blendMap, String heightMap) {
-		this.texturePack = texturePack;
-		this.blendMap = blendMap;
-		this.x = gridX * SIZE;
-		this.z = gridZ * SIZE;
-        this.model = generateTerrain(loader, heightMap);
-        this.name = "NoName";
-	}
-	
-	public Terrain(int gridX, int gridZ, Loader loader, TerrainTexturePack texturePack,
-			TerrainTexture blendMap, float amplitude, int octaves, float roughness) {
-		this.texturePack = texturePack;
-		this.blendMap = blendMap;
-		this.x = gridX * SIZE;
-		this.z = gridZ * SIZE;
-		this.model = generateTerrainByProcedure(loader, amplitude, octaves, roughness);
-		this.name = "NoName";
-	}
-	
 	public Terrain(String name, int gridX, int gridZ, Loader loader, TerrainTexturePack texturePack,
 			TerrainTexture blendMap, String heightMap) {
 		this.texturePack = texturePack;
@@ -69,6 +49,10 @@ public class Terrain {
 		this.z = gridZ * SIZE;
 		this.model = generateTerrainByProcedure(loader, amplitude, octaves, roughness);
 		this.name = name;
+	}
+	
+	public float getSize() {
+		return SIZE;
 	}
 	
 	public float getX() {

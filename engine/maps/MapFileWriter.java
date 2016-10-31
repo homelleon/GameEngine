@@ -6,6 +6,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import entities.Entity;
 import scene.Settings;
@@ -24,7 +25,7 @@ public class MapFileWriter implements MapWriteable {
 			lines.add("#This map is createrd by MapFileWriter");
 			
 			if (!map.getEntities().isEmpty()){
-				for(Entity entity : map.getEntities()){
+				for(Entity entity : map.getEntities().values()){
 					String line = "<e> ";
 					line += String.valueOf(entity.getName());
 					line += " ";
@@ -46,7 +47,7 @@ public class MapFileWriter implements MapWriteable {
 			}
 			
 			if (!map.getTerrains().isEmpty()){
-				for(Terrain terrain: map.getTerrains()){
+				for(Terrain terrain: map.getTerrains().values()){
 					String line = "<t> ";
 					line += String.valueOf(terrain.getName());
 				}

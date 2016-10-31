@@ -1,6 +1,7 @@
 package entities;
 
 import java.util.List;
+import java.util.Map;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -18,6 +19,8 @@ public class Player extends Entity {
 	private static final float TURN_SPEED = 80;
 	private static final float JUMP_POWER = 30;
 	
+	private String name;
+	
 	private float currentForwardSpeed = 0;
 	private float currentStrafeSpeed = 0;
 	private float currentTurnSpeed = 0;
@@ -26,8 +29,8 @@ public class Player extends Entity {
 	public boolean isInAir = false;
 	
 	
-	public Player(TexturedModel model, Vector3f position, float rotX, float rotY, float rotZ, float scale) {
-		super(model, position, rotX, rotY, rotZ, scale);
+	public Player(String name, TexturedModel model, Vector3f position, float rotX, float rotY, float rotZ, float scale) {
+		super(name, model, position, rotX, rotY, rotZ, scale);
 	}
 	
 	public void move(List<Terrain> terrains) {
@@ -49,18 +52,16 @@ public class Player extends Entity {
 		upwardsSpeed += Settings.GRAVITY * DisplayManager.getFrameTimeSeconds();
 		super.increasePosition(0, upwardsSpeed * DisplayManager.getFrameTimeSeconds(), 0);
 		
-		for(Terrain terrain : terrains) {
-			
-			if ((super.getPosition().x - terrain.getX())>=0) {
-				float terrainHeight = terrain.getHeightOfTerrain(super.getPosition().x, super.getPosition().z);
-				
-				if(super.getPosition().y < terrainHeight) {
-					upwardsSpeed = 0;
-					isInAir = false;
-					super.getPosition().y = terrainHeight;
-				}				
-			}
+		float terrainHeight = 0; 
+		for(Terrain terrain : terrains) {		
+			terrainHeight += terrain.getHeightOfTerrain(super.getPosition().x, super.getPosition().z);								
 		}
+		
+		if(super.getPosition().y < terrainHeight) {
+			upwardsSpeed = 0;
+			isInAir = false;
+			super.getPosition().y = terrainHeight;
+		} 
 	}
 	
 	private void jump() {

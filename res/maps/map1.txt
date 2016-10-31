@@ -1,17 +1,17 @@
 #map-file for game engine
 #created by @homelleon
 
-<e> cuby1 cube Cube1 50 0 25 4 no
-<e> cuby2 cube Cube1 20 0 25 4 no
-<e> cuby3 cube Cube1 30 0 25 4 no
-<e> cuby4 cube Cube1 42 0 25 4 no
-<e> cuby5 cube Cube1 44 0 25 4 no
-<e> cuby6 cube Cube1 46 0 25 4 no
-<e> cuby7 cube Cube1 48 0 25 4 no
-<e> tree1 tree bark 55 0 30 1 no
-<e> tree2 tree bark 70 0 30 1 no
-<e> tree3 tree bark 80 0 30 1 no
-<e> tree4 tree bark 90 0 30 1 no
-<t> terrain1 0 0 grass ground floweredGrass road blendMap true 100f 5 0.5f
-<t> terrain2 1 0 grass ground floweredGrass road blendMap true 100f 5 0.5f
+<e> Cuby1 cube Cube1 50 0 25 4 no
+<e> Cuby2 cube Cube1 20 0 25 4 no
+<e> Cuby3 cube Cube1 30 0 25 4 no
+<e> Cuby4 cube Cube1 42 0 25 4 no
+<e> Cuby5 cube Cube1 44 0 25 4 no
+<e> Cuby6 cube Cube1 46 0 25 4 no
+<e> Cuby7 cube Cube1 48 0 25 4 no
+<e> Tree1 tree bark 55 0 30 1 no
+<e> Tree2 tree bark 70 0 30 1 no
+<e> Tree3 tree bark 80 0 30 1 no
+<e> Tree4 tree bark 90 0 30 1 no
+<t> Terrain1 0 0 grass ground floweredGrass road blendMap true 100f 5 0.5f
+<t> Terrain2 1 0 grass ground floweredGrass road blendMap true 100f 5 0.5f
 <end>

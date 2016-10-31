@@ -29,7 +29,7 @@ public class MasterRenderer {
 	private Matrix4f projectionMatrix;
 	
 	private StaticShader shader = new StaticShader();
-	private EntityRenderer renderer;
+	private EntityRenderer entityRenderer;
 	
 	private TerrainRenderer terrainRenderer;
 	private TerrainShader terrainShader = new TerrainShader();
@@ -47,10 +47,10 @@ public class MasterRenderer {
 	public MasterRenderer(Loader loader, Camera camera) {
 		enableCulling();
 		createProjectionMatrix();
-		renderer = new EntityRenderer(shader,projectionMatrix);
-		terrainRenderer = new TerrainRenderer(terrainShader, projectionMatrix);
-		skyboxRenderer = new SkyboxRenderer(loader, projectionMatrix);
-		normalMapRenderer = new NormalMappingRenderer(projectionMatrix);
+		this.entityRenderer = new EntityRenderer(shader,projectionMatrix);
+		this.terrainRenderer = new TerrainRenderer(terrainShader, projectionMatrix);
+		this.skyboxRenderer = new SkyboxRenderer(loader, projectionMatrix);
+		this.normalMapRenderer = new NormalMappingRenderer(projectionMatrix);
 		this.shadowMapRenderer = new ShadowMapMasterRenderer(camera);
 	}
 	
@@ -75,9 +75,9 @@ public class MasterRenderer {
 		shader.loadFogDensity(Settings.FOG_DENSITY);
 		shader.loadLights(lights);
 		shader.loadViewMatrix(camera);
-		renderer.render(entities, camera, shadowMapRenderer.getToShadowMapSpaceMatrix());
+		entityRenderer.render(entities, camera, shadowMapRenderer.getToShadowMapSpaceMatrix());
 		shader.stop();
-		normalMapRenderer.render(normalMapEntities, clipPlane, lights, camera,shadowMapRenderer.getToShadowMapSpaceMatrix());
+		normalMapRenderer.render(normalMapEntities, clipPlane, lights, camera, shadowMapRenderer.getToShadowMapSpaceMatrix());
 		terrainShader.start();
 		terrainShader.loadClipPlane(clipPlane);
 		terrainShader.loadSkyColour(Settings.DISPLAY_RED, Settings.DISPLAY_GREEN, Settings.DISPLAY_BLUE);
@@ -104,9 +104,7 @@ public class MasterRenderer {
 		}else{
 			List<Entity> newBatch = new ArrayList<Entity>();
 			newBatch.add(entity);
-			entities.put(entityModel, newBatch);
-			
-				
+			entities.put(entityModel, newBatch);		
 		}
 	}
 	
@@ -118,9 +116,7 @@ public class MasterRenderer {
 		}else{
 			List<Entity> newBatch = new ArrayList<Entity>();
 			newBatch.add(entity);
-			normalMapEntities.put(entityModel, newBatch);
-			
-				
+			normalMapEntities.put(entityModel, newBatch);	
 		}
 	}
 	
@@ -135,7 +131,7 @@ public class MasterRenderer {
 		for(Entity entity : normalEntities) {
 			processNormalMapEntity(entity);
 		}
-		render(lights,camera,clipPlane);
+		render(lights, camera, clipPlane);
 	}
 	
 	public void renderShadowMap(List<Entity> entityList, List<Entity> normalEntities, Player player, Light sun, 
@@ -165,7 +161,7 @@ public class MasterRenderer {
 		shadowMapRenderer.cleanUp();
 	}
 	
-	public void prepare(){
+	public void prepare() {
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT|GL11.GL_DEPTH_BUFFER_BIT);
 		GL11.glClearColor(Settings.DISPLAY_RED, Settings.DISPLAY_GREEN, Settings.DISPLAY_BLUE, 1);

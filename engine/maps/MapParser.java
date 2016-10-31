@@ -3,7 +3,9 @@ package maps;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
@@ -19,7 +21,6 @@ public class MapParser implements MapReadable {
 
 	@Override
 	public GameMap readMap(String fileName, BufferedReader reader, Loader loader) {	
-		GameMap map = new GameMap(fileName);
         String line;
         
 		List<String> eNames = new ArrayList<String>();
@@ -120,7 +121,8 @@ public class MapParser implements MapReadable {
         
         for(int i=0;i<eNames.size();i++) {
         	TexturedModel model = SceneObjectTools.loadStaticModel(eModels.get(i), eTextures.get(i), loader);
-        	entities.add(new Entity(eNames.get(i), model, eCoords.get(i), 0, 0, 0, eScales.get(i)));
+        	Entity entity = new Entity(eNames.get(i), model, eCoords.get(i), 0, 0, 0, eScales.get(i));
+        	entities.add(entity);
         }
         
         //*Create terrains*//
@@ -128,26 +130,31 @@ public class MapParser implements MapReadable {
         
         for(int i=0;i<tNames.size();i++) {
         	if (tProcGens.get(i)) {
-	        	terrains.add(SceneObjectTools.createMultiTexTerrain((int) tCoords.get(i).x, 
+        		Terrain terrain = SceneObjectTools.createMultiTexTerrain(tNames.get(i), (int) tCoords.get(i).x, 
 	        			(int) tCoords.get(i).y, tBaseTexs.get(i), trTexs.get(i), tgTexs.get(i), 
 	        			tbTexs.get(i), tBlends.get(i), tAmplitudes.get(i), tOctaves.get(i), 
-	        			tRoughnesses.get(i), loader));
+	        			tRoughnesses.get(i), loader);
+	        	terrains.add(terrain);
 
         	} else {
-        		terrains.add(SceneObjectTools.createMultiTexTerrain((int) tCoords.get(i).x, 
+        		Terrain terrain = SceneObjectTools.createMultiTexTerrain(tNames.get(i),  (int) tCoords.get(i).x, 
 	        			(int) tCoords.get(i).y, tBaseTexs.get(i), trTexs.get(i), tgTexs.get(i), 
-	        			tbTexs.get(i), tBlends.get(i),tHeights.get(i), loader));
+	        			tbTexs.get(i), tBlends.get(i),tHeights.get(i), loader);
+        		terrains.add(terrain);
         	}
         }
         
         //*Create audios*//
         List<Source> audios = new ArrayList<Source>();    
         
-        for(int i=0;i<audios.size();i++) {      	
-        	audios.add(new Source(aNames.get(i), aPaths.get(i), aMaxDistances.get(i), aCoords.get(i)));
+        for(int i=0;i<audios.size();i++) {
+        	Source source = new Source(aNames.get(i), aPaths.get(i), aMaxDistances.get(i), aCoords.get(i));
+        	audios.add(source);
         }
+        
+		GameMap map = new GameMap(fileName, loader);
      
-		map.setEntities(entities);;
+		map.setEntities(entities);
 		map.setTerrains(terrains);
 		map.setAudios(audios);
 		

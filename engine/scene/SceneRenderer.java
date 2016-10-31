@@ -2,7 +2,10 @@ package scene;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.openal.AL10;
@@ -58,9 +61,9 @@ public class SceneRenderer implements WorldGethable {
 	private boolean isMidday = true;
 	
 	//TODO: Delete unnecessary objects
-	private List<Camera> cameras;
-	private List<Player> players;
-	private List<GameMap> maps;
+	private Map<String, Camera> cameras;
+	private Map<String, Player> players;
+	private GameMap map;
 	private List<GuiTexture> guis;
 	private GuiRenderer guiRenderer;
 	private List<ParticleSystem> pSystem;
@@ -68,70 +71,67 @@ public class SceneRenderer implements WorldGethable {
 	private List<Entity> entities;
 	private List<Entity> normalMapEntities;
 	private List<WaterTile> waters;
+	private List<Light> lights;
 	FontType font;
 	WaterFrameBuffers waterFBOs;
 	private Fbo multisampleFbo;	
 	private Fbo outputFbo;
 	private Fbo outputFbo2;
-	private List<Light> lights;
 	private Light sun;
 	private WaterRenderer waterRenderer;	
 	private GameTime time;
 	private MousePicker picker;
 	
-	public SceneRenderer() {
-		
-		//***************PRE LOAD TOOLS*************//
+	public void loadMap() {
+		/*--------------PRE LOAD TOOLS-------------*/
 		this.loader = new Loader();
+		/*---------------MAP-----------------------*/
 		MapLoadable mapLoader = new MapFileLoader();
-		GameMap map = mapLoader.loadMap("map1", loader);
-		this.maps = new ArrayList<GameMap>();
-		maps.add(map);
+		this.map = mapLoader.loadMap("Map1", loader);	
+	}
+	
+	public void init() {		
+		/*-------------TERRAIN------------------*/
 		
-		//***************TERRAIN********************//
-		
-		this.terrains = map.getTerrains();
+		this.terrains = new ArrayList<Terrain>(); 
+		terrains.addAll(map.getTerrains().values());
 
-        //***********GAME OBJECTS****************//
+        /*--------------GAME OBJECTS-------------*/
 		
-		this.entities = EntitiesManager.createEntities(loader);
-		this.normalMapEntities = EntitiesManager.createNormalMappedEntities(loader);
-		
-		entities.addAll(map.getEntities());
+		this.entities = new ArrayList<Entity>(); 
+		this.normalMapEntities = new ArrayList<Entity>();
+		normalMapEntities = EntitiesManager.createNormalMappedEntities(loader);
+		entities = EntitiesManager.createEntities(loader);
+		entities.addAll(map.getEntities().values());
 
 		
 		spreadOnHeights(entities);
 		spreadOnHeights(normalMapEntities);
-		for(Entity entity : normalMapEntities) {
-			if(entity.getName() == "boulder") {
-				entity.increasePosition(0, 20, 0);
-			}
-		}
 		
-		//***********LIGHTS****************//
+		/*------------------LIGHTS----------------*/
 		this.lights = new ArrayList<Light>();
-		this.sun = new Light(new Vector3f(100000,1500000,-100000),new Vector3f(1.3f,1.3f,1.3f));
+		this.sun = new Light("Sun", new Vector3f(100000,1500000,-100000),new Vector3f(1.3f,1.3f,1.3f));
 		lights.add(sun);
 		//lights.add(new Light(new Vector3f(200,2,200),new Vector3f(10,0,0), new Vector3f(1, 0.01f, 0.002f)));
 		//lights.add(new Light(new Vector3f(20,2,20),new Vector3f(0,10,0), new Vector3f(0, 0.01f, 0.002f)));
 		
-		//***********PLAYER****************//
+		/*------------------PLAYER-----------------*/
 		TexturedModel cubeModel = SceneObjectTools.loadStaticModel("cube", "cube1", loader);
-		this.players = new ArrayList<Player>();
-		Player player = new Player(cubeModel, new Vector3f(100, 0, 10), 0, 0, 0, 1);
-		players.add(player);
-		this.cameras = new ArrayList<Camera>();
-		Camera camera = new Camera(player, "Игрок1");
-		cameras.add(camera);
+		this.players = new HashMap<String, Player>();
+		Player player = new Player("Player1",cubeModel, new Vector3f(100, 0, 10), 0, 0, 0, 1);
+		players.put(player.getName(), player);
+		this.cameras = new HashMap<String, Camera>();
+		Camera camera = new Camera(player, "Player1");
+		cameras.put(camera.getName(), camera);
 		this.time = new GameTime(10);
 		
 		this.renderer = new MasterRenderer(loader, camera);		
 		
-		//**************PARTICLES***************//
+		/*----------------PARTICLES-----------------*/
 		this.pSystem = ParticlesManager.createParticleSystem(loader);		
 		ParticleMaster.init(loader, renderer.getProjectionMatrix());
 		
-		//******************FBO*******************//
+		/*------------------FBO-------------------*/
 		
 		this.multisampleFbo = new Fbo(Display.getWidth(),Display.getHeight());
 		this.outputFbo = new Fbo(Display.getWidth(),Display.getHeight(), Fbo.DEPTH_TEXTURE);
@@ -140,7 +140,7 @@ public class SceneRenderer implements WorldGethable {
 		PostProcessing.isBlured = true;
 		PostProcessing.init(loader);
 
-		//*******************FONTS*************//
+		/*----------------FONTS-----------------*/
 		TextMaster.init(loader);
 		this.font = 
 				new FontType(loader.loadTexture(Settings.FONT_PATH, "candara"),
@@ -149,7 +149,8 @@ public class SceneRenderer implements WorldGethable {
 				3, font, new Vector2f(0.25f, 0), 0.5f, true);
 		
 		text.setColour(1, 0, 0);
-		//*******************AUDIO*************//
+		
+		/*--------------AUDIO----------------*/
 		
 		AudioMaster.init();
 		AudioMaster.setListenerData(0,0,0);
@@ -160,22 +161,23 @@ public class SceneRenderer implements WorldGethable {
 		ambientSource.play();
 		ambientSource.setPosition(10, 20, 10);			
 		
-		//***************GUI***********//
-		this.guis = GuiManager.createGui(loader);	
+		/*--------------GUI-----------------*/
+		this.guis = GuiManager.createGui(loader);
 		this.guiRenderer = new GuiRenderer(loader);		
-		//**************WATER***********************//
+		
+		/*--------------WATER----------------*/
 		this.waterFBOs = new WaterFrameBuffers();
 		WaterShader waterShader = new WaterShader();
 		this.waterRenderer = new WaterRenderer(loader, waterShader, renderer.getProjectionMatrix(), waterFBOs);
-		this.waters = new ArrayList<WaterTile>(); 
-		waters.add(new WaterTile("Water",0, 0, -4, 1000));
+		this.waters = new ArrayList<WaterTile>();
+		WaterTile water = new  WaterTile("Water",0, 0, -4, 1000);
+		waters.add(water);
 		waters.stream().forEach((i) -> i.setTilingSize(0.05f));
 		waters.stream().forEach((i) -> i.setWaterSpeed(0.7f));
 		waters.stream().forEach((i) -> i.setWaveStrength(0.1f));		
 		
-	//**************IN GAME TOOLS**************************//	
+		/*---------------IN GAME TOOLS--------------*/	
 		this.picker = new MousePicker(camera, renderer.getProjectionMatrix());
-		
 		
 	}
 			
@@ -189,7 +191,7 @@ public class SceneRenderer implements WorldGethable {
 		}
 		if(Keyboard.isKeyDown(Keyboard.KEY_T)) {
 			MapWriteable mapWriter = new MapFileWriter();
-			GameMap map = new GameMap("coolmap");
+			GameMap map = new GameMap("coolmap", loader);
 			map.setEntities(entities);
 			map.setTerrains(terrains);
 			mapWriter.write(map);
@@ -197,45 +199,30 @@ public class SceneRenderer implements WorldGethable {
 		}
 		
 		renderParticlesToScreen();
-		renderer.renderShadowMap(entities, normalMapEntities, players.get(0), sun, cameras.get(0));				
+		renderer.renderShadowMap(entities, normalMapEntities, players.get("Player1"), sun, cameras.get("Player1"));				
 		GL11.glEnable(GL30.GL_CLIP_DISTANCE0);
 		renderReflectionTexture();		
 		renderRefractionTexture();
 	    renderToScreen();
 	}
-	
-	private void spreadOnHeights(List<Entity> entities) {
-		for(Entity entity : entities) {
-			entity.setPosition(new Vector3f(entity.getPosition().x, 
-					terrains.get(0).getHeightOfTerrain(entity.getPosition().x, 
-							entity.getPosition().z), entity.getPosition().z));
-		}
-	}
-	
-	
-    private void moves() {
-    	cameras.get(0).move();
-		players.get(0).move(terrains);
-		AudioMaster.setListenerData(cameras.get(0).getPosition().x, cameras.get(0).getPosition().y, cameras.get(0).getPosition().z);
-    }
     
     private void renderReflectionTexture() {
     	waterFBOs.bindReflectionFrameBuffer();
-		float distance = 2 * (cameras.get(0).getPosition().y - waters.get(0).getHeight());
-		cameras.get(0).getPosition().y -= distance;
-		cameras.get(0).invertPitch();
-		renderer.processEntity(players.get(0));
+		float distance = 2 * (cameras.get("Player1").getPosition().y - waters.get(0).getHeight());
+		cameras.get("Player1").getPosition().y -= distance;
+		cameras.get("Player1").invertPitch();
+		renderer.processEntity(players.get("Player1"));
 		renderer.renderScene(entities, normalMapEntities, terrains, lights, 
-				cameras.get(0), new Vector4f(0, 1, 0, -waters.get(0).getHeight()));
-		cameras.get(0).getPosition().y += distance;
-		cameras.get(0).invertPitch();
+				cameras.get("Player1"), new Vector4f(0, 1, 0, -waters.get(0).getHeight()));
+		cameras.get("Player1").getPosition().y += distance;
+		cameras.get("Player1").invertPitch();
     }
     
     private void renderRefractionTexture() {
     	waterFBOs.bindRefractionFrameBuffer();
-		renderer.processEntity(players.get(0));
+		renderer.processEntity(players.get("Player1"));
 		renderer.renderScene(entities, normalMapEntities, terrains, lights, 
-				cameras.get(0), new Vector4f(0, -1, 0, waters.get(0).getHeight()+1f));
+				cameras.get("Player1"), new Vector4f(0, -1, 0, waters.get(0).getHeight()+1f));
 
     }
     
@@ -244,10 +231,11 @@ public class SceneRenderer implements WorldGethable {
 		waterFBOs.unbindCurrentFrameBuffer();
 	    
 		multisampleFbo.bindFrameBuffer();
-	    renderer.processEntity(players.get(0));
-	    renderer.renderScene(entities, normalMapEntities, terrains, lights, cameras.get(0), new Vector4f(0, -1, 0, 15));
-	    waterRenderer.render(waters, cameras.get(0), sun);
-	    ParticleMaster.renderParticles(cameras.get(0));
+	    renderer.processEntity(players.get("Player1"));
+	    renderer.renderScene(entities, normalMapEntities, terrains,	lights, 
+	    		cameras.get("Player1"), new Vector4f(0, -1, 0, 15));
+	    waterRenderer.render(waters, cameras.get("Player1"), sun);
+	    ParticleMaster.renderParticles(cameras.get("Player1"));
 	    multisampleFbo.unbindFrameBuffer();
 	    multisampleFbo.resolveToFbo(GL30.GL_COLOR_ATTACHMENT0, outputFbo);
 	    multisampleFbo.resolveToFbo(GL30.GL_COLOR_ATTACHMENT1, outputFbo2);
@@ -260,9 +248,9 @@ public class SceneRenderer implements WorldGethable {
     }
     
     public void renderParticlesToScreen() {
-		pSystem.get(0).generateParticles(players.get(0).getPosition());
+		pSystem.get(0).generateParticles(players.get("Player1").getPosition());
 		pSystem.get(1).generateParticles(new Vector3f(50,terrains.get(0).getHeightOfTerrain(50, 50),50));
-		ParticleMaster.update(cameras.get(0));
+		ParticleMaster.update(cameras.get("Player1"));
     }
     	
 	public void cleanUp() {
@@ -279,92 +267,33 @@ public class SceneRenderer implements WorldGethable {
 		loader.cleanUp();
 	}
 	
+	private void spreadOnHeights(List<Entity> entities) {
+		if (!entities.isEmpty()) {
+			for(Entity entity : entities){
+				float terrainHeight = 0;
+				
+				for(Terrain terrain : terrains){
+					terrainHeight += terrain.getHeightOfTerrain(entity.getPosition().x, entity.getPosition().z);
+				}
+				entity.setPosition(new Vector3f(entity.getPosition().x, terrainHeight, entity.getPosition().z));
+			}
+		}
+	}
+	
+	
+    private void moves() {
+    	cameras.get("Player1").move();
+		players.get("Player1").move(terrains);
+		AudioMaster.setListenerData(cameras.get("Player1").getPosition().x, cameras.get("Player1").getPosition().y, cameras.get("Player1").getPosition().z);
+    }
+	
 	public GUIText createFPSText(float FPS) {
 		return new GUIText("FPS: " + String.valueOf((int)FPS), 2, font, new Vector2f(0.65f, 0), 0.5f, true);
 	}
 
 	@Override
-	public GameMap getMapByName(String name) {
-		GameMap map = null;
-		for(GameMap currentMap: maps){
-			if(currentMap.getName() == name){
-				map = currentMap;
-				break;
-			}
-		}
+	public GameMap getMap() {
 		return map;
-	}
-
-	@Override
-	public Camera getCameraByName(String name) {
-		Camera camera = null;
-		for(Camera currentCamera: cameras){
-			if(currentCamera.getName() == name){
-				camera = currentCamera;
-				break;
-			}
-		}
-		return camera;
-	}
-
-	@Override
-	public Entity getEntityByName(String name) {
-		Entity entity = null;
-		for(Entity currentEntity: entities){
-			if(currentEntity.getName() == name){
-				entity = currentEntity;
-				break;
-			}
-		}
-		return entity;
-	}
-
-	@Override
-	public Player getPlayerByName(String name) {
-		Player player = null;
-		for(Player currentPlayer: players){
-			if(currentPlayer.getName() == name){
-				player = currentPlayer;
-				break;
-			}
-		}
-		return player;
-	}
-
-	@Override
-	public Terrain getTerrainByName(String name) {
-		Terrain terrain = null;
-		for(Terrain currentTerrain: terrains){
-			if(currentTerrain.getName() == name){
-				terrain = currentTerrain;
-				break;
-			}
-		}
-		return terrain;
-	}
-
-	@Override
-	public WaterTile getWaterByName(String name) {
-		WaterTile water = null;
-		for(WaterTile currentWater: waters){
-			if(currentWater.getName() == name){
-				water = currentWater;
-				break;
-			}
-		}
-		return water;
-	}
-
-	@Override
-	public GuiTexture getGuiByName(String name) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public ParticleSystem getParticlesByName(String name) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }

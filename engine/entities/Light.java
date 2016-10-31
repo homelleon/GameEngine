@@ -8,15 +8,25 @@ public class Light {
 	private Vector3f colour;
 	private Vector3f attenuation = new Vector3f(1, 0, 0);
 	
-	public Light(Vector3f position, Vector3f colour) {
-		this.position = position;
-		this.colour = colour;
+	private String name;
+	
+	
+	public String getName() {
+		return name;
 	}
 	
-	public Light(Vector3f position, Vector3f colour, Vector3f attenuation) {
+	public Light(String name, Vector3f position, Vector3f colour) {
+		this.position = position;
+		this.colour = colour;
+		this.name = name;
+	}
+	
+	public Light(String name, Vector3f position, Vector3f colour, Vector3f attenuation) {
 		this.position = position;
 		this.colour = colour;
 		this.attenuation = attenuation;
+		this.name = name;
+		
 	}
 
 	public Vector3f getAttenuation() {

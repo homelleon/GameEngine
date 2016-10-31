@@ -21,13 +21,13 @@ import water.WaterTile;
 public class SceneObjectTools {
 	
 	public static TexturedModel loadStaticModel(String objFile, 
-			String textureName, Loader loader) {
+			String texName, Loader loader) {
 		ModelData data = OBJFileLoader.loadOBJ(objFile);
 		RawModel rawModel = loader.loadToVAO(data.getVertices(), 
 				data.getTextureCoords(), data.getNormals(), 
 				data.getIndices());
 	    TexturedModel staticModel = new TexturedModel(objFile, rawModel,
-	    		new ModelTexture(textureName, loader.loadTexture(Settings.MODEL_TEXTURE_PATH, textureName)));
+	    		new ModelTexture(texName, loader.loadTexture(Settings.MODEL_TEXTURE_PATH, texName)));
 	    return staticModel;
 	}
 	
@@ -80,7 +80,7 @@ public class SceneObjectTools {
 		return waters;
 	}
 	
-	public static Terrain createMultiTexTerrain(int x, int y, String basicTexture, 
+	public static Terrain createMultiTexTerrain(String name, int x, int y, String basicTexture, 
 			String redTexture, String greenTexture, String blueTexture, 
 			String blendTexture, String heightTexture, Loader loader) {
 		TerrainTexture backgroundTexture =
@@ -96,11 +96,11 @@ public class SceneObjectTools {
 				new TerrainTexturePack(backgroundTexture, rTexture, gTexture, bTexture);
 		TerrainTexture blendMap = 
 				new TerrainTexture(loader.loadTexture(Settings.BLEND_MAP_PATH,blendTexture));
-		Terrain terrain = new Terrain(x,y,loader,texturePack, blendMap, heightTexture);	
+		Terrain terrain = new Terrain(name, x,y,loader,texturePack, blendMap, heightTexture);	
 		return terrain;
 	}
 	
-	public static Terrain createMultiTexTerrain(int x, int y, String basicTexture, 
+	public static Terrain createMultiTexTerrain(String name, int x, int y, String basicTexture, 
 			String redTexture, String greenTexture,	String blueTexture,
 			String blendTexture, float amplitude, int octaves, float roughness,
 			Loader loader) {
@@ -118,7 +118,7 @@ public class SceneObjectTools {
 		TerrainTexture blendMap = 
 				new TerrainTexture(loader.loadTexture(Settings.BLEND_MAP_PATH,blendTexture));
 		Terrain terrain = 
-				new Terrain(x,y,loader,texturePack, blendMap, amplitude, octaves, roughness);
+				new Terrain(name, x,y,loader,texturePack, blendMap, amplitude, octaves, roughness);
 		return terrain;
 	}
 	

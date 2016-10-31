@@ -18,7 +18,7 @@ public class EntitiesManager {
 		List<Entity> entities = new ArrayList<Entity>();
 		//******StaticModels***************//
 		//Grass/
-		TexturedModel grassModel = SceneObjectTools.loadStaticModel("grass", "grass", loader);		
+		//TexturedModel grassModel = SceneObjectTools.loadStaticModel("grass", "grass", loader);		
 		//Stall//
 	    TexturedModel stallModel = SceneObjectTools.loadStaticModel("stall", "stallTexture", loader);
 	    stallModel.getTexture().setShineDamper(5);
@@ -41,7 +41,7 @@ public class EntitiesManager {
 	
 			
 		//Entities attach
-		List<Entity> grasses = SceneObjectTools.createGrassField(0, 0, 800, 1, 0.2f, loader);
+		//List<Entity> grasses = SceneObjectTools.createGrassField(0, 0, 1500, 1, 0.2f, loader);
 		Entity stall = new Entity("stall", stallModel, new Vector3f(50,0,50),0,0,0,4);
 		Entity cube = new Entity("cube", cubeModel, new Vector3f(100,0,10),0,0,0,1);
 		Entity cherry = new Entity("cherry", cherryModel, new Vector3f(150, 0, 150), 0,0,0,4);
@@ -51,7 +51,7 @@ public class EntitiesManager {
 		entities.add(stall);
 		entities.add(cherry);
 		entities.add(tree);
-		entities.addAll(grasses);
+		//entities.addAll(grasses);
 		
 		return entities;
 	}

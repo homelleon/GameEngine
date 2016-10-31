@@ -9,6 +9,8 @@ import org.lwjgl.util.vector.Vector4f;
 import renderEngine.DisplayManager;
  
 public class ParticleSystem {
+	
+    private String name;
  
     private float pps, averageSpeed, gravityComplient, averageLifeLength, averageScale;
  
@@ -21,7 +23,8 @@ public class ParticleSystem {
  
     private Random random = new Random();
  
-    public ParticleSystem(ParticleTexture texture, float pps, float speed, float gravityComplient, float lifeLength, float scale) {
+    public ParticleSystem(String name, ParticleTexture texture, float pps, float speed, float gravityComplient, float lifeLength, float scale) {
+    	this.name = name;
         this.pps = pps;
         this.averageSpeed = speed;
         this.gravityComplient = gravityComplient;
@@ -29,8 +32,13 @@ public class ParticleSystem {
         this.averageScale = scale;
         this.texture = texture;
     }
+    
  
-    /**
+    public String getName() {
+		return name;
+	}
+
+	/**
      * @param direction - The average direction in which particles are emitted.
      * @param deviation - A value between 0 and 1 indicating how far from the chosen direction particles can deviate.
      */
