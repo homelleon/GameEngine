@@ -53,7 +53,8 @@ import water.WaterTile;
 
 public class SceneRenderer implements WorldGethable {
 
-	public static boolean gamePaused = false;	
+	private static boolean isScebePaused = false;
+	private static boolean isEditMode = false;
 	private Loader loader;
 	private MasterRenderer renderer;
 	private Source ambientSource;
@@ -82,12 +83,22 @@ public class SceneRenderer implements WorldGethable {
 	private GameTime time;
 	private MousePicker picker;
 	
-	public void loadMap() {
+	public SceneRenderer(boolean isEditMode) {
+			this.isEditMode = isEditMode;
+	}
+	
+	@Override
+	public void setScenePaused(boolean value) {
+		this.isScebePaused = value;
+	}
+	
+	@Override
+	public void loadMap(String name) {
 		/*--------------PRE LOAD TOOLS-------------*/
 		this.loader = new Loader();
 		/*---------------MAP-----------------------*/
 		MapLoadable mapLoader = new MapFileLoader();
-		this.map = mapLoader.loadMap("Map1", loader);	
+		this.map = mapLoader.loadMap(name, loader);	
 	}
 	
 	public void init() {		
@@ -182,7 +193,7 @@ public class SceneRenderer implements WorldGethable {
 	}
 			
 	public void render() {
-		if (gamePaused == false) {
+		if (isScebePaused == false) {
 			time.start();
 			moves();	
 		}else{
