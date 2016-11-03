@@ -38,8 +38,6 @@ public class GameMap {
 	public String getName() {
 		return name;
 	}
-		
-	
 
 	public Map<String, Entity> getEntities() {
 		return entities;

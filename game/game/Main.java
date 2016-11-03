@@ -11,7 +11,7 @@ public class Main {
 
 	public static void main(String[] args) {
 		Engine testEngine = new MainGameLoop();
-		testEngine.LoadMap("Map1");
+		testEngine.LoadMap("map1");
 		preInit(testEngine);
 		testEngine.init();
 		afterInit(testEngine);

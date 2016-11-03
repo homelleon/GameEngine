@@ -27,7 +27,12 @@ public class Terrain {
 	private RawModel model;
 	private TerrainTexturePack texturePack;
 	private TerrainTexture blendMap;
+	private String heightMapName;
+	private boolean isProcedureGenerated = false;
 	private String name;
+	private float amplitude;
+	private int octaves;
+	private float roughness;
 	
 	private float[][] heights;
 	
@@ -47,6 +52,9 @@ public class Terrain {
 		this.blendMap = blendMap;
 		this.x = gridX * SIZE;
 		this.z = gridZ * SIZE;
+		this.amplitude = amplitude;
+		this.octaves = octaves;
+		this.roughness = roughness;
 		this.model = generateTerrainByProcedure(loader, amplitude, octaves, roughness);
 		this.name = name;
 	}
@@ -79,6 +87,26 @@ public class Terrain {
 		return blendMap;
 	}
 	
+	public String getHeightMapName() {
+		return heightMapName;
+	}
+	
+	public boolean isProcedureGenerated() {
+		return isProcedureGenerated;
+	}
+	
+	public float getAmplitude() {
+		return amplitude;
+	}
+
+	public int getOctaves() {
+		return octaves;
+	}
+
+	public float getRoughness() {
+		return roughness;
+	}
+
 	public float getHeightOfTerrain(float worldX, float worldZ) {
 		float terrainX = worldX - this.x;
 		float terrainZ = worldZ - this.z;
@@ -110,6 +138,7 @@ public class Terrain {
 		BufferedImage image = null;
 		try {
 			image = ImageIO.read(new File(Settings.HEIGHT_MAP_PATH + heightMap+".png"));
+			this.heightMapName = heightMap;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -156,7 +185,7 @@ public class Terrain {
 	}
 	
 	private RawModel generateTerrainByProcedure(Loader loader, float amp, int oct, float rough) {
-		
+		this.isProcedureGenerated = true;
 		HeightsGenerator generator = new HeightsGenerator(amp, oct, rough);
 		
 		int VERTEX_COUNT = 128;

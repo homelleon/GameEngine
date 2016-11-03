@@ -84,18 +84,18 @@ public class SceneObjectTools {
 			String redTexture, String greenTexture, String blueTexture, 
 			String blendTexture, String heightTexture, Loader loader) {
 		TerrainTexture backgroundTexture =
-				new TerrainTexture(loader.loadTexture(Settings.TERRAIN_TEXTURE_PATH, basicTexture));
+				new TerrainTexture(basicTexture, loader.loadTexture(Settings.TERRAIN_TEXTURE_PATH, basicTexture));
 		TerrainTexture rTexture = 
-				new TerrainTexture(loader.loadTexture(Settings.TERRAIN_TEXTURE_PATH, redTexture));
+				new TerrainTexture(redTexture, loader.loadTexture(Settings.TERRAIN_TEXTURE_PATH, redTexture));
 		TerrainTexture gTexture = 
-				new TerrainTexture(loader.loadTexture(Settings.TERRAIN_TEXTURE_PATH, greenTexture));
+				new TerrainTexture(greenTexture, loader.loadTexture(Settings.TERRAIN_TEXTURE_PATH, greenTexture));
 		TerrainTexture bTexture = 
-				new TerrainTexture(loader.loadTexture(Settings.TERRAIN_TEXTURE_PATH, blueTexture));
+				new TerrainTexture(blueTexture, loader.loadTexture(Settings.TERRAIN_TEXTURE_PATH, blueTexture));
 		
 		TerrainTexturePack texturePack = 
-				new TerrainTexturePack(backgroundTexture, rTexture, gTexture, bTexture);
+				new TerrainTexturePack(backgroundTexture + "Pack", backgroundTexture, rTexture, gTexture, bTexture);
 		TerrainTexture blendMap = 
-				new TerrainTexture(loader.loadTexture(Settings.BLEND_MAP_PATH,blendTexture));
+				new TerrainTexture(blendTexture, loader.loadTexture(Settings.BLEND_MAP_PATH, blendTexture));
 		Terrain terrain = new Terrain(name, x,y,loader,texturePack, blendMap, heightTexture);	
 		return terrain;
 	}
@@ -105,18 +105,18 @@ public class SceneObjectTools {
 			String blendTexture, float amplitude, int octaves, float roughness,
 			Loader loader) {
 		TerrainTexture backgroundTexture = 
-				new TerrainTexture(loader.loadTexture(Settings.TERRAIN_TEXTURE_PATH, basicTexture));
+				new TerrainTexture(basicTexture, loader.loadTexture(Settings.TERRAIN_TEXTURE_PATH, basicTexture));
 		TerrainTexture rTexture = 
-				new TerrainTexture(loader.loadTexture(Settings.TERRAIN_TEXTURE_PATH, redTexture));
+				new TerrainTexture(redTexture, loader.loadTexture(Settings.TERRAIN_TEXTURE_PATH, redTexture));
 		TerrainTexture gTexture = 
-				new TerrainTexture(loader.loadTexture(Settings.TERRAIN_TEXTURE_PATH, greenTexture));
+				new TerrainTexture(greenTexture, loader.loadTexture(Settings.TERRAIN_TEXTURE_PATH, greenTexture));
 		TerrainTexture bTexture = 
-				new TerrainTexture(loader.loadTexture(Settings.TERRAIN_TEXTURE_PATH, blueTexture));
+				new TerrainTexture(blueTexture, loader.loadTexture(Settings.TERRAIN_TEXTURE_PATH, blueTexture));
 		
 		TerrainTexturePack texturePack = 
-				new TerrainTexturePack(backgroundTexture, rTexture,	gTexture, bTexture);
+				new TerrainTexturePack(basicTexture + "Pack", backgroundTexture, rTexture,	gTexture, bTexture);
 		TerrainTexture blendMap = 
-				new TerrainTexture(loader.loadTexture(Settings.BLEND_MAP_PATH,blendTexture));
+				new TerrainTexture(blendTexture, loader.loadTexture(Settings.BLEND_MAP_PATH,blendTexture));
 		Terrain terrain = 
 				new Terrain(name, x,y,loader,texturePack, blendMap, amplitude, octaves, roughness);
 		return terrain;

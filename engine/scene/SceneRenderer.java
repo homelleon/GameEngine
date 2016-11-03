@@ -53,7 +53,7 @@ import water.WaterTile;
 
 public class SceneRenderer implements WorldGethable {
 
-	private static boolean isScebePaused = false;
+	private static boolean isPaused = false;
 	private static boolean isEditMode = false;
 	private Loader loader;
 	private MasterRenderer renderer;
@@ -89,7 +89,7 @@ public class SceneRenderer implements WorldGethable {
 	
 	@Override
 	public void setScenePaused(boolean value) {
-		this.isScebePaused = value;
+		this.isPaused = value;
 	}
 	
 	@Override
@@ -191,18 +191,24 @@ public class SceneRenderer implements WorldGethable {
 		this.picker = new MousePicker(camera, renderer.getProjectionMatrix());
 		
 	}
+	
+	/*Main render*/
 			
 	public void render() {
-		if (isScebePaused == false) {
+		if(!isPaused) {
 			time.start();
 			moves();	
-		}else{
+		}
+		
+		if(isPaused || isEditMode) {
 			picker.update();
 			System.out.println(picker.getCurrentRay());
 		}
+		
+		
 		if(Keyboard.isKeyDown(Keyboard.KEY_T)) {
 			MapWriteable mapWriter = new MapFileWriter();
-			GameMap map = new GameMap("coolmap", loader);
+			GameMap map = new GameMap("newMap", loader);
 			map.setEntities(entities);
 			map.setTerrains(terrains);
 			mapWriter.write(map);
@@ -217,6 +223,8 @@ public class SceneRenderer implements WorldGethable {
 	    renderToScreen();
 	}
     
+	/*Render to FBO reflection texture*/
+	
     private void renderReflectionTexture() {
     	waterFBOs.bindReflectionFrameBuffer();
 		float distance = 2 * (cameras.get("Player1").getPosition().y - waters.get(0).getHeight());
@@ -229,6 +237,8 @@ public class SceneRenderer implements WorldGethable {
 		cameras.get("Player1").invertPitch();
     }
     
+    /*Render to FBO refraction texture*/
+    
     private void renderRefractionTexture() {
     	waterFBOs.bindRefractionFrameBuffer();
 		renderer.processEntity(players.get("Player1"));
@@ -236,6 +246,8 @@ public class SceneRenderer implements WorldGethable {
 				cameras.get("Player1"), new Vector4f(0, -1, 0, waters.get(0).getHeight()+1f));
 
     }
+    
+    /*Render to Screen*/
     
     private void renderToScreen() {
 		GL11.glDisable(GL30.GL_CLIP_DISTANCE0);
@@ -252,10 +264,7 @@ public class SceneRenderer implements WorldGethable {
 	    multisampleFbo.resolveToFbo(GL30.GL_COLOR_ATTACHMENT1, outputFbo2);
 	    PostProcessing.doPostProcessing(outputFbo.getColourTexture(), outputFbo2.getColourTexture());
 	    guiRenderer.render(guis);
-	    GUIText text = createFPSText(1 / DisplayManager.getFrameTimeSeconds());
-	    text.setColour(1, 0, 0);
-	    TextMaster.render();
-	    text.remove();
+	    renderText();	    
     }
     
     public void renderParticlesToScreen() {
@@ -291,7 +300,6 @@ public class SceneRenderer implements WorldGethable {
 		}
 	}
 	
-	
     private void moves() {
     	cameras.get("Player1").move();
 		players.get("Player1").move(terrains);
@@ -300,6 +308,22 @@ public class SceneRenderer implements WorldGethable {
 	
 	public GUIText createFPSText(float FPS) {
 		return new GUIText("FPS: " + String.valueOf((int)FPS), 2, font, new Vector2f(0.65f, 0), 0.5f, true);
+	}
+	
+	public GUIText createPickerCoordsText(MousePicker picker) {
+		picker.update();
+		String text = (String) String.valueOf(picker.getCurrentRay());
+		return new GUIText(text, 1, font, new Vector2f(0.3f, 0.2f), 1f, true);
+	}
+	
+	public void renderText() {
+		GUIText fpsText = createFPSText(1 / DisplayManager.getFrameTimeSeconds());
+	    fpsText.setColour(1, 0, 0);
+	    GUIText coordsText = createPickerCoordsText(picker);
+	    coordsText.setColour(1, 0, 0);
+	    TextMaster.render();
+	    fpsText.remove();
+	    coordsText.remove();				
 	}
 
 	@Override
