@@ -5,7 +5,7 @@ import org.lwjgl.opengl.Display;
 
 import maps.GameMap;
 import renderEngine.DisplayManager;
-import scene.SceneRenderer;
+import scene.GameSceneRenderer;
 import scene.WorldGethable;
 import triggers.Trigger;
 
@@ -16,7 +16,7 @@ public class MainGameLoop implements Engine {
 	
 	public MainGameLoop() {
 		DisplayManager.creatDisplay();
-		scene = new SceneRenderer(false);
+		scene = new GameSceneRenderer();
 	}
 	
 	@Override

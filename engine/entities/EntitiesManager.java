@@ -38,7 +38,6 @@ public class EntitiesManager {
 		TexturedModel treeModel = SceneObjectTools.loadStaticModel("tree", "bark", loader);
 		treeModel.getTexture().setShineDamper(10);
 		treeModel.getTexture().setReflectivity(0.5f);
-	
 			
 		//Entities attach
 		//List<Entity> grasses = SceneObjectTools.createGrassField(0, 0, 1500, 1, 0.2f, loader);

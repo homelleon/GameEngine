@@ -2,7 +2,6 @@ package scene;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +21,7 @@ import audio.Source;
 import entities.Camera;
 import entities.EntitiesManager;
 import entities.Entity;
+import entities.FreeCamera;
 import entities.Light;
 import entities.Player;
 import fontMeshCreator.FontType;
@@ -51,10 +51,9 @@ import water.WaterRenderer;
 import water.WaterShader;
 import water.WaterTile;
 
-public class SceneRenderer implements WorldGethable {
+public class EditorSceneRenderer implements WorldGethable {
 
 	private static boolean isPaused = false;
-	private static boolean isEditMode = false;
 	private Loader loader;
 	private MasterRenderer renderer;
 	private Source ambientSource;
@@ -82,10 +81,6 @@ public class SceneRenderer implements WorldGethable {
 	private WaterRenderer waterRenderer;	
 	private GameTime time;
 	private MousePicker picker;
-	
-	public SceneRenderer(boolean isEditMode) {
-			this.isEditMode = isEditMode;
-	}
 	
 	@Override
 	public void setScenePaused(boolean value) {
@@ -132,7 +127,7 @@ public class SceneRenderer implements WorldGethable {
 		Player player = new Player("Player1",cubeModel, new Vector3f(100, 0, 10), 0, 0, 0, 1);
 		players.put(player.getName(), player);
 		this.cameras = new HashMap<String, Camera>();
-		Camera camera = new Camera(player, "Player1");
+		Camera camera = new FreeCamera("Free", 20, 10, 20);
 		cameras.put(camera.getName(), camera);
 		this.time = new GameTime(10);
 		
@@ -156,7 +151,7 @@ public class SceneRenderer implements WorldGethable {
 		this.font = 
 				new FontType(loader.loadTexture(Settings.FONT_PATH, "candara"),
 						new File(Settings.FONT_PATH + "candara.fnt"));
-		GUIText text = new GUIText("This is an Alfa-version of the game engine", 
+		GUIText text = new GUIText("Edit mode", 
 				3, font, new Vector2f(0.25f, 0), 0.5f, true);
 		
 		text.setColour(1, 0, 0);
@@ -200,7 +195,7 @@ public class SceneRenderer implements WorldGethable {
 			moves();	
 		}
 		
-		if(isPaused || isEditMode) {
+		if(isPaused) {
 			picker.update();
 			System.out.println(picker.getCurrentRay());
 		}
@@ -216,7 +211,7 @@ public class SceneRenderer implements WorldGethable {
 		}
 		
 		renderParticlesToScreen();
-		renderer.renderShadowMap(entities, normalMapEntities, players.get("Player1"), sun, cameras.get("Player1"));				
+		renderer.renderShadowMap(entities, normalMapEntities, players.get("Player1"), sun, cameras.get("Free"));				
 		GL11.glEnable(GL30.GL_CLIP_DISTANCE0);
 		renderReflectionTexture();		
 		renderRefractionTexture();
@@ -227,14 +222,14 @@ public class SceneRenderer implements WorldGethable {
 	
     private void renderReflectionTexture() {
     	waterFBOs.bindReflectionFrameBuffer();
-		float distance = 2 * (cameras.get("Player1").getPosition().y - waters.get(0).getHeight());
-		cameras.get("Player1").getPosition().y -= distance;
-		cameras.get("Player1").invertPitch();
+		float distance = 2 * (cameras.get("Free").getPosition().y - waters.get(0).getHeight());
+		cameras.get("Free").getPosition().y -= distance;
+		cameras.get("Free").invertPitch();
 		renderer.processEntity(players.get("Player1"));
 		renderer.renderScene(entities, normalMapEntities, terrains, lights, 
-				cameras.get("Player1"), new Vector4f(0, 1, 0, -waters.get(0).getHeight()));
-		cameras.get("Player1").getPosition().y += distance;
-		cameras.get("Player1").invertPitch();
+				cameras.get("Free"), new Vector4f(0, 1, 0, -waters.get(0).getHeight()));
+		cameras.get("Free").getPosition().y += distance;
+		cameras.get("Free").invertPitch();
     }
     
     /*Render to FBO refraction texture*/
@@ -243,7 +238,7 @@ public class SceneRenderer implements WorldGethable {
     	waterFBOs.bindRefractionFrameBuffer();
 		renderer.processEntity(players.get("Player1"));
 		renderer.renderScene(entities, normalMapEntities, terrains, lights, 
-				cameras.get("Player1"), new Vector4f(0, -1, 0, waters.get(0).getHeight()+1f));
+				cameras.get("Free"), new Vector4f(0, -1, 0, waters.get(0).getHeight()+1f));
 
     }
     
@@ -256,9 +251,9 @@ public class SceneRenderer implements WorldGethable {
 		multisampleFbo.bindFrameBuffer();
 	    renderer.processEntity(players.get("Player1"));
 	    renderer.renderScene(entities, normalMapEntities, terrains,	lights, 
-	    		cameras.get("Player1"), new Vector4f(0, -1, 0, 15));
-	    waterRenderer.render(waters, cameras.get("Player1"), sun);
-	    ParticleMaster.renderParticles(cameras.get("Player1"));
+	    		cameras.get("Free"), new Vector4f(0, -1, 0, 15));
+	    waterRenderer.render(waters, cameras.get("Free"), sun);
+	    ParticleMaster.renderParticles(cameras.get("Free"));
 	    multisampleFbo.unbindFrameBuffer();
 	    multisampleFbo.resolveToFbo(GL30.GL_COLOR_ATTACHMENT0, outputFbo);
 	    multisampleFbo.resolveToFbo(GL30.GL_COLOR_ATTACHMENT1, outputFbo2);
@@ -270,7 +265,7 @@ public class SceneRenderer implements WorldGethable {
     public void renderParticlesToScreen() {
 		pSystem.get(0).generateParticles(players.get("Player1").getPosition());
 		pSystem.get(1).generateParticles(new Vector3f(50,terrains.get(0).getHeightOfTerrain(50, 50),50));
-		ParticleMaster.update(cameras.get("Player1"));
+		ParticleMaster.update(cameras.get("Free"));
     }
     	
 	public void cleanUp() {
@@ -301,9 +296,8 @@ public class SceneRenderer implements WorldGethable {
 	}
 	
     private void moves() {
-    	cameras.get("Player1").move();
-		players.get("Player1").move(terrains);
-		AudioMaster.setListenerData(cameras.get("Player1").getPosition().x, cameras.get("Player1").getPosition().y, cameras.get("Player1").getPosition().z);
+    	cameras.get("Free").move();
+		AudioMaster.setListenerData(cameras.get("Free").getPosition().x, cameras.get("Free").getPosition().y, cameras.get("Free").getPosition().z);
     }
 	
 	public GUIText createFPSText(float FPS) {

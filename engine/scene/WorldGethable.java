@@ -1,6 +1,6 @@
 package scene;
 
-import entities.Camera;
+import entities.PlayerCamera;
 import entities.Entity;
 import entities.Player;
 import guis.GuiTexture;

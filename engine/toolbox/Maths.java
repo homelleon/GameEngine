@@ -6,6 +6,7 @@ import org.lwjgl.util.vector.Vector3f;
 
 import entities.Camera;
 import entities.Entity;
+import entities.PlayerCamera;
 
 public class Maths {
 	

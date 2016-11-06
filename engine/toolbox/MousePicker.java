@@ -27,7 +27,7 @@ public class MousePicker {
 		return currentRay;
 	}
 	
-	public void update(){
+	public void update() {
 		viewMatrix = Maths.createViewMatrix(camera);
 		currentRay = calculateMouseRay();
 	}

@@ -5,7 +5,8 @@ import org.lwjgl.opengl.Display;
 
 import maps.GameMap;
 import renderEngine.DisplayManager;
-import scene.SceneRenderer;
+import scene.EditorSceneRenderer;
+import scene.GameSceneRenderer;
 import scene.WorldGethable;
 
 public class MainEditorLoop implements Engine {
@@ -13,8 +14,8 @@ public class MainEditorLoop implements Engine {
 	private WorldGethable scene;
 	
 	public MainEditorLoop() {
-		DisplayManager.creatDisplay(1);
-		scene = new SceneRenderer(true);		
+		DisplayManager.creatDisplay();
+		scene = new EditorSceneRenderer();		
 	}
 
 	@Override
