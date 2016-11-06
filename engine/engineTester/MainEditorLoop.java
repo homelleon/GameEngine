@@ -13,7 +13,7 @@ public class MainEditorLoop implements Engine {
 	private WorldGethable scene;
 	
 	public MainEditorLoop() {
-		DisplayManager.creatDisplay();
+		DisplayManager.creatDisplay(1);
 		scene = new SceneRenderer(true);		
 	}
 

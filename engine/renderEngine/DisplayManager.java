@@ -1,5 +1,10 @@
 package renderEngine;
 
+import java.awt.Canvas;
+import java.awt.Color;
+
+import javax.swing.JFrame;
+
 import org.lwjgl.LWJGLException;
 import org.lwjgl.Sys;
 import org.lwjgl.opengl.ContextAttribs;
@@ -26,7 +31,40 @@ public class DisplayManager {
 		try {
 			Display.setDisplayMode(new DisplayMode(Settings.DISPLAY_WIDTH,Settings.DISPLAY_HEIGHT));
 			Display.create(new PixelFormat().withDepthBits(24), attribs);
+			Display.isFullscreen();
 			Display.setTitle("MyGame");
+			GL11.glEnable(GL13.GL_MULTISAMPLE);
+		} catch (LWJGLException e) {
+			e.printStackTrace();
+		}
+		
+		GL11.glViewport(0, 0, Settings.DISPLAY_WIDTH, Settings.DISPLAY_HEIGHT);
+		lastFrameTime = getCurrentTime();	
+		
+	}
+	
+public static void creatDisplay(int mode) {
+	
+		JFrame frame = new JFrame(); 
+		frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
+		
+		Canvas canvas = new Canvas();
+		canvas.isDisplayable();
+		canvas.setBackground(Color.white);
+		canvas.setVisible(true);
+		canvas.setSize(Settings.DISPLAY_WIDTH, Settings.DISPLAY_HEIGHT);
+	
+
+		
+		ContextAttribs attribs = new ContextAttribs(3,3)
+		.withForwardCompatible(true)
+		.withProfileCore(true);
+		
+		try {
+			Display.setDisplayMode(new DisplayMode(Settings.DISPLAY_WIDTH,Settings.DISPLAY_HEIGHT));
+			Display.setParent(canvas);
+			Display.create(new PixelFormat().withDepthBits(24), attribs);
+			Display.setTitle("EditMode");
 			GL11.glEnable(GL13.GL_MULTISAMPLE);
 		} catch (LWJGLException e) {
 			e.printStackTrace();
@@ -52,10 +90,8 @@ public class DisplayManager {
 		return delta;
 	}
 	
-	public static void closeDisplay() {
-		
-		Display.destroy();
-		
+	public static void closeDisplay() {		
+		Display.destroy();		
 	}
 	
 	private static long getCurrentTime() {

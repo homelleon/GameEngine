@@ -3,6 +3,7 @@ package game;
 import org.lwjgl.util.vector.Vector3f;
 
 import engineTester.Engine;
+import engineTester.MainEditorLoop;
 import engineTester.MainGameLoop;
 
 public class Main {
@@ -10,7 +11,7 @@ public class Main {
 
 
 	public static void main(String[] args) {
-		Engine testEngine = new MainGameLoop();
+		Engine testEngine = new MainEditorLoop();
 		testEngine.LoadMap("map1");
 		preInit(testEngine);
 		testEngine.init();
