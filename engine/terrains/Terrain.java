@@ -30,6 +30,8 @@ public class Terrain {
 	private String heightMapName;
 	private boolean isProcedureGenerated = false;
 	private String name;
+	private boolean isVisible;
+	private boolean isRendered = true;
 	private float amplitude;
 	private int octaves;
 	private float roughness;
@@ -77,6 +79,22 @@ public class Terrain {
 	
 	public String getName() {
 		return name;
+	}
+	
+	public boolean isVisible() {
+		return isVisible;
+	}
+
+	public void setVisible(boolean isVisible) {
+		this.isVisible = isVisible;
+	}
+
+	public boolean isRendered() {
+		return isRendered;
+	}
+
+	public void setRendered(boolean isRendered) {
+		this.isRendered = isRendered;
 	}
 
 	public TerrainTexturePack getTexturePack() {

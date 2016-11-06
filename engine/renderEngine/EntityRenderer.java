@@ -30,18 +30,14 @@ public class EntityRenderer {
 		shader.stop();
 	}
 	
-
-	
-	public void render(Map<TexturedModel, List<Entity>> entities, Camera camera, Matrix4f toShadowMapSpace) {
+	public void render(Map<TexturedModel, List<Entity>> entities, Matrix4f toShadowMapSpace) {
 		shader.loadToShadowSpaceMatrix(toShadowMapSpace);
 		shader.loadShadowVariables(Settings.SHADOW_DISTANCE, Settings.SHADOW_MAP_SIZE, Settings.SHADOW_TRANSITION_DISTANCE, Settings.SHADOW_PCF);
 		for(TexturedModel model : entities.keySet()) {
 			prepareTexturedModel(model);
 			List<Entity> batch = entities.get(model);
-			for(Entity entity : batch){	
-				if((!entity.isDetail() && Maths.distanceFromCamera(entity,camera) 
-						<= Settings.RENDERING_VIEW_DISTANCE)
-						|| (entity.isDetail() && Maths.distanceFromCamera(entity,camera) <= Settings.DETAIL_VIEW_DISTANCE)) {
+			for(Entity entity : batch) {
+				if(entity.isRendered()) {
 					prepareInstance(entity);
 					GL11.glDrawElements(GL11.GL_TRIANGLES, model.getRawModel().getVertexCount(), 
 							GL11.GL_UNSIGNED_INT, 0);

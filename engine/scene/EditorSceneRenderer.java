@@ -16,6 +16,8 @@ import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 
+import Optimisations.CutOptimisation;
+import Optimisations.Optimisation;
 import audio.AudioMaster;
 import audio.Source;
 import entities.Camera;
@@ -81,6 +83,7 @@ public class EditorSceneRenderer implements WorldGethable {
 	private WaterRenderer waterRenderer;	
 	private GameTime time;
 	private MousePicker picker;
+	private Optimisation optimisation;
 	
 	@Override
 	public void setScenePaused(boolean value) {
@@ -97,8 +100,10 @@ public class EditorSceneRenderer implements WorldGethable {
 	}
 	
 	public void init() {		
-		/*-------------TERRAIN------------------*/
+		/*-------------OPTIMIZATION-------------*/
+		this.optimisation = new CutOptimisation();	
 		
+		/*-------------TERRAIN------------------*/
 		this.terrains = new ArrayList<Terrain>(); 
 		terrains.addAll(map.getTerrains().values());
 
@@ -249,6 +254,7 @@ public class EditorSceneRenderer implements WorldGethable {
 		waterFBOs.unbindCurrentFrameBuffer();
 	    
 		multisampleFbo.bindFrameBuffer();
+		optimisation.optimize(cameras.get("Free"), entities, terrains);
 	    renderer.processEntity(players.get("Player1"));
 	    renderer.renderScene(entities, normalMapEntities, terrains,	lights, 
 	    		cameras.get("Free"), new Vector4f(0, -1, 0, 15));

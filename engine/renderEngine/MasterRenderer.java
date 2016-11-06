@@ -75,7 +75,7 @@ public class MasterRenderer {
 		shader.loadFogDensity(Settings.FOG_DENSITY);
 		shader.loadLights(lights);
 		shader.loadViewMatrix(camera);
-		entityRenderer.render(entities, camera, shadowMapRenderer.getToShadowMapSpaceMatrix());
+		entityRenderer.render(entities, shadowMapRenderer.getToShadowMapSpaceMatrix());
 		shader.stop();
 		normalMapRenderer.render(normalMapEntities, clipPlane, lights, camera, shadowMapRenderer.getToShadowMapSpaceMatrix());
 		terrainShader.start();

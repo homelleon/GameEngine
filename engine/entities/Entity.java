@@ -12,6 +12,8 @@ public class Entity {
 	private float rotX,rotY,rotZ;
 	private float scale;
 	private boolean isDetail = false;
+	private boolean isVisible = true;
+	private boolean isRendered = false;
 	
 	private int textureIndex = 0;
 	
@@ -33,6 +35,22 @@ public class Entity {
 		return isDetail;
 	}
 	
+	public boolean isVisible() {
+		return isVisible;
+	}
+
+	public void setVisible(boolean isVisible) {
+		this.isVisible = isVisible;
+	}
+
+	public boolean isRendered() {
+		return isRendered;
+	}
+
+	public void setRendered(boolean isRendered) {
+		this.isRendered = isRendered;
+	}
+
 	public float getTextureXOffset() {
 		int column = textureIndex % model.getTexture().getNumberOfRows();
 		return (float)column/(float)model.getTexture().getNumberOfRows();
@@ -104,8 +122,6 @@ public class Entity {
 	}
 	public void setScale(float scale) {
 		this.scale = scale;
-	}
-	
-	
+	}	
 
 }

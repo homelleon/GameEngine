@@ -2,7 +2,6 @@ package scene;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,13 +16,15 @@ import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 
+import Optimisations.CutOptimisation;
+import Optimisations.Optimisation;
 import audio.AudioMaster;
 import audio.Source;
-import entities.PlayerCamera;
 import entities.EntitiesManager;
 import entities.Entity;
 import entities.Light;
 import entities.Player;
+import entities.PlayerCamera;
 import fontMeshCreator.FontType;
 import fontMeshCreator.GUIText;
 import fontRendering.TextMaster;
@@ -81,6 +82,7 @@ public class GameSceneRenderer implements WorldGethable {
 	private WaterRenderer waterRenderer;	
 	private GameTime time;
 	private MousePicker picker;
+	private Optimisation optimisation;
 	
 	@Override
 	public void setScenePaused(boolean value) {
@@ -97,13 +99,14 @@ public class GameSceneRenderer implements WorldGethable {
 	}
 	
 	public void init() {		
-		/*-------------TERRAIN------------------*/
+		/*-------------OPTIMIZATION-------------*/
+		this.optimisation = new CutOptimisation();	
 		
+		/*-------------TERRAIN------------------*/
 		this.terrains = new ArrayList<Terrain>(); 
 		terrains.addAll(map.getTerrains().values());
 
         /*--------------GAME OBJECTS-------------*/
-		
 		this.entities = new ArrayList<Entity>(); 
 		this.normalMapEntities = new ArrayList<Entity>();
 		normalMapEntities = EntitiesManager.createNormalMappedEntities(loader);
@@ -239,7 +242,6 @@ public class GameSceneRenderer implements WorldGethable {
 		renderer.processEntity(players.get("Player1"));
 		renderer.renderScene(entities, normalMapEntities, terrains, lights, 
 				cameras.get("Player1"), new Vector4f(0, -1, 0, waters.get(0).getHeight()+1f));
-
     }
     
     /*Render to Screen*/
@@ -249,6 +251,7 @@ public class GameSceneRenderer implements WorldGethable {
 		waterFBOs.unbindCurrentFrameBuffer();
 	    
 		multisampleFbo.bindFrameBuffer();
+		optimisation.optimize(cameras.get("Player1"), entities, terrains);
 	    renderer.processEntity(players.get("Player1"));
 	    renderer.renderScene(entities, normalMapEntities, terrains,	lights, 
 	    		cameras.get("Player1"), new Vector4f(0, -1, 0, 15));

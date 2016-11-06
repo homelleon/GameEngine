@@ -7,6 +7,7 @@ import org.lwjgl.util.vector.Vector3f;
 import entities.Camera;
 import entities.Entity;
 import entities.PlayerCamera;
+import terrains.Terrain;
 
 public class Maths {
 	
@@ -53,12 +54,26 @@ public class Maths {
 		return a*a;
 	}
 	
-	public static float distanceFromCamera(Entity entity, Camera camera){
+	public static float distanceFromCamera(Entity entity, Camera camera) {
 		float distance = 0;
 		distance = Maths.sqr(entity.getPosition().x - camera.getPosition().x);
 		distance += Maths.sqr(entity.getPosition().y - camera.getPosition().y);
 		distance += Maths.sqr(entity.getPosition().z - camera.getPosition().z);
 		distance = (float) Math.sqrt(distance);
+	    return distance;
+	}	
+	
+	public static float distanceFromCamera(Terrain terrain, Camera camera) {
+		float distance = 0;
+		float x = terrain.getX() + terrain.getSize();
+		float z = terrain.getZ() + terrain.getSize();
+		if (((camera.getPosition().x < terrain.getX()) && (camera.getPosition().z < terrain.getZ())) 
+				|| ((camera.getPosition().x > x) && (camera.getPosition().z > z))) {
+			distance = Maths.sqr(terrain.getX() - camera.getPosition().x);
+			distance += Maths.sqr(terrain.getZ() - camera.getPosition().z);
+			distance += Maths.sqr(0 - camera.getPosition().z);
+			distance = (float) Math.sqrt(distance);
+		}
 	    return distance;
 	}	
 }
