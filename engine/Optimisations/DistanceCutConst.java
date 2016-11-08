@@ -38,7 +38,7 @@ public class DistanceCutConst {
 		for(Terrain terrain : terrains) {
 			if(terrain.isVisible()) {
 				float distance = Maths.distanceFromCamera(terrain, camera);
-				if(distance <= Settings.RENDERING_VIEW_DISTANCE) {
+				if(distance <= 50) {
 					terrain.setRendered(true);
 				} else {
 					terrain.setRendered(false);

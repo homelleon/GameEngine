@@ -54,26 +54,73 @@ public class Maths {
 		return a*a;
 	}
 	
+	public static float distance2Points(Vector3f point1, Vector3f point2) {
+		float distance = 0;
+		distance = Maths.sqr(point1.x - point2.x);
+		distance += Maths.sqr(point1.y - point2.y);
+		distance += Maths.sqr(point1.z - point2.z);
+		distance = (float) Math.sqrt(distance);
+	    return distance;
+	}	
+	
+	public static float distance2Points(Vector2f point1, Vector2f point2) {
+		float distance = 0;
+		distance = Maths.sqr(point1.x - point2.x);
+		distance += Maths.sqr(point1.y - point2.y);
+		distance = (float) Math.sqrt(distance);
+	    return distance;
+	}	
+	
 	public static float distanceFromCamera(Entity entity, Camera camera) {
 		float distance = 0;
-		distance = Maths.sqr(entity.getPosition().x - camera.getPosition().x);
-		distance += Maths.sqr(entity.getPosition().y - camera.getPosition().y);
-		distance += Maths.sqr(entity.getPosition().z - camera.getPosition().z);
-		distance = (float) Math.sqrt(distance);
+		distance = distance2Points(entity.getPosition(), camera.getPosition());
 	    return distance;
 	}	
 	
 	public static float distanceFromCamera(Terrain terrain, Camera camera) {
 		float distance = 0;
-		float x = terrain.getX() + terrain.getSize();
-		float z = terrain.getZ() + terrain.getSize();
-		if (((camera.getPosition().x < terrain.getX()) && (camera.getPosition().z < terrain.getZ())) 
-				|| ((camera.getPosition().x > x) && (camera.getPosition().z > z))) {
-			distance = Maths.sqr(terrain.getX() - camera.getPosition().x);
-			distance += Maths.sqr(terrain.getZ() - camera.getPosition().z);
-			distance += Maths.sqr(0 - camera.getPosition().z);
-			distance = (float) Math.sqrt(distance);
+		float x = terrain.getX() / terrain.getSize();
+		float z = terrain.getZ() / terrain.getSize();
+		if (camera.getPosition().x < terrain.getX()) {
+			distance += Maths.sqr(terrain.getX() - camera.getPosition().x);
 		}
+		if (camera.getPosition().z < terrain.getZ()) {
+			distance += Maths.sqr(terrain.getZ() - camera.getPosition().z);
+		}
+		if (camera.getPosition().x > x) {
+			distance += Maths.sqr(x - camera.getPosition().x);			
+		}
+		if (camera.getPosition().z > z) {
+			distance += Maths.sqr(z - camera.getPosition().z);			
+		}
+		distance += Maths.sqr(0 - camera.getPosition().y);
+		distance = (float) Math.sqrt(distance);
+		// TODO Count distances for camera at every side of terrain
+		System.out.println(distance);
 	    return distance;
 	}	
+	
+	public static float distanceLineAndPoint(Vector2f point, Vector2f linePoint1, Vector2f linePoint2) {
+		float x = point.x;
+		float y = point.y;
+		
+		float x1 = linePoint1.x;
+		float y1 = linePoint1.y;
+		
+		float x2 = linePoint2.x;
+		float y2 = linePoint2.y;
+		
+		float m = (y2 - y1) / (x2 - x1);
+		float k = y1 - m * x1;
+		
+		float sqrx = (x + m * y - m * k) / (sqr(m) + 1);
+		sqrx = sqr(sqrx);
+				
+		float sqry = m * (x + m * y - m * k) / (sqr(m) + 1) + k - y;
+		sqry = sqr(sqry);
+		
+		float distance = (float) Math.sqrt(sqrx + sqry); 
+
+		return distance;
+	}
 }

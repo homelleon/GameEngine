@@ -30,8 +30,8 @@ public class Terrain {
 	private String heightMapName;
 	private boolean isProcedureGenerated = false;
 	private String name;
-	private boolean isVisible;
-	private boolean isRendered = true;
+	private boolean isVisible = true;
+	private boolean isRendered = false;
 	private float amplitude;
 	private int octaves;
 	private float roughness;
@@ -267,14 +267,11 @@ public class Terrain {
 		height += MAX_PIXEL_COLOUR/2f;
 		height /= MAX_PIXEL_COLOUR/2f;
 		height *= MAX_HEIGHT;
-		return height;
-		
+		return height;		
 	}
 	
 	private float getHeight(int x, int z, HeightsGenerator generator) {
-		return generator.generateHeight(x, z)
-				;
-		
+		return generator.generateHeight(x, z);		
 	}
 	
 	private Vector3f calculateNormal(int x, int z, HeightsGenerator generator) {
