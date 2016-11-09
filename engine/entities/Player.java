@@ -98,8 +98,8 @@ public class Player extends Entity {
 		}
 		
 		if(!Mouse.isButtonDown(2)) {
-			this.currentTurnSpeed = -TURN_SPEED * (Mouse.getX()-Settings.DISPLAY_WIDTH/2) * Settings.MOUSE_X_SPEED;
-			Mouse.setCursorPosition(Settings.DISPLAY_WIDTH/2,Settings.DISPLAY_HEIGHT/2);
+			this.currentTurnSpeed = -TURN_SPEED * (Mouse.getX() - Settings.DISPLAY_WIDTH / 2) * Settings.MOUSE_X_SPEED;
+			Mouse.setCursorPosition(Settings.DISPLAY_WIDTH / 2, Settings.DISPLAY_HEIGHT / 2);
 		}			
 	}
 	

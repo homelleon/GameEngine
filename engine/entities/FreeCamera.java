@@ -4,13 +4,14 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.util.vector.Vector3f;
 
+import renderEngine.DisplayManager;
 import scene.Settings;
 
 public class FreeCamera implements Camera{
 	
 	private static final float MAX_PITCH = 90;
 	private static final float MIN_PITCH = -90;
-	private static final float SPEED = 0.5f;
+	private static final float SPEED = 100;
 	private static final float RUN_SPEED = 4;
 	
 	private Vector3f position = new Vector3f(0,0,0);
@@ -18,6 +19,11 @@ public class FreeCamera implements Camera{
 	private float pitch = 20;
 	private float yaw = 0;
 	private float roll;
+	
+	private float currentForwardSpeed = 0;
+	private float currentStrafeSpeed = 0;
+	private float currentTurnSpeed = 0;
+	private float currentPitchSpeed = 0;
 	
 	private String name;
 	
@@ -53,66 +59,81 @@ public class FreeCamera implements Camera{
 		this.yaw = angleYaw;
 	}
 	
+	public void increaseRotation(float dx, float dy, float dz) {
+		this.roll += dx;
+		this.yaw += dy;
+		this.pitch += dz;
+	}
+	
+	public void increasePosition(float dx, float dy, float dz) {
+		this.position.x += dx;
+		this.position.y += dy;
+		this.position.z += dz;
+	}
+	
 	public void move() {
-			calculatePitchAndAngle();
-			float runSpeed = 1;
-					
-			if(Keyboard.isKeyDown(Keyboard.KEY_HOME)) {
-				roll = 0;
-				pitch = 0;
-			}
-			
-			if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-				runSpeed = RUN_SPEED;
-			}
+		chekInputs();
+		float yawAngle = currentTurnSpeed * DisplayManager.getFrameTimeSeconds(); 
+		float pitchAngle = currentPitchSpeed * DisplayManager.getFrameTimeSeconds();
+		float strafeDistance = currentStrafeSpeed * DisplayManager.getFrameTimeSeconds();
+		float fowardDistance = currentForwardSpeed * DisplayManager.getFrameTimeSeconds();
 		
-			if(Keyboard.isKeyDown(Keyboard.KEY_W)) {
-				position.z-= SPEED * runSpeed;
-			}
-			
-			if(Keyboard.isKeyDown(Keyboard.KEY_S)) {
-				position.z+= SPEED * runSpeed;
-			}
-			
-			if(Keyboard.isKeyDown(Keyboard.KEY_A)) {
-				position.x-= SPEED * runSpeed;
-			}
-			
-			if(Keyboard.isKeyDown(Keyboard.KEY_D)) {
-				position.x+= SPEED * runSpeed;
-			}
-			
-			if(Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
-				position.y+=0.5f;
-			}
-			
-			if(Keyboard.isKeyDown(Keyboard.KEY_C)) {
-				position.y-=0.5f;
-			}
+		increaseRotation(0, yawAngle, pitchAngle);
+		
+		float dx = (float) (fowardDistance * Math.sin(Math.toRadians(-yaw)) 
+				+ (strafeDistance * Math.sin(Math.toRadians(-yaw + 90))));
+		float dy = (float) (fowardDistance * Math.sin(Math.toRadians(pitch)) 
+				+ strafeDistance * Math.cos(Math.toRadians(pitch + 90)));
+		float dz = (float) (fowardDistance * Math.cos(Math.toRadians(-yaw)) 
+				+ strafeDistance * Math.cos(Math.toRadians(-yaw + 90)));
+		
+		increasePosition(dx, dy, dz);
+				
+	}
+	
+	private void chekInputs() {
+		if(Keyboard.isKeyDown(Keyboard.KEY_HOME)) {
+			roll = 0;
+			pitch = 0;
+		}
+		
+		float runSpeed = 1;
+		
+		if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+			runSpeed = RUN_SPEED;
+		}
+	
+		if(Keyboard.isKeyDown(Keyboard.KEY_W)) {
+			currentForwardSpeed = -SPEED * runSpeed;
+		} else if(Keyboard.isKeyDown(Keyboard.KEY_S)) {
+			currentForwardSpeed = SPEED * runSpeed;;
+		} else {
+			currentForwardSpeed = 0;
+		}
+		
+		if(Keyboard.isKeyDown(Keyboard.KEY_A)) {
+			currentStrafeSpeed = -SPEED * runSpeed;
+		} else if(Keyboard.isKeyDown(Keyboard.KEY_D)) {
+			currentStrafeSpeed = SPEED * runSpeed;
+		} else {
+			currentStrafeSpeed = 0;
+		}
+		
+		if(Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
+			position.y += 0.5f;
+		}
+		
+		if(Keyboard.isKeyDown(Keyboard.KEY_C)) {
+			position.y -= 0.5f;
+		}
 					
-			if(Keyboard.isKeyDown(Keyboard.KEY_E)) {
-				roll+=0.5f;
-			}
-			
-			if(Keyboard.isKeyDown(Keyboard.KEY_Q)) {
-				roll-=0.5f;
-			}
-			
-			if(Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
-				yaw+=0.5f;
-			}
-			
-			if(Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
-				yaw-=0.5f;
-		  	}
-			
-	    	if(Keyboard.isKeyDown(Keyboard.KEY_UP)) {
-	 			pitch-=0.1f;
-			}
-	    	
-			if(Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
-				pitch+=0.1f;
-			}			
+		if(Mouse.isButtonDown(2)) {
+			this.currentTurnSpeed = SPEED * Mouse.getDX() * Settings.MOUSE_X_SPEED * runSpeed;
+			this.currentPitchSpeed = -SPEED * Mouse.getDY() * Settings.MOUSE_Y_SPEED * runSpeed;	
+		} else {
+			currentTurnSpeed = 0;
+			currentPitchSpeed = 0;
+		}				
 	}
 
 	public Vector3f getPosition() {
@@ -134,20 +155,6 @@ public class FreeCamera implements Camera{
 	public float getRoll() {
 		return roll;
 	}	
-	
-	private void calculatePitchAndAngle() {
-		if(Mouse.isButtonDown(2)) {
-			float pitchChange = Mouse.getDY() * Settings.MOUSE_Y_SPEED;
-			
-			if((pitch<MAX_PITCH)||(pitch>MIN_PITCH)) {
-				pitch -= pitchChange;
-			}
-		}
-
-		if(Mouse.isButtonDown(2)) {	
-			float angleChange = Mouse.getDX() * Settings.MOUSE_X_SPEED;			
-		}
-	}
-	
+		
 	
 }

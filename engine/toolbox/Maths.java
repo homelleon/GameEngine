@@ -79,24 +79,66 @@ public class Maths {
 	
 	public static float distanceFromCamera(Terrain terrain, Camera camera) {
 		float distance = 0;
-		float x = terrain.getX() / terrain.getSize();
-		float z = terrain.getZ() / terrain.getSize();
-		if (camera.getPosition().x < terrain.getX()) {
-			distance += Maths.sqr(terrain.getX() - camera.getPosition().x);
+		
+		float cX = camera.getPosition().x;
+		float cY = camera.getPosition().y;
+		float cZ = camera.getPosition().z;
+		float tX1 = terrain.getX() * terrain.getSize();
+		float tZ1 = terrain.getZ() * terrain.getSize();
+		float tX = terrain.getX();
+		float tZ = terrain.getZ();
+		System.out.println(tX);
+		//System.out.println(tZ);
+		//System.out.println(tX1);
+		//System.out.println(tZ1);
+		
+		Vector2f terrainPoint;
+		Vector2f terrainSideP1;
+		Vector2f terrainSideP2;
+		Vector2f camVec = new Vector2f(cX, cZ);		
+		
+		if (cX < tX1) {			
+			if(cZ < tZ) {
+				terrainPoint = new Vector2f(tX, tZ);
+				distance = sqr(distance2Points(camVec, terrainPoint));
+			} else if(cZ > tZ1) {
+				terrainPoint = new Vector2f(tX, tZ1);
+				distance = sqr(distance2Points(camVec, terrainPoint));				
+			} else {
+				System.out.println("Left");
+				terrainSideP1 = new Vector2f(tX, tZ1);
+				terrainSideP2 = new Vector2f(tX, tZ);
+				distance = sqr(distanceLineAndPoint(camVec, terrainSideP1, terrainSideP2));
+			}
+		} else if (cX > tX1) {	
+			if(cZ < tZ) {
+				terrainPoint = new Vector2f(tX1, tZ);
+				distance = sqr(distance2Points(camVec, terrainPoint));
+			} else if(cZ > tZ1) {
+				terrainPoint = new Vector2f(tX1, tZ1);
+				distance = sqr(distance2Points(camVec, terrainPoint));				
+			} else {
+				System.out.println("Right");
+				terrainSideP1 = new Vector2f(tX1, tZ1);
+				terrainSideP2 = new Vector2f(tX1, tZ);
+				distance = sqr(distanceLineAndPoint(camVec, terrainSideP1, terrainSideP2));
+			}
+		} else if(cZ < tZ) {
+			System.out.println("Bottom");
+			terrainSideP1 = new Vector2f(tX, tX1);
+			terrainSideP2 = new Vector2f(tZ, tZ1);
+			distance = sqr(distanceLineAndPoint(camVec, terrainSideP1, terrainSideP2));
+		} else if(cZ > tZ1) {
+			System.out.println("Top");
+			terrainSideP1 = new Vector2f(tX, tZ1);
+			terrainSideP2 = new Vector2f(tX1, tZ1);
+			distance = sqr(distanceLineAndPoint(camVec, terrainSideP1, terrainSideP2));				
 		}
-		if (camera.getPosition().z < terrain.getZ()) {
-			distance += Maths.sqr(terrain.getZ() - camera.getPosition().z);
-		}
-		if (camera.getPosition().x > x) {
-			distance += Maths.sqr(x - camera.getPosition().x);			
-		}
-		if (camera.getPosition().z > z) {
-			distance += Maths.sqr(z - camera.getPosition().z);			
-		}
+						
 		distance += Maths.sqr(0 - camera.getPosition().y);
 		distance = (float) Math.sqrt(distance);
 		// TODO Count distances for camera at every side of terrain
-		System.out.println(distance);
+		//System.out.println(distance);
 	    return distance;
 	}	
 	
@@ -123,4 +165,5 @@ public class Maths {
 
 		return distance;
 	}
+	
 }
