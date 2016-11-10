@@ -1,4 +1,4 @@
-package Optimisations;
+package optimisations;
 
 import java.util.List;
 
