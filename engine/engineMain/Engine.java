@@ -1,4 +1,4 @@
-package engineTester;
+package engineMain;
 
 import maps.GameMap;
 import triggers.Trigger;

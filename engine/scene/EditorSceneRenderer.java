@@ -27,8 +27,8 @@ import entities.Player;
 import fontMeshCreator.FontType;
 import fontMeshCreator.GUIText;
 import fontRendering.TextMaster;
-import game.Game;
-import game.Game1;
+import gameMain.Game;
+import gameMain.MyGame;
 import guis.GuiManager;
 import guis.GuiRenderer;
 import guis.GuiTexture;
@@ -57,7 +57,7 @@ import water.WaterTile;
 
 public class EditorSceneRenderer implements WorldGethable {
 	
-	Game game = new Game1();
+	Game game = new MyGame();
 
 	private Loader loader;
 	private MasterRenderer renderer;

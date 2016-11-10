@@ -1,11 +1,11 @@
-package game;
+package gameMain;
 
 import org.lwjgl.util.vector.Vector3f;
 
-import engineTester.Main;
+import engineMain.Main;
 import entities.Entity;
 
-public class Game1 implements Game {
+public class MyGame implements Game {
 	
 
 	private int time = 0;
@@ -26,8 +26,8 @@ public class Game1 implements Game {
 			time += 1;
 			System.out.println(Main.getMap().getEntities().get("Bo").getName());
 			Entity tree = Main.getMap().getEntities().get("Tree1");
-				if ((time % 10 == 0) && (tree.getPosition().y <=50)) {
-					tree.increasePosition(0, 1, 0);				
+				if (time % 5 == 0) {
+					tree.increasePosition(0, 0.2f, 0);				
 			}
 		}
 }

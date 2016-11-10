@@ -1,36 +1,35 @@
-package engineTester;
+package engineMain;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 
 import maps.GameMap;
 import renderEngine.DisplayManager;
+import scene.EditorSceneRenderer;
 import scene.GameSceneRenderer;
 import scene.WorldGethable;
-import triggers.Trigger;
 
-public class MainGameLoop implements Engine {
+public class MainEditorLoop implements Engine {
 	
 	private WorldGethable scene;
-	private boolean isScenePaused = false;
 	
-	public MainGameLoop() {
+	public MainEditorLoop() {
 		DisplayManager.creatDisplay();
-		scene = new GameSceneRenderer();
+		scene = new EditorSceneRenderer();		
 	}
-	
+
 	@Override
 	public void loadMap(String name) {
-		scene.loadMap(name);		
+		scene.loadMap(name);				
 	}
-	
+
 	@Override
 	public void init() {
 		scene.init();		
 	}
-	
+
 	@Override
-	public void run() {		
+	public void run() {
 		while(!Display.isCloseRequested()) {
 			scene.render();
 			DisplayManager.updateDisplay(); 
@@ -39,28 +38,20 @@ public class MainGameLoop implements Engine {
 				break;
 			}
 			
-			if(Keyboard.isKeyDown(Keyboard.KEY_P)) {
-				isScenePaused = !isScenePaused;
-				scene.setScenePaused(isScenePaused);
-			}
-			
 		}
 		
 		scene.cleanUp();
-		DisplayManager.closeDisplay();
-		
+		DisplayManager.closeDisplay();		
 	}
-	
-	public GameMap getMap() {
-		return scene.getMap();
-	}
-	
 
 	@Override
 	public void exit() {
 		Display.destroy();		
 	}
 
-
+	@Override
+	public GameMap getMap() {
+		return scene.getMap();
+	}
 
 }
