@@ -16,8 +16,6 @@ import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 
-import Optimisations.CutOptimisation;
-import Optimisations.Optimisation;
 import audio.AudioMaster;
 import audio.Source;
 import entities.EntitiesManager;
@@ -37,6 +35,8 @@ import maps.MapFileWriter;
 import maps.MapLoadable;
 import maps.MapWriteable;
 import models.TexturedModel;
+import optimisations.CutOptimisation;
+import optimisations.Optimisation;
 import particles.ParticleMaster;
 import particles.ParticleSystem;
 import particles.ParticlesManager;
