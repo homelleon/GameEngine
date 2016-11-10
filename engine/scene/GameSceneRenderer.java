@@ -26,6 +26,8 @@ import entities.PlayerCamera;
 import fontMeshCreator.FontType;
 import fontMeshCreator.GUIText;
 import fontRendering.TextMaster;
+import game.Game;
+import game.Game1;
 import guis.GuiManager;
 import guis.GuiRenderer;
 import guis.GuiTexture;
@@ -53,13 +55,12 @@ import water.WaterShader;
 import water.WaterTile;
 
 public class GameSceneRenderer implements WorldGethable {
-
-	private static boolean isPaused = false;
+	
+	Game game = new Game1();
+	
 	private Loader loader;
 	private MasterRenderer renderer;
 	private Source ambientSource;
-	
-	private boolean isMidday = true;
 	
 	//TODO: Delete unnecessary objects
 	private Map<String, PlayerCamera> cameras;
@@ -84,6 +85,9 @@ public class GameSceneRenderer implements WorldGethable {
 	private MousePicker picker;
 	private Optimisation optimisation;
 	
+	private static boolean isPaused = false;
+	private boolean mapIsLoaded = false;
+	
 	@Override
 	public void setScenePaused(boolean value) {
 		this.isPaused = value;
@@ -98,7 +102,10 @@ public class GameSceneRenderer implements WorldGethable {
 		this.map = mapLoader.loadMap(name, loader);	
 	}
 	
-	public void init() {		
+	public void init() {
+		if (!this.mapIsLoaded) {
+			loadMap("map");
+		}
 		/*-------------OPTIMIZATION-------------*/
 		this.optimisation = new CutOptimisation();	
 		
@@ -107,15 +114,14 @@ public class GameSceneRenderer implements WorldGethable {
 		terrains.addAll(map.getTerrains().values());
 
         /*--------------GAME OBJECTS-------------*/
+		
 		this.entities = new ArrayList<Entity>(); 
+		entities = EntitiesManager.createEntities(loader);
 		this.normalMapEntities = new ArrayList<Entity>();
 		normalMapEntities = EntitiesManager.createNormalMappedEntities(loader);
-		entities = EntitiesManager.createEntities(loader);
-		entities.addAll(map.getEntities().values());
 
-		
-		spreadOnHeights(entities);
-		spreadOnHeights(normalMapEntities);
+
+		entities.addAll(map.getEntities().values());
 		
 		/*------------------LIGHTS----------------*/
 		this.lights = new ArrayList<Light>();
@@ -188,11 +194,14 @@ public class GameSceneRenderer implements WorldGethable {
 		/*---------------IN GAME TOOLS--------------*/	
 		this.picker = new MousePicker(camera, renderer.getProjectionMatrix());
 		
+		/*---------------PREPARE-------------*/
+		game.onStart();
 	}
 	
 	/*Main render*/
 			
 	public void render() {
+		game.onUpdate();
 		if(!isPaused) {
 			time.start();
 			moves();	

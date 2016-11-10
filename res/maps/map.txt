@@ -1,12 +1,6 @@
-<e> cuby1 cube Cube1 50.0 3.4170291 25.0 4.0 false
-<e> cuby2 cube Cube1 20.0 26.818657 25.0 4.0 false
-<e> cuby3 cube Cube1 30.0 17.788387 25.0 4.0 false
-<e> cuby4 cube Cube1 42.0 7.646545 25.0 4.0 false
-<e> cuby5 cube Cube1 44.0 6.0051003 25.0 4.0 false
-<e> cuby6 cube Cube1 46.0 5.0959883 25.0 4.0 false
-<e> cuby7 cube Cube1 48.0 4.2565084 25.0 4.0 false
-<e> tree1 tree bark 55.0 1.7413206 30.0 1.0 false
-<e> tree2 tree bark 70.0 -0.45847565 30.0 1.0 false
-<e> tree3 tree bark 80.0 -1.8962091 30.0 1.0 false
-<e> tree4 tree bark 90.0 -6.583279 30.0 1.0 false
+#map-file for game engine
+#default empty map
+#created by @homelleon
+
+<t> Terrain1 0 0 grass ground floweredGrass road blendMap true 0 0 0
 <end>

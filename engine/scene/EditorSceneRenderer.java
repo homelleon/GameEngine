@@ -27,6 +27,8 @@ import entities.Player;
 import fontMeshCreator.FontType;
 import fontMeshCreator.GUIText;
 import fontRendering.TextMaster;
+import game.Game;
+import game.Game1;
 import guis.GuiManager;
 import guis.GuiRenderer;
 import guis.GuiTexture;
@@ -54,14 +56,13 @@ import water.WaterShader;
 import water.WaterTile;
 
 public class EditorSceneRenderer implements WorldGethable {
+	
+	Game game = new Game1();
 
-	private static boolean isPaused = false;
 	private Loader loader;
 	private MasterRenderer renderer;
 	private Source ambientSource;
-	
-	private boolean isMidday = true;
-	
+
 	//TODO: Delete unnecessary objects
 	private Map<String, Camera> cameras;
 	private Map<String, Player> players;
@@ -85,21 +86,28 @@ public class EditorSceneRenderer implements WorldGethable {
 	private MousePicker picker;
 	private Optimisation optimisation;
 	
+	private static boolean isPaused = false;
+	private boolean mapIsLoaded = false;
+
 	@Override
 	public void setScenePaused(boolean value) {
 		this.isPaused = value;
 	}
 	
 	@Override
-	public void loadMap(String name) {
+	public void loadMap(String name) {		
 		/*--------------PRE LOAD TOOLS-------------*/
 		this.loader = new Loader();
 		/*---------------MAP-----------------------*/
 		MapLoadable mapLoader = new MapFileLoader();
 		this.map = mapLoader.loadMap(name, loader);	
+		this.mapIsLoaded = true;
 	}
 	
-	public void init() {		
+	public void init() {	
+		if (!this.mapIsLoaded) {
+			loadMap("map");
+		}
 		/*-------------OPTIMIZATION-------------*/
 		this.optimisation = new CutOptimisation();	
 		
@@ -110,14 +118,12 @@ public class EditorSceneRenderer implements WorldGethable {
         /*--------------GAME OBJECTS-------------*/
 		
 		this.entities = new ArrayList<Entity>(); 
+		entities = EntitiesManager.createEntities(loader);
 		this.normalMapEntities = new ArrayList<Entity>();
 		normalMapEntities = EntitiesManager.createNormalMappedEntities(loader);
-		entities = EntitiesManager.createEntities(loader);
-		entities.addAll(map.getEntities().values());
 
-		
-		spreadOnHeights(entities);
-		spreadOnHeights(normalMapEntities);
+
+		entities.addAll(map.getEntities().values());
 		
 		/*------------------LIGHTS----------------*/
 		this.lights = new ArrayList<Light>();
@@ -190,11 +196,17 @@ public class EditorSceneRenderer implements WorldGethable {
 		/*---------------IN GAME TOOLS--------------*/	
 		this.picker = new MousePicker(camera, renderer.getProjectionMatrix());
 		
+		/*---------------PREPARE-------------*/
+		
+		spreadOnHeights(entities);
+		spreadOnHeights(normalMapEntities);
+		game.onStart();
 	}
 	
 	/*Main render*/
 			
 	public void render() {
+		game.onUpdate();
 		if(!isPaused) {
 			time.start();
 			moves();	

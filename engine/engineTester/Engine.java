@@ -5,7 +5,7 @@ import triggers.Trigger;
 
 public interface Engine extends Runnable {
 	
-	void LoadMap(String name);
+	void loadMap(String name);
 	void init();
 	void run();
 	void exit();

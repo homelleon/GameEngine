@@ -19,7 +19,7 @@ public class MainEditorLoop implements Engine {
 	}
 
 	@Override
-	public void LoadMap(String name) {
+	public void loadMap(String name) {
 		scene.loadMap(name);				
 	}
 
