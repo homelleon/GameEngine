@@ -31,7 +31,6 @@ public class WaterRenderer {
     private int normalMap;
     
     private float moveFactor = 0;
-    private float waveStrength = 0;
  
     public WaterRenderer(Loader loader, WaterShader shader, Matrix4f projectionMatrix, WaterFrameBuffers fbos) {
         this.shader = shader;

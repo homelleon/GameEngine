@@ -59,6 +59,7 @@ public class MainEditorLoop implements Engine {
 	public void loadGameSettings() {
 		SettingsLoader setLoader = new SettingsTXTLoader();  
 		GameSettings settings = setLoader.loadSettings(SETTINGS_NAME);
+		System.out.println(settings.getMapName());
 		scene.loadMap(settings.getMapName());		
 	}
 

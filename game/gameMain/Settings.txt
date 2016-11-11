@@ -1,3 +1,5 @@
 #Game Settings
 
-MapName= map1
+mapName= newMap
+
+end

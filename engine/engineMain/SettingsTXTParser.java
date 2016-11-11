@@ -14,9 +14,9 @@ public class SettingsTXTParser implements SettingsParser {
 				line = reader.readLine();
 				if (line.startsWith("mapName= ")) {
 	                    String[] currentLine = line.split(" ");	            
-	                    settings.setMapName(currentLine[0]);
+	                    settings.setMapName(currentLine[1]);
 				}
-				if (line.isEmpty()) {
+				if (line.startsWith("end")) {
 					break;
 				}
 			}
@@ -25,7 +25,7 @@ public class SettingsTXTParser implements SettingsParser {
 			System.err.println("Error in reading Settings file!");
 			e.printStackTrace();
 		} 
-		settings.setInitialized(true);
+
 		return settings;
 	}
 	

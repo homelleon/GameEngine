@@ -29,7 +29,8 @@ public class DisplayManager {
 		.withProfileCore(true);
 		
 		try {
-			Display.setDisplayMode(new DisplayMode(EngineSettings.DISPLAY_WIDTH,EngineSettings.DISPLAY_HEIGHT));
+			Display.setDisplayMode(new DisplayMode(EngineSettings.DISPLAY_WIDTH,
+					EngineSettings.DISPLAY_HEIGHT));
 			Display.create(new PixelFormat().withDepthBits(24), attribs);
 			Display.isFullscreen();
 			Display.setTitle("MyGame");
@@ -38,7 +39,8 @@ public class DisplayManager {
 			e.printStackTrace();
 		}
 		
-		GL11.glViewport(0, 0, EngineSettings.DISPLAY_WIDTH, EngineSettings.DISPLAY_HEIGHT);
+		GL11.glViewport(0, 0, EngineSettings.DISPLAY_WIDTH, 
+				EngineSettings.DISPLAY_HEIGHT);
 		lastFrameTime = getCurrentTime();	
 		
 	}
@@ -52,7 +54,8 @@ public static void creatDisplay(int mode) {
 		canvas.isDisplayable();
 		canvas.setBackground(Color.white);
 		canvas.setVisible(true);
-		canvas.setSize(EngineSettings.DISPLAY_WIDTH, EngineSettings.DISPLAY_HEIGHT);
+		canvas.setSize(EngineSettings.DISPLAY_WIDTH, 
+				EngineSettings.DISPLAY_HEIGHT);
 	
 
 		
@@ -61,7 +64,8 @@ public static void creatDisplay(int mode) {
 		.withProfileCore(true);
 		
 		try {
-			Display.setDisplayMode(new DisplayMode(EngineSettings.DISPLAY_WIDTH,EngineSettings.DISPLAY_HEIGHT));
+			Display.setDisplayMode(new DisplayMode(EngineSettings.DISPLAY_WIDTH,
+					EngineSettings.DISPLAY_HEIGHT));
 			Display.setParent(canvas);
 			Display.create(new PixelFormat().withDepthBits(24), attribs);
 			Display.setTitle("EditMode");
@@ -70,7 +74,8 @@ public static void creatDisplay(int mode) {
 			e.printStackTrace();
 		}
 		
-		GL11.glViewport(0, 0, EngineSettings.DISPLAY_WIDTH, EngineSettings.DISPLAY_HEIGHT);
+		GL11.glViewport(0, 0, EngineSettings.DISPLAY_WIDTH, 
+				EngineSettings.DISPLAY_HEIGHT);
 		lastFrameTime = getCurrentTime();
 		
 		
@@ -81,7 +86,7 @@ public static void creatDisplay(int mode) {
 		Display.sync(EngineSettings.FPS_CAP);
 		Display.update();
 		long currentFrameTime = getCurrentTime();
-		delta = (currentFrameTime - lastFrameTime)/1000f;
+		delta = (currentFrameTime - lastFrameTime) / 1000f;
 		lastFrameTime = currentFrameTime;
 		
 	}
@@ -95,7 +100,7 @@ public static void creatDisplay(int mode) {
 	}
 	
 	private static long getCurrentTime() {
-		return Sys.getTime()*1000/Sys.getTimerResolution();
+		return Sys.getTime() * 1000 / Sys.getTimerResolution();
 	}
 	
 
