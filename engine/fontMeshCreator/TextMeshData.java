@@ -12,7 +12,7 @@ public class TextMeshData {
 	
 	protected TextMeshData(float[] vertexPositions, float[] textureCoords){
 		this.vertexPositions = vertexPositions;
-		this.textureCoords = textureCoords;
+		this.textureCoords = textureCoords; 
 	}
 
 	public float[] getVertexPositions() {

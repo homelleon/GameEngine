@@ -1,7 +1,7 @@
 package engineMain;
 
 public interface SettingsLoader {
-	
-	public void loadSettings(String fileName);
+	 
+	public GameSettings loadSettings(String fileName);
 
 }

@@ -9,7 +9,7 @@ import java.io.File;
  * @author Karl
  *
  */
-public class FontType {
+public class FontType { 
 
 	private int textureAtlas;
 	private TextMeshCreator loader;

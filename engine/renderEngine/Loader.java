@@ -27,7 +27,7 @@ import org.newdawn.slick.opengl.TextureLoader;
 import de.matthiasmann.twl.utils.PNGDecoder;
 import de.matthiasmann.twl.utils.PNGDecoder.Format;
 import models.RawModel;
-import scene.Settings;
+import scene.EngineSettings;
 import textures.TextureData;
 
 public class Loader {
@@ -110,7 +110,7 @@ public class Loader {
 		Texture texture = null;
 		try {
 			float bias;
-			if (path == Settings.FONT_PATH) {
+			if (path == EngineSettings.FONT_PATH) {
 				bias = 0; 
 			}else{
 				bias = -2.4f;

@@ -15,7 +15,7 @@ uniform float borderEdge;
 
 uniform vec2 offset;
 
-uniform vec3 outlineColour;
+uniform vec3 outlineColour; 
 
 void main(void) {
 

@@ -17,14 +17,14 @@ import entities.Entity;
 import models.TexturedModel;
 import renderEngine.Loader;
 import scene.SceneObjectTools;
-import scene.Settings;
+import scene.EngineSettings;
 import terrains.Terrain;
 
 public class MapFileLoader implements MapLoadable {
 	
 	public GameMap loadMap(String fileName, Loader loader) {
 		FileReader isr = null;
-        File mapFile = new File(Settings.MAP_PATH + fileName + ".txt");
+        File mapFile = new File(EngineSettings.MAP_PATH + fileName + ".txt");
 	        
         try {
             isr = new FileReader(mapFile);

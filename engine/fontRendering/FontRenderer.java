@@ -16,7 +16,7 @@ public class FontRenderer {
 	private FontShader shader;
 
 	public FontRenderer() {
-		shader = new FontShader();
+		shader = new FontShader(); 
 	}
 
 	public void cleanUp() {

@@ -8,7 +8,7 @@ import postProcessing.ImageRenderer;
 public class CombineFilter {
 	
 	private ImageRenderer renderer;
-	private CombineShader shader;
+	private CombineShader shader; 
 	
 	public CombineFilter() {
 		shader = new CombineShader();

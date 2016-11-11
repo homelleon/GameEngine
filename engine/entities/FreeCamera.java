@@ -5,7 +5,7 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.util.vector.Vector3f;
 
 import renderEngine.DisplayManager;
-import scene.Settings;
+import scene.EngineSettings;
 
 public class FreeCamera implements Camera{
 	
@@ -17,7 +17,7 @@ public class FreeCamera implements Camera{
 	private Vector3f position = new Vector3f(0,0,0);
 	
 	private float pitch = 20;
-	private float yaw = 0;
+	private float yaw = 0; 
 	private float roll;
 	
 	private float currentForwardSpeed = 0;
@@ -128,8 +128,8 @@ public class FreeCamera implements Camera{
 		}
 					
 		if(Mouse.isButtonDown(2)) {
-			this.currentTurnSpeed = SPEED * Mouse.getDX() * Settings.MOUSE_X_SPEED * runSpeed;
-			this.currentPitchSpeed = -SPEED * Mouse.getDY() * Settings.MOUSE_Y_SPEED * runSpeed;	
+			this.currentTurnSpeed = SPEED * Mouse.getDX() * EngineSettings.MOUSE_X_SPEED * runSpeed;
+			this.currentPitchSpeed = -SPEED * Mouse.getDY() * EngineSettings.MOUSE_Y_SPEED * runSpeed;	
 		} else {
 			currentTurnSpeed = 0;
 			currentPitchSpeed = 0;

@@ -2,13 +2,13 @@ package guis;
 
 import org.lwjgl.util.vector.Matrix4f;
 
-import scene.Settings;
+import scene.EngineSettings;
 import shaders.ShaderProgram;
 
 public class GuiShader extends ShaderProgram {
     
-    private static final String VERTEX_FILE = Settings.GUI_SHADER_PATH + "guiVertexShader.txt";
-    private static final String FRAGMENT_FILE = Settings.GUI_SHADER_PATH + "guiFragmentShader.txt";
+    private static final String VERTEX_FILE = EngineSettings.GUI_SHADER_PATH + "guiVertexShader.txt";
+    private static final String FRAGMENT_FILE = EngineSettings.GUI_SHADER_PATH + "guiFragmentShader.txt";
      
     private int location_transformationMatrix;
  

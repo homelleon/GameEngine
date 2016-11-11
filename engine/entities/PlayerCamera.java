@@ -4,7 +4,7 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.util.vector.Vector3f;
 
-import scene.Settings;
+import scene.EngineSettings;
 
 public class PlayerCamera implements Camera{
 	
@@ -18,7 +18,7 @@ public class PlayerCamera implements Camera{
 	
 	private Vector3f position = new Vector3f(0,0,0);
 	
-	private float pitch = 20;
+	private float pitch = 20; 
 	private float yaw = 0;
 	private float roll;
 	
@@ -158,7 +158,7 @@ public class PlayerCamera implements Camera{
 	}
 	
 	private void calculateZoom() {
-		float zoomLevel = Mouse.getDWheel() * Settings.MOUSE_ZOOM_SPEED;
+		float zoomLevel = Mouse.getDWheel() * EngineSettings.MOUSE_ZOOM_SPEED;
 		if(((distanceFromPlayer<maxDistanceFromPlayer)&&(zoomLevel<0))
 				||((distanceFromPlayer>minDistanceFromPlayer)&&(zoomLevel>0))) {
 			distanceFromPlayer -= zoomLevel;
@@ -167,7 +167,7 @@ public class PlayerCamera implements Camera{
 	
 	private void calculatePitch() {
 
-			float pitchChange = Mouse.getY() * Settings.MOUSE_Y_SPEED;
+			float pitchChange = Mouse.getY() * EngineSettings.MOUSE_Y_SPEED;
 			if(((pitch<maxPitch)&&(pitchChange<0))||((pitch>minPitch)&&(pitchChange>0))) {
 				pitch -= pitchChange;
 			}
@@ -175,14 +175,14 @@ public class PlayerCamera implements Camera{
 	
 	private void calculateAngleAroundPlayer() {
 		if(Mouse.isButtonDown(2)) {
-			float angleChange = Mouse.getDX() * Settings.MOUSE_X_SPEED;
+			float angleChange = Mouse.getDX() * EngineSettings.MOUSE_X_SPEED;
 			angleAroundPlayer -= angleChange;
 		}
 	}
 	
 	private void calculatePitchAndAngle() {
 		if(!Mouse.isButtonDown(2)) {
-			float pitchChange = (Mouse.getY() - Settings.DISPLAY_HEIGHT/2) * Settings.MOUSE_Y_SPEED;
+			float pitchChange = (Mouse.getY() - EngineSettings.DISPLAY_HEIGHT/2) * EngineSettings.MOUSE_Y_SPEED;
 			
 			if((pitch<maxPitch)||(pitch>minPitch)) {
 				pitch -= pitchChange;
@@ -190,7 +190,7 @@ public class PlayerCamera implements Camera{
 		}
 		
 		if(Mouse.isButtonDown(2)) {	
-			float angleChange = (Mouse.getX() - Settings.DISPLAY_WIDTH/2) * Settings.MOUSE_X_SPEED;
+			float angleChange = (Mouse.getX() - EngineSettings.DISPLAY_WIDTH/2) * EngineSettings.MOUSE_X_SPEED;
 			angleAroundPlayer = -angleChange;		
 		}else{
 			angleAroundPlayer = 0;

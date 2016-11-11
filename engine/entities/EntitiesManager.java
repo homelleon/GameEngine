@@ -9,7 +9,7 @@ import models.TexturedModel;
 import normalMappingObjConverter.NormalMappedObjLoader;
 import renderEngine.Loader;
 import scene.SceneObjectTools;
-import scene.Settings;
+import scene.EngineSettings;
 import textures.ModelTexture;
 
 public class EntitiesManager {
@@ -33,7 +33,7 @@ public class EntitiesManager {
 		TexturedModel cherryModel = SceneObjectTools.loadStaticModel("cherry", "cherry", loader);
 		cherryModel.getTexture().setShineDamper(10);
 		cherryModel.getTexture().setReflectivity(0.5f);
-		cherryModel.getTexture().setSpecularMap(loader.loadTexture(Settings.SPECULAR_MAP_PATH, "cherryS"));
+		cherryModel.getTexture().setSpecularMap(loader.loadTexture(EngineSettings.SPECULAR_MAP_PATH, "cherryS"));
 		//Tree//
 		TexturedModel treeModel = SceneObjectTools.loadStaticModel("tree", "bark", loader);
 		treeModel.getTexture().setShineDamper(10);
@@ -58,15 +58,15 @@ public class EntitiesManager {
 	public static List<Entity> createNormalMappedEntities(Loader loader) {
 		List<Entity> entities = new ArrayList<Entity>();
 		TexturedModel barrelModel = new TexturedModel(NormalMappedObjLoader.loadOBJ("barrel", loader),
-				new ModelTexture(loader.loadTexture(Settings.MODEL_TEXTURE_PATH,"barrel")));
-		barrelModel.getTexture().setNormalMap(loader.loadTexture(Settings.NORMAL_MAP_PATH, "barrelNormal"));
+				new ModelTexture(loader.loadTexture(EngineSettings.MODEL_TEXTURE_PATH,"barrel")));
+		barrelModel.getTexture().setNormalMap(loader.loadTexture(EngineSettings.NORMAL_MAP_PATH, "barrelNormal"));
 		barrelModel.getTexture().setShineDamper(10);
 		barrelModel.getTexture().setReflectivity(0.5f);
-		barrelModel.getTexture().setSpecularMap(loader.loadTexture(Settings.SPECULAR_MAP_PATH, "barrelS"));
+		barrelModel.getTexture().setSpecularMap(loader.loadTexture(EngineSettings.SPECULAR_MAP_PATH, "barrelS"));
 
 		TexturedModel boulderModel = new TexturedModel(NormalMappedObjLoader.loadOBJ("boulder", loader),
-				new ModelTexture(loader.loadTexture(Settings.MODEL_TEXTURE_PATH,"boulder")));
-		boulderModel.getTexture().setNormalMap(loader.loadTexture(Settings.NORMAL_MAP_PATH, "boulderNormal"));
+				new ModelTexture(loader.loadTexture(EngineSettings.MODEL_TEXTURE_PATH,"boulder")));
+		boulderModel.getTexture().setNormalMap(loader.loadTexture(EngineSettings.NORMAL_MAP_PATH, "boulderNormal"));
 		boulderModel.getTexture().setShineDamper(10);
 		boulderModel.getTexture().setReflectivity(0.5f);
 		
@@ -77,7 +77,7 @@ public class EntitiesManager {
 		entities.add(barrel);
 		entities.add(boulder);
 		
-		return entities;
+		return entities; 
 	}
 
 }

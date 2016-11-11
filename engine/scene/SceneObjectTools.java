@@ -27,7 +27,7 @@ public class SceneObjectTools {
 				data.getTextureCoords(), data.getNormals(), 
 				data.getIndices());
 	    TexturedModel staticModel = new TexturedModel(objFile, rawModel,
-	    		new ModelTexture(texName, loader.loadTexture(Settings.MODEL_TEXTURE_PATH, texName)));
+	    		new ModelTexture(texName, loader.loadTexture(EngineSettings.MODEL_TEXTURE_PATH, texName)));
 	    return staticModel;
 	}
 	
@@ -84,18 +84,18 @@ public class SceneObjectTools {
 			String redTexture, String greenTexture, String blueTexture, 
 			String blendTexture, String heightTexture, Loader loader) {
 		TerrainTexture backgroundTexture =
-				new TerrainTexture(basicTexture, loader.loadTexture(Settings.TERRAIN_TEXTURE_PATH, basicTexture));
+				new TerrainTexture(basicTexture, loader.loadTexture(EngineSettings.TERRAIN_TEXTURE_PATH, basicTexture));
 		TerrainTexture rTexture = 
-				new TerrainTexture(redTexture, loader.loadTexture(Settings.TERRAIN_TEXTURE_PATH, redTexture));
+				new TerrainTexture(redTexture, loader.loadTexture(EngineSettings.TERRAIN_TEXTURE_PATH, redTexture));
 		TerrainTexture gTexture = 
-				new TerrainTexture(greenTexture, loader.loadTexture(Settings.TERRAIN_TEXTURE_PATH, greenTexture));
+				new TerrainTexture(greenTexture, loader.loadTexture(EngineSettings.TERRAIN_TEXTURE_PATH, greenTexture));
 		TerrainTexture bTexture = 
-				new TerrainTexture(blueTexture, loader.loadTexture(Settings.TERRAIN_TEXTURE_PATH, blueTexture));
+				new TerrainTexture(blueTexture, loader.loadTexture(EngineSettings.TERRAIN_TEXTURE_PATH, blueTexture));
 		
 		TerrainTexturePack texturePack = 
 				new TerrainTexturePack(backgroundTexture + "Pack", backgroundTexture, rTexture, gTexture, bTexture);
 		TerrainTexture blendMap = 
-				new TerrainTexture(blendTexture, loader.loadTexture(Settings.BLEND_MAP_PATH, blendTexture));
+				new TerrainTexture(blendTexture, loader.loadTexture(EngineSettings.BLEND_MAP_PATH, blendTexture));
 		Terrain terrain = new Terrain(name, x,y,loader,texturePack, blendMap, heightTexture);	
 		return terrain;
 	}
@@ -105,18 +105,18 @@ public class SceneObjectTools {
 			String blendTexture, float amplitude, int octaves, float roughness,
 			Loader loader) {
 		TerrainTexture backgroundTexture = 
-				new TerrainTexture(basicTexture, loader.loadTexture(Settings.TERRAIN_TEXTURE_PATH, basicTexture));
+				new TerrainTexture(basicTexture, loader.loadTexture(EngineSettings.TERRAIN_TEXTURE_PATH, basicTexture));
 		TerrainTexture rTexture = 
-				new TerrainTexture(redTexture, loader.loadTexture(Settings.TERRAIN_TEXTURE_PATH, redTexture));
+				new TerrainTexture(redTexture, loader.loadTexture(EngineSettings.TERRAIN_TEXTURE_PATH, redTexture));
 		TerrainTexture gTexture = 
-				new TerrainTexture(greenTexture, loader.loadTexture(Settings.TERRAIN_TEXTURE_PATH, greenTexture));
+				new TerrainTexture(greenTexture, loader.loadTexture(EngineSettings.TERRAIN_TEXTURE_PATH, greenTexture));
 		TerrainTexture bTexture = 
-				new TerrainTexture(blueTexture, loader.loadTexture(Settings.TERRAIN_TEXTURE_PATH, blueTexture));
+				new TerrainTexture(blueTexture, loader.loadTexture(EngineSettings.TERRAIN_TEXTURE_PATH, blueTexture));
 		
 		TerrainTexturePack texturePack = 
 				new TerrainTexturePack(basicTexture + "Pack", backgroundTexture, rTexture,	gTexture, bTexture);
 		TerrainTexture blendMap = 
-				new TerrainTexture(blendTexture, loader.loadTexture(Settings.BLEND_MAP_PATH,blendTexture));
+				new TerrainTexture(blendTexture, loader.loadTexture(EngineSettings.BLEND_MAP_PATH,blendTexture));
 		Terrain terrain = 
 				new Terrain(name, x,y,loader,texturePack, blendMap, amplitude, octaves, roughness);
 		return terrain;

@@ -12,7 +12,7 @@ public class TextMeshCreator {
 	private MetaFile metaData;
 
 	protected TextMeshCreator(File metaFile) {
-		metaData = new MetaFile(metaFile);
+		metaData = new MetaFile(metaFile); 
 	}
 
 	protected TextMeshData createTextMesh(GUIText text) {

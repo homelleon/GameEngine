@@ -22,7 +22,7 @@ public class TextMaster {
 	}
 	
 	public static void render() {
-		renderer.render(texts);
+		renderer.render(texts); 
 	}
 	
 	public static void loadText(GUIText text) {

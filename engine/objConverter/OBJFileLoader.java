@@ -11,13 +11,13 @@ import java.util.List;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
-import scene.Settings;
+import scene.EngineSettings;
 
 public class OBJFileLoader {
  
     public static ModelData loadOBJ(String objFileName) {
         FileReader isr = null;
-        File objFile = new File(Settings.OBJECT_PATH + objFileName + ".obj");
+        File objFile = new File(EngineSettings.OBJECT_PATH + objFileName + ".obj");
         try {
             isr = new FileReader(objFile);
         } catch (FileNotFoundException e) {

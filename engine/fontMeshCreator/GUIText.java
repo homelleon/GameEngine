@@ -59,7 +59,7 @@ public class GUIText {
 	 *            line. When text is centered it is centered into the middle of
 	 *            the line, based on this line length value.
 	 * @param centered
-	 *            - whether the text should be centered or not.
+	 *            - whether the text should be centered or not. 
 	 */
 	public GUIText(String text, float fontSize, FontType font, Vector2f position, float maxLineLength,
 			boolean centered) {

@@ -12,7 +12,7 @@ import entities.Camera;
 import entities.Entity;
 import entities.Light;
 import models.TexturedModel;
-import scene.Settings;
+import scene.EngineSettings;
 
 /**
  * This class is in charge of using all of the classes in the shadows package to
@@ -49,7 +49,7 @@ public class ShadowMapMasterRenderer {
 	public ShadowMapMasterRenderer(Camera camera) {
 		shader = new ShadowShader();
 		shadowBox = new ShadowBox(lightViewMatrix, camera);
-		shadowFbo = new ShadowFrameBuffer(Settings.SHADOW_MAP_SIZE, Settings.SHADOW_MAP_SIZE);
+		shadowFbo = new ShadowFrameBuffer(EngineSettings.SHADOW_MAP_SIZE, EngineSettings.SHADOW_MAP_SIZE);
 		entityRenderer = new ShadowMapEntityRenderer(shader, projectionViewMatrix);
 	}
 

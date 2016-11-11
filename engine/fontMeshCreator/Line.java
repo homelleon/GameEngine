@@ -15,7 +15,7 @@ public class Line {
 	private double spaceSize;
 
 	private List<Word> words = new ArrayList<Word>();
-	private double currentLineLength = 0;
+	private double currentLineLength = 0; 
 
 	/**
 	 * Creates an empty line.

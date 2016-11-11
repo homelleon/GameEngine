@@ -6,7 +6,7 @@ import org.lwjgl.util.vector.Vector3f;
 
 import entities.Camera;
 import entities.Entity;
-import scene.Settings;
+import scene.EngineSettings;
 import terrains.Terrain;
 import toolbox.Maths;
 
@@ -22,7 +22,7 @@ public class DistanceCutConst {
 		for(Entity entity : entities) {
 			if(entity.isVisible()) {
 				float distance = Maths.distanceFromCamera(entity, camera);
-				if(distance <= Settings.RENDERING_VIEW_DISTANCE) {
+				if(distance <= EngineSettings.RENDERING_VIEW_DISTANCE) {
 					entity.setRendered(true);
 				} else {
 					entity.setRendered(false);

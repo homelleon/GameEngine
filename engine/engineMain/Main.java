@@ -6,9 +6,9 @@ public class Main {
 		
 	private static Engine engine;
 
-	public static void main(String[] args) {
+	public static void main(String[] args) { 
 		engine = new MainEditorLoop();
-		engine.loadMap("map1");
+		engine.loadGameSettings();
 		engine.init();
 		engine.run();
 	}

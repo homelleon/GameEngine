@@ -9,15 +9,15 @@ import org.lwjgl.util.vector.Vector4f;
 
 import entities.Camera;
 import entities.Light;
-import scene.Settings;
+import scene.EngineSettings;
 import toolbox.Maths;
 
 public class StaticShader extends ShaderProgram{
 	
 	private static final int MAX_LIGHTS = 4;
 	
-	public static final String VERTEX_FILE = Settings.SHADER_PATH + "vertexShader.txt";
-	public static final String FRAGMENT_FILE = Settings.SHADER_PATH + "fragmentShader.txt";
+	public static final String VERTEX_FILE = EngineSettings.SHADER_PATH + "vertexShader.txt";
+	public static final String FRAGMENT_FILE = EngineSettings.SHADER_PATH + "fragmentShader.txt";
 	
 	private int location_transformationMatrix;
 	private int location_projectionMatrix;

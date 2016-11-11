@@ -1,12 +1,12 @@
 package bloom;
 
-import scene.Settings;
+import scene.EngineSettings;
 import shaders.ShaderProgram;
 
-public class BrightFilterShader extends ShaderProgram {
+public class BrightFilterShader extends ShaderProgram { 
 	
-	private static final String VERTEX_FILE = Settings.BLOOM_SHADER_PATH + "simpleVertex.txt";
-	private static final String FRAGMENT_FILE = Settings.BLOOM_SHADER_PATH + "brightFilterFragment.txt";
+	private static final String VERTEX_FILE = EngineSettings.BLOOM_SHADER_PATH + "simpleVertex.txt";
+	private static final String FRAGMENT_FILE = EngineSettings.BLOOM_SHADER_PATH + "brightFilterFragment.txt";
 	
 	public BrightFilterShader() {
 		super(VERTEX_FILE, FRAGMENT_FILE);

@@ -10,10 +10,10 @@ import org.lwjgl.openal.AL;
 import org.lwjgl.openal.AL10;
 import org.lwjgl.util.WaveData;
 
-import scene.Settings;
+import scene.EngineSettings;
 
 
-public class AudioMaster {
+public class AudioMaster { 
 	
 	private static Map<String, Integer> buffers = new HashMap<String, Integer>();
 
@@ -44,7 +44,7 @@ public class AudioMaster {
 		int buffer = AL10.alGenBuffers(); 
 		buffers.put(file, buffer);
 		
-		WaveData waveFile = WaveData.create(Settings.AUDIO_PATH + file);
+		WaveData waveFile = WaveData.create(EngineSettings.AUDIO_PATH + file);
 		AL10.alBufferData(buffer, waveFile.format, waveFile.data, waveFile.samplerate);
 		waveFile.dispose();
 		return buffer;

@@ -5,7 +5,7 @@ import org.lwjgl.opengl.GL13;
 
 import postProcessing.ImageRenderer;
 
-public class BrightFilter {
+public class BrightFilter { 
 
 	private ImageRenderer renderer;
 	private BrightFilterShader shader;

@@ -14,7 +14,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.PixelFormat;
 
-import scene.Settings;
+import scene.EngineSettings;
 
 public class DisplayManager {
 	
@@ -29,7 +29,7 @@ public class DisplayManager {
 		.withProfileCore(true);
 		
 		try {
-			Display.setDisplayMode(new DisplayMode(Settings.DISPLAY_WIDTH,Settings.DISPLAY_HEIGHT));
+			Display.setDisplayMode(new DisplayMode(EngineSettings.DISPLAY_WIDTH,EngineSettings.DISPLAY_HEIGHT));
 			Display.create(new PixelFormat().withDepthBits(24), attribs);
 			Display.isFullscreen();
 			Display.setTitle("MyGame");
@@ -38,7 +38,7 @@ public class DisplayManager {
 			e.printStackTrace();
 		}
 		
-		GL11.glViewport(0, 0, Settings.DISPLAY_WIDTH, Settings.DISPLAY_HEIGHT);
+		GL11.glViewport(0, 0, EngineSettings.DISPLAY_WIDTH, EngineSettings.DISPLAY_HEIGHT);
 		lastFrameTime = getCurrentTime();	
 		
 	}
@@ -52,7 +52,7 @@ public static void creatDisplay(int mode) {
 		canvas.isDisplayable();
 		canvas.setBackground(Color.white);
 		canvas.setVisible(true);
-		canvas.setSize(Settings.DISPLAY_WIDTH, Settings.DISPLAY_HEIGHT);
+		canvas.setSize(EngineSettings.DISPLAY_WIDTH, EngineSettings.DISPLAY_HEIGHT);
 	
 
 		
@@ -61,7 +61,7 @@ public static void creatDisplay(int mode) {
 		.withProfileCore(true);
 		
 		try {
-			Display.setDisplayMode(new DisplayMode(Settings.DISPLAY_WIDTH,Settings.DISPLAY_HEIGHT));
+			Display.setDisplayMode(new DisplayMode(EngineSettings.DISPLAY_WIDTH,EngineSettings.DISPLAY_HEIGHT));
 			Display.setParent(canvas);
 			Display.create(new PixelFormat().withDepthBits(24), attribs);
 			Display.setTitle("EditMode");
@@ -70,7 +70,7 @@ public static void creatDisplay(int mode) {
 			e.printStackTrace();
 		}
 		
-		GL11.glViewport(0, 0, Settings.DISPLAY_WIDTH, Settings.DISPLAY_HEIGHT);
+		GL11.glViewport(0, 0, EngineSettings.DISPLAY_WIDTH, EngineSettings.DISPLAY_HEIGHT);
 		lastFrameTime = getCurrentTime();
 		
 		
@@ -78,7 +78,7 @@ public static void creatDisplay(int mode) {
 	
 	public static void updateDisplay() {
 		
-		Display.sync(Settings.FPS_CAP);
+		Display.sync(EngineSettings.FPS_CAP);
 		Display.update();
 		long currentFrameTime = getCurrentTime();
 		delta = (currentFrameTime - lastFrameTime)/1000f;

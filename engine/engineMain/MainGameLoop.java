@@ -12,7 +12,7 @@ import triggers.Trigger;
 public class MainGameLoop implements Engine {
 	
 	private WorldGethable scene;
-	private boolean isScenePaused = false;
+	private boolean isScenePaused = false; 
 	
 	public MainGameLoop() {
 		DisplayManager.creatDisplay();
@@ -59,6 +59,12 @@ public class MainGameLoop implements Engine {
 	@Override
 	public void exit() {
 		Display.destroy();		
+	}
+
+	@Override
+	public void loadGameSettings() {
+		// TODO Auto-generated method stub
+		
 	}
 
 

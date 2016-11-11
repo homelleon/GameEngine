@@ -16,7 +16,7 @@ import entities.Light;
 import models.RawModel;
 import models.TexturedModel;
 import renderEngine.MasterRenderer;
-import scene.Settings;
+import scene.EngineSettings;
 import textures.ModelTexture;
 import toolbox.Maths;
 
@@ -34,9 +34,9 @@ public class NormalMappingRenderer {
 
 	public void render(Map<TexturedModel, List<Entity>> entities, Vector4f clipPlane, List<Light> lights, Camera camera, Matrix4f toShadowMapSpace) {
 		shader.start();
-		shader.loadFogDensity(Settings.FOG_DENSITY);
+		shader.loadFogDensity(EngineSettings.FOG_DENSITY);
 		shader.loadToShadowSpaceMatrix(toShadowMapSpace);
-		shader.loadShadowVariables(Settings.SHADOW_DISTANCE, Settings.SHADOW_MAP_SIZE, Settings.SHADOW_TRANSITION_DISTANCE, Settings.SHADOW_PCF);
+		shader.loadShadowVariables(EngineSettings.SHADOW_DISTANCE, EngineSettings.SHADOW_MAP_SIZE, EngineSettings.SHADOW_TRANSITION_DISTANCE, EngineSettings.SHADOW_PCF);
 		prepare(clipPlane, lights, camera);
 		for (TexturedModel model : entities.keySet()) {
 			prepareTexturedModel(model);
@@ -97,7 +97,7 @@ public class NormalMappingRenderer {
 	private void prepare(Vector4f clipPlane, List<Light> lights, Camera camera) {
 		shader.loadClipPlane(clipPlane);
 		//need to be public variables in MasterRenderer
-		shader.loadSkyColour(Settings.DISPLAY_RED, Settings.DISPLAY_GREEN, Settings.DISPLAY_BLUE);
+		shader.loadSkyColour(EngineSettings.DISPLAY_RED, EngineSettings.DISPLAY_GREEN, EngineSettings.DISPLAY_BLUE);
 		Matrix4f viewMatrix = Maths.createViewMatrix(camera);
 		
 		shader.loadLights(lights, viewMatrix);

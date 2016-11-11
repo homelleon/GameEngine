@@ -12,6 +12,7 @@ import scene.WorldGethable;
 public class MainEditorLoop implements Engine {
 	
 	private WorldGethable scene;
+	private static final String SETTINGS_NAME = "Settings";
 	
 	public MainEditorLoop() {
 		DisplayManager.creatDisplay();
@@ -41,7 +42,7 @@ public class MainEditorLoop implements Engine {
 		}
 		
 		scene.cleanUp();
-		DisplayManager.closeDisplay();		
+		DisplayManager.closeDisplay();	 	
 	}
 
 	@Override
@@ -52,6 +53,13 @@ public class MainEditorLoop implements Engine {
 	@Override
 	public GameMap getMap() {
 		return scene.getMap();
+	}
+
+	@Override
+	public void loadGameSettings() {
+		SettingsLoader setLoader = new SettingsTXTLoader();  
+		GameSettings settings = setLoader.loadSettings(SETTINGS_NAME);
+		scene.loadMap(settings.getMapName());		
 	}
 
 }

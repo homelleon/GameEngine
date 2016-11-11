@@ -1,6 +1,6 @@
 package scene;
 
-public class Settings {
+public class EngineSettings {
 	
 	//*****************DISPLAY SETTINGS**********************************//
 	public static final int DISPLAY_WIDTH = 800; //1920;  
@@ -40,6 +40,7 @@ public class Settings {
 	
 	//*****************PATH SETTINGS*************************************//
 	public final static String RES_PATH = "res/";
+	public final static String GAME_PATH = "game/";
 	public final static String SOURCE_PATH = "/";
 	public final static String MODEL_TEXTURE_PATH = RES_PATH + "textures/modelTextures/";
 	public final static String TERRAIN_TEXTURE_PATH = RES_PATH + "textures/terrainTextures/";
@@ -69,6 +70,8 @@ public class Settings {
 	public final static String POST_PROCESSING_SHADER_PATH = SOURCE_PATH + "postProcessing/";
 	public final static String BLUR_SHADER_PATH = SOURCE_PATH + "gaussianBlur/";
 	public final static String BLOOM_SHADER_PATH = SOURCE_PATH + "bloom/";
+	
+	public final static String GAME_SETTINGS_PATH = GAME_PATH + "gameMain/";
 	
 	//*****************RENDER SETTINGS**********************************//
 

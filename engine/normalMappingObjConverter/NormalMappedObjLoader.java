@@ -13,7 +13,7 @@ import org.lwjgl.util.vector.Vector3f;
 
 import models.RawModel;
 import renderEngine.Loader;
-import scene.Settings;
+import scene.EngineSettings;
 
 public class NormalMappedObjLoader {
 
@@ -21,7 +21,7 @@ public class NormalMappedObjLoader {
 
 	public static RawModel loadOBJ(String objFileName, Loader loader) {
 		FileReader isr = null;
-		File objFile = new File(Settings.OBJECT_PATH + objFileName + ".obj");
+		File objFile = new File(EngineSettings.OBJECT_PATH + objFileName + ".obj");
 		
 		try {
 			isr = new FileReader(objFile);

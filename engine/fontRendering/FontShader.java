@@ -3,13 +3,13 @@ package fontRendering;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
-import scene.Settings;
+import scene.EngineSettings;
 import shaders.ShaderProgram;
 
 public class FontShader extends ShaderProgram {
 
-	private static final String VERTEX_FILE = Settings.FONT_SHADER_PATH + "fontVertex.txt";
-	private static final String FRAGMENT_FILE = Settings.FONT_SHADER_PATH + "fontFragment.txt";
+	private static final String VERTEX_FILE = EngineSettings.FONT_SHADER_PATH + "fontVertex.txt";
+	private static final String FRAGMENT_FILE = EngineSettings.FONT_SHADER_PATH + "fontFragment.txt";
 	
 	private int location_colour;
 	private int location_translation;

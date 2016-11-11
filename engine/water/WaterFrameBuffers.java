@@ -8,15 +8,15 @@ import org.lwjgl.opengl.GL14;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.opengl.GL32;
 
-import scene.Settings;
+import scene.EngineSettings;
  
 public class WaterFrameBuffers {
  
     protected static final int REFLECTION_WIDTH = 320;
     private static final int REFLECTION_HEIGHT = 180;  
      
-    protected static final int REFRACTION_WIDTH = Settings.DISPLAY_WIDTH;
-    private static final int REFRACTION_HEIGHT = Settings.DISPLAY_HEIGHT;
+    protected static final int REFRACTION_WIDTH = EngineSettings.DISPLAY_WIDTH;
+    private static final int REFRACTION_HEIGHT = EngineSettings.DISPLAY_HEIGHT;
  
     private int reflectionFrameBuffer;
     private int reflectionTexture;
@@ -45,7 +45,7 @@ public class WaterFrameBuffers {
     }
      
     public void bindRefractionFrameBuffer() {//call before rendering to this FBO
-        bindFrameBuffer(refractionFrameBuffer,Settings.DISPLAY_WIDTH,Settings.DISPLAY_HEIGHT);
+        bindFrameBuffer(refractionFrameBuffer,EngineSettings.DISPLAY_WIDTH,EngineSettings.DISPLAY_HEIGHT);
     }
      
     public void unbindCurrentFrameBuffer() {//call to switch to default frame buffer

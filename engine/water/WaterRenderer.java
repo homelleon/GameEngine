@@ -15,7 +15,7 @@ import entities.PlayerCamera;
 import models.RawModel;
 import renderEngine.DisplayManager;
 import renderEngine.Loader;
-import scene.Settings;
+import scene.EngineSettings;
 import toolbox.Maths;
  
 public class WaterRenderer {
@@ -37,12 +37,12 @@ public class WaterRenderer {
     public WaterRenderer(Loader loader, WaterShader shader, Matrix4f projectionMatrix, WaterFrameBuffers fbos) {
         this.shader = shader;
         this.fbos = fbos;
-        dudvTexture = loader.loadTexture(Settings.DUDV_MAP_PATH, DUDV_MAP);
-        normalMap = loader.loadTexture(Settings.NORMAL_MAP_PATH, NORMAL_MAP);
+        dudvTexture = loader.loadTexture(EngineSettings.DUDV_MAP_PATH, DUDV_MAP);
+        normalMap = loader.loadTexture(EngineSettings.NORMAL_MAP_PATH, NORMAL_MAP);
         shader.start();
         shader.connectTextureUnits();
-        shader.loadFogDensity(Settings.FOG_DENSITY);
-        shader.loadSkyColour(Settings.DISPLAY_RED, Settings.DISPLAY_GREEN, Settings.DISPLAY_BLUE);
+        shader.loadFogDensity(EngineSettings.FOG_DENSITY);
+        shader.loadSkyColour(EngineSettings.DISPLAY_RED, EngineSettings.DISPLAY_GREEN, EngineSettings.DISPLAY_BLUE);
         shader.loadProjectionMatrix(projectionMatrix);
         shader.stop();
         setUpVAO(loader);

@@ -1,17 +1,39 @@
 package engineMain;
 
-public class GameSettings implements Settings {
+public class GameSettings {
 	
-	public GameSettings(String fileName) {
-
-	}
+	private static GameSettings instance; 
 	
 	String mapName;
+	boolean isInitialized;
+	
+	private GameSettings() {}
+	
+	public static GameSettings getInstance() {
+		if (instance == null) {
+		     instance = new GameSettings();
+		   }
+		return instance;
+	}
+	
+	private boolean isInitialized() {
+		return isInitialized;
+	}
 
-	@Override
+	public void setInitialized(boolean isInitialized) {
+		this.isInitialized = isInitialized;
+	}
+
+
 	public String getMapName() {
-		
-		return null;
+		if(isInitialized) {
+			return mapName;
+		} else
+			return null;
+	}
+
+	public void setMapName(String name) {
+		mapName = name;		
 	}
 
 }

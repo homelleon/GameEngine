@@ -7,7 +7,7 @@ public class Source {
 	
 	private String name;
 	private int sourceId;
-	private String pathName;
+	private String pathName; 
 	
 	public Source(String name, String path, int maxDistance) {
 		sourceId = AL10.alGenSources();

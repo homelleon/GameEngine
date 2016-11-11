@@ -8,7 +8,7 @@ import postProcessing.ImageRenderer;
 public class VerticalBlur {
 	
 	private ImageRenderer renderer;
-	private VerticalBlurShader shader;
+	private VerticalBlurShader shader; 
 	
 	public VerticalBlur(int targetFboWidth, int targetFboHeight) {
 		shader = new VerticalBlurShader();

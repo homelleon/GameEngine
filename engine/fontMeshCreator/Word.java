@@ -8,7 +8,7 @@ import java.util.List;
  * @author Karl
  *
  */
-public class Word {
+public class Word { 
 	
 	private List<Character> characters = new ArrayList<Character>();
 	private double width = 0;

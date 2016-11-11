@@ -8,7 +8,7 @@ import postProcessing.ImageRenderer;
 public class HorizontalBlur {
 	
 	private ImageRenderer renderer;
-	private HorizontalBlurShader shader;
+	private HorizontalBlurShader shader; 
 	
 	public HorizontalBlur(int targetFboWidth, int targetFboHeight) {
 		shader = new HorizontalBlurShader();

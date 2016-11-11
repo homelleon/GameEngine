@@ -158,8 +158,8 @@ public class GameSceneRenderer implements WorldGethable {
 		/*----------------FONTS-----------------*/
 		TextMaster.init(loader);
 		this.font = 
-				new FontType(loader.loadTexture(Settings.FONT_PATH, "candara"),
-						new File(Settings.FONT_PATH + "candara.fnt"));
+				new FontType(loader.loadTexture(EngineSettings.FONT_PATH, "candara"),
+						new File(EngineSettings.FONT_PATH + "candara.fnt"));
 		GUIText text = new GUIText("This is an Alfa-version of the game engine", 
 				3, font, new Vector2f(0.25f, 0), 0.5f, true);
 		
