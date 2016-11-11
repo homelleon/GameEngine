@@ -108,7 +108,6 @@ public abstract class ShaderProgram {
 		GL30.glBindFragDataLocation(programID, attachment, variableName);
 	}
 	
-	@SuppressWarnings("deprecation")
 	private static int loadShader(String file, int type) {
 		StringBuilder shaderSource = new StringBuilder();
 		try {

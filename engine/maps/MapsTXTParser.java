@@ -3,10 +3,7 @@ package maps;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
@@ -17,7 +14,7 @@ import renderEngine.Loader;
 import scene.SceneObjectTools;
 import terrains.Terrain;
 
-public class MapParser implements MapReadable {
+public class MapsTXTParser implements MapsParser {
 
 	@Override
 	public GameMap readMap(String fileName, BufferedReader reader, Loader loader) {	

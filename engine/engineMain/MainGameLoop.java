@@ -7,9 +7,10 @@ import maps.GameMap;
 import renderEngine.DisplayManager;
 import scene.GameSceneRenderer;
 import scene.WorldGethable;
-import triggers.Trigger;
 
 public class MainGameLoop implements Engine {
+	
+	private static final String SETTINGS_NAME = "settings";
 	
 	private WorldGethable scene;
 	private boolean isScenePaused = false; 
@@ -63,8 +64,9 @@ public class MainGameLoop implements Engine {
 
 	@Override
 	public void loadGameSettings() {
-		// TODO Auto-generated method stub
-		
+		SettingsLoader setLoader = new SettingsTXTLoader();  
+		GameSettings settings = setLoader.loadSettings(SETTINGS_NAME);
+		scene.loadMap(settings.getMapName());			
 	}
 
 

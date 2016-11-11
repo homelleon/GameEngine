@@ -1,6 +1,6 @@
 package maps;
 
-public interface MapWriteable {
+public interface MapsWriter {
 	
 	public void write(GameMap map);
 

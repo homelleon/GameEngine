@@ -6,13 +6,12 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import entities.Entity;
 import scene.EngineSettings;
 import terrains.Terrain;
 
-public class MapFileWriter implements MapWriteable {
+public class MapsTXTWriter implements MapsWriter {
 	
 	@Override
 	public void write(GameMap map) {

@@ -2,8 +2,6 @@ package audio;
 
 import java.io.IOException;
 
-import org.lwjgl.LWJGLException;
-import org.lwjgl.input.Keyboard;
 import org.lwjgl.openal.AL10;
 import org.lwjgl.openal.AL11;
 
@@ -21,8 +19,6 @@ public class Test {
 		
 		float xPos = 8;
 		
-	
-		char c = ' ';
 		while(xPos > -50) {
 			xPos -= 0.0002f;
 			source.setPosition(xPos, 0, 2);

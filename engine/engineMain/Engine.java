@@ -1,7 +1,6 @@
 package engineMain;
 
 import maps.GameMap;
-import triggers.Trigger;
 
 public interface Engine extends Runnable { 
 	

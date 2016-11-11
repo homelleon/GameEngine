@@ -8,7 +8,6 @@ public class GameTime {
 	private float time;
 	private float dayTime;
 	private float sunTime;
-	private boolean sunRise = false;
 	
 	public GameTime(int timeLength){
 		this.timeLength = timeLength;		

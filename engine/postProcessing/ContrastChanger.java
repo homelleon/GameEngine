@@ -3,7 +3,6 @@ package postProcessing;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 
-import entities.PlayerCamera;
 import scene.EngineSettings;
 
 public class ContrastChanger {

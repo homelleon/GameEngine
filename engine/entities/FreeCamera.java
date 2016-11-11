@@ -9,8 +9,6 @@ import scene.EngineSettings;
 
 public class FreeCamera implements Camera{
 	
-	private static final float MAX_PITCH = 90;
-	private static final float MIN_PITCH = -90;
 	private static final float SPEED = 100;
 	private static final float RUN_SPEED = 4;
 	

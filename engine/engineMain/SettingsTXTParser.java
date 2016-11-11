@@ -14,7 +14,7 @@ public class SettingsTXTParser implements SettingsParser {
 				line = reader.readLine();
 				if (line.startsWith("mapName= ")) {
 	                    String[] currentLine = line.split(" ");	            
-	                    settings.setMapName(line);
+	                    settings.setMapName(currentLine[0]);
 				}
 				if (line.isEmpty()) {
 					break;

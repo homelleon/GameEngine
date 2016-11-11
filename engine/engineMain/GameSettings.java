@@ -5,7 +5,7 @@ public class GameSettings {
 	private static GameSettings instance; 
 	
 	String mapName;
-	boolean isInitialized;
+	private boolean isInitialized;
 	
 	private GameSettings() {}
 	
@@ -16,17 +16,13 @@ public class GameSettings {
 		return instance;
 	}
 	
-	private boolean isInitialized() {
-		return isInitialized;
-	}
-
 	public void setInitialized(boolean isInitialized) {
 		this.isInitialized = isInitialized;
 	}
 
 
 	public String getMapName() {
-		if(isInitialized) {
+		if(this.isInitialized) {
 			return mapName;
 		} else
 			return null;

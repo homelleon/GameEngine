@@ -6,7 +6,6 @@ import org.lwjgl.util.vector.Vector3f;
 
 import entities.Camera;
 import entities.Entity;
-import entities.PlayerCamera;
 import terrains.Terrain;
 
 public class Maths {
@@ -127,7 +126,7 @@ public class Maths {
 			distance = sqr(distanceLineAndPoint(camVec, terrainSideP1, terrainSideP2));				
 		}
 						
-		distance += Maths.sqr(terrain.getHeightOfTerrain(cX, cZ) - camera.getPosition().y);
+		distance += Maths.sqr(terrain.getHeightOfTerrain(cX, cZ) - cY);
 		distance = (float) Math.sqrt(distance);
 
 	    return distance;

@@ -33,7 +33,6 @@ public class NormalMappingShader extends ShaderProgram{
 	private int location_modelTexture;
 	private int location_fogDensity;
 	private int location_normalMap;
-	private int location_shadowCoords;
 	private int location_toShadowMapSpace;
 	private int location_shadowDistance;
 	private int location_shadowMap;

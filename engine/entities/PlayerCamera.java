@@ -165,21 +165,6 @@ public class PlayerCamera implements Camera{
 		}
 	}
 	
-	private void calculatePitch() {
-
-			float pitchChange = Mouse.getY() * EngineSettings.MOUSE_Y_SPEED;
-			if(((pitch<maxPitch)&&(pitchChange<0))||((pitch>minPitch)&&(pitchChange>0))) {
-				pitch -= pitchChange;
-			}
-	}
-	
-	private void calculateAngleAroundPlayer() {
-		if(Mouse.isButtonDown(2)) {
-			float angleChange = Mouse.getDX() * EngineSettings.MOUSE_X_SPEED;
-			angleAroundPlayer -= angleChange;
-		}
-	}
-	
 	private void calculatePitchAndAngle() {
 		if(!Mouse.isButtonDown(2)) {
 			float pitchChange = (Mouse.getY() - EngineSettings.DISPLAY_HEIGHT/2) * EngineSettings.MOUSE_Y_SPEED;

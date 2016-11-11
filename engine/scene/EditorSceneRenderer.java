@@ -33,10 +33,10 @@ import guis.GuiManager;
 import guis.GuiRenderer;
 import guis.GuiTexture;
 import maps.GameMap;
-import maps.MapFileLoader;
-import maps.MapFileWriter;
-import maps.MapLoadable;
-import maps.MapWriteable;
+import maps.MapsLoader;
+import maps.MapsTXTLoader;
+import maps.MapsTXTWriter;
+import maps.MapsWriter;
 import models.TexturedModel;
 import optimisations.CutOptimisation;
 import optimisations.Optimisation;
@@ -86,7 +86,7 @@ public class EditorSceneRenderer implements WorldGethable {
 	private MousePicker picker;
 	private Optimisation optimisation;
 	
-	private static boolean isPaused = false;
+	private boolean isPaused = false;
 	private boolean mapIsLoaded = false;
 
 	@Override
@@ -99,7 +99,7 @@ public class EditorSceneRenderer implements WorldGethable {
 		/*--------------PRE LOAD TOOLS-------------*/
 		this.loader = new Loader();
 		/*---------------MAP-----------------------*/
-		MapLoadable mapLoader = new MapFileLoader();
+		MapsLoader mapLoader = new MapsTXTLoader();
 		this.map = mapLoader.loadMap(name, loader);	
 		this.mapIsLoaded = true;
 	}
@@ -219,7 +219,7 @@ public class EditorSceneRenderer implements WorldGethable {
 		
 		
 		if(Keyboard.isKeyDown(Keyboard.KEY_T)) {
-			MapWriteable mapWriter = new MapFileWriter();
+			MapsWriter mapWriter = new MapsTXTWriter();
 			GameMap map = new GameMap("newMap", loader);
 			map.setEntities(entities);
 			map.setTerrains(terrains);

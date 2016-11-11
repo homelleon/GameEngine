@@ -2,8 +2,6 @@ package optimisations;
 
 import java.util.List;
 
-import org.lwjgl.util.vector.Vector3f;
-
 import entities.Camera;
 import entities.Entity;
 import scene.EngineSettings;

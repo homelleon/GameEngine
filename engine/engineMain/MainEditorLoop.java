@@ -6,13 +6,13 @@ import org.lwjgl.opengl.Display;
 import maps.GameMap;
 import renderEngine.DisplayManager;
 import scene.EditorSceneRenderer;
-import scene.GameSceneRenderer;
 import scene.WorldGethable;
 
 public class MainEditorLoop implements Engine {
 	
+	private static final String SETTINGS_NAME = "settings";
+	
 	private WorldGethable scene;
-	private static final String SETTINGS_NAME = "Settings";
 	
 	public MainEditorLoop() {
 		DisplayManager.creatDisplay();
