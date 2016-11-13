@@ -148,8 +148,8 @@ public class SceneEditor implements Scene {
 		this.renderer = new MasterRenderer(loader, camera);		
 		
 		/*----------------PARTICLES-----------------*/
-		this.pSystem = ParticlesManager.createParticleSystem(loader);		
-		ParticleMaster.init(loader, renderer.getProjectionMatrix());
+		this.pSystem = ParticlesManager.createParticleSystem(loader);	
+
 		
 		/*------------------FBO-------------------*/
 		
@@ -204,6 +204,9 @@ public class SceneEditor implements Scene {
 		spreadOnHeights(entities);
 		spreadOnHeights(normalMapEntities);
 		game.onStart();
+		pSystem.addAll(map.getParticles().values());
+		
+		ParticleMaster.init(loader, renderer.getProjectionMatrix());
 	}
 	
 	/*Main render*/

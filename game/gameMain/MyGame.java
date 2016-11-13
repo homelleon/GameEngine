@@ -3,18 +3,27 @@ package gameMain;
 import org.lwjgl.util.vector.Vector3f;
 
 import engineMain.Main;
-import entities.Entity;
+import particles.ParticleSystem;
 
 public class MyGame implements Game {
 	
 
 	private int time = 0;
+	private ParticleSystem partS;
 	
 		/* use "Main.getMap()" to get methods of Map
 		 * and all objects on Map */	
 		public void onStart() {
 			
 			Main.getMap().createEntity("Bo", "cube", "Cube1", new Vector3f(70, 50, 70), 0, 1, 0, 8);
+			Main.getMap().createParticles("Part", "cosmic", 4, true, 50, 25, 0.3f, 4, 1);
+			partS = Main.getMap().getParticles().get("Part");
+			partS.randomizeRotation();
+			partS.setDirection(new Vector3f(0, 1, 0), 0.1f);
+			partS.setLifeError(0.1f);
+			partS.setSpeedError(0.4f);
+			partS.setScaleError(0.8f);
+			
 		}
 		
 		/* on screen update - here you can
@@ -23,6 +32,7 @@ public class MyGame implements Game {
 		 * to manipulate Entity named "Tree1"
 		 * Don't use while loop and etc*/
 		public void onUpdate() {
+			partS.generateParticles(new Vector3f(20,50,20));			
 			
 		}
 }

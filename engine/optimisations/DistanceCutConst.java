@@ -11,7 +11,7 @@ import toolbox.Maths;
 //Cut during to constants
 public class DistanceCutConst {
 	
-	private static final float TERRAIN_CUT_DISTANCE = 480;
+	private static final float TERRAIN_CUT_DISTANCE = 500;
 	
 	public void cutRender(Camera camera, List<Entity> entities, List<Terrain> terrains) {
 		cutEntityRender(camera, entities);	

@@ -20,6 +20,7 @@ public class MapsTXTParser implements MapsParser {
 	public GameMap readMap(String fileName, BufferedReader reader, Loader loader) {	
         String line;
         
+        /* entities */
 		List<String> eNames = new ArrayList<String>();
         List<String> eModels = new ArrayList<String>();
         List<String> eTextures = new ArrayList<String>();
@@ -27,6 +28,7 @@ public class MapsTXTParser implements MapsParser {
         List<Float> eScales = new ArrayList<Float>();  
         List<Boolean> eTypes = new ArrayList<Boolean>();
         
+        /* terrains */
         List<String> tNames = new ArrayList<String>();
         List<Vector2f> tCoords = new ArrayList<Vector2f>();
         List<String> tBaseTexs = new ArrayList<String>();
@@ -40,10 +42,22 @@ public class MapsTXTParser implements MapsParser {
         List<Integer> tOctaves = new ArrayList<Integer>();
         List<Float> tRoughnesses = new ArrayList<Float>();
         
+        /* audio sources */
         List<String> aNames = new ArrayList<String>();
         List<String> aPaths = new ArrayList<String>();
         List<Vector3f> aCoords = new ArrayList<Vector3f>();
         List<Integer> aMaxDistances = new ArrayList<Integer>();
+        
+        /* particle systems */
+        List<String> pNames = new ArrayList<String>();
+        List<String> pTexs = new ArrayList<String>();
+        List<Integer> pDims = new ArrayList<Integer>();
+        List<Boolean> pAdds = new ArrayList<Boolean>();
+        List<Float> pPpss = new ArrayList<Float>();
+        List<Float> pSpeeds = new ArrayList<Float>();
+        List<Float> pGravities = new ArrayList<Float>();
+        List<Float> pLifes = new ArrayList<Float>();
+        List<Float> pScales = new ArrayList<Float>();
         
         try {        	
 	        while (true) {	      
@@ -102,6 +116,19 @@ public class MapsTXTParser implements MapsParser {
 	        	/*Read water planes*/
 	        	//TODO:Implement reader
 	        	
+	        	/*Read particle systems*/
+	        	if (line.startsWith("<p> ")) {
+	        		String[] currentLine = line.split(" ");
+	        		pNames.add(String.valueOf(currentLine[1]));
+	        		pTexs.add(String.valueOf(currentLine[2]));	                  
+	                pAdds.add((boolean) Boolean.valueOf(currentLine[3]));
+	                pPpss.add((float) Float.valueOf(currentLine[4]));
+	                pSpeeds.add((float) Float.valueOf(currentLine[5]));
+	                pGravities.add((float) Float.valueOf(currentLine[6]));
+	                pLifes.add((float) Float.valueOf(currentLine[7]));
+	                pScales.add((float) Float.valueOf(currentLine[8]));	 
+	        	}
+	        	
 	        	if (line.startsWith("<end>")) {
 	        		break;
 	        	}	
@@ -111,17 +138,8 @@ public class MapsTXTParser implements MapsParser {
 	        
         } catch (IOException e) {
         	System.err.println("Error reading the file");
-        }
-        
-        //*Create enities*//
-        List<Entity> entities = new ArrayList<Entity>();
-        
-        for(int i=0;i<eNames.size();i++) {
-        	TexturedModel model = SceneObjectTools.loadStaticModel(eModels.get(i), eTextures.get(i), loader);
-        	Entity entity = new Entity(eNames.get(i), model, eCoords.get(i), 0, 0, 0, eScales.get(i));
-        	entities.add(entity);
-        }
-        
+        }        
+                
         //*Create terrains*//
         List<Terrain> terrains = new ArrayList<Terrain>();
         
@@ -150,8 +168,17 @@ public class MapsTXTParser implements MapsParser {
         }
         
 		GameMap map = new GameMap(fileName, loader);
-     
-		map.setEntities(entities);
+		
+		/* create entities */
+		for(int i=0;i<eNames.size();i++) {
+			map.createEntity(eNames.get(i), eModels.get(i), eTextures.get(i), eCoords.get(i), 0, 0, 0, eScales.get(i));
+        }
+		
+		/* create particle systems */
+		for(int i=0;i<pNames.size();i++) { 
+			map.createParticles(pNames.get(i), pTexs.get(i), pDims.get(i), pAdds.get(i), pPpss.get(i), pSpeeds.get(i), pGravities.get(i), pLifes.get(i), pScales.get(i));
+		}
+		
 		map.setTerrains(terrains);
 		map.setAudios(audios);
 		

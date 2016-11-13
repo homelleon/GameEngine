@@ -9,7 +9,10 @@ import org.lwjgl.util.vector.Vector3f;
 import audio.Source;
 import entities.Entity;
 import models.TexturedModel;
+import particles.ParticleSystem;
+import particles.ParticleTexture;
 import renderEngine.Loader;
+import scene.EngineSettings;
 import scene.SceneObjectTools;
 import terrains.Terrain;
 import triggers.Trigger;
@@ -17,21 +20,16 @@ import triggers.Trigger;
 public class GameMap {
 	
 	private String name;
-	private Map<String, Entity> entities;
-	private Map<String, Entity> normalEntities;
-	private Map<String, Terrain> terrains;
-	private Map<String, Source> audios;
-	private Map<String, Trigger> triggers;
+	private Map<String, Entity> entities = new HashMap<String, Entity>();
+	private Map<String, Entity> normalEntities = new HashMap<String, Entity>();
+	private Map<String, Terrain> terrains = new HashMap<String, Terrain>();
+	private Map<String, Source> audios = new HashMap<String, Source>();
+	private Map<String, Trigger> triggers = new HashMap<String, Trigger>();
+	private Map<String, ParticleSystem> particleSystem = new HashMap<String, ParticleSystem>();
 	
 	private Loader loader;
 	
 	public GameMap(String name, Loader loader){
-		this.name = name;
-		this.entities = new HashMap<String, Entity>();
-		this.normalEntities = new HashMap<String, Entity>();
-		this.terrains = new HashMap<String, Terrain>();
-		this.audios = new HashMap<String, Source>();
-		this.triggers = new HashMap<String, Trigger>();
 		this.loader = loader;
 	}	
 	
@@ -89,10 +87,26 @@ public class GameMap {
 		}
 	}
 	
+	public void setParticles(List<ParticleSystem> particleSystem) {
+		for(ParticleSystem particles : particleSystem){
+			this.particleSystem.put(particles.getName(), particles);
+		}
+	}
+	
+	public Map<String, ParticleSystem> getParticles() {
+		return particleSystem;
+	}
+	
 	public void createEntity(String name, String model, String texName, Vector3f position, float rotX, float rotY, float rotZ, float scale) {
 		TexturedModel staticModel = SceneObjectTools.loadStaticModel(model, texName, loader);
 		Entity entity = new Entity(name, staticModel, position, rotX, rotY, rotZ, scale);
 		this.entities.put(name, entity);
+	}
+	
+	public void createParticles(String name, String texName, int texDimentions, boolean additive, float pps, float speed, float gravityComplient, float lifeLength, float scale) {
+		ParticleTexture texture = new ParticleTexture(loader.loadTexture(EngineSettings.PARTICLE_TEXTURE_PATH, texName), texDimentions, additive);
+		ParticleSystem particles = new ParticleSystem(name, texture, pps, speed, gravityComplient, lifeLength, scale);	    	
+		this.particleSystem.put(name, particles);
 	}
 
 }

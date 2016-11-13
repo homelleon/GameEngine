@@ -57,7 +57,7 @@ public class Terrain {
 		this.amplitude = amplitude;
 		this.octaves = octaves;
 		this.roughness = roughness;
-		this.model = generateTerrainByProcedure(loader, amplitude, octaves, roughness);
+		this.model = generateWithProcedure(loader, amplitude, octaves, roughness);
 		this.name = name;
 	}
 	
@@ -202,7 +202,7 @@ public class Terrain {
 		return loader.loadToVAO(vertices, textureCoords, normals, indices);
 	}
 	
-	private RawModel generateTerrainByProcedure(Loader loader, float amp, int oct, float rough) {
+	private RawModel generateWithProcedure(Loader loader, float amp, int oct, float rough) {
 		this.isProcedureGenerated = true;
 		HeightsGenerator generator = new HeightsGenerator(amp, oct, rough);
 		
