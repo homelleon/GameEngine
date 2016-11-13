@@ -10,7 +10,9 @@ import toolbox.Maths;
 
 //Cut during to constants
 public class DistanceCutConst {
-
+	
+	private static final float TERRAIN_CUT_DISTANCE = 480;
+	
 	public void cutRender(Camera camera, List<Entity> entities, List<Terrain> terrains) {
 		cutEntityRender(camera, entities);	
 		cutTerrainRender(camera, terrains);
@@ -36,7 +38,7 @@ public class DistanceCutConst {
 		for(Terrain terrain : terrains) {
 			if(terrain.isVisible()) {
 				float distance = Maths.distanceFromCamera(terrain, camera);
-				if(distance <= 1000) {
+				if(distance <= TERRAIN_CUT_DISTANCE) {
 					terrain.setRendered(true);
 				} else {
 					terrain.setRendered(false);

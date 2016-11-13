@@ -7,7 +7,7 @@ import org.lwjgl.util.vector.Vector3f;
 import renderEngine.DisplayManager;
 import scene.EngineSettings;
 
-public class FreeCamera implements Camera{
+public class CameraFree implements Camera{
 	
 	private static final float SPEED = 100;
 	private static final float RUN_SPEED = 4;
@@ -33,12 +33,12 @@ public class FreeCamera implements Camera{
 		return name;
 	}
 
-	public FreeCamera(float posX,float posY,float posZ) {
+	public CameraFree(float posX,float posY,float posZ) {
 		this.setPosition(posX, posY, posZ);		
 		this.name = "FreeCamera";
 	}
 	
-	public FreeCamera(String name, float posX,float posY,float posZ) {
+	public CameraFree(String name, float posX,float posY,float posZ) {
 		this.setPosition(posX, posY, posZ);	
 		this.name = name;
 	}

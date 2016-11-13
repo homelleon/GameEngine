@@ -9,6 +9,7 @@ public class SettingsTXTParser implements SettingsParser {
 	public GameSettings readSettings(String fileName, BufferedReader reader) {
 		GameSettings settings = GameSettings.getInstance();
 		String line;
+		
 		try {
 			while(true) {
 				line = reader.readLine();

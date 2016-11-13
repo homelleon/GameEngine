@@ -23,11 +23,6 @@ public class MyGame implements Game {
 		 * to manipulate Entity named "Tree1"
 		 * Don't use while loop and etc*/
 		public void onUpdate() {
-			time += 1;
-			System.out.println(Main.getMap().getEntities().get("Bo").getName());
-			Entity tree = Main.getMap().getEntities().get("Tree1");
-				if (time % 5 == 0) {
-					tree.increasePosition(0, 0.2f, 0);				
-			}
+			
 		}
 }

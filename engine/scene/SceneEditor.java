@@ -21,7 +21,7 @@ import audio.Source;
 import entities.Camera;
 import entities.EntitiesManager;
 import entities.Entity;
-import entities.FreeCamera;
+import entities.CameraFree;
 import entities.Light;
 import entities.Player;
 import fontMeshCreator.FontType;
@@ -55,13 +55,16 @@ import water.WaterRenderer;
 import water.WaterShader;
 import water.WaterTile;
 
-public class EditorSceneRenderer implements WorldGethable {
+public class SceneEditor implements Scene {
 	
 	Game game = new MyGame();
 
 	private Loader loader;
 	private MasterRenderer renderer;
 	private Source ambientSource;
+	
+	private String cameraName = "Main";
+	private String playerName = "Player1";
 
 	//TODO: Delete unnecessary objects
 	private Map<String, Camera> cameras;
@@ -135,10 +138,10 @@ public class EditorSceneRenderer implements WorldGethable {
 		/*------------------PLAYER-----------------*/
 		TexturedModel cubeModel = SceneObjectTools.loadStaticModel("cube", "cube1", loader);
 		this.players = new HashMap<String, Player>();
-		Player player = new Player("Player1",cubeModel, new Vector3f(100, 0, 10), 0, 0, 0, 1);
+		Player player = new Player(playerName, cubeModel, new Vector3f(100, 0, 10), 0, 0, 0, 1);
 		players.put(player.getName(), player);
 		this.cameras = new HashMap<String, Camera>();
-		Camera camera = new FreeCamera("Free", 20, 10, 20);
+		Camera camera = new CameraFree(cameraName, 20, 10, 20);
 		cameras.put(camera.getName(), camera);
 		this.time = new GameTime(10);
 		
@@ -228,7 +231,7 @@ public class EditorSceneRenderer implements WorldGethable {
 		}
 		
 		renderParticlesToScreen();
-		renderer.renderShadowMap(entities, normalMapEntities, players.get("Player1"), sun, cameras.get("Free"));				
+		renderer.renderShadowMap(entities, normalMapEntities, players.get(playerName), sun, cameras.get(cameraName));				
 		GL11.glEnable(GL30.GL_CLIP_DISTANCE0);
 		renderReflectionTexture();		
 		renderRefractionTexture();
@@ -239,23 +242,23 @@ public class EditorSceneRenderer implements WorldGethable {
 	
     private void renderReflectionTexture() {
     	waterFBOs.bindReflectionFrameBuffer();
-		float distance = 2 * (cameras.get("Free").getPosition().y - waters.get(0).getHeight());
-		cameras.get("Free").getPosition().y -= distance;
-		cameras.get("Free").invertPitch();
-		renderer.processEntity(players.get("Player1"));
+		float distance = 2 * (cameras.get(cameraName).getPosition().y - waters.get(0).getHeight());
+		cameras.get(cameraName).getPosition().y -= distance;
+		cameras.get(cameraName).invertPitch();
+		renderer.processEntity(players.get(playerName));
 		renderer.renderScene(entities, normalMapEntities, terrains, lights, 
-				cameras.get("Free"), new Vector4f(0, 1, 0, -waters.get(0).getHeight()));
-		cameras.get("Free").getPosition().y += distance;
-		cameras.get("Free").invertPitch();
+				cameras.get(cameraName), new Vector4f(0, 1, 0, -waters.get(0).getHeight()));
+		cameras.get(cameraName).getPosition().y += distance;
+		cameras.get(cameraName).invertPitch();
     }
     
     /*Render to FBO refraction texture*/
     
     private void renderRefractionTexture() {
     	waterFBOs.bindRefractionFrameBuffer();
-		renderer.processEntity(players.get("Player1"));
+		renderer.processEntity(players.get(playerName));
 		renderer.renderScene(entities, normalMapEntities, terrains, lights, 
-				cameras.get("Free"), new Vector4f(0, -1, 0, waters.get(0).getHeight()+1f));
+				cameras.get(cameraName), new Vector4f(0, -1, 0, waters.get(0).getHeight()+1f));
 
     }
     
@@ -266,12 +269,12 @@ public class EditorSceneRenderer implements WorldGethable {
 		waterFBOs.unbindCurrentFrameBuffer();
 	    
 		multisampleFbo.bindFrameBuffer();
-		optimisation.optimize(cameras.get("Free"), entities, terrains);
-	    renderer.processEntity(players.get("Player1"));
+		optimisation.optimize(cameras.get(cameraName), entities, terrains);
+	    renderer.processEntity(players.get(playerName));
 	    renderer.renderScene(entities, normalMapEntities, terrains,	lights, 
-	    		cameras.get("Free"), new Vector4f(0, -1, 0, 15));
-	    waterRenderer.render(waters, cameras.get("Free"), sun);
-	    ParticleMaster.renderParticles(cameras.get("Free"));
+	    		cameras.get(cameraName), new Vector4f(0, -1, 0, 15));
+	    waterRenderer.render(waters, cameras.get(cameraName), sun);
+	    ParticleMaster.renderParticles(cameras.get(cameraName));
 	    multisampleFbo.unbindFrameBuffer();
 	    multisampleFbo.resolveToFbo(GL30.GL_COLOR_ATTACHMENT0, outputFbo);
 	    multisampleFbo.resolveToFbo(GL30.GL_COLOR_ATTACHMENT1, outputFbo2);
@@ -281,9 +284,9 @@ public class EditorSceneRenderer implements WorldGethable {
     }
     
     public void renderParticlesToScreen() {
-		pSystem.get(0).generateParticles(players.get("Player1").getPosition());
+		pSystem.get(0).generateParticles(players.get(playerName).getPosition());
 		pSystem.get(1).generateParticles(new Vector3f(50,terrains.get(0).getHeightOfTerrain(50, 50),50));
-		ParticleMaster.update(cameras.get("Free"));
+		ParticleMaster.update(cameras.get(cameraName));
     }
     	
 	public void cleanUp() {
@@ -314,8 +317,8 @@ public class EditorSceneRenderer implements WorldGethable {
 	}
 	
     private void moves() {
-    	cameras.get("Free").move();
-		AudioMaster.setListenerData(cameras.get("Free").getPosition().x, cameras.get("Free").getPosition().y, cameras.get("Free").getPosition().z);
+    	cameras.get(cameraName).move();
+		AudioMaster.setListenerData(cameras.get(cameraName).getPosition().x, cameras.get(cameraName).getPosition().y, cameras.get(cameraName).getPosition().z);
     }
 	
 	public GUIText createFPSText(float FPS) {

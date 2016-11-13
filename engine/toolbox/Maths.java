@@ -53,6 +53,7 @@ public class Maths {
 		return a*a;
 	}
 	
+	/* distance between 2 points in 3D */
 	public static float distance2Points(Vector3f point1, Vector3f point2) {
 		float distance = 0;
 		distance = Maths.sqr(point1.x - point2.x);
@@ -62,6 +63,7 @@ public class Maths {
 	    return distance;
 	}	
 	
+	/* distance between 2 points in 2D */
 	public static float distance2Points(Vector2f point1, Vector2f point2) {
 		float distance = 0;
 		distance = Maths.sqr(point1.x - point2.x);
@@ -70,12 +72,40 @@ public class Maths {
 	    return distance;
 	}	
 	
+	/* distance between line and point in 2D */
+	public static float distanceLineAndPoint(Vector2f point, Vector2f linePoint1, Vector2f linePoint2) {
+		float x = point.x;
+		float y = point.y;
+		
+		float x1 = linePoint1.x;
+		float y1 = linePoint1.y;
+		
+		float x2 = linePoint2.x;
+		float y2 = linePoint2.y;
+		
+		/* exception if x2 - x1 = 0 */
+		float difX = x2 - x1;
+		if (difX == 0) {
+			difX = 0.01f;
+		}
+		
+		float k = (y2 - y1) / (difX);
+		float b = y1 - k * x1;
+		
+		float xH = (y * k + x - b * k) / (sqr(k) + 1); 
+		float yH = k * xH + b;
+		
+		Vector2f vecH = new Vector2f(xH, yH);
+
+		return distance2Points(point, vecH);
+	}
+	
+	/* distance from camera to entity  */
 	public static float distanceFromCamera(Entity entity, Camera camera) {
-		float distance = 0;
-		distance = distance2Points(entity.getPosition(), camera.getPosition());
-	    return distance;
+	    return distance2Points(entity.getPosition(), camera.getPosition());
 	}	
 	
+	/* distance from camera to terrain  */
 	public static float distanceFromCamera(Terrain terrain, Camera camera) {
 		float distance = 0;
 		
@@ -98,32 +128,34 @@ public class Maths {
 				distance = sqr(distance2Points(camVec, terrainPoint));
 			} else if(cZ > tZ1) {
 				terrainPoint = new Vector2f(tX1, tZ1);
-				distance = sqr(distance2Points(camVec, terrainPoint));				
+				distance = sqr(distance2Points(camVec, terrainPoint));
 			} else {
 				terrainSideP1 = new Vector2f(tX1, tZ);
 				terrainSideP2 = new Vector2f(tX1, tZ1);
 				distance = sqr(distanceLineAndPoint(camVec, terrainSideP1, terrainSideP2));
 			}
+			
 		} else if(cX < tX) {	
 			if(cZ < tZ) {
 				terrainPoint = new Vector2f(tX, tZ);
 				distance = sqr(distance2Points(camVec, terrainPoint));
 			} else if(cZ > tZ1) {
 				terrainPoint = new Vector2f(tX, tZ1);
-				distance = sqr(distance2Points(camVec, terrainPoint));				
+				distance = sqr(distance2Points(camVec, terrainPoint));
 			} else {
 				terrainSideP1 = new Vector2f(tX, tZ);
 				terrainSideP2 = new Vector2f(tX, tZ1);
 				distance = sqr(distanceLineAndPoint(camVec, terrainSideP1, terrainSideP2));
 			}
+		
 		} else if(cZ < tZ) {
 			terrainSideP1 = new Vector2f(tX, tZ);
 			terrainSideP2 = new Vector2f(tX1, tZ);
-			distance = sqr(distanceLineAndPoint(camVec, terrainSideP1, terrainSideP2));
+			distance = sqr(distanceLineAndPoint(camVec, terrainSideP1, terrainSideP2));;
 		} else if(cZ > tZ1) {
 			terrainSideP1 = new Vector2f(tX, tZ1);
 			terrainSideP2 = new Vector2f(tX1, tZ1);
-			distance = sqr(distanceLineAndPoint(camVec, terrainSideP1, terrainSideP2));				
+			distance = sqr(distanceLineAndPoint(camVec, terrainSideP1, terrainSideP2));
 		}
 						
 		distance += Maths.sqr(terrain.getHeightOfTerrain(cX, cZ) - cY);
@@ -131,29 +163,5 @@ public class Maths {
 
 	    return distance;
 	}	
-	
-	public static float distanceLineAndPoint(Vector2f point, Vector2f linePoint1, Vector2f linePoint2) {
-		float x = point.x;
-		float y = point.y;
-		
-		float x1 = linePoint1.x;
-		float y1 = linePoint1.y;
-		
-		float x2 = linePoint2.x;
-		float y2 = linePoint2.y;
-		
-		float m = (y2 - y1) / (x2 - x1);
-		float k = y1 - m * x1;
-		
-		float sqrx = (x + m * y - m * k) / (sqr(m) + 1);
-		sqrx = sqr(sqrx);
-				
-		float sqry = m * (x + m * y - m * k) / (sqr(m) + 1) + k - y;
-		sqry = sqr(sqry);
-		
-		float distance = (float) Math.sqrt(sqrx + sqry); 
-
-		return distance;
-	}
 	
 }

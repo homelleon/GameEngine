@@ -2,7 +2,7 @@ package scene;
 
 import maps.GameMap;
 
-public interface WorldGethable {
+public interface Scene {
 
 	public void loadMap(String name);
 	public GameMap getMap();

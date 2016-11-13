@@ -22,7 +22,8 @@ import entities.EntitiesManager;
 import entities.Entity;
 import entities.Light;
 import entities.Player;
-import entities.PlayerCamera;
+import entities.Camera;
+import entities.CameraPlayer;
 import fontMeshCreator.FontType;
 import fontMeshCreator.GUIText;
 import fontRendering.TextMaster;
@@ -54,7 +55,7 @@ import water.WaterRenderer;
 import water.WaterShader;
 import water.WaterTile;
 
-public class GameSceneRenderer implements WorldGethable {
+public class SceneGame implements Scene {
 	
 	Game game = new MyGame();
 	
@@ -62,8 +63,11 @@ public class GameSceneRenderer implements WorldGethable {
 	private MasterRenderer renderer;
 	private Source ambientSource;
 	
+	private String cameraName = "Main";
+	private String playerName = "Player1";
+	
 	//TODO: Delete unnecessary objects
-	private Map<String, PlayerCamera> cameras;
+	private Map<String, Camera> cameras;
 	private Map<String, Player> players;
 	private GameMap map;
 	private List<GuiTexture> guis;
@@ -133,10 +137,10 @@ public class GameSceneRenderer implements WorldGethable {
 		/*------------------PLAYER-----------------*/
 		TexturedModel cubeModel = SceneObjectTools.loadStaticModel("cube", "cube1", loader);
 		this.players = new HashMap<String, Player>();
-		Player player = new Player("Player1",cubeModel, new Vector3f(100, 0, 10), 0, 0, 0, 1);
+		Player player = new Player(playerName,cubeModel, new Vector3f(100, 0, 10), 0, 0, 0, 1);
 		players.put(player.getName(), player);
-		this.cameras = new HashMap<String, PlayerCamera>();
-		PlayerCamera camera = new PlayerCamera(player, "Player1");
+		this.cameras = new HashMap<String, Camera>();
+		CameraPlayer camera = new CameraPlayer(player, cameraName);
 		cameras.put(camera.getName(), camera);
 		this.time = new GameTime(10);
 		
@@ -225,7 +229,7 @@ public class GameSceneRenderer implements WorldGethable {
 		}
 		
 		renderParticlesToScreen();
-		renderer.renderShadowMap(entities, normalMapEntities, players.get("Player1"), sun, cameras.get("Player1"));				
+		renderer.renderShadowMap(entities, normalMapEntities, players.get(playerName), sun, cameras.get(cameraName));				
 		GL11.glEnable(GL30.GL_CLIP_DISTANCE0);
 		renderReflectionTexture();		
 		renderRefractionTexture();
@@ -236,23 +240,23 @@ public class GameSceneRenderer implements WorldGethable {
 	
     private void renderReflectionTexture() {
     	waterFBOs.bindReflectionFrameBuffer();
-		float distance = 2 * (cameras.get("Player1").getPosition().y - waters.get(0).getHeight());
-		cameras.get("Player1").getPosition().y -= distance;
-		cameras.get("Player1").invertPitch();
-		renderer.processEntity(players.get("Player1"));
+		float distance = 2 * (cameras.get(cameraName).getPosition().y - waters.get(0).getHeight());
+		cameras.get(cameraName).getPosition().y -= distance;
+		cameras.get(cameraName).invertPitch();
+		renderer.processEntity(players.get(playerName));
 		renderer.renderScene(entities, normalMapEntities, terrains, lights, 
-				cameras.get("Player1"), new Vector4f(0, 1, 0, -waters.get(0).getHeight()));
-		cameras.get("Player1").getPosition().y += distance;
-		cameras.get("Player1").invertPitch();
+				cameras.get(cameraName), new Vector4f(0, 1, 0, -waters.get(0).getHeight()));
+		cameras.get(cameraName).getPosition().y += distance;
+		cameras.get(cameraName).invertPitch();
     }
     
     /*Render to FBO refraction texture*/
     
     private void renderRefractionTexture() {
     	waterFBOs.bindRefractionFrameBuffer();
-		renderer.processEntity(players.get("Player1"));
+		renderer.processEntity(players.get(playerName));
 		renderer.renderScene(entities, normalMapEntities, terrains, lights, 
-				cameras.get("Player1"), new Vector4f(0, -1, 0, waters.get(0).getHeight()+1f));
+				cameras.get(cameraName), new Vector4f(0, -1, 0, waters.get(0).getHeight()+1f));
     }
     
     /*Render to Screen*/
@@ -262,12 +266,12 @@ public class GameSceneRenderer implements WorldGethable {
 		waterFBOs.unbindCurrentFrameBuffer();
 	    
 		multisampleFbo.bindFrameBuffer();
-		optimisation.optimize(cameras.get("Player1"), entities, terrains);
-	    renderer.processEntity(players.get("Player1"));
+		optimisation.optimize(cameras.get(cameraName), entities, terrains);
+	    renderer.processEntity(players.get(playerName));
 	    renderer.renderScene(entities, normalMapEntities, terrains,	lights, 
-	    		cameras.get("Player1"), new Vector4f(0, -1, 0, 15));
-	    waterRenderer.render(waters, cameras.get("Player1"), sun);
-	    ParticleMaster.renderParticles(cameras.get("Player1"));
+	    		cameras.get(cameraName), new Vector4f(0, -1, 0, 15));
+	    waterRenderer.render(waters, cameras.get(cameraName), sun);
+	    ParticleMaster.renderParticles(cameras.get(cameraName));
 	    multisampleFbo.unbindFrameBuffer();
 	    multisampleFbo.resolveToFbo(GL30.GL_COLOR_ATTACHMENT0, outputFbo);
 	    multisampleFbo.resolveToFbo(GL30.GL_COLOR_ATTACHMENT1, outputFbo2);
@@ -277,9 +281,9 @@ public class GameSceneRenderer implements WorldGethable {
     }
     
     public void renderParticlesToScreen() {
-		pSystem.get(0).generateParticles(players.get("Player1").getPosition());
+		pSystem.get(0).generateParticles(players.get(playerName).getPosition());
 		pSystem.get(1).generateParticles(new Vector3f(50,terrains.get(0).getHeightOfTerrain(50, 50),50));
-		ParticleMaster.update(cameras.get("Player1"));
+		ParticleMaster.update(cameras.get(cameraName));
     }
     	
 	public void cleanUp() {
@@ -310,9 +314,9 @@ public class GameSceneRenderer implements WorldGethable {
 	}
 	
     private void moves() {
-    	cameras.get("Player1").move();
-		players.get("Player1").move(terrains);
-		AudioMaster.setListenerData(cameras.get("Player1").getPosition().x, cameras.get("Player1").getPosition().y, cameras.get("Player1").getPosition().z);
+    	cameras.get(cameraName).move();
+		players.get(playerName).move(terrains);
+		AudioMaster.setListenerData(cameras.get(cameraName).getPosition().x, cameras.get(cameraName).getPosition().y, cameras.get(cameraName).getPosition().z);
     }
 	
 	public GUIText createFPSText(float FPS) {

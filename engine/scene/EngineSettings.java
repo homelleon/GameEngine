@@ -3,8 +3,8 @@ package scene;
 public class EngineSettings {
 	
 	//*****************DISPLAY SETTINGS**********************************//
-	public static final int DISPLAY_WIDTH = 1920; //1920;  
-	public static final int DISPLAY_HEIGHT = 1080; //1080; 
+	public static final int DISPLAY_WIDTH = 800; //1920;  
+	public static final int DISPLAY_HEIGHT = 600; //1080; 
 	public static final int FAR_PLANE = 10000000;
 	public static final float NEAR_PLANE = 0.5f;
 	public static final int FPS_CAP = 120;

@@ -5,18 +5,18 @@ import org.lwjgl.opengl.Display;
 
 import maps.GameMap;
 import renderEngine.DisplayManager;
-import scene.EditorSceneRenderer;
-import scene.WorldGethable;
+import scene.SceneEditor;
+import scene.Scene;
 
 public class MainEditorLoop implements Engine {
 	
 	private static final String SETTINGS_NAME = "settings";
 	
-	private WorldGethable scene;
+	private Scene scene;
 	
 	public MainEditorLoop() {
 		DisplayManager.creatDisplay();
-		scene = new EditorSceneRenderer();		
+		scene = new SceneEditor();		
 	}
 
 	@Override
