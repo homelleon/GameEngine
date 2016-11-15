@@ -60,6 +60,8 @@ public class EngineSettings {
 	public final static String TEXT_PATH = RES_PATH + "texts/";
 	
 	public final static String SHADER_PATH = SOURCE_PATH + "shaders/";
+	public final static String ENTITY_SHADER_PATH = SOURCE_PATH + "entities/";
+	public final static String TERRAIN_SHADER_PATH = SOURCE_PATH + "terrains/";
 	public final static String GUI_SHADER_PATH = SOURCE_PATH + "guis/";
 	public final static String SKYBOX_SHADER_PATH = SOURCE_PATH + "skybox/";
 	public final static String NORMAL_MAP_SHADER_PATH = SOURCE_PATH + "normalMappingRenderer/";

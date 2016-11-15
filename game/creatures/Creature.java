@@ -4,7 +4,7 @@ import org.lwjgl.util.vector.Vector3f;
 
 import entities.EntityTextured;
 import models.TexturedModel;
-import phisics.Collision;
+import physics.Collision;
 
 public abstract class Creature extends EntityTextured implements EntityDamagable, EntityWithCollision {
 	

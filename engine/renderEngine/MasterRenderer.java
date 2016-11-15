@@ -15,21 +15,21 @@ import entities.Camera;
 import entities.Entity;
 import entities.Light;
 import entities.Player;
+import entities.EntityShader;
 import models.TexturedModel;
 import normalMappingRenderer.NormalMappingRenderer;
 import scene.EngineSettings;
-import shaders.StaticShader;
-import shaders.TerrainShader;
 import shadows.ShadowMapMasterRenderer;
 import skybox.SkyboxRenderer;
 import terrains.Terrain;
+import terrains.TerrainShader;
 import terrains.TerrainTextured;
 
 public class MasterRenderer {
 		
 	private Matrix4f projectionMatrix;
 	
-	private StaticShader shader = new StaticShader();
+	private EntityShader shader = new EntityShader();
 	private EntityRenderer entityRenderer;
 	
 	private TerrainRenderer terrainRenderer;

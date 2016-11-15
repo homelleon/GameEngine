@@ -37,6 +37,7 @@ public class MyGame implements Game {
 		 * Don't use while loop and etc
 		 */
 		public void onUpdate() {
+			Main.getMap().getEntities().get("tree").increasePosition(0, 0.1f, 0);
 			particles.generateParticles(new Vector3f(20,50,20));			
 			
 		}

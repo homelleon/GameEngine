@@ -1,15 +1,8 @@
 package scene;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.openal.AL10;
-import org.lwjgl.openal.AL11;
-import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Vector2f;
@@ -19,31 +12,22 @@ import org.lwjgl.util.vector.Vector4f;
 import audio.AudioMaster;
 import audio.Source;
 import entities.Camera;
-import entities.CameraPlayer;
-import entities.EntitiesManager;
 import entities.Entity;
 import entities.Light;
 import entities.Player;
-import entities.PlayerTextured;
 import fontMeshCreator.FontType;
 import fontMeshCreator.GUIText;
 import fontRendering.TextMaster;
 import gameMain.Game;
 import gameMain.MyGame;
-import guis.GuiManager;
 import guis.GuiRenderer;
 import guis.GuiTexture;
 import maps.GameMap;
 import maps.MapsLoader;
 import maps.MapsTXTLoader;
-import maps.MapsTXTWriter;
-import maps.MapsWriter;
-import models.TexturedModel;
-import optimisations.CutOptimisation;
 import optimisations.Optimisation;
 import particles.ParticleMaster;
 import particles.ParticleSystem;
-import particles.ParticlesManager;
 import postProcessing.Fbo;
 import postProcessing.PostProcessing;
 import renderEngine.DisplayManager;
@@ -53,7 +37,6 @@ import terrains.Terrain;
 import toolbox.MousePicker;
 import water.WaterFrameBuffers;
 import water.WaterRenderer;
-import water.WaterShader;
 import water.WaterTile;
 
 public abstract class SceneManager {

@@ -1,4 +1,4 @@
-package shaders;
+package entities;
 
 import java.util.List;
 
@@ -7,17 +7,16 @@ import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 
-import entities.Camera;
-import entities.Light;
 import scene.EngineSettings;
+import shaders.ShaderProgram;
 import toolbox.Maths;
 
-public class StaticShader extends ShaderProgram{
+public class EntityShader extends ShaderProgram {
 	
 	private static final int MAX_LIGHTS = 4;
 	
-	public static final String VERTEX_FILE = EngineSettings.SHADER_PATH + "vertexShader.txt";
-	public static final String FRAGMENT_FILE = EngineSettings.SHADER_PATH + "fragmentShader.txt";
+	public static final String VERTEX_FILE = EngineSettings.ENTITY_SHADER_PATH + "entityVertexShader.txt";
+	public static final String FRAGMENT_FILE = EngineSettings.ENTITY_SHADER_PATH + "entityFragmentShader.txt";
 	
 	private int location_transformationMatrix;
 	private int location_projectionMatrix;
@@ -43,7 +42,7 @@ public class StaticShader extends ShaderProgram{
 	private int location_usesSpecularMap;
 	private int location_modelTexture;
 		
-	public StaticShader() {
+	public EntityShader() {
 		super(VERTEX_FILE, FRAGMENT_FILE);
 	}
 

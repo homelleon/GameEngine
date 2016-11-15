@@ -10,7 +10,7 @@ public class Main {
 		engine = new MainEditorLoop();
 		engine.loadGameSettings();
 		engine.init();
-		engine.run();
+		engine.run(); 
 	}
 	
 	

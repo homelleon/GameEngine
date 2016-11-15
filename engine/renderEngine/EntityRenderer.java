@@ -10,19 +10,19 @@ import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Matrix4f;
 
 import entities.EntityTextured;
+import entities.EntityShader;
 import entities.Entity;
 import models.RawModel;
 import models.TexturedModel;
 import scene.EngineSettings;
-import shaders.StaticShader;
 import textures.ModelTexture;
 import toolbox.Maths;
 
 public class EntityRenderer {
 
-	private StaticShader shader;
+	private EntityShader shader;
 	
-	public EntityRenderer(StaticShader shader,Matrix4f projectionMatrix) {
+	public EntityRenderer(EntityShader shader,Matrix4f projectionMatrix) {
 		this.shader = shader;
 		shader.start();
 		shader.loadProjectionMatrix(projectionMatrix);

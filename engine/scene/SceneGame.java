@@ -3,9 +3,6 @@ package scene;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.openal.AL10;
 import org.lwjgl.openal.AL11;
@@ -14,8 +11,6 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
-import org.lwjgl.util.vector.Vector4f;
-
 import audio.AudioMaster;
 import audio.Source;
 import entities.Camera;
@@ -32,25 +27,17 @@ import gameMain.Game;
 import gameMain.MyGame;
 import guis.GuiManager;
 import guis.GuiRenderer;
-import guis.GuiTexture;
 import maps.GameMap;
-import maps.MapsLoader;
-import maps.MapsTXTLoader;
 import maps.MapsTXTWriter;
 import maps.MapsWriter;
 import models.TexturedModel;
 import optimisations.CutOptimisation;
-import optimisations.Optimisation;
 import particles.ParticleMaster;
-import particles.ParticleSystem;
 import particles.ParticlesManager;
 import postProcessing.Fbo;
 import postProcessing.PostProcessing;
-import renderEngine.DisplayManager;
-import renderEngine.Loader;
 import renderEngine.MasterRenderer;
 import terrains.Terrain;
-import terrains.TerrainTextured;
 import toolbox.MousePicker;
 import water.WaterFrameBuffers;
 import water.WaterRenderer;
@@ -98,7 +85,7 @@ public class SceneGame extends SceneManager implements Scene {
 		
 		/*------------------LIGHTS----------------*/
 		this.lights = new ArrayList<Light>();
-		this.sun = new Light("Sun", new Vector3f(100000,1500000,-100000),new Vector3f(1.3f,1.3f,1.3f));
+		this.sun = new Light("Sun", new Vector3f(100000,1500000,-100000), new Vector3f(1.3f,1.3f,1.3f));
 		lights.add(sun);
 		//lights.add(new Light(new Vector3f(200,2,200),new Vector3f(10,0,0), new Vector3f(1, 0.01f, 0.002f)));
 		//lights.add(new Light(new Vector3f(20,2,20),new Vector3f(0,10,0), new Vector3f(0, 0.01f, 0.002f)));
@@ -121,9 +108,9 @@ public class SceneGame extends SceneManager implements Scene {
 		
 		/*------------------FBO-------------------*/
 		
-		this.multisampleFbo = new Fbo(Display.getWidth(),Display.getHeight());
-		this.outputFbo = new Fbo(Display.getWidth(),Display.getHeight(), Fbo.DEPTH_TEXTURE);
-		this.outputFbo2 = new Fbo(Display.getWidth(),Display.getHeight(), Fbo.DEPTH_TEXTURE);
+		this.multisampleFbo = new Fbo(Display.getWidth(), Display.getHeight());
+		this.outputFbo = new Fbo(Display.getWidth(), Display.getHeight(), Fbo.DEPTH_TEXTURE);
+		this.outputFbo2 = new Fbo(Display.getWidth(), Display.getHeight(), Fbo.DEPTH_TEXTURE);
 		PostProcessing.isBloomed = true;
 		PostProcessing.isBlured = true;
 		PostProcessing.init(loader);
@@ -158,7 +145,7 @@ public class SceneGame extends SceneManager implements Scene {
 		WaterShader waterShader = new WaterShader();
 		this.waterRenderer = new WaterRenderer(loader, waterShader, renderer.getProjectionMatrix(), waterFBOs);
 		this.waters = new ArrayList<WaterTile>();
-		WaterTile water = new  WaterTile("Water",0, 0, -4, 1000);
+		WaterTile water = new  WaterTile("Water", 0, 0, -4, 1000);
 		waters.add(water);
 		waters.stream().forEach((i) -> i.setTilingSize(0.05f));
 		waters.stream().forEach((i) -> i.setWaterSpeed(0.7f));

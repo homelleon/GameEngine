@@ -1,4 +1,4 @@
-package phisics;
+package physics;
 
 public interface Collision {
 	

@@ -4,7 +4,6 @@ import org.lwjgl.util.vector.Vector3f;
 
 public interface ParticleEffect {
 	
-	void create();
 	void cleanUp();
 	void setPosition(Vector3f position);
 	Vector3f getPosition();

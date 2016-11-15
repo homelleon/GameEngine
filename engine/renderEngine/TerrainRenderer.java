@@ -11,8 +11,8 @@ import org.lwjgl.util.vector.Vector3f;
 
 import models.RawModel;
 import scene.EngineSettings;
-import shaders.TerrainShader;
 import terrains.Terrain;
+import terrains.TerrainShader;
 import terrains.TerrainTextured;
 import textures.TerrainTexturePack;
 import toolbox.Maths;
