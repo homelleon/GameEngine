@@ -6,7 +6,7 @@ import org.lwjgl.util.vector.Vector3f;
 
 import scene.EngineSettings;
 
-public class CameraPlayer implements Camera{
+public class CameraPlayer implements Camera {
 	
 	private static final float maxDistanceFromPlayer = 100;
 	private static final float minDistanceFromPlayer = 0;
@@ -65,7 +65,7 @@ public class CameraPlayer implements Camera{
 			float horizontalDistance = calculateHorizontalDistance();
 			float verticalDistance = calculateVerticalDistance();
 			calculateCameraPosition(horizontalDistance,verticalDistance);
-			this.yaw = 180 - (player.getRotY() + angleAroundPlayer);
+			this.yaw = 180 - ((player).getRotY() + angleAroundPlayer);
 		}
 		
 		

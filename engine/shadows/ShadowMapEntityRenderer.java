@@ -10,6 +10,7 @@ import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Matrix4f;
 
 import entities.Camera;
+import entities.EntityTextured;
 import entities.Entity;
 import models.RawModel;
 import models.TexturedModel;

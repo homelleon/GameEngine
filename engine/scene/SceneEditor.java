@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.openal.AL10;
@@ -19,34 +18,27 @@ import org.lwjgl.util.vector.Vector4f;
 import audio.AudioMaster;
 import audio.Source;
 import entities.Camera;
+import entities.CameraFree;
 import entities.EntitiesManager;
 import entities.Entity;
-import entities.CameraFree;
 import entities.Light;
 import entities.Player;
+import entities.PlayerTextured;
 import fontMeshCreator.FontType;
 import fontMeshCreator.GUIText;
 import fontRendering.TextMaster;
-import gameMain.Game;
-import gameMain.MyGame;
 import guis.GuiManager;
 import guis.GuiRenderer;
-import guis.GuiTexture;
 import maps.GameMap;
-import maps.MapsLoader;
-import maps.MapsTXTLoader;
 import maps.MapsTXTWriter;
 import maps.MapsWriter;
 import models.TexturedModel;
 import optimisations.CutOptimisation;
-import optimisations.Optimisation;
 import particles.ParticleMaster;
-import particles.ParticleSystem;
 import particles.ParticlesManager;
 import postProcessing.Fbo;
 import postProcessing.PostProcessing;
 import renderEngine.DisplayManager;
-import renderEngine.Loader;
 import renderEngine.MasterRenderer;
 import terrains.Terrain;
 import toolbox.MousePicker;
@@ -55,42 +47,9 @@ import water.WaterRenderer;
 import water.WaterShader;
 import water.WaterTile;
 
-public class SceneEditor implements Scene {
-	
-	Game game = new MyGame();
-
-	private Loader loader;
-	private MasterRenderer renderer;
-	private Source ambientSource;
-	
-	private String cameraName = "Main";
-	private String playerName = "Player1";
-
-	//TODO: Delete unnecessary objects
-	private Map<String, Camera> cameras;
-	private Map<String, Player> players;
-	private GameMap map;
-	private List<GuiTexture> guis;
-	private GuiRenderer guiRenderer;
-	private List<ParticleSystem> pSystem;
-	private List<Terrain> terrains;
-	private List<Entity> entities;
-	private List<Entity> normalMapEntities;
-	private List<WaterTile> waters;
-	private List<Light> lights;
-	FontType font;
-	WaterFrameBuffers waterFBOs;
-	private Fbo multisampleFbo;	
-	private Fbo outputFbo;
-	private Fbo outputFbo2;
-	private Light sun;
-	private WaterRenderer waterRenderer;	
-	private GameTime time;
-	private MousePicker picker;
-	private Optimisation optimisation;
+public class SceneEditor extends SceneManager implements Scene {
 	
 	private boolean isPaused = false;
-	private boolean mapIsLoaded = false;
 
 	@Override
 	public void setScenePaused(boolean value) {
@@ -98,19 +57,17 @@ public class SceneEditor implements Scene {
 	}
 	
 	@Override
-	public void loadMap(String name) {		
-		/*--------------PRE LOAD TOOLS-------------*/
-		this.loader = new Loader();
-		/*---------------MAP-----------------------*/
-		MapsLoader mapLoader = new MapsTXTLoader();
-		this.map = mapLoader.loadMap(name, loader);	
-		this.mapIsLoaded = true;
+	public void loadMap(String name) {
+		super.loadMap(name);
+	}
+	
+	@Override
+	public GameMap getMap() {
+		return super.getMap();
 	}
 	
 	public void init() {	
-		if (!this.mapIsLoaded) {
-			loadMap("map");
-		}
+		super.init();
 		/*-------------OPTIMIZATION-------------*/
 		this.optimisation = new CutOptimisation();	
 		
@@ -138,7 +95,7 @@ public class SceneEditor implements Scene {
 		/*------------------PLAYER-----------------*/
 		TexturedModel cubeModel = SceneObjectTools.loadStaticModel("cube", "cube1", loader);
 		this.players = new HashMap<String, Player>();
-		Player player = new Player(playerName, cubeModel, new Vector3f(100, 0, 10), 0, 0, 0, 1);
+		PlayerTextured player = new PlayerTextured(playerName, cubeModel, new Vector3f(100, 0, 10), 0, 0, 0, 1);
 		players.put(player.getName(), player);
 		this.cameras = new HashMap<String, Camera>();
 		Camera camera = new CameraFree(cameraName, 20, 10, 20);
@@ -212,17 +169,7 @@ public class SceneEditor implements Scene {
 	/*Main render*/
 			
 	public void render() {
-		game.onUpdate();
-		if(!isPaused) {
-			time.start();
-			moves();	
-		}
-		
-		if(isPaused) {
-			picker.update();
-			System.out.println(picker.getCurrentRay());
-		}
-		
+		super.render();
 		
 		if(Keyboard.isKeyDown(Keyboard.KEY_T)) {
 			MapsWriter mapWriter = new MapsTXTWriter();
@@ -233,120 +180,19 @@ public class SceneEditor implements Scene {
 			System.out.println("save");
 		}
 		
-		renderParticlesToScreen();
+		renderParticles();
 		renderer.renderShadowMap(entities, normalMapEntities, players.get(playerName), sun, cameras.get(cameraName));				
 		GL11.glEnable(GL30.GL_CLIP_DISTANCE0);
 		renderReflectionTexture();		
 		renderRefractionTexture();
 	    renderToScreen();
-	}
-    
-	/*Render to FBO reflection texture*/
-	
-    private void renderReflectionTexture() {
-    	waterFBOs.bindReflectionFrameBuffer();
-		float distance = 2 * (cameras.get(cameraName).getPosition().y - waters.get(0).getHeight());
-		cameras.get(cameraName).getPosition().y -= distance;
-		cameras.get(cameraName).invertPitch();
-		renderer.processEntity(players.get(playerName));
-		renderer.renderScene(entities, normalMapEntities, terrains, lights, 
-				cameras.get(cameraName), new Vector4f(0, 1, 0, -waters.get(0).getHeight()));
-		cameras.get(cameraName).getPosition().y += distance;
-		cameras.get(cameraName).invertPitch();
-    }
-    
-    /*Render to FBO refraction texture*/
-    
-    private void renderRefractionTexture() {
-    	waterFBOs.bindRefractionFrameBuffer();
-		renderer.processEntity(players.get(playerName));
-		renderer.renderScene(entities, normalMapEntities, terrains, lights, 
-				cameras.get(cameraName), new Vector4f(0, -1, 0, waters.get(0).getHeight()+1f));
-
-    }
-    
-    /*Render to Screen*/
-    
-    private void renderToScreen() {
-		GL11.glDisable(GL30.GL_CLIP_DISTANCE0);
-		waterFBOs.unbindCurrentFrameBuffer();
-	    
-		multisampleFbo.bindFrameBuffer();
-		optimisation.optimize(cameras.get(cameraName), entities, terrains);
-	    renderer.processEntity(players.get(playerName));
-	    renderer.renderScene(entities, normalMapEntities, terrains,	lights, 
-	    		cameras.get(cameraName), new Vector4f(0, -1, 0, 15));
-	    waterRenderer.render(waters, cameras.get(cameraName), sun);
-	    ParticleMaster.renderParticles(cameras.get(cameraName));
-	    multisampleFbo.unbindFrameBuffer();
-	    multisampleFbo.resolveToFbo(GL30.GL_COLOR_ATTACHMENT0, outputFbo);
-	    multisampleFbo.resolveToFbo(GL30.GL_COLOR_ATTACHMENT1, outputFbo2);
-	    PostProcessing.doPostProcessing(outputFbo.getColourTexture(), outputFbo2.getColourTexture());
-	    guiRenderer.render(guis);
-	    renderText();	    
-    }
-    
-    public void renderParticlesToScreen() {
-		pSystem.get(0).generateParticles(players.get(playerName).getPosition());
-		pSystem.get(1).generateParticles(new Vector3f(50,terrains.get(0).getHeightOfTerrain(50, 50),50));
-		ParticleMaster.update(cameras.get(cameraName));
-    }
+	}   
     	
 	public void cleanUp() {
-		PostProcessing.cleanUp();
-		outputFbo.cleanUp();
-		outputFbo2.cleanUp();
-		multisampleFbo.cleanUp();
-		TextMaster.cleanUp();
-		ambientSource.delete();
-		waterFBOs.cleanUp();
-		guiRenderer.cleanUp();
-		AudioMaster.cleanUp();
-		renderer.cleanUp();
-		loader.cleanUp();
+		super.cleanUp();
 	}
-	
-	private void spreadOnHeights(List<Entity> entities) {
-		if (!entities.isEmpty()) {
-			for(Entity entity : entities){
-				float terrainHeight = 0;
-				
-				for(Terrain terrain : terrains){
-					terrainHeight += terrain.getHeightOfTerrain(entity.getPosition().x, entity.getPosition().z);
-				}
-				entity.setPosition(new Vector3f(entity.getPosition().x, terrainHeight, entity.getPosition().z));
-			}
-		}
-	}
-	
-    private void moves() {
-    	cameras.get(cameraName).move();
-		AudioMaster.setListenerData(cameras.get(cameraName).getPosition().x, cameras.get(cameraName).getPosition().y, cameras.get(cameraName).getPosition().z);
-    }
-	
-	public GUIText createFPSText(float FPS) {
-		return new GUIText("FPS: " + String.valueOf((int)FPS), 2, font, new Vector2f(0.65f, 0), 0.5f, true);
-	}
-	
-	public GUIText createPickerCoordsText(MousePicker picker) {
-		picker.update();
-		String text = (String) String.valueOf(picker.getCurrentRay());
-		return new GUIText(text, 1, font, new Vector2f(0.3f, 0.2f), 1f, true);
-	}
-	
-	public void renderText() {
-		GUIText fpsText = createFPSText(1 / DisplayManager.getFrameTimeSeconds());
-	    fpsText.setColour(1, 0, 0);
-	    GUIText coordsText = createPickerCoordsText(picker);
-	    coordsText.setColour(1, 0, 0);
-	    TextMaster.render();
-	    fpsText.remove();
-	    coordsText.remove();				
-	}
+		
 
-	@Override
-	public GameMap getMap() {
-		return map;
-	}
+
 
 }

@@ -6,13 +6,13 @@ import java.util.Random;
 
 import org.lwjgl.util.vector.Vector3f;
 
-import entities.Entity;
+import entities.EntityTextured;
 import models.RawModel;
 import models.TexturedModel;
 import objConverter.ModelData;
 import objConverter.OBJFileLoader;
 import renderEngine.Loader;
-import terrains.Terrain;
+import terrains.TerrainTextured;
 import textures.ModelTexture;
 import textures.TerrainTexture;
 import textures.TerrainTexturePack;
@@ -32,7 +32,7 @@ public class SceneObjectTools {
 	}
 	
 	
-	public static List<Entity> createGrassField(float x, float z, float r, float sizeNoise, 
+	public static List<EntityTextured> createGrassField(float x, float z, float r, float sizeNoise, 
 			float density, Loader loader) {
 		//TODO: Noise - better using
 		
@@ -49,15 +49,15 @@ public class SceneObjectTools {
 		r = r*density;
 		density = 1/density;
 		Random random = new Random();
-		List<Entity>grasses = new ArrayList<Entity>();
+		List<EntityTextured>grasses = new ArrayList<EntityTextured>();
 		for(Integer j = 0; j < r; j++) {
 			for(Integer i = 0; i < r; i++) {
 				sizeNoise = 1 + 2*(float) random.nextDouble();
-				Entity grassEntity = new Entity(grass, texIndex, 
+				EntityTextured grassEntity = new EntityTextured("Grass" + String.valueOf(i) + "/" + String.valueOf(j), grass, texIndex, 
 						new Vector3f(x + density*i, 0, z + density*j), 0, 0, 0, sizeNoise);
 				grassEntity.setIsDetail(true);
 				grasses.add(grassEntity);
-				Entity grassEntity1 = new Entity(grass, texIndex, 
+				EntityTextured grassEntity1 = new EntityTextured("Grass" + String.valueOf(i) + "/" + String.valueOf(j), grass, texIndex, 
 						new Vector3f((float) (x + density*i), 0, 
 								(float) (z + density*j)), 0, 100, 0, sizeNoise);
 				grassEntity1.setIsDetail(true);
@@ -80,7 +80,7 @@ public class SceneObjectTools {
 		return waters;
 	}
 	
-	public static Terrain createMultiTexTerrain(String name, int x, int y, String basicTexture, 
+	public static TerrainTextured createMultiTexTerrain(String name, int x, int y, String basicTexture, 
 			String redTexture, String greenTexture, String blueTexture, 
 			String blendTexture, String heightTexture, Loader loader) {
 		TerrainTexture backgroundTexture =
@@ -96,11 +96,11 @@ public class SceneObjectTools {
 				new TerrainTexturePack(backgroundTexture + "Pack", backgroundTexture, rTexture, gTexture, bTexture);
 		TerrainTexture blendMap = 
 				new TerrainTexture(blendTexture, loader.loadTexture(EngineSettings.BLEND_MAP_PATH, blendTexture));
-		Terrain terrain = new Terrain(name, x,y,loader,texturePack, blendMap, heightTexture);	
+		TerrainTextured terrain = new TerrainTextured(name, x,y,loader,texturePack, blendMap, heightTexture);	
 		return terrain;
 	}
 	
-	public static Terrain createMultiTexTerrain(String name, int x, int y, String basicTexture, 
+	public static TerrainTextured createMultiTexTerrain(String name, int x, int y, String basicTexture, 
 			String redTexture, String greenTexture,	String blueTexture,
 			String blendTexture, float amplitude, int octaves, float roughness,
 			Loader loader) {
@@ -117,12 +117,12 @@ public class SceneObjectTools {
 				new TerrainTexturePack(basicTexture + "Pack", backgroundTexture, rTexture,	gTexture, bTexture);
 		TerrainTexture blendMap = 
 				new TerrainTexture(blendTexture, loader.loadTexture(EngineSettings.BLEND_MAP_PATH,blendTexture));
-		Terrain terrain = 
-				new Terrain(name, x,y,loader,texturePack, blendMap, amplitude, octaves, roughness);
+		TerrainTextured terrain = 
+				new TerrainTextured(name, x,y,loader,texturePack, blendMap, amplitude, octaves, roughness);
 		return terrain;
 	}
 	
-	public static void createForest(List<Entity> forest, float x, float y, float r, float noise){
+	public static void createForest(List<EntityTextured> forest, float x, float y, float r, float noise){
 		
 	}
 	

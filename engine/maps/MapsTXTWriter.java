@@ -23,8 +23,8 @@ public class MapsTXTWriter implements MapsWriter {
 			
 			lines.add("#This map is createrd by MapFileWriter");
 			
-			if (!map.getEntities().isEmpty()){
-				for(Entity entity : map.getEntities().values()){
+			if (!map.getEntities().isEmpty()) {
+				for(Entity entity : map.getEntities().values()) {
 					String line = "<e> ";
 					line += String.valueOf(entity.getName());
 					line += " ";
@@ -46,7 +46,7 @@ public class MapsTXTWriter implements MapsWriter {
 			}
 			
 			if (!map.getTerrains().isEmpty()){
-				for(Terrain terrain: map.getTerrains().values()){
+				for(Terrain terrain: map.getTerrains().values()) {
 					String line = "<t> ";
 					line += String.valueOf(terrain.getName());
 					line += " ";
@@ -64,7 +64,7 @@ public class MapsTXTWriter implements MapsWriter {
 					line += " ";
 					line += String.valueOf(terrain.getBlendMap().getName());
 					line += " ";
-					if(terrain.isProcedureGenerated()){
+					if(terrain.isProcedureGenerated()) {
 						line += "true";
 						line += " ";
 						line += String.valueOf(terrain.getAmplitude());
@@ -82,7 +82,7 @@ public class MapsTXTWriter implements MapsWriter {
 			}
 			
 			
-			for(String line : lines){
+			for(String line : lines) {
 				writer.write(line);
 				writer.flush();
 				writer.newLine();

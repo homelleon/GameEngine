@@ -6,6 +6,7 @@ import entities.Camera;
 import entities.Entity;
 import scene.EngineSettings;
 import terrains.Terrain;
+import terrains.TerrainTextured;
 import toolbox.Maths;
 
 //Cut during to constants

@@ -13,6 +13,7 @@ import models.RawModel;
 import scene.EngineSettings;
 import shaders.TerrainShader;
 import terrains.Terrain;
+import terrains.TerrainTextured;
 import textures.TerrainTexturePack;
 import toolbox.Maths;
 

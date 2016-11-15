@@ -23,6 +23,7 @@ import shaders.TerrainShader;
 import shadows.ShadowMapMasterRenderer;
 import skybox.SkyboxRenderer;
 import terrains.Terrain;
+import terrains.TerrainTextured;
 
 public class MasterRenderer {
 		

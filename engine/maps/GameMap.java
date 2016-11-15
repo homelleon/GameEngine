@@ -8,6 +8,7 @@ import org.lwjgl.util.vector.Vector3f;
 
 import audio.Source;
 import entities.Entity;
+import entities.EntityTextured;
 import models.TexturedModel;
 import particles.ParticleSystem;
 import particles.ParticleTexture;
@@ -99,7 +100,7 @@ public class GameMap {
 	
 	public void createEntity(String name, String model, String texName, Vector3f position, float rotX, float rotY, float rotZ, float scale) {
 		TexturedModel staticModel = SceneObjectTools.loadStaticModel(model, texName, loader);
-		Entity entity = new Entity(name, staticModel, position, rotX, rotY, rotZ, scale);
+		EntityTextured entity = new EntityTextured(name, staticModel, position, rotX, rotY, rotZ, scale);
 		this.entities.put(name, entity);
 	}
 	

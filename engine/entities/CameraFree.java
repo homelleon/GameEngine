@@ -7,7 +7,7 @@ import org.lwjgl.util.vector.Vector3f;
 import renderEngine.DisplayManager;
 import scene.EngineSettings;
 
-public class CameraFree implements Camera{
+public class CameraFree implements Camera {
 	
 	private static final float SPEED = 100;
 	private static final float RUN_SPEED = 4;
