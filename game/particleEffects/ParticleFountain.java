@@ -4,11 +4,19 @@ import org.lwjgl.util.vector.Vector3f;
 
 import particles.ParticleTexture;
 
-public class ParticleFountan extends ParticleEffectBasic implements ParticleEffect {
+public class ParticleFountain extends ParticleEffectBasic implements ParticleEffect {
+	
+	private ParticleFountain self;
 
-	private ParticleFountan(String name, ParticleTexture texture, float pps, float speed, float gravityComplient,
+	private ParticleFountain(String name, ParticleTexture texture, float pps, float speed, float gravityComplient,
 			float lifeLength, float scale) {
 		super(name, texture, pps, speed, gravityComplient, lifeLength, scale);
+	}
+	
+	
+	public void create(String name, String texture) {
+		ParticleTexture pTexture = new ParticleTexture();
+		self = new ParticleFountain(name, pTexture, 1, 1, 1, 1, 1);
 	}
 
 	@Override

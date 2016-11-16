@@ -11,7 +11,7 @@ public class ParticleEffectBasic extends ParticleSystem {
 	protected Vector3f center;
 	protected String type;
 
-	private ParticleEffectBasic(String name, ParticleTexture texture, float pps, float speed, float gravityComplient,
+	protected ParticleEffectBasic(String name, ParticleTexture texture, float pps, float speed, float gravityComplient,
 			float lifeLength, float scale) {
 		super(name, texture, pps, speed, gravityComplient, lifeLength, scale);	
 	}

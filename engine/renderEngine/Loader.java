@@ -26,11 +26,24 @@ import org.newdawn.slick.opengl.TextureLoader;
 
 import de.matthiasmann.twl.utils.PNGDecoder;
 import de.matthiasmann.twl.utils.PNGDecoder.Format;
+import engineMain.GameSettings;
 import models.RawModel;
 import scene.EngineSettings;
 import textures.TextureData;
 
 public class Loader {
+	
+	private static Loader instance;
+	
+	private Loader() {};
+	
+	public static Loader getInstance() {
+		if (instance == null) {
+		     instance = new Loader();
+		   }
+		return instance;
+	}
+	
 	
 	private List<Integer> vaos = new ArrayList<Integer>();
 	private List<Integer> vbos = new ArrayList<Integer>();

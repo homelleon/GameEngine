@@ -76,7 +76,7 @@ public abstract class SceneManager {
     
     protected void loadMap(String name) {
 		/*--------------PRE LOAD TOOLS-------------*/
-		this.loader = new Loader();
+		this.loader = Loader.getInstance();
 		/*---------------MAP-----------------------*/
 		MapsLoader mapLoader = new MapsTXTLoader();
 		this.map = mapLoader.loadMap(name, loader);	
