@@ -49,14 +49,14 @@ public class Loader {
 	private List<Integer> vbos = new ArrayList<Integer>();
 	private Map<String, Integer> textures = new HashMap<String, Integer>();
 	
-	public RawModel loadToVAO(float[] positions,float[] textureCoords,float[] normals, int[] indices) {
+	public RawModel loadToVAO(float[] positions, float[] textureCoords,float[] normals, int[] indices) {
 		int vaoID = createVAO();
-		bindIndicesBugger(indices);
+		bindIndicesBuffer(indices);
 		storeDataInAttributeList(0, 3, positions);
 		storeDataInAttributeList(1, 2, textureCoords);
 		storeDataInAttributeList(2, 3, normals);
 		unbindVAO();
-		return new RawModel(vaoID,indices.length);
+		return new RawModel(vaoID, indices.length);
 		
 	}
 	
@@ -81,7 +81,7 @@ public class Loader {
 	
 	public RawModel loadToVAO(float[] positions,float[] textureCoords,float[] normals, float[] tangents, int[] indices) {
 		int vaoID = createVAO();
-		bindIndicesBugger(indices);
+		bindIndicesBuffer(indices);
 		storeDataInAttributeList(0, 3, positions);
 		storeDataInAttributeList(1, 2, textureCoords);
 		storeDataInAttributeList(2, 3, normals);
@@ -220,9 +220,8 @@ public class Loader {
 		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboID);
 		FloatBuffer buffer = storeDataInFloatBuffer(data);
 		GL15.glBufferData(GL15.GL_ARRAY_BUFFER, buffer, GL15.GL_STATIC_DRAW);
-		GL20.glVertexAttribPointer(attributeNumber,coordinateSize,GL11.GL_FLOAT,false,0,0);
-		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
-		
+		GL20.glVertexAttribPointer(attributeNumber, coordinateSize, GL11.GL_FLOAT,false,0,0);
+		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);		
 	}
 	
 	private void unbindVAO() {
@@ -231,7 +230,7 @@ public class Loader {
 		
 	}
 	
-	private void bindIndicesBugger(int[] indices) {
+	private void bindIndicesBuffer(int[] indices) {
 		
 		int vboID = GL15.glGenBuffers();
 		vbos.add(vboID);
