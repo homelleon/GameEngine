@@ -8,5 +8,6 @@ public interface Body {
 	Vector3f getPosition();
 	void doAcceleration(float value, Vector3f direction);
 	int getID();
+	int getTypeID();
 	
 }

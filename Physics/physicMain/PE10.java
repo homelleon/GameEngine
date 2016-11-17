@@ -1,9 +1,7 @@
 package physicMain;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.lwjgl.util.vector.Vector3f;
@@ -28,7 +26,7 @@ public class PE10 {
 	
 	private static boolean isInitialized = false;
 	private static Map<Integer, World> worlds;
-	private static int worldIDs[];
+	private static int worldIDcount = 0;
 	
 	public static final int PE_2D_PLANE = 0;
 	public static final int PE_2D_TRIANGLE = 1;
@@ -42,20 +40,48 @@ public class PE10 {
 	public static void initialize() {
 		if(!peErrRecurInit()) {
 			worlds = new HashMap<Integer, World>();
-			worldIDs = new ArrayList<Integer>();
 			isInitialized = true;
 		}	
 	}
 	 
-	public static int peCreateWorld(Vector3f position1, Vector3f position2) {		
-		World world = new WorldG(id, position1, position2);
-		worlds.put(id, world);
-		return id;		
+	public static int peCreateWorld(Vector3f position1, Vector3f position2) {
+		worldIDcount += 1;
+		World world = new WorldG(worldIDcount, position1, position2);
+		worlds.put(worldIDcount, world);
+		return worldIDcount;		
 	}
 	
-	public static void peDeleteWorld(int id) {
-		worlds.get(id).delete();
-		worlds.remove(id);
+	public static boolean peDeleteWorld(int worldID) {
+		boolean isSucceed = false;
+		if(!peErrNoInit()) {
+			if(!peErrNoIDWorld(worldID)) {
+				worlds.get(worldID).delete();
+				worlds.remove(worldID);
+				isSucceed = true;
+			} 
+		}
+		return isSucceed;
+	}
+	
+	public static boolean peUpdateWorld(int worldID) {
+		boolean isSucced = false;
+		if(!peErrNoInit()) {
+			if(!peErrNoIDWorld(worldID)) {
+				worlds.get(worldID).update();
+				isSucced = true;			
+			}
+		}
+		return isSucced;
+	}
+	
+	public static boolean peSetGravity(int worldID, float value) {
+		boolean isSucced = false;
+		if(!peErrNoIDWorld(worldID)) {
+			if(!peErrGravityNotAv(worldID)) {
+				worlds.get(worldID).setGravity(value);			
+			}
+		}
+		return isSucced;
 	}
 	
 	/*
@@ -66,7 +92,7 @@ public class PE10 {
 		boolean isError = false;
 		if(isInitialized) {
 			isError = true;
-			System.err.println("Engine was repeatedly initilized!");
+			System.err.println("Physical engine was repeatedly initilized!");
 		}
 		return isError;
 	}
@@ -75,7 +101,25 @@ public class PE10 {
 		boolean isError = false;
 		if(!isInitialized) {
 			isError = true;
-			System.err.println("Engine isn't initialized!");
+			System.err.println("Physical engine isn't initialized!");
+		}
+		return isError;
+	}
+	
+	private static boolean peErrNoIDWorld(int worldID) {
+		boolean isError = false;
+		if(!worlds.containsKey(worldID)) {
+			isError = true;
+			System.err.println("Such world id isn't existed!");
+		}
+		return isError;
+	}
+	
+	private static boolean peErrGravityNotAv(int worldID) {
+		boolean isError = false;
+		if(!worlds.get(worldID).hasGravity()) {
+			isError = true;
+			System.err.println("Gravity is not avalable in that world!");
 		}
 		return isError;
 	}

@@ -7,10 +7,11 @@ import org.lwjgl.util.vector.Vector3f;
 
 public abstract class BodyBasic {
 	
-	protected int collisionID;
+	protected int bodyID;
 	protected int typeID;
 	protected float mass = 0;
 	protected float size;
+	protected float vertex [][][];
 	protected Vector3f position;
 	protected Vector3f speed;
 	
@@ -20,11 +21,17 @@ public abstract class BodyBasic {
 		this.size = size;
 	}
 	
-	protected int getID() {
-		return collisionID;
+	protected BodyBasic(int id, Vector3f position, float[][][] vertex) {
+		this.typeID = id;
+		this.position = position;
+		this.vertex = vertex;
 	}
 	
-	protected int getType() {
+	protected int getID() {
+		return bodyID;
+	}
+		
+	protected int getTypeID() {
 		return typeID;
 	}
 	
