@@ -12,7 +12,7 @@ public class Body2DCircle extends BodyBasic implements Body {
 	}
 
 	@Override
-	public Vector3f getPosition() { 
+	public Vector3f getPosition() {  
 		return null;
 	}
 	
