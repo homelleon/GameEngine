@@ -1,11 +1,13 @@
 package frames;
 
-import java.awt.Canvas;
 import java.awt.Component;
 
+import javax.swing.JPanel;
+
 public interface Frame {
-	public void addCanvas(Canvas canvas);
+	public void addElement(Component component);
+	public JPanel getDisplayPanel();
 	public int getHeight();
-	public int getWidth();
+	public int getWidth(); 
 
 }

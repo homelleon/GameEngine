@@ -11,6 +11,7 @@ import org.lwjgl.util.vector.Vector4f;
 
 import audio.AudioMaster;
 import audio.Source;
+import engineMain.DisplayManager;
 import entities.Camera;
 import entities.Entity;
 import entities.Light;
@@ -30,7 +31,6 @@ import particles.ParticleMaster;
 import particles.ParticleSystem;
 import postProcessing.Fbo;
 import postProcessing.PostProcessing;
-import renderEngine.DisplayManager;
 import renderEngine.Loader;
 import renderEngine.MasterRenderer;
 import terrains.Terrain;

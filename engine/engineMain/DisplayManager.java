@@ -1,7 +1,9 @@
-package renderEngine;
+package engineMain;
 
 import java.awt.Canvas;
 import java.awt.Color;
+
+import javax.swing.JPanel;
 
 import org.lwjgl.LWJGLException;
 import org.lwjgl.Sys;
@@ -65,7 +67,9 @@ public static void creatDisplay(int mode) {
 		try {
 			Display.setDisplayMode(new DisplayMode(width, height));
 			Display.create(new PixelFormat().withDepthBits(24), attribs);
-			frame.addCanvas(canvas);
+
+			frame.getDisplayPanel().add(canvas);
+		
 			Display.setParent(canvas);
 			Display.setTitle("EditMode");
 			GL11.glEnable(GL13.GL_MULTISAMPLE);

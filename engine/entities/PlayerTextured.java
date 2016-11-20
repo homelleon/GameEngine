@@ -6,8 +6,8 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.util.vector.Vector3f;
 
+import engineMain.DisplayManager;
 import models.TexturedModel;
-import renderEngine.DisplayManager;
 import scene.ES;
 import terrains.Terrain;
 import terrains.TerrainTextured;

@@ -1,6 +1,6 @@
 package engineMain;
 
-public class GameSettings {
+public class GameSettings { 
 	
 	private static GameSettings instance; 
 	

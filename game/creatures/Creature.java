@@ -17,7 +17,7 @@ public abstract class Creature extends EntityTextured implements EntityDamagable
 		
 	}
 	
-	public int getHelth() {
+	public int getHelth() { 
 		return helth;
 	}
 	

@@ -15,7 +15,7 @@ public class MyGame implements Game {
 	
 		/* 
 		 * use "Main.getMap()" to get methods of Map
-		 * and all objects on Map 
+		 * and all objects on Map  
 		 * 
 		 */	
 		public void onStart() {

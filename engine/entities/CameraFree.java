@@ -4,7 +4,7 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.util.vector.Vector3f;
 
-import renderEngine.DisplayManager;
+import engineMain.DisplayManager;
 import scene.ES;
 
 public class CameraFree implements Camera {

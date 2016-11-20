@@ -9,8 +9,8 @@ public class Main {
 	public static void main(String[] args) { 
 		engine = new MainEditorLoop();
 		engine.loadGameSettings();
-		engine.init();
-		engine.run(); 
+		engine.init(); 
+		engine.run();  
 	}
 	
 	

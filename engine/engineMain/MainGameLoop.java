@@ -4,7 +4,6 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 
 import maps.GameMap;
-import renderEngine.DisplayManager;
 import scene.SceneGame;
 import scene.Scene;
 

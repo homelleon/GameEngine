@@ -4,17 +4,16 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 
 import maps.GameMap;
-import renderEngine.DisplayManager;
 import scene.SceneEditor;
 import scene.Scene;
 
-public class MainEditorLoop implements Engine {
+public class MainEditorLoop implements Engine { 
 	
 	private static final String SETTINGS_NAME = "settings";
 	
 	private Scene scene;
 	
-	public MainEditorLoop() {
+	public MainEditorLoop() { 
 		DisplayManager.creatDisplay(1);
 		scene = new SceneEditor();		
 	}
