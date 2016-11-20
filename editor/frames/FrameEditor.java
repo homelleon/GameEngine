@@ -5,6 +5,8 @@ import java.awt.Dimension;
 
 import javax.swing.JFrame;
 
+import panels.PanelDistanceOfView;
+
 public class FrameEditor extends JFrame implements Frame {
 	
 	static final int WIDTH = 1024;
@@ -15,15 +17,14 @@ public class FrameEditor extends JFrame implements Frame {
 		setDefaultCloseOperation(this.EXIT_ON_CLOSE);
 		setPreferredSize(new Dimension(WIDTH, HEIGHT));
 		setVisible(true);
+		add(new PanelDistanceOfView());
 		pack();
 	}
 	
 	@Override
 	public void addCanvas(Canvas canvas) {
-		add(canvas);
-		
+		add(canvas);		
 	}	
-
 	
 	@Override
 	public int getHeight() {
