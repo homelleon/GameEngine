@@ -1,4 +1,4 @@
-package Intersects;
+package intersects;
 
 public class IntersectData {
 	
