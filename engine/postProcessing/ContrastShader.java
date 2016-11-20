@@ -1,12 +1,12 @@
 package postProcessing;
 
-import scene.EngineSettings;
+import scene.ES;
 import shaders.ShaderProgram;
 
 public class ContrastShader extends ShaderProgram {
 
-	private static final String VERTEX_FILE = EngineSettings.POST_PROCESSING_SHADER_PATH + "contrastVertex.txt";
-	private static final String FRAGMENT_FILE = EngineSettings.POST_PROCESSING_SHADER_PATH + "contrastFragment.txt";
+	private static final String VERTEX_FILE = ES.POST_PROCESSING_SHADER_PATH + "contrastVertex.txt";
+	private static final String FRAGMENT_FILE = ES.POST_PROCESSING_SHADER_PATH + "contrastFragment.txt";
 	
 	private int location_contrast;
 	

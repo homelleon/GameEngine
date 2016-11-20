@@ -1,12 +1,12 @@
 package gaussianBlur;
 
-import scene.EngineSettings;
+import scene.ES;
 import shaders.ShaderProgram;
 
 public class HorizontalBlurShader extends ShaderProgram {
 
-	private static final String VERTEX_FILE = EngineSettings.BLUR_SHADER_PATH + "horizontalBlurVertex.txt";
-	private static final String FRAGMENT_FILE = EngineSettings.BLUR_SHADER_PATH + "blurFragment.txt";
+	private static final String VERTEX_FILE = ES.BLUR_SHADER_PATH + "horizontalBlurVertex.txt";
+	private static final String FRAGMENT_FILE = ES.BLUR_SHADER_PATH + "blurFragment.txt";
 	
 	private int location_targetWidth;
 	

@@ -18,7 +18,7 @@ import entities.Player;
 import entities.EntityShader;
 import models.TexturedModel;
 import normalMappingRenderer.NormalMappingRenderer;
-import scene.EngineSettings;
+import scene.ES;
 import shadows.ShadowMapMasterRenderer;
 import skybox.SkyboxRenderer;
 import terrains.Terrain;
@@ -72,8 +72,8 @@ public class MasterRenderer {
 		prepare();
 		shader.start();
 		shader.loadClipPlane(clipPlane);
-		shader.loadSkyColour(EngineSettings.DISPLAY_RED, EngineSettings.DISPLAY_GREEN, EngineSettings.DISPLAY_BLUE);
-		shader.loadFogDensity(EngineSettings.FOG_DENSITY);
+		shader.loadSkyColour(ES.DISPLAY_RED, ES.DISPLAY_GREEN, ES.DISPLAY_BLUE);
+		shader.loadFogDensity(ES.FOG_DENSITY);
 		shader.loadLights(lights);
 		shader.loadViewMatrix(camera);
 		entityRenderer.render(entities, shadowMapRenderer.getToShadowMapSpaceMatrix());
@@ -81,13 +81,13 @@ public class MasterRenderer {
 		normalMapRenderer.render(normalMapEntities, clipPlane, lights, camera, shadowMapRenderer.getToShadowMapSpaceMatrix());
 		terrainShader.start();
 		terrainShader.loadClipPlane(clipPlane);
-		terrainShader.loadSkyColour(EngineSettings.DISPLAY_RED, EngineSettings.DISPLAY_GREEN, EngineSettings.DISPLAY_BLUE);
-		terrainShader.loadFogDensity(EngineSettings.FOG_DENSITY);
+		terrainShader.loadSkyColour(ES.DISPLAY_RED, ES.DISPLAY_GREEN, ES.DISPLAY_BLUE);
+		terrainShader.loadFogDensity(ES.FOG_DENSITY);
 		terrainShader.loadLights(lights);
 		terrainShader.loadViewMatrix(camera);
 		terrainRenderer.render(terrains, shadowMapRenderer.getToShadowMapSpaceMatrix());
 		terrainShader.stop();
-		skyboxRenderer.render(camera, EngineSettings.DISPLAY_RED, EngineSettings.DISPLAY_GREEN, EngineSettings.DISPLAY_BLUE);
+		skyboxRenderer.render(camera, ES.DISPLAY_RED, ES.DISPLAY_GREEN, ES.DISPLAY_BLUE);
 		terrains.clear();
 		entities.clear();
 		normalMapEntities.clear();
@@ -165,7 +165,7 @@ public class MasterRenderer {
 	public void prepare() {
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT|GL11.GL_DEPTH_BUFFER_BIT);
-		GL11.glClearColor(EngineSettings.DISPLAY_RED, EngineSettings.DISPLAY_GREEN, EngineSettings.DISPLAY_BLUE, 1);
+		GL11.glClearColor(ES.DISPLAY_RED, ES.DISPLAY_GREEN, ES.DISPLAY_BLUE, 1);
 		GL13.glActiveTexture(GL13.GL_TEXTURE5);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, getShadowMapTexture());		
 	}
@@ -173,15 +173,15 @@ public class MasterRenderer {
 	private void createProjectionMatrix() {
 		projectionMatrix = new Matrix4f();
 		float aspectRatio = (float) Display.getWidth()/(float) Display.getHeight();
-		float y_scale = (float) (1f / Math.tan(Math.toRadians(EngineSettings.FOV / 2f)) * aspectRatio);
+		float y_scale = (float) (1f / Math.tan(Math.toRadians(ES.FOV / 2f)) * aspectRatio);
 		float x_scale = y_scale / aspectRatio;
-		float frustrum_length = EngineSettings.FAR_PLANE - EngineSettings.NEAR_PLANE;
+		float frustrum_length = ES.FAR_PLANE - ES.NEAR_PLANE;
 		
 		projectionMatrix.m00 = x_scale;
 		projectionMatrix.m11 = y_scale;
-		projectionMatrix.m22 = -((EngineSettings.FAR_PLANE + EngineSettings.NEAR_PLANE) / frustrum_length);
+		projectionMatrix.m22 = -((ES.FAR_PLANE + ES.NEAR_PLANE) / frustrum_length);
 		projectionMatrix.m23 = -1;
-		projectionMatrix.m32 = -((2 * EngineSettings.NEAR_PLANE * EngineSettings.FAR_PLANE) / frustrum_length);
+		projectionMatrix.m32 = -((2 * ES.NEAR_PLANE * ES.FAR_PLANE) / frustrum_length);
 		projectionMatrix.m33 = 0;
 	}
 

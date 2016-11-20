@@ -3,13 +3,13 @@ package shadows;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector2f;
 
-import scene.EngineSettings;
+import scene.ES;
 import shaders.ShaderProgram;
 
 public class ShadowShader extends ShaderProgram {
 	
-	private static final String VERTEX_FILE = EngineSettings.SHADOW_SHADER_PATH + "shadowVertexShader.txt";
-	private static final String FRAGMENT_FILE = EngineSettings.SHADOW_SHADER_PATH + "shadowFragmentShader.txt";
+	private static final String VERTEX_FILE = ES.SHADOW_SHADER_PATH + "shadowVertexShader.txt";
+	private static final String FRAGMENT_FILE = ES.SHADOW_SHADER_PATH + "shadowFragmentShader.txt";
 	
 	private int location_mvpMatrix;
 	private int location_offset;

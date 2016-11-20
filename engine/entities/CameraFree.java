@@ -5,7 +5,7 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.util.vector.Vector3f;
 
 import renderEngine.DisplayManager;
-import scene.EngineSettings;
+import scene.ES;
 
 public class CameraFree implements Camera {
 	
@@ -126,8 +126,8 @@ public class CameraFree implements Camera {
 		}
 					
 		if(Mouse.isButtonDown(2)) {
-			this.currentTurnSpeed = SPEED * Mouse.getDX() * EngineSettings.MOUSE_X_SPEED * runSpeed;
-			this.currentPitchSpeed = -SPEED * Mouse.getDY() * EngineSettings.MOUSE_Y_SPEED * runSpeed;	
+			this.currentTurnSpeed = SPEED * Mouse.getDX() * ES.MOUSE_X_SPEED * runSpeed;
+			this.currentPitchSpeed = -SPEED * Mouse.getDY() * ES.MOUSE_Y_SPEED * runSpeed;	
 		} else {
 			currentTurnSpeed = 0;
 			currentPitchSpeed = 0;

@@ -12,7 +12,7 @@ import org.lwjgl.opengl.GL14;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 
-import scene.EngineSettings;
+import scene.ES;
 
 public class Fbo {
 
@@ -213,7 +213,7 @@ public class Fbo {
 	private int createMultisampleColourAttachment(int attachment) {
 		int colourBuffer = GL30.glGenRenderbuffers();
 		GL30.glBindRenderbuffer(GL30.GL_RENDERBUFFER, colourBuffer);
-		GL30.glRenderbufferStorageMultisample(GL30.GL_RENDERBUFFER, EngineSettings.MULTISAMPLE, GL11.GL_RGBA8, width, height);
+		GL30.glRenderbufferStorageMultisample(GL30.GL_RENDERBUFFER, ES.MULTISAMPLE, GL11.GL_RGBA8, width, height);
 		GL30.glFramebufferRenderbuffer(GL30.GL_FRAMEBUFFER, attachment, GL30.GL_RENDERBUFFER,
 				colourBuffer);
 		return colourBuffer;
@@ -229,7 +229,7 @@ public class Fbo {
 		if(!isMultisampledAndMultiTaregeted){
 			GL30.glRenderbufferStorage(GL30.GL_RENDERBUFFER, GL14.GL_DEPTH_COMPONENT24, width, height);
 		}else{
-			GL30.glRenderbufferStorageMultisample(GL30.GL_RENDERBUFFER, EngineSettings.MULTISAMPLE, GL14.GL_DEPTH_COMPONENT24, width, height);
+			GL30.glRenderbufferStorageMultisample(GL30.GL_RENDERBUFFER, ES.MULTISAMPLE, GL14.GL_DEPTH_COMPONENT24, width, height);
 		}
 		GL30.glFramebufferRenderbuffer(GL30.GL_FRAMEBUFFER, GL30.GL_DEPTH_ATTACHMENT, GL30.GL_RENDERBUFFER,
 				depthBuffer);

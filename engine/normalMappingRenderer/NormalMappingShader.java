@@ -8,15 +8,15 @@ import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 
 import entities.Light;
-import scene.EngineSettings;
+import scene.ES;
 import shaders.ShaderProgram;
 
 public class NormalMappingShader extends ShaderProgram{
 	
 	private static final int MAX_LIGHTS = 4;
 	
-	private static final String VERTEX_FILE = EngineSettings.NORMAL_MAP_SHADER_PATH + "normalMapVShader.txt";
-	private static final String FRAGMENT_FILE = EngineSettings.NORMAL_MAP_SHADER_PATH + "normalMapFShader.txt";
+	private static final String VERTEX_FILE = ES.NORMAL_MAP_SHADER_PATH + "normalMapVShader.txt";
+	private static final String FRAGMENT_FILE = ES.NORMAL_MAP_SHADER_PATH + "normalMapFShader.txt";
 	
 	private int location_transformationMatrix;
 	private int location_projectionMatrix;

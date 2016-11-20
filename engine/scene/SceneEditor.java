@@ -115,8 +115,8 @@ public class SceneEditor extends SceneManager implements Scene {
 		/*----------------FONTS-----------------*/
 		TextMaster.init(loader);
 		this.font = 
-				new FontType(loader.loadTexture(EngineSettings.FONT_PATH, "candara"),
-						new File(EngineSettings.FONT_PATH + "candara.fnt"));
+				new FontType(loader.loadTexture(ES.FONT_PATH, "candara"),
+						new File(ES.FONT_PATH + "candara.fnt"));
 		GUIText text = new GUIText("Edit mode", 
 				3, font, new Vector2f(0.25f, 0), 0.5f, true);
 		

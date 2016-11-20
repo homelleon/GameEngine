@@ -15,7 +15,7 @@ import entities.Entity;
 import models.RawModel;
 import models.TexturedModel;
 import renderEngine.MasterRenderer;
-import scene.EngineSettings;
+import scene.ES;
 import toolbox.Maths;
 
 public class ShadowMapEntityRenderer {
@@ -53,7 +53,7 @@ public class ShadowMapEntityRenderer {
 				MasterRenderer.disableCulling();
 			}
 			for (Entity entity : entities.get(model)) {
-				if(Maths.distanceFromCamera(entity,camera) <= EngineSettings.SHADOW_DISTANCE) {
+				if(Maths.distanceFromCamera(entity,camera) <= ES.SHADOW_DISTANCE) {
 					prepareInstance(entity);
 					GL11.glDrawElements(GL11.GL_TRIANGLES, rawModel.getVertexCount(),
 							GL11.GL_UNSIGNED_INT, 0);

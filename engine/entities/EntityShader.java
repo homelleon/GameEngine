@@ -7,7 +7,7 @@ import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 
-import scene.EngineSettings;
+import scene.ES;
 import shaders.ShaderProgram;
 import toolbox.Maths;
 
@@ -15,8 +15,8 @@ public class EntityShader extends ShaderProgram {
 	
 	private static final int MAX_LIGHTS = 4;
 	
-	public static final String VERTEX_FILE = EngineSettings.ENTITY_SHADER_PATH + "entityVertexShader.txt";
-	public static final String FRAGMENT_FILE = EngineSettings.ENTITY_SHADER_PATH + "entityFragmentShader.txt";
+	public static final String VERTEX_FILE = ES.ENTITY_SHADER_PATH + "entityVertexShader.txt";
+	public static final String FRAGMENT_FILE = ES.ENTITY_SHADER_PATH + "entityFragmentShader.txt";
 	
 	private int location_transformationMatrix;
 	private int location_projectionMatrix;

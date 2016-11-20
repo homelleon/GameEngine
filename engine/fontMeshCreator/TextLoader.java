@@ -6,14 +6,14 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
-import scene.EngineSettings;
+import scene.ES;
 
 public class TextLoader {
 	
 	public static String readText(String fileName, int stringFrom, int stringTo) {
 		String text = null;
 		FileReader isr = null;
-		File textFile = new File(EngineSettings.TEXT_PATH + "fileName"+".txt");
+		File textFile = new File(ES.TEXT_PATH + "fileName"+".txt");
 		
 		try {
 			isr = new FileReader(textFile); 

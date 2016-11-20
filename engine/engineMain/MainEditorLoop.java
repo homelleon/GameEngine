@@ -15,7 +15,7 @@ public class MainEditorLoop implements Engine {
 	private Scene scene;
 	
 	public MainEditorLoop() {
-		DisplayManager.creatDisplay();
+		DisplayManager.creatDisplay(1);
 		scene = new SceneEditor();		
 	}
 

@@ -5,14 +5,14 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 
-import scene.EngineSettings;
+import scene.ES;
 
 public class SettingsTXTLoader implements SettingsLoader {
  
 	@Override
 	public GameSettings loadSettings(String fileName) {
 		FileReader isr = null;
-        File setFile = new File(EngineSettings.GAME_SETTINGS_PATH + fileName + ".txt");
+        File setFile = new File(ES.GAME_SETTINGS_PATH + fileName + ".txt");
 		 try {
 	            isr = new FileReader(setFile);
 	        } catch (FileNotFoundException e) {

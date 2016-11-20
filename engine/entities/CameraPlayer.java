@@ -4,7 +4,7 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.util.vector.Vector3f;
 
-import scene.EngineSettings;
+import scene.ES;
 
 public class CameraPlayer implements Camera {
 	
@@ -158,7 +158,7 @@ public class CameraPlayer implements Camera {
 	}
 	
 	private void calculateZoom() {
-		float zoomLevel = Mouse.getDWheel() * EngineSettings.MOUSE_ZOOM_SPEED;
+		float zoomLevel = Mouse.getDWheel() * ES.MOUSE_ZOOM_SPEED;
 		if(((distanceFromPlayer<maxDistanceFromPlayer)&&(zoomLevel<0))
 				||((distanceFromPlayer>minDistanceFromPlayer)&&(zoomLevel>0))) {
 			distanceFromPlayer -= zoomLevel;
@@ -167,7 +167,7 @@ public class CameraPlayer implements Camera {
 	
 	private void calculatePitchAndAngle() {
 		if(!Mouse.isButtonDown(2)) {
-			float pitchChange = (Mouse.getY() - EngineSettings.DISPLAY_HEIGHT/2) * EngineSettings.MOUSE_Y_SPEED;
+			float pitchChange = (Mouse.getY() - ES.DISPLAY_HEIGHT/2) * ES.MOUSE_Y_SPEED;
 			
 			if((pitch<maxPitch)||(pitch>minPitch)) {
 				pitch -= pitchChange;
@@ -175,7 +175,7 @@ public class CameraPlayer implements Camera {
 		}
 		
 		if(Mouse.isButtonDown(2)) {	
-			float angleChange = (Mouse.getX() - EngineSettings.DISPLAY_WIDTH/2) * EngineSettings.MOUSE_X_SPEED;
+			float angleChange = (Mouse.getX() - ES.DISPLAY_WIDTH/2) * ES.MOUSE_X_SPEED;
 			angleAroundPlayer = -angleChange;		
 		}else{
 			angleAroundPlayer = 0;

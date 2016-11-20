@@ -8,7 +8,7 @@ import org.lwjgl.util.vector.Vector3f;
 
 import models.TexturedModel;
 import renderEngine.DisplayManager;
-import scene.EngineSettings;
+import scene.ES;
 import terrains.Terrain;
 import terrains.TerrainTextured;
 
@@ -47,7 +47,7 @@ public class PlayerTextured extends EntityTextured implements Player {
 		float dz = (float) (fowardDistance * Math.cos(Math.toRadians(super.getRotY())) 
 				+ (strafeDistance * Math.cos(Math.toRadians(super.getRotY() + 90)))) / speedCorrector;
 		super.increasePosition(dx, 0, dz);
-		upwardsSpeed += EngineSettings.GRAVITY * DisplayManager.getFrameTimeSeconds();
+		upwardsSpeed += ES.GRAVITY * DisplayManager.getFrameTimeSeconds();
 		super.increasePosition(0, upwardsSpeed * DisplayManager.getFrameTimeSeconds(), 0);
 		
 		float terrainHeight = 0; 
@@ -96,8 +96,8 @@ public class PlayerTextured extends EntityTextured implements Player {
 		}
 		
 		if(!Mouse.isButtonDown(2)) {
-			this.currentTurnSpeed = -TURN_SPEED * (Mouse.getX() - EngineSettings.DISPLAY_WIDTH / 2) * EngineSettings.MOUSE_X_SPEED;
-			Mouse.setCursorPosition(EngineSettings.DISPLAY_WIDTH / 2, EngineSettings.DISPLAY_HEIGHT / 2);
+			this.currentTurnSpeed = -TURN_SPEED * (Mouse.getX() - ES.DISPLAY_WIDTH / 2) * ES.MOUSE_X_SPEED;
+			Mouse.setCursorPosition(ES.DISPLAY_WIDTH / 2, ES.DISPLAY_HEIGHT / 2);
 		}			
 	}
 	

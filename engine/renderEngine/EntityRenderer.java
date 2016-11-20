@@ -14,7 +14,7 @@ import entities.EntityShader;
 import entities.Entity;
 import models.RawModel;
 import models.TexturedModel;
-import scene.EngineSettings;
+import scene.ES;
 import textures.ModelTexture;
 import toolbox.Maths;
 
@@ -32,7 +32,7 @@ public class EntityRenderer {
 	
 	public void render(Map<TexturedModel, List<Entity>> entities, Matrix4f toShadowMapSpace) {
 		shader.loadToShadowSpaceMatrix(toShadowMapSpace);
-		shader.loadShadowVariables(EngineSettings.SHADOW_DISTANCE, EngineSettings.SHADOW_MAP_SIZE, EngineSettings.SHADOW_TRANSITION_DISTANCE, EngineSettings.SHADOW_PCF);
+		shader.loadShadowVariables(ES.SHADOW_DISTANCE, ES.SHADOW_MAP_SIZE, ES.SHADOW_TRANSITION_DISTANCE, ES.SHADOW_PCF);
 		for(TexturedModel model : entities.keySet()) {
 			prepareTexturedModel(model);
 			List<Entity> batch = entities.get(model);

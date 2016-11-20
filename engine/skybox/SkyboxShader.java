@@ -5,14 +5,14 @@ import org.lwjgl.util.vector.Vector3f;
 
 import entities.Camera;
 import renderEngine.DisplayManager;
-import scene.EngineSettings;
+import scene.ES;
 import shaders.ShaderProgram;
 import toolbox.Maths;
  
 public class SkyboxShader extends ShaderProgram {
  
-    private static final String VERTEX_FILE = EngineSettings.SKYBOX_SHADER_PATH + "skyboxVertexShader.txt";
-    private static final String FRAGMENT_FILE = EngineSettings.SKYBOX_SHADER_PATH + "skyboxFragmentShader.txt";
+    private static final String VERTEX_FILE = ES.SKYBOX_SHADER_PATH + "skyboxVertexShader.txt";
+    private static final String FRAGMENT_FILE = ES.SKYBOX_SHADER_PATH + "skyboxFragmentShader.txt";
     
     private static final float ROTATE_SPEED = 1f;
      

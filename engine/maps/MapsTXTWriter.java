@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import entities.Entity;
-import scene.EngineSettings;
+import scene.ES;
 import terrains.Terrain;
 
 public class MapsTXTWriter implements MapsWriter {
@@ -16,7 +16,7 @@ public class MapsTXTWriter implements MapsWriter {
 	@Override
 	public void write(GameMap map) {
 		try {
-			File mapFile = new File(EngineSettings.MAP_PATH + map.getName() + ".txt");
+			File mapFile = new File(ES.MAP_PATH + map.getName() + ".txt");
 			BufferedWriter writer = new BufferedWriter(new FileWriter(mapFile));
 			
 			List<String> lines = new ArrayList<String>();

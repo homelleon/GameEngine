@@ -8,7 +8,7 @@ import org.lwjgl.util.vector.Vector4f;
 
 import entities.Camera;
 import entities.Light;
-import scene.EngineSettings;
+import scene.ES;
 import shaders.ShaderProgram;
 import toolbox.Maths;
 
@@ -16,8 +16,8 @@ public class TerrainShader extends ShaderProgram {
 	
 	private static final int MAX_LIGHTS = 4;
 	
-	public static final String VERTEX_FILE = EngineSettings.TERRAIN_SHADER_PATH + "terrainVertexShader.txt";
-	public static final String FRAGMENT_FILE = EngineSettings.TERRAIN_SHADER_PATH + "terrainFragmentShader.txt";
+	public static final String VERTEX_FILE = ES.TERRAIN_SHADER_PATH + "terrainVertexShader.txt";
+	public static final String FRAGMENT_FILE = ES.TERRAIN_SHADER_PATH + "terrainFragmentShader.txt";
 	
 	private int location_transformationMatrix;
 	private int location_projectionMatrix;

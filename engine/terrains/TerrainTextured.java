@@ -11,7 +11,7 @@ import org.lwjgl.util.vector.Vector3f;
 
 import models.RawModel;
 import renderEngine.Loader;
-import scene.EngineSettings;
+import scene.ES;
 import textures.TerrainTexture;
 import textures.TerrainTexturePack;
 import toolbox.Maths;
@@ -155,7 +155,7 @@ public class TerrainTextured implements Terrain {
 				
 		BufferedImage image = null;
 		try {
-			image = ImageIO.read(new File(EngineSettings.HEIGHT_MAP_PATH + heightMap+".png"));
+			image = ImageIO.read(new File(ES.HEIGHT_MAP_PATH + heightMap+".png"));
 			this.heightMapName = heightMap;
 		} catch (IOException e) {
 			e.printStackTrace();

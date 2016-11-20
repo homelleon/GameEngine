@@ -13,7 +13,7 @@ import models.TexturedModel;
 import particles.ParticleSystem;
 import particles.ParticleTexture;
 import renderEngine.Loader;
-import scene.EngineSettings;
+import scene.ES;
 import scene.SceneObjectTools;
 import terrains.Terrain;
 import triggers.Trigger;
@@ -105,7 +105,7 @@ public class GameMap {
 	}
 	
 	public void createParticles(String name, String texName, int texDimentions, boolean additive, float pps, float speed, float gravityComplient, float lifeLength, float scale) {
-		ParticleTexture texture = new ParticleTexture(loader.loadTexture(EngineSettings.PARTICLE_TEXTURE_PATH, texName), texDimentions, additive);
+		ParticleTexture texture = new ParticleTexture(loader.loadTexture(ES.PARTICLE_TEXTURE_PATH, texName), texDimentions, additive);
 		ParticleSystem particles = new ParticleSystem(name, texture, pps, speed, gravityComplient, lifeLength, scale);	    	
 		this.particleSystem.put(name, particles);
 	}

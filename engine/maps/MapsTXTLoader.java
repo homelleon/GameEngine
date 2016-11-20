@@ -5,13 +5,13 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import renderEngine.Loader;
-import scene.EngineSettings;
+import scene.ES;
 
 public class MapsTXTLoader implements MapsLoader {
 	
 	public GameMap loadMap(String fileName, Loader loader) {
 		FileReader isr = null;
-        File mapFile = new File(EngineSettings.MAP_PATH + fileName + ".txt");
+        File mapFile = new File(ES.MAP_PATH + fileName + ".txt");
 	        
         try {
             isr = new FileReader(mapFile);

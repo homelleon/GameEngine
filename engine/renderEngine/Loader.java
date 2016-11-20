@@ -28,7 +28,7 @@ import de.matthiasmann.twl.utils.PNGDecoder;
 import de.matthiasmann.twl.utils.PNGDecoder.Format;
 import engineMain.GameSettings;
 import models.RawModel;
-import scene.EngineSettings;
+import scene.ES;
 import textures.TextureData;
 
 public class Loader {
@@ -123,7 +123,7 @@ public class Loader {
 		Texture texture = null;
 		try {
 			float bias;
-			if (path == EngineSettings.FONT_PATH) {
+			if (path == ES.FONT_PATH) {
 				bias = 0; 
 			}else{
 				bias = -2.4f;

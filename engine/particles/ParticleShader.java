@@ -2,13 +2,13 @@ package particles;
 
 import org.lwjgl.util.vector.Matrix4f;
 
-import scene.EngineSettings;
+import scene.ES;
 import shaders.ShaderProgram;
 
 public class ParticleShader extends ShaderProgram {
 
-	private static final String VERTEX_FILE = EngineSettings.PARTICLE_SHADER_PATH + "particleVShader.txt";
-	private static final String FRAGMENT_FILE = EngineSettings.PARTICLE_SHADER_PATH + "particleFShader.txt";
+	private static final String VERTEX_FILE = ES.PARTICLE_SHADER_PATH + "particleVShader.txt";
+	private static final String FRAGMENT_FILE = ES.PARTICLE_SHADER_PATH + "particleFShader.txt";
 
 	private int location_numberOfRows;
 	private int location_projectionMatrix;

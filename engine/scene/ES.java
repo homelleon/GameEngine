@@ -1,6 +1,13 @@
 package scene;
 
-public class EngineSettings {
+/* 
+ * 
+ * Engine Settings 
+ * here is all constants for the game
+ * 
+ */
+
+public class ES {
 	
 	//*****************DISPLAY SETTINGS**********************************//
 	public static final int DISPLAY_WIDTH = 800; //1920;  

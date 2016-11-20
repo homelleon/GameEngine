@@ -5,7 +5,7 @@ import org.lwjgl.util.vector.Vector3f;
 
 import entities.Camera;
 import renderEngine.DisplayManager;
-import scene.EngineSettings;
+import scene.ES;
  
 public class Particle {
  
@@ -71,7 +71,7 @@ public class Particle {
     }
      
     protected boolean update(Camera camera) {
-        velocity.y += EngineSettings.GRAVITY * gravityEffect * DisplayManager.getFrameTimeSeconds();
+        velocity.y += ES.GRAVITY * gravityEffect * DisplayManager.getFrameTimeSeconds();
         Vector3f change = new Vector3f(velocity);
         change.scale(DisplayManager.getFrameTimeSeconds());
         Vector3f.add(change, position, position);

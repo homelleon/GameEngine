@@ -1,12 +1,12 @@
 package bloom;
 
-import scene.EngineSettings;
+import scene.ES;
 import shaders.ShaderProgram;
 
 public class CombineShader extends ShaderProgram { 
 
-	private static final String VERTEX_FILE = EngineSettings.BLOOM_SHADER_PATH + "simpleVertex.txt";
-	private static final String FRAGMENT_FILE = EngineSettings.BLOOM_SHADER_PATH + "combineFragment.txt";
+	private static final String VERTEX_FILE = ES.BLOOM_SHADER_PATH + "simpleVertex.txt";
+	private static final String FRAGMENT_FILE = ES.BLOOM_SHADER_PATH + "combineFragment.txt";
 	
 	private int location_colourTexture;
 	private int location_highlightTexture2;

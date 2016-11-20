@@ -5,14 +5,14 @@ import org.lwjgl.util.vector.Vector3f;
 
 import entities.Camera;
 import entities.Light;
-import scene.EngineSettings;
+import scene.ES;
 import shaders.ShaderProgram;
 import toolbox.Maths;
  
 public class WaterShader extends ShaderProgram {
  
-    private final static String VERTEX_FILE = EngineSettings.WATER_SHADER_PATH + "waterVertex.txt";
-    private final static String FRAGMENT_FILE = EngineSettings.WATER_SHADER_PATH + "waterFragment.txt";
+    private final static String VERTEX_FILE = ES.WATER_SHADER_PATH + "waterVertex.txt";
+    private final static String FRAGMENT_FILE = ES.WATER_SHADER_PATH + "waterFragment.txt";
  
     private int location_modelMatrix;
     private int location_viewMatrix;

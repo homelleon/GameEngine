@@ -10,7 +10,7 @@ import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 
 import models.RawModel;
-import scene.EngineSettings;
+import scene.ES;
 import terrains.Terrain;
 import terrains.TerrainShader;
 import terrains.TerrainTextured;
@@ -31,7 +31,7 @@ public class TerrainRenderer {
 	
 	public void render(List<Terrain> terrains, Matrix4f toShadowMapSpace) {
 		shader.loadToShadowSpaceMatrix(toShadowMapSpace);
-		shader.loadShadowVariables(EngineSettings.SHADOW_DISTANCE, EngineSettings.SHADOW_MAP_SIZE, EngineSettings.SHADOW_TRANSITION_DISTANCE, EngineSettings.SHADOW_PCF);
+		shader.loadShadowVariables(ES.SHADOW_DISTANCE, ES.SHADOW_MAP_SIZE, ES.SHADOW_TRANSITION_DISTANCE, ES.SHADOW_PCF);
 		for(Terrain terrain:terrains) {
 			if(terrain.isRendered()) {
 				prepareTerrain(terrain);
