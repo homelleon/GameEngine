@@ -1,6 +1,6 @@
 package entities;
 
-import java.util.List;
+import java.util.Collection;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -10,7 +10,6 @@ import engineMain.DisplayManager;
 import models.TexturedModel;
 import scene.ES;
 import terrains.Terrain;
-import terrains.TerrainTextured;
 
 public class PlayerTextured extends EntityTextured implements Player {
 	
@@ -31,7 +30,7 @@ public class PlayerTextured extends EntityTextured implements Player {
 		super(name, model, position, rotX, rotY, rotZ, scale);
 	}
 	
-	public void move(List<Terrain> terrains) {
+	public void move(Collection<Terrain> terrains) {
 		checkInputs();
 		super.increaseRotation(0, currentTurnSpeed * DisplayManager.getFrameTimeSeconds(), 0);
 		float fowardDistance = currentForwardSpeed * DisplayManager.getFrameTimeSeconds();

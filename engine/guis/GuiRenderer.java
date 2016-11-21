@@ -1,6 +1,6 @@
 package guis;
 
-import java.util.List;
+import java.util.Collection;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
@@ -23,7 +23,7 @@ public class GuiRenderer {
 		shader = new GuiShader();
 	}
 	
-	public void render(List<GuiTexture> guis) {
+	public void render(Collection <GuiTexture> guis) {
 		shader.start();
 		GL30.glBindVertexArray(quad.getVaoID());
 		GL20.glEnableVertexAttribArray(0);

@@ -2,7 +2,8 @@ package scene;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.WeakHashMap;
+
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.openal.AL10;
 import org.lwjgl.openal.AL11;
@@ -11,6 +12,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
+
 import audio.AudioMaster;
 import audio.Source;
 import entities.Camera;
@@ -31,6 +33,7 @@ import maps.MapsWriter;
 import models.TexturedModel;
 import optimisations.CutOptimisation;
 import particles.ParticleMaster;
+import particles.ParticleSystem;
 import particles.ParticlesManager;
 import postProcessing.Fbo;
 import postProcessing.PostProcessing;
@@ -67,18 +70,21 @@ public class SceneEditor extends SceneManager implements Scene {
 		this.optimisation = new CutOptimisation();	
 		
 		/*-------------TERRAIN------------------*/
-		this.terrains = new ArrayList<Terrain>(); 
-		terrains.addAll(map.getTerrains().values());
+		this.terrains = new WeakHashMap<String, Terrain>();
+		for(Terrain terrain : map.getTerrains().values())
+		terrains.put(terrain.getName(), terrain);
 
         /*--------------GAME OBJECTS-------------*/
 		
-		this.entities = new ArrayList<Entity>(); 
+		this.entities = new WeakHashMap<String, Entity>(); 
 		entities = EntitiesManager.createEntities(loader);
-		this.normalMapEntities = new ArrayList<Entity>();
+		this.normalMapEntities = new WeakHashMap<String, Entity>();
+		
 		normalMapEntities = EntitiesManager.createNormalMappedEntities(loader);
 
-
-		entities.addAll(map.getEntities().values());
+		for(Entity entity : map.getEntities().values()) {
+			entities.put(entity.getName(), entity);
+		}
 		
 		/*------------------LIGHTS----------------*/
 		this.lights = new ArrayList<Light>();
@@ -89,10 +95,10 @@ public class SceneEditor extends SceneManager implements Scene {
 		
 		/*------------------PLAYER-----------------*/
 		TexturedModel cubeModel = SceneObjectTools.loadStaticModel("cube", "cube1", loader);
-		this.players = new HashMap<String, Player>();
+		this.players = new WeakHashMap<String, Player>();
 		PlayerTextured player = new PlayerTextured(playerName, cubeModel, new Vector3f(100, 0, 10), 0, 0, 0, 1);
 		players.put(player.getName(), player);
-		this.cameras = new HashMap<String, Camera>();
+		this.cameras = new WeakHashMap<String, Camera>();
 		Camera camera = new CameraFree(cameraName, 20, 10, 20);
 		cameras.put(camera.getName(), camera);
 		this.time = new GameTime(10);
@@ -153,10 +159,12 @@ public class SceneEditor extends SceneManager implements Scene {
 		
 		/*---------------PREPARE-------------*/
 		
-		spreadOnHeights(entities);
-		spreadOnHeights(normalMapEntities);
+		spreadEntitiesOnHeights(entities.values());
+		spreadEntitiesOnHeights(normalMapEntities.values());
 		game.onStart();
-		pSystem.addAll(map.getParticles().values());
+		for(ParticleSystem pSys : map.getParticles().values()) {
+			pSystem.put(pSys.getName(), pSys);
+		}
 		
 		ParticleMaster.init(loader, renderer.getProjectionMatrix());
 	}
@@ -169,14 +177,14 @@ public class SceneEditor extends SceneManager implements Scene {
 		if(Keyboard.isKeyDown(Keyboard.KEY_T)) {
 			MapsWriter mapWriter = new MapsTXTWriter();
 			GameMap map = new GameMap("newMap", loader);
-			map.setEntities(entities);
-			map.setTerrains(terrains);
+			map.setEntities(entities.values());
+			map.setTerrains(terrains.values());
 			mapWriter.write(map);
 			System.out.println("save");
 		}
 		
 		renderParticles();
-		renderer.renderShadowMap(entities, normalMapEntities, players.get(playerName), sun, cameras.get(cameraName));				
+		renderer.renderShadowMap(entities.values(), normalMapEntities.values(), players.get(playerName), sun, cameras.get(cameraName));				
 		GL11.glEnable(GL30.GL_CLIP_DISTANCE0);
 		renderReflectionTexture();		
 		renderRefractionTexture();

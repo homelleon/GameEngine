@@ -1,5 +1,6 @@
 package maps;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,7 +43,7 @@ public class GameMap {
 		return entities;
 	}
 
-	public void setEntities(List<Entity> entities) {
+	public void setEntities(Collection<Entity> entities) {
 		for(Entity entity : entities){
 			this.entities.put(entity.getName(), entity);			
 		}
@@ -62,7 +63,7 @@ public class GameMap {
 		return terrains;
 	}
 
-	public void setTerrains(List<Terrain> terrains) {
+	public void setTerrains(Collection<Terrain> terrains) {
 		for(Terrain terrain : terrains){
 			this.terrains.put(terrain.getName(), terrain);
 		}

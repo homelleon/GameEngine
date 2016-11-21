@@ -1,5 +1,6 @@
 package optimisations;
 
+import java.util.Collection;
 import java.util.List;
 
 import entities.Camera;
@@ -17,7 +18,7 @@ public class CutOptimisation implements Optimisation {
 	}
 
 	@Override
-	public void optimize(Camera camera, List<Entity> entities, List<Terrain> terrains) {
+	public void optimize(Camera camera, Collection<Entity> entities, Collection<Terrain> terrains) {
 		cutDist.cutRender(camera, entities, terrains);						
 	}
 

@@ -19,19 +19,23 @@ public class ParticleEffectBasic extends ParticleSystem {
 	public void create(String name) {
 		Main.getMap().createParticles("Part", "cosmic", 4, true, 50, 25, 0.3f, 4, 1);
 	}
-
-	protected void setPosition(Vector3f position) {
-		super.generateParticles(position);
-		this.center = position;
+	
+	public void generateParticles() {
+		super.generateParticles();
 	}
 
-	protected Vector3f getPosition() {
-		return center;
+	public void setPosition(Vector3f position) {
+		super.setPosition(position);
 	}
 
-	protected String getType() {
+	public Vector3f getPosition() {
+		return super.getPosition();
+	}
+
+	public String getType() {
 		return type;
 	}
+
 	
 	public String getName() {
 		return super.getName();

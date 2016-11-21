@@ -24,8 +24,8 @@ public class FrameEditor extends JFrame implements Frame {
 		setVisible(true);
 		Box vBox = Box.createVerticalBox();
 		Box hBox = Box.createHorizontalBox();
-		getContentPane().setLayout(layout);
 		displayPanel.setPreferredSize(new Dimension(WIDTH/2, HEIGHT/2));
+		displayPanel.setLocation(0,0);
 		hBox.add(displayPanel);
 		hBox.add(new PanelDistanceOfView());
 		vBox.add(hBox);

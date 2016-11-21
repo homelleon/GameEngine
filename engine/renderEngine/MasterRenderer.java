@@ -1,6 +1,7 @@
 package renderEngine;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,9 +14,9 @@ import org.lwjgl.util.vector.Vector4f;
 
 import entities.Camera;
 import entities.Entity;
+import entities.EntityShader;
 import entities.Light;
 import entities.Player;
-import entities.EntityShader;
 import models.TexturedModel;
 import normalMappingRenderer.NormalMappingRenderer;
 import scene.ES;
@@ -23,7 +24,6 @@ import shadows.ShadowMapMasterRenderer;
 import skybox.SkyboxRenderer;
 import terrains.Terrain;
 import terrains.TerrainShader;
-import terrains.TerrainTextured;
 
 public class MasterRenderer {
 		
@@ -121,7 +121,7 @@ public class MasterRenderer {
 		}
 	}
 	
-	public void renderScene(List<Entity> entities, List<Entity> normalEntities, List<Terrain> terrains, List<Light> lights,
+	public void renderScene(Collection<Entity> entities, Collection<Entity> normalEntities, Collection<Terrain> terrains, List<Light> lights,
 		Camera camera, Vector4f clipPlane) {
 		for (Terrain terrain : terrains) {
 			processTerrain(terrain);
@@ -135,7 +135,7 @@ public class MasterRenderer {
 		render(lights, camera, clipPlane);
 	}
 	
-	public void renderShadowMap(List<Entity> entityList, List<Entity> normalEntities, Player player, Light sun, 
+	public void renderShadowMap(Collection<Entity> entityList, Collection<Entity> normalEntities, Player player, Light sun, 
 			Camera camera) {
 		for(Entity entity :  normalEntities) {
 			processEntity(entity);

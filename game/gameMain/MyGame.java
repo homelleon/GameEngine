@@ -42,7 +42,8 @@ public class MyGame implements Game {
 		public void onUpdate() {
 			PE10.peUpdateWorld(world1);
 			Main.getMap().getEntities().get("tree").increasePosition(0, 0.1f, 0);
-			particles.generateParticles(new Vector3f(20,50,20));			
+			particles.setPosition(new Vector3f(20,50,20));
+			particles.generateParticles();			
 			
 		}
 }

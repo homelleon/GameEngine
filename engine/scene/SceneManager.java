@@ -1,5 +1,6 @@
 package scene;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -53,12 +54,12 @@ public abstract class SceneManager {
     protected Map<String, Camera> cameras;
     protected Map<String, Player> players;
     protected GameMap map;
-    protected List<GuiTexture> guis;
+    protected Map<String, GuiTexture> guis;
     protected GuiRenderer guiRenderer;
-    protected List<ParticleSystem> pSystem;
-    protected List<Terrain> terrains;
-    protected List<Entity> entities;
-    protected List<Entity> normalMapEntities;
+    protected Map<String, ParticleSystem> pSystem;
+    protected Map<String, Terrain> terrains;
+    protected Map<String, Entity> entities;
+    protected Map<String, Entity> normalMapEntities;
     protected List<WaterTile> waters;
     protected List<Light> lights;
     protected FontType font;
@@ -108,7 +109,7 @@ public abstract class SceneManager {
 		cameras.get(cameraName).getPosition().y -= distance;
 		cameras.get(cameraName).invertPitch();
 		renderer.processEntity(players.get(playerName));
-		renderer.renderScene(entities, normalMapEntities, terrains, lights, 
+		renderer.renderScene(entities.values(), normalMapEntities.values(), terrains.values(), lights, 
 				cameras.get(cameraName), new Vector4f(0, 1, 0, -waters.get(0).getHeight()));
 		cameras.get(cameraName).getPosition().y += distance;
 		cameras.get(cameraName).invertPitch();
@@ -117,7 +118,7 @@ public abstract class SceneManager {
     protected void renderRefractionTexture() {
     	waterFBOs.bindRefractionFrameBuffer();
 		renderer.processEntity(players.get(playerName));
-		renderer.renderScene(entities, normalMapEntities, terrains, lights, 
+		renderer.renderScene(entities.values(), normalMapEntities.values(), terrains.values(), lights, 
 				cameras.get(cameraName), new Vector4f(0, -1, 0, waters.get(0).getHeight()+1f));
     }
     
@@ -126,9 +127,9 @@ public abstract class SceneManager {
 		waterFBOs.unbindCurrentFrameBuffer();
 	    
 		multisampleFbo.bindFrameBuffer();
-		optimisation.optimize(cameras.get(cameraName), entities, terrains);
+		optimisation.optimize(cameras.get(cameraName), entities.values(), terrains.values());
 	    renderer.processEntity(players.get(playerName));
-	    renderer.renderScene(entities, normalMapEntities, terrains,	lights, 
+	    renderer.renderScene(entities.values(), normalMapEntities.values(), terrains.values(),	lights, 
 	    		cameras.get(cameraName), new Vector4f(0, -1, 0, 15));
 	    waterRenderer.render(waters, cameras.get(cameraName), sun);
 	    ParticleMaster.renderParticles(cameras.get(cameraName));
@@ -136,13 +137,14 @@ public abstract class SceneManager {
 	    multisampleFbo.resolveToFbo(GL30.GL_COLOR_ATTACHMENT0, outputFbo);
 	    multisampleFbo.resolveToFbo(GL30.GL_COLOR_ATTACHMENT1, outputFbo2);
 	    PostProcessing.doPostProcessing(outputFbo.getColourTexture(), outputFbo2.getColourTexture());
-	    guiRenderer.render(guis);
+	    guiRenderer.render(guis.values());
 	    renderText();
     }
     
     protected void renderParticles() {
-    	pSystem.get(0).generateParticles(players.get(playerName).getPosition());
-		pSystem.get(1).generateParticles(new Vector3f(50,terrains.get(0).getHeightOfTerrain(50, 50),50));
+    	pSystem.get("Cosmic").setPosition(players.get(playerName).getPosition());
+    	pSystem.get("Cosmic").generateParticles();
+		pSystem.get("Star").generateParticles();
 		ParticleMaster.update(cameras.get(cameraName));
     }
     
@@ -183,15 +185,28 @@ public abstract class SceneManager {
     
     
 	
-    protected void spreadOnHeights(List<Entity> entities) {
+    protected void spreadEntitiesOnHeights(Collection<Entity> entities) {
 		if (!entities.isEmpty()) {
 			for(Entity entity : entities){
 				float terrainHeight = 0;
 				
-				for(Terrain terrain : terrains){
+				for(Terrain terrain : terrains.values()){
 					terrainHeight += terrain.getHeightOfTerrain(entity.getPosition().x, entity.getPosition().z);
 				}
 				entity.setPosition(new Vector3f(entity.getPosition().x, terrainHeight, entity.getPosition().z));
+			}
+		}
+	}
+    
+    protected void spreadParitclesOnHeights(Collection<ParticleSystem> systems) {
+		if (!systems.isEmpty()) {
+			for(ParticleSystem system : systems){
+				float terrainHeight = 0;
+				
+				for(Terrain terrain : terrains.values()){
+					terrainHeight += terrain.getHeightOfTerrain(system.getPosition().x, system.getPosition().z);
+				}
+				system.setPosition(new Vector3f(system.getPosition().x, terrainHeight, system.getPosition().z));
 			}
 		}
 	}

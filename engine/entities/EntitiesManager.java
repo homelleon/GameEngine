@@ -2,23 +2,25 @@ package entities;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.WeakHashMap;
 
 import org.lwjgl.util.vector.Vector3f;
 
 import models.TexturedModel;
 import normalMappingObjConverter.NormalMappedObjLoader;
 import renderEngine.Loader;
-import scene.SceneObjectTools;
 import scene.ES;
+import scene.SceneObjectTools;
 import textures.ModelTexture;
 
 public class EntitiesManager {
 	
-	public static List<Entity> createEntities(Loader loader) {
-		List<Entity> entities = new ArrayList<Entity>();
+	public static Map<String, Entity> createEntities(Loader loader) {
+		Map<String, Entity> entities = new WeakHashMap<String, Entity>();
 		//******StaticModels***************//
 		//Grass/
-		//TexturedModel grassModel = SceneObjectTools.loadStaticModel("grass", "grass", loader);		
+		TexturedModel grassModel = SceneObjectTools.loadStaticModel("grass", "grass", loader);		
 		//Stall//
 	    TexturedModel stallModel = SceneObjectTools.loadStaticModel("stall", "stallTexture", loader);
 	    stallModel.getTexture().setShineDamper(5);
@@ -40,23 +42,27 @@ public class EntitiesManager {
 		treeModel.getTexture().setReflectivity(0.5f);
 			
 		//Entities attach
-		//List<Entity> grasses = SceneObjectTools.createGrassField(0, 0, 1500, 1, 0.2f, loader);
+		List<Entity> grasses = SceneObjectTools.createGrassField(500, 500, 50, 1, 
+			0.1f, loader);
 		Entity stall = new EntityTextured("stall", stallModel, new Vector3f(50, 0, 50), 0, 0, 0, 4);
 		Entity cube = new EntityTextured("cube", cubeModel, new Vector3f(100, 0, 10), 0, 0, 0, 1);
 		Entity cherry = new EntityTextured("cherry", cherryModel, new Vector3f(150, 0, 150), 0, 0, 0, 4);
 		Entity tree = new EntityTextured("tree", treeModel, new Vector3f(10, 0, 10), 0, 30, 0, 4);
 		
-		entities.add(cube);
-		entities.add(stall);
-		entities.add(cherry);
-		entities.add(tree);
+		entities.put(cube.getName(), cube);
+		entities.put(stall.getName(), stall);
+		entities.put(cherry.getName(), cherry);
+		entities.put(tree.getName(), tree);
+		for(Entity grass : grasses) {
+			entities.put(grass.getName(), grass);
+		}
 		//entities.addAll(grasses);
 		
 		return entities;
 	}
 	
-	public static List<Entity> createNormalMappedEntities(Loader loader) {
-		List<Entity> entities = new ArrayList<Entity>();
+	public static Map<String, Entity> createNormalMappedEntities(Loader loader) {
+		Map<String, Entity> entities = new WeakHashMap<String, Entity>();
 		TexturedModel barrelModel = new TexturedModel(NormalMappedObjLoader.loadOBJ("barrel", loader),
 				new ModelTexture(loader.loadTexture(ES.MODEL_TEXTURE_PATH,"barrel")));
 		barrelModel.getTexture().setNormalMap(loader.loadTexture(ES.NORMAL_MAP_PATH, "barrelNormal"));
@@ -74,8 +80,8 @@ public class EntitiesManager {
 		Entity barrel = new EntityTextured("barrel", barrelModel, new Vector3f(200, 0, 200), 0,0,0,1);
 		Entity boulder = new EntityTextured("boulder", boulderModel, new Vector3f(250,0,250), 0,0,0,1);
 		
-		entities.add(barrel);
-		entities.add(boulder);
+		entities.put(barrel.getName(), barrel);
+		entities.put(boulder.getName(), boulder);
 		
 		return entities; 
 	}

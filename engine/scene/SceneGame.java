@@ -3,6 +3,8 @@ package scene;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.WeakHashMap;
+
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.openal.AL10;
 import org.lwjgl.openal.AL11;
@@ -11,6 +13,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
+
 import audio.AudioMaster;
 import audio.Source;
 import entities.Camera;
@@ -70,18 +73,21 @@ public class SceneGame extends SceneManager implements Scene {
 		this.optimisation = new CutOptimisation();	
 		
 		/*-------------TERRAIN------------------*/
-		this.terrains = new ArrayList<Terrain>(); 
-		terrains.addAll(map.getTerrains().values());
+		this.terrains = new WeakHashMap<String, Terrain>();
+		for(Terrain terrain : map.getTerrains().values()) {
+			terrains.put(terrain.getName(), terrain);
+		}
 
         /*--------------GAME OBJECTS-------------*/
 		
-		this.entities = new ArrayList<Entity>(); 
+		this.entities = new WeakHashMap<String, Entity>(); 
 		entities = EntitiesManager.createEntities(loader);
-		this.normalMapEntities = new ArrayList<Entity>();
+		this.normalMapEntities = new WeakHashMap<String, Entity>();
 		normalMapEntities = EntitiesManager.createNormalMappedEntities(loader);
 
-
-		entities.addAll(map.getEntities().values());
+		for(Entity entity : map.getEntities().values()) {
+			entities.put(entity.getName(), entity);
+		}
 		
 		/*------------------LIGHTS----------------*/
 		this.lights = new ArrayList<Light>();
@@ -156,8 +162,8 @@ public class SceneGame extends SceneManager implements Scene {
 		
 		/*---------------PREPARE-------------*/
 		game.onStart();
-		spreadOnHeights(entities);
-		spreadOnHeights(normalMapEntities);
+		spreadEntitiesOnHeights(entities.values());
+		spreadEntitiesOnHeights(normalMapEntities.values());
 		
 	}
 	
@@ -166,19 +172,19 @@ public class SceneGame extends SceneManager implements Scene {
 	public void render() {
 		super.render();
 		
-		players.get(playerName).move(terrains);
+		players.get(playerName).move(terrains.values());
 		
 		if(Keyboard.isKeyDown(Keyboard.KEY_T)) {
 			MapsWriter mapWriter = new MapsTXTWriter();
 			GameMap map = new GameMap("newMap", loader);
-			map.setEntities(entities);
-			map.setTerrains(terrains);
+			map.setEntities(entities.values());
+			map.setTerrains(terrains.values());
 			mapWriter.write(map);
 			System.out.println("save");
 		}
 		
 		renderParticles();
-		renderer.renderShadowMap(entities, normalMapEntities, players.get(playerName), sun, cameras.get(cameraName));				
+		renderer.renderShadowMap(entities.values(), normalMapEntities.values(), players.get(playerName), sun, cameras.get(cameraName));				
 		GL11.glEnable(GL30.GL_CLIP_DISTANCE0);
 		renderReflectionTexture();		
 		renderRefractionTexture();

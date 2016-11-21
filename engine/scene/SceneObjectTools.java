@@ -6,6 +6,7 @@ import java.util.Random;
 
 import org.lwjgl.util.vector.Vector3f;
 
+import entities.Entity;
 import entities.EntityTextured;
 import models.RawModel;
 import models.TexturedModel;
@@ -32,7 +33,7 @@ public class SceneObjectTools {
 	}
 	
 	
-	public static List<EntityTextured> createGrassField(float x, float z, float r, float sizeNoise, 
+	public static List<Entity> createGrassField(float x, float z, float r, float sizeNoise, 
 			float density, Loader loader) {
 		//TODO: Noise - better using
 		
@@ -49,15 +50,15 @@ public class SceneObjectTools {
 		r = r*density;
 		density = 1/density;
 		Random random = new Random();
-		List<EntityTextured>grasses = new ArrayList<EntityTextured>();
+		List<Entity>grasses = new ArrayList<Entity>();
 		for(Integer j = 0; j < r; j++) {
 			for(Integer i = 0; i < r; i++) {
 				sizeNoise = 1 + 2*(float) random.nextDouble();
-				EntityTextured grassEntity = new EntityTextured("Grass" + String.valueOf(i) + "/" + String.valueOf(j), grass, texIndex, 
+				Entity grassEntity = new EntityTextured("Grass" + String.valueOf(i) + "/" + String.valueOf(j), grass, texIndex, 
 						new Vector3f(x + density*i, 0, z + density*j), 0, 0, 0, sizeNoise);
 				grassEntity.setIsDetail(true);
 				grasses.add(grassEntity);
-				EntityTextured grassEntity1 = new EntityTextured("Grass" + String.valueOf(i) + "/" + String.valueOf(j), grass, texIndex, 
+				Entity grassEntity1 = new EntityTextured("Grass" + String.valueOf(i) + "/" + String.valueOf(j), grass, texIndex, 
 						new Vector3f((float) (x + density*i), 0, 
 								(float) (z + density*j)), 0, 100, 0, sizeNoise);
 				grassEntity1.setIsDetail(true);
