@@ -6,14 +6,17 @@ import physicMain.PE10;
 
 public class Body3DCube extends BodyBasic implements Body {
 
-	protected Body3DCube(int id, Vector3f position, float size) {
+	public Body3DCube(int id, Vector3f position, float size) {
 		super(id, position, size);
-		typeID = PE10.PE_3D_CUBE;
+		typeID = PE10.BODY_3D_CUBE;
 	}
 
-	@Override
 	public Vector3f getPosition() {
-		return null;
+		return super.getPosition();
+	}
+	
+	public void setPosition(Vector3f position) {
+		super.setPosition(position);
 	}
 	
 	public float getMass() {
@@ -30,6 +33,10 @@ public class Body3DCube extends BodyBasic implements Body {
 	
 	public int getTypeID() {
 		return super.getTypeID();
+	}
+	
+	public float getSize() {
+		return super.getSize();
 	}
 
 }

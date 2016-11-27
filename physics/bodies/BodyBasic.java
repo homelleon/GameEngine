@@ -1,9 +1,13 @@
 package bodies;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.lwjgl.util.vector.Vector3f;
+
+import intersects.IntersectData;
+import physicMain.PE10;
+import toolbox.Maths;
 
 public abstract class BodyBasic {
 	
@@ -25,6 +29,14 @@ public abstract class BodyBasic {
 		this.typeID = id;
 		this.position = position;
 		this.vertex = vertex;
+	}
+	
+	protected void setPosition(Vector3f position) {
+		this.position = position;
+	}
+	
+	protected Vector3f getPosition() {
+		return position;
 	}
 	
 	protected int getID() {
@@ -50,6 +62,12 @@ public abstract class BodyBasic {
 	protected void doAcceleration(float value, Vector3f direction) {
 		
 	}
+	
+	protected IntersectData checkIntersection(Body body) {
+		IntersectData data = null;
+		return data;
+	}
+	
 	
 	protected void update() {
 		

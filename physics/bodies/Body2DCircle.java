@@ -6,14 +6,17 @@ import physicMain.PE10;
 
 public class Body2DCircle extends BodyBasic implements Body {
 
-	protected Body2DCircle(int id, Vector3f position, float size) {
+	public Body2DCircle(int id, Vector3f position, float size) {
 		super(id, position, size);
-		typeID = PE10.PE_2D_CIRCLE;
+		typeID = PE10.BODY_2D_CIRCLE;
 	}
 
-	@Override
-	public Vector3f getPosition() {  
-		return null;
+	public Vector3f getPosition() {
+		return super.getPosition();
+	}
+	
+	public void setPosition(Vector3f position) {
+		super.setPosition(position);
 	}
 	
 	public float getMass() {
@@ -30,6 +33,10 @@ public class Body2DCircle extends BodyBasic implements Body {
 	
 	public int getTypeID() {
 		return super.getTypeID();
+	}
+	
+	public float getSize() {
+		return super.getSize();
 	}
 
 }

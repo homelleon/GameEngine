@@ -1,11 +1,11 @@
 package physicMain;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.lwjgl.util.vector.Vector3f;
 
+import entities.Entity;
 import worlds.World;
 import worlds.WorldG;
 
@@ -13,6 +13,22 @@ import worlds.WorldG;
  * 
  * Physical Game Engine
  * version 1.0 
+ * 
+ * Need to be initialized by 
+ * initialize()-method before use.
+ * 
+ * World - is area where 
+ * collision bodies can be created
+ * and calculated by that module
+ * automatically.
+ * 
+ * Create World with size you need
+ * by using method peCreateWorld,
+ * attach bodies to objects in the 
+ * scene by using method peAttachBody
+ * and use peUpdateWorld-method to 
+ * update collision of all objects
+ * in the world.
  * 
  */
 
@@ -28,14 +44,24 @@ public class PE10 {
 	private static Map<Integer, World> worlds;
 	private static int worldIDcount = 0;
 	
-	public static final int PE_2D_PLANE = 0;
-	public static final int PE_2D_TRIANGLE = 1;
-	public static final int PE_2D_QUAD = 2;
-	public static final int PE_2D_CIRCLE = 3;
-	public static final int PE_3D_CUBE = 4;
-	public static final int PE_3D_SPHERE = 5;
-	public static final int PE_3D_PYRAMID = 6;
-	public static final int PE_3D_MESH = 7;
+	public static final int BODY_2D_PLANE = 0;
+	public static final int BODY_2D_TRIANGLE = 1;
+	public static final int BODY_2D_QUAD = 2;
+	public static final int BODY_2D_CIRCLE = 3;
+	public static final int BODY_3D_CUBE = 4;
+	public static final int BODY_3D_SPHERE = 5;
+	public static final int BODY_3D_PYRAMID = 6;
+	public static final int BODY_3D_MESH = 7;
+	
+	/*
+	 * Intersect type constants
+	 */
+	
+	public static final int DATA_IS_OUT = 0;
+	public static final int DATA_IS_IN = 1;
+	public static final int DATA_IS_CENTER = 2;
+	
+
 	
 	public static void initialize() {
 		if(!peErrRecurInit()) {
@@ -68,6 +94,19 @@ public class PE10 {
 		if(!peErrNoInit()) {
 			if(!peErrNoIDWorld(worldID)) {
 				worlds.get(worldID).update();
+				isSucced = true;			
+			}
+		}
+		return isSucced;
+	}
+	
+	//TODO Implement worlds.add method and attaching with body of certain type
+	public static boolean peAttachBody(Entity entity, int type, int worldID) {
+		boolean isSucced = false;
+		if(!peErrNoInit()) {
+			if(!peErrNoIDWorld(worldID)) {
+				worlds.get(worldID);     //to implement add entity-method to
+										 //to connect it with bodies
 				isSucced = true;			
 			}
 		}

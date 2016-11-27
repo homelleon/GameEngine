@@ -4,17 +4,18 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 
 import maps.GameMap;
-import scene.SceneEditor;
+import scene.ES;
 import scene.Scene;
+import scene.SceneEditor;
 
 public class MainEditorLoop implements Engine { 
 	
 	private static final String SETTINGS_NAME = "settings";
 	
-	private Scene scene;
+	private Scene scene; 
 	
 	public MainEditorLoop() { 
-		DisplayManager.creatDisplay(1);
+		DisplayManager.creatDisplay(ES.DISPLAY_EDIT_MODE);
 		scene = new SceneEditor();		
 	}
 

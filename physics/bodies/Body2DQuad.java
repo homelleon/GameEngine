@@ -6,14 +6,17 @@ import physicMain.PE10;
 
 public class Body2DQuad extends BodyBasic implements Body {
 
-	protected Body2DQuad(int id, Vector3f position, float size) {
+	public Body2DQuad(int id, Vector3f position, float size) {
 		super(id, position, size);
-		typeID = PE10.PE_2D_QUAD;
+		typeID = PE10.BODY_2D_QUAD;
 	}
 
-	@Override
 	public Vector3f getPosition() {
-		return null;
+		return super.getPosition();
+	}
+	
+	public void setPosition(Vector3f position) {
+		super.setPosition(position);
 	}
 	
 	public float getMass() {
@@ -30,6 +33,10 @@ public class Body2DQuad extends BodyBasic implements Body {
 	
 	public int getTypeID() {
 		return super.getTypeID();
+	}
+	
+	public float getSize() {
+		return super.getSize();
 	}
 
 }

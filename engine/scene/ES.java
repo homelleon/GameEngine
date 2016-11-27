@@ -87,6 +87,12 @@ public class ES {
 	
 	//****************GLOBAL WORLD SETTINGS*********************************//
 	public final static float SUN_MAX_HEIGHT = 4000; 
-	public final static float SUN_MIN_HEIGHT = -4000;	
+	public final static float SUN_MIN_HEIGHT = -4000;
+	
+	//****************DISPLAY MODE CONSTANTS*******************************//
+	public final static int DISPLAY_DEBUG_MODE = 0;
+	public final static int DISPLAY_EDIT_MODE = 1;
+	public final static int DISPLAY_GAME_MODE = 2;
+	
 
 }
