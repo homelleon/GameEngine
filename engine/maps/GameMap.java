@@ -1,9 +1,9 @@
 package maps;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.WeakHashMap;
 
 import org.lwjgl.util.vector.Vector3f;
 
@@ -22,12 +22,12 @@ import triggers.Trigger;
 public class GameMap {
 	
 	private String name;
-	private Map<String, Entity> entities = new HashMap<String, Entity>();
-	private Map<String, Entity> normalEntities = new HashMap<String, Entity>();
-	private Map<String, Terrain> terrains = new HashMap<String, Terrain>();
-	private Map<String, Source> audios = new HashMap<String, Source>();
-	private Map<String, Trigger> triggers = new HashMap<String, Trigger>();
-	private Map<String, ParticleSystem> particleSystem = new HashMap<String, ParticleSystem>();
+	private Map<String, Entity> entities = new WeakHashMap<String, Entity>();
+	private Map<String, Entity> normalEntities = new WeakHashMap<String, Entity>();
+	private Map<String, Terrain> terrains = new WeakHashMap<String, Terrain>();
+	private Map<String, Source> audios = new WeakHashMap<String, Source>();
+	private Map<String, Trigger> triggers = new WeakHashMap<String, Trigger>();
+	private Map<String, ParticleSystem> particleSystem = new WeakHashMap<String, ParticleSystem>();
 	
 	private Loader loader;
 	

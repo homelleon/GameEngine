@@ -101,13 +101,23 @@ public class PE10 {
 	}
 	
 	//TODO Implement worlds.add method and attaching with body of certain type
-	public static boolean peAttachBody(Entity entity, int type, int worldID) {
+	public static int peAttachBody(Entity entity, int type, int worldID) {
+		int id = -1;
+		if(!peErrNoInit()) {
+			if(!peErrNoIDWorld(worldID)) {
+				id = worlds.get(worldID).attachToEntity(entity, type);			
+			}
+		}
+		return id;
+	}
+	
+	public static boolean peDeleteBody(int bodyID, int worldID) {
 		boolean isSucced = false;
 		if(!peErrNoInit()) {
 			if(!peErrNoIDWorld(worldID)) {
-				worlds.get(worldID);     //to implement add entity-method to
-										 //to connect it with bodies
-				isSucced = true;			
+				if(!peErrRemoveIDBody(worldID, worldID)) {
+					isSucced = true;
+				}				
 			}
 		}
 		return isSucced;
@@ -154,11 +164,23 @@ public class PE10 {
 		return isError;
 	}
 	
+	
 	private static boolean peErrGravityNotAv(int worldID) {
 		boolean isError = false;
 		if(!worlds.get(worldID).hasGravity()) {
 			isError = true;
 			System.err.println("Gravity is not avalable in that world!");
+		}
+		return isError;
+	}
+	
+	private static boolean peErrRemoveIDBody(int bodyID, int worldID) {
+		boolean isError = false;
+		if(!peErrNoIDWorld(worldID)) {
+			if(!worlds.get(worldID).removeBody(bodyID)) {
+				isError = true;
+				System.err.println("Such body id isn't existed!");
+			}
 		}
 		return isError;
 	}

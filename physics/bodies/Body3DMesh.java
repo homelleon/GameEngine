@@ -2,12 +2,19 @@ package bodies;
 
 import org.lwjgl.util.vector.Vector3f;
 
+import entities.Entity;
+import intersects.IntersectData;
 import physicMain.PE10;
 
 public class Body3DMesh extends BodyBasic implements Body {
 
-	public Body3DMesh(int id, Vector3f position, float size) {
-		super(id, position, size);
+	public Body3DMesh(Vector3f position, float size) {
+		super(position, size);
+		typeID = PE10.BODY_3D_MESH;
+	}
+	
+	public Body3DMesh() {
+		super();
 		typeID = PE10.BODY_3D_MESH;
 	}
 
@@ -23,12 +30,21 @@ public class Body3DMesh extends BodyBasic implements Body {
 		return super.getMass();
 	}
 	
+	public void attachEntity(Entity entity) {
+		super.attachEntity(entity);
+	}
+	
+	public Entity getEntity() {
+		return super.getEntity();
+	}
+	
 	public void doAcceleration(float value, Vector3f direction) {
 		
 	}
 	
-	public int getID() {
-		return super.getID();
+	public IntersectData checkIntersection(Body body) {
+		IntersectData data = null;
+		return data;		
 	}
 	
 	public int getTypeID() {

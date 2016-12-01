@@ -21,7 +21,7 @@ public class IntersectData {
 	}	
 	
 	public float getDistance() {
-		return distance;
+		return this.distance;
 	}	
 	
 	public void setPosition(List<Vector3f> positions) {
@@ -29,7 +29,7 @@ public class IntersectData {
 	}
 	
 	public List<Vector3f> getPositions() {
-		return positions;
+		return this.positions;
 	}
 	
 	public void setType(int value) {

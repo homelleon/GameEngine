@@ -2,12 +2,19 @@ package bodies;
 
 import org.lwjgl.util.vector.Vector3f;
 
+import entities.Entity;
+import intersects.IntersectData;
 import physicMain.PE10;
 
 public class Body2DQuad extends BodyBasic implements Body {
 
-	public Body2DQuad(int id, Vector3f position, float size) {
-		super(id, position, size);
+	public Body2DQuad(Vector3f position, float size) {
+		super(position, size);
+		typeID = PE10.BODY_2D_QUAD;
+	}
+	
+	public Body2DQuad() {
+		super();
 		typeID = PE10.BODY_2D_QUAD;
 	}
 
@@ -27,8 +34,17 @@ public class Body2DQuad extends BodyBasic implements Body {
 		
 	}
 	
-	public int getID() {
-		return super.getID();
+	public IntersectData checkIntersection(Body body) {
+		IntersectData data = null;
+		return data;		
+	}
+	
+	public void attachEntity(Entity entity) {
+		super.attachEntity(entity);
+	}
+	
+	public Entity getEntity() {
+		return super.getEntity();
 	}
 	
 	public int getTypeID() {

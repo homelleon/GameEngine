@@ -5,14 +5,20 @@ import java.util.List;
 
 import org.lwjgl.util.vector.Vector3f;
 
+import entities.Entity;
 import intersects.IntersectData;
 import physicMain.PE10;
 import toolbox.Maths;
 
 public class Body3DSphere extends BodyBasic implements Body {
 
-	public Body3DSphere(int id, Vector3f position, float size) {
-		super(id, position, size);
+	public Body3DSphere(Vector3f position, float size) {
+		super(position, size);
+		typeID = PE10.BODY_3D_SPHERE;
+	}
+	
+	public Body3DSphere() {
+		super();
 		typeID = PE10.BODY_3D_SPHERE;
 	}
 
@@ -32,6 +38,14 @@ public class Body3DSphere extends BodyBasic implements Body {
 		
 	}
 	
+	public void attachEntity(Entity entity) {
+		super.attachEntity(entity);
+	}
+	
+	public Entity getEntity() {
+		return super.getEntity();
+	}
+	
 	public IntersectData checkIntersection(Body body) {
 		IntersectData data = null;
 		if (body.getTypeID() == PE10.BODY_3D_SPHERE) {
@@ -42,6 +56,9 @@ public class Body3DSphere extends BodyBasic implements Body {
 	
 	private IntersectData check2SphereIntersection(Body body) {
 		float distance = Maths.distance2Points(this.position, body.getPosition());
+		System.out.println(this.position);
+		System.out.println(body.getPosition());
+		System.out.println(distance);
 		float intersectDistance = distance - (this.getSize() + body.getSize());
 		List<Vector3f> points = new ArrayList<Vector3f>();
 		int type = PE10.DATA_IS_OUT;
@@ -57,10 +74,6 @@ public class Body3DSphere extends BodyBasic implements Body {
 			points.add(point);
 		}
 		return new IntersectData(type, distance, points);
-	}
-	
-	public int getID() {
-		return super.getID();
 	}
 	
 	public int getTypeID() {
