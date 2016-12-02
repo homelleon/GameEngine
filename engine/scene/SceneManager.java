@@ -59,7 +59,6 @@ public abstract class SceneManager {
     protected Map<String, ParticleSystem> pSystem;
     protected Map<String, Terrain> terrains;
     protected Map<String, Entity> entities;
-    protected Map<String, Entity> normalMapEntities;
     protected List<WaterTile> waters;
     protected List<Light> lights;
     protected FontType font;
@@ -109,7 +108,7 @@ public abstract class SceneManager {
 		cameras.get(cameraName).getPosition().y -= distance;
 		cameras.get(cameraName).invertPitch();
 		renderer.processEntity(players.get(playerName));
-		renderer.renderScene(entities.values(), normalMapEntities.values(), terrains.values(), lights, 
+		renderer.renderScene(entities.values(), terrains.values(), lights, 
 				cameras.get(cameraName), new Vector4f(0, 1, 0, -waters.get(0).getHeight()));
 		cameras.get(cameraName).getPosition().y += distance;
 		cameras.get(cameraName).invertPitch();
@@ -118,7 +117,7 @@ public abstract class SceneManager {
     protected void renderRefractionTexture() {
     	waterFBOs.bindRefractionFrameBuffer();
 		renderer.processEntity(players.get(playerName));
-		renderer.renderScene(entities.values(), normalMapEntities.values(), terrains.values(), lights, 
+		renderer.renderScene(entities.values(), terrains.values(), lights, 
 				cameras.get(cameraName), new Vector4f(0, -1, 0, waters.get(0).getHeight()+1f));
     }
     
@@ -129,7 +128,7 @@ public abstract class SceneManager {
 		multisampleFbo.bindFrameBuffer();
 		optimisation.optimize(cameras.get(cameraName), entities.values(), terrains.values());
 	    renderer.processEntity(players.get(playerName));
-	    renderer.renderScene(entities.values(), normalMapEntities.values(), terrains.values(),	lights, 
+	    renderer.renderScene(entities.values(), terrains.values(),	lights, 
 	    		cameras.get(cameraName), new Vector4f(0, -1, 0, 15));
 	    waterRenderer.render(waters, cameras.get(cameraName), sun);
 	    ParticleMaster.renderParticles(cameras.get(cameraName));

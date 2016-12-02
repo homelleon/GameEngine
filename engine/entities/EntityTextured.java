@@ -3,6 +3,7 @@ package entities;
 import org.lwjgl.util.vector.Vector3f;
 
 import models.TexturedModel;
+import scene.ES;
 
 public class EntityTextured implements Entity {
 	
@@ -16,10 +17,22 @@ public class EntityTextured implements Entity {
 	private boolean isRendered = false;
 	
 	private int textureIndex = 0;
+	private int typeID = ES.ENTITY_TYPE_SIMPLE;
 	
 	public EntityTextured(String name, TexturedModel model, Vector3f position, float rotX, float rotY, float rotZ, float scale) {
 		this.name = name;
 		this.model = model;
+		this.position = position;
+		this.rotX = rotX;
+		this.rotY = rotY;
+		this.rotZ = rotZ;
+		this.scale = scale; 
+	}
+	
+	public EntityTextured(String name, int typeID, TexturedModel model, Vector3f position, float rotX, float rotY, float rotZ, float scale) {
+		this.name = name;
+		this.model = model;
+		this.typeID = typeID;
 		this.position = position;
 		this.rotX = rotX;
 		this.rotY = rotY;
@@ -90,9 +103,14 @@ public class EntityTextured implements Entity {
 		return name;
 	}
 	
+	public int getType() {
+		return this.typeID;
+	}	
+	
 	public TexturedModel getModel() {
 		return model;
 	}
+	
 	public void setModel(TexturedModel model) {
 		this.model = model;
 	}
@@ -125,6 +143,7 @@ public class EntityTextured implements Entity {
 	}
 	public void setScale(float scale) {
 		this.scale = scale;
-	}	
+	}
+
 
 }

@@ -42,6 +42,10 @@ public class Body3DMesh extends BodyBasic implements Body {
 		
 	}
 	
+	public void update() {
+		super.update();
+	}
+	
 	public IntersectData checkIntersection(Body body) {
 		IntersectData data = null;
 		return data;		

@@ -40,7 +40,11 @@ public class Body2DPlane extends BodyBasic implements Body {
 	
 	public void doAcceleration(float value, Vector3f direction) {
 		
-	}	
+	}
+	
+	public void update() {
+		super.update();
+	}
 	
 	public IntersectData checkIntersection(Body body) {
 		IntersectData data = null;

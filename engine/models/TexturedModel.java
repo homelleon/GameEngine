@@ -8,12 +8,6 @@ public class TexturedModel {
 	private ModelTexture texture;
 	private String name;
 	
-	public TexturedModel(RawModel model, ModelTexture texture) {
-		this.rawModel = model;
-		this.texture = texture;
-		this.name = "NoName";
-	}
-	
 	public TexturedModel(String name, RawModel model, ModelTexture texture) {
 		this.rawModel = model;
 		this.texture = texture;
@@ -22,15 +16,15 @@ public class TexturedModel {
 
 
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	public RawModel getRawModel() {
-		return rawModel;
+		return this.rawModel;
 	}
 
 	public ModelTexture getTexture() {
-		return texture;
+		return this.texture;
 	}
 
 }

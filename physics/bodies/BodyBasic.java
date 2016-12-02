@@ -71,19 +71,19 @@ public abstract class BodyBasic {
 		
 	}
 	
+	protected void update() {
+		float totalAcceleration = 0;
+		float totalDirection = 0;
+		entity.setPosition(this.position);
+	}
+	
+	
 	protected IntersectData checkIntersection(Body body) {
 		IntersectData data = null;
 		return data;
 	}
 	
-	
-	protected void update() {
-		
-		float totalAcceleration = 0;
-		float totalDirection = 0;		
-		
-	}
-	
+
 	protected void delete() {
 		this.entity = null;
 		try {

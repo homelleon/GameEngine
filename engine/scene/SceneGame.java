@@ -3,6 +3,7 @@ package scene;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.WeakHashMap;
 
 import org.lwjgl.input.Keyboard;
@@ -82,10 +83,13 @@ public class SceneGame extends SceneManager implements Scene {
 		
 		this.entities = new WeakHashMap<String, Entity>(); 
 		entities = EntitiesManager.createEntities(loader);
-		this.normalMapEntities = new WeakHashMap<String, Entity>();
-		normalMapEntities = EntitiesManager.createNormalMappedEntities(loader);
+		List<Entity> normalMapEntities = EntitiesManager.createNormalMappedEntities(loader);
 
 		for(Entity entity : map.getEntities().values()) {
+			entities.put(entity.getName(), entity);
+		}
+		
+		for(Entity entity : normalMapEntities) {
 			entities.put(entity.getName(), entity);
 		}
 		
@@ -162,9 +166,7 @@ public class SceneGame extends SceneManager implements Scene {
 		
 		/*---------------PREPARE-------------*/
 		game.onStart();
-		spreadEntitiesOnHeights(entities.values());
-		spreadEntitiesOnHeights(normalMapEntities.values());
-		
+		spreadEntitiesOnHeights(entities.values());		
 	}
 	
 	/*Main render*/
@@ -184,7 +186,7 @@ public class SceneGame extends SceneManager implements Scene {
 		}
 		
 		renderParticles();
-		renderer.renderShadowMap(entities.values(), normalMapEntities.values(), players.get(playerName), sun, cameras.get(cameraName));				
+		renderer.renderShadowMap(entities.values(), players.get(playerName), sun, cameras.get(cameraName));				
 		GL11.glEnable(GL30.GL_CLIP_DISTANCE0);
 		renderReflectionTexture();		
 		renderRefractionTexture();

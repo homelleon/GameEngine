@@ -10,6 +10,7 @@ import entities.Entity;
 import entities.EntityTextured;
 import models.RawModel;
 import models.TexturedModel;
+import normalMappingObjConverter.NormalMappedObjLoader;
 import objConverter.ModelData;
 import objConverter.OBJFileLoader;
 import renderEngine.Loader;
@@ -30,6 +31,19 @@ public class SceneObjectTools {
 	    TexturedModel staticModel = new TexturedModel(objFile, rawModel,
 	    		new ModelTexture(texName, loader.loadTexture(ES.MODEL_TEXTURE_PATH, texName)));
 	    return staticModel;
+	}
+	
+	public static TexturedModel loadNormalModel(String objFile, String texName, String normalTexture, String specularTexture, Loader loader) {
+		RawModel rawModel = NormalMappedObjLoader.loadOBJ(objFile, loader);
+		ModelTexture texture = new ModelTexture(loader.loadTexture(ES.MODEL_TEXTURE_PATH,"barrel"));
+		TexturedModel model = new TexturedModel(objFile, rawModel, texture);
+		int normaMap = loader.loadTexture(ES.NORMAL_MAP_PATH, normalTexture);
+		int specularMap = loader.loadTexture(ES.SPECULAR_MAP_PATH, specularTexture);
+		model.getTexture().setNormalMap(normaMap);
+		model.getTexture().setShineDamper(10);
+		model.getTexture().setReflectivity(0.5f);
+		model.getTexture().setSpecularMap(specularMap);
+		return model;		
 	}
 	
 	

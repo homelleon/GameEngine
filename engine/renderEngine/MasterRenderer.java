@@ -121,25 +121,37 @@ public class MasterRenderer {
 		}
 	}
 	
-	public void renderScene(Collection<Entity> entities, Collection<Entity> normalEntities, Collection<Terrain> terrains, List<Light> lights,
-		Camera camera, Vector4f clipPlane) {
-		for (Terrain terrain : terrains) {
-			processTerrain(terrain);
-		}
-		for (Entity entity : entities) {
-			processEntity(entity);
-		}
-		for(Entity entity : normalEntities) {
-			processNormalMapEntity(entity);
-		}
-		render(lights, camera, clipPlane);
-	}
+	//public void renderScene(Collection<Entity> entities, Collection<Entity> normalEntities, Collection<Terrain> terrains, List<Light> lights,
+	//	Camera camera, Vector4f clipPlane) {
+	//	for (Terrain terrain : terrains) {
+	//		processTerrain(terrain);
+	//	}
+	//	for (Entity entity : entities) {
+	//		processEntity(entity);
+	//	}
+//		for(Entity entity : normalEntities) {
+	//		processNormalMapEntity(entity);
+	//	}
+	//	render(lights, camera, clipPlane);
+//	}
 	
-	public void renderShadowMap(Collection<Entity> entityList, Collection<Entity> normalEntities, Player player, Light sun, 
-			Camera camera) {
-		for(Entity entity :  normalEntities) {
-			processEntity(entity);
+	public void renderScene(Collection<Entity> entities, Collection<Terrain> terrains, List<Light> lights,
+			Camera camera, Vector4f clipPlane) {
+			for (Terrain terrain : terrains) {
+				processTerrain(terrain);
+			}
+			for (Entity entity : entities) {
+				if(entity.getType() == ES.ENTITY_TYPE_SIMPLE) {
+					processEntity(entity);
+				} else if(entity.getType() == ES.ENTITY_TYPE_NORMAL) {
+					processNormalMapEntity(entity);
+				}					
+			}
+			render(lights, camera, clipPlane);
 		}
+	
+	public void renderShadowMap(Collection<Entity> entityList, Player player, Light sun, 
+			Camera camera) {
 		for(Entity entity : entityList) {
 			processEntity(entity);
 		}

@@ -25,6 +25,7 @@ public interface Entity {
 	public void increaseRotation(float dx, float dy, float dz);
 	
 	public String getName();
+	public int getType();
 	
 	public TexturedModel getModel();
 	public void setModel(TexturedModel model);

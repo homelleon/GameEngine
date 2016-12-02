@@ -42,6 +42,10 @@ public class Body2DCircle extends BodyBasic implements Body {
 		
 	}
 	
+	public void update() {
+		super.update();
+	}
+	
 	public IntersectData checkIntersection(Body body) {
 		IntersectData data = null;
 		return data;		

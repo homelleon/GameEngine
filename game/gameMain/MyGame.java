@@ -27,8 +27,10 @@ public class MyGame implements Game {
 			Main.getMap().createParticles("Part", "cosmic", 4, true, 50, 25, 0.3f, 4, 1);
 			tree1 = Main.getMap().getEntities().get("tree");
 			Entity tree2 = Main.getMap().getEntities().get("Tree2");
+			Entity tree3 = Main.getMap().getEntities().get("Tree3");
 			PE10.peAttachBody(tree1, PE10.BODY_3D_SPHERE, world1);
 			PE10.peAttachBody(tree2, PE10.BODY_3D_SPHERE, world1);
+			PE10.peAttachBody(tree3, PE10.BODY_3D_SPHERE, world1);
 			particles = Main.getMap().getParticles().get("Part");
 			particles.randomizeRotation();
 			particles.setDirection(new Vector3f(0, 1, 0), 0.1f);
@@ -47,9 +49,9 @@ public class MyGame implements Game {
 		 */
 		public void onUpdate() {
 			PE10.peUpdateWorld(world1);
-			tree1.increasePosition(0, 0.1f, 0);
-			particles.setPosition(new Vector3f(20,50,20));
-			particles.generateParticles();			
+			//tree1.increasePosition(0, 0.1f, 0);
+			//particles.setPosition(new Vector3f(20,50,20));
+			//particles.generateParticles();			
 			
 		}
 }

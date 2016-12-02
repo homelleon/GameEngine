@@ -1,6 +1,7 @@
 package worlds;
 
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.lwjgl.util.vector.Vector3f;
@@ -56,17 +57,22 @@ public abstract class WorldBasic {
 	
 	protected void update() {
 		for(Body body1 : bodies.values()) {			
-				Collection<Body> bodyBatch = bodies.values();
-				bodyBatch.remove(body1);
-				for(Body body2 : bodyBatch) {
-					IntersectData data = body1.checkIntersection(body2);
-					if(data.getDistance() < 900) {
-						System.out.println(body1.getEntity().getName() + " is close to " + 
-					body2.getEntity().getName() + " at " + data.getDistance());
+				List<Body> bodyList = new ArrayList<Body>();
+				bodyList.addAll(bodies.values());
+				
+				for(Body body2 : bodyList) {
+					if (!(body2 == body1)) {
+						IntersectData data = body1.checkIntersection(body2);
+						if(data.getDistance() < 200) {
+							System.out.println(body1.getEntity().getName() + " is close to " + 
+						body2.getEntity().getName() + " at " + data.getDistance());
+					}
 				}
-				bodyBatch.clear();
+				body1.update();
+				//bodyBatch.clear();
 			}
 		}
+		System.out.println();
 	}
 	
 	protected void delete() {}

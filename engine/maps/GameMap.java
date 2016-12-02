@@ -23,7 +23,6 @@ public class GameMap {
 	
 	private String name;
 	private Map<String, Entity> entities = new WeakHashMap<String, Entity>();
-	private Map<String, Entity> normalEntities = new WeakHashMap<String, Entity>();
 	private Map<String, Terrain> terrains = new WeakHashMap<String, Terrain>();
 	private Map<String, Source> audios = new WeakHashMap<String, Source>();
 	private Map<String, Trigger> triggers = new WeakHashMap<String, Trigger>();
@@ -31,7 +30,7 @@ public class GameMap {
 	
 	private Loader loader;
 	
-	public GameMap(String name, Loader loader){
+	public GameMap(String name, Loader loader) {
 		this.loader = loader;
 	}	
 	
@@ -49,15 +48,6 @@ public class GameMap {
 		}
 	}
 
-	public Map<String, Entity> getNormalEntities() {
-		return normalEntities;
-	}
-
-	public void setNormalEntities(List<Entity> normalEntities) {
-		for(Entity entity : normalEntities){
-			this.normalEntities.put(entity.getName(), entity);
-		}
-	}
 
 	public Map<String, Terrain> getTerrains() {
 		return terrains;
@@ -74,7 +64,7 @@ public class GameMap {
 	}
 
 	public void setAudios(List<Source> audios) {
-		for(Source source : audios){
+		for(Source source : audios) {
 			this.audios.put(source.getName(), source);
 		}
 	}
@@ -84,13 +74,13 @@ public class GameMap {
 	}
 
 	public void setTriggers(List<Trigger> triggers) {
-		for(Trigger trigger : triggers){
+		for(Trigger trigger : triggers) {
 			this.triggers.put(trigger.getName(), trigger);
 		}
 	}
 	
 	public void setParticles(List<ParticleSystem> particleSystem) {
-		for(ParticleSystem particles : particleSystem){
+		for(ParticleSystem particles : particleSystem) {
 			this.particleSystem.put(particles.getName(), particles);
 		}
 	}
@@ -105,10 +95,21 @@ public class GameMap {
 		this.entities.put(name, entity);
 	}
 	
+	public void createEntity(String name, String model, String texName, String normal, String specular, Vector3f position, float rotX, float rotY, float rotZ, float scale) {
+		TexturedModel staticModel = SceneObjectTools.loadNormalModel(name, texName, normal, specular, loader);
+		EntityTextured entity = new EntityTextured(name, ES.ENTITY_TYPE_NORMAL, staticModel, position, rotX, rotY, rotZ, scale);
+		this.entities.put(name, entity);
+	}
+	
 	public void createParticles(String name, String texName, int texDimentions, boolean additive, float pps, float speed, float gravityComplient, float lifeLength, float scale) {
 		ParticleTexture texture = new ParticleTexture(loader.loadTexture(ES.PARTICLE_TEXTURE_PATH, texName), texDimentions, additive);
 		ParticleSystem particles = new ParticleSystem(name, texture, pps, speed, gravityComplient, lifeLength, scale);	    	
 		this.particleSystem.put(name, particles);
+	}
+	
+	public void createAudioSource(String name, String path, int maxDistance, Vector3f coords) {
+		Source source = new Source(name, path, maxDistance, coords);
+		this.audios.put(name, source);
 	}
 
 }

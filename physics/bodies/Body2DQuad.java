@@ -34,6 +34,10 @@ public class Body2DQuad extends BodyBasic implements Body {
 		
 	}
 	
+	public void update() {
+		super.update();
+	}
+	
 	public IntersectData checkIntersection(Body body) {
 		IntersectData data = null;
 		return data;		

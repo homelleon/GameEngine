@@ -38,6 +38,10 @@ public class Body3DSphere extends BodyBasic implements Body {
 		
 	}
 	
+	public void update() {
+		super.update();
+	}
+	
 	public void attachEntity(Entity entity) {
 		super.attachEntity(entity);
 	}

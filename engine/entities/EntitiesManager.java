@@ -61,27 +61,27 @@ public class EntitiesManager {
 		return entities;
 	}
 	
-	public static Map<String, Entity> createNormalMappedEntities(Loader loader) {
-		Map<String, Entity> entities = new WeakHashMap<String, Entity>();
-		TexturedModel barrelModel = new TexturedModel(NormalMappedObjLoader.loadOBJ("barrel", loader),
+	public static List<Entity> createNormalMappedEntities(Loader loader) {
+		List<Entity> entities = new ArrayList<Entity>();
+		TexturedModel barrelModel = new TexturedModel("barrel", NormalMappedObjLoader.loadOBJ("barrel", loader),
 				new ModelTexture(loader.loadTexture(ES.MODEL_TEXTURE_PATH,"barrel")));
 		barrelModel.getTexture().setNormalMap(loader.loadTexture(ES.NORMAL_MAP_PATH, "barrelNormal"));
 		barrelModel.getTexture().setShineDamper(10);
 		barrelModel.getTexture().setReflectivity(0.5f);
 		barrelModel.getTexture().setSpecularMap(loader.loadTexture(ES.SPECULAR_MAP_PATH, "barrelS"));
 
-		TexturedModel boulderModel = new TexturedModel(NormalMappedObjLoader.loadOBJ("boulder", loader),
+		TexturedModel boulderModel = new TexturedModel("boulder", NormalMappedObjLoader.loadOBJ("boulder", loader),
 				new ModelTexture(loader.loadTexture(ES.MODEL_TEXTURE_PATH,"boulder")));
 		boulderModel.getTexture().setNormalMap(loader.loadTexture(ES.NORMAL_MAP_PATH, "boulderNormal"));
 		boulderModel.getTexture().setShineDamper(10);
 		boulderModel.getTexture().setReflectivity(0.5f);
 		
 		/*Creating entities*/
-		Entity barrel = new EntityTextured("barrel", barrelModel, new Vector3f(200, 0, 200), 0,0,0,1);
-		Entity boulder = new EntityTextured("boulder", boulderModel, new Vector3f(250,0,250), 0,0,0,1);
+		Entity barrel = new EntityTextured("barrel", ES.ENTITY_TYPE_NORMAL, barrelModel, new Vector3f(200, 0, 200), 0,0,0,1);
+		Entity boulder = new EntityTextured("boulder", ES.ENTITY_TYPE_NORMAL, boulderModel, new Vector3f(250,0,250), 0,0,0,1);
 		
-		entities.put(barrel.getName(), barrel);
-		entities.put(boulder.getName(), boulder);
+		entities.add(barrel);
+		entities.add(boulder);
 		
 		return entities; 
 	}

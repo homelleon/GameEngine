@@ -13,6 +13,7 @@ public interface Body {
 	void attachEntity(Entity entity);
 	Entity getEntity();
 	void doAcceleration(float value, Vector3f direction);
+	void update();
 	IntersectData checkIntersection(Body body);
 	int getTypeID();
 	float getSize();

@@ -94,5 +94,9 @@ public class ES {
 	public final static int DISPLAY_EDIT_MODE = 1;
 	public final static int DISPLAY_GAME_MODE = 2;
 	
+	//***************ENTITY TYPE*****************************************//
+	public final static int ENTITY_TYPE_SIMPLE = 0;
+	public final static int ENTITY_TYPE_NORMAL = 1;
+	
 
 }
