@@ -150,12 +150,11 @@ public class MasterRenderer {
 			render(lights, camera, clipPlane);
 		}
 	
-	public void renderShadowMap(Collection<Entity> entityList, Player player, Light sun, 
+	public void renderShadowMap(Collection<Entity> entityList, Light sun, 
 			Camera camera) {
 		for(Entity entity : entityList) {
 			processEntity(entity);
 		}
-		processEntity(player);
 		
 		shadowMapRenderer.render(normalMapEntities, sun, camera);
 		normalMapEntities.clear();

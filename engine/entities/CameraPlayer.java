@@ -59,65 +59,12 @@ public class CameraPlayer implements Camera {
 	}
 	
 	public void move() {
-		if (perspectiveMode == false) {
 			calculateZoom();
 			calculatePitchAndAngle();
 			float horizontalDistance = calculateHorizontalDistance();
 			float verticalDistance = calculateVerticalDistance();
 			calculateCameraPosition(horizontalDistance,verticalDistance);
-			this.yaw = 180 - ((player).getRotY() + angleAroundPlayer);
-		}
-		
-		
-		if (perspectiveMode) {
-			if(Keyboard.isKeyDown(Keyboard.KEY_W)) {
-				position.z-=0.5f;
-			}
-			
-			if(Keyboard.isKeyDown(Keyboard.KEY_S)) {
-				position.z+=0.5f;
-			}
-			
-			if(Keyboard.isKeyDown(Keyboard.KEY_D)) {
-				position.x+=0.5f;
-			}
-			
-			if(Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
-				position.y+=0.5f;
-			}
-			
-			if(Keyboard.isKeyDown(Keyboard.KEY_C)) {
-				position.y-=0.5f;
-			}
-			
-			if(Keyboard.isKeyDown(Keyboard.KEY_A)) {
-				position.x-=0.5f;
-			}
-			
-			if(Keyboard.isKeyDown(Keyboard.KEY_E)) {
-				roll+=0.5f;
-			}
-			
-			if(Keyboard.isKeyDown(Keyboard.KEY_Q)) {
-				roll-=0.5f;
-			}
-			
-			if(Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
-				yaw+=0.5f;
-			}
-			
-			if(Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
-				yaw-=0.5f;
-		  	}
-			
-	    	if(Keyboard.isKeyDown(Keyboard.KEY_UP)) {
-	 			pitch-=0.1f;
-			}
-	    	
-			if(Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
-				pitch+=0.1f;
-			}		
-	    }		
+			this.yaw = 180 - ((player).getRotY() + angleAroundPlayer);		
 	}
 
 	public Vector3f getPosition() {

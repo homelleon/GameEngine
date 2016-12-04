@@ -48,7 +48,7 @@ public class MyGame implements Game {
 		 * Don't use while loop and etc
 		 */
 		public void onUpdate() {
-			PE10.peUpdateWorld(world1);
+			//PE10.peUpdateWorld(world1);
 			//tree1.increasePosition(0, 0.1f, 0);
 			//particles.setPosition(new Vector3f(20,50,20));
 			//particles.generateParticles();			

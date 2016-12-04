@@ -50,21 +50,7 @@ public class SceneEditor extends SceneManager implements Scene {
 	
 	private boolean isPaused = false;
 
-	@Override
-	public void setScenePaused(boolean value) {
-		this.isPaused = value;
-	}
-	
-	@Override
-	public void loadMap(String name) {
-		super.loadMap(name);
-	}
-	
-	@Override
-	public GameMap getMap() {
-		return super.getMap();
-	}
-	
+
 	public void init() {	
 		super.init();
 		/*-------------OPTIMIZATION-------------*/
@@ -88,7 +74,25 @@ public class SceneEditor extends SceneManager implements Scene {
 		
 		for(Entity entity : normalMapEntities) {
 			entities.put(entity.getName(), entity);
-		}
+		}		
+		
+		/*------------------PLAYER-----------------*/
+		TexturedModel cubeModel = SceneObjectTools.loadStaticModel("cube", "cube1", loader);
+		this.players = new WeakHashMap<String, Player>();
+		PlayerTextured player1 = new PlayerTextured(playerName, cubeModel, new Vector3f(100, 0, 10), 0, 0, 0, 1);
+		players.put(player1.getName(), player1);
+		this.cameras = new WeakHashMap<String, Camera>();
+		
+		for(Player player : players.values()) {
+			entities.put(player.getName(), player);
+		}	
+		
+		/*------------------CAMERA----------------*/
+		Camera camera = new CameraFree(cameraName, 20, 10, 20);
+		cameras.put(camera.getName(), camera);
+		this.time = new GameTime(10);
+		
+		this.renderer = new MasterRenderer(loader, camera);		
 		
 		/*------------------LIGHTS----------------*/
 		this.lights = new ArrayList<Light>();
@@ -97,17 +101,6 @@ public class SceneEditor extends SceneManager implements Scene {
 		//lights.add(new Light(new Vector3f(200,2,200),new Vector3f(10,0,0), new Vector3f(1, 0.01f, 0.002f)));
 		//lights.add(new Light(new Vector3f(20,2,20),new Vector3f(0,10,0), new Vector3f(0, 0.01f, 0.002f)));
 		
-		/*------------------PLAYER-----------------*/
-		TexturedModel cubeModel = SceneObjectTools.loadStaticModel("cube", "cube1", loader);
-		this.players = new WeakHashMap<String, Player>();
-		PlayerTextured player = new PlayerTextured(playerName, cubeModel, new Vector3f(100, 0, 10), 0, 0, 0, 1);
-		players.put(player.getName(), player);
-		this.cameras = new WeakHashMap<String, Camera>();
-		Camera camera = new CameraFree(cameraName, 20, 10, 20);
-		cameras.put(camera.getName(), camera);
-		this.time = new GameTime(10);
-		
-		this.renderer = new MasterRenderer(loader, camera);		
 		
 		/*----------------PARTICLES-----------------*/
 		this.pSystem = ParticlesManager.createParticleSystem(loader);	
@@ -187,12 +180,27 @@ public class SceneEditor extends SceneManager implements Scene {
 		}
 		
 		renderParticles();
-		renderer.renderShadowMap(entities.values(), players.get(playerName), sun, cameras.get(cameraName));				
+		renderer.renderShadowMap(entities.values(), sun, cameras.get(cameraName));				
 		GL11.glEnable(GL30.GL_CLIP_DISTANCE0);
 		renderReflectionTexture();		
 		renderRefractionTexture();
 	    renderToScreen();
 	}   
+	
+	@Override
+	public void setScenePaused(boolean value) {
+		this.isPaused = value;
+	}
+	
+	@Override
+	public void loadMap(String name) {
+		super.loadMap(name);
+	}
+	
+	@Override
+	public GameMap getMap() {
+		return super.getMap();
+	}	
     	
 	public void cleanUp() {
 		super.cleanUp();

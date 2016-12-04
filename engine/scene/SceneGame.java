@@ -50,22 +50,11 @@ import water.WaterTile;
 
 public class SceneGame extends SceneManager implements Scene {
 	
-	Game game = new MyGame();
-	
-	private String cameraName = "Main";
-	private String playerName = "Player1";
-	
-	//TODO: Delete unnecessary objects	
 	private boolean isPaused = false;
 	
-	@Override
-	public void setScenePaused(boolean value) {
-		this.isPaused = value;
-	}
-	
-	@Override
-	public void loadMap(String name) {
-		super.loadMap(name);
+	public SceneGame() {
+		cameraName = "Main";
+		playerName = "Player1";
 	}
 	
 	public void init() {
@@ -93,6 +82,21 @@ public class SceneGame extends SceneManager implements Scene {
 			entities.put(entity.getName(), entity);
 		}
 		
+		/*------------------PLAYER-----------------*/
+		TexturedModel cubeModel = SceneObjectTools.loadStaticModel("cube", "cube1", loader);
+		this.players = new HashMap<String, Player>();
+		Player player1 = new PlayerTextured(playerName,cubeModel, new Vector3f(100, 0, 10), 0, 0, 0, 1);
+		players.put(player1.getName(), player1);
+		
+		for(Player player : players.values()) {
+			entities.put(player.getName(), player);
+		}
+		
+		/*------------------CAMERA--------------------*/
+		this.cameras = new HashMap<String, Camera>();
+		CameraPlayer camera = new CameraPlayer(player1, cameraName);
+		cameras.put(camera.getName(), camera);
+		
 		/*------------------LIGHTS----------------*/
 		this.lights = new ArrayList<Light>();
 		this.sun = new Light("Sun", new Vector3f(100000,1500000,-100000), new Vector3f(1.3f,1.3f,1.3f));
@@ -100,14 +104,6 @@ public class SceneGame extends SceneManager implements Scene {
 		//lights.add(new Light(new Vector3f(200,2,200),new Vector3f(10,0,0), new Vector3f(1, 0.01f, 0.002f)));
 		//lights.add(new Light(new Vector3f(20,2,20),new Vector3f(0,10,0), new Vector3f(0, 0.01f, 0.002f)));
 		
-		/*------------------PLAYER-----------------*/
-		TexturedModel cubeModel = SceneObjectTools.loadStaticModel("cube", "cube1", loader);
-		this.players = new HashMap<String, Player>();
-		Player player = new PlayerTextured(playerName,cubeModel, new Vector3f(100, 0, 10), 0, 0, 0, 1);
-		players.put(player.getName(), player);
-		this.cameras = new HashMap<String, Camera>();
-		CameraPlayer camera = new CameraPlayer(player, cameraName);
-		cameras.put(camera.getName(), camera);
 		this.time = new GameTime(10);
 		
 		this.renderer = new MasterRenderer(loader, camera);		
@@ -186,14 +182,22 @@ public class SceneGame extends SceneManager implements Scene {
 		}
 		
 		renderParticles();
-		renderer.renderShadowMap(entities.values(), players.get(playerName), sun, cameras.get(cameraName));				
+		renderer.renderShadowMap(entities.values(), sun, cameras.get(cameraName));				
 		GL11.glEnable(GL30.GL_CLIP_DISTANCE0);
 		renderReflectionTexture();		
 		renderRefractionTexture();
 	    renderToScreen();
 	}
-    
-	/*Render to FBO reflection texture*/
+	
+	@Override
+	public void setScenePaused(boolean value) {
+		this.isPaused = value;
+	}
+	
+	@Override
+	public void loadMap(String name) {
+		super.loadMap(name);
+	}
     	
 	public void cleanUp() {
 		super.cleanUp();

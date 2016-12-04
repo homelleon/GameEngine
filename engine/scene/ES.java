@@ -1,5 +1,7 @@
 package scene;
 
+import org.lwjgl.input.Keyboard;
+
 /* 
  * 
  * Engine Settings 
@@ -33,10 +35,31 @@ public class ES {
 	public static final float MOUSE_Y_SPEED = 0.2f;
 	public static final float MOUSE_ZOOM_SPEED = 0.1f;
 	
+	public static final int KEY_EXIT = Keyboard.KEY_ESCAPE;
+	public static final int KEY_APPLY = Keyboard.KEY_INSERT;
+	
+	//****************PLYAER CONTROLS***************************************//
+	public static final int KEY_PLAYER_MOVE_FORWARD = Keyboard.KEY_W;
+	public static final int KEY_PLAYER_MOVE_BACKWARD = Keyboard.KEY_S;
+	public static final int KEY_PLAYER_MOVE_LEFT = Keyboard.KEY_A;
+	public static final int KEY_PLAYER_MOVE_RIGHT = Keyboard.KEY_D;
+	public static final int KEY_PLAYER_JUMP = Keyboard.KEY_SPACE;
+	public static final int KEY_PLAYER_ACCELERATE = Keyboard.KEY_LSHIFT;
+	
+	//****************EDIT CAMERA CONTROLS**********************************//
+	public static final int KEY_EDITOR_MOVE_FORWARD = Keyboard.KEY_W;
+	public static final int KEY_EDITOR_MOVE_BACKWARD = Keyboard.KEY_S;
+	public static final int KEY_EDITOR_MOVE_LEFT = Keyboard.KEY_A;
+	public static final int KEY_EDITOR_MOVE_RIGHT = Keyboard.KEY_D;
+	public static final int KEY_EDITOR_MOVE_UP = Keyboard.KEY_SPACE;
+	public static final int KEY_EDITOR_MOVE_DOWN = Keyboard.KEY_C;
+	public static final int KEY_EDITOR_ACCELERATE = Keyboard.KEY_LSHIFT;
+	public static final int KEY_EDITOR_CENTER_VIEW = Keyboard.KEY_HOME;
+	
 	//*****************SIMULATION SETTINGS*************************************//	
 	public static final float GRAVITY = -50;
 	public static final float TIME_LENGTH = 1;
-	public static final float FOG_DENSITY = 0.003f;
+	public static final float FOG_DENSITY = 0.002f;
 	public static final float SHADOW_DISTANCE = 200;
 	public static final int SHADOW_MAP_SIZE = 4096;
 	public static final float SHADOW_TRANSITION_DISTANCE = 25;

@@ -127,7 +127,6 @@ public abstract class SceneManager {
 	    
 		multisampleFbo.bindFrameBuffer();
 		optimisation.optimize(cameras.get(cameraName), entities.values(), terrains.values());
-	    renderer.processEntity(players.get(playerName));
 	    renderer.renderScene(entities.values(), terrains.values(),	lights, 
 	    		cameras.get(cameraName), new Vector4f(0, -1, 0, 15));
 	    waterRenderer.render(waters, cameras.get(cameraName), sun);

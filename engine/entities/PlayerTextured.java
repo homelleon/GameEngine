@@ -70,26 +70,32 @@ public class PlayerTextured extends EntityTextured implements Player {
 	
 	private void checkInputs() {
 		if (!isInAir) {
-			if((Keyboard.isKeyDown(Keyboard.KEY_W)) 
-					&& (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT))) {
+			if((Keyboard.isKeyDown(ES.KEY_PLAYER_MOVE_FORWARD)) 
+					&& (Keyboard.isKeyDown(ES.KEY_PLAYER_ACCELERATE) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT))) {
 				this.currentForwardSpeed = RUN_SPEED;
-			}else if(Keyboard.isKeyDown(Keyboard.KEY_W)) {
+			}else if(Keyboard.isKeyDown(ES.KEY_PLAYER_MOVE_FORWARD)) {
 				this.currentForwardSpeed = MOVE_SPEED;			
-			}else if(Keyboard.isKeyDown(Keyboard.KEY_S)) {
+			}else if(Keyboard.isKeyDown(ES.KEY_PLAYER_MOVE_BACKWARD)) {
 				this.currentForwardSpeed = -MOVE_SPEED; 
 			}else{
 				this.currentForwardSpeed = 0;	
 			}
 			
-			if(Keyboard.isKeyDown(Keyboard.KEY_A)) {
+			if((Keyboard.isKeyDown(ES.KEY_PLAYER_MOVE_LEFT)) 
+					&& (Keyboard.isKeyDown(ES.KEY_PLAYER_ACCELERATE) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT))) {
+				this.currentStrafeSpeed = RUN_SPEED;
+			} else if ((Keyboard.isKeyDown(ES.KEY_PLAYER_MOVE_RIGHT)) 
+					&& (Keyboard.isKeyDown(ES.KEY_PLAYER_ACCELERATE) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT))) {
+				this.currentStrafeSpeed = -RUN_SPEED;
+			} else if(Keyboard.isKeyDown(ES.KEY_PLAYER_MOVE_LEFT)) {
 				this.currentStrafeSpeed = MOVE_SPEED;
-			}else if(Keyboard.isKeyDown(Keyboard.KEY_D)) {
+			}else if(Keyboard.isKeyDown(ES.KEY_PLAYER_MOVE_RIGHT)) {
 				this.currentStrafeSpeed = -MOVE_SPEED;
 			}else{
 				this.currentStrafeSpeed = 0;
 			}
 		
-			if(Keyboard.isKeyDown(Keyboard.KEY_SPACE)) { 
+			if(Keyboard.isKeyDown(ES.KEY_PLAYER_JUMP)) { 
 				jump();
 			}
 		}

@@ -90,38 +90,38 @@ public class CameraFree implements Camera {
 	}
 	
 	private void chekInputs() {
-		if(Keyboard.isKeyDown(Keyboard.KEY_HOME)) {
+		if(Keyboard.isKeyDown(ES.KEY_EDITOR_CENTER_VIEW)) {
 			roll = 0;
 			pitch = 0;
 		}
 		
 		float runSpeed = 1;
 		
-		if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+		if(Keyboard.isKeyDown(ES.KEY_EDITOR_ACCELERATE)) {
 			runSpeed = RUN_SPEED;
 		}
 	
-		if(Keyboard.isKeyDown(Keyboard.KEY_W)) {
+		if(Keyboard.isKeyDown(ES.KEY_EDITOR_MOVE_FORWARD)) {
 			currentForwardSpeed = -SPEED * runSpeed;
-		} else if(Keyboard.isKeyDown(Keyboard.KEY_S)) {
+		} else if(Keyboard.isKeyDown(ES.KEY_EDITOR_MOVE_BACKWARD)) {
 			currentForwardSpeed = SPEED * runSpeed;;
 		} else {
 			currentForwardSpeed = 0;
 		}
 		
-		if(Keyboard.isKeyDown(Keyboard.KEY_A)) {
+		if(Keyboard.isKeyDown(ES.KEY_EDITOR_MOVE_LEFT)) {
 			currentStrafeSpeed = -SPEED * runSpeed;
-		} else if(Keyboard.isKeyDown(Keyboard.KEY_D)) {
+		} else if(Keyboard.isKeyDown(ES.KEY_EDITOR_MOVE_RIGHT)) {
 			currentStrafeSpeed = SPEED * runSpeed;
 		} else {
 			currentStrafeSpeed = 0;
 		}
 		
-		if(Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
+		if(Keyboard.isKeyDown(ES.KEY_EDITOR_MOVE_UP)) {
 			position.y += 0.5f;
 		}
 		
-		if(Keyboard.isKeyDown(Keyboard.KEY_C)) {
+		if(Keyboard.isKeyDown(ES.KEY_EDITOR_MOVE_DOWN)) {
 			position.y -= 0.5f;
 		}
 					
