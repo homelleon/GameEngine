@@ -8,17 +8,15 @@ import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Matrix4f;
-import org.newdawn.slick.opengl.GLUtils;
 
-import entities.EntityTextured;
 import entities.Camera;
+import entities.EntityTextured;
 import entities.Entity;
 import models.RawModel;
 import models.TexturedModel;
 import renderEngine.MasterRenderer;
 import scene.ES;
 import toolbox.Maths;
-import toolbox.OGLUtils;
 
 public class ShadowMapEntityRenderer {
 
@@ -52,7 +50,7 @@ public class ShadowMapEntityRenderer {
 			GL13.glActiveTexture(GL13.GL_TEXTURE0);
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, model.getTexture().getID());
 			if(model.getTexture().isHasTransparency()) {
-				OGLUtils.cullFace(false); 
+				MasterRenderer.disableCulling();
 			}
 			for (Entity entity : entities.get(model)) {
 				if(Maths.distanceFromCamera(entity,camera) <= ES.SHADOW_DISTANCE) {
@@ -62,7 +60,7 @@ public class ShadowMapEntityRenderer {
 				}
 			}
 			if(model.getTexture().isHasTransparency()){
-				OGLUtils.cullFace(true);
+				MasterRenderer.enableCulling();
 			}
 		}
 		GL20.glDisableVertexAttribArray(0);

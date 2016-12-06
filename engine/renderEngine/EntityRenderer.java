@@ -17,7 +17,6 @@ import models.TexturedModel;
 import scene.ES;
 import textures.ModelTexture;
 import toolbox.Maths;
-import toolbox.OGLUtils;
 
 public class EntityRenderer {
 
@@ -57,7 +56,7 @@ public class EntityRenderer {
 		ModelTexture texture = model.getTexture();
 		shader.loadNumberOfRows(texture.getNumberOfRows());
 		if(texture.isHasTransparency()) {
-			OGLUtils.cullFace(false);
+			MasterRenderer.disableCulling();
 		}
 		shader.loadFakeLightingVariable(texture.isUseFakeLighting());
 		shader.loadShineVariables(texture.getShineDamper(), texture.getReflectivity());
@@ -71,7 +70,7 @@ public class EntityRenderer {
 	}
 	
 	private void unbindTexturedModel() {
-		OGLUtils.cullFace(true);
+		MasterRenderer.enableCulling();
 		GL20.glDisableVertexAttribArray(0);
 		GL20.glDisableVertexAttribArray(1);
 		GL20.glDisableVertexAttribArray(2);

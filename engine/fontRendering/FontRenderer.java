@@ -10,7 +10,6 @@ import org.lwjgl.opengl.GL30;
 
 import fontMeshCreator.FontType;
 import fontMeshCreator.GUIText;
-import toolbox.OGLUtils;
 
 public class FontRenderer {
 
@@ -39,8 +38,9 @@ public class FontRenderer {
 	}
 	
 	private void prepare() {
-		OGLUtils.alphaBlending(true);
-		OGLUtils.depthTesting(false);
+		GL11.glEnable(GL11.GL_BLEND);
+		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+		GL11.glDisable(GL11.GL_DEPTH_TEST);
 		shader.start();
 	}
 	
@@ -62,8 +62,8 @@ public class FontRenderer {
 	
 	private void endRendering() {
 		shader.stop();
-		OGLUtils.alphaBlending(false);
-		OGLUtils.depthTesting(true);
+		GL11.glDisable(GL11.GL_BLEND);
+		GL11.glEnable(GL11.GL_DEPTH_TEST);
 	}
 
 }
