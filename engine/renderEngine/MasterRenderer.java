@@ -24,6 +24,7 @@ import shadows.ShadowMapMasterRenderer;
 import skybox.SkyboxRenderer;
 import terrains.Terrain;
 import terrains.TerrainShader;
+import toolbox.OGLUtils;
 
 public class MasterRenderer {
 		
@@ -45,23 +46,17 @@ public class MasterRenderer {
 	private SkyboxRenderer skyboxRenderer;
 	private ShadowMapMasterRenderer shadowMapRenderer;
 	
+	private boolean terrainsAreWiredFrame = false;
+	private boolean entitiesAreWiredFrame = false;
+	
 	public MasterRenderer(Loader loader, Camera camera) {
-		enableCulling();
+		OGLUtils.cullFace(true);
 		createProjectionMatrix();
 		this.entityRenderer = new EntityRenderer(shader,projectionMatrix);
 		this.terrainRenderer = new TerrainRenderer(terrainShader, projectionMatrix);
 		this.skyboxRenderer = new SkyboxRenderer(loader, projectionMatrix);
 		this.normalMapRenderer = new NormalMappingRenderer(projectionMatrix);
 		this.shadowMapRenderer = new ShadowMapMasterRenderer(camera);
-	}
-	
-	public static void enableCulling() {
-		GL11.glEnable(GL11.GL_CULL_FACE);
-		GL11.glCullFace(GL11.GL_BACK);
-	}
-	
-	public static void disableCulling() {
-		GL11.glDisable(GL11.GL_CULL_FACE);
 	}
 	
 	public Matrix4f getProjectionMatrix() {
@@ -76,16 +71,29 @@ public class MasterRenderer {
 		shader.loadFogDensity(ES.FOG_DENSITY);
 		shader.loadLights(lights);
 		shader.loadViewMatrix(camera);
+		if(this.entitiesAreWiredFrame) {
+			OGLUtils.wiredFrame(true);
+		}
 		entityRenderer.render(entities, shadowMapRenderer.getToShadowMapSpaceMatrix());
 		shader.stop();
+		
 		normalMapRenderer.render(normalMapEntities, clipPlane, lights, camera, shadowMapRenderer.getToShadowMapSpaceMatrix());
+		if(this.entitiesAreWiredFrame) {
+			OGLUtils.wiredFrame(false);
+		}
 		terrainShader.start();
 		terrainShader.loadClipPlane(clipPlane);
 		terrainShader.loadSkyColour(ES.DISPLAY_RED, ES.DISPLAY_GREEN, ES.DISPLAY_BLUE);
 		terrainShader.loadFogDensity(ES.FOG_DENSITY);
 		terrainShader.loadLights(lights);
 		terrainShader.loadViewMatrix(camera);
+		if(this.terrainsAreWiredFrame) {
+			OGLUtils.wiredFrame(true);
+		}
 		terrainRenderer.render(terrains, shadowMapRenderer.getToShadowMapSpaceMatrix());
+		if(this.terrainsAreWiredFrame) {
+			OGLUtils.wiredFrame(false);
+		}
 		terrainShader.stop();
 		skyboxRenderer.render(camera, ES.DISPLAY_RED, ES.DISPLAY_GREEN, ES.DISPLAY_BLUE);
 		terrains.clear();
@@ -174,7 +182,7 @@ public class MasterRenderer {
 	}
 	
 	public void prepare() {
-		GL11.glEnable(GL11.GL_DEPTH_TEST);
+		OGLUtils.depthTesting(true);
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT|GL11.GL_DEPTH_BUFFER_BIT);
 		GL11.glClearColor(ES.DISPLAY_RED, ES.DISPLAY_GREEN, ES.DISPLAY_BLUE, 1);
 		GL13.glActiveTexture(GL13.GL_TEXTURE5);
@@ -194,6 +202,14 @@ public class MasterRenderer {
 		projectionMatrix.m23 = -1;
 		projectionMatrix.m32 = -((2 * ES.NEAR_PLANE * ES.FAR_PLANE) / frustrum_length);
 		projectionMatrix.m33 = 0;
+	}
+	
+	public void setTerrainWiredFrame(boolean value) {
+		this.terrainsAreWiredFrame = true;
+	}
+	
+	public void setEntitiesWiredFrame(boolean value) {
+		this.entitiesAreWiredFrame = true;
 	}
 
 }

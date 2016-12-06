@@ -11,6 +11,7 @@ import gaussianBlur.HorizontalBlur;
 import gaussianBlur.VerticalBlur;
 import models.RawModel;
 import renderEngine.Loader;
+import toolbox.OGLUtils;
 
 public class PostProcessing {
 	
@@ -53,9 +54,9 @@ public class PostProcessing {
 			hBlur8.render(brightFilter.getOutputTexture());
 			vBlur8.render(hBlur8.getOutputTexture());
 			combineFilter.render(colourTexture, vBlur2.getOutputTexture(), vBlur4.getOutputTexture(), vBlur8.getOutputTexture());
-		}else if(isBlured){
+		}else if(isBlured) {
 			doBlur(colourTexture);
-		}else if(isBloomed){
+		}else if(isBloomed) {
 			brightFilter.render(colourTexture);
 			contrastChanger.render(brightFilter.getOutputTexture());
 		}else{
@@ -91,11 +92,11 @@ public class PostProcessing {
 	private static void start() {
 		GL30.glBindVertexArray(quad.getVaoID());
 		GL20.glEnableVertexAttribArray(0);
-		GL11.glDisable(GL11.GL_DEPTH_TEST);
+		OGLUtils.depthTesting(true);
 	}
 	
 	private static void end() {
-		GL11.glEnable(GL11.GL_DEPTH_TEST);
+		OGLUtils.depthTesting(false);
 		GL20.glDisableVertexAttribArray(0);
 		GL30.glBindVertexArray(0);
 	}

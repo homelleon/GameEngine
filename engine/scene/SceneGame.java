@@ -27,8 +27,6 @@ import entities.PlayerTextured;
 import fontMeshCreator.FontType;
 import fontMeshCreator.GUIText;
 import fontRendering.TextMaster;
-import gameMain.Game;
-import gameMain.MyGame;
 import guis.GuiManager;
 import guis.GuiRenderer;
 import maps.GameMap;
@@ -85,7 +83,7 @@ public class SceneGame extends SceneManager implements Scene {
 		/*------------------PLAYER-----------------*/
 		TexturedModel cubeModel = SceneObjectTools.loadStaticModel("cube", "cube1", loader);
 		this.players = new HashMap<String, Player>();
-		Player player1 = new PlayerTextured(playerName,cubeModel, new Vector3f(100, 0, 10), 0, 0, 0, 1);
+		Player player1 = new PlayerTextured(playerName, cubeModel, new Vector3f(100, 0, 10), 0, 0, 0, 1);
 		players.put(player1.getName(), player1);
 		
 		for(Player player : players.values()) {
@@ -94,7 +92,7 @@ public class SceneGame extends SceneManager implements Scene {
 		
 		/*------------------CAMERA--------------------*/
 		this.cameras = new HashMap<String, Camera>();
-		CameraPlayer camera = new CameraPlayer(player1, cameraName);
+		Camera camera = new CameraPlayer(player1, cameraName);
 		cameras.put(camera.getName(), camera);
 		
 		/*------------------LIGHTS----------------*/
