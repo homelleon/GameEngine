@@ -3,8 +3,8 @@ package particles;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
+import cameras.Camera;
 import engineMain.DisplayManager;
-import entities.Camera;
 import scene.ES;
  
 public class Particle {

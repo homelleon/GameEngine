@@ -13,7 +13,7 @@ import org.lwjgl.opengl.GL31;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 
-import entities.Camera;
+import cameras.Camera;
 import models.RawModel;
 import renderEngine.Loader;
 import toolbox.Maths;

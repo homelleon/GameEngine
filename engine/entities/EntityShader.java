@@ -7,6 +7,7 @@ import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 
+import cameras.Camera;
 import scene.ES;
 import shaders.ShaderProgram;
 import toolbox.Maths;

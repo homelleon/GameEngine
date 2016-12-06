@@ -6,8 +6,8 @@ import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Matrix4f;
 
+import cameras.Camera;
 import engineMain.DisplayManager;
-import entities.Camera;
 import models.RawModel;
 import renderEngine.Loader;
 import scene.ES;

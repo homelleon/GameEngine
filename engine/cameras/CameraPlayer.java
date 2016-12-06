@@ -1,9 +1,9 @@
-package entities;
+package cameras;
 
-import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.util.vector.Vector3f;
 
+import entities.Player;
 import scene.ES;
 
 public class CameraPlayer implements Camera {

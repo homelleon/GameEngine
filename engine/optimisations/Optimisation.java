@@ -1,9 +1,8 @@
 package optimisations;
 
 import java.util.Collection;
-import java.util.List;
 
-import entities.Camera;
+import cameras.Camera;
 import entities.Entity;
 import terrains.Terrain;
 

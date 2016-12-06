@@ -6,7 +6,7 @@ import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 
-import entities.Camera;
+import cameras.Camera;
 import entities.Light;
 import scene.ES;
 import shaders.ShaderProgram;

@@ -3,8 +3,8 @@ package skybox;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 
+import cameras.Camera;
 import engineMain.DisplayManager;
-import entities.Camera;
 import scene.ES;
 import shaders.ShaderProgram;
 import toolbox.Maths;

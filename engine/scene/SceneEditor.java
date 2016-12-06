@@ -16,8 +16,8 @@ import org.lwjgl.util.vector.Vector3f;
 
 import audio.AudioMaster;
 import audio.Source;
-import entities.Camera;
-import entities.CameraFree;
+import cameras.Camera;
+import cameras.CameraFree;
 import entities.EntitiesManager;
 import entities.Entity;
 import entities.Light;

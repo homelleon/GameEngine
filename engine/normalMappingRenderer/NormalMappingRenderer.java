@@ -10,8 +10,7 @@ import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector4f;
 
-import entities.Camera;
-import entities.EntityTextured;
+import cameras.Camera;
 import entities.Entity;
 import entities.Light;
 import models.RawModel;
@@ -20,6 +19,7 @@ import renderEngine.MasterRenderer;
 import scene.ES;
 import textures.ModelTexture;
 import toolbox.Maths;
+import toolbox.OGLUtils;
 
 public class NormalMappingRenderer {
 
@@ -65,7 +65,7 @@ public class NormalMappingRenderer {
 		ModelTexture texture = model.getTexture();
 		shader.loadNumberOfRows(texture.getNumberOfRows());
 		if (texture.isHasTransparency()) {
-			MasterRenderer.disableCulling();
+			OGLUtils.cullBackFaces(false);
 		}
 		shader.loadShineVariables(texture.getShineDamper(), texture.getReflectivity());
 		GL13.glActiveTexture(GL13.GL_TEXTURE0);
@@ -80,7 +80,7 @@ public class NormalMappingRenderer {
 	}
 
 	private void unbindTexturedModel() {
-		MasterRenderer.enableCulling();
+		OGLUtils.cullBackFaces(true);
 		GL20.glDisableVertexAttribArray(0);
 		GL20.glDisableVertexAttribArray(1);
 		GL20.glDisableVertexAttribArray(2);

@@ -9,8 +9,8 @@ import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 
+import cameras.Camera;
 import engineMain.DisplayManager;
-import entities.Camera;
 import entities.Light;
 import models.RawModel;
 import renderEngine.Loader;

@@ -1,4 +1,4 @@
-package entities;
+package cameras;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
