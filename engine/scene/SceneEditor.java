@@ -132,7 +132,7 @@ public class SceneEditor extends SceneManager implements Scene {
 		AL10.alDistanceModel(AL11.AL_LINEAR_DISTANCE_CLAMPED);
 		this.ambientSource = new Source("birds", "forest.wav", 200);
 		ambientSource.setLooping(true);
-		ambientSource.setVolume(0.3f);
+		ambientSource.setVolume(0.3f); 
 		ambientSource.play();
 		ambientSource.setPosition(10, 20, 10);			
 		
