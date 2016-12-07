@@ -37,7 +37,7 @@ public class ShadowMapEntityRenderer {
 	}
 
 	/**
-	 * Renders entieis to the shadow map. Each model is first bound and then all
+	 * Renders entities to the shadow map. Each model is first bound and then all
 	 * of the entities using that model are rendered to the shadow map.
 	 * 
 	 * @param entities

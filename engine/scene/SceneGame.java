@@ -60,8 +60,7 @@ public class SceneGame extends SceneManager implements Scene {
 
         /*--------------GAME OBJECTS-------------*/
 		
-		List<Entity> entities = new ArrayList<Entity>(); 
-		entities = EntitiesManager.createEntities(loader);
+		List<Entity> entities = EntitiesManager.createEntities(loader);
 		List<Entity> normalMapEntities = EntitiesManager.createNormalMappedEntities(loader);
 
 		map.setEntities(entities);

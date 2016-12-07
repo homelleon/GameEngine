@@ -159,9 +159,8 @@ public class MasterRenderer {
 			}
 		}
 		
-		shadowMapRenderer.render(entities, sun, camera);
+		shadowMapRenderer.render(entities, normalMapEntities, sun, camera);
 		entities.clear();
-		shadowMapRenderer.render(normalMapEntities, sun, camera);
 		normalMapEntities.clear();
 	}
 	
