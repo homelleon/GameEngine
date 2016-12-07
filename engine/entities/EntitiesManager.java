@@ -16,8 +16,8 @@ import textures.ModelTexture;
 
 public class EntitiesManager {
 	
-	public static Map<String, Entity> createEntities(Loader loader) {
-		Map<String, Entity> entities = new WeakHashMap<String, Entity>();
+	public static List<Entity> createEntities(Loader loader) {
+		List<Entity> entities = new ArrayList<Entity>();
 		//******StaticModels***************//
 		//Grass/
 		TexturedModel grassModel = SceneObjectTools.loadStaticModel("grass", "grass", loader);		
@@ -49,13 +49,10 @@ public class EntitiesManager {
 		Entity cherry = new EntityTextured("cherry", cherryModel, new Vector3f(150, 0, 150), 0, 0, 0, 4);
 		Entity tree = new EntityTextured("tree", treeModel, new Vector3f(10, 0, 10), 0, 30, 0, 4);
 		
-		entities.put(cube.getName(), cube);
-		entities.put(stall.getName(), stall);
-		entities.put(cherry.getName(), cherry);
-		entities.put(tree.getName(), tree);
-		for(Entity grass : grasses) {
-			entities.put(grass.getName(), grass);
-		}
+		entities.add(cube);
+		entities.add(stall);
+		entities.add(cherry);
+		entities.add(tree);
 		//entities.addAll(grasses);
 		
 		return entities;

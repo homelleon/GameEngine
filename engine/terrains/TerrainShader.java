@@ -1,6 +1,6 @@
 package terrains;
 
-import java.util.List;
+import java.util.Collection;
 
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
@@ -127,17 +127,19 @@ public class TerrainShader extends ShaderProgram {
 		super.loadMatrix(location_transformationMatrix, matrix);
 	}
 	
-	public void loadLights(List <Light> lights) {
-		for(int i=0;i<MAX_LIGHTS;i++) {
-			if(i<lights.size()) {
-				super.loadVector(location_lightPosition[i], lights.get(i).getPosition());
-				super.loadVector(location_lightColour[i], lights.get(i).getColour());
-				super.loadVector(location_attenuation[i], lights.get(i).getAttenuation());
-			}else{
+	public void loadLights(Collection <Light> lights) {
+		int i = 0;
+		for(Light light : lights) {
+			i += 1;
+			if(i<=lights.size()) {
+				super.loadVector(location_lightPosition[i], light.getPosition());
+				super.loadVector(location_lightColour[i], light.getColour());
+				super.loadVector(location_attenuation[i], light.getAttenuation());
+			} else {
 				super.loadVector(location_lightPosition[i], new Vector3f(0, 0, 0));
 				super.loadVector(location_lightColour[i], new Vector3f(0, 0, 0));
 				super.loadVector(location_attenuation[i], new Vector3f(1, 0, 0));
-			}
+			}			
 		}
 	}
 	

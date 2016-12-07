@@ -1,5 +1,6 @@
 package normalMappingRenderer;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -15,7 +16,6 @@ import entities.Entity;
 import entities.Light;
 import models.RawModel;
 import models.TexturedModel;
-import renderEngine.MasterRenderer;
 import scene.ES;
 import textures.ModelTexture;
 import toolbox.Maths;
@@ -33,7 +33,7 @@ public class NormalMappingRenderer {
 		shader.stop();
 	}
 
-	public void render(Map<TexturedModel, List<Entity>> entities, Vector4f clipPlane, List<Light> lights, Camera camera, Matrix4f toShadowMapSpace) {
+	public void render(Map<TexturedModel, List<Entity>> entities, Vector4f clipPlane, Collection<Light> lights, Camera camera, Matrix4f toShadowMapSpace) {
 		shader.start();
 		shader.loadFogDensity(ES.FOG_DENSITY);
 		shader.loadToShadowSpaceMatrix(toShadowMapSpace);
@@ -43,8 +43,10 @@ public class NormalMappingRenderer {
 			prepareTexturedModel(model);
 			List<Entity> batch = entities.get(model);
 			for (Entity entity : batch) {
-				prepareInstance(entity);
-				GL11.glDrawElements(GL11.GL_TRIANGLES, model.getRawModel().getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
+				if(entity.getType() == ES.ENTITY_TYPE_NORMAL) {
+					prepareInstance(entity);
+					GL11.glDrawElements(GL11.GL_TRIANGLES, model.getRawModel().getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
+				}
 			}
 			unbindTexturedModel();
 		}
@@ -95,7 +97,7 @@ public class NormalMappingRenderer {
 		shader.loadOffset(entity.getTextureXOffset(), entity.getTextureYOffset());
 	}
 
-	private void prepare(Vector4f clipPlane, List<Light> lights, Camera camera) {
+	private void prepare(Vector4f clipPlane, Collection<Light> lights, Camera camera) {
 		shader.loadClipPlane(clipPlane);
 		//need to be public variables in MasterRenderer
 		shader.loadSkyColour(ES.DISPLAY_RED, ES.DISPLAY_GREEN, ES.DISPLAY_BLUE);

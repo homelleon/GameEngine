@@ -62,7 +62,7 @@ public class MasterRenderer {
 		return projectionMatrix;
 	}
 	
-	public void render(List<Light> lights, Camera camera, Vector4f clipPlane) {
+	public void render(Collection<Light> lights, Camera camera, Vector4f clipPlane) {
 		prepare();
 		checkWiredFrameOn(entitiyWiredFrame);
 		shader.start();
@@ -134,7 +134,7 @@ public class MasterRenderer {
 	//	render(lights, camera, clipPlane);
 //	}
 	
-	public void renderScene(Collection<Entity> entities, Collection<Terrain> terrains, List<Light> lights,
+	public void renderScene(Collection<Entity> entities, Collection<Terrain> terrains, Collection<Light> lights,
 			Camera camera, Vector4f clipPlane) {
 			for (Terrain terrain : terrains) {
 				processTerrain(terrain);
@@ -152,13 +152,17 @@ public class MasterRenderer {
 	public void renderShadowMap(Collection<Entity> entityList, Light sun, 
 			Camera camera) {
 		for(Entity entity : entityList) {
-			processEntity(entity);
+			if(entity.getType() == ES.ENTITY_TYPE_SIMPLE) {
+				processEntity(entity);
+			} else if(entity.getType() == ES.ENTITY_TYPE_NORMAL) {
+				processNormalMapEntity(entity);
+			}
 		}
 		
-		shadowMapRenderer.render(normalMapEntities, sun, camera);
-		normalMapEntities.clear();
 		shadowMapRenderer.render(entities, sun, camera);
 		entities.clear();
+		shadowMapRenderer.render(normalMapEntities, sun, camera);
+		normalMapEntities.clear();
 	}
 	
 	public int getShadowMapTexture() {
@@ -197,7 +201,7 @@ public class MasterRenderer {
 	
 	
 	
-	public void setEntitiyWiredFrame(boolean entitiyWiredFrame) {
+	public void setEntityWiredFrame(boolean entitiyWiredFrame) {
 		this.entitiyWiredFrame = entitiyWiredFrame;
 	}
 	

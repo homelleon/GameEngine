@@ -17,7 +17,7 @@ public class ParticleEffectBasic extends ParticleSystem {
 	}
 	
 	public void create(String name) {
-		Main.getMap().createParticles("Part", "cosmic", 4, true, 50, 25, 0.3f, 4, 1);
+		Main.getScene().getMap().createParticles("Part", "cosmic", 4, true, 50, 25, 0.3f, 4, 1);
 	}
 	
 	public void generateParticles() {

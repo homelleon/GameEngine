@@ -1,6 +1,6 @@
 package normalMappingRenderer;
 
-import java.util.List;
+import java.util.Collection;
 
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector2f;
@@ -140,12 +140,14 @@ public class NormalMappingShader extends ShaderProgram{
 		super.loadMatrix(location_transformationMatrix, matrix);
 	}
 	
-	protected void loadLights(List<Light> lights, Matrix4f viewMatrix) {
-		for(int i=0;i<MAX_LIGHTS;i++) {
+	protected void loadLights(Collection<Light> lights, Matrix4f viewMatrix) {
+		int i = 0;
+		for(Light light : lights) {
+			i += 1;
 			if(i<lights.size()) {
-				super.loadVector(location_lightPositionEyeSpace[i], getEyeSpacePosition(lights.get(i), viewMatrix));
-				super.loadVector(location_lightColour[i], lights.get(i).getColour());
-				super.loadVector(location_attenuation[i], lights.get(i).getAttenuation());
+				super.loadVector(location_lightPositionEyeSpace[i], getEyeSpacePosition(light, viewMatrix));
+				super.loadVector(location_lightColour[i], light.getColour());
+				super.loadVector(location_attenuation[i], light.getAttenuation());
 			}else{
 				super.loadVector(location_lightPositionEyeSpace[i], new Vector3f(0, 0, 0));
 				super.loadVector(location_lightColour[i], new Vector3f(0, 0, 0));

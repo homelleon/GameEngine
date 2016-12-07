@@ -1,8 +1,6 @@
 package scene;
 
 import java.util.Collection;
-import java.util.List;
-import java.util.Map;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
@@ -12,18 +10,14 @@ import org.lwjgl.util.vector.Vector4f;
 
 import audio.AudioMaster;
 import audio.Source;
-import cameras.Camera;
 import engineMain.DisplayManager;
 import entities.Entity;
-import entities.Light;
-import entities.Player;
 import fontMeshCreator.FontType;
 import fontMeshCreator.GUIText;
 import fontRendering.TextMaster;
 import gameMain.Game;
 import gameMain.MyGame;
 import guis.GuiRenderer;
-import guis.GuiTexture;
 import maps.GameMap;
 import maps.MapsLoader;
 import maps.MapsTXTLoader;
@@ -38,7 +32,6 @@ import terrains.Terrain;
 import toolbox.MousePicker;
 import water.WaterFrameBuffers;
 import water.WaterRenderer;
-import water.WaterTile;
 
 public abstract class SceneManager {
 	
@@ -51,30 +44,22 @@ public abstract class SceneManager {
     protected String cameraName;
     protected String playerName;
 	
-    protected Map<String, Camera> cameras;
-    protected Map<String, Player> players;
     protected GameMap map;
-    protected Map<String, GuiTexture> guis;
     protected GuiRenderer guiRenderer;
-    protected Map<String, ParticleSystem> pSystem;
-    protected Map<String, Terrain> terrains;
-    protected Map<String, Entity> entities;
-    protected List<WaterTile> waters;
-    protected List<Light> lights;
     protected FontType font;
     protected WaterFrameBuffers waterFBOs;
     protected Fbo multisampleFbo;	
     protected Fbo outputFbo;
     protected Fbo outputFbo2;
-    protected Light sun;
     protected WaterRenderer waterRenderer;	
     protected GameTime time;
     protected MousePicker picker;
     protected Optimisation optimisation;
     
     protected boolean mapIsLoaded = false;
+    protected boolean isPaused = false;
     
-    protected void loadMap(String name) {
+    public void loadMap(String name) {
 		/*--------------PRE LOAD TOOLS-------------*/
 		this.loader = Loader.getInstance();
 		/*---------------MAP-----------------------*/
@@ -83,10 +68,7 @@ public abstract class SceneManager {
 		this.mapIsLoaded = true;
 	}
     
-    protected GameMap getMap() {
-		return map;
-	}
-    
+
     protected void init() {
     	if (!this.mapIsLoaded) {
 			loadMap("map");
@@ -98,27 +80,27 @@ public abstract class SceneManager {
     	/*
     	 * need to be deleted:
     	 */
-		cameras.get(cameraName).move();	
-		AudioMaster.setListenerData(cameras.get(cameraName).getPosition().x, cameras.get(cameraName).getPosition().y, cameras.get(cameraName).getPosition().z);
+		map.getCameras().get(cameraName).move();	
+		AudioMaster.setListenerData(map.getCameras().get(cameraName).getPosition().x, map.getCameras().get(cameraName).getPosition().y, map.getCameras().get(cameraName).getPosition().z);
     }
     
     protected void renderReflectionTexture() {
     	waterFBOs.bindReflectionFrameBuffer();
-		float distance = 2 * (cameras.get(cameraName).getPosition().y - waters.get(0).getHeight());
-		cameras.get(cameraName).getPosition().y -= distance;
-		cameras.get(cameraName).invertPitch();
-		renderer.processEntity(players.get(playerName));
-		renderer.renderScene(entities.values(), terrains.values(), lights, 
-				cameras.get(cameraName), new Vector4f(0, 1, 0, -waters.get(0).getHeight()));
-		cameras.get(cameraName).getPosition().y += distance;
-		cameras.get(cameraName).invertPitch();
+		float distance = 2 * (map.getCameras().get(cameraName).getPosition().y - map.getWaters().get("Water").getHeight());
+		map.getCameras().get(cameraName).getPosition().y -= distance;
+		map.getCameras().get(cameraName).invertPitch();
+		renderer.processEntity(map.getPlayers().get(playerName));
+		renderer.renderScene(map.getEntities().values(), map.getTerrains().values(), map.getLights().values(), 
+				map.getCameras().get(cameraName), new Vector4f(0, 1, 0, -map.getWaters().get("Water").getHeight()));
+		map.getCameras().get(cameraName).getPosition().y += distance;
+		map.getCameras().get(cameraName).invertPitch();
     }
     
     protected void renderRefractionTexture() {
     	waterFBOs.bindRefractionFrameBuffer();
-		renderer.processEntity(players.get(playerName));
-		renderer.renderScene(entities.values(), terrains.values(), lights, 
-				cameras.get(cameraName), new Vector4f(0, -1, 0, waters.get(0).getHeight()+1f));
+		renderer.processEntity(map.getPlayers().get(playerName));
+		renderer.renderScene(map.getEntities().values(), map.getTerrains().values(), map.getLights().values(), 
+				map.getCameras().get(cameraName), new Vector4f(0, -1, 0, map.getWaters().get("Water").getHeight()+1f));
     }
     
     protected void renderToScreen() {
@@ -126,41 +108,39 @@ public abstract class SceneManager {
 		waterFBOs.unbindCurrentFrameBuffer();
 	    
 		multisampleFbo.bindFrameBuffer();
-		optimisation.optimize(cameras.get(cameraName), entities.values(), terrains.values());
-	    renderer.renderScene(entities.values(), terrains.values(),	lights, 
-	    		cameras.get(cameraName), new Vector4f(0, -1, 0, 15));
-	    waterRenderer.render(waters, cameras.get(cameraName), sun);
-	    ParticleMaster.renderParticles(cameras.get(cameraName));
+		optimisation.optimize(map.getCameras().get(cameraName), map.getEntities().values(), map.getTerrains().values());
+	    renderer.renderScene(map.getEntities().values(), map.getTerrains().values(),	map.getLights().values(), 
+	    		map.getCameras().get(cameraName), new Vector4f(0, -1, 0, 15));
+	    waterRenderer.render(map.getWaters().values(), map.getCameras().get(cameraName), map.getLights().get("Sun"));
+	    ParticleMaster.renderParticles(map.getCameras().get(cameraName));
 	    multisampleFbo.unbindFrameBuffer();
 	    multisampleFbo.resolveToFbo(GL30.GL_COLOR_ATTACHMENT0, outputFbo);
 	    multisampleFbo.resolveToFbo(GL30.GL_COLOR_ATTACHMENT1, outputFbo2);
 	    PostProcessing.doPostProcessing(outputFbo.getColourTexture(), outputFbo2.getColourTexture());
-	    guiRenderer.render(guis.values());
+	    guiRenderer.render(map.getGuis().values());
 	    renderText();
     }
     
     protected void renderParticles() {
-    	pSystem.get("Cosmic").setPosition(players.get(playerName).getPosition());
-    	pSystem.get("Cosmic").generateParticles();
-		pSystem.get("Star").generateParticles();
-		ParticleMaster.update(cameras.get(cameraName));
+    	map.getParticles().get("Cosmic").setPosition(map.getPlayers().get(playerName).getPosition());
+    	map.getParticles().get("Cosmic").generateParticles();
+		map.getParticles().get("Star").generateParticles();
+		ParticleMaster.update(map.getCameras().get(cameraName));
     }
     
-    protected void cleanUp() {
+    public void cleanUp() {
     	PostProcessing.cleanUp();
 		outputFbo.cleanUp();
 		outputFbo2.cleanUp();
 		multisampleFbo.cleanUp();
 		TextMaster.cleanUp();
-		ambientSource.delete();
 		waterFBOs.cleanUp();
 		guiRenderer.cleanUp();
 		AudioMaster.cleanUp();
 		renderer.cleanUp();
 		loader.cleanUp();
     }
- 
-    
+     
     protected GUIText createFPSText(float FPS) {
     	return new GUIText("FPS: " + String.valueOf((int)FPS), 2, font, new Vector2f(0.65f, 0), 0.5f, true);
 	}
@@ -179,16 +159,14 @@ public abstract class SceneManager {
 	    TextMaster.render();
 	    fpsText.remove();
 	    coordsText.remove();	
-    }
-    
-    
-	
+    } 
+    	
     protected void spreadEntitiesOnHeights(Collection<Entity> entities) {
-		if (!entities.isEmpty()) {
+		if (!map.getEntities().isEmpty()) {
 			for(Entity entity : entities){
 				float terrainHeight = 0;
 				
-				for(Terrain terrain : terrains.values()){
+				for(Terrain terrain : map.getTerrains().values()){
 					terrainHeight += terrain.getHeightOfTerrain(entity.getPosition().x, entity.getPosition().z);
 				}
 				entity.setPosition(new Vector3f(entity.getPosition().x, terrainHeight, entity.getPosition().z));
@@ -201,12 +179,29 @@ public abstract class SceneManager {
 			for(ParticleSystem system : systems){
 				float terrainHeight = 0;
 				
-				for(Terrain terrain : terrains.values()){
+				for(Terrain terrain : map.getTerrains().values()){
 					terrainHeight += terrain.getHeightOfTerrain(system.getPosition().x, system.getPosition().z);
 				}
 				system.setPosition(new Vector3f(system.getPosition().x, terrainHeight, system.getPosition().z));
 			}
 		}
+	}
+    
+    
+    public void setTerrainWiredFrame(boolean value) {
+		renderer.setTerrainWiredFrame(value);
+	}
+	
+	public void setEntityWiredFrame(boolean value) {
+		renderer.setEntityWiredFrame(value);
+	}
+	
+	public void setScenePaused(boolean value) {
+		isPaused = value;
+	}		
+	
+    public GameMap getMap() {
+		return map;
 	}
 
 }

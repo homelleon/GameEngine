@@ -1,8 +1,7 @@
 package particles;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.WeakHashMap;
 
 import org.lwjgl.util.vector.Vector3f;
 
@@ -11,8 +10,8 @@ import scene.ES;
 
 public class ParticlesManager {
 	
-	public static Map<String, ParticleSystem> createParticleSystem(Loader loader) {
-		Map<String, ParticleSystem> pSystem = new WeakHashMap<String, ParticleSystem>();
+	public static List<ParticleSystem> createParticleSystem(Loader loader) {
+		List<ParticleSystem> pSystem = new ArrayList<ParticleSystem>();
 		ParticleTexture cosmicPTexture = new ParticleTexture(loader.loadTexture(ES.PARTICLE_TEXTURE_PATH, "cosmic"), 4, true);
 		ParticleSystem cosmicParticle = new ParticleSystem("Cosmic", cosmicPTexture, 50, 25, 0.3f, 4, 1);
 		cosmicParticle.randomizeRotation();
@@ -29,8 +28,8 @@ public class ParticlesManager {
 		starParticle.setSpeedError(0.4f);
 		starParticle.setScaleError(0.8f);
 		
-		pSystem.put(cosmicParticle.getName(), cosmicParticle);
-		pSystem.put(starParticle.getName(), starParticle);
+		pSystem.add(cosmicParticle);
+		pSystem.add(starParticle);
 		return pSystem;
 	}
 
