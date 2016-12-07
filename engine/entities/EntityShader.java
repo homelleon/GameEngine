@@ -146,7 +146,7 @@ public class EntityShader extends ShaderProgram {
 		int i = 0;
 		for(Light light : lights) {
 			i += 1;
-			if(i<=lights.size()) {
+			if(i<=MAX_LIGHTS) {
 				super.loadVector(location_lightPosition[i], light.getPosition());
 				super.loadVector(location_lightColour[i], light.getColour());
 				super.loadVector(location_attenuation[i], light.getAttenuation());
