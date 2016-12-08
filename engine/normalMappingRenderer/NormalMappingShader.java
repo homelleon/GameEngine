@@ -144,20 +144,21 @@ public class NormalMappingShader extends ShaderProgram{
 	
 	protected void loadLights(Collection<Light> lights, Matrix4f viewMatrix) {
 		super.loadInt(location_lightCount, ES.MAX_LIGHTS);
-		List<Light> lightList = new ArrayList<Light>();
-		for(Light ligth : lights) {
-			lightList.add(ligth);
-		}
-		for(int i = 0;i<ES.MAX_LIGHTS; i++) {			
-			if(i < lightList.size()) {
-				super.loadVector(location_lightPositionEyeSpace[i], getEyeSpacePosition(lightList.get(i), viewMatrix));
-				super.loadVector(location_lightColour[i], lightList.get(i).getColour());
-				super.loadVector(location_attenuation[i], lightList.get(i).getAttenuation());
-			}else{
-				super.loadVector(location_lightPositionEyeSpace[i], new Vector3f(0, 0, 0));
-				super.loadVector(location_lightColour[i], new Vector3f(0, 0, 0));
-				super.loadVector(location_attenuation[i], new Vector3f(1, 0, 0));
+		int i = -1;
+		for(Light light : lights) {
+			i ++;
+			if(i >=ES.MAX_LIGHTS) {
+				break;
 			}
+			super.loadVector(location_lightPositionEyeSpace[i], getEyeSpacePosition(light, viewMatrix));
+			super.loadVector(location_lightColour[i], light.getColour());
+			super.loadVector(location_attenuation[i], light.getAttenuation());
+		}
+		
+		for(int j = i + 1; j<ES.MAX_LIGHTS; j++) {
+			super.loadVector(location_lightPositionEyeSpace[j], new Vector3f(0, 0, 0));
+			super.loadVector(location_lightColour[j], new Vector3f(0, 0, 0));
+			super.loadVector(location_attenuation[j], new Vector3f(1, 0, 0));
 		}
 	}
 	

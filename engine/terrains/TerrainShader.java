@@ -129,21 +129,38 @@ public class TerrainShader extends ShaderProgram {
 	
 	public void loadLights(Collection <Light> lights) {
 		super.loadInt(location_lightCount, ES.MAX_LIGHTS);
+//		int i = 0;
+//		for(Light light : lights) {
+//			i += 1;
+//			if(i > ES.MAX_LIGHTS) {
+//				break;
+//			}
+//			if(i <= lights.size()) {
+//				super.loadVector(location_lightPosition[i], light.getPosition());
+//				super.loadVector(location_lightColour[i], light.getColour());
+//				super.loadVector(location_attenuation[i], light.getAttenuation());
+//			} else {
+//				super.loadVector(location_lightPosition[i], new Vector3f(0, 0, 0));
+//				super.loadVector(location_lightColour[i], new Vector3f(0, 0, 0));
+//				super.loadVector(location_attenuation[i], new Vector3f(1, 0, 0));
+//			}			
+//		}
+		
 		int i = 0;
 		for(Light light : lights) {
 			i += 1;
-			if(i > ES.MAX_LIGHTS) {
-				break;
+			if(i >=ES.MAX_LIGHTS) {
+				//break;
 			}
-			if(i <= lights.size()) {
-				super.loadVector(location_lightPosition[i], light.getPosition());
-				super.loadVector(location_lightColour[i], light.getColour());
-				super.loadVector(location_attenuation[i], light.getAttenuation());
-			} else {
-				super.loadVector(location_lightPosition[i], new Vector3f(0, 0, 0));
-				super.loadVector(location_lightColour[i], new Vector3f(0, 0, 0));
-				super.loadVector(location_attenuation[i], new Vector3f(1, 0, 0));
-			}			
+			super.loadVector(location_lightPosition[i], light.getPosition());
+			super.loadVector(location_lightColour[i], light.getColour());
+			super.loadVector(location_attenuation[i], light.getAttenuation());
+		}
+		
+		for(int j = i + 1; j<ES.MAX_LIGHTS; j++) {
+			//super.loadVector(location_lightPosition[i], new Vector3f(0, 0, 0));
+			//super.loadVector(location_lightColour[i], new Vector3f(0, 0, 0));
+			//super.loadVector(location_attenuation[i], new Vector3f(1, 0, 0));
 		}
 	}
 	
