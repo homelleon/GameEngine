@@ -1,6 +1,6 @@
 package engineMain;
 
-import maps.GameMap;
+import scene.Scene;
 
 public interface Engine extends Runnable { 
 	
@@ -9,5 +9,5 @@ public interface Engine extends Runnable {
 	void init();
 	void run();
 	void exit();
-	GameMap getMap();
+	Scene getScene();
 }

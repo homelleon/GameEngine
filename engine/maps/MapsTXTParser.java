@@ -180,7 +180,7 @@ public class MapsTXTParser implements MapsParser {
 		}
 		
 		map.setTerrains(terrains);
-		map.setAudios(audios);
+		map.setAudioSources(audios);
 		
 		return map;
 	}

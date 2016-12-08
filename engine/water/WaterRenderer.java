@@ -1,6 +1,6 @@
 package water;
  
-import java.util.List;
+import java.util.Collection;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
@@ -46,7 +46,7 @@ public class WaterRenderer {
         setUpVAO(loader);
     }
  
-    public void render(List<WaterTile> water, Camera camera, Light sun) {
+    public void render(Collection<WaterTile> water, Camera camera, Light sun) {
         prepareRender(camera, sun);  
         for (WaterTile tile : water) {
             Matrix4f modelMatrix = Maths.createTransformationMatrix(

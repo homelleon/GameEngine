@@ -1,6 +1,6 @@
 package engineMain;
 
-import maps.GameMap;
+import scene.Scene;
 
 public class Main {
 		
@@ -14,8 +14,8 @@ public class Main {
 	}
 	
 	
-	public static GameMap getMap() {
-		return engine.getMap();
+	public static Scene getScene() {
+		return engine.getScene();
 	}
 
 }

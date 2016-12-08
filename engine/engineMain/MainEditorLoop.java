@@ -49,10 +49,9 @@ public class MainEditorLoop implements Engine {
 	public void exit() {
 		Display.destroy();		
 	}
-
-	@Override
-	public GameMap getMap() {
-		return scene.getMap();
+	
+	public Scene getScene() {
+		return scene;
 	}
 
 	@Override
@@ -62,5 +61,5 @@ public class MainEditorLoop implements Engine {
 		System.out.println(settings.getMapName());
 		scene.loadMap(settings.getMapName());		
 	}
-
+	
 }

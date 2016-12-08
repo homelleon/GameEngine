@@ -1,7 +1,7 @@
 package guis;
 
-import java.util.Map;
-import java.util.WeakHashMap;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.lwjgl.util.vector.Vector2f;
 
@@ -10,11 +10,11 @@ import scene.ES;
 
 public class GuiManager {
 	
-	public static Map<String, GuiTexture> createGui(Loader loader) {
-		Map<String, GuiTexture> guis = new WeakHashMap<String, GuiTexture>();
+	public static List<GuiTexture> createGui(Loader loader) {
+		List<GuiTexture> guis = new ArrayList<GuiTexture>();
 		
 		GuiTexture gui = new GuiTexture("Helth", loader.loadTexture(ES.INTERFACE_TEXTURE_PATH,"helthBar"), new Vector2f(-0.7f, -0.7f), new Vector2f(0.25f, 0.25f));
-		guis.put(gui.getName(), gui);
+		guis.add(gui);
 		
 		return guis;
 	}

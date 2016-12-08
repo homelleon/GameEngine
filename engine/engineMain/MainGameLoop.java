@@ -51,8 +51,8 @@ public class MainGameLoop implements Engine {
 		
 	}
 	
-	public GameMap getMap() {
-		return scene.getMap();
+	public Scene getScene() {
+		return scene;
 	}
 	
 

@@ -1,6 +1,7 @@
 package terrains;
 
-import java.util.List;
+import java.util.Collection;
+import java.util.Iterator;
 
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
@@ -14,14 +15,13 @@ import toolbox.Maths;
 
 public class TerrainShader extends ShaderProgram {
 	
-	private static final int MAX_LIGHTS = 4;
-	
 	public static final String VERTEX_FILE = ES.TERRAIN_SHADER_PATH + "terrainVertexShader.txt";
 	public static final String FRAGMENT_FILE = ES.TERRAIN_SHADER_PATH + "terrainFragmentShader.txt";
 	
 	private int location_transformationMatrix;
 	private int location_projectionMatrix;
 	private int location_viewMatrix;
+	private int location_lightCount;
 	private int location_lightPosition[];
 	private int location_lightColour[];
 	private int location_attenuation[];
@@ -76,10 +76,11 @@ public class TerrainShader extends ShaderProgram {
 		location_shadowTransitionDistance = super.getUniformLocation("shadowTransitionDistance");
 		location_shadowPCFCount = super.getUniformLocation("shadowPCFCount");
 		
-		location_lightPosition = new int[MAX_LIGHTS];
-		location_lightColour = new int[MAX_LIGHTS];
-		location_attenuation = new int[MAX_LIGHTS];
-		for(int i=0;i<MAX_LIGHTS;i++){
+		location_lightCount = super.getUniformLocation("lightCount");
+		location_lightPosition = new int[ES.MAX_LIGHTS];
+		location_lightColour = new int[ES.MAX_LIGHTS];
+		location_attenuation = new int[ES.MAX_LIGHTS];
+		for(int i=0;i<ES.MAX_LIGHTS;i++){
 			location_lightPosition[i] = super.getUniformLocation("lightPosition[" + i + "]");
 			location_lightColour[i] = super.getUniformLocation("lightColour[" + i + "]");
 			location_attenuation[i] = super.getUniformLocation("attenuation[" + i + "]");
@@ -127,17 +128,20 @@ public class TerrainShader extends ShaderProgram {
 		super.loadMatrix(location_transformationMatrix, matrix);
 	}
 	
-	public void loadLights(List <Light> lights) {
-		for(int i=0;i<MAX_LIGHTS;i++) {
-			if(i<lights.size()) {
-				super.loadVector(location_lightPosition[i], lights.get(i).getPosition());
-				super.loadVector(location_lightColour[i], lights.get(i).getColour());
-				super.loadVector(location_attenuation[i], lights.get(i).getAttenuation());
-			}else{
+	public void loadLights(Collection <Light> lights) {
+		super.loadInt(location_lightCount, ES.MAX_LIGHTS);
+		Iterator iterator = lights.iterator();
+		for(int i=0; i<ES.MAX_LIGHTS; i++) {
+			if(iterator.hasNext()) {
+				Light light = (Light) iterator.next();
+				super.loadVector(location_lightPosition[i], light.getPosition());
+				super.loadVector(location_lightColour[i], light.getColour());
+				super.loadVector(location_attenuation[i], light.getAttenuation());
+			} else {
 				super.loadVector(location_lightPosition[i], new Vector3f(0, 0, 0));
 				super.loadVector(location_lightColour[i], new Vector3f(0, 0, 0));
 				super.loadVector(location_attenuation[i], new Vector3f(1, 0, 0));
-			}
+			}	
 		}
 	}
 	
