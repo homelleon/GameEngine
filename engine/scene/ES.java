@@ -66,6 +66,7 @@ public class ES {
 	public static final int SHADOW_PCF = 2;
 	public static final float RENDERING_VIEW_DISTANCE = 1000;
 	public static final float DETAIL_VIEW_DISTANCE = 150;
+	public static final int MAX_LIGHTS = 10;
 
 	
 	//*****************PATH SETTINGS*************************************//

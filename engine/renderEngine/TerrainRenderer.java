@@ -1,5 +1,6 @@
 package renderEngine;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.lwjgl.opengl.GL11;
@@ -8,7 +9,10 @@ import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
+import org.lwjgl.util.vector.Vector4f;
 
+import cameras.Camera;
+import entities.Light;
 import models.RawModel;
 import scene.ES;
 import terrains.Terrain;
@@ -21,15 +25,21 @@ public class TerrainRenderer {
 	
 	private TerrainShader shader;
 	
-	public TerrainRenderer(TerrainShader shader, Matrix4f projectionMatrix) {
-		this.shader = shader;
+	public TerrainRenderer(Matrix4f projectionMatrix) {
+		this.shader = new TerrainShader();
 		shader.start();
 		shader.loadProjectionMatrix(projectionMatrix);
 		shader.connectTextureUnits();
 		shader.stop();
 	}
 	
-	public void render(List<Terrain> terrains, Matrix4f toShadowMapSpace) {
+	public void render(List<Terrain> terrains,  Vector4f clipPlane, Collection<Light> lights, Camera camera, Matrix4f toShadowMapSpace) {
+		shader.start();
+		shader.loadClipPlane(clipPlane);
+		shader.loadSkyColour(ES.DISPLAY_RED, ES.DISPLAY_GREEN, ES.DISPLAY_BLUE);
+		shader.loadFogDensity(ES.FOG_DENSITY);
+		shader.loadLights(lights);
+		shader.loadViewMatrix(camera);
 		shader.loadToShadowSpaceMatrix(toShadowMapSpace);
 		shader.loadShadowVariables(ES.SHADOW_DISTANCE, ES.SHADOW_MAP_SIZE, ES.SHADOW_TRANSITION_DISTANCE, ES.SHADOW_PCF);
 		for(Terrain terrain:terrains) {
@@ -41,6 +51,11 @@ public class TerrainRenderer {
 				unbindTexturedModel();
 			}
 		}
+		shader.stop();
+	}
+	
+	public void cleanUp() {
+		shader.cleanUp();
 	}
 	
 	private void prepareTerrain(Terrain terrain) {

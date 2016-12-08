@@ -29,12 +29,8 @@ public class MasterRenderer {
 		
 	private Matrix4f projectionMatrix;
 	
-	private EntityShader shader = new EntityShader();
-	private EntityRenderer entityRenderer;
-	
-	private TerrainRenderer terrainRenderer;
-	private TerrainShader terrainShader = new TerrainShader();
-	
+	private EntityRenderer entityRenderer;	
+	private TerrainRenderer terrainRenderer;	
 	private NormalMappingRenderer normalMapRenderer;
 	
 	private boolean terrainWiredFrame = false;
@@ -51,8 +47,8 @@ public class MasterRenderer {
 	public MasterRenderer(Loader loader, Camera camera) {
 		OGLUtils.cullBackFaces(true);
 		createProjectionMatrix();
-		this.entityRenderer = new EntityRenderer(shader,projectionMatrix);
-		this.terrainRenderer = new TerrainRenderer(terrainShader, projectionMatrix);
+		this.entityRenderer = new EntityRenderer(projectionMatrix);
+		this.terrainRenderer = new TerrainRenderer(projectionMatrix);
 		this.skyboxRenderer = new SkyboxRenderer(loader, projectionMatrix);
 		this.normalMapRenderer = new NormalMappingRenderer(projectionMatrix);
 		this.shadowMapRenderer = new ShadowMapMasterRenderer(camera);
@@ -65,27 +61,14 @@ public class MasterRenderer {
 	public void render(Collection<Light> lights, Camera camera, Vector4f clipPlane) {
 		prepare();
 		checkWiredFrameOn(entitiyWiredFrame);
-		shader.start();
-		shader.loadClipPlane(clipPlane);
-		shader.loadSkyColour(ES.DISPLAY_RED, ES.DISPLAY_GREEN, ES.DISPLAY_BLUE);
-		shader.loadFogDensity(ES.FOG_DENSITY);
-		shader.loadLights(lights);
-		shader.loadViewMatrix(camera);
-		entityRenderer.render(entities, shadowMapRenderer.getToShadowMapSpaceMatrix());
-		shader.stop();
+		entityRenderer.render(entities, clipPlane, lights, camera, shadowMapRenderer.getToShadowMapSpaceMatrix());
 		normalMapRenderer.render(normalMapEntities, clipPlane, lights, camera, shadowMapRenderer.getToShadowMapSpaceMatrix());
 		checkWiredFrameOff(entitiyWiredFrame);
 		
 		checkWiredFrameOn(terrainWiredFrame);
-		terrainShader.start();
-		terrainShader.loadClipPlane(clipPlane);
-		terrainShader.loadSkyColour(ES.DISPLAY_RED, ES.DISPLAY_GREEN, ES.DISPLAY_BLUE);
-		terrainShader.loadFogDensity(ES.FOG_DENSITY);
-		terrainShader.loadLights(lights);
-		terrainShader.loadViewMatrix(camera);
-		terrainRenderer.render(terrains, shadowMapRenderer.getToShadowMapSpaceMatrix());
-		terrainShader.stop();
+		terrainRenderer.render(terrains, clipPlane, lights, camera, shadowMapRenderer.getToShadowMapSpaceMatrix());
 		checkWiredFrameOff(terrainWiredFrame);
+		
 		skyboxRenderer.render(camera, ES.DISPLAY_RED, ES.DISPLAY_GREEN, ES.DISPLAY_BLUE);
 		terrains.clear();
 		entities.clear();
@@ -119,20 +102,6 @@ public class MasterRenderer {
 			normalMapEntities.put(entityModel, newBatch);	
 		}
 	}
-	
-	//public void renderScene(Collection<Entity> entities, Collection<Entity> normalEntities, Collection<Terrain> terrains, List<Light> lights,
-	//	Camera camera, Vector4f clipPlane) {
-	//	for (Terrain terrain : terrains) {
-	//		processTerrain(terrain);
-	//	}
-	//	for (Entity entity : entities) {
-	//		processEntity(entity);
-	//	}
-//		for(Entity entity : normalEntities) {
-	//		processNormalMapEntity(entity);
-	//	}
-	//	render(lights, camera, clipPlane);
-//	}
 	
 	public void renderScene(Collection<Entity> entities, Collection<Terrain> terrains, Collection<Light> lights,
 			Camera camera, Vector4f clipPlane) {
@@ -168,10 +137,10 @@ public class MasterRenderer {
 		return shadowMapRenderer.getShadowMap();
 	}
 	
-	public void cleanUp() {
-		shader.cleanUp();
-		terrainShader.cleanUp();
+	public void cleanUp() {		
+		entityRenderer.cleanUp();
 		normalMapRenderer.cleanUp();
+		terrainRenderer.cleanUp();
 		shadowMapRenderer.cleanUp();
 	}
 	

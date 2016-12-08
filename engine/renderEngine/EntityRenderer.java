@@ -1,5 +1,6 @@
 package renderEngine;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -8,10 +9,12 @@ import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Vector4f;
 
-import entities.EntityTextured;
-import entities.EntityShader;
+import cameras.Camera;
 import entities.Entity;
+import entities.EntityShader;
+import entities.Light;
 import models.RawModel;
 import models.TexturedModel;
 import scene.ES;
@@ -23,15 +26,21 @@ public class EntityRenderer {
 
 	private EntityShader shader;
 	
-	public EntityRenderer(EntityShader shader,Matrix4f projectionMatrix) {
-		this.shader = shader;
+	public EntityRenderer(Matrix4f projectionMatrix) {
+		this.shader = new EntityShader();
 		shader.start();
 		shader.loadProjectionMatrix(projectionMatrix);
 		shader.connectTextureUnits();
 		shader.stop();
 	}
 	
-	public void render(Map<TexturedModel, List<Entity>> entities, Matrix4f toShadowMapSpace) {
+	public void render(Map<TexturedModel, List<Entity>> entities, Vector4f clipPlane, Collection<Light> lights, Camera camera, Matrix4f toShadowMapSpace) {
+		shader.start();
+		shader.loadClipPlane(clipPlane);
+		shader.loadSkyColour(ES.DISPLAY_RED, ES.DISPLAY_GREEN, ES.DISPLAY_BLUE);
+		shader.loadFogDensity(ES.FOG_DENSITY);
+		shader.loadLights(lights);
+		shader.loadViewMatrix(camera);
 		shader.loadToShadowSpaceMatrix(toShadowMapSpace);
 		shader.loadShadowVariables(ES.SHADOW_DISTANCE, ES.SHADOW_MAP_SIZE, ES.SHADOW_TRANSITION_DISTANCE, ES.SHADOW_PCF);
 		for(TexturedModel model : entities.keySet()) {
@@ -46,6 +55,11 @@ public class EntityRenderer {
 			}
 			unbindTexturedModel();
 		}
+		shader.stop();
+	}
+	
+	public void cleanUp() {
+		shader.cleanUp();
 	}
 	
 	private void prepareTexturedModel(TexturedModel model) {

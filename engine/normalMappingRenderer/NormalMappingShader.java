@@ -13,14 +13,13 @@ import shaders.ShaderProgram;
 
 public class NormalMappingShader extends ShaderProgram{
 	
-	private static final int MAX_LIGHTS = 4;
-	
 	private static final String VERTEX_FILE = ES.NORMAL_MAP_SHADER_PATH + "normalMapVShader.txt";
 	private static final String FRAGMENT_FILE = ES.NORMAL_MAP_SHADER_PATH + "normalMapFShader.txt";
 	
 	private int location_transformationMatrix;
 	private int location_projectionMatrix;
 	private int location_viewMatrix;
+	private int location_lightCount;
 	private int location_lightPositionEyeSpace[];
 	private int location_lightColour[];
 	private int location_attenuation[];
@@ -79,10 +78,11 @@ public class NormalMappingShader extends ShaderProgram{
 		location_specularMap = super.getUniformLocation("specularMap");
 		location_usesSpecularMap = super.getUniformLocation("usesSpecularMap");	
 		
-		location_lightPositionEyeSpace = new int[MAX_LIGHTS];
-		location_lightColour = new int[MAX_LIGHTS];
-		location_attenuation = new int[MAX_LIGHTS];
-		for(int i=0;i<MAX_LIGHTS;i++){
+		location_lightCount = super.getUniformLocation("lightCount");
+		location_lightPositionEyeSpace = new int[ES.MAX_LIGHTS];
+		location_lightColour = new int[ES.MAX_LIGHTS];
+		location_attenuation = new int[ES.MAX_LIGHTS];
+		for(int i=0;i<ES.MAX_LIGHTS;i++){
 			location_lightPositionEyeSpace[i] = super.getUniformLocation("lightPositionEyeSpace[" + i + "]");
 			location_lightColour[i] = super.getUniformLocation("lightColour[" + i + "]");
 			location_attenuation[i] = super.getUniformLocation("attenuation[" + i + "]");
@@ -141,10 +141,15 @@ public class NormalMappingShader extends ShaderProgram{
 	}
 	
 	protected void loadLights(Collection<Light> lights, Matrix4f viewMatrix) {
-		int i = 0;
+		super.loadInt(location_lightCount, ES.MAX_LIGHTS);
+		int i = 1;
 		for(Light light : lights) {
 			i += 1;
-			if(i<= MAX_LIGHTS) {
+			if(i > ES.MAX_LIGHTS) {
+				break;
+			}
+			
+			if(i <= lights.size()) {
 				super.loadVector(location_lightPositionEyeSpace[i], getEyeSpacePosition(light, viewMatrix));
 				super.loadVector(location_lightColour[i], light.getColour());
 				super.loadVector(location_attenuation[i], light.getAttenuation());

@@ -75,7 +75,7 @@ public class EntitiesManager {
 		
 		/*Creating entities*/
 		Entity barrel = new EntityTextured("barrel", ES.ENTITY_TYPE_NORMAL, barrelModel, new Vector3f(200, 0, 200), 0,0,0,1);
-		Entity boulder = new EntityTextured("boulder", ES.ENTITY_TYPE_NORMAL, boulderModel, new Vector3f(250,0,250), 0,0,0,1);
+		Entity boulder = new EntityTextured("boulder", ES.ENTITY_TYPE_NORMAL, boulderModel, new Vector3f(250, 0, 250), 0,0,0,1);
 		
 		entities.add(barrel);
 		entities.add(boulder);
