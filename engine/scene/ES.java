@@ -60,9 +60,9 @@ public class ES {
 	public static final float GRAVITY = -50;
 	public static final float TIME_LENGTH = 1;
 	public static final float FOG_DENSITY = 0.002f;
-	public static final float SHADOW_DISTANCE = 200;
-	public static final int SHADOW_MAP_SIZE = 4096;
-	public static final float SHADOW_TRANSITION_DISTANCE = 25;
+	public static final float SHADOW_DISTANCE = 150;
+	public static final int SHADOW_MAP_SIZE = 16384;
+	public static final float SHADOW_TRANSITION_DISTANCE = SHADOW_DISTANCE;
 	public static final int SHADOW_PCF = 2;
 	public static final float RENDERING_VIEW_DISTANCE = 1000;
 	public static final float DETAIL_VIEW_DISTANCE = 150;

@@ -60,16 +60,13 @@ public class SceneGame extends SceneManager implements Scene {
 
         /*--------------GAME OBJECTS-------------*/
 		
-		List<Entity> entities = EntitiesManager.createEntities(loader);
 		List<Entity> normalMapEntities = EntitiesManager.createNormalMappedEntities(loader);
 
-		map.setEntities(entities);
 		map.setEntities(normalMapEntities);
 		
 		/*------------------PLAYER-----------------*/
 		TexturedModel cubeModel = SceneObjectTools.loadStaticModel("cube", "cube1", loader);
 		Player player1 = new PlayerTextured(playerName,cubeModel, new Vector3f(100, 0, 10), 0, 0, 0, 1);
-		map.addPlayer(player1);
 		map.addPlayer(player1);
 		map.addEntity(player1);
 		
@@ -78,7 +75,7 @@ public class SceneGame extends SceneManager implements Scene {
 		map.addCamera(camera);
 		
 		/*------------------LIGHTS----------------*/
-		Light sun = new Light("Sun", new Vector3f(100000,1500000,-100000), new Vector3f(1.3f,1.3f,1.3f));
+		Light sun = new Light("Sun", new Vector3f(-100000,150000,-100000), new Vector3f(1.3f,1.3f,1.3f));
 		//lights.add(new Light(new Vector3f(200,2,200),new Vector3f(10,0,0), new Vector3f(1, 0.01f, 0.002f)));
 		//lights.add(new Light(new Vector3f(20,2,20),new Vector3f(0,10,0), new Vector3f(0, 0.01f, 0.002f)));
 		map.addLight(sun);
@@ -166,8 +163,7 @@ public class SceneGame extends SceneManager implements Scene {
 			System.out.println("save");
 		}
 		
-		renderParticles();
-		renderer.renderShadowMap(map.getEntities().values(), map.getLights().get("Sun"), map.getCameras().get(cameraName));				
+		renderParticles();				
 		GL11.glEnable(GL30.GL_CLIP_DISTANCE0);
 		renderReflectionTexture();		
 		renderRefractionTexture();

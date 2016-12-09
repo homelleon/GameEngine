@@ -14,15 +14,14 @@ import org.lwjgl.util.vector.Vector4f;
 
 import cameras.Camera;
 import entities.Entity;
-import entities.EntityShader;
 import entities.Light;
+import models.RawModel;
 import models.TexturedModel;
 import normalMappingRenderer.NormalMappingRenderer;
 import scene.ES;
 import shadows.ShadowMapMasterRenderer;
 import skybox.SkyboxRenderer;
 import terrains.Terrain;
-import terrains.TerrainShader;
 import toolbox.OGLUtils;
 
 public class MasterRenderer {
@@ -39,7 +38,7 @@ public class MasterRenderer {
 	
 	private Map<TexturedModel, List<Entity>> entities = new HashMap<TexturedModel, List<Entity>>();
 	private Map<TexturedModel, List<Entity>> normalMapEntities = new HashMap<TexturedModel, List<Entity>>();
-	private List<Terrain> terrains = new ArrayList<Terrain>();
+	private Collection <Terrain> terrains = new ArrayList <Terrain>();
 	
 	private SkyboxRenderer skyboxRenderer;
 	private ShadowMapMasterRenderer shadowMapRenderer;
@@ -116,6 +115,9 @@ public class MasterRenderer {
 				}					
 			}
 			render(lights, camera, clipPlane);
+			this.entities.clear();
+			this.normalMapEntities.clear();
+			this.terrains.clear();
 		}
 	
 	public void renderShadowMap(Collection<Entity> entityList, Light sun, 
@@ -128,7 +130,7 @@ public class MasterRenderer {
 			}
 		}
 		
-		shadowMapRenderer.render(entities, normalMapEntities, sun, camera);
+		shadowMapRenderer.render(entities, terrains, normalMapEntities, sun, camera);
 		entities.clear();
 		normalMapEntities.clear();
 	}

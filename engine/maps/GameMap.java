@@ -58,8 +58,8 @@ public class GameMap {
 	}
 
 	public void setEntities(Collection<Entity> entities) {
-		for(Entity entity : entities){
-			this.entities.put(entity.getName(), entity);			
+		for(Entity entity : entities) {
+			this.entities.put(entity.getName(), entity);
 		}
 	}
 	

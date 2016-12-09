@@ -2,6 +2,7 @@ package renderEngine;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
@@ -12,8 +13,10 @@ import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 
 import cameras.Camera;
+import entities.Entity;
 import entities.Light;
 import models.RawModel;
+import models.TexturedModel;
 import scene.ES;
 import terrains.Terrain;
 import terrains.TerrainShader;
@@ -33,7 +36,7 @@ public class TerrainRenderer {
 		shader.stop();
 	}
 	
-	public void render(List<Terrain> terrains,  Vector4f clipPlane, Collection<Light> lights, Camera camera, Matrix4f toShadowMapSpace) {
+	public void render(Collection <Terrain> terrains,  Vector4f clipPlane, Collection<Light> lights, Camera camera, Matrix4f toShadowMapSpace) {
 		shader.start();
 		shader.loadClipPlane(clipPlane);
 		shader.loadSkyColour(ES.DISPLAY_RED, ES.DISPLAY_GREEN, ES.DISPLAY_BLUE);
@@ -42,13 +45,13 @@ public class TerrainRenderer {
 		shader.loadViewMatrix(camera);
 		shader.loadToShadowSpaceMatrix(toShadowMapSpace);
 		shader.loadShadowVariables(ES.SHADOW_DISTANCE, ES.SHADOW_MAP_SIZE, ES.SHADOW_TRANSITION_DISTANCE, ES.SHADOW_PCF);
-		for(Terrain terrain:terrains) {
+		
+		for(Terrain terrain : terrains) {
 			if(terrain.isRendered()) {
 				prepareTerrain(terrain);
 				loadModelMatrix(terrain);
 				GL11.glDrawElements(GL11.GL_TRIANGLES, terrain.getModel().getVertexCount(), 
 						GL11.GL_UNSIGNED_INT, 0);
-				unbindTexturedModel();
 			}
 		}
 		shader.stop();
@@ -84,7 +87,6 @@ public class TerrainRenderer {
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, terrain.getBlendMap().getTextureID());
 	}
 	
-	private void unbindTexturedModel() {
 		GL20.glDisableVertexAttribArray(0);
 		GL20.glDisableVertexAttribArray(1);
 		GL20.glDisableVertexAttribArray(2);

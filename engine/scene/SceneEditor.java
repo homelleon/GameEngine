@@ -58,12 +58,8 @@ public class SceneEditor extends SceneManager implements Scene {
 
         /*--------------GAME OBJECTS-------------*/
 		
-		List<Entity> entities = new ArrayList<Entity>(); 
-		entities = EntitiesManager.createEntities(loader);
-		
 		List<Entity> normalMapEntities = EntitiesManager.createNormalMappedEntities(loader);
 		
-		map.setEntities(entities);
 		map.setEntities(normalMapEntities);
 		
 		/*------------------PLAYER-----------------*/
@@ -165,8 +161,7 @@ public class SceneEditor extends SceneManager implements Scene {
 			System.out.println("save");
 		}
 		
-		renderParticles();
-		renderer.renderShadowMap(map.getEntities().values(), map.getLights().get("Sun"), map.getCameras().get(cameraName));				
+		renderParticles();				
 		GL11.glEnable(GL30.GL_CLIP_DISTANCE0);
 		renderReflectionTexture();		
 		renderRefractionTexture();

@@ -1,5 +1,6 @@
 package shadows;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -13,6 +14,7 @@ import entities.Entity;
 import entities.Light;
 import models.TexturedModel;
 import scene.ES;
+import terrains.Terrain;
 
 /**
  * This class is in charge of using all of the classes in the shadows package to
@@ -34,6 +36,7 @@ public class ShadowMapMasterRenderer {
 	private Matrix4f offset = createOffset();
 
 	private ShadowMapEntityRenderer entityRenderer;
+	private ShadowMapTerrainRenderer terrainRenderer;
 
 	/**
 	 * Creates instances of the important objects needed for rendering the scene
@@ -51,6 +54,7 @@ public class ShadowMapMasterRenderer {
 		shadowBox = new ShadowBox(lightViewMatrix, camera);
 		shadowFbo = new ShadowFrameBuffer(ES.SHADOW_MAP_SIZE, ES.SHADOW_MAP_SIZE);
 		entityRenderer = new ShadowMapEntityRenderer(shader, projectionViewMatrix);
+		terrainRenderer = new ShadowMapTerrainRenderer(shader, projectionViewMatrix);
 	}
 
 	/**
@@ -68,13 +72,14 @@ public class ShadowMapMasterRenderer {
 	 * @param sun
 	 *            - the light acting as the sun in the scene.
 	 */
-	public void render(Map<TexturedModel, List<Entity>> entities, Map<TexturedModel, List<Entity>> normalMapEntities, Light sun, Camera camera) {
+	public void render(Map<TexturedModel, List<Entity>> entities, Collection <Terrain> terrains, Map<TexturedModel, List<Entity>> normalMapEntities, Light sun, Camera camera) {
 		shadowBox.update();
 		Vector3f sunPosition = sun.getPosition();
 		Vector3f lightDirection = new Vector3f(-sunPosition.x, -sunPosition.y, -sunPosition.z);
 		prepare(lightDirection, shadowBox);
-		//entities.putAll(normalMapEntities);
+		entities.putAll(normalMapEntities);
 		entityRenderer.render(entities, camera);
+		//terrainRenderer.render(terrains, camera);
 		finish();
 	}
 
