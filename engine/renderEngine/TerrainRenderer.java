@@ -52,8 +52,11 @@ public class TerrainRenderer {
 				loadModelMatrix(terrain);
 				GL11.glDrawElements(GL11.GL_TRIANGLES, terrain.getModel().getVertexCount(), 
 						GL11.GL_UNSIGNED_INT, 0);
+				unbindTexture();
 			}
+			
 		}
+		
 		shader.stop();
 	}
 	
@@ -87,6 +90,7 @@ public class TerrainRenderer {
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, terrain.getBlendMap().getTextureID());
 	}
 	
+	private void unbindTexture() {
 		GL20.glDisableVertexAttribArray(0);
 		GL20.glDisableVertexAttribArray(1);
 		GL20.glDisableVertexAttribArray(2);
