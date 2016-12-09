@@ -82,6 +82,7 @@ public abstract class SceneManager {
     	 */
 		map.getCameras().get(cameraName).move();	
 		AudioMaster.setListenerData(map.getCameras().get(cameraName).getPosition().x, map.getCameras().get(cameraName).getPosition().y, map.getCameras().get(cameraName).getPosition().z);
+		renderer.renderShadowMap(map.getEntities().values(), map.getLights().get("Sun"), map.getCameras().get(cameraName));
     }
     
     protected void renderReflectionTexture() {
@@ -114,7 +115,6 @@ public abstract class SceneManager {
 	    		map.getCameras().get(cameraName), new Vector4f(0, -1, 0, 15));
 	    waterRenderer.render(map.getWaters().values(), map.getCameras().get(cameraName), map.getLights().get("Sun"));
 	    ParticleMaster.renderParticles(map.getCameras().get(cameraName));
-	    renderer.renderShadowMap(map.getEntities().values(), map.getLights().get("Sun"), map.getCameras().get(cameraName));
 	    multisampleFbo.unbindFrameBuffer();
 	    multisampleFbo.resolveToFbo(GL30.GL_COLOR_ATTACHMENT0, outputFbo);
 	    multisampleFbo.resolveToFbo(GL30.GL_COLOR_ATTACHMENT1, outputFbo2);

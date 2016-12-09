@@ -133,6 +133,7 @@ public class MasterRenderer {
 		shadowMapRenderer.render(entities, terrains, normalMapEntities, sun, camera);
 		entities.clear();
 		normalMapEntities.clear();
+		terrains.clear();
 	}
 	
 	public int getShadowMapTexture() {

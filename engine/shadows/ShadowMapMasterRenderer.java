@@ -15,6 +15,7 @@ import entities.Light;
 import models.TexturedModel;
 import scene.ES;
 import terrains.Terrain;
+import toolbox.Maths;
 
 /**
  * This class is in charge of using all of the classes in the shadows package to
@@ -79,7 +80,7 @@ public class ShadowMapMasterRenderer {
 		prepare(lightDirection, shadowBox);
 		entities.putAll(normalMapEntities);
 		entityRenderer.render(entities, camera);
-		//terrainRenderer.render(terrains, camera);
+		terrainRenderer.render(terrains, camera);
 		finish();
 	}
 
