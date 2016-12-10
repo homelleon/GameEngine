@@ -15,7 +15,6 @@ import org.lwjgl.util.vector.Vector4f;
 import cameras.Camera;
 import entities.Entity;
 import entities.Light;
-import models.RawModel;
 import models.TexturedModel;
 import normalMappingRenderer.NormalMappingRenderer;
 import scene.ES;
@@ -23,6 +22,7 @@ import shadows.ShadowMapMasterRenderer;
 import skybox.SkyboxRenderer;
 import terrains.Terrain;
 import toolbox.OGLUtils;
+import voxels.Chunk;
 
 public class MasterRenderer {
 		
@@ -31,6 +31,9 @@ public class MasterRenderer {
 	private EntityRenderer entityRenderer;	
 	private TerrainRenderer terrainRenderer;	
 	private NormalMappingRenderer normalMapRenderer;
+	private SkyboxRenderer skyboxRenderer;
+	private VoxelRenderer voxelRenderer;
+	private ShadowMapMasterRenderer shadowMapRenderer;
 	
 	private boolean terrainWiredFrame = false;
 	private boolean entitiyWiredFrame = false;
@@ -38,11 +41,9 @@ public class MasterRenderer {
 	
 	private Map<TexturedModel, List<Entity>> entities = new HashMap<TexturedModel, List<Entity>>();
 	private Map<TexturedModel, List<Entity>> normalMapEntities = new HashMap<TexturedModel, List<Entity>>();
-	private Collection <Terrain> terrains = new ArrayList <Terrain>();
-	
-	private SkyboxRenderer skyboxRenderer;
-	private ShadowMapMasterRenderer shadowMapRenderer;
-	
+	private Collection <Terrain> terrains = new ArrayList<Terrain>();
+	private Collection <Chunk> chunks = new ArrayList<Chunk>();
+		
 	public MasterRenderer(Loader loader, Camera camera) {
 		OGLUtils.cullBackFaces(true);
 		createProjectionMatrix();
@@ -50,6 +51,7 @@ public class MasterRenderer {
 		this.terrainRenderer = new TerrainRenderer(projectionMatrix);
 		this.skyboxRenderer = new SkyboxRenderer(loader, projectionMatrix);
 		this.normalMapRenderer = new NormalMappingRenderer(projectionMatrix);
+		this.voxelRenderer = new VoxelRenderer(loader, projectionMatrix);
 		this.shadowMapRenderer = new ShadowMapMasterRenderer(camera);
 	}
 	
@@ -68,7 +70,9 @@ public class MasterRenderer {
 		terrainRenderer.render(terrains, clipPlane, lights, camera, shadowMapRenderer.getToShadowMapSpaceMatrix());
 		checkWiredFrameOff(terrainWiredFrame);
 		
-		skyboxRenderer.render(camera, ES.DISPLAY_RED, ES.DISPLAY_GREEN, ES.DISPLAY_BLUE);
+		skyboxRenderer.render(camera);
+		
+		//voxelRenderer.render(chunks, camera);
 		terrains.clear();
 		entities.clear();
 		normalMapEntities.clear();
@@ -102,7 +106,11 @@ public class MasterRenderer {
 		}
 	}
 	
-	public void renderScene(Collection<Entity> entities, Collection<Terrain> terrains, Collection<Light> lights,
+	public void processChunk(Chunk chunk) {
+		chunks.add(chunk);
+	}
+	
+	public void renderScene(Collection<Entity> entities, Collection<Terrain> terrains, Collection<Chunk> chunks, Collection<Light> lights,
 			Camera camera, Vector4f clipPlane) {
 			for (Terrain terrain : terrains) {
 				processTerrain(terrain);
@@ -114,10 +122,15 @@ public class MasterRenderer {
 					processNormalMapEntity(entity);
 				}					
 			}
+			
+			for(Chunk chunk : chunks) {
+				processChunk(chunk);
+			}
 			render(lights, camera, clipPlane);
 			this.entities.clear();
 			this.normalMapEntities.clear();
 			this.terrains.clear();
+			this.chunks.clear();
 		}
 	
 	public void renderShadowMap(Collection<Entity> entityList, Light sun, 

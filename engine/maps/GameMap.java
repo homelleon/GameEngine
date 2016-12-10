@@ -19,8 +19,8 @@ import particles.ParticleSystem;
 import particles.ParticleTexture;
 import renderEngine.Loader;
 import scene.ES;
-import scene.SceneObjectTools;
 import terrains.Terrain;
+import toolbox.ObjectUtils;
 import triggers.Trigger;
 import water.WaterTile;
 
@@ -241,13 +241,13 @@ public class GameMap {
 
 	
 	public void createEntity(String name, String model, String texName, Vector3f position, float rotX, float rotY, float rotZ, float scale) {
-		TexturedModel staticModel = SceneObjectTools.loadStaticModel(model, texName, loader);
+		TexturedModel staticModel = ObjectUtils.loadStaticModel(model, texName, loader);
 		EntityTextured entity = new EntityTextured(name, staticModel, position, rotX, rotY, rotZ, scale);
 		this.entities.put(name, entity);
 	}
 	
 	public void createEntity(String name, String model, String texName, String normal, String specular, Vector3f position, float rotX, float rotY, float rotZ, float scale) {
-		TexturedModel staticModel = SceneObjectTools.loadNormalModel(name, texName, normal, specular, loader);
+		TexturedModel staticModel = ObjectUtils.loadNormalModel(name, texName, normal, specular, loader);
 		EntityTextured entity = new EntityTextured(name, ES.ENTITY_TYPE_NORMAL, staticModel, position, rotX, rotY, rotZ, scale);
 		this.entities.put(name, entity);
 	}

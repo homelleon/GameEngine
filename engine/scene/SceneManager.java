@@ -30,6 +30,7 @@ import renderEngine.Loader;
 import renderEngine.MasterRenderer;
 import terrains.Terrain;
 import toolbox.MousePicker;
+import voxels.Chunk;
 import water.WaterFrameBuffers;
 import water.WaterRenderer;
 
@@ -44,6 +45,7 @@ public abstract class SceneManager {
     protected String cameraName;
     protected String playerName;
 	
+    protected Collection<Chunk> chunks;
     protected GameMap map;
     protected GuiRenderer guiRenderer;
     protected FontType font;
@@ -82,16 +84,16 @@ public abstract class SceneManager {
     	 */
 		map.getCameras().get(cameraName).move();	
 		AudioMaster.setListenerData(map.getCameras().get(cameraName).getPosition().x, map.getCameras().get(cameraName).getPosition().y, map.getCameras().get(cameraName).getPosition().z);
-		renderer.renderShadowMap(map.getEntities().values(), map.getLights().get("Sun"), map.getCameras().get(cameraName));
     }
     
     protected void renderReflectionTexture() {
+    	renderer.renderShadowMap(map.getEntities().values(), map.getLights().get("Sun"), map.getCameras().get(cameraName));
     	waterFBOs.bindReflectionFrameBuffer();
 		float distance = 2 * (map.getCameras().get(cameraName).getPosition().y - map.getWaters().get("Water").getHeight());
 		map.getCameras().get(cameraName).getPosition().y -= distance;
 		map.getCameras().get(cameraName).invertPitch();
 		renderer.processEntity(map.getPlayers().get(playerName));
-		renderer.renderScene(map.getEntities().values(), map.getTerrains().values(), map.getLights().values(), 
+		renderer.renderScene(map.getEntities().values(), map.getTerrains().values(), chunks, map.getLights().values(), 
 				map.getCameras().get(cameraName), new Vector4f(0, 1, 0, -map.getWaters().get("Water").getHeight()));
 		map.getCameras().get(cameraName).getPosition().y += distance;
 		map.getCameras().get(cameraName).invertPitch();
@@ -100,7 +102,7 @@ public abstract class SceneManager {
     protected void renderRefractionTexture() {
     	waterFBOs.bindRefractionFrameBuffer();
 		renderer.processEntity(map.getPlayers().get(playerName));
-		renderer.renderScene(map.getEntities().values(), map.getTerrains().values(), map.getLights().values(), 
+		renderer.renderScene(map.getEntities().values(), map.getTerrains().values(), chunks, map.getLights().values(), 
 				map.getCameras().get(cameraName), new Vector4f(0, -1, 0, map.getWaters().get("Water").getHeight()+1f));
     }
     
@@ -111,7 +113,7 @@ public abstract class SceneManager {
 	    
 		multisampleFbo.bindFrameBuffer();
 		optimisation.optimize(map.getCameras().get(cameraName), map.getEntities().values(), map.getTerrains().values());
-	    renderer.renderScene(map.getEntities().values(), map.getTerrains().values(),	map.getLights().values(), 
+	    renderer.renderScene(map.getEntities().values(), map.getTerrains().values(), chunks, map.getLights().values(), 
 	    		map.getCameras().get(cameraName), new Vector4f(0, -1, 0, 15));
 	    waterRenderer.render(map.getWaters().values(), map.getCameras().get(cameraName), map.getLights().get("Sun"));
 	    ParticleMaster.renderParticles(map.getCameras().get(cameraName));

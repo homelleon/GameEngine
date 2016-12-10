@@ -67,6 +67,10 @@ public class ES {
 	public static final float RENDERING_VIEW_DISTANCE = 1000;
 	public static final float DETAIL_VIEW_DISTANCE = 150;
 	public static final int MAX_LIGHTS = 10;
+	
+	//****************VOZEL SETTINGS****************************************//
+	public static final float VOXEL_SIZE = 1f;
+	public static final int CHUNK_SIZE = 16;
 
 	
 	//*****************PATH SETTINGS*************************************//
@@ -93,6 +97,7 @@ public class ES {
 	public final static String SHADER_PATH = SOURCE_PATH + "shaders/";
 	public final static String ENTITY_SHADER_PATH = SOURCE_PATH + "entities/";
 	public final static String TERRAIN_SHADER_PATH = SOURCE_PATH + "terrains/";
+	public final static String VOXEL_SHADER_PATH = SOURCE_PATH + "voxels/";
 	public final static String GUI_SHADER_PATH = SOURCE_PATH + "guis/";
 	public final static String SKYBOX_SHADER_PATH = SOURCE_PATH + "skybox/";
 	public final static String NORMAL_MAP_SHADER_PATH = SOURCE_PATH + "normalMappingRenderer/";

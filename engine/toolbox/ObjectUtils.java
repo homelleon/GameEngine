@@ -1,4 +1,4 @@
-package scene;
+package toolbox;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,13 +14,14 @@ import normalMappingObjConverter.NormalMappedObjLoader;
 import objConverter.ModelData;
 import objConverter.OBJFileLoader;
 import renderEngine.Loader;
+import scene.ES;
 import terrains.TerrainTextured;
 import textures.ModelTexture;
 import textures.TerrainTexture;
 import textures.TerrainTexturePack;
 import water.WaterTile;
 
-public class SceneObjectTools {
+public class ObjectUtils {
 	
 	public static TexturedModel loadStaticModel(String objFile, 
 			String texName, Loader loader) {

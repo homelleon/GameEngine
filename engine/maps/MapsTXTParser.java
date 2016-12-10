@@ -10,9 +10,9 @@ import org.lwjgl.util.vector.Vector3f;
 
 import audio.Source;
 import renderEngine.Loader;
-import scene.SceneObjectTools;
 import terrains.Terrain;
 import terrains.TerrainTextured;
+import toolbox.ObjectUtils;
 
 public class MapsTXTParser implements MapsParser {
 
@@ -145,14 +145,14 @@ public class MapsTXTParser implements MapsParser {
         
         for(int i=0;i<tNames.size();i++) {
         	if (tProcGens.get(i)) {
-        		Terrain terrain = SceneObjectTools.createMultiTexTerrain(tNames.get(i), (int) tCoords.get(i).x, 
+        		Terrain terrain = ObjectUtils.createMultiTexTerrain(tNames.get(i), (int) tCoords.get(i).x, 
 	        			(int) tCoords.get(i).y, tBaseTexs.get(i), trTexs.get(i), tgTexs.get(i), 
 	        			tbTexs.get(i), tBlends.get(i), tAmplitudes.get(i), tOctaves.get(i), 
 	        			tRoughnesses.get(i), loader);
 	        	terrains.add(terrain);
 
         	} else {
-        		Terrain terrain = SceneObjectTools.createMultiTexTerrain(tNames.get(i),  (int) tCoords.get(i).x, 
+        		Terrain terrain = ObjectUtils.createMultiTexTerrain(tNames.get(i),  (int) tCoords.get(i).x, 
 	        			(int) tCoords.get(i).y, tBaseTexs.get(i), trTexs.get(i), tgTexs.get(i), 
 	        			tbTexs.get(i), tBlends.get(i),tHeights.get(i), loader);
         		terrains.add(terrain);

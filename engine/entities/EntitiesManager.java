@@ -11,8 +11,8 @@ import models.TexturedModel;
 import normalMappingObjConverter.NormalMappedObjLoader;
 import renderEngine.Loader;
 import scene.ES;
-import scene.SceneObjectTools;
 import textures.ModelTexture;
+import toolbox.ObjectUtils;
 
 public class EntitiesManager {
 	
@@ -20,29 +20,29 @@ public class EntitiesManager {
 		List<Entity> entities = new ArrayList<Entity>();
 		//******StaticModels***************//
 		//Grass/
-		TexturedModel grassModel = SceneObjectTools.loadStaticModel("grass", "grass", loader);		
+		TexturedModel grassModel = ObjectUtils.loadStaticModel("grass", "grass", loader);		
 		//Stall//
-	    TexturedModel stallModel = SceneObjectTools.loadStaticModel("stall", "stallTexture", loader);
+	    TexturedModel stallModel = ObjectUtils.loadStaticModel("stall", "stallTexture", loader);
 	    stallModel.getTexture().setShineDamper(5);
 	    stallModel.getTexture().setReflectivity(1);
 		//Cube//
-		TexturedModel cubeModel = SceneObjectTools.loadStaticModel("cube", "cube1", loader);		
+		TexturedModel cubeModel = ObjectUtils.loadStaticModel("cube", "cube1", loader);		
 		cubeModel.getTexture().setShineDamper(5);
 		cubeModel.getTexture().setReflectivity(1);
 		cubeModel.getTexture().setHasTransparency(true);
 		cubeModel.getTexture().setUseFakeLighting(true);
 		//Cherry//
-		TexturedModel cherryModel = SceneObjectTools.loadStaticModel("cherry", "cherry", loader);
+		TexturedModel cherryModel = ObjectUtils.loadStaticModel("cherry", "cherry", loader);
 		cherryModel.getTexture().setShineDamper(10);
 		cherryModel.getTexture().setReflectivity(0.5f);
 		cherryModel.getTexture().setSpecularMap(loader.loadTexture(ES.SPECULAR_MAP_PATH, "cherryS"));
 		//Tree//
-		TexturedModel treeModel = SceneObjectTools.loadStaticModel("tree", "bark", loader);
+		TexturedModel treeModel = ObjectUtils.loadStaticModel("tree", "bark", loader);
 		treeModel.getTexture().setShineDamper(10);
 		treeModel.getTexture().setReflectivity(0.5f);
 			
 		//Entities attach
-		List<Entity> grasses = SceneObjectTools.createGrassField(500, 500, 50, 1, 
+		List<Entity> grasses = ObjectUtils.createGrassField(500, 500, 50, 1, 
 			0.1f, loader);
 		Entity stall = new EntityTextured("stall", stallModel, new Vector3f(50, 0, 50), 0, 0, 0, 4);
 		Entity cube = new EntityTextured("cube", cubeModel, new Vector3f(100, 0, 10), 0, 0, 0, 1);

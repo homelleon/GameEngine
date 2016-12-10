@@ -39,6 +39,8 @@ import postProcessing.Fbo;
 import postProcessing.PostProcessing;
 import renderEngine.MasterRenderer;
 import toolbox.MousePicker;
+import toolbox.ObjectUtils;
+import voxels.Chunk;
 import water.WaterFrameBuffers;
 import water.WaterRenderer;
 import water.WaterShader;
@@ -65,10 +67,13 @@ public class SceneGame extends SceneManager implements Scene {
 		map.setEntities(normalMapEntities);
 		
 		/*------------------PLAYER-----------------*/
-		TexturedModel cubeModel = SceneObjectTools.loadStaticModel("cube", "cube1", loader);
+		TexturedModel cubeModel = ObjectUtils.loadStaticModel("cube", "cube1", loader);
 		Player player1 = new PlayerTextured(playerName,cubeModel, new Vector3f(100, 0, 10), 0, 0, 0, 1);
 		map.addPlayer(player1);
 		map.addEntity(player1);
+		
+		/*------------------CHUNKS-------------------*/
+		this.chunks = new ArrayList<Chunk>();
 		
 		/*------------------CAMERA--------------------*/
 		CameraPlayer camera = new CameraPlayer(player1, cameraName);

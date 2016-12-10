@@ -41,6 +41,7 @@ import postProcessing.PostProcessing;
 import renderEngine.MasterRenderer;
 import terrains.Terrain;
 import toolbox.MousePicker;
+import toolbox.ObjectUtils;
 import water.WaterFrameBuffers;
 import water.WaterRenderer;
 import water.WaterShader;
@@ -63,7 +64,7 @@ public class SceneEditor extends SceneManager implements Scene {
 		map.setEntities(normalMapEntities);
 		
 		/*------------------PLAYER-----------------*/
-		TexturedModel cubeModel = SceneObjectTools.loadStaticModel("cube", "cube1", loader);
+		TexturedModel cubeModel = ObjectUtils.loadStaticModel("cube", "cube1", loader);
 		PlayerTextured player1 = new PlayerTextured(playerName, cubeModel, new Vector3f(100, 0, 10), 0, 0, 0, 1);
 		map.addPlayer(player1);
 		
