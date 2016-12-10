@@ -72,10 +72,11 @@ public class MasterRenderer {
 		
 		skyboxRenderer.render(camera);
 		
-		//voxelRenderer.render(chunks, camera);
+		voxelRenderer.render(chunks, lights, camera);
 		terrains.clear();
 		entities.clear();
 		normalMapEntities.clear();
+		chunks.clear();
 	}
 	
 	public void processTerrain(Terrain terrain) {
@@ -127,10 +128,6 @@ public class MasterRenderer {
 				processChunk(chunk);
 			}
 			render(lights, camera, clipPlane);
-			this.entities.clear();
-			this.normalMapEntities.clear();
-			this.terrains.clear();
-			this.chunks.clear();
 		}
 	
 	public void renderShadowMap(Collection<Entity> entityList, Light sun, 

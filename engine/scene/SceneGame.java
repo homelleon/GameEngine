@@ -74,6 +74,8 @@ public class SceneGame extends SceneManager implements Scene {
 		
 		/*------------------CHUNKS-------------------*/
 		this.chunks = new ArrayList<Chunk>();
+		Chunk chunk = new Chunk(new Vector3f(0,0,0));
+		chunks.add(chunk);
 		
 		/*------------------CAMERA--------------------*/
 		CameraPlayer camera = new CameraPlayer(player1, cameraName);

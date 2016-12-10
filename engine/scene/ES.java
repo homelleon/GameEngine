@@ -69,8 +69,8 @@ public class ES {
 	public static final int MAX_LIGHTS = 10;
 	
 	//****************VOZEL SETTINGS****************************************//
-	public static final float VOXEL_SIZE = 1f;
-	public static final int CHUNK_SIZE = 16;
+	public static final float VOXEL_SIZE = 10f;
+	public static final int CHUNK_SIZE = 2;
 
 	
 	//*****************PATH SETTINGS*************************************//

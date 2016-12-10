@@ -17,7 +17,7 @@ public class Chunk {
 	private List<Voxel> voxels;
 	private Vector3f position;
 	
-	public Chunk(RawModel voxelModel, Vector3f position, float ChunkSize) {
+	public Chunk(Vector3f position) {
 		this.position = position;
 		this.voxels = new ArrayList<Voxel>();
 		for(int x = -ES.CHUNK_SIZE / 2; x < ES.CHUNK_SIZE / 2; x++) {
@@ -34,8 +34,8 @@ public class Chunk {
 		return SIZE;
 	}
 	
-	public Voxel getVoxel(int id) {
-		return this.voxels.get(id);
+	public List<Voxel> getVoxels() {
+		return this.voxels;
 	}
 
 
