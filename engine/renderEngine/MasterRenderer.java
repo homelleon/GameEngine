@@ -72,7 +72,7 @@ public class MasterRenderer {
 		
 		skyboxRenderer.render(camera);
 		
-		voxelRenderer.render(chunks, lights, camera);
+		voxelRenderer.render(chunks, clipPlane, lights, camera, shadowMapRenderer.getToShadowMapSpaceMatrix());
 		terrains.clear();
 		entities.clear();
 		normalMapEntities.clear();

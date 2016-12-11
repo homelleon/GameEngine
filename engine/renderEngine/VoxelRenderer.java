@@ -7,6 +7,7 @@ import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Vector4f;
 
 import cameras.Camera;
 import entities.Light;
@@ -15,6 +16,7 @@ import models.TexturedModel;
 import scene.ES;
 import textures.ModelTexture;
 import toolbox.Maths;
+import toolbox.OGLUtils;
 import toolbox.ObjectUtils;
 import voxels.Chunk;
 import voxels.Voxel;
@@ -128,14 +130,20 @@ public class VoxelRenderer {
 		this.loader = loader;
 		this.cube = ObjectUtils.loadStaticModel("cube", "cube1", loader);
 		this.texture = cube.getTexture();
-		texture.setNumberOfRows(1);
+		//texture.setNumberOfRows(1);
 		//this.texture = loader.loadCubeMap(ES.SKYBOX_TEXTURE_PATH, TEXTURE_FILES);
 	}
 	
-	public void render(Collection<Chunk> chunks, Collection<Light> lights, Camera camera) {
+	public void render(Collection<Chunk> chunks, Vector4f clipPlane, Collection<Light> lights, Camera camera, Matrix4f toShadowMapSpace) {
 		shader.start();
-		shader.loadViewMatrix(camera);
+		shader.loadClipPlane(clipPlane);
+		shader.loadSkyColour(ES.DISPLAY_RED, ES.DISPLAY_GREEN, ES.DISPLAY_BLUE);
+		shader.loadFogDensity(ES.FOG_DENSITY);
 		shader.loadLights(lights);
+		shader.loadViewMatrix(camera);
+		shader.loadToShadowSpaceMatrix(toShadowMapSpace);
+		shader.loadShadowVariables(ES.SHADOW_DISTANCE, ES.SHADOW_MAP_SIZE, ES.SHADOW_TRANSITION_DISTANCE, ES.SHADOW_PCF);
+		
 		for(Chunk chunk : chunks) {
 			prepareModel(cube.getRawModel());
 			bindTexture(texture);
@@ -158,6 +166,8 @@ public class VoxelRenderer {
 	private void prepareModel(RawModel rawModel) {
 		GL30.glBindVertexArray(rawModel.getVaoID());
 		GL20.glEnableVertexAttribArray(0);
+		GL20.glEnableVertexAttribArray(1);
+		GL20.glEnableVertexAttribArray(2);
 		
 	}
 	
@@ -168,7 +178,10 @@ public class VoxelRenderer {
 	}
 	
 	private void unbindTexture() {
+		OGLUtils.cullBackFaces(true);
 		GL20.glDisableVertexAttribArray(0);
+		GL20.glDisableVertexAttribArray(1);
+		GL20.glDisableVertexAttribArray(2);
 		GL30.glBindVertexArray(0);
 	}
 

@@ -24,7 +24,7 @@ public class Chunk {
 			for(int y = -ES.CHUNK_SIZE / 2; y < ES.CHUNK_SIZE / 2; y++) {
 				for(int z = -ES.CHUNK_SIZE / 2; z < ES.CHUNK_SIZE / 2; z++) {
 					this.voxels.add(new Voxel(new Vector3f(position.x + ES.VOXEL_SIZE * x, 
-							position.y + ES.VOXEL_SIZE * y, position.z + ES.VOXEL_SIZE * z)));
+							position.y + ES.VOXEL_SIZE * y, position.z + ES.VOXEL_SIZE * z), false));
 				}
 			}
 		}
