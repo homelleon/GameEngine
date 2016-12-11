@@ -130,8 +130,6 @@ public class VoxelRenderer {
 		this.loader = loader;
 		this.cube = ObjectUtils.loadStaticModel("cube", "cube1", loader);
 		this.texture = cube.getTexture();
-		//texture.setNumberOfRows(1);
-		//this.texture = loader.loadCubeMap(ES.SKYBOX_TEXTURE_PATH, TEXTURE_FILES);
 	}
 	
 	public void render(Collection<Chunk> chunks, Vector4f clipPlane, Collection<Light> lights, Camera camera, Matrix4f toShadowMapSpace) {
@@ -143,18 +141,18 @@ public class VoxelRenderer {
 		shader.loadViewMatrix(camera);
 		shader.loadToShadowSpaceMatrix(toShadowMapSpace);
 		shader.loadShadowVariables(ES.SHADOW_DISTANCE, ES.SHADOW_MAP_SIZE, ES.SHADOW_TRANSITION_DISTANCE, ES.SHADOW_PCF);
-		
+		prepareModel(cube.getRawModel());
+		bindTexture(texture);
 		for(Chunk chunk : chunks) {
-			prepareModel(cube.getRawModel());
-			bindTexture(texture);
-			for(Voxel voxel : chunk.getVoxels()) {
-				prepareInstance(voxel);
-				//GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, cube.getVertexCount());
-				GL11.glDrawElements(GL11.GL_TRIANGLES, cube.getRawModel().getVertexCount(), 
-						GL11.GL_UNSIGNED_INT, 0);
+			if(chunk.isRendered()) {
+				for(Voxel voxel : chunk.getVoxels()) {
+					prepareInstance(voxel);
+					GL11.glDrawElements(GL11.GL_TRIANGLES, cube.getRawModel().getVertexCount(), 
+							GL11.GL_UNSIGNED_INT, 0);
+				}
 			}
 		}
-		unbindTexture();
+		unbindTexturedModel();
 		shader.stop();
 	}
 	
@@ -172,13 +170,19 @@ public class VoxelRenderer {
 	}
 	
 	private void bindTexture(ModelTexture texture) {
+		shader.loadFakeLightingVariable(texture.isUseFakeLighting());
 		shader.loadNumberOfRows(texture.getNumberOfRows());
+		shader.loadShineVariables(texture.getShineDamper(), texture.getReflectivity());
 		GL13.glActiveTexture(GL13.GL_TEXTURE0);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture.getID());
+		shader.loadUsesSpecularMap(texture.hasSpecularMap());
+		if(texture.hasSpecularMap()) {
+			GL13.glActiveTexture(GL13.GL_TEXTURE1);
+			GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture.getSpecularMap());
+		}
 	}
 	
-	private void unbindTexture() {
-		OGLUtils.cullBackFaces(true);
+	private void unbindTexturedModel() {
 		GL20.glDisableVertexAttribArray(0);
 		GL20.glDisableVertexAttribArray(1);
 		GL20.glDisableVertexAttribArray(2);

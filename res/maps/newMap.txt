@@ -1,10 +1,5 @@
 #This map is createrd by MapFileWriter
-<e> Tree3 tree bark 80.0 21.703592 30.0 1.0 false
 <e> cherry cherry cherry 150.0 0.9530765 150.0 4.0 false
-<e> Tree2 tree bark 70.0 15.543156 30.0 1.0 false
-<e> Tree4 tree bark 90.0 22.970793 30.0 1.0 false
-<e> Tree1 tree bark 55.0 55.840168 30.0 1.0 false
-<e> tree tree bark 10.0 -2.6049185 10.0 4.0 false
 <e> Cuby7 cube Cube1 48.0 7.51823 25.0 4.0 false
 <e> stall stall stallTexture 50.0 -6.6857347 50.0 4.0 false
 <e> Cuby5 cube Cube1 44.0 6.9643636 25.0 4.0 false

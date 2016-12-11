@@ -92,7 +92,7 @@ public abstract class SceneManager {
 		float distance = 2 * (map.getCameras().get(cameraName).getPosition().y - map.getWaters().get("Water").getHeight());
 		map.getCameras().get(cameraName).getPosition().y -= distance;
 		map.getCameras().get(cameraName).invertPitch();
-		renderer.processEntity(map.getPlayers().get(playerName));
+		//renderer.processEntity(map.getPlayers().get(playerName));
 		renderer.renderScene(map.getEntities().values(), map.getTerrains().values(), chunks, map.getLights().values(), 
 				map.getCameras().get(cameraName), new Vector4f(0, 1, 0, -map.getWaters().get("Water").getHeight()));
 		map.getCameras().get(cameraName).getPosition().y += distance;
@@ -101,7 +101,7 @@ public abstract class SceneManager {
     
     protected void renderRefractionTexture() {
     	waterFBOs.bindRefractionFrameBuffer();
-		renderer.processEntity(map.getPlayers().get(playerName));
+		//renderer.processEntity(map.getPlayers().get(playerName));
 		renderer.renderScene(map.getEntities().values(), map.getTerrains().values(), chunks, map.getLights().values(), 
 				map.getCameras().get(cameraName), new Vector4f(0, -1, 0, map.getWaters().get("Water").getHeight()+1f));
     }
@@ -112,7 +112,7 @@ public abstract class SceneManager {
 		waterFBOs.unbindCurrentFrameBuffer();
 	    
 		multisampleFbo.bindFrameBuffer();
-		optimisation.optimize(map.getCameras().get(cameraName), map.getEntities().values(), map.getTerrains().values());
+		optimisation.optimize(map.getCameras().get(cameraName), map.getEntities().values(), map.getTerrains().values(), chunks);
 	    renderer.renderScene(map.getEntities().values(), map.getTerrains().values(), chunks, map.getLights().values(), 
 	    		map.getCameras().get(cameraName), new Vector4f(0, -1, 0, 15));
 	    waterRenderer.render(map.getWaters().values(), map.getCameras().get(cameraName), map.getLights().get("Sun"));

@@ -16,6 +16,7 @@ public class Chunk {
 	private int texture;	
 	private List<Voxel> voxels;
 	private Vector3f position;
+	private boolean isRendered;
 	
 	public Chunk(Vector3f position) {
 		this.position = position;
@@ -30,12 +31,24 @@ public class Chunk {
 		}
 	}
 	
+	public Vector3f getPosition() {
+		return this.position;
+	}
+	
 	public float getSize() {
 		return SIZE;
 	}
 	
 	public List<Voxel> getVoxels() {
 		return this.voxels;
+	}
+	
+	public void setRendered(boolean value) {
+		this.isRendered = value;
+	}
+	
+	public boolean isRendered() {
+		return this.isRendered;
 	}
 
 

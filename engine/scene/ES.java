@@ -64,13 +64,13 @@ public class ES {
 	public static final int SHADOW_MAP_SIZE = 16384;
 	public static final float SHADOW_TRANSITION_DISTANCE = SHADOW_DISTANCE;
 	public static final int SHADOW_PCF = 2;
-	public static final float RENDERING_VIEW_DISTANCE = 1000;
+	public static final float RENDERING_VIEW_DISTANCE = 200;
 	public static final float DETAIL_VIEW_DISTANCE = 150;
 	public static final int MAX_LIGHTS = 10;
 	
 	//****************VOZEL SETTINGS****************************************//
-	public static final float VOXEL_SIZE = 10f;
-	public static final int CHUNK_SIZE = 24;
+	public static final float VOXEL_SIZE = 1.5f;
+	public static final int CHUNK_SIZE = 16;
 
 	
 	//*****************PATH SETTINGS*************************************//

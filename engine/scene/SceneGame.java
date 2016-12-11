@@ -31,7 +31,7 @@ import maps.GameMap;
 import maps.MapsTXTWriter;
 import maps.MapsWriter;
 import models.TexturedModel;
-import optimisations.CutOptimisation;
+import optimisations.MasterOptimisation;
 import particles.ParticleMaster;
 import particles.ParticleSystem;
 import particles.ParticlesManager;
@@ -56,7 +56,7 @@ public class SceneGame extends SceneManager implements Scene {
 	public void init() {
 		super.init();
 		/*-------------OPTIMIZATION-------------*/
-		this.optimisation = new CutOptimisation();	
+	
 		
 		/*-------------TERRAIN------------------*/
 
@@ -74,12 +74,14 @@ public class SceneGame extends SceneManager implements Scene {
 		
 		/*------------------CHUNKS-------------------*/
 		this.chunks = new ArrayList<Chunk>();
-		Chunk chunk = new Chunk(new Vector3f(0,0,0));
+		Chunk chunk = new Chunk(new Vector3f(50,0,50));
 		chunks.add(chunk);
 		
 		/*------------------CAMERA--------------------*/
 		CameraPlayer camera = new CameraPlayer(player1, cameraName);
 		map.addCamera(camera);
+		
+
 		
 		/*------------------LIGHTS----------------*/
 		Light sun = new Light("Sun", new Vector3f(-100000,150000,-100000), new Vector3f(1.3f,1.3f,1.3f));
@@ -89,7 +91,8 @@ public class SceneGame extends SceneManager implements Scene {
 		
 		this.time = new GameTime(10);
 		
-		this.renderer = new MasterRenderer(loader, camera);		
+		this.renderer = new MasterRenderer(loader, camera);
+		this.optimisation = new MasterOptimisation(camera, renderer.getProjectionMatrix());
 		
 		/*----------------PARTICLES-----------------*/
 		List<ParticleSystem> particleList = ParticlesManager.createParticleSystem(loader);

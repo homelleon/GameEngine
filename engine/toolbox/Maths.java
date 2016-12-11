@@ -164,4 +164,10 @@ public class Maths {
 	    return distance;
 	}	
 	
+	public static boolean pointIsOnRay(Vector3f point, Vector3f ray) {
+		boolean isOnRay = false;
+
+		return isOnRay;		
+	}
+	
 }

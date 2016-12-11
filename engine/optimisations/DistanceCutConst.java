@@ -7,15 +7,17 @@ import entities.Entity;
 import scene.ES;
 import terrains.Terrain;
 import toolbox.Maths;
+import voxels.Chunk;
 
 //Cut during to constants
 public class DistanceCutConst {
 	
 	private static final float TERRAIN_CUT_DISTANCE = 500;
 	
-	public void cutRender(Camera camera, Collection<Entity> entities, Collection<Terrain> terrains) {
+	public void cutRender(Camera camera, Collection<Entity> entities, Collection<Terrain> terrains, Collection<Chunk> chunks) {
 		cutEntityRender(camera, entities);	
 		cutTerrainRender(camera, terrains);
+		cutChunkRender(camera, chunks);
 	}
 	
 	private void cutEntityRender(Camera camera, Collection<Entity> entities) {
@@ -47,6 +49,17 @@ public class DistanceCutConst {
 				terrain.setRendered(false);
 			}
 			
+		}
+	}
+	
+	private void cutChunkRender(Camera camera, Collection<Chunk> chunks) {
+		for(Chunk chunk : chunks) {
+			float distance = Maths.distance2Points(chunk.getPosition(), camera.getPosition());
+			if(distance <= ES.RENDERING_VIEW_DISTANCE) {
+				chunk.setRendered(true);
+			} else {
+				chunk.setRendered(false);
+			}
 		}
 	}
 	

@@ -32,7 +32,7 @@ import maps.GameMap;
 import maps.MapsTXTWriter;
 import maps.MapsWriter;
 import models.TexturedModel;
-import optimisations.CutOptimisation;
+import optimisations.MasterOptimisation;
 import particles.ParticleMaster;
 import particles.ParticleSystem;
 import particles.ParticlesManager;
@@ -53,8 +53,7 @@ public class SceneEditor extends SceneManager implements Scene {
 	public void init() {	
 		super.init();
 		/*-------------OPTIMIZATION-------------*/
-		this.optimisation = new CutOptimisation();	
-		
+	
 		/*-------------TERRAIN------------------*/
 
         /*--------------GAME OBJECTS-------------*/
@@ -71,6 +70,9 @@ public class SceneEditor extends SceneManager implements Scene {
 		/*------------------CAMERA----------------*/
 		Camera camera = new CameraFree(cameraName, 20, 10, 20);
 		map.addCamera(camera);
+		
+		this.optimisation = new MasterOptimisation(map.getCameras().get(cameraName),renderer.getProjectionMatrix());	
+		
 
 		this.time = new GameTime(10);
 		
