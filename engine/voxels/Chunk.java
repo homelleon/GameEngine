@@ -11,21 +11,22 @@ import scene.ES;
 
 public class Chunk {
 	
-	private static final float SIZE = ES.VOXEL_SIZE * ES.CHUNK_SIZE;
+	private static final int BLOCK_SIZE = 2;
+	private static final float SIZE = BLOCK_SIZE * ES.CHUNK_SIZE * ES.VOXEL_SIZE;
 	
-	private int texture;	
-	private List<Voxel> voxels;
+
+	private List<Block> blocks;
 	private Vector3f position;
-	private boolean isRendered;
+	private boolean isRendered = true;
 	
 	public Chunk(Vector3f position) {
 		this.position = position;
-		this.voxels = new ArrayList<Voxel>();
+		this.blocks = new ArrayList<Block>();
 		for(int x = -ES.CHUNK_SIZE / 2; x < ES.CHUNK_SIZE / 2; x++) {
 			for(int y = -ES.CHUNK_SIZE / 2; y < ES.CHUNK_SIZE / 2; y++) {
 				for(int z = -ES.CHUNK_SIZE / 2; z < ES.CHUNK_SIZE / 2; z++) {
-					this.voxels.add(new Voxel(new Vector3f(position.x + ES.VOXEL_SIZE * x, 
-							position.y + ES.VOXEL_SIZE * y, position.z + ES.VOXEL_SIZE * z), false));
+					this.blocks.add(new Block(new Vector3f(position.x + ES.VOXEL_SIZE * BLOCK_SIZE * x, 
+							position.y + ES.VOXEL_SIZE * BLOCK_SIZE * y, position.z + ES.VOXEL_SIZE * BLOCK_SIZE * z), BLOCK_SIZE));
 				}
 			}
 		}
@@ -39,8 +40,8 @@ public class Chunk {
 		return SIZE;
 	}
 	
-	public List<Voxel> getVoxels() {
-		return this.voxels;
+	public List<Block> getBlocks() {
+		return this.blocks;
 	}
 	
 	public void setRendered(boolean value) {

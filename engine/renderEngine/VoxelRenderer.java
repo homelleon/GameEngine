@@ -16,8 +16,9 @@ import models.TexturedModel;
 import scene.ES;
 import textures.ModelTexture;
 import toolbox.Maths;
-import toolbox.OGLUtils;
 import toolbox.ObjectUtils;
+import voxels.Area;
+import voxels.Block;
 import voxels.Chunk;
 import voxels.Voxel;
 import voxels.VoxelShader;
@@ -132,7 +133,7 @@ public class VoxelRenderer {
 		this.texture = cube.getTexture();
 	}
 	
-	public void render(Collection<Chunk> chunks, Vector4f clipPlane, Collection<Light> lights, Camera camera, Matrix4f toShadowMapSpace) {
+	public void render(Collection<Area> areas, Vector4f clipPlane, Collection<Light> lights, Camera camera, Matrix4f toShadowMapSpace) {
 		shader.start();
 		shader.loadClipPlane(clipPlane);
 		shader.loadSkyColour(ES.DISPLAY_RED, ES.DISPLAY_GREEN, ES.DISPLAY_BLUE);
@@ -143,12 +144,21 @@ public class VoxelRenderer {
 		shader.loadShadowVariables(ES.SHADOW_DISTANCE, ES.SHADOW_MAP_SIZE, ES.SHADOW_TRANSITION_DISTANCE, ES.SHADOW_PCF);
 		prepareModel(cube.getRawModel());
 		bindTexture(texture);
-		for(Chunk chunk : chunks) {
-			if(chunk.isRendered()) {
-				for(Voxel voxel : chunk.getVoxels()) {
-					prepareInstance(voxel);
-					GL11.glDrawElements(GL11.GL_TRIANGLES, cube.getRawModel().getVertexCount(), 
-							GL11.GL_UNSIGNED_INT, 0);
+		for(Area area : areas) {
+			if(area.isRendered()) {
+				for(Chunk chunk : area.getChunks()) {
+					if(chunk.isRendered()) {
+						for(Block block : chunk.getBlocks()) {
+							if(block.isRendered()) {
+								for(Voxel voxel : block.getVoxels()) {
+									prepareInstance(voxel);
+									GL11.glDrawElements(GL11.GL_TRIANGLES, cube.getRawModel().getVertexCount(), 
+											GL11.GL_UNSIGNED_INT, 0);
+								}
+							}
+						}
+						
+					}
 				}
 			}
 		}

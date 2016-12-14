@@ -44,7 +44,9 @@ public class RayCasting {
 		boolean isIntersects = false;
 		viewMatrix = Maths.createViewMatrix(camera);
 		currentRay = calculateRay();
-		if(Maths.distance2Points(position, currentRay) < OFFSET) {
+		float error = 5; 
+		for(int i = 0; i < 5; )
+		if(Maths.pointIsOnRay(position, currentRay)) {
 			isIntersects = true;
 		}
 		return isIntersects;

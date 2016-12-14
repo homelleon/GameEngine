@@ -7,6 +7,7 @@ import models.RawModel;
 public class Voxel {
 	
 	private Vector3f position;
+	private boolean isRendered = true;
 	private boolean isAir;
 	
 	public Voxel(Vector3f position, boolean isAir) { 
@@ -23,8 +24,12 @@ public class Voxel {
 	}
 	
 	public boolean getIsAir() {
-		return isAir;
+		return this.isAir;
 	}	
+	
+	public boolean isRendered() {
+		return this.isRendered;
+	}
 	
 
 }

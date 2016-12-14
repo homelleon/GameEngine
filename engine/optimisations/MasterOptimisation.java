@@ -7,6 +7,7 @@ import org.lwjgl.util.vector.Matrix4f;
 import cameras.Camera;
 import entities.Entity;
 import terrains.Terrain;
+import voxels.Area;
 import voxels.Chunk;
 
 public class MasterOptimisation implements Optimisation {
@@ -21,10 +22,9 @@ public class MasterOptimisation implements Optimisation {
 		this.rCast = new RayCasting(camera, projection);
 	}
 
-	@Override
-	public void optimize(Camera camera, Collection<Entity> entities, Collection<Terrain> terrains, Collection<Chunk> chunks) {
-		cutDist.cutRender(camera, entities, terrains, chunks);	
-		rCast.checkEntities(entities);
+	public void optimize(Camera camera, Collection<Entity> entities, Collection<Terrain> terrains, Collection<Area> areas) {
+		cutDist.cutRender(camera, entities, terrains, areas);	
+		//rCast.checkEntities(entities);
 	}
 
 }

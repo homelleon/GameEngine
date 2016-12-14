@@ -166,7 +166,24 @@ public class Maths {
 	
 	public static boolean pointIsOnRay(Vector3f point, Vector3f ray) {
 		boolean isOnRay = false;
-
+		
+		float x = point.x;
+		float y = point.y;
+		float z = point.z;
+		
+		float  p1 = ray.x;
+		float  p2 = ray.y;
+		float  p3 = ray.z;
+		
+		float oX = x / p1;
+		float oY = y / p2;
+		float oZ = z / p3;
+		
+		if((oX) == (oY)) {
+			if((oY) == (oZ)) {
+				isOnRay = true;
+			}
+		}
 		return isOnRay;		
 	}
 	

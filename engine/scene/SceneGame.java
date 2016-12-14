@@ -40,6 +40,7 @@ import postProcessing.PostProcessing;
 import renderEngine.MasterRenderer;
 import toolbox.MousePicker;
 import toolbox.ObjectUtils;
+import voxels.Area;
 import voxels.Chunk;
 import water.WaterFrameBuffers;
 import water.WaterRenderer;
@@ -73,9 +74,9 @@ public class SceneGame extends SceneManager implements Scene {
 		map.addEntity(player1);
 		
 		/*------------------CHUNKS-------------------*/
-		this.chunks = new ArrayList<Chunk>();
-		Chunk chunk = new Chunk(new Vector3f(50,0,50));
-		chunks.add(chunk);
+		this.areas = new ArrayList<Area>();
+		Area area = new Area(new Vector3f(50,0,50));
+		areas.add(area);
 		
 		/*------------------CAMERA--------------------*/
 		CameraPlayer camera = new CameraPlayer(player1, cameraName);
