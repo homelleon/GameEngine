@@ -31,6 +31,7 @@ public class MyGame implements Game {
 			Entity tree1 = scene.getMap().getEntities().get("tree");
 			Entity tree2 = scene.getMap().getEntities().get("Tree2");
 			Entity tree3 = scene.getMap().getEntities().get("Tree3");
+	
 			//PE10.peAttachBody(tree1, PE10.BODY_3D_SPHERE, world1);
 			//PE10.peAttachBody(tree2, PE10.BODY_3D_SPHERE, world1);
 			//PE10.peAttachBody(tree3, PE10.BODY_3D_SPHERE, world1);

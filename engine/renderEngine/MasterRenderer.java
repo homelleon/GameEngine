@@ -35,6 +35,7 @@ public class MasterRenderer {
 	private SkyboxRenderer skyboxRenderer;
 	private VoxelRenderer voxelRenderer;
 	private ShadowMapMasterRenderer shadowMapRenderer;
+	private int environmentMap;
 	
 	private boolean terrainWiredFrame = false;
 	private boolean entitiyWiredFrame = false;
@@ -54,6 +55,7 @@ public class MasterRenderer {
 		this.normalMapRenderer = new NormalMappingRenderer(projectionMatrix);
 		this.voxelRenderer = new VoxelRenderer(loader, projectionMatrix);
 		this.shadowMapRenderer = new ShadowMapMasterRenderer(camera);
+		this.environmentMap = skyboxRenderer.getTexture(); 
 	}
 	
 	public Matrix4f getProjectionMatrix() {
@@ -63,7 +65,7 @@ public class MasterRenderer {
 	public void render(Collection<Light> lights, Camera camera, Vector4f clipPlane) {
 		prepare();
 		checkWiredFrameOn(entitiyWiredFrame);
-		entityRenderer.render(entities, clipPlane, lights, camera, shadowMapRenderer.getToShadowMapSpaceMatrix());
+		entityRenderer.render(entities, clipPlane, lights, camera, shadowMapRenderer.getToShadowMapSpaceMatrix(), environmentMap);
 		normalMapRenderer.render(normalMapEntities, clipPlane, lights, camera, shadowMapRenderer.getToShadowMapSpaceMatrix());
 		checkWiredFrameOff(entitiyWiredFrame);
 		
@@ -73,7 +75,7 @@ public class MasterRenderer {
 		
 		skyboxRenderer.render(camera);
 		
-		voxelRenderer.render(areas, clipPlane, lights, camera, shadowMapRenderer.getToShadowMapSpaceMatrix());
+		//voxelRenderer.render(areas, clipPlane, lights, camera, shadowMapRenderer.getToShadowMapSpaceMatrix());
 		terrains.clear();
 		entities.clear();
 		normalMapEntities.clear();

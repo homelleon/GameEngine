@@ -3,8 +3,11 @@ package voxels;
 import org.lwjgl.util.vector.Vector3f;
 
 import models.RawModel;
+import scene.ES;
 
 public class Voxel {
+	
+	private final float size = ES.VOXEL_SIZE;
 	
 	private Vector3f position;
 	private boolean isRendered = true;
@@ -29,6 +32,10 @@ public class Voxel {
 	
 	public boolean isRendered() {
 		return this.isRendered;
+	}
+	
+	public float getSize() {
+		return size;
 	}
 	
 

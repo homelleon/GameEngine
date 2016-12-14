@@ -11,8 +11,9 @@ import scene.ES;
 
 public class Chunk {
 	
-	private static final int BLOCK_SIZE = 2;
-	private static final float SIZE = BLOCK_SIZE * ES.CHUNK_SIZE * ES.VOXEL_SIZE;
+	private final int step = ES.VOXEL_CHUNK_SIZE;
+	private final float space = ES.VOXEL_SIZE * ES.VOXEL_BLOCK_SIZE;
+	private final float size = space * step;
 	
 
 	private List<Block> blocks;
@@ -22,11 +23,11 @@ public class Chunk {
 	public Chunk(Vector3f position) {
 		this.position = position;
 		this.blocks = new ArrayList<Block>();
-		for(int x = -ES.CHUNK_SIZE / 2; x < ES.CHUNK_SIZE / 2; x++) {
-			for(int y = -ES.CHUNK_SIZE / 2; y < ES.CHUNK_SIZE / 2; y++) {
-				for(int z = -ES.CHUNK_SIZE / 2; z < ES.CHUNK_SIZE / 2; z++) {
-					this.blocks.add(new Block(new Vector3f(position.x + ES.VOXEL_SIZE * BLOCK_SIZE * x, 
-							position.y + ES.VOXEL_SIZE * BLOCK_SIZE * y, position.z + ES.VOXEL_SIZE * BLOCK_SIZE * z), BLOCK_SIZE));
+		for(int x = -step / 2; x < step / 2; x++) {
+			for(int y = -step / 2; y < step / 2; y++) {
+				for(int z = -step / 2; z < step / 2; z++) {
+					this.blocks.add(new Block(new Vector3f(position.x + space * x, 
+							position.y + space * y, position.z + space * z)));
 				}
 			}
 		}
@@ -37,7 +38,7 @@ public class Chunk {
 	}
 	
 	public float getSize() {
-		return SIZE;
+		return this.size;
 	}
 	
 	public List<Block> getBlocks() {

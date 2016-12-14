@@ -70,8 +70,9 @@ public class ES {
 	
 	//****************VOZEL SETTINGS****************************************//
 	public static final float VOXEL_SIZE = 2f;
-	public static final int CHUNK_SIZE = 16;
-	public static final int AREA_SIZE = 2;
+	public static final int VOXEL_BLOCK_SIZE = 8;
+	public static final int VOXEL_CHUNK_SIZE = 2;
+	public static final int VOXEL_AREA_SIZE = 2;
 
 	
 	//*****************PATH SETTINGS*************************************//

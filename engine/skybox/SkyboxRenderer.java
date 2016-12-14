@@ -65,13 +65,14 @@ public class SkyboxRenderer {
 	
 	private RawModel cube;
 	private int texture;
+	private int dayTexture;
 	private int nightTexture;
 	private SkyboxShader shader;
 	private float time = 0;
 	
 	public SkyboxRenderer(Loader loader, Matrix4f projectionMatrix) {
 		cube = loader.loadToVAO(VERTICES, 3);
-		texture = loader.loadCubeMap(ES.SKYBOX_TEXTURE_PATH,TEXTURE_FILES);
+		dayTexture = loader.loadCubeMap(ES.SKYBOX_TEXTURE_PATH,TEXTURE_FILES);
 		nightTexture = loader.loadCubeMap(ES.SKYBOX_TEXTURE_PATH,NIGHT_TEXTURE_FILES);
 		shader = new SkyboxShader();
 		shader.start();
@@ -106,14 +107,14 @@ public class SkyboxRenderer {
 			blendFactor = (time - 0) / (5000 - 0);
 		}else if(time >= 5000 && time < 8000) {
 			texture1 = nightTexture;
-			texture2 = texture;
+			texture2 = dayTexture;
 			blendFactor = (time - 5000) / (8000 - 5000);
 		}else if(time >= 8000 && time < 21000) {
-			texture1 = texture;
-			texture2 = texture;
+			texture1 = dayTexture;
+			texture2 = dayTexture;
 			blendFactor = (time - 8000) / (21000 - 8000);
 		}else{
-			texture1 = texture;
+			texture1 = dayTexture;
 			texture2 = nightTexture;
 			blendFactor = (time - 21000) / (24000 - 21000);
 		}
@@ -123,6 +124,10 @@ public class SkyboxRenderer {
 		GL13.glActiveTexture(GL13.GL_TEXTURE1);
 		GL11.glBindTexture(GL13.GL_TEXTURE_CUBE_MAP, texture2);
 		shader.loadBlendFactor(blendFactor);
+	}
+	
+	public int getTexture() {
+		return this.dayTexture;
 	}
 
 }

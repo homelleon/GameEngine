@@ -7,12 +7,16 @@ in vec3 toLightVector[10];
 in vec3 toCameraVector;
 in float visibility;
 in vec4 shadowCoords;
+in vec3 reflectedVector;
+in vec3 refractedVector;
 
 out vec4 out_Color;
 out vec4 out_BrightColor;
 
 uniform sampler2D textureSampler;
 uniform sampler2D specularMap;
+uniform samplerCube enviroMap;
+
 uniform float usesSpecularMap;
 uniform sampler2D shadowMap;
 uniform vec3 lightColour[10];
@@ -21,6 +25,8 @@ uniform float shineDamper;
 uniform float reflectivity;
 uniform vec3 skyColour;
 uniform int lightCount;
+uniform float reflectiveFactor;
+uniform float refractiveFactor;
 
 uniform float shadowMapSize;
 uniform int shadowPCFCount;
@@ -81,8 +87,17 @@ void main(void) {
 			totalDiffuse = vec3(1.0);
 		}
 	}
-   
-	out_Color = vec4(totalDiffuse,1.0) * textureColour + vec4(totalSpecular,1.0);
-	out_Color = mix(vec4(skyColour,1.0),out_Color,visibility);
+	
+	vec4 reflectedColour = texture(enviroMap, reflectedVector);
+	vec4 refractedColour = texture(enviroMap, refractedVector);
+
+	out_Color = textureColour;
+	
+	out_Color = mix(out_Color, refractedColour, refractiveFactor);
+	out_Color = mix(out_Color, reflectedColour, reflectiveFactor);	
+	
+	out_Color = vec4(totalDiffuse,1.0) * out_Color + vec4(totalSpecular,1.0);
+
+	out_Color = mix(vec4(skyColour,1.0),out_Color,visibility);	
 	
 }

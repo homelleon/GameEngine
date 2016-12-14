@@ -34,17 +34,17 @@ public class EntityRenderer {
 		shader.stop();
 	}
 	
-	public void render(Map<TexturedModel, List<Entity>> entities, Vector4f clipPlane, Collection<Light> lights, Camera camera, Matrix4f toShadowMapSpace) {
+	public void render(Map<TexturedModel, List<Entity>> entities, Vector4f clipPlane, Collection<Light> lights, Camera camera, Matrix4f toShadowMapSpace, int environmentMap) {
 		shader.start();
 		shader.loadClipPlane(clipPlane);
 		shader.loadSkyColour(ES.DISPLAY_RED, ES.DISPLAY_GREEN, ES.DISPLAY_BLUE);
 		shader.loadFogDensity(ES.FOG_DENSITY);
 		shader.loadLights(lights);
-		shader.loadViewMatrix(camera);
+		shader.loadCamera(camera);
 		shader.loadToShadowSpaceMatrix(toShadowMapSpace);
 		shader.loadShadowVariables(ES.SHADOW_DISTANCE, ES.SHADOW_MAP_SIZE, ES.SHADOW_TRANSITION_DISTANCE, ES.SHADOW_PCF);
 		for(TexturedModel model : entities.keySet()) {
-			prepareTexturedModel(model);
+			prepareTexturedModel(model, environmentMap);
 			List<Entity> batch = entities.get(model);
 			for(Entity entity : batch) {
 				if(entity.isRendered()) {
@@ -62,7 +62,7 @@ public class EntityRenderer {
 		shader.cleanUp();
 	}
 	
-	private void prepareTexturedModel(TexturedModel model) {
+	private void prepareTexturedModel(TexturedModel model, int environmentMap) {
 		RawModel rawModel = model.getRawModel();
 		GL30.glBindVertexArray(rawModel.getVaoID());
 		GL20.glEnableVertexAttribArray(0);
@@ -75,12 +75,19 @@ public class EntityRenderer {
 		}
 		shader.loadFakeLightingVariable(texture.isUseFakeLighting());
 		shader.loadShineVariables(texture.getShineDamper(), texture.getReflectivity());
+		shader.loadReflectiveFactor(texture.getReflectiveFactor());
+		shader.loadRefractVariables(texture.getRefractiveIndex(), texture.getRefractiveFactor());
 		GL13.glActiveTexture(GL13.GL_TEXTURE0);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, model.getTexture().getID());
 		shader.loadUsesSpecularMap(texture.hasSpecularMap());
 		if(texture.hasSpecularMap()) {
 			GL13.glActiveTexture(GL13.GL_TEXTURE1);
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture.getSpecularMap());
+		}
+		if((texture.getReflectiveFactor() > 0)
+				|| (texture.getRefractiveFactor() > 0)) {
+			GL13.glActiveTexture(GL13.GL_TEXTURE3);
+			GL11.glBindTexture(GL13.GL_TEXTURE_CUBE_MAP, environmentMap);
 		}
 	}
 	

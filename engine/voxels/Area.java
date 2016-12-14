@@ -9,7 +9,9 @@ import scene.ES;
 
 public class Area {
 	
-	private static final float SIZE = ES.VOXEL_SIZE * ES.CHUNK_SIZE * ES.AREA_SIZE;
+	private final int step = ES.VOXEL_AREA_SIZE;
+	private final float space = ES.VOXEL_SIZE * ES.VOXEL_BLOCK_SIZE * ES.VOXEL_CHUNK_SIZE;
+	private final float size = space * step;
 	
 	private List<Chunk> chunks;
 	private Vector3f position;
@@ -18,11 +20,11 @@ public class Area {
 	public Area(Vector3f position) {
 		this.position = position;
 		this.chunks = new ArrayList<Chunk>();
-		for(int x = -ES.AREA_SIZE / 2; x < ES.AREA_SIZE / 2; x++) {
-			for(int y = -ES.AREA_SIZE / 2; y < ES.AREA_SIZE / 2; y++) {
-				for(int z = -ES.AREA_SIZE / 2; z < ES.AREA_SIZE / 2; z++) {
-					this.chunks.add(new Chunk(new Vector3f(position.x + ES.CHUNK_SIZE * ES.VOXEL_SIZE * x, 
-							position.y + ES.CHUNK_SIZE * ES.VOXEL_SIZE * y, position.z + ES.CHUNK_SIZE * ES.VOXEL_SIZE * z)));
+		for(int x = -step / 2; x < step / 2; x++) {
+			for(int y = -step / 2; y < step / 2; y++) {
+				for(int z = -step / 2; z < step / 2; z++) {
+					this.chunks.add(new Chunk(new Vector3f(position.x + space * x, 
+							position.y + space * y, position.z + space * z)));
 				}
 			}
 		}			
@@ -38,6 +40,10 @@ public class Area {
 	
 	public boolean isRendered() {
 		return this.isRendered;
+	}
+	
+	public float getSize() {
+		return size;
 	}
 	
 	public void setRendered(boolean value) {

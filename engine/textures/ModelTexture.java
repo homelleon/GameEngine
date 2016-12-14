@@ -9,6 +9,9 @@ public class ModelTexture {
 	
 	private float shineDamper = 1;
 	private float reflectivity = 0;
+	private float reflectiveFactor = 0;
+	private float refractiveFactor = 0;
+	private float refractiveIndex = 0;
 	
 	private boolean hasTransparency = false;
 	private boolean useFakeLighting = false;
@@ -79,6 +82,30 @@ public class ModelTexture {
 
 	public void setHasTransparency(boolean hasTransparency) {
 		this.hasTransparency = hasTransparency;
+	}
+	
+	public float getRefractiveFactor() {
+		return refractiveFactor;
+	}
+
+	public void setRefractiveFactor(float refractiveFactor) {
+		this.refractiveFactor = refractiveFactor;
+	}	
+
+	public float getRefractiveIndex() {
+		return refractiveIndex;
+	}
+
+	public void setRefractiveIndex(float refractiveIndex) {
+		this.refractiveIndex = refractiveIndex;
+	}
+
+	public float getReflectiveFactor() {
+		return reflectiveFactor;
+	}
+
+	public void setReflectiveFactor(float reflectiveFactor) {
+		this.reflectiveFactor = reflectiveFactor;
 	}
 
 	public int getID(){

@@ -70,6 +70,10 @@ public class SceneGame extends SceneManager implements Scene {
 		/*------------------PLAYER-----------------*/
 		TexturedModel cubeModel = ObjectUtils.loadStaticModel("cube", "cube1", loader);
 		Player player1 = new PlayerTextured(playerName,cubeModel, new Vector3f(100, 0, 10), 0, 0, 0, 1);
+		player1.getModel().getTexture().setReflectiveFactor(1.0f);
+		player1.getModel().getTexture().setRefractiveFactor(1.0f);
+		player1.getModel().getTexture().setRefractiveIndex(1.33f);
+		player1.getModel().getTexture().setShineDamper(5.0f);
 		map.addPlayer(player1);
 		map.addEntity(player1);
 		

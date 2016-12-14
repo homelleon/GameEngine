@@ -21,12 +21,17 @@ public class EntityShader extends ShaderProgram {
 	private int location_transformationMatrix;
 	private int location_projectionMatrix;
 	private int location_viewMatrix;
+	private int location_cameraPosition;
 	private int location_lightCount;
 	private int location_lightPosition[];
 	private int location_lightColour[];
 	private int location_attenuation[];
 	private int location_shineDamper;
 	private int location_reflectivity;
+	private int location_reflectiveFactor;
+	private int location_refractiveIndex;
+	private int location_refractiveFactor;
+	private int location_enviroMap;
 	private int location_useFakeLighting;
 	private int location_skyColour;
 	private int location_numberOfRows;
@@ -58,6 +63,7 @@ public class EntityShader extends ShaderProgram {
 	public void connectTextureUnits() {
 		super.loadInt(location_modelTexture, 0);
 		super.loadInt(location_specularMap, 1);
+		super.loadInt(location_enviroMap, 3);
 		super.loadInt(location_shadowMap, 5);
 	}
 	
@@ -70,8 +76,12 @@ public class EntityShader extends ShaderProgram {
 		location_transformationMatrix = super.getUniformLocation("transformationMatrix");
 		location_projectionMatrix = super.getUniformLocation("projectionMatrix");
 		location_viewMatrix = super.getUniformLocation("viewMatrix");
+		location_cameraPosition = super.getUniformLocation("cameraPosition");
 		location_shineDamper = super.getUniformLocation("shineDamper");
 		location_reflectivity = super.getUniformLocation("reflectivity");
+		location_reflectiveFactor = super.getUniformLocation("reflectiveFactor");
+		location_refractiveIndex = super.getUniformLocation("refractiveIndex");
+		location_refractiveFactor = super.getUniformLocation("refractiveFactor");
 		location_useFakeLighting = super.getUniformLocation("useFakeLighting");
 		location_skyColour = super.getUniformLocation("skyColour");
 		location_numberOfRows = super.getUniformLocation("numberOfRows");
@@ -87,6 +97,7 @@ public class EntityShader extends ShaderProgram {
 		location_specularMap = super.getUniformLocation("specularMap");
 		location_usesSpecularMap = super.getUniformLocation("usesSpecularMap");
 		location_modelTexture = super.getUniformLocation("modelTexture");
+		location_enviroMap = super.getUniformLocation("enviroMap");
 		
 		location_lightCount = super.getUniformLocation("lightCount");
 		location_lightPosition = new int[ES.MAX_LIGHTS];
@@ -135,8 +146,23 @@ public class EntityShader extends ShaderProgram {
 		super.loadFloat(location_reflectivity, reflectivity);
 	}
 	
+	public void loadReflectiveFactor(float index) {
+		super.loadFloat(location_reflectiveFactor, index);
+	}
+	
+	public void loadRefractVariables(float index, float factor) {
+		super.loadFloat(location_refractiveIndex, index);
+		super.loadFloat(location_refractiveFactor, factor);
+	}
+	
 	public void loadFogDensity(float density) {
 		super.loadFloat(location_fogDensity, density);
+	}
+	
+	public void loadCamera(Camera camera) {
+		Matrix4f viewMatrix = Maths.createViewMatrix(camera);
+		super.loadMatrix(location_viewMatrix, viewMatrix);
+		super.loadVector(location_cameraPosition, camera.getPosition());
 	}
 	
 	public void loadTranformationMatrix(Matrix4f matrix) {
