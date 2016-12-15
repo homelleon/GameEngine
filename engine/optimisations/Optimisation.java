@@ -5,10 +5,10 @@ import java.util.Collection;
 import cameras.Camera;
 import entities.Entity;
 import terrains.Terrain;
-import voxels.Area;
+import voxels.VoxelGrid;
 
 public interface Optimisation {
 	
-	public void optimize(Camera camera, Collection<Entity> entities, Collection<Terrain> terrains, Collection<Area> areas);
+	public void optimize(Camera camera, Collection<Entity> entities, Collection<Terrain> terrains, Collection<VoxelGrid> grids);
 	
 }

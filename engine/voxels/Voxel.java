@@ -6,37 +6,30 @@ import models.RawModel;
 import scene.ES;
 
 public class Voxel {
+
+	private boolean isVisible;
+	private boolean isAir = true;
 	
-	private final float size = ES.VOXEL_SIZE;
+	public Voxel() {}
 	
-	private Vector3f position;
-	private boolean isRendered = true;
-	private boolean isAir;
-	
-	public Voxel(Vector3f position, boolean isAir) { 
-		this.position = position;
+	public Voxel(boolean isAir) {
 		this.isAir = isAir;
-	}
-
-	public Vector3f getPosition() {
-		return position;
-	}
-
-	public void setPosition(Vector3f position) {
-		this.position = position;
 	}
 	
 	public boolean getIsAir() {
 		return this.isAir;
 	}	
 	
-	public boolean isRendered() {
-		return this.isRendered;
+	public boolean getIsVisible() {
+		return this.isVisible;
 	}
 	
-	public float getSize() {
-		return size;
+	public void setAir(boolean value) {
+		this.isAir = value;
 	}
 	
+	public void setVisible(boolean value) {
+		this.isVisible = value;
+	}	
 
 }

@@ -24,7 +24,7 @@ public class MyGame implements Game {
 		public void onStart() {
 			PE10.initialize();
 			scene = Main.getScene();
-			//scene.setTerrainWiredFrame(true);
+			scene.setTerrainWiredFrame(true);
 			world1 = PE10.peCreateWorld(new Vector3f(0,0,0), new Vector3f(0,0,0));
 			scene.getMap().createEntity("Bo", "cube", "Cube1", new Vector3f(70, 50, 70), 0, 1, 0, 8);
 			scene.getMap().createParticles("Part", "cosmic", 4, true, 50, 25, 0.3f, 4, 1);

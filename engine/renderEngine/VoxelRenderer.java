@@ -7,6 +7,7 @@ import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 
 import cameras.Camera;
@@ -17,57 +18,111 @@ import scene.ES;
 import textures.ModelTexture;
 import toolbox.Maths;
 import toolbox.ObjectUtils;
-import voxels.Area;
-import voxels.Block;
-import voxels.Chunk;
-import voxels.Voxel;
+import voxels.VoxelGrid;
 import voxels.VoxelShader;
 
 public class VoxelRenderer {
 	
+	private static final float size = ES.VOXEL_SIZE;
+	
 	private static final float[] VERTICES = {        
-		    -ES.VOXEL_SIZE,  ES.VOXEL_SIZE, -ES.VOXEL_SIZE,
-		    -ES.VOXEL_SIZE, -ES.VOXEL_SIZE, -ES.VOXEL_SIZE,
-		    ES.VOXEL_SIZE, -ES.VOXEL_SIZE, -ES.VOXEL_SIZE,
-		     ES.VOXEL_SIZE, -ES.VOXEL_SIZE, -ES.VOXEL_SIZE,
-		     ES.VOXEL_SIZE,  ES.VOXEL_SIZE, -ES.VOXEL_SIZE,
-		    -ES.VOXEL_SIZE,  ES.VOXEL_SIZE, -ES.VOXEL_SIZE,
-
-		    -ES.VOXEL_SIZE, -ES.VOXEL_SIZE,  ES.VOXEL_SIZE,
-		    -ES.VOXEL_SIZE, -ES.VOXEL_SIZE, -ES.VOXEL_SIZE,
-		    -ES.VOXEL_SIZE,  ES.VOXEL_SIZE, -ES.VOXEL_SIZE,
-		    -ES.VOXEL_SIZE,  ES.VOXEL_SIZE, -ES.VOXEL_SIZE,
-		    -ES.VOXEL_SIZE,  ES.VOXEL_SIZE,  ES.VOXEL_SIZE,
-		    -ES.VOXEL_SIZE, -ES.VOXEL_SIZE,  ES.VOXEL_SIZE,
-
-		     ES.VOXEL_SIZE, -ES.VOXEL_SIZE, -ES.VOXEL_SIZE,
-		     ES.VOXEL_SIZE, -ES.VOXEL_SIZE,  ES.VOXEL_SIZE,
-		     ES.VOXEL_SIZE,  ES.VOXEL_SIZE,  ES.VOXEL_SIZE,
-		     ES.VOXEL_SIZE,  ES.VOXEL_SIZE,  ES.VOXEL_SIZE,
-		     ES.VOXEL_SIZE,  ES.VOXEL_SIZE, -ES.VOXEL_SIZE,
-		     ES.VOXEL_SIZE, -ES.VOXEL_SIZE, -ES.VOXEL_SIZE,
-
-		    -ES.VOXEL_SIZE, -ES.VOXEL_SIZE,  ES.VOXEL_SIZE,
-		    -ES.VOXEL_SIZE,  ES.VOXEL_SIZE,  ES.VOXEL_SIZE,
-		     ES.VOXEL_SIZE,  ES.VOXEL_SIZE,  ES.VOXEL_SIZE,
-		     ES.VOXEL_SIZE,  ES.VOXEL_SIZE,  ES.VOXEL_SIZE,
-		     ES.VOXEL_SIZE, -ES.VOXEL_SIZE,  ES.VOXEL_SIZE,
-		    -ES.VOXEL_SIZE, -ES.VOXEL_SIZE,  ES.VOXEL_SIZE,
-
-		    -ES.VOXEL_SIZE,  ES.VOXEL_SIZE, -ES.VOXEL_SIZE,
-		     ES.VOXEL_SIZE,  ES.VOXEL_SIZE, -ES.VOXEL_SIZE,
-		     ES.VOXEL_SIZE,  ES.VOXEL_SIZE,  ES.VOXEL_SIZE,
-		     ES.VOXEL_SIZE,  ES.VOXEL_SIZE,  ES.VOXEL_SIZE,
-		    -ES.VOXEL_SIZE,  ES.VOXEL_SIZE,  ES.VOXEL_SIZE,
-		    -ES.VOXEL_SIZE,  ES.VOXEL_SIZE, -ES.VOXEL_SIZE,
-
-		    -ES.VOXEL_SIZE, -ES.VOXEL_SIZE, -ES.VOXEL_SIZE,
-		    -ES.VOXEL_SIZE, -ES.VOXEL_SIZE,  ES.VOXEL_SIZE,
-		     ES.VOXEL_SIZE, -ES.VOXEL_SIZE, -ES.VOXEL_SIZE,
-		     ES.VOXEL_SIZE, -ES.VOXEL_SIZE, -ES.VOXEL_SIZE,
-		    -ES.VOXEL_SIZE, -ES.VOXEL_SIZE,  ES.VOXEL_SIZE,
-		    ES.VOXEL_SIZE, -ES.VOXEL_SIZE,  ES.VOXEL_SIZE
+		    // -z
+			-size,  size, -size,
+		    -size, -size, -size,
+		    size, -size, -size,
+		    size, -size, -size,
+		    size,  size, -size,
+		    -size,  size, -size,
+		    // -x
+		    -size, -size,  size,
+		    -size, -size, -size,
+		    -size,  size, -size,
+		    -size,  size, -size,
+		    -size,  size,  size,
+		    -size, -size,  size,
+		    // +x
+		    size, -size, -size,
+		    size, -size,  size,
+		    size,  size,  size,
+		    size,  size,  size,
+		    size,  size, -size,
+		    size, -size, -size,
+		    // +z
+		    -size, -size,  size,
+		    -size,  size,  size,
+		    size,  size,  size,
+		    size,  size,  size,
+		    size, -size,  size,
+		    -size, -size,  size,
+		    // +y
+		    -size,  size, -size,
+		    size,  size, -size,
+		    size,  size,  size,
+		    size,  size,  size,
+		    -size,  size,  size,
+		    -size,  size, -size,
+		    // -y
+		    -size, -size, -size,
+		    -size, -size,  size,
+		    size, -size, -size,
+		    size, -size, -size,
+		    -size, -size,  size,
+		    size, -size,  size
 		};
+	
+	private static final float[] VERTICES_X = {
+			size, -size, -size,
+		    size, -size,  size,
+		    size,  size,  size,
+		    size,  size,  size,
+		    size,  size, -size,
+		    size, -size, -size
+	};
+	
+	private static final float[] VERTICES_MIN_X = {
+			-size, -size,  size,
+		    -size, -size, -size,
+		    -size,  size, -size,
+		    -size,  size, -size,
+		    -size,  size,  size,
+		    -size, -size,  size
+	};
+	
+	private static final float[] VERTICES_Y = {
+			-size,  size, -size,
+		    size,  size, -size,
+		    size,  size,  size,
+		    size,  size,  size,
+		    -size,  size,  size,
+		    -size,  size, -size
+	};
+	
+	private static final float[] VERTICES_MIN_Y = {
+			-size, -size, -size,
+		    -size, -size,  size,
+		    size, -size, -size,
+		    size, -size, -size,
+		    -size, -size,  size,
+		    size, -size,  size
+	};
+	
+	private static final float[] VERTICES_Z = {
+			-size, -size,  size,
+		    -size,  size,  size,
+		    size,  size,  size,
+		    size,  size,  size,
+		    size, -size,  size,
+		    -size, -size,  size
+	};
+	
+	private static final float[] VERTICES_MIN_Z = {
+			-size,  size, -size,
+		    -size, -size, -size,
+		    size, -size, -size,
+		    size, -size, -size,
+		    size,  size, -size,
+		    -size,  size, -size
+	};
 	
 	private static final float[] TEXTURES = {
 			0, 1, 0,
@@ -85,18 +140,18 @@ public class VoxelRenderer {
 	};
 	
 	private static final float[] NORMALS = {
-		1, 0, 0, 
-		1, 0, 0,
-		1, 0, 0,
-		1, 0, 0,
-		1, 0, 0,
-		1, 0, 0,
-		1, 0, 0, 
-		1, 0, 0,
-		1, 0, 0,
-		1, 0, 0,
-		1, 0, 0,
-		1, 0, 0
+			1, 0, 0, 
+			1, 0, 0,
+			1, 0, 0,
+			1, 0, 0,
+			1, 0, 0,
+			1, 0, 0,
+			1, 0, 0, 
+			1, 0, 0,
+			1, 0, 0,
+			1, 0, 0,
+			1, 0, 0,
+			1, 0, 0
 	};
 	
 	private static final int[] INDICES = {
@@ -133,7 +188,7 @@ public class VoxelRenderer {
 		this.texture = cube.getTexture();
 	}
 	
-	public void render(Collection<Area> areas, Vector4f clipPlane, Collection<Light> lights, Camera camera, Matrix4f toShadowMapSpace) {
+	public void render(Collection<VoxelGrid> grids, Vector4f clipPlane, Collection<Light> lights, Camera camera, Matrix4f toShadowMapSpace) {
 		shader.start();
 		shader.loadClipPlane(clipPlane);
 		shader.loadSkyColour(ES.DISPLAY_RED, ES.DISPLAY_GREEN, ES.DISPLAY_BLUE);
@@ -144,20 +199,15 @@ public class VoxelRenderer {
 		shader.loadShadowVariables(ES.SHADOW_DISTANCE, ES.SHADOW_MAP_SIZE, ES.SHADOW_TRANSITION_DISTANCE, ES.SHADOW_PCF);
 		prepareModel(cube.getRawModel());
 		bindTexture(texture);
-		for(Area area : areas) {
-			if(area.isRendered()) {
-				for(Chunk chunk : area.getChunks()) {
-					if(chunk.isRendered()) {
-						for(Block block : chunk.getBlocks()) {
-							if(block.isRendered()) {
-								for(Voxel voxel : block.getVoxels()) {
-									prepareInstance(voxel);
-									GL11.glDrawElements(GL11.GL_TRIANGLES, cube.getRawModel().getVertexCount(), 
-											GL11.GL_UNSIGNED_INT, 0);
-								}
-							}
+		for(VoxelGrid grid : grids) {
+			for(int i = 0; i<grid.getSize(); i++) {
+				for(int j = 0; j<grid.getSize(); j++) {
+					for(int k = 0; k<grid.getSize(); k++) {
+						if(!grid.getVoxel(i, j, k).getIsAir()) {
+							prepareInstance(new Vector3f(i * ES.VOXEL_SIZE + grid.getPosition().x, j * ES.VOXEL_SIZE + grid.getPosition().y, k * ES.VOXEL_SIZE + grid.getPosition().z));
+							GL11.glDrawElements(GL11.GL_TRIANGLES, cube.getRawModel().getVertexCount(), 
+									GL11.GL_UNSIGNED_INT, 0);
 						}
-						
 					}
 				}
 			}
@@ -166,8 +216,8 @@ public class VoxelRenderer {
 		shader.stop();
 	}
 	
-	private void prepareInstance(Voxel voxel) {
-		Matrix4f transformationMatrix = Maths.createTransformationMatrix(voxel.getPosition(), 0, 0, 0, 1);
+	private void prepareInstance(Vector3f position) {
+		Matrix4f transformationMatrix = Maths.createTransformationMatrix(position, 0, 0, 0, 1);
 		shader.loadTranformationMatrix(transformationMatrix);
 	}
 	

@@ -22,8 +22,7 @@ import shadows.ShadowMapMasterRenderer;
 import skybox.SkyboxRenderer;
 import terrains.Terrain;
 import toolbox.OGLUtils;
-import voxels.Area;
-import voxels.Chunk;
+import voxels.VoxelGrid;
 
 public class MasterRenderer {
 		
@@ -44,7 +43,7 @@ public class MasterRenderer {
 	private Map<TexturedModel, List<Entity>> entities = new HashMap<TexturedModel, List<Entity>>();
 	private Map<TexturedModel, List<Entity>> normalMapEntities = new HashMap<TexturedModel, List<Entity>>();
 	private Collection<Terrain> terrains = new ArrayList<Terrain>();
-	private Collection<Area> areas = new ArrayList<Area>();
+	private Collection<VoxelGrid> grids = new ArrayList<VoxelGrid>(); 
 		
 	public MasterRenderer(Loader loader, Camera camera) {
 		OGLUtils.cullBackFaces(true);
@@ -70,16 +69,16 @@ public class MasterRenderer {
 		checkWiredFrameOff(entitiyWiredFrame);
 		
 		checkWiredFrameOn(terrainWiredFrame);
+		voxelRenderer.render(grids, clipPlane, lights, camera, shadowMapRenderer.getToShadowMapSpaceMatrix());
 		terrainRenderer.render(terrains, clipPlane, lights, camera, shadowMapRenderer.getToShadowMapSpaceMatrix());
 		checkWiredFrameOff(terrainWiredFrame);
 		
 		skyboxRenderer.render(camera);
-		
-		//voxelRenderer.render(areas, clipPlane, lights, camera, shadowMapRenderer.getToShadowMapSpaceMatrix());
+			
 		terrains.clear();
 		entities.clear();
 		normalMapEntities.clear();
-		areas.clear();
+		grids.clear();
 	}
 	
 	public void processTerrain(Terrain terrain) {
@@ -110,11 +109,12 @@ public class MasterRenderer {
 		}
 	}
 	
-	public void processChunk(Area area) {
-		areas.add(area);
+	public void processVoxel(VoxelGrid grid) {
+		this.grids.add(grid);
 	}
+
 	
-	public void renderScene(Collection<Entity> entities, Collection<Terrain> terrains, Collection<Area> areas, Collection<Light> lights,
+	public void renderScene(Collection<Entity> entities, Collection<Terrain> terrains, Collection<VoxelGrid> grids, Collection<Light> lights,
 			Camera camera, Vector4f clipPlane) {
 			for (Terrain terrain : terrains) {
 				processTerrain(terrain);
@@ -127,9 +127,10 @@ public class MasterRenderer {
 				}					
 			}
 			
-			for(Area area : areas) {
-				processChunk(area);
+			for(VoxelGrid grid : grids) {
+				processVoxel(grid);
 			}
+
 			render(lights, camera, clipPlane);
 		}
 	

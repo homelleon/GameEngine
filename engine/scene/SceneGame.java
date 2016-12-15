@@ -38,10 +38,10 @@ import particles.ParticlesManager;
 import postProcessing.Fbo;
 import postProcessing.PostProcessing;
 import renderEngine.MasterRenderer;
+import terrains.Terrain;
 import toolbox.MousePicker;
 import toolbox.ObjectUtils;
-import voxels.Area;
-import voxels.Chunk;
+import voxels.VoxelGrid;
 import water.WaterFrameBuffers;
 import water.WaterRenderer;
 import water.WaterShader;
@@ -78,9 +78,22 @@ public class SceneGame extends SceneManager implements Scene {
 		map.addEntity(player1);
 		
 		/*------------------CHUNKS-------------------*/
-		this.areas = new ArrayList<Area>();
-		Area area = new Area(new Vector3f(50,0,50));
-		areas.add(area);
+		this.grids = new ArrayList<VoxelGrid>();
+		VoxelGrid grid = new VoxelGrid(new Vector3f(0,0,0), 80);
+		Terrain terrain = map.getTerrains().get("Terrain1");
+		for(int x = 0; x<grid.getSize()-1; x++) {
+				for(int z = 0; z<grid.getSize()-1; z++) {
+					for(int y = 0; y<grid.getSize()-1; y++) {
+						float height = terrain.getHeightOfTerrain(x, z);
+						if(height>=0) {
+							if(y< (int) height) {
+								grid.getVoxel(x, y, z).setAir(false);
+							}
+						}
+					}
+				}
+		}
+		grids.add(grid);
 		
 		/*------------------CAMERA--------------------*/
 		CameraPlayer camera = new CameraPlayer(player1, cameraName);
