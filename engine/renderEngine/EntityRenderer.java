@@ -19,6 +19,7 @@ import models.RawModel;
 import models.TexturedModel;
 import scene.ES;
 import textures.ModelTexture;
+import textures.Texture;
 import toolbox.Maths;
 import toolbox.OGLUtils;
 
@@ -34,7 +35,7 @@ public class EntityRenderer {
 		shader.stop();
 	}
 	
-	public void render(Map<TexturedModel, List<Entity>> entities, Vector4f clipPlane, Collection<Light> lights, Camera camera, Matrix4f toShadowMapSpace, int environmentMap) {
+	public void render(Map<TexturedModel, List<Entity>> entities, Vector4f clipPlane, Collection<Light> lights, Camera camera, Matrix4f toShadowMapSpace, Texture environmentMap) {
 		shader.start();
 		shader.loadClipPlane(clipPlane);
 		shader.loadSkyColour(ES.DISPLAY_RED, ES.DISPLAY_GREEN, ES.DISPLAY_BLUE);
@@ -62,7 +63,7 @@ public class EntityRenderer {
 		shader.cleanUp();
 	}
 	
-	private void prepareTexturedModel(TexturedModel model, int environmentMap) {
+	private void prepareTexturedModel(TexturedModel model, Texture environmentMap) {
 		RawModel rawModel = model.getRawModel();
 		GL30.glBindVertexArray(rawModel.getVaoID());
 		GL20.glEnableVertexAttribArray(0);
@@ -87,7 +88,7 @@ public class EntityRenderer {
 		if((texture.getReflectiveFactor() > 0)
 				|| (texture.getRefractiveFactor() > 0)) {
 			GL13.glActiveTexture(GL13.GL_TEXTURE3);
-			GL11.glBindTexture(GL13.GL_TEXTURE_CUBE_MAP, environmentMap);
+			GL11.glBindTexture(GL13.GL_TEXTURE_CUBE_MAP, environmentMap.textureId);
 		}
 	}
 	

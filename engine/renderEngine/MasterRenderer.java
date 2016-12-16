@@ -15,12 +15,13 @@ import org.lwjgl.util.vector.Vector4f;
 import cameras.Camera;
 import entities.Entity;
 import entities.Light;
+import environmentMap.EnvironmentMapRenderer;
 import models.TexturedModel;
 import normalMappingRenderer.NormalMappingRenderer;
 import scene.ES;
 import shadows.ShadowMapMasterRenderer;
-import skybox.SkyboxRenderer;
 import terrains.Terrain;
+import textures.Texture;
 import toolbox.OGLUtils;
 import voxels.VoxelGrid;
 
@@ -34,7 +35,8 @@ public class MasterRenderer {
 	private SkyboxRenderer skyboxRenderer;
 	private VoxelRenderer voxelRenderer;
 	private ShadowMapMasterRenderer shadowMapRenderer;
-	private int environmentMap;
+	private EnvironmentMapRenderer enviroRenderer;
+	private Texture environmentMap;
 	
 	private boolean terrainWiredFrame = false;
 	private boolean entitiyWiredFrame = false;
@@ -54,7 +56,8 @@ public class MasterRenderer {
 		this.normalMapRenderer = new NormalMappingRenderer(projectionMatrix);
 		this.voxelRenderer = new VoxelRenderer(loader, projectionMatrix);
 		this.shadowMapRenderer = new ShadowMapMasterRenderer(camera);
-		this.environmentMap = skyboxRenderer.getTexture(); 
+		this.enviroRenderer = new EnvironmentMapRenderer(projectionMatrix);
+		this.environmentMap = Texture.newEmptyCubeMap(128); 
 	}
 	
 	public Matrix4f getProjectionMatrix() {
@@ -69,7 +72,7 @@ public class MasterRenderer {
 		checkWiredFrameOff(entitiyWiredFrame);
 		
 		checkWiredFrameOn(terrainWiredFrame);
-		voxelRenderer.render(grids, clipPlane, lights, camera, shadowMapRenderer.getToShadowMapSpaceMatrix());
+		//voxelRenderer.render(grids, clipPlane, lights, camera, shadowMapRenderer.getToShadowMapSpaceMatrix());
 		terrainRenderer.render(terrains, clipPlane, lights, camera, shadowMapRenderer.getToShadowMapSpaceMatrix());
 		checkWiredFrameOff(terrainWiredFrame);
 		

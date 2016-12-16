@@ -1,4 +1,4 @@
-package skybox;
+package renderEngine;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
@@ -9,8 +9,8 @@ import org.lwjgl.util.vector.Matrix4f;
 import cameras.Camera;
 import engineMain.DisplayManager;
 import models.RawModel;
-import renderEngine.Loader;
 import scene.ES;
+import skybox.SkyboxShader;
 
 public class SkyboxRenderer {
 	
