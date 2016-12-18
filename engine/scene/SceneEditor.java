@@ -168,6 +168,7 @@ public class SceneEditor extends SceneManager implements Scene {
 		GL11.glEnable(GL30.GL_CLIP_DISTANCE0);
 		renderReflectionTexture();		
 		renderRefractionTexture();
+    	GL11.glDisable(GL30.GL_CLIP_DISTANCE0);
 	    renderToScreen();
 	}
  

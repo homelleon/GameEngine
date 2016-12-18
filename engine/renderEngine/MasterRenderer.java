@@ -57,7 +57,6 @@ public class MasterRenderer {
 		this.voxelRenderer = new VoxelRenderer(loader, projectionMatrix);
 		this.shadowMapRenderer = new ShadowMapMasterRenderer(camera);
 		this.enviroRenderer = new EnvironmentMapRenderer(projectionMatrix);
-		this.environmentMap = Texture.newEmptyCubeMap(128); 
 	}
 	
 	public Matrix4f getProjectionMatrix() {
@@ -114,11 +113,11 @@ public class MasterRenderer {
 	
 	public void processVoxel(VoxelGrid grid) {
 		this.grids.add(grid);
-	}
-
+	}	
 	
 	public void renderScene(Collection<Entity> entities, Collection<Terrain> terrains, Collection<VoxelGrid> grids, Collection<Light> lights,
-			Camera camera, Vector4f clipPlane) {
+			Camera camera, Vector4f clipPlane, Texture environmentMap) {
+			this.environmentMap = environmentMap;
 			for (Terrain terrain : terrains) {
 				processTerrain(terrain);
 			}

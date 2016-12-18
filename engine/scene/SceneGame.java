@@ -21,6 +21,7 @@ import entities.Entity;
 import entities.Light;
 import entities.Player;
 import entities.PlayerTextured;
+import environmentMap.EnvironmentMapRenderer;
 import fontMeshCreator.FontType;
 import fontMeshCreator.GUIText;
 import fontRendering.TextMaster;
@@ -171,6 +172,7 @@ public class SceneGame extends SceneManager implements Scene {
 		this.picker = new MousePicker(camera, renderer.getProjectionMatrix());
 		
 		/*---------------PREPARE-------------*/
+		enviroRenderer = new EnvironmentMapRenderer(renderer.getProjectionMatrix());
 		game.onStart();
 		spreadEntitiesOnHeights(map.getEntities().values());		
 	}
@@ -195,6 +197,7 @@ public class SceneGame extends SceneManager implements Scene {
 		GL11.glEnable(GL30.GL_CLIP_DISTANCE0);
 		renderReflectionTexture();		
 		renderRefractionTexture();
+    	GL11.glDisable(GL30.GL_CLIP_DISTANCE0);
 	    renderToScreen();
 	}
 	

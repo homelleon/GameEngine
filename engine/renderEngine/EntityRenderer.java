@@ -59,8 +59,43 @@ public class EntityRenderer {
 		shader.stop();
 	}
 	
+	public void renderLow(Map<TexturedModel, List<Entity>> entities, Camera camera) {
+		shader.start();
+		shader.loadCamera(camera);
+		for(TexturedModel model : entities.keySet()) {
+			prepareLowTexturedModel(model);
+			List<Entity> batch = entities.get(model);
+			for(Entity entity : batch) {
+				if(entity.isRendered()) {
+					if(Maths.distance2Points(entity.getPosition(), camera.getPosition()) < 50) {
+						prepareInstance(entity);
+						GL11.glDrawElements(GL11.GL_TRIANGLES, model.getRawModel().getVertexCount(), 
+								GL11.GL_UNSIGNED_INT, 0);
+					}
+				}				
+			}
+			unbindTexturedModel();
+		}
+		shader.stop();		
+	}
+	
 	public void cleanUp() {
 		shader.cleanUp();
+	}
+	
+	private void prepareLowTexturedModel(TexturedModel model) {
+		RawModel rawModel = model.getRawModel();
+		GL30.glBindVertexArray(rawModel.getVaoID());
+		GL20.glEnableVertexAttribArray(0);
+		GL20.glEnableVertexAttribArray(1);
+		GL20.glEnableVertexAttribArray(2);
+		ModelTexture texture = model.getTexture();
+		shader.loadNumberOfRows(texture.getNumberOfRows());
+		if(texture.isHasTransparency()) {
+			OGLUtils.cullBackFaces(false);
+		}
+		GL13.glActiveTexture(GL13.GL_TEXTURE0);
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, model.getTexture().getID());
 	}
 	
 	private void prepareTexturedModel(TexturedModel model, Texture environmentMap) {
