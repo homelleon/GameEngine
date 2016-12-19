@@ -45,10 +45,9 @@ public class SceneRenderer {
     protected Fbo outputFbo2;
     protected MousePicker picker;
     protected Optimisation optimisation;
-	
-	public void render(Scene scene, Light sun, Camera camera, Player player, FontType font, Loader loader) {
-		
-		this.renderer = new MasterRenderer(loader, camera);
+    
+    public void init(Camera camera, Loader loader) {
+    	this.renderer = new MasterRenderer(loader, camera);
 		this.enviroRenderer = new EnvironmentMapRenderer(renderer.getProjectionMatrix());
 		this.guiRenderer = new GuiRenderer(loader);	
 		this.optimisation = new MasterOptimisation(camera, renderer.getProjectionMatrix());
@@ -67,7 +66,10 @@ public class SceneRenderer {
 		this.environmentMap = Texture.newEmptyCubeMap(128);
 		
 		this.picker = new MousePicker(camera, renderer.getProjectionMatrix());
-		
+    }
+	
+	public void render(Scene scene, Light sun, Camera camera, Player player, FontType font, Loader loader) {
+				
 
 		if(Keyboard.isKeyDown(Keyboard.KEY_T)) {
 			MapsWriter mapWriter = new MapsTXTWriter();
@@ -78,7 +80,7 @@ public class SceneRenderer {
 			System.out.println("save");
 		}
 		
-    	enviroRenderer.render(environmentMap, scene, camera);
+    	//enviroRenderer.render(environmentMap, scene, camera);
     	move(scene, camera, player);	
 		renderParticles(scene, camera, player);
 		renderWaterSurface(scene, sun, camera);		

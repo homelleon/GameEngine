@@ -192,13 +192,14 @@ public class LoopGame implements Loop {
 		
 		/*---------------PREPARE-------------*/
 
-		game.onStart();
+		//game.onStart();
 		
 		/*---------------SCENE-------------*/
 		
 		scene.addVoxelGrid(grid);
 		scene.addAllEntities(normalMapEntities);
 		scene.addPlayer(player1);
+		scene.addEntity(player1);
 		scene.addCamera(camera);
 		scene.addLight(sun);
 		scene.addAudioSource(ambientSource);
@@ -211,7 +212,8 @@ public class LoopGame implements Loop {
 	}
 	
 	@Override
-	public void run() {		
+	public void run() {	
+		sceneRenderer.init(camera, loader);
 		while(!Display.isCloseRequested()) {
 			if(Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
 				break;

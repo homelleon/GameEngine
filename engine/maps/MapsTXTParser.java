@@ -75,7 +75,6 @@ public class MapsTXTParser implements MapsParser {
                             (float) Float.valueOf(currentLine[6])));
                     eScales.add(Float.valueOf(currentLine[7]));
                     eTypes.add(Boolean.valueOf(currentLine[8]));
-        			System.out.println(eNames.get(eNames.size()-1));
 	        	}
 	        	
 	        	/*Read normal mapped entities*/
@@ -180,6 +179,47 @@ public class MapsTXTParser implements MapsParser {
 			map.createParticles(pNames.get(i), pTexs.get(i), pDims.get(i), pAdds.get(i), pPpss.get(i), pSpeeds.get(i), pGravities.get(i), pLifes.get(i), pScales.get(i));
 
 		}
+		
+		//Clear
+		
+		/* entities */
+		eNames.clear();
+        eModels.clear();
+        eTextures.clear();
+        eCoords.clear();
+        eScales.clear(); 
+        eTypes.clear();
+        
+        /* terrains */
+        tNames.clear();
+        tCoords.clear();
+        tBaseTexs.clear();
+        trTexs.clear();
+        tgTexs.clear();
+        tbTexs.clear();
+        tBlends.clear();
+        tProcGens.clear();
+        tHeights.clear();
+        tAmplitudes.clear();
+        tOctaves.clear();
+        tRoughnesses.clear();
+        
+        /* audio sources */
+        aNames.clear();
+        aPaths.clear();
+        aCoords.clear();
+        aMaxDistances.clear();
+        
+        /* particle systems */
+        pNames.clear();
+        pTexs.clear();
+        pDims.clear();
+        pAdds.clear();
+        pPpss.clear();
+        pSpeeds.clear();
+        pGravities.clear();
+        pLifes.clear();
+        pScales.clear();
 		
 		map.setTerrains(terrains);
 		map.setAudioSources(audios);

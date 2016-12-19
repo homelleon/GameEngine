@@ -118,9 +118,10 @@ public class MasterRenderer {
 	
 	public void renderScene(Scene scene, Camera camera, Vector4f clipPlane, Texture environmentMap) {
 			this.environmentMap = environmentMap;
-			for (Terrain terrain : terrains) {
+			for (Terrain terrain : scene.getTerrains().values()) {
 				processTerrain(terrain);
 			}
+			
 			for (Entity entity : scene.getEntities().values()) {
 				if(entity.getType() == ES.ENTITY_TYPE_SIMPLE) {
 					processEntity(entity);

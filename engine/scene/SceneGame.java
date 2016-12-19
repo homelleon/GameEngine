@@ -2,6 +2,7 @@ package scene;
 
 import java.util.Collection;
 import java.util.Map;
+import java.util.WeakHashMap;
 
 import audio.AudioSource;
 import cameras.Camera;
@@ -18,17 +19,17 @@ import water.WaterTile;
 
 public class SceneGame implements Scene {
 	
-	private Map<String, Entity> entities;
-	private Map<String, Player> players;
-	private Map<String, Terrain> terrains;
-	private Map<String, WaterTile> waters;
-	private Map<String, VoxelGrid> grids;
-	private Map<String, ParticleSystem> particles;
-	private Map<String, Camera> cameras;
-	private Map<String, Light> lights;
-	private Map<String, AudioSource> audioSources;
-	private Map<String, GuiTexture> guis;
-	private Map<String, GuiText> texts;
+	private Map<String, Entity> entities = new WeakHashMap<String, Entity>();
+	private Map<String, Player> players = new WeakHashMap<String, Player>();
+	private Map<String, Terrain> terrains = new WeakHashMap<String, Terrain>();
+	private Map<String, WaterTile> waters = new WeakHashMap<String, WaterTile>();
+	private Map<String, VoxelGrid> grids = new WeakHashMap<String, VoxelGrid>();
+	private Map<String, ParticleSystem> particles = new WeakHashMap<String, ParticleSystem>();
+	private Map<String, Camera> cameras = new WeakHashMap<String, Camera>();
+	private Map<String, Light> lights = new WeakHashMap<String, Light>();
+	private Map<String, AudioSource> audioSources = new WeakHashMap<String, AudioSource>();
+	private Map<String, GuiTexture> guis = new WeakHashMap<String, GuiTexture>();
+	private Map<String, GuiText> texts = new WeakHashMap<String, GuiText>();
 	
 	public SceneGame() {}
 	
