@@ -17,7 +17,7 @@ import toolbox.ObjectUtils;
 public class MapsTXTParser implements MapsParser {
 
 	@Override
-	public GameMap readMap(String fileName, BufferedReader reader, Loader loader) {	
+	public GameMap readMap(String fileName, BufferedReader reader, Loader loader) {
         String line;
         
         /* entities */
@@ -75,6 +75,7 @@ public class MapsTXTParser implements MapsParser {
                             (float) Float.valueOf(currentLine[6])));
                     eScales.add(Float.valueOf(currentLine[7]));
                     eTypes.add(Boolean.valueOf(currentLine[8]));
+        			System.out.println(eNames.get(eNames.size()-1));
 	        	}
 	        	
 	        	/*Read normal mapped entities*/
@@ -99,7 +100,7 @@ public class MapsTXTParser implements MapsParser {
                     	tRoughnesses.add(Float.valueOf(currentLine[12]));
                     } else {
                     	tHeights.add(String.valueOf(currentLine[10]));
-                    }  
+                    } 
 	        	}
 	        	
 	        	/*Read audio loops*/
@@ -177,6 +178,7 @@ public class MapsTXTParser implements MapsParser {
 		/* create particle systems */
 		for(int i=0;i<pNames.size();i++) { 
 			map.createParticles(pNames.get(i), pTexs.get(i), pDims.get(i), pAdds.get(i), pPpss.get(i), pSpeeds.get(i), pGravities.get(i), pLifes.get(i), pScales.get(i));
+
 		}
 		
 		map.setTerrains(terrains);

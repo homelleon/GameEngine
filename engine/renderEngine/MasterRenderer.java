@@ -136,8 +136,8 @@ public class MasterRenderer {
 			render(scene.getLights().values(), camera, clipPlane);
 		}
 	
-	public void renderShadowMap(Scene scene, String sunName, 
-			String cameraName) {
+	public void renderShadowMap(Scene scene, Light sun, 
+			Camera camera) {
 		for(Entity entity : scene.getEntities().values()) {
 			if(entity.getType() == ES.ENTITY_TYPE_SIMPLE) {
 				processEntity(entity);
@@ -146,7 +146,7 @@ public class MasterRenderer {
 			}
 		}
 		
-		shadowMapRenderer.render(entities, terrains, normalMapEntities, scene.getLights().get(sunName), scene.getCameras().get(cameraName));
+		shadowMapRenderer.render(entities, terrains, normalMapEntities, sun, camera);
 		entities.clear();
 		normalMapEntities.clear();
 		terrains.clear();
