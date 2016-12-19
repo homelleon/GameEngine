@@ -6,6 +6,7 @@ import scene.ES;
 
 public class VoxelGrid {
 	
+	private String name;	
 	private Voxel[][][] voxels;
 	private Vector3f position;
 	private int size;
@@ -46,6 +47,10 @@ public class VoxelGrid {
 			}
 		}
 		return chunk; 
+	}
+	
+	public String getName() {
+		return this.name;
 	}
 	
 	public Vector3f getPosition() {

@@ -2,11 +2,11 @@ package gameMain;
 
 import org.lwjgl.util.vector.Vector3f;
 
-import engineMain.Main;
+import engineMain.EngineMain;
 import entities.Entity;
 import particles.ParticleSystem;
 import physicMain.PE10;
-import scene.Scene;
+import scene.SceneO;
 
 public class MyGame implements Game {
 	
@@ -14,7 +14,7 @@ public class MyGame implements Game {
 	private int time = 0;
 	private ParticleSystem particles;
 	private int world1;
-	private Scene scene;
+	private SceneO scene;
 	
 		/* 
 		 * use "Main.getMap()" to get methods of Map
@@ -23,7 +23,7 @@ public class MyGame implements Game {
 		 */	
 		public void onStart() {
 			PE10.initialize();
-			scene = Main.getScene();
+			scene = EngineMain.getScene();
 			//scene.setTerrainWiredFrame(true);
 			world1 = PE10.peCreateWorld(new Vector3f(0,0,0), new Vector3f(0,0,0));
 			scene.getMap().createEntity("Bo", "cube", "Cube1", new Vector3f(70, 50, 70), 0, 1, 0, 8);

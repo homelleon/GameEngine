@@ -7,7 +7,7 @@ import java.util.WeakHashMap;
 
 import org.lwjgl.util.vector.Vector3f;
 
-import audio.Source;
+import audio.AudioSource;
 import cameras.Camera;
 import entities.Entity;
 import entities.EntityTextured;
@@ -29,7 +29,7 @@ public class GameMap {
 	private String name;
 	private Map<String, Entity> entities = new WeakHashMap<String, Entity>();
 	private Map<String, Terrain> terrains = new WeakHashMap<String, Terrain>();
-	private Map<String, Source> audioSorces = new WeakHashMap<String, Source>();
+	private Map<String, AudioSource> audioSorces = new WeakHashMap<String, AudioSource>();
 	private Map<String, Trigger> triggers = new WeakHashMap<String, Trigger>();
 	private Map<String, ParticleSystem> particleSystems = new WeakHashMap<String, ParticleSystem>();
 	private Map<String, GuiTexture> guis = new WeakHashMap<String, GuiTexture>();
@@ -91,17 +91,17 @@ public class GameMap {
 	 * 
 	 */
 
-	public Map<String, Source> getAudioSources() {
+	public Map<String, AudioSource> getAudioSources() {
 		return audioSorces;
 	}
 
-	public void setAudioSources(List<Source> audioList) {
-		for(Source audio : audioList) {
+	public void setAudioSources(List<AudioSource> audioList) {
+		for(AudioSource audio : audioList) {
 			this.audioSorces.put(audio.getName(), audio);
 		}
 	}
 	
-	public void addAudio(Source auido) {
+	public void addAudio(AudioSource auido) {
 		this.audioSorces.put(auido.getName(), auido);
 	}
 	
@@ -259,7 +259,7 @@ public class GameMap {
 	}
 	
 	public void createAudioSource(String name, String path, int maxDistance, Vector3f coords) {
-		Source source = new Source(name, path, maxDistance, coords);
+		AudioSource source = new AudioSource(name, path, maxDistance, coords);
 		this.audioSorces.put(name, source);
 	}
 

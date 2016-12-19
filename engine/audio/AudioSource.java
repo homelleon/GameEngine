@@ -3,13 +3,13 @@ package audio;
 import org.lwjgl.openal.AL10;
 import org.lwjgl.util.vector.Vector3f;
 
-public class Source {
+public class AudioSource {
 	
 	private String name;
 	private int sourceId;
 	private String pathName; 
 	
-	public Source(String name, String path, int maxDistance) {
+	public AudioSource(String name, String path, int maxDistance) {
 		sourceId = AL10.alGenSources();
 		AL10.alSourcef(sourceId, AL10.AL_ROLLOFF_FACTOR, 1);
 		AL10.alSourcef(sourceId, AL10.AL_REFERENCE_DISTANCE, 6);
@@ -22,7 +22,7 @@ public class Source {
 		this.pathName = path;
 	}
 	
-	public Source(String name, String path, int maxDistance, Vector3f coords) {
+	public AudioSource(String name, String path, int maxDistance, Vector3f coords) {
 		sourceId = AL10.alGenSources();
 		AL10.alSourcef(sourceId, AL10.AL_ROLLOFF_FACTOR, 1);
 		AL10.alSourcef(sourceId, AL10.AL_REFERENCE_DISTANCE, 6);
@@ -36,7 +36,7 @@ public class Source {
 		this.setPosition(coords.x, coords.y, coords.z);
 	}
 	
-	public Source(String path){
+	public AudioSource(String path){
 		sourceId = AL10.alGenSources();
 		AL10.alSourcef(sourceId, AL10.AL_ROLLOFF_FACTOR, 1);
 		AL10.alSourcef(sourceId, AL10.AL_REFERENCE_DISTANCE, 6);

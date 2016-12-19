@@ -5,18 +5,18 @@ import org.lwjgl.opengl.Display;
 
 import maps.GameMap;
 import scene.ES;
-import scene.Scene;
-import scene.SceneEditor;
+import scene.SceneO;
+import scene.SceneEditorO;
 
-public class MainEditorLoop implements Engine { 
+public class MainEditorLoop implements Loop { 
 	
 	private static final String SETTINGS_NAME = "settings";
 	
-	private Scene scene; 
+	private SceneO scene; 
 	
 	public MainEditorLoop() { 
 		DisplayManager.creatDisplay(ES.DISPLAY_EDIT_MODE);
-		scene = new SceneEditor();		
+		scene = new SceneEditorO();		
 	}
 
 	@Override
@@ -50,7 +50,7 @@ public class MainEditorLoop implements Engine {
 		Display.destroy();		
 	}
 	
-	public Scene getScene() {
+	public SceneO getScene() {
 		return scene;
 	}
 

@@ -1,205 +1,281 @@
 package scene;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
+import java.util.Map;
 
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.openal.AL10;
-import org.lwjgl.openal.AL11;
-import org.lwjgl.opengl.Display;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL30;
-import org.lwjgl.util.vector.Vector2f;
-import org.lwjgl.util.vector.Vector3f;
-
-import audio.AudioMaster;
-import audio.Source;
-import cameras.CameraPlayer;
-import entities.EntitiesManager;
+import audio.AudioSource;
+import cameras.Camera;
 import entities.Entity;
 import entities.Light;
 import entities.Player;
-import entities.PlayerTextured;
-import environmentMap.EnvironmentMapRenderer;
-import fontMeshCreator.FontType;
-import fontMeshCreator.GUIText;
-import fontRendering.TextMaster;
-import guis.GuiManager;
-import guis.GuiRenderer;
+import fontMeshCreator.GuiText;
 import guis.GuiTexture;
 import maps.GameMap;
-import maps.MapsTXTWriter;
-import maps.MapsWriter;
-import models.TexturedModel;
-import optimisations.MasterOptimisation;
-import particles.ParticleMaster;
 import particles.ParticleSystem;
-import particles.ParticlesManager;
-import postProcessing.Fbo;
-import postProcessing.PostProcessing;
-import renderEngine.MasterRenderer;
 import terrains.Terrain;
-import toolbox.MousePicker;
-import toolbox.ObjectUtils;
 import voxels.VoxelGrid;
-import water.WaterFrameBuffers;
-import water.WaterRenderer;
-import water.WaterShader;
 import water.WaterTile;
 
-public class SceneGame extends SceneManager implements Scene {
+public class SceneGame implements Scene {
 	
-	public SceneGame() {
-		cameraName = "Main";
-		playerName = "Player1";
+	private Map<String, Entity> entities;
+	private Map<String, Player> players;
+	private Map<String, Terrain> terrains;
+	private Map<String, WaterTile> waters;
+	private Map<String, VoxelGrid> grids;
+	private Map<String, ParticleSystem> particles;
+	private Map<String, Camera> cameras;
+	private Map<String, Light> lights;
+	private Map<String, AudioSource> audioSources;
+	private Map<String, GuiTexture> guis;
+	private Map<String, GuiText> texts;
+	
+	public SceneGame() {}
+	
+	public SceneGame(GameMap map) {
+		this.addAllEntities(map.getEntities().values());
+		this.addAllPlayers(map.getPlayers().values());
+		this.addAllTerrains(map.getTerrains().values());
+		this.addAllWaters(map.getWaters().values());
+		this.addAllParticles(map.getParticles().values());
+		this.addAllCameras(map.getCameras().values());
+		this.addAllLights(map.getLights().values());
+		this.addAllAudioSources(map.getAudioSources().values());
+		this.addAllGuis(map.getGuis().values());
 	}
 	
-	public void init() {
-		super.init();
-		/*-------------OPTIMIZATION-------------*/
-	
-		
-		/*-------------TERRAIN------------------*/
+	/* 
+	 * @Enitites
+	 */
+	@Override
+	public Map<String, Entity> getEntities() {
+		return this.entities;
+	}
 
-        /*--------------GAME OBJECTS-------------*/
-		
-		List<Entity> normalMapEntities = EntitiesManager.createNormalMappedEntities(loader);
+	@Override
+	public void addEntity(Entity entity) {
+		this.entities.put(entity.getName(), entity);
+	}
 
-		map.setEntities(normalMapEntities);
-		
-		/*------------------PLAYER-----------------*/
-		TexturedModel cubeModel = ObjectUtils.loadStaticModel("cube", "cube1", loader);
-		Player player1 = new PlayerTextured(playerName,cubeModel, new Vector3f(100, 0, 10), 0, 0, 0, 1);
-		player1.getModel().getTexture().setReflectiveFactor(1.0f);
-		player1.getModel().getTexture().setRefractiveFactor(1.0f);
-		player1.getModel().getTexture().setRefractiveIndex(1.33f);
-		player1.getModel().getTexture().setShineDamper(5.0f);
-		map.addPlayer(player1);
-		map.addEntity(player1);
-		
-		/*------------------CHUNKS-------------------*/
-		this.grids = new ArrayList<VoxelGrid>();
-		VoxelGrid grid = new VoxelGrid(new Vector3f(0,0,0), 80);
-		Terrain terrain = map.getTerrains().get("Terrain1");
-		for(int x = 0; x<grid.getSize()-1; x++) {
-				for(int z = 0; z<grid.getSize()-1; z++) {
-					for(int y = 0; y<grid.getSize()-1; y++) {
-						float height = terrain.getHeightOfTerrain(x, z);
-						if(height>=0) {
-							if(y< (int) height) {
-								grid.getVoxel(x, y, z).setAir(false);
-							}
-						}
-					}
-				}
+	@Override
+	public void addAllEntities(Collection<Entity> entityList) {
+		for(Entity entity : entityList) {
+			this.entities.put(entity.getName(), entity);
 		}
-		grids.add(grid);
-		
-		/*------------------CAMERA--------------------*/
-		CameraPlayer camera = new CameraPlayer(player1, cameraName);
-		map.addCamera(camera);
-		
-
-		
-		/*------------------LIGHTS----------------*/
-		Light sun = new Light("Sun", new Vector3f(-100000,150000,-100000), new Vector3f(1.3f,1.3f,1.3f));
-		//lights.add(new Light(new Vector3f(200,2,200),new Vector3f(10,0,0), new Vector3f(1, 0.01f, 0.002f)));
-		//lights.add(new Light(new Vector3f(20,2,20),new Vector3f(0,10,0), new Vector3f(0, 0.01f, 0.002f)));
-		map.addLight(sun);
-		
-		this.time = new GameTime(10);
-		
-		this.renderer = new MasterRenderer(loader, camera);
-		this.optimisation = new MasterOptimisation(camera, renderer.getProjectionMatrix());
-		
-		/*----------------PARTICLES-----------------*/
-		List<ParticleSystem> particleList = ParticlesManager.createParticleSystem(loader);
-		map.setParticles(particleList);
-		
-		ParticleMaster.init(loader, renderer.getProjectionMatrix());				
-		/*------------------FBO-------------------*/
-		
-		this.multisampleFbo = new Fbo(Display.getWidth(), Display.getHeight());
-		this.outputFbo = new Fbo(Display.getWidth(), Display.getHeight(), Fbo.DEPTH_TEXTURE);
-		this.outputFbo2 = new Fbo(Display.getWidth(), Display.getHeight(), Fbo.DEPTH_TEXTURE);
-		PostProcessing.isBloomed = true;
-		PostProcessing.isBlured = true;
-		PostProcessing.init(loader);
-
-		/*----------------FONTS-----------------*/
-		TextMaster.init(loader);
-		this.font = 
-				new FontType(loader.loadTexture(ES.FONT_PATH, "candara"),
-						new File(ES.FONT_PATH + "candara.fnt"));
-		GUIText text = new GUIText("This is an Alfa-version of the game engine", 
-				3, font, new Vector2f(0.25f, 0), 0.5f, true);
-		
-		text.setColour(1, 0, 0);
-		
-		/*--------------AUDIO----------------*/
-		
-		AudioMaster.init();
-		AudioMaster.setListenerData(0,0,0);
-		AL10.alDistanceModel(AL11.AL_LINEAR_DISTANCE_CLAMPED);
-		Source ambientSource = new Source("birds", "forest.wav", 200);
-		ambientSource.setLooping(true);
-		ambientSource.setVolume(0.3f);
-		ambientSource.play();
-		ambientSource.setPosition(10, 20, 10);			
-		map.addAudio(ambientSource);
-		
-		/*--------------GUI-----------------*/
-		List<GuiTexture> guiList = GuiManager.createGui(loader);
-		map.setGuis(guiList);
-		
-		this.guiRenderer = new GuiRenderer(loader);		
-		
-		/*--------------WATER----------------*/
-		this.waterFBOs = new WaterFrameBuffers();
-		WaterShader waterShader = new WaterShader();
-		this.waterRenderer = new WaterRenderer(loader, waterShader, renderer.getProjectionMatrix(), waterFBOs);
-		
-		List<WaterTile> waterList = new ArrayList<WaterTile>();
-		WaterTile water = new  WaterTile("Water", 0, 0, -4, 1000);
-		waterList.add(water);
-		waterList.stream().forEach((i) -> i.setTilingSize(0.05f));
-		waterList.stream().forEach((i) -> i.setWaterSpeed(0.7f));
-		waterList.stream().forEach((i) -> i.setWaveStrength(0.1f));
-		map.setWaters(waterList);
-		
-		/*---------------IN GAME TOOLS--------------*/	
-		this.picker = new MousePicker(camera, renderer.getProjectionMatrix());
-		
-		/*---------------PREPARE-------------*/
-		enviroRenderer = new EnvironmentMapRenderer(renderer.getProjectionMatrix());
-		game.onStart();
-		spreadEntitiesOnHeights(map.getEntities().values());		
 	}
 	
-	/*Main render*/
-			
-	public void render() {
-		super.render();
-		
-		map.getPlayers().get(playerName).move(map.getTerrains().values());
-		
-		if(Keyboard.isKeyDown(Keyboard.KEY_T)) {
-			MapsWriter mapWriter = new MapsTXTWriter();
-			GameMap map = new GameMap("newMap", loader);
-			map.setEntities(map.getEntities().values());
-			map.setTerrains(map.getTerrains().values());
-			mapWriter.write(map);
-			System.out.println("save");
+	/* 
+	 * @Players
+	 */	
+	@Override
+	public Map<String, Player> getPlayers() {
+		return this.players;
+	}
+
+	@Override
+	public void addPlayer(Player player) {
+		this.players.put(player.getName(), player);
+	}
+
+	@Override
+	public void addAllPlayers(Collection<Player> playerList) {
+		for(Player player : playerList) {
+			this.players.put(player.getName(), player);
 		}
-		
-		renderParticles();				
-		GL11.glEnable(GL30.GL_CLIP_DISTANCE0);
-		renderReflectionTexture();		
-		renderRefractionTexture();
-    	GL11.glDisable(GL30.GL_CLIP_DISTANCE0);
-	    renderToScreen();
 	}
 	
+
+	/* 
+	 * @Terrains
+	 */
+
+	@Override
+	public Map<String, Terrain> getTerrains() {
+		return this.terrains;
+	}
+
+	@Override
+	public void addTerrain(Terrain terrain) {
+		this.terrains.put(terrain.getName(), terrain);
+	}
+
+	@Override
+	public void addAllTerrains(Collection<Terrain> terrainList) {
+		for(Terrain terrain : terrainList) {
+			this.terrains.put(terrain.getName(), terrain);
+		}
+	}
+	
+	/* 
+	 * @Waters
+	 */
+	
+	@Override
+	public Map<String, WaterTile> getWaters() {
+		return this.waters;
+	}
+
+	@Override
+	public void addWater(WaterTile water) {
+		this.waters.put(water.getName(), water);
+	}
+
+	@Override
+	public void addAllWaters(Collection<WaterTile> waterList) {
+		for(WaterTile water : waterList) {
+			this.waters.put(water.getName(), water);
+		}
+	}
+	
+	/* 
+	 * @VoxelGrids
+	 */
+	
+	@Override
+	public Map<String, VoxelGrid> getVoxelGrids() {
+		return this.grids;
+	}
+
+	@Override
+	public void addVoxelGrid(VoxelGrid grid) {
+		this.grids.put(grid.getName(), grid);
+	}
+
+	@Override
+	public void addAllVoxelGrids(Collection<VoxelGrid> gridList) {
+		for(VoxelGrid grid : gridList) {
+			this.grids.put(grid.getName(), grid);
+		}
+	}
+	
+	/* 
+	 * @Particles
+	 */
+
+	@Override
+	public Map<String, ParticleSystem> getParticles() {
+		return this.particles;
+	}
+
+	@Override
+	public void addParticle(ParticleSystem particle) {
+		this.particles.put(particle.getName(), particle);
+	}
+
+	@Override
+	public void addAllParticles(Collection<ParticleSystem> particleList) {
+		for(ParticleSystem particle : particleList) {
+			this.particles.put(particle.getName(), particle);
+		}
+	}
+
+
+	/* 
+	 * @Cameras
+	 */
+
+	@Override
+	public Map<String, Camera> getCameras() {
+		return this.cameras;
+	}
+
+	@Override
+	public void addCamera(Camera camera) {
+		this.cameras.put(camera.getName(), camera);
+	}
+
+	@Override
+	public void addAllCameras(Collection<Camera> cameraList) {
+		for(Camera camera : cameraList) {
+			this.cameras.put(camera.getName(), camera);
+		}
+	}
+	
+
+	/* 
+	 * @Lights
+	 */
+	
+
+	@Override
+	public Map<String, Light> getLights() {
+		return this.lights;
+	}
+
+	@Override
+	public void addLight(Light light) {
+		this.lights.put(light.getName(), light);
+	}
+
+	@Override
+	public void addAllLights(Collection<Light> lightList) {
+		for(Light light : lightList) {
+			this.lights.put(light.getName(), light);
+		}
+	}
+	
+
+	/* 
+	 * @AudioSources
+	 */
+	
+	@Override
+	public Map<String, AudioSource> getAudioSources() {
+		return this.audioSources;
+	}
+
+	@Override
+	public void addAudioSource(AudioSource source) {
+		this.audioSources.put(source.getName(), source);
+	}
+
+	@Override
+	public void addAllAudioSources(Collection<AudioSource> sourceList) {
+		for(AudioSource source : sourceList) {
+			this.audioSources.put(source.getName(), source);
+		}
+	}
+	
+	/* 
+	 * @GuiTexture
+	 */
+
+	@Override
+	public Map<String, GuiTexture> getGuis() {
+		return this.guis;
+	}
+
+	@Override
+	public void addGui(GuiTexture gui) {
+		this.guis.put(gui.getName(), gui);
+	}
+
+	@Override
+	public void addAllGuis(Collection<GuiTexture> guiList) {
+		for(GuiTexture gui : guiList) {
+			this.guis.put(gui.getName(), gui);
+		}
+	}
+	
+	/* 
+	 * @GuiText
+	 */
+
+	@Override
+	public Map<String, GuiText> getTexts() {
+		return this.texts;
+	}
+
+	@Override
+	public void addText(GuiText text) {
+		this.texts.put(text.getName(), text);
+	}
+
+	@Override
+	public void addAllTexts(Collection<GuiText> textList) {
+		for(GuiText text : textList) {
+			this.texts.put(text.getName(), text);
+		}
+	}
 
 }

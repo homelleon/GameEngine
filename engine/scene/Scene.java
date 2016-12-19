@@ -1,16 +1,65 @@
 package scene;
 
-import maps.GameMap;
+import java.util.Collection;
+import java.util.Map;
+
+import audio.AudioSource;
+import cameras.Camera;
+import entities.Entity;
+import entities.Light;
+import entities.Player;
+import fontMeshCreator.GuiText;
+import guis.GuiTexture;
+import particles.ParticleSystem;
+import terrains.Terrain;
+import voxels.VoxelGrid;
+import water.WaterTile;
 
 public interface Scene {
-
-	public void loadMap(String name);
-	public GameMap getMap();
-	public void render();
-	public void init();
-	public void cleanUp();
-	public void setScenePaused(boolean isScenePaused);
-	public void setTerrainWiredFrame(boolean value);	
-	public void setEntityWiredFrame(boolean value);
 	
+	Map<String, Entity> getEntities();
+	void addEntity(Entity entity);
+	void addAllEntities(Collection<Entity> entityList);
+	
+	Map<String, Player> getPlayers();
+	void addPlayer(Player player);
+	void addAllPlayers(Collection<Player> playerList);
+	
+	Map<String, Terrain> getTerrains();
+	void addTerrain(Terrain terrain);
+	void addAllTerrains(Collection<Terrain> terrainList);
+	
+	Map<String, WaterTile> getWaters();
+	void addWater(WaterTile water);
+	void addAllWaters(Collection<WaterTile> waterList);	
+	
+	Map<String, VoxelGrid> getVoxelGrids();
+	void addVoxelGrid(VoxelGrid grid);
+	void addAllVoxelGrids(Collection<VoxelGrid> gridList);
+	
+	Map<String, ParticleSystem> getParticles();
+	void addParticle(ParticleSystem particle);
+	void addAllParticles(Collection<ParticleSystem> particleList);
+	
+	Map<String, Camera> getCameras();
+	void addCamera(Camera camera);
+	void addAllCameras(Collection<Camera> cameraList);	
+	
+	Map<String, Light> getLights();
+	void addLight(Light light);
+	void addAllLights(Collection<Light> lightList);
+	
+	Map<String, AudioSource> getAudioSources();
+	void addAudioSource(AudioSource source);
+	void addAllAudioSources(Collection<AudioSource> sourceList);	
+	
+	Map<String, GuiTexture> getGuis();
+	void addGui(GuiTexture gui);
+	void addAllGuis(Collection<GuiTexture> guiList);
+
+	Map<String, GuiText> getTexts();
+	void addText(GuiText text);
+	void addAllTexts(Collection<GuiText> textList);
+
+
 }

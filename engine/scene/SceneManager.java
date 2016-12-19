@@ -9,12 +9,12 @@ import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 
 import audio.AudioMaster;
-import audio.Source;
+import audio.AudioSource;
 import engineMain.DisplayManager;
 import entities.Entity;
 import environmentMap.EnvironmentMapRenderer;
 import fontMeshCreator.FontType;
-import fontMeshCreator.GUIText;
+import fontMeshCreator.GuiText;
 import fontRendering.TextMaster;
 import gameMain.Game;
 import gameMain.MyGame;
@@ -39,11 +39,13 @@ import water.WaterRenderer;
 public abstract class SceneManager {
 	
     protected Game game = new MyGame();
+    
+    
 	
     protected Loader loader;
     protected MasterRenderer renderer;
     protected EnvironmentMapRenderer enviroRenderer;
-    protected Source ambientSource;
+    protected AudioSource ambientSource;
 	protected Texture environmentMap;
 	
     protected String cameraName;
@@ -79,6 +81,7 @@ public abstract class SceneManager {
     	if (!this.mapIsLoaded) {
 			loadMap("map");
 		}		
+    	
     }
     
     protected void render() {
@@ -148,20 +151,20 @@ public abstract class SceneManager {
 		loader.cleanUp();
     }
      
-    protected GUIText createFPSText(float FPS) {
-    	return new GUIText("FPS: " + String.valueOf((int)FPS), 2, font, new Vector2f(0.65f, 0), 0.5f, true);
+    protected GuiText createFPSText(float FPS) {
+    	return new GuiText("FPS","FPS: " + String.valueOf((int)FPS), 2, font, new Vector2f(0.65f, 0), 0.5f, true);
 	}
     
-    protected GUIText createPickerCoordsText(MousePicker picker) {
+    protected GuiText createPickerCoordsText(MousePicker picker) {
     	picker.update();
 		String text = (String) String.valueOf(picker.getCurrentRay());
-		return new GUIText(text, 1, font, new Vector2f(0.3f, 0.2f), 1f, true);    	
+		return new GuiText("Coords", text, 1, font, new Vector2f(0.3f, 0.2f), 1f, true);    	
     }
     
     protected void renderText() {
-    	GUIText fpsText = createFPSText(1 / DisplayManager.getFrameTimeSeconds());
+    	GuiText fpsText = createFPSText(1 / DisplayManager.getFrameTimeSeconds());
 	    fpsText.setColour(1, 0, 0);
-	    GUIText coordsText = createPickerCoordsText(picker);
+	    GuiText coordsText = createPickerCoordsText(picker);
 	    coordsText.setColour(1, 0, 0);
 	    TextMaster.render();
 	    fpsText.remove();

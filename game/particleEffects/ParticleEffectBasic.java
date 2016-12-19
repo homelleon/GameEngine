@@ -2,7 +2,7 @@ package particleEffects;
 
 import org.lwjgl.util.vector.Vector3f;
 
-import engineMain.Main;
+import engineMain.EngineMain;
 import particles.ParticleSystem;
 import particles.ParticleTexture;
 
@@ -17,7 +17,7 @@ public class ParticleEffectBasic extends ParticleSystem {
 	}
 	
 	public void create(String name) {
-		Main.getScene().getMap().createParticles("Part", "cosmic", 4, true, 50, 25, 0.3f, 4, 1);
+		EngineMain.getScene().getMap().createParticles("Part", "cosmic", 4, true, 50, 25, 0.3f, 4, 1);
 	}
 	
 	public void generateParticles() {

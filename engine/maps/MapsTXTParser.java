@@ -8,7 +8,7 @@ import java.util.List;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
-import audio.Source;
+import audio.AudioSource;
 import renderEngine.Loader;
 import terrains.Terrain;
 import terrains.TerrainTextured;
@@ -160,10 +160,10 @@ public class MapsTXTParser implements MapsParser {
         }
         
         //*Create audios*//
-        List<Source> audios = new ArrayList<Source>();    
+        List<AudioSource> audios = new ArrayList<AudioSource>();    
         
         for(int i=0;i<audios.size();i++) {
-        	Source source = new Source(aNames.get(i), aPaths.get(i), aMaxDistances.get(i), aCoords.get(i));
+        	AudioSource source = new AudioSource(aNames.get(i), aPaths.get(i), aMaxDistances.get(i), aCoords.get(i));
         	audios.add(source);
         }
         
