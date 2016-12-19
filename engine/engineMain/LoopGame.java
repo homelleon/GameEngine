@@ -17,6 +17,7 @@ import org.lwjgl.util.vector.Vector4f;
 
 import audio.AudioMaster;
 import audio.AudioSource;
+import cameras.Camera;
 import cameras.CameraPlayer;
 import entities.EntitiesManager;
 import entities.Entity;
@@ -51,10 +52,10 @@ import scene.ES;
 import scene.GameTime;
 import scene.Scene;
 import scene.SceneGame;
-import scene.SceneO;
 import terrains.Terrain;
 import textures.Texture;
 import toolbox.MousePicker;
+import toolbox.OGLUtils;
 import toolbox.ObjectUtils;
 import voxels.VoxelGrid;
 import water.WaterFrameBuffers;
@@ -62,7 +63,7 @@ import water.WaterRenderer;
 import water.WaterShader;
 import water.WaterTile;
 
-public class GameLoop implements Loop {
+public class LoopGame implements Loop {
 	
 	private static final String SETTINGS_NAME = "settings";
 	
@@ -80,6 +81,9 @@ public class GameLoop implements Loop {
     private String playerName;
 	
     private Scene scene;
+    private Camera camera;
+    private Player player;
+    private Light sun;
     protected GameMap map;
     protected GuiRenderer guiRenderer;
     protected FontType font;
@@ -95,7 +99,7 @@ public class GameLoop implements Loop {
     protected boolean mapIsLoaded = false;
     protected boolean isPaused = false;
 	
-	public GameLoop() {
+	public LoopGame() {
 		DisplayManager.creatDisplay();
 	}
 	
@@ -111,6 +115,7 @@ public class GameLoop implements Loop {
 	
 	@Override
 	public void init() {
+		
 		if (!this.mapIsLoaded) {
 			loadMap("map");
 		}
@@ -119,11 +124,6 @@ public class GameLoop implements Loop {
 		cameraName = "Main";
 		playerName = "Player1";
 		
-		/*-------------OPTIMIZATION-------------*/
-	
-		
-		/*-------------TERRAIN------------------*/
-
         /*--------------GAME OBJECTS-------------*/
 		
 		List<Entity> normalMapEntities = EntitiesManager.createNormalMappedEntities(loader);
@@ -137,6 +137,7 @@ public class GameLoop implements Loop {
 		player1.getModel().getTexture().setRefractiveFactor(1.0f);
 		player1.getModel().getTexture().setRefractiveIndex(1.33f);
 		player1.getModel().getTexture().setShineDamper(5.0f);
+		this.player = player1;
 
 		
 		/*------------------CHUNKS-------------------*/
@@ -158,12 +159,12 @@ public class GameLoop implements Loop {
 		
 		/*------------------CAMERA--------------------*/
 		CameraPlayer camera = new CameraPlayer(player1, cameraName);
-	
+		this.camera = camera;
 		
 
 		
 		/*------------------LIGHTS----------------*/
-		Light sun = new Light("Sun", new Vector3f(-100000,150000,-100000), new Vector3f(1.3f,1.3f,1.3f));
+		this.sun = new Light("Sun", new Vector3f(-100000,150000,-100000), new Vector3f(1.3f,1.3f,1.3f));
 		//lights.add(new Light(new Vector3f(200,2,200),new Vector3f(10,0,0), new Vector3f(1, 0.01f, 0.002f)));
 		//lights.add(new Light(new Vector3f(20,2,20),new Vector3f(0,10,0), new Vector3f(0, 0.01f, 0.002f)));
 		
@@ -240,7 +241,6 @@ public class GameLoop implements Loop {
 		scene.addVoxelGrid(grid);
 		scene.addAllEntities(normalMapEntities);
 		scene.addPlayer(player1);
-		scene.addEntity(player1);
 		scene.addCamera(camera);
 		scene.addLight(sun);
 		scene.addAudioSource(ambientSource);
@@ -278,11 +278,11 @@ public class GameLoop implements Loop {
     	/*
     	 * need to be deleted:
     	 */
-		scene.getCameras().get(cameraName).move();	
-		AudioMaster.setListenerData(scene.getCameras().get(cameraName).getPosition().x, scene.getCameras().get(cameraName).getPosition().y, scene.getCameras().get(cameraName).getPosition().z);
+		camera.move();	
+		AudioMaster.setListenerData(camera.getPosition().x, camera.getPosition().y, camera.getPosition().z);
 		this.environmentMap = Texture.newEmptyCubeMap(128);
-    	enviroRenderer.render(environmentMap, scene.getEntities().values(), scene.getTerrains().values(), scene.getCameras().get(cameraName));
-    	scene.getPlayers().get(playerName).move(scene.getTerrains().values());
+    	enviroRenderer.render(environmentMap, scene, cameraName);
+    	player.move(scene.getTerrains().values());
 		
 		if(Keyboard.isKeyDown(Keyboard.KEY_T)) {
 			MapsWriter mapWriter = new MapsTXTWriter();
@@ -294,38 +294,35 @@ public class GameLoop implements Loop {
 		}
 		
 		renderParticles();				
-		GL11.glEnable(GL30.GL_CLIP_DISTANCE0);
+		OGLUtils.clipDistance(true);
 		renderReflectionTexture();		
 		renderRefractionTexture();
-    	GL11.glDisable(GL30.GL_CLIP_DISTANCE0);
+		OGLUtils.clipDistance(false);
 	    renderToScreen();
 	}
 	
 	protected void renderReflectionTexture() {
-    	renderer.renderShadowMap(scene.getEntities().values(), scene.getLights().get("Sun"), scene.getCameras().get(cameraName));
+    	renderer.renderShadowMap(scene, "Sun", cameraName);
     	waterFBOs.bindReflectionFrameBuffer();
 		float distance = 2 * (scene.getCameras().get(cameraName).getPosition().y - scene.getWaters().get("Water").getHeight());
 		scene.getCameras().get(cameraName).getPosition().y -= distance;
 		scene.getCameras().get(cameraName).invertPitch();
 		//renderer.processEntity(map.getPlayers().get(playerName));
-		renderer.renderScene(scene.getEntities().values(), scene.getTerrains().values(), scene.getVoxelGrids().values(), scene.getLights().values(), 
-				scene.getCameras().get(cameraName), new Vector4f(0, 1, 0, -scene.getWaters().get("Water").getHeight()), environmentMap);
-		scene.getCameras().get(cameraName).getPosition().y += distance;
-		scene.getCameras().get(cameraName).invertPitch();
+		renderer.renderScene(scene, camera, new Vector4f(0, 1, 0, -scene.getWaters().get("Water").getHeight()), environmentMap);
+		camera.getPosition().y += distance;
+		camera.invertPitch();
     }
     
     protected void renderRefractionTexture() {
     	waterFBOs.bindRefractionFrameBuffer();
-		renderer.renderScene(scene.getEntities().values(), scene.getTerrains().values(), scene.getVoxelGrids().values(), scene.getLights().values(), 
-				scene.getCameras().get(cameraName), new Vector4f(0, -1, 0, scene.getWaters().get("Water").getHeight()+1f),environmentMap);
+		renderer.renderScene(scene, camera, new Vector4f(0, -1, 0, scene.getWaters().get("Water").getHeight()+1f), environmentMap);
     }
     
     protected void renderToScreen() {
 		waterFBOs.unbindCurrentFrameBuffer();
 		multisampleFbo.bindFrameBuffer();
 		optimisation.optimize(scene.getCameras().get(cameraName), scene.getEntities().values(), scene.getTerrains().values(), scene.getVoxelGrids().values());
-	    renderer.renderScene(scene.getEntities().values(), scene.getTerrains().values(), scene.getVoxelGrids().values(), scene.getLights().values(), 
-	    		scene.getCameras().get(cameraName), new Vector4f(0, -1, 0, 15), environmentMap);
+	    renderer.renderScene(scene, camera, new Vector4f(0, -1, 0, 15), environmentMap);
 	    waterRenderer.render(scene.getWaters().values(), scene.getCameras().get(cameraName), scene.getLights().get("Sun"));
 	    ParticleMaster.renderParticles(scene.getCameras().get(cameraName));
 	    multisampleFbo.unbindFrameBuffer();
@@ -435,9 +432,8 @@ public class GameLoop implements Loop {
     }
 
 	@Override
-	public SceneO getScene() {
-		// TODO Auto-generated method stub
-		return null;
+	public Scene getScene() {
+		return this.scene;
 	}
 
 

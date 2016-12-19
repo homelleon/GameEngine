@@ -1,6 +1,6 @@
 package engineMain;
 
-import scene.SceneO;
+import scene.Scene;
 
 public interface Loop extends Runnable { 
 	
@@ -9,5 +9,5 @@ public interface Loop extends Runnable {
 	void init();
 	void run();
 	void exit();
-	SceneO getScene();
+	Scene getScene();
 }

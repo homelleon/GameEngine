@@ -3,20 +3,19 @@ package engineMain;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 
-import maps.GameMap;
 import scene.ES;
-import scene.SceneO;
-import scene.SceneEditorO;
+import scene.Scene;
+import scene.SceneGame;
 
-public class MainEditorLoop implements Loop { 
+public class LoopEditor implements Loop { 
 	
 	private static final String SETTINGS_NAME = "settings";
 	
-	private SceneO scene; 
+	private Scene scene; 
 	
-	public MainEditorLoop() { 
+	public LoopEditor() { 
 		DisplayManager.creatDisplay(ES.DISPLAY_EDIT_MODE);
-		scene = new SceneEditorO();		
+		scene = new SceneGame();		
 	}
 
 	@Override
@@ -50,7 +49,7 @@ public class MainEditorLoop implements Loop {
 		Display.destroy();		
 	}
 	
-	public SceneO getScene() {
+	public Scene getScene() {
 		return scene;
 	}
 

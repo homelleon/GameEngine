@@ -1,21 +1,21 @@
 package engineMain;
 
-import scene.SceneO;
+import scene.Scene;
 
 public class EngineMain {
 		
-	private static Loop engine;
+	private static Loop loopGame;
 
 	public static void main(String[] args) { 
-		engine = new GameLoop();
-		engine.loadGameSettings();
-		engine.init(); 
-		engine.run();  
+		loopGame = new LoopGame();
+		loopGame.loadGameSettings();
+		loopGame.init(); 
+		loopGame.run();  
 	}
 	
 	
-	public static SceneO getScene() {
-		return engine.getScene();
+	public static Scene getScene() {
+		return loopGame.getScene();
 	}
 
 }

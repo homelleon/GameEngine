@@ -11,7 +11,9 @@ import fontRendering.TextMaster;
  * @author Karl
  *
  */
-public class GUIText {
+public class GuiText {
+	
+	private String name;
 
 	private String textString;
 	private float fontSize;
@@ -61,8 +63,9 @@ public class GUIText {
 	 * @param centered
 	 *            - whether the text should be centered or not. 
 	 */
-	public GUIText(String text, float fontSize, FontType font, Vector2f position, float maxLineLength,
+	public GuiText(String name, String text, float fontSize, FontType font, Vector2f position, float maxLineLength,
 			boolean centered) {
+		this.name = name;
 		this.textString = text;
 		this.fontSize = fontSize;
 		this.font = font;
@@ -142,6 +145,10 @@ public class GUIText {
 
 	public void setOutlineColour(Vector3f outlineColour) {
 		this.outlineColour = outlineColour;
+	}
+	
+	public String getName() {
+		return this.name;
 	}
 
 

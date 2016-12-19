@@ -19,6 +19,7 @@ import environmentMap.EnvironmentMapRenderer;
 import models.TexturedModel;
 import normalMappingRenderer.NormalMappingRenderer;
 import scene.ES;
+import scene.Scene;
 import shadows.ShadowMapMasterRenderer;
 import terrains.Terrain;
 import textures.Texture;
@@ -115,13 +116,12 @@ public class MasterRenderer {
 		this.grids.add(grid);
 	}	
 	
-	public void renderScene(Collection<Entity> entities, Collection<Terrain> terrains, Collection<VoxelGrid> grids, Collection<Light> lights,
-			Camera camera, Vector4f clipPlane, Texture environmentMap) {
+	public void renderScene(Scene scene, Camera camera, Vector4f clipPlane, Texture environmentMap) {
 			this.environmentMap = environmentMap;
 			for (Terrain terrain : terrains) {
 				processTerrain(terrain);
 			}
-			for (Entity entity : entities) {
+			for (Entity entity : scene.getEntities().values()) {
 				if(entity.getType() == ES.ENTITY_TYPE_SIMPLE) {
 					processEntity(entity);
 				} else if(entity.getType() == ES.ENTITY_TYPE_NORMAL) {
@@ -129,16 +129,16 @@ public class MasterRenderer {
 				}					
 			}
 			
-			for(VoxelGrid grid : grids) {
+			for(VoxelGrid grid : scene.getVoxelGrids().values()) {
 				processVoxel(grid);
 			}
 
-			render(lights, camera, clipPlane);
+			render(scene.getLights().values(), camera, clipPlane);
 		}
 	
-	public void renderShadowMap(Collection<Entity> entityList, Light sun, 
-			Camera camera) {
-		for(Entity entity : entityList) {
+	public void renderShadowMap(Scene scene, String sunName, 
+			String cameraName) {
+		for(Entity entity : scene.getEntities().values()) {
 			if(entity.getType() == ES.ENTITY_TYPE_SIMPLE) {
 				processEntity(entity);
 			} else if(entity.getType() == ES.ENTITY_TYPE_NORMAL) {
@@ -146,7 +146,7 @@ public class MasterRenderer {
 			}
 		}
 		
-		shadowMapRenderer.render(entities, terrains, normalMapEntities, sun, camera);
+		shadowMapRenderer.render(entities, terrains, normalMapEntities, scene.getLights().get(sunName), scene.getCameras().get(cameraName));
 		entities.clear();
 		normalMapEntities.clear();
 		terrains.clear();
