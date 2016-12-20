@@ -12,7 +12,7 @@ import voxels.VoxelGrid;
 //Cut during to constants
 public class DistanceCutConst {
 	
-	private static final float TERRAIN_CUT_DISTANCE = 500;
+	private static final float TERRAIN_CUT_DISTANCE = 400;
 	
 	public void cutRender(Camera camera, Collection<Entity> entities, Collection<Terrain> terrains, Collection<VoxelGrid> grids) {
 		cutEntityRender(camera, entities);	

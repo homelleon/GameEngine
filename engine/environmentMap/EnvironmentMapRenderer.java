@@ -37,7 +37,7 @@ public class EnvironmentMapRenderer {
 		this.entityRenderer = new EntityRenderer(projectionMatrix);	
 	}
 	
-	public void render(Texture cubeMap, Scene scene, Camera camera) {
+	public void render(Texture cubeMap, Scene scene) {
 		for(Entity entity : scene.getEntities().values()) {
 			processEntity(entity);
 		}
@@ -57,7 +57,7 @@ public class EnvironmentMapRenderer {
 		for(int i=0;i<6;i++) {
 			GL30.glFramebufferTexture2D(GL30.GL_FRAMEBUFFER, GL30.GL_COLOR_ATTACHMENT0, GL13.GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, cubeMap.textureId, 0);
 			cubeCamera.switchToFace(i);
-			entityRenderer.renderLow(this.entities, camera);
+			entityRenderer.renderLow(this.entities, scene.getCamera());
 		}
 		GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0);
 		GL11.glViewport(0, 0, Display.getWidth(), Display.getHeight());	

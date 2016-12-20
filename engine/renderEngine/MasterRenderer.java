@@ -116,7 +116,7 @@ public class MasterRenderer {
 		this.grids.add(grid);
 	}	
 	
-	public void renderScene(Scene scene, Camera camera, Vector4f clipPlane, Texture environmentMap) {
+	public void renderScene(Scene scene, Vector4f clipPlane, Texture environmentMap) {
 			this.environmentMap = environmentMap;
 			for (Terrain terrain : scene.getTerrains().values()) {
 				processTerrain(terrain);
@@ -134,11 +134,10 @@ public class MasterRenderer {
 				processVoxel(grid);
 			}
 
-			render(scene.getLights().values(), camera, clipPlane);
+			render(scene.getLights().values(), scene.getCamera(), clipPlane);
 		}
 	
-	public void renderShadowMap(Scene scene, Light sun, 
-			Camera camera) {
+	public void renderShadowMap(Scene scene) {
 		for(Entity entity : scene.getEntities().values()) {
 			if(entity.getType() == ES.ENTITY_TYPE_SIMPLE) {
 				processEntity(entity);
@@ -147,7 +146,7 @@ public class MasterRenderer {
 			}
 		}
 		
-		shadowMapRenderer.render(entities, terrains, normalMapEntities, sun, camera);
+		shadowMapRenderer.render(entities, terrains, normalMapEntities, scene.getSun(), scene.getCamera());
 		entities.clear();
 		normalMapEntities.clear();
 		terrains.clear();

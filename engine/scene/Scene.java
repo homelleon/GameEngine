@@ -3,6 +3,8 @@ package scene;
 import java.util.Collection;
 import java.util.Map;
 
+import org.lwjgl.util.vector.Vector3f;
+
 import audio.AudioSource;
 import cameras.Camera;
 import entities.Entity;
@@ -17,13 +19,18 @@ import water.WaterTile;
 
 public interface Scene {
 	
+	Player getPlayer();
+	void setPlayer(Player player);
+	
+	Camera getCamera();
+	void setCamera(Camera camera);
+	
+	Light getSun();
+	void setSun(Light sun);
+	
 	Map<String, Entity> getEntities();
 	void addEntity(Entity entity);
 	void addAllEntities(Collection<Entity> entityList);
-	
-	Map<String, Player> getPlayers();
-	void addPlayer(Player player);
-	void addAllPlayers(Collection<Player> playerList);
 	
 	Map<String, Terrain> getTerrains();
 	void addTerrain(Terrain terrain);
@@ -41,10 +48,6 @@ public interface Scene {
 	void addParticle(ParticleSystem particle);
 	void addAllParticles(Collection<ParticleSystem> particleList);
 	
-	Map<String, Camera> getCameras();
-	void addCamera(Camera camera);
-	void addAllCameras(Collection<Camera> cameraList);	
-	
 	Map<String, Light> getLights();
 	void addLight(Light light);
 	void addAllLights(Collection<Light> lightList);
@@ -60,6 +63,10 @@ public interface Scene {
 	Map<String, GuiText> getTexts();
 	void addText(GuiText text);
 	void addAllTexts(Collection<GuiText> textList);
+	
+	void spreadEntitiesOnHeights();
+	void spreadParitclesOnHeights(Collection<ParticleSystem> systems);
+	void createVoxelTerrain(int size, Vector3f position);
 
 
 }

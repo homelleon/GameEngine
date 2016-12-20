@@ -9,8 +9,6 @@ import org.lwjgl.util.vector.Vector4f;
 import audio.AudioMaster;
 import cameras.Camera;
 import engineMain.DisplayManager;
-import entities.Light;
-import entities.Player;
 import environmentMap.EnvironmentMapRenderer;
 import fontMeshCreator.FontType;
 import fontMeshCreator.GuiText;
@@ -46,11 +44,11 @@ public class SceneRenderer {
     protected MousePicker picker;
     protected Optimisation optimisation;
     
-    public void init(Camera camera, Loader loader) {
-    	this.renderer = new MasterRenderer(loader, camera);
+    public void init(Scene scene, Loader loader) {
+    	this.renderer = new MasterRenderer(loader, scene.getCamera());
 		this.enviroRenderer = new EnvironmentMapRenderer(renderer.getProjectionMatrix());
 		this.guiRenderer = new GuiRenderer(loader);	
-		this.optimisation = new MasterOptimisation(camera, renderer.getProjectionMatrix());
+		this.optimisation = new MasterOptimisation(scene.getCamera(), renderer.getProjectionMatrix());
 		ParticleMaster.init(loader, renderer.getProjectionMatrix());
 		this.multisampleFbo = new Fbo(Display.getWidth(), Display.getHeight());
 		this.outputFbo = new Fbo(Display.getWidth(), Display.getHeight(), Fbo.DEPTH_TEXTURE);
@@ -65,10 +63,10 @@ public class SceneRenderer {
 		
 		this.environmentMap = Texture.newEmptyCubeMap(128);
 		
-		this.picker = new MousePicker(camera, renderer.getProjectionMatrix());
+		this.picker = new MousePicker(scene.getCamera(), renderer.getProjectionMatrix());
     }
 	
-	public void render(Scene scene, Light sun, Camera camera, Player player, FontType font, Loader loader) {
+	public void render(Scene scene, FontType font, Loader loader) {
 				
 
 		if(Keyboard.isKeyDown(Keyboard.KEY_T)) {
@@ -80,20 +78,20 @@ public class SceneRenderer {
 			System.out.println("save");
 		}
 		
-    	//enviroRenderer.render(environmentMap, scene, camera);
-    	move(scene, camera, player);	
-		renderParticles(scene, camera, player);
-		renderWaterSurface(scene, sun, camera);		
-	    renderToScreen(scene, font, sun, camera);	
+    	enviroRenderer.render(environmentMap, scene);
+    	move(scene);	
+		renderParticles(scene);
+		renderWaterSurface(scene);		
+	    renderToScreen(scene, font);	
 	}
 	
-	private void renderToScreen(Scene scene, FontType font, Light sun, Camera camera) {
+	private void renderToScreen(Scene scene, FontType font) {
 		waterFBOs.unbindCurrentFrameBuffer();
 		multisampleFbo.bindFrameBuffer();
-		optimisation.optimize(camera, scene.getEntities().values(), scene.getTerrains().values(), scene.getVoxelGrids().values());
-	    renderer.renderScene(scene, camera, new Vector4f(0, -1, 0, 15), environmentMap);
-	    waterRenderer.render(scene.getWaters().values(), camera, sun);
-	    ParticleMaster.renderParticles(camera);
+		optimisation.optimize(scene.getCamera(), scene.getEntities().values(), scene.getTerrains().values(), scene.getVoxelGrids().values());
+	    renderer.renderScene(scene, new Vector4f(0, -1, 0, 15), environmentMap);
+	    waterRenderer.render(scene.getWaters().values(), scene.getCamera(), scene.getSun());
+	    ParticleMaster.renderParticles(scene.getCamera());
 	    multisampleFbo.unbindFrameBuffer();
 	    multisampleFbo.resolveToFbo(GL30.GL_COLOR_ATTACHMENT0, outputFbo);
 	    multisampleFbo.resolveToFbo(GL30.GL_COLOR_ATTACHMENT1, outputFbo2);
@@ -102,34 +100,34 @@ public class SceneRenderer {
 	    renderText(font);
 	}
 	
-	private void renderWaterSurface(Scene scene, Light sun, Camera camera) {
+	private void renderWaterSurface(Scene scene) {
 		OGLUtils.clipDistance(true);
-		renderWaterReflection(scene, sun, camera);
-		renderWaterRefraction(scene, sun, camera);
+		renderWaterReflection(scene);
+		renderWaterRefraction(scene);
 		OGLUtils.clipDistance(false);
 	}
 	
-	private void renderWaterReflection(Scene scene, Light sun, Camera camera) {
-		renderer.renderShadowMap(scene, sun, camera);
+	private void renderWaterReflection(Scene scene) {
+		renderer.renderShadowMap(scene);
     	waterFBOs.bindReflectionFrameBuffer();
-		float distance = 2 * (camera.getPosition().y - scene.getWaters().get("Water").getHeight());
-		camera.getPosition().y -= distance;
-		camera.invertPitch();
-		renderer.renderScene(scene, camera, new Vector4f(0, 1, 0, -scene.getWaters().get("Water").getHeight()), environmentMap);
-		camera.getPosition().y += distance;
-		camera.invertPitch();
+		float distance = 2 * (scene.getCamera().getPosition().y - scene.getWaters().get("Water").getHeight());
+		scene.getCamera().getPosition().y -= distance;
+		scene.getCamera().invertPitch();
+		renderer.renderScene(scene, new Vector4f(0, 1, 0, -scene.getWaters().get("Water").getHeight()), environmentMap);
+		scene.getCamera().getPosition().y += distance;
+		scene.getCamera().invertPitch();
 	}
 	
-	private void renderWaterRefraction(Scene scene, Light sun, Camera camera) {
+	private void renderWaterRefraction(Scene scene) {
 		waterFBOs.bindRefractionFrameBuffer();
-		renderer.renderScene(scene, camera, new Vector4f(0, -1, 0, scene.getWaters().get("Water").getHeight()+1f), environmentMap);
+		renderer.renderScene(scene, new Vector4f(0, -1, 0, scene.getWaters().get("Water").getHeight()+1f), environmentMap);
 	}
 	
-	protected void renderParticles(Scene scene, Camera camera, Player player) {
-    	scene.getParticles().get("Cosmic").setPosition(player.getPosition());
+	protected void renderParticles(Scene scene) {
+    	scene.getParticles().get("Cosmic").setPosition(scene.getPlayer().getPosition());
     	scene.getParticles().get("Cosmic").generateParticles();
     	scene.getParticles().get("Star").generateParticles();
-		ParticleMaster.update(camera);
+		ParticleMaster.update(scene.getCamera());
     }
 	
 	protected void renderText(FontType font) {
@@ -152,10 +150,10 @@ public class SceneRenderer {
 		return new GuiText("Coords", text, 1, font, new Vector2f(0.3f, 0.2f), 1f, true);    	
     }
     
-    private void move(Scene scene, Camera camera, Player player) {
-		camera.move();	
-		player.move(scene.getTerrains().values());
-		AudioMaster.setListenerData(camera.getPosition().x, camera.getPosition().y, camera.getPosition().z);
+    private void move(Scene scene) {
+		scene.getCamera().move();	
+		scene.getPlayer().move(scene.getTerrains().values());
+		AudioMaster.setListenerData(scene.getCamera().getPosition().x, scene.getCamera().getPosition().y, scene.getCamera().getPosition().z);
     }
     
 	

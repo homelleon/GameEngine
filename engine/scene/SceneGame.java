@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.WeakHashMap;
 
+import org.lwjgl.util.vector.Vector3f;
+
 import audio.AudioSource;
 import cameras.Camera;
 import entities.Entity;
@@ -19,13 +21,15 @@ import water.WaterTile;
 
 public class SceneGame implements Scene {
 	
+	private Player player;
+	private Camera camera;
+	private Light sun;
+	
 	private Map<String, Entity> entities = new WeakHashMap<String, Entity>();
-	private Map<String, Player> players = new WeakHashMap<String, Player>();
 	private Map<String, Terrain> terrains = new WeakHashMap<String, Terrain>();
 	private Map<String, WaterTile> waters = new WeakHashMap<String, WaterTile>();
 	private Map<String, VoxelGrid> grids = new WeakHashMap<String, VoxelGrid>();
 	private Map<String, ParticleSystem> particles = new WeakHashMap<String, ParticleSystem>();
-	private Map<String, Camera> cameras = new WeakHashMap<String, Camera>();
 	private Map<String, Light> lights = new WeakHashMap<String, Light>();
 	private Map<String, AudioSource> audioSources = new WeakHashMap<String, AudioSource>();
 	private Map<String, GuiTexture> guis = new WeakHashMap<String, GuiTexture>();
@@ -35,14 +39,42 @@ public class SceneGame implements Scene {
 	
 	public SceneGame(GameMap map) {
 		this.addAllEntities(map.getEntities().values());
-		this.addAllPlayers(map.getPlayers().values());
 		this.addAllTerrains(map.getTerrains().values());
 		this.addAllWaters(map.getWaters().values());
 		this.addAllParticles(map.getParticles().values());
-		this.addAllCameras(map.getCameras().values());
 		this.addAllLights(map.getLights().values());
 		this.addAllAudioSources(map.getAudioSources().values());
 		this.addAllGuis(map.getGuis().values());
+	}
+	
+	@Override
+	public Player getPlayer() {
+		return this.player;
+	}
+	
+	@Override
+	public void setPlayer(Player player) {
+		this.player = player;
+	}
+	
+	@Override
+	public Camera getCamera() {
+		return this.camera;
+	}
+	
+	@Override
+	public void setCamera(Camera camera) {
+		this.camera = camera;
+	}
+	
+	@Override
+	public Light getSun() {
+		return this.sun;
+	}
+	
+	@Override
+	public void setSun(Light sun) {
+		this.sun = sun;
 	}
 	
 	/* 
@@ -62,26 +94,6 @@ public class SceneGame implements Scene {
 	public void addAllEntities(Collection<Entity> entityList) {
 		for(Entity entity : entityList) {
 			this.entities.put(entity.getName(), entity);
-		}
-	}
-	
-	/* 
-	 * @Players
-	 */	
-	@Override
-	public Map<String, Player> getPlayers() {
-		return this.players;
-	}
-
-	@Override
-	public void addPlayer(Player player) {
-		this.players.put(player.getName(), player);
-	}
-
-	@Override
-	public void addAllPlayers(Collection<Player> playerList) {
-		for(Player player : playerList) {
-			this.players.put(player.getName(), player);
 		}
 	}
 	
@@ -172,28 +184,6 @@ public class SceneGame implements Scene {
 
 
 	/* 
-	 * @Cameras
-	 */
-
-	@Override
-	public Map<String, Camera> getCameras() {
-		return this.cameras;
-	}
-
-	@Override
-	public void addCamera(Camera camera) {
-		this.cameras.put(camera.getName(), camera);
-	}
-
-	@Override
-	public void addAllCameras(Collection<Camera> cameraList) {
-		for(Camera camera : cameraList) {
-			this.cameras.put(camera.getName(), camera);
-		}
-	}
-	
-
-	/* 
 	 * @Lights
 	 */
 	
@@ -277,6 +267,52 @@ public class SceneGame implements Scene {
 		for(GuiText text : textList) {
 			this.texts.put(text.getName(), text);
 		}
+	}
+	
+	@Override
+	public void spreadEntitiesOnHeights() {
+		if (!entities.isEmpty()) {
+			for(Entity entity : this.entities.values()){
+				float terrainHeight = 0;
+				
+				for(Terrain terrain : this.terrains.values()){
+					terrainHeight += terrain.getHeightOfTerrain(entity.getPosition().x, entity.getPosition().z);
+				}
+				entity.setPosition(new Vector3f(entity.getPosition().x, terrainHeight, entity.getPosition().z));
+			}
+		}
+	}
+    
+	@Override
+	public void spreadParitclesOnHeights(Collection<ParticleSystem> systems) {
+		if (!systems.isEmpty()) {
+			for(ParticleSystem system : systems){
+				float terrainHeight = 0;
+				
+				for(Terrain terrain : this.terrains.values()){
+					terrainHeight += terrain.getHeightOfTerrain(system.getPosition().x, system.getPosition().z);
+				}
+				system.setPosition(new Vector3f(system.getPosition().x, terrainHeight, system.getPosition().z));
+			}
+		}
+	}
+	
+	public void createVoxelTerrain(int size, Vector3f position) {
+		VoxelGrid grid = new VoxelGrid(position, size);
+		Terrain terrain = this.terrains.get("Terrain1");
+		for(int x = 0; x<grid.getSize()-1; x++) {
+				for(int z = 0; z<grid.getSize()-1; z++) {
+					for(int y = 0; y<grid.getSize()-1; y++) {
+						float height = terrain.getHeightOfTerrain(x, z);
+						if(height>=0) {
+							if(y< (int) height) {
+								grid.getVoxel(x, y, z).setAir(false);
+							}
+						}
+					}
+				}
+		}
+		addVoxelGrid(grid);
 	}
 
 }
