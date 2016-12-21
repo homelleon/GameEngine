@@ -210,6 +210,7 @@ public class LoopGame implements Loop {
 
 	
 	private void cleanUp() {
+		scene.cleanUp();
 		loader.cleanUp();
 		sceneRenderer.cleanUp();
     }

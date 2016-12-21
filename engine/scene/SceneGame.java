@@ -16,6 +16,7 @@ import guis.GuiTexture;
 import maps.GameMap;
 import particles.ParticleSystem;
 import terrains.Terrain;
+import textures.Texture;
 import voxels.VoxelGrid;
 import water.WaterTile;
 
@@ -24,6 +25,8 @@ public class SceneGame implements Scene {
 	private Player player;
 	private Camera camera;
 	private Light sun;
+	
+	private Texture environmentMap = Texture.newEmptyCubeMap(128);
 	
 	private Map<String, Entity> entities = new WeakHashMap<String, Entity>();
 	private Map<String, Terrain> terrains = new WeakHashMap<String, Terrain>();
@@ -45,6 +48,11 @@ public class SceneGame implements Scene {
 		this.addAllLights(map.getLights().values());
 		this.addAllAudioSources(map.getAudioSources().values());
 		this.addAllGuis(map.getGuis().values());
+	}
+	
+	@Override
+	public Texture getEnvironmentMap() {
+		return this.environmentMap;
 	}
 	
 	@Override
@@ -313,6 +321,19 @@ public class SceneGame implements Scene {
 				}
 		}
 		addVoxelGrid(grid);
+	}
+	
+	public void cleanUp() {
+		this.environmentMap.delete();
+		entities.clear();
+		terrains.clear();
+		waters.clear();
+		grids.clear();
+		particles.clear();
+		lights.clear();
+		audioSources.clear();
+		guis.clear();
+		texts.clear();		
 	}
 
 }

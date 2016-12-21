@@ -46,7 +46,7 @@ public class SceneRenderer {
     
     public void init(Scene scene, Loader loader) {
     	this.renderer = new MasterRenderer(loader, scene.getCamera());
-		this.enviroRenderer = new EnvironmentMapRenderer(renderer.getProjectionMatrix());
+    	this.enviroRenderer = new EnvironmentMapRenderer();
 		this.guiRenderer = new GuiRenderer(loader);	
 		this.optimisation = new MasterOptimisation(scene.getCamera(), renderer.getProjectionMatrix());
 		ParticleMaster.init(loader, renderer.getProjectionMatrix());
@@ -64,6 +64,8 @@ public class SceneRenderer {
 		this.environmentMap = Texture.newEmptyCubeMap(128);
 		
 		this.picker = new MousePicker(scene.getCamera(), renderer.getProjectionMatrix());
+		
+		enviroRenderer.render(scene, renderer.getEntityRenderer());
     }
 	
 	public void render(Scene scene, FontType font, Loader loader) {
@@ -78,7 +80,6 @@ public class SceneRenderer {
 			System.out.println("save");
 		}
 		
-    	enviroRenderer.render(environmentMap, scene);
     	move(scene);	
 		renderParticles(scene);
 		renderWaterSurface(scene);		
@@ -89,7 +90,7 @@ public class SceneRenderer {
 		waterFBOs.unbindCurrentFrameBuffer();
 		multisampleFbo.bindFrameBuffer();
 		optimisation.optimize(scene.getCamera(), scene.getEntities().values(), scene.getTerrains().values(), scene.getVoxelGrids().values());
-	    renderer.renderScene(scene, new Vector4f(0, -1, 0, 15), environmentMap);
+	    renderer.renderScene(scene, new Vector4f(0, -1, 0, 15));
 	    waterRenderer.render(scene.getWaters().values(), scene.getCamera(), scene.getSun());
 	    ParticleMaster.renderParticles(scene.getCamera());
 	    multisampleFbo.unbindFrameBuffer();
@@ -113,14 +114,14 @@ public class SceneRenderer {
 		float distance = 2 * (scene.getCamera().getPosition().y - scene.getWaters().get("Water").getHeight());
 		scene.getCamera().getPosition().y -= distance;
 		scene.getCamera().invertPitch();
-		renderer.renderScene(scene, new Vector4f(0, 1, 0, -scene.getWaters().get("Water").getHeight()), environmentMap);
+		renderer.renderScene(scene, new Vector4f(0, 1, 0, -scene.getWaters().get("Water").getHeight()));
 		scene.getCamera().getPosition().y += distance;
 		scene.getCamera().invertPitch();
 	}
 	
 	private void renderWaterRefraction(Scene scene) {
 		waterFBOs.bindRefractionFrameBuffer();
-		renderer.renderScene(scene, new Vector4f(0, -1, 0, scene.getWaters().get("Water").getHeight()+1f), environmentMap);
+		renderer.renderScene(scene, new Vector4f(0, -1, 0, scene.getWaters().get("Water").getHeight()+1f));
 	}
 	
 	protected void renderParticles(Scene scene) {
@@ -154,6 +155,10 @@ public class SceneRenderer {
 		scene.getCamera().move();	
 		scene.getPlayer().move(scene.getTerrains().values());
 		AudioMaster.setListenerData(scene.getCamera().getPosition().x, scene.getCamera().getPosition().y, scene.getCamera().getPosition().z);
+    }
+    
+    public EntityRenderer getEntityRenderer() {
+    	return renderer.getEntityRenderer();
     }
     
 	

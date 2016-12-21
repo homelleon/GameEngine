@@ -14,10 +14,13 @@ import fontMeshCreator.GuiText;
 import guis.GuiTexture;
 import particles.ParticleSystem;
 import terrains.Terrain;
+import textures.Texture;
 import voxels.VoxelGrid;
 import water.WaterTile;
 
 public interface Scene {
+	
+	public Texture getEnvironmentMap();
 	
 	Player getPlayer();
 	void setPlayer(Player player);
@@ -67,6 +70,6 @@ public interface Scene {
 	void spreadEntitiesOnHeights();
 	void spreadParitclesOnHeights(Collection<ParticleSystem> systems);
 	void createVoxelTerrain(int size, Vector3f position);
-
+	void cleanUp();
 
 }

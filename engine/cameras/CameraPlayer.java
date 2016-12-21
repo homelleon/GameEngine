@@ -136,5 +136,11 @@ public class CameraPlayer implements Camera {
 			isUnderWater = false;
 		}
 	}
+
+	@Override
+	public void switchToFace(int faceIndex) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }

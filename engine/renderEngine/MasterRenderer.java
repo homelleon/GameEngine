@@ -57,15 +57,15 @@ public class MasterRenderer {
 		this.normalMapRenderer = new NormalMappingRenderer(projectionMatrix);
 		this.voxelRenderer = new VoxelRenderer(loader, projectionMatrix);
 		this.shadowMapRenderer = new ShadowMapMasterRenderer(camera);
-		this.enviroRenderer = new EnvironmentMapRenderer(projectionMatrix);
+		this.enviroRenderer = new EnvironmentMapRenderer();
 	}
 	
 	public Matrix4f getProjectionMatrix() {
 		return projectionMatrix;
 	}
 	
-	public void render(Collection<Light> lights, Camera camera, Vector4f clipPlane) {
-		prepare();
+	public void render(Collection<Light> lights, Camera camera, Vector4f clipPlane) {	
+		prepare();	
 		checkWiredFrameOn(entitiyWiredFrame);
 		entityRenderer.render(entities, clipPlane, lights, camera, shadowMapRenderer.getToShadowMapSpaceMatrix(), environmentMap);
 		normalMapRenderer.render(normalMapEntities, clipPlane, lights, camera, shadowMapRenderer.getToShadowMapSpaceMatrix());
@@ -116,8 +116,8 @@ public class MasterRenderer {
 		this.grids.add(grid);
 	}	
 	
-	public void renderScene(Scene scene, Vector4f clipPlane, Texture environmentMap) {
-			this.environmentMap = environmentMap;
+	public void renderScene(Scene scene, Vector4f clipPlane) {
+			this.environmentMap = scene.getEnvironmentMap();
 			for (Terrain terrain : scene.getTerrains().values()) {
 				processTerrain(terrain);
 			}
@@ -133,7 +133,6 @@ public class MasterRenderer {
 			for(VoxelGrid grid : scene.getVoxelGrids().values()) {
 				processVoxel(grid);
 			}
-
 			render(scene.getLights().values(), scene.getCamera(), clipPlane);
 		}
 	
@@ -184,6 +183,10 @@ public class MasterRenderer {
 		projectionMatrix.m23 = -1;
 		projectionMatrix.m32 = -((2 * ES.NEAR_PLANE * ES.FAR_PLANE) / frustrum_length);
 		projectionMatrix.m33 = 0;
+	}
+	
+	public EntityRenderer getEntityRenderer() {
+		return this.entityRenderer;
 	}
 	
 	

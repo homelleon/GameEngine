@@ -152,6 +152,12 @@ public class CameraFree implements Camera {
 
 	public float getRoll() {
 		return roll;
+	}
+
+	@Override
+	public void switchToFace(int faceIndex) {
+		// TODO Auto-generated method stub
+		
 	}	
 		
 	

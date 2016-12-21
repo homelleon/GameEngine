@@ -3,7 +3,7 @@ package cameras;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 
-public class CameraCubeMap {
+public class CameraCubeMap implements Camera {
 	
     private static final float NEAR_PLANE = 0.1f;
     private static final float FAR_PLANE = 200f;
@@ -100,6 +100,47 @@ public class CameraCubeMap {
  
         Matrix4f.mul(projectionMatrix, viewMatrix, projectionViewMatrix);
     }
+
+	@Override
+	public String getName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setPitch(float anglePitch) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setYaw(float angleYaw) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void move() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	public float getPitch() {
+		return pitch;
+	}
+	
+	public void invertPitch() {
+		this.pitch = -pitch;
+	}
+
+	public float getYaw() {
+		return yaw;
+	}
+
+	public float getRoll() {
+		return roll;
+	}
+
 	
 	
 
