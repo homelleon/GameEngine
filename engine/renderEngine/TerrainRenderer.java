@@ -60,6 +60,27 @@ public class TerrainRenderer {
 		shader.stop();
 	}
 	
+	public void renderLow(Collection <Terrain> terrains,  Collection<Light> lights, Camera camera) {
+		shader.start();
+		shader.loadClipPlane(ES.NO_CLIP);
+		shader.loadSkyColour(ES.DISPLAY_RED, ES.DISPLAY_GREEN, ES.DISPLAY_BLUE);
+		shader.loadFogDensity(ES.FOG_DENSITY);
+		shader.loadLights(lights);
+		shader.loadViewMatrix(camera);
+		shader.loadShadowVariables(ES.SHADOW_DISTANCE, ES.SHADOW_MAP_SIZE, ES.SHADOW_TRANSITION_DISTANCE, ES.SHADOW_PCF);
+		
+		for(Terrain terrain : terrains) {
+			prepareTerrain(terrain);
+			loadModelMatrix(terrain);
+			GL11.glDrawElements(GL11.GL_TRIANGLES, terrain.getModel().getVertexCount(), 
+					GL11.GL_UNSIGNED_INT, 0);
+			unbindTexture();
+			
+		}
+		
+		shader.stop();
+	}
+	
 	public void cleanUp() {
 		shader.cleanUp();
 	}

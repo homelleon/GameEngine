@@ -27,7 +27,6 @@ public class EntityRenderer {
 
 	private EntityShader shader;
 	private Texture environmentMap;
-	private static final Vector4f NO_CLIP = new Vector4f(0, 0, 0, 1);
 	
 	public EntityRenderer(Matrix4f projectionMatrix) {
 		this.shader = new EntityShader();
@@ -63,10 +62,10 @@ public class EntityRenderer {
 	}
 	
 	public void renderLow(Map<TexturedModel, List<Entity>> entities, Collection<Light> lights, Camera camera) {
-		GL11.glClearColor(ES.DISPLAY_RED, ES.DISPLAY_GREEN, ES.DISPLAY_BLUE, 1);
+		GL11.glClearColor(1, 1, 1, 1);
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 		shader.start();
-		shader.loadClipPlane(NO_CLIP);
+		shader.loadClipPlane(ES.NO_CLIP);
 		shader.loadSkyColour(ES.DISPLAY_RED, ES.DISPLAY_GREEN, ES.DISPLAY_BLUE);
 		shader.loadFogDensity(ES.FOG_DENSITY);
 		shader.loadLights(lights);
@@ -76,11 +75,9 @@ public class EntityRenderer {
 			prepareLowTexturedModel(model);
 			List<Entity> batch = entities.get(model);
 			for(Entity entity : batch) {
-				if(entity.isRendered()) {
-					prepareInstance(entity);
-					GL11.glDrawElements(GL11.GL_TRIANGLES, model.getRawModel().getVertexCount(), 
-							GL11.GL_UNSIGNED_INT, 0);
-				}
+				prepareInstance(entity);
+				GL11.glDrawElements(GL11.GL_TRIANGLES, model.getRawModel().getVertexCount(), 
+						GL11.GL_UNSIGNED_INT, 0);
 			}
 			unbindTexturedModel();
 		}

@@ -16,16 +16,14 @@ import cameras.Camera;
 import cameras.CameraCubeMap;
 import entities.Entity;
 import models.TexturedModel;
-import renderEngine.EntityRenderer;
+import renderEngine.MasterRenderer;
 import scene.Scene;
 
 public class EnvironmentMapRenderer {
 	
 	Map<TexturedModel, List<Entity>> entities = new HashMap<TexturedModel, List<Entity>>();
-		
-	Vector3f center = new Vector3f(20,50,20);
 
-	public void render(Scene scene, EntityRenderer renderer) {
+	public void render(Scene scene, MasterRenderer renderer, Vector3f center) {
 		Camera cubeCamera = new CameraCubeMap(center);
 		int fbo = GL30.glGenFramebuffers();
 		GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, fbo);
@@ -37,14 +35,14 @@ public class EnvironmentMapRenderer {
 		GL30.glFramebufferRenderbuffer(GL30.GL_FRAMEBUFFER, GL30.GL_DEPTH_ATTACHMENT, GL30.GL_RENDERBUFFER, depthBuffer);
 		
 		GL11.glViewport(0, 0, scene.getEnvironmentMap().size, scene.getEnvironmentMap().size);
-		
+		for(Entity entity : scene.getEntities().values()) {
+			processEntity(entity);
+		}
 		for(int i=0;i<6;i++) {
 			GL30.glFramebufferTexture2D(GL30.GL_FRAMEBUFFER, GL30.GL_COLOR_ATTACHMENT0, GL13.GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, scene.getEnvironmentMap().textureId, 0);
 			cubeCamera.switchToFace(i);
-			for(Entity entity : scene.getEntities().values()) {
-				processEntity(entity);
-			}
-			renderer.renderLow(entities, scene.getLights().values(), cubeCamera);
+		
+			renderer.rendereLowQualityScene(entities, scene.getTerrains().values(), scene.getLights().values(), cubeCamera);
 		}
 		GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0);
 		GL11.glViewport(0, 0, Display.getWidth(), Display.getHeight());	

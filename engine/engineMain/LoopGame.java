@@ -155,8 +155,9 @@ public class LoopGame implements Loop {
 		scene.addAllGuis(GuiManager.createGui(loader));
 		scene.addAllWaters(waterList);
 		scene.addAllParticles(ParticlesManager.createParticleSystem(loader));
-
+		
 		scene.spreadEntitiesOnHeights();
+		scene.getEntities().get("stall").getModel().getTexture().setReflectiveFactor(1.2f);
 	}
 	
 	@Override

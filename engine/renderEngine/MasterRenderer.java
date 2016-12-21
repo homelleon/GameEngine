@@ -84,6 +84,12 @@ public class MasterRenderer {
 		grids.clear();
 	}
 	
+	public void rendereLowQualityScene(Map<TexturedModel, List<Entity>> entities, Collection<Terrain> terrains, Collection<Light> lights, Camera camera) {
+		entityRenderer.renderLow(entities, lights, camera);
+		terrainRenderer.renderLow(terrains, lights, camera);
+		skyboxRenderer.render(camera);
+	}
+	
 	public void processTerrain(Terrain terrain) {
 		terrains.add(terrain);
 	}

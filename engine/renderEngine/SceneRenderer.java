@@ -65,7 +65,7 @@ public class SceneRenderer {
 		
 		this.picker = new MousePicker(scene.getCamera(), renderer.getProjectionMatrix());
 		
-		enviroRenderer.render(scene, renderer.getEntityRenderer());
+		enviroRenderer.render(scene, renderer, scene.getEntities().get("stall").getPosition());
     }
 	
 	public void render(Scene scene, FontType font, Loader loader) {
@@ -80,7 +80,8 @@ public class SceneRenderer {
 			System.out.println("save");
 		}
 		
-    	move(scene);	
+    	move(scene);
+    	enviroRenderer.render(scene, renderer, scene.getEntities().get("stall").getPosition());
 		renderParticles(scene);
 		renderWaterSurface(scene);		
 	    renderToScreen(scene, font);	
