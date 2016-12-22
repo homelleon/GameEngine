@@ -12,7 +12,7 @@ public class Test {
 		AudioMaster.init();
 		AudioMaster.setListenerData(0,0,0);
 		AL10.alDistanceModel(AL11.AL_LINEAR_DISTANCE_CLAMPED);
-		Source source = new Source("audio1", "forest.wav", 20);
+		AudioSource source = new AudioSource("audio1", "forest.wav", 20);
 		source.setLooping(true);
 		source.play();
 		

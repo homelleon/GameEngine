@@ -19,6 +19,7 @@ import environmentMap.EnvironmentMapRenderer;
 import models.TexturedModel;
 import normalMappingRenderer.NormalMappingRenderer;
 import scene.ES;
+import scene.Scene;
 import shadows.ShadowMapMasterRenderer;
 import terrains.Terrain;
 import textures.Texture;
@@ -56,15 +57,15 @@ public class MasterRenderer {
 		this.normalMapRenderer = new NormalMappingRenderer(projectionMatrix);
 		this.voxelRenderer = new VoxelRenderer(loader, projectionMatrix);
 		this.shadowMapRenderer = new ShadowMapMasterRenderer(camera);
-		this.enviroRenderer = new EnvironmentMapRenderer(projectionMatrix);
+		this.enviroRenderer = new EnvironmentMapRenderer();
 	}
 	
 	public Matrix4f getProjectionMatrix() {
 		return projectionMatrix;
 	}
 	
-	public void render(Collection<Light> lights, Camera camera, Vector4f clipPlane) {
-		prepare();
+	public void render(Collection<Light> lights, Camera camera, Vector4f clipPlane) {	
+		prepare();	
 		checkWiredFrameOn(entitiyWiredFrame);
 		entityRenderer.render(entities, clipPlane, lights, camera, shadowMapRenderer.getToShadowMapSpaceMatrix(), environmentMap);
 		normalMapRenderer.render(normalMapEntities, clipPlane, lights, camera, shadowMapRenderer.getToShadowMapSpaceMatrix());
@@ -81,6 +82,12 @@ public class MasterRenderer {
 		entities.clear();
 		normalMapEntities.clear();
 		grids.clear();
+	}
+	
+	public void rendereLowQualityScene(Map<TexturedModel, List<Entity>> entities, Collection<Terrain> terrains, Collection<Light> lights, Camera camera) {
+		entityRenderer.renderLow(entities, lights, camera);
+		terrainRenderer.renderLow(terrains, lights, camera);
+		skyboxRenderer.render(camera);
 	}
 	
 	public void processTerrain(Terrain terrain) {
@@ -115,13 +122,13 @@ public class MasterRenderer {
 		this.grids.add(grid);
 	}	
 	
-	public void renderScene(Collection<Entity> entities, Collection<Terrain> terrains, Collection<VoxelGrid> grids, Collection<Light> lights,
-			Camera camera, Vector4f clipPlane, Texture environmentMap) {
-			this.environmentMap = environmentMap;
-			for (Terrain terrain : terrains) {
+	public void renderScene(Scene scene, Vector4f clipPlane) {
+			this.environmentMap = scene.getEnvironmentMap();
+			for (Terrain terrain : scene.getTerrains().values()) {
 				processTerrain(terrain);
 			}
-			for (Entity entity : entities) {
+			
+			for (Entity entity : scene.getEntities().values()) {
 				if(entity.getType() == ES.ENTITY_TYPE_SIMPLE) {
 					processEntity(entity);
 				} else if(entity.getType() == ES.ENTITY_TYPE_NORMAL) {
@@ -129,16 +136,14 @@ public class MasterRenderer {
 				}					
 			}
 			
-			for(VoxelGrid grid : grids) {
+			for(VoxelGrid grid : scene.getVoxelGrids().values()) {
 				processVoxel(grid);
 			}
-
-			render(lights, camera, clipPlane);
+			render(scene.getLights().values(), scene.getCamera(), clipPlane);
 		}
 	
-	public void renderShadowMap(Collection<Entity> entityList, Light sun, 
-			Camera camera) {
-		for(Entity entity : entityList) {
+	public void renderShadowMap(Scene scene) {
+		for(Entity entity : scene.getEntities().values()) {
 			if(entity.getType() == ES.ENTITY_TYPE_SIMPLE) {
 				processEntity(entity);
 			} else if(entity.getType() == ES.ENTITY_TYPE_NORMAL) {
@@ -146,7 +151,7 @@ public class MasterRenderer {
 			}
 		}
 		
-		shadowMapRenderer.render(entities, terrains, normalMapEntities, sun, camera);
+		shadowMapRenderer.render(entities, terrains, normalMapEntities, scene.getSun(), scene.getCamera());
 		entities.clear();
 		normalMapEntities.clear();
 		terrains.clear();
@@ -184,6 +189,10 @@ public class MasterRenderer {
 		projectionMatrix.m23 = -1;
 		projectionMatrix.m32 = -((2 * ES.NEAR_PLANE * ES.FAR_PLANE) / frustrum_length);
 		projectionMatrix.m33 = 0;
+	}
+	
+	public EntityRenderer getEntityRenderer() {
+		return this.entityRenderer;
 	}
 	
 	

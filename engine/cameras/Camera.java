@@ -14,5 +14,5 @@ public interface Camera {
 	public void invertPitch();
 	public float getYaw();
 	public float getRoll();
-	
+	public void switchToFace(int faceIndex);
 }

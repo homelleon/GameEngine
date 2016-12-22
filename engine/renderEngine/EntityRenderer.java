@@ -26,6 +26,7 @@ import toolbox.OGLUtils;
 public class EntityRenderer {
 
 	private EntityShader shader;
+	private Texture environmentMap;
 	
 	public EntityRenderer(Matrix4f projectionMatrix) {
 		this.shader = new EntityShader();
@@ -36,6 +37,7 @@ public class EntityRenderer {
 	}
 	
 	public void render(Map<TexturedModel, List<Entity>> entities, Vector4f clipPlane, Collection<Light> lights, Camera camera, Matrix4f toShadowMapSpace, Texture environmentMap) {
+		this.environmentMap = environmentMap;
 		shader.start();
 		shader.loadClipPlane(clipPlane);
 		shader.loadSkyColour(ES.DISPLAY_RED, ES.DISPLAY_GREEN, ES.DISPLAY_BLUE);
@@ -45,7 +47,7 @@ public class EntityRenderer {
 		shader.loadToShadowSpaceMatrix(toShadowMapSpace);
 		shader.loadShadowVariables(ES.SHADOW_DISTANCE, ES.SHADOW_MAP_SIZE, ES.SHADOW_TRANSITION_DISTANCE, ES.SHADOW_PCF);
 		for(TexturedModel model : entities.keySet()) {
-			prepareTexturedModel(model, environmentMap);
+			prepareTexturedModel(model);
 			List<Entity> batch = entities.get(model);
 			for(Entity entity : batch) {
 				if(entity.isRendered()) {
@@ -59,20 +61,23 @@ public class EntityRenderer {
 		shader.stop();
 	}
 	
-	public void renderLow(Map<TexturedModel, List<Entity>> entities, Camera camera) {
+	public void renderLow(Map<TexturedModel, List<Entity>> entities, Collection<Light> lights, Camera camera) {
+		GL11.glClearColor(1, 1, 1, 1);
+		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 		shader.start();
+		shader.loadClipPlane(ES.NO_CLIP);
+		shader.loadSkyColour(ES.DISPLAY_RED, ES.DISPLAY_GREEN, ES.DISPLAY_BLUE);
+		shader.loadFogDensity(ES.FOG_DENSITY);
+		shader.loadLights(lights);
 		shader.loadCamera(camera);
+		shader.loadShadowVariables(ES.SHADOW_DISTANCE, ES.SHADOW_MAP_SIZE, ES.SHADOW_TRANSITION_DISTANCE, ES.SHADOW_PCF);
 		for(TexturedModel model : entities.keySet()) {
 			prepareLowTexturedModel(model);
 			List<Entity> batch = entities.get(model);
 			for(Entity entity : batch) {
-				if(entity.isRendered()) {
-					if(Maths.distance2Points(entity.getPosition(), camera.getPosition()) < 50) {
-						prepareInstance(entity);
-						GL11.glDrawElements(GL11.GL_TRIANGLES, model.getRawModel().getVertexCount(), 
-								GL11.GL_UNSIGNED_INT, 0);
-					}
-				}				
+				prepareInstance(entity);
+				GL11.glDrawElements(GL11.GL_TRIANGLES, model.getRawModel().getVertexCount(), 
+						GL11.GL_UNSIGNED_INT, 0);
 			}
 			unbindTexturedModel();
 		}
@@ -98,7 +103,7 @@ public class EntityRenderer {
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, model.getTexture().getID());
 	}
 	
-	private void prepareTexturedModel(TexturedModel model, Texture environmentMap) {
+	private void prepareTexturedModel(TexturedModel model) {
 		RawModel rawModel = model.getRawModel();
 		GL30.glBindVertexArray(rawModel.getVaoID());
 		GL20.glEnableVertexAttribArray(0);
@@ -140,6 +145,10 @@ public class EntityRenderer {
 				entity.getRotX(), entity.getRotY(), entity.getRotZ(), entity.getScale());
 		shader.loadTranformationMatrix(transformationMatrix);
 		shader.loadOffset(entity.getTextureXOffset(), entity.getTextureYOffset());
+	}
+	
+	public Texture getEnvironmentMap() {
+		return environmentMap;
 	}
 
 }

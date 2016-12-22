@@ -3,7 +3,7 @@ package cameras;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 
-public class CameraCubeMap {
+public class CameraCubeMap implements Camera {
 	
     private static final float NEAR_PLANE = 0.1f;
     private static final float FAR_PLANE = 200f;
@@ -17,7 +17,7 @@ public class CameraCubeMap {
 	private Vector3f position = new Vector3f(0,0,0);
 	
 	private float pitch = 0;
-	private float yaw = 0; 
+	private float yaw; 
 	private float roll;
 	
 	public CameraCubeMap(Vector3f position) {
@@ -34,7 +34,7 @@ public class CameraCubeMap {
 	public Vector3f getPosition() {
 		return position;
 	}
-
+	
 	public void switchToFace(int faceIndex) {
         switch (faceIndex) {
         case 0:
@@ -56,6 +56,36 @@ public class CameraCubeMap {
         case 4:
             pitch = 0;
             yaw = 180;
+            break;
+        case 5:
+            pitch = 0;
+            yaw = 0;
+            break;
+        }
+        updateViewMatrix();
+    }
+
+	public void switchToFaceà(int faceIndex) {
+        switch (faceIndex) {
+        case 0:
+            pitch = 0;
+            yaw = 0;
+            break;
+        case 1:
+            pitch = 0;
+            yaw = 0;
+            break;
+        case 2:
+            pitch = -90;
+            yaw = 0;
+            break;
+        case 3:
+            pitch = 90;
+            yaw = 0;
+            break;
+        case 4:
+            pitch = 0;
+            yaw = 0;
             break;
         case 5:
             pitch = 0;
@@ -100,6 +130,47 @@ public class CameraCubeMap {
  
         Matrix4f.mul(projectionMatrix, viewMatrix, projectionViewMatrix);
     }
+
+	@Override
+	public String getName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setPitch(float anglePitch) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setYaw(float angleYaw) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void move() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	public float getPitch() {
+		return pitch;
+	}
+	
+	public void invertPitch() {
+		this.pitch = -pitch;
+	}
+
+	public float getYaw() {
+		return yaw;
+	}
+
+	public float getRoll() {
+		return roll;
+	}
+
 	
 	
 

@@ -8,7 +8,7 @@ import java.util.List;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
-import audio.Source;
+import audio.AudioSource;
 import renderEngine.Loader;
 import terrains.Terrain;
 import terrains.TerrainTextured;
@@ -17,7 +17,7 @@ import toolbox.ObjectUtils;
 public class MapsTXTParser implements MapsParser {
 
 	@Override
-	public GameMap readMap(String fileName, BufferedReader reader, Loader loader) {	
+	public GameMap readMap(String fileName, BufferedReader reader, Loader loader) {
         String line;
         
         /* entities */
@@ -99,7 +99,7 @@ public class MapsTXTParser implements MapsParser {
                     	tRoughnesses.add(Float.valueOf(currentLine[12]));
                     } else {
                     	tHeights.add(String.valueOf(currentLine[10]));
-                    }  
+                    } 
 	        	}
 	        	
 	        	/*Read audio loops*/
@@ -160,10 +160,10 @@ public class MapsTXTParser implements MapsParser {
         }
         
         //*Create audios*//
-        List<Source> audios = new ArrayList<Source>();    
+        List<AudioSource> audios = new ArrayList<AudioSource>();    
         
         for(int i=0;i<audios.size();i++) {
-        	Source source = new Source(aNames.get(i), aPaths.get(i), aMaxDistances.get(i), aCoords.get(i));
+        	AudioSource source = new AudioSource(aNames.get(i), aPaths.get(i), aMaxDistances.get(i), aCoords.get(i));
         	audios.add(source);
         }
         
@@ -177,7 +177,49 @@ public class MapsTXTParser implements MapsParser {
 		/* create particle systems */
 		for(int i=0;i<pNames.size();i++) { 
 			map.createParticles(pNames.get(i), pTexs.get(i), pDims.get(i), pAdds.get(i), pPpss.get(i), pSpeeds.get(i), pGravities.get(i), pLifes.get(i), pScales.get(i));
+
 		}
+		
+		//Clear
+		
+		/* entities */
+		eNames.clear();
+        eModels.clear();
+        eTextures.clear();
+        eCoords.clear();
+        eScales.clear(); 
+        eTypes.clear();
+        
+        /* terrains */
+        tNames.clear();
+        tCoords.clear();
+        tBaseTexs.clear();
+        trTexs.clear();
+        tgTexs.clear();
+        tbTexs.clear();
+        tBlends.clear();
+        tProcGens.clear();
+        tHeights.clear();
+        tAmplitudes.clear();
+        tOctaves.clear();
+        tRoughnesses.clear();
+        
+        /* audio sources */
+        aNames.clear();
+        aPaths.clear();
+        aCoords.clear();
+        aMaxDistances.clear();
+        
+        /* particle systems */
+        pNames.clear();
+        pTexs.clear();
+        pDims.clear();
+        pAdds.clear();
+        pPpss.clear();
+        pSpeeds.clear();
+        pGravities.clear();
+        pLifes.clear();
+        pScales.clear();
 		
 		map.setTerrains(terrains);
 		map.setAudioSources(audios);

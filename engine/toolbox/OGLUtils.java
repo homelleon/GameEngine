@@ -2,6 +2,7 @@ package toolbox;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
+import org.lwjgl.opengl.GL30;
 
 public class OGLUtils {
 	
@@ -37,5 +38,14 @@ public class OGLUtils {
 			GL11.glDisable(GL13.GL_MULTISAMPLE);
 		}
 	}
+	
+	public static void clipDistance(boolean value) {
+		if(value) {
+			GL11.glEnable(GL30.GL_CLIP_DISTANCE0);
+		} else {
+			GL11.glDisable(GL30.GL_CLIP_DISTANCE0);
+		}
+	}
+	
 
 }

@@ -1,6 +1,7 @@
 package scene;
 
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.util.vector.Vector4f;
 
 /* 
  * 
@@ -114,7 +115,7 @@ public class ES {
 	public final static String GAME_SETTINGS_PATH = GAME_PATH + "gameMain/";
 	
 	//*****************RENDER SETTINGS**********************************//
-
+	public final static Vector4f NO_CLIP = new Vector4f(0, 0, 0, 1);
 	
 	//****************GLOBAL WORLD SETTINGS*********************************//
 	public final static float SUN_MAX_HEIGHT = 4000; 
