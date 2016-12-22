@@ -61,11 +61,11 @@ public class SceneRenderer {
 		WaterShader waterShader = new WaterShader();
 		this.waterRenderer = new WaterRenderer(loader, waterShader, renderer.getProjectionMatrix(), waterFBOs);
 		
-		this.environmentMap = Texture.newEmptyCubeMap(128);
+		this.environmentMap = Texture.newEmptyCubeMap(64);
 		
 		this.picker = new MousePicker(scene.getCamera(), renderer.getProjectionMatrix());
 		
-		enviroRenderer.render(scene, renderer, scene.getEntities().get("Cuby4").getPosition());
+		enviroRenderer.render(scene, renderer, scene.getEntities().get("stall"));
     }
 	
 	public void render(Scene scene, FontType font, Loader loader) {
@@ -81,7 +81,7 @@ public class SceneRenderer {
 		}
 		
     	move(scene);
-    	//enviroRenderer.render(scene, renderer, scene.getEntities().get("Cuby4").getPosition());
+    	enviroRenderer.render(scene, renderer, scene.getEntities().get("stall"));
 		renderParticles(scene);
 		renderWaterSurface(scene);		
 	    renderToScreen(scene, font);	
@@ -173,7 +173,6 @@ public class SceneRenderer {
 		guiRenderer.cleanUp();
 		AudioMaster.cleanUp();
 		renderer.cleanUp();
-		//enviroRenderer.cleanUp;
 	}
 	
 	

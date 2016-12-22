@@ -147,6 +147,7 @@ public class LoopGame implements Loop {
 		
 		scene.setPlayer(player1);
 		scene.addEntity(player1);
+		scene.addAllEntities(ObjectUtils.createGrassField(500, 500, 50, 1, 0.1f, loader));
 		scene.addAllEntities(EntitiesManager.createNormalMappedEntities(loader));
 		scene.setCamera(camera);
 		scene.setSun(new Light("Sun", new Vector3f(-100000,150000,-100000), new Vector3f(1.3f,1.3f,1.3f)));

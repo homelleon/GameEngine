@@ -65,27 +65,27 @@ public class CameraCubeMap implements Camera {
         updateViewMatrix();
     }
 
-	public void switchToFaced(int faceIndex) {
+	public void switchToFaceà(int faceIndex) {
         switch (faceIndex) {
         case 0:
             pitch = 0;
-            yaw = 90;
+            yaw = 0;
             break;
         case 1:
             pitch = 0;
-            yaw = -90;
+            yaw = 0;
             break;
         case 2:
             pitch = -90;
-            yaw = 180;
+            yaw = 0;
             break;
         case 3:
             pitch = 90;
-            yaw = 180;
+            yaw = 0;
             break;
         case 4:
             pitch = 0;
-            yaw = 180;
+            yaw = 0;
             break;
         case 5:
             pitch = 0;

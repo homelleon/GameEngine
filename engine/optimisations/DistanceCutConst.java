@@ -24,15 +24,20 @@ public class DistanceCutConst {
 		for(Entity entity : entities) {
 			if(entity.isVisible()) {
 				float distance = Maths.distanceFromCamera(entity, camera);
-				if(distance <= ES.RENDERING_VIEW_DISTANCE) {
-					entity.setRendered(true);
+				if(entity.isDetail()) {
+					if(distance <= ES.DETAIL_VIEW_DISTANCE) {
+						entity.setRendered(true);
+					} else {
+						entity.setRendered(false);
+					}
 				} else {
-					entity.setRendered(false);
-				}
-			} else {
-				entity.setRendered(false);
+					if(distance <= ES.RENDERING_VIEW_DISTANCE) {
+						entity.setRendered(true);
+					} else {
+						entity.setRendered(false);
+					}
+				}	
 			}
-			
 		}
 	}
 	

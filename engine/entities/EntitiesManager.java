@@ -48,11 +48,11 @@ public class EntitiesManager {
 		Entity cherry = new EntityTextured("cherry", cherryModel, new Vector3f(150, 0, 150), 0, 0, 0, 4);
 		Entity tree = new EntityTextured("tree", treeModel, new Vector3f(10, 0, 10), 0, 30, 0, 4);
 		
-		entities.add(cube);
-		entities.add(stall);
-		entities.add(cherry);
-		entities.add(tree);
-		//entities.addAll(grasses);
+		//entities.add(cube);
+		//entities.add(stall);
+		//entities.add(cherry);
+		//entities.add(tree);
+		entities.addAll(grasses);
 		
 		return entities;
 	}
