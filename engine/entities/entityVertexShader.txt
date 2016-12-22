@@ -54,7 +54,8 @@ void main(void) {
    
    pass_normal = normal;
    vec3 unitNormal = normalize(normal);
-   vec3 viewVector = worldPosition.xyz - cameraPosition;
+   vec3 viewVector = worldPosition.xyz;
+    //- cameraPosition;
    
    if(reflectiveFactor > 0.0) {	   
 	   reflectedVector = reflect(viewVector, unitNormal);

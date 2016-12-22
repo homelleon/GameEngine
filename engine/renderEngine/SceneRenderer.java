@@ -65,7 +65,7 @@ public class SceneRenderer {
 		
 		this.picker = new MousePicker(scene.getCamera(), renderer.getProjectionMatrix());
 		
-		enviroRenderer.render(scene, renderer, scene.getEntities().get("stall").getPosition());
+		enviroRenderer.render(scene, renderer, scene.getEntities().get("Cuby4").getPosition());
     }
 	
 	public void render(Scene scene, FontType font, Loader loader) {
@@ -81,7 +81,7 @@ public class SceneRenderer {
 		}
 		
     	move(scene);
-    	enviroRenderer.render(scene, renderer, scene.getEntities().get("stall").getPosition());
+    	//enviroRenderer.render(scene, renderer, scene.getEntities().get("Cuby4").getPosition());
 		renderParticles(scene);
 		renderWaterSurface(scene);		
 	    renderToScreen(scene, font);	

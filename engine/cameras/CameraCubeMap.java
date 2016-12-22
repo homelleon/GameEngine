@@ -17,7 +17,7 @@ public class CameraCubeMap implements Camera {
 	private Vector3f position = new Vector3f(0,0,0);
 	
 	private float pitch = 0;
-	private float yaw = 0; 
+	private float yaw; 
 	private float roll;
 	
 	public CameraCubeMap(Vector3f position) {
@@ -34,8 +34,38 @@ public class CameraCubeMap implements Camera {
 	public Vector3f getPosition() {
 		return position;
 	}
-
+	
 	public void switchToFace(int faceIndex) {
+        switch (faceIndex) {
+        case 0:
+            pitch = 0;
+            yaw = 90;
+            break;
+        case 1:
+            pitch = 0;
+            yaw = -90;
+            break;
+        case 2:
+            pitch = -90;
+            yaw = 180;
+            break;
+        case 3:
+            pitch = 90;
+            yaw = 180;
+            break;
+        case 4:
+            pitch = 0;
+            yaw = 180;
+            break;
+        case 5:
+            pitch = 0;
+            yaw = 0;
+            break;
+        }
+        updateViewMatrix();
+    }
+
+	public void switchToFaced(int faceIndex) {
         switch (faceIndex) {
         case 0:
             pitch = 0;

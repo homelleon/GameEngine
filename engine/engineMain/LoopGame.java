@@ -157,7 +157,7 @@ public class LoopGame implements Loop {
 		scene.addAllParticles(ParticlesManager.createParticleSystem(loader));
 		
 		scene.spreadEntitiesOnHeights();
-		scene.getEntities().get("stall").getModel().getTexture().setReflectiveFactor(1.2f);
+		scene.getEntities().get("Cuby4").getModel().getTexture().setReflectiveFactor(1.2f);
 	}
 	
 	@Override
