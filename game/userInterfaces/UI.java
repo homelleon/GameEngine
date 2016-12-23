@@ -10,11 +10,11 @@ import guis.GuiTexture;
 
 public interface UI {
 	
-	void addText(String name, GuiText text, FontType font, Vector2f position);
-	GuiText getText(String name);
+	void addText(GuiText text);
+	GuiText getText(String name); 
 	Collection<GuiText> getAllTexts();
 	
-	void addTexture(String name, GuiTexture texture, Vector2f position);
+	void addTexture(GuiTexture texture);
 	GuiTexture getTexture(String name);
 	Collection<GuiTexture> getAllTextures();
 	

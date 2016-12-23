@@ -15,7 +15,7 @@ public class UIBase {
 	protected Map<String, GuiText> texts = new HashMap<String, GuiText>();
 	protected Map<String, GuiTexture> guis = new HashMap<String, GuiTexture>();
 
-	public void addText(String name, GuiText text, FontType font, Vector2f position) {
+	public void addText(GuiText text) {
 		this.texts.put(text.getName(), text);
 	}
 
@@ -27,8 +27,8 @@ public class UIBase {
 		return this.texts.values();
 	}
 
-	public void addTexture(String name, GuiTexture texture, Vector2f position) {
-		this.guis.put(name, texture);
+	public void addTexture(GuiTexture texture) {
+		this.guis.put(texture.getName(), texture);
 	}
 
 	public GuiTexture getTexture(String name) {

@@ -15,6 +15,7 @@ public class MyGame implements Game {
 	private ParticleSystem particles;
 	private int world1;
 	private Scene scene;
+	Entity cube7;
 	
 		/* 
 		 * use "Main.getMap()" to get methods of Map
@@ -26,19 +27,17 @@ public class MyGame implements Game {
 			scene = EngineMain.getScene();
 			//scene.setTerrainWiredFrame(true);
 			world1 = PE10.peCreateWorld(new Vector3f(0,0,0), new Vector3f(0,0,0));
-			Entity tree1 = scene.getEntities().get("tree");
-			Entity tree2 = scene.getEntities().get("Tree2");
-			Entity tree3 = scene.getEntities().get("Tree3");
+			cube7 = scene.getEntities().get("Cuby7");
 	
 			//PE10.peAttachBody(tree1, PE10.BODY_3D_SPHERE, world1);
 			//PE10.peAttachBody(tree2, PE10.BODY_3D_SPHERE, world1);
 			//PE10.peAttachBody(tree3, PE10.BODY_3D_SPHERE, world1);
-			particles = scene.getParticles().get("Part");
-			particles.randomizeRotation();
-			particles.setDirection(new Vector3f(0, 1, 0), 0.1f);
-			particles.setLifeError(0.5f);
-			particles.setSpeedError(0.4f);
-			particles.setScaleError(0.8f);			
+			//particles = scene.getParticles().get("Part");
+			//particles.randomizeRotation();
+			//particles.setDirection(new Vector3f(0, 1, 0), 0.1f);
+			//particles.setLifeError(0.5f);
+			//particles.setSpeedError(0.4f);
+			//particles.setScaleError(0.8f);			
 		}
 		
 		/* 
@@ -50,6 +49,7 @@ public class MyGame implements Game {
 		 * Don't use while loop and etc
 		 */
 		public void onUpdate() {
+			cube7.increasePosition(0, 0.1f, 0);
 			//PE10.peUpdateWorld(world1);
 			//tree1.increasePosition(0, 0.1f, 0);
 			//particles.setPosition(new Vector3f(20,50,20));

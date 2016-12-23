@@ -22,12 +22,13 @@ import entities.PlayerTextured;
 import fontMeshCreator.FontType;
 import fontMeshCreator.GuiText;
 import fontRendering.TextMaster;
+import gameMain.Game;
+import gameMain.MyGame;
 import guis.GuiManager;
 import maps.GameMap;
 import maps.MapsLoader;
 import maps.MapsTXTLoader;
 import models.TexturedModel;
-import particles.ParticleSystem;
 import particles.ParticlesManager;
 import renderEngine.Loader;
 import renderEngine.MasterRenderer;
@@ -56,6 +57,8 @@ public class LoopGame implements Loop {
     private Player player;
     private Light sun;
     private GameMap map;
+    
+    private Game game = new MyGame();
 
     private FontType font;
     
@@ -164,10 +167,12 @@ public class LoopGame implements Loop {
 	@Override
 	public void run() {	
 		sceneRenderer.init(scene, loader);
+		game.onStart();
 		while(!Display.isCloseRequested()) {
 			if(Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
 				break;
 			}	
+			game.onUpdate();
 			sceneRenderer.render(scene, font, loader);
 			DisplayManager.updateDisplay();		
 		}
