@@ -7,7 +7,6 @@ import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector4f;
 
 import audio.AudioMaster;
-import cameras.Camera;
 import engineMain.DisplayManager;
 import environmentMap.EnvironmentMapRenderer;
 import fontMeshCreator.FontType;
@@ -23,7 +22,6 @@ import particles.ParticleMaster;
 import postProcessing.Fbo;
 import postProcessing.PostProcessing;
 import scene.Scene;
-import textures.Texture;
 import toolbox.MousePicker;
 import toolbox.OGLUtils;
 import water.WaterFrameBuffers;
@@ -36,7 +34,6 @@ public class SceneRenderer {
 	private WaterRenderer waterRenderer;
     protected EnvironmentMapRenderer enviroRenderer;
     protected GuiRenderer guiRenderer;
-	private Texture environmentMap;
 	private WaterFrameBuffers waterFBOs;
 	protected Fbo multisampleFbo;	
     protected Fbo outputFbo;
@@ -60,8 +57,6 @@ public class SceneRenderer {
 		this.waterFBOs = new WaterFrameBuffers();
 		WaterShader waterShader = new WaterShader();
 		this.waterRenderer = new WaterRenderer(loader, waterShader, renderer.getProjectionMatrix(), waterFBOs);
-		
-		this.environmentMap = Texture.newEmptyCubeMap(64);
 		
 		this.picker = new MousePicker(scene.getCamera(), renderer.getProjectionMatrix());
 		

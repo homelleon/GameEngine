@@ -1,6 +1,5 @@
 package worlds;
 
-import java.util.Map;
 import java.util.WeakHashMap;
 
 import org.lwjgl.util.vector.Vector3f;

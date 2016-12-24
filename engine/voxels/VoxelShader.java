@@ -156,7 +156,7 @@ public class VoxelShader extends ShaderProgram {
 	
 	public void loadLights(Collection<Light> lights) {
 		super.loadInt(location_lightCount, ES.MAX_LIGHTS);
-		Iterator iterator = lights.iterator();
+		Iterator<Light> iterator = lights.iterator();
 		for(int i=0; i<ES.MAX_LIGHTS; i++) {
 			if(iterator.hasNext()) {
 				Light light = (Light) iterator.next();

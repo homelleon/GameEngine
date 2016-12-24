@@ -36,7 +36,6 @@ public class MasterRenderer {
 	private SkyboxRenderer skyboxRenderer;
 	private VoxelRenderer voxelRenderer;
 	private ShadowMapMasterRenderer shadowMapRenderer;
-	private EnvironmentMapRenderer enviroRenderer;
 	private Texture environmentMap;
 	
 	private boolean terrainWiredFrame = false;
@@ -57,7 +56,6 @@ public class MasterRenderer {
 		this.normalMapRenderer = new NormalMappingRenderer(projectionMatrix);
 		this.voxelRenderer = new VoxelRenderer(loader, projectionMatrix);
 		this.shadowMapRenderer = new ShadowMapMasterRenderer(camera);
-		this.enviroRenderer = new EnvironmentMapRenderer();
 	}
 	
 	public Matrix4f getProjectionMatrix() {

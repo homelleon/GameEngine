@@ -4,9 +4,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.lwjgl.util.vector.Vector2f;
-
-import fontMeshCreator.FontType;
 import fontMeshCreator.GuiText;
 import guis.GuiTexture;
 

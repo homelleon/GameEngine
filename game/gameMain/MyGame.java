@@ -11,8 +11,6 @@ import scene.Scene;
 public class MyGame implements Game {
 	
 
-	private int time = 0;
-	private ParticleSystem particles;
 	private int world1;
 	private Scene scene;
 	Entity cube7;
@@ -31,13 +29,7 @@ public class MyGame implements Game {
 	
 			//PE10.peAttachBody(tree1, PE10.BODY_3D_SPHERE, world1);
 			//PE10.peAttachBody(tree2, PE10.BODY_3D_SPHERE, world1);
-			//PE10.peAttachBody(tree3, PE10.BODY_3D_SPHERE, world1);
-			//particles = scene.getParticles().get("Part");
-			//particles.randomizeRotation();
-			//particles.setDirection(new Vector3f(0, 1, 0), 0.1f);
-			//particles.setLifeError(0.5f);
-			//particles.setSpeedError(0.4f);
-			//particles.setScaleError(0.8f);			
+			//PE10.peAttachBody(tree3, PE10.BODY_3D_SPHERE, world1);			
 		}
 		
 		/* 
@@ -52,8 +44,7 @@ public class MyGame implements Game {
 			cube7.increasePosition(0, 0.1f, 0);
 			//PE10.peUpdateWorld(world1);
 			//tree1.increasePosition(0, 0.1f, 0);
-			//particles.setPosition(new Vector3f(20,50,20));
-			//particles.generateParticles();			
+			
 			
 		}
 }

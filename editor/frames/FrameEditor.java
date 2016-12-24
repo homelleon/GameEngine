@@ -12,6 +12,10 @@ import panels.PanelDistanceOfView;
 
 public class FrameEditor extends JFrame implements Frame {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1928954494308202730L;
 	private static final int WIDTH = 2048;
 	private static final int HEIGHT = 1536;
 	private JPanel displayPanel = new JPanel();
@@ -19,7 +23,7 @@ public class FrameEditor extends JFrame implements Frame {
 	
 	public FrameEditor(String name) {
 		super(name);
-		setDefaultCloseOperation(this.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setPreferredSize(new Dimension(WIDTH, HEIGHT));
 		setVisible(true);
 		Box vBox = Box.createVerticalBox();

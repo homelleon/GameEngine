@@ -1,7 +1,5 @@
 package worlds;
 
-import org.lwjgl.util.vector.Vector3f;
-
 import entities.Entity;
 
 public interface World {

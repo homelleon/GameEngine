@@ -2,7 +2,6 @@ package particleEffects;
 
 import org.lwjgl.util.vector.Vector3f;
 
-import engineMain.EngineMain;
 import particles.ParticleSystem;
 import particles.ParticleTexture;
 

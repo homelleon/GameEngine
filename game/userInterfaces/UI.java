@@ -2,9 +2,6 @@ package userInterfaces;
 
 import java.util.Collection;
 
-import org.lwjgl.util.vector.Vector2f;
-
-import fontMeshCreator.FontType;
 import fontMeshCreator.GuiText;
 import guis.GuiTexture;
 

@@ -13,7 +13,6 @@ import cameras.Camera;
 import entities.Entity;
 import models.RawModel;
 import models.TexturedModel;
-import renderEngine.MasterRenderer;
 import scene.ES;
 import toolbox.Maths;
 import toolbox.OGLUtils;

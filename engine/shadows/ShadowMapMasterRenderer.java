@@ -15,7 +15,6 @@ import entities.Light;
 import models.TexturedModel;
 import scene.ES;
 import terrains.Terrain;
-import toolbox.Maths;
 
 /**
  * This class is in charge of using all of the classes in the shadows package to

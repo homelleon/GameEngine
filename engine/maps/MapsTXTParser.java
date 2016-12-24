@@ -11,7 +11,6 @@ import org.lwjgl.util.vector.Vector3f;
 import audio.AudioSource;
 import renderEngine.Loader;
 import terrains.Terrain;
-import terrains.TerrainTextured;
 import toolbox.ObjectUtils;
 
 public class MapsTXTParser implements MapsParser {

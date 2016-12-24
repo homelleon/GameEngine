@@ -6,7 +6,7 @@ import org.lwjgl.util.vector.Vector3f;
 import entities.Player;
 import scene.ES;
 
-public class CameraPlayer implements Camera {
+public class CameraPlayer implements Camera { 
 	
 	private static final float maxDistanceFromPlayer = 100;
 	private static final float minDistanceFromPlayer = 0;

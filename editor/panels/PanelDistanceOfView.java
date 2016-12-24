@@ -8,6 +8,11 @@ import javax.swing.JLabel;
 
 public class PanelDistanceOfView extends PanelBasic implements Panel {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3844860083636184535L;
+
 	public PanelDistanceOfView() {
 		super();
 		this.setPreferredSize(new Dimension(400,200));

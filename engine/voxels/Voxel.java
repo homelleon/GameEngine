@@ -1,10 +1,5 @@
 package voxels;
 
-import org.lwjgl.util.vector.Vector3f;
-
-import models.RawModel;
-import scene.ES;
-
 public class Voxel {
 
 	private boolean isVisible;

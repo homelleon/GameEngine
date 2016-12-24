@@ -3,7 +3,6 @@ package shadows;
 import java.util.Collection;
 
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Matrix4f;
@@ -34,11 +33,11 @@ public class ShadowMapTerrainRenderer {
 	}
 
 	/**
-	 * Renders entities to the shadow map. Each model is first bound and then all
-	 * of the entities using that model are rendered to the shadow map.
+	 * Renders terrains to the shadow map. Each model is first bound and then all
+	 * of the terrains using that model are rendered to the shadow map.
 	 * 
-	 * @param entities
-	 *            - the entities to be rendered to the shadow map.
+	 * @param terrains
+	 *            - the terrains to be rendered to the shadow map.
 	 */
 	protected void render(Collection <Terrain> terrains, Camera camera) {
 		for(Terrain terrain : terrains) {

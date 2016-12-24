@@ -1,9 +1,7 @@
 package normalMappingRenderer;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector2f;
@@ -145,7 +143,7 @@ public class NormalMappingShader extends ShaderProgram{
 	
 	protected void loadLights(Collection<Light> lights, Matrix4f viewMatrix) {
 		super.loadInt(location_lightCount, ES.MAX_LIGHTS);
-		Iterator iterator = lights.iterator();
+		Iterator<Light> iterator = lights.iterator();
 		for(int i=0; i<ES.MAX_LIGHTS; i++) {
 			if(iterator.hasNext()) {
 				Light light = (Light) iterator.next();

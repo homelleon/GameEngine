@@ -42,9 +42,7 @@ import water.WaterTile;
 public class LoopGame implements Loop {
 	
 	private static final String SETTINGS_NAME = "settings";
-	
-	private boolean isScenePaused = false; 
-	
+		
 	private Loader loader;
 	private MasterRenderer renderer;
     private SceneRenderer sceneRenderer;
@@ -53,9 +51,6 @@ public class LoopGame implements Loop {
     private String playerName;
 	
     private Scene scene;
-    private Camera camera;
-    private Player player;
-    private Light sun;
     private GameMap map;
     
     private Game game = new MyGame();
@@ -93,7 +88,6 @@ public class LoopGame implements Loop {
 		player1.getModel().getTexture().setRefractiveFactor(1.0f);
 		player1.getModel().getTexture().setRefractiveIndex(1.33f);
 		player1.getModel().getTexture().setShineDamper(5.0f);
-		this.player = player1;
 
 		
 		/*------------------CHUNKS-------------------*/
@@ -102,9 +96,7 @@ public class LoopGame implements Loop {
 		
 		
 		/*------------------CAMERA--------------------*/
-		Camera camera = new CameraPlayer(player1, cameraName);
-		this.camera = camera;
-		
+		Camera camera = new CameraPlayer(player1, cameraName);		
 
 		
 		/*------------------LIGHTS----------------*/

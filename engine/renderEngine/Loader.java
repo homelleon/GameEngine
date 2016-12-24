@@ -26,7 +26,6 @@ import org.newdawn.slick.opengl.TextureLoader;
 
 import de.matthiasmann.twl.utils.PNGDecoder;
 import de.matthiasmann.twl.utils.PNGDecoder.Format;
-import engineMain.GameSettings;
 import models.RawModel;
 import scene.ES;
 import textures.TextureData;
