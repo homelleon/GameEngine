@@ -85,7 +85,7 @@ public class SceneRenderer {
 	private void renderToScreen(Scene scene, FontType font) {
 		waterFBOs.unbindCurrentFrameBuffer();
 		multisampleFbo.bindFrameBuffer();
-		optimisation.optimize(scene.getCamera(), scene.getEntities().values(), scene.getTerrains().values(), scene.getVoxelGrids().values());
+		optimisation.optimize(scene.getCamera(), scene.getEntities().values(), scene.getTerrains().values(), scene.getChunks());
 	    renderer.renderScene(scene, new Vector4f(0, -1, 0, 15));
 	    waterRenderer.render(scene.getWaters().values(), scene.getCamera(), scene.getSun());
 	    ParticleMaster.renderParticles(scene.getCamera());

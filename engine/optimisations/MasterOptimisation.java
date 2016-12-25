@@ -7,7 +7,7 @@ import org.lwjgl.util.vector.Matrix4f;
 import cameras.Camera;
 import entities.Entity;
 import terrains.Terrain;
-import voxels.VoxelGrid;
+import voxels.Chunk;
 
 public class MasterOptimisation implements Optimisation {
 	private DistanceCutConst cutDist;
@@ -21,8 +21,8 @@ public class MasterOptimisation implements Optimisation {
 		this.rCast = new RayCasting(camera, projection);
 	}
 
-	public void optimize(Camera camera, Collection<Entity> entities, Collection<Terrain> terrains, Collection<VoxelGrid> grids) {
-		cutDist.cutRender(camera, entities, terrains, grids);	
+	public void optimize(Camera camera, Collection<Entity> entities, Collection<Terrain> terrains, Collection<Chunk> chunks) {
+		cutDist.cutRender(camera, entities, terrains, chunks);	
 		//rCast.checkEntities(entities);
 	}
 

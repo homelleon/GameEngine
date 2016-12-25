@@ -1,6 +1,8 @@
 package scene;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.WeakHashMap;
 
@@ -17,7 +19,7 @@ import maps.GameMap;
 import particles.ParticleSystem;
 import terrains.Terrain;
 import textures.Texture;
-import voxels.VoxelGrid;
+import voxels.Chunk;
 import water.WaterTile;
 
 public class SceneGame implements Scene {
@@ -31,7 +33,7 @@ public class SceneGame implements Scene {
 	private Map<String, Entity> entities = new WeakHashMap<String, Entity>();
 	private Map<String, Terrain> terrains = new WeakHashMap<String, Terrain>();
 	private Map<String, WaterTile> waters = new WeakHashMap<String, WaterTile>();
-	private Map<String, VoxelGrid> grids = new WeakHashMap<String, VoxelGrid>();
+	private List<Chunk> chunks = new ArrayList<Chunk>();
 	private Map<String, ParticleSystem> particles = new WeakHashMap<String, ParticleSystem>();
 	private Map<String, Light> lights = new WeakHashMap<String, Light>();
 	private Map<String, AudioSource> audioSources = new WeakHashMap<String, AudioSource>();
@@ -153,19 +155,19 @@ public class SceneGame implements Scene {
 	 */
 	
 	@Override
-	public Map<String, VoxelGrid> getVoxelGrids() {
-		return this.grids;
+	public List<Chunk> getChunks() {
+		return this.chunks;
 	}
 
 	@Override
-	public void addVoxelGrid(VoxelGrid grid) {
-		this.grids.put(grid.getName(), grid);
+	public void addChunk(Chunk chunk) {
+		this.chunks.add(chunk);
 	}
 
 	@Override
-	public void addAllVoxelGrids(Collection<VoxelGrid> gridList) {
-		for(VoxelGrid grid : gridList) {
-			this.grids.put(grid.getName(), grid);
+	public void addAllChunks(Collection<Chunk> chunkList) {
+		for(Chunk chunk : chunkList) {
+			this.chunks.add(chunk);
 		}
 	}
 	
@@ -305,30 +307,13 @@ public class SceneGame implements Scene {
 		}
 	}
 	
-	public void createVoxelTerrain(int size, Vector3f position) {
-		VoxelGrid grid = new VoxelGrid(position, size);
-		Terrain terrain = this.terrains.get("Terrain1");
-		for(int x = 0; x<grid.getSize()-1; x++) {
-				for(int z = 0; z<grid.getSize()-1; z++) {
-					for(int y = 0; y<grid.getSize()-1; y++) {
-						float height = terrain.getHeightOfTerrain(x, z);
-						if(height>=0) {
-							if(y< (int) height) {
-								grid.getVoxel(x, y, z).setAir(false);
-							}
-						}
-					}
-				}
-		}
-		addVoxelGrid(grid);
-	}
 	
 	public void cleanUp() {
 		this.environmentMap.delete();
 		entities.clear();
 		terrains.clear();
 		waters.clear();
-		grids.clear();
+		chunks.clear();
 		particles.clear();
 		lights.clear();
 		audioSources.clear();

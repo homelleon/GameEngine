@@ -7,14 +7,14 @@ import entities.Entity;
 import scene.ES;
 import terrains.Terrain;
 import toolbox.Maths;
-import voxels.VoxelGrid;
+import voxels.Chunk;
 
 //Cut during to constants
 public class DistanceCutConst {
 	
 	private static final float TERRAIN_CUT_DISTANCE = 400;
 	
-	public void cutRender(Camera camera, Collection<Entity> entities, Collection<Terrain> terrains, Collection<VoxelGrid> grids) {
+	public void cutRender(Camera camera, Collection<Entity> entities, Collection<Terrain> terrains, Collection<Chunk> chunks) {
 		cutEntityRender(camera, entities);	
 		cutTerrainRender(camera, terrains);
 		//cutChunkRender(camera, grids);
@@ -57,8 +57,8 @@ public class DistanceCutConst {
 		}
 	}
 	
-	private void cutChunkRender(Camera camera, Collection<VoxelGrid> grids) {
-		for(VoxelGrid grid : grids) {
+	private void cutChunkRender(Camera camera, Collection<Chunk> chunks) {
+		for(Chunk chunk : chunks) {
 			
 		}
 			

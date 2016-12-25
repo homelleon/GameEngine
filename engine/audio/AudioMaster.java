@@ -7,6 +7,7 @@ import org.lwjgl.LWJGLException;
 import org.lwjgl.openal.AL;
 import org.lwjgl.openal.AL10;
 import org.lwjgl.util.WaveData;
+import org.lwjgl.util.vector.Vector3f;
 
 import scene.ES;
 
@@ -21,8 +22,7 @@ public class AudioMaster {
 		} catch (LWJGLException e) {
 			e.printStackTrace();
 		}
-	}
-	
+	}	
 	
 	public static Map<String, Integer> getBuffers() {
 		return buffers;
@@ -31,10 +31,15 @@ public class AudioMaster {
 	public static int getBuffer(String path) {
 		return buffers.get(path);
 	}
-
+		
 
 	public static void setListenerData(float x, float y, float z) {
 		AL10.alListener3f(AL10.AL_POSITION, x, y, z);
+		AL10.alListener3f(AL10.AL_VELOCITY, 0, 0, 0);
+	}
+	
+	public static void setListenerData(Vector3f position) {
+		AL10.alListener3f(AL10.AL_POSITION, position.x, position.y, position.z);
 		AL10.alListener3f(AL10.AL_VELOCITY, 0, 0, 0);
 	}
 	

@@ -14,8 +14,7 @@ public class AudioSource {
 		AL10.alSourcef(sourceId, AL10.AL_ROLLOFF_FACTOR, 1);
 		AL10.alSourcef(sourceId, AL10.AL_REFERENCE_DISTANCE, 6);
 		AL10.alSourcef(sourceId, AL10.AL_MAX_DISTANCE, maxDistance);
-		this.name = name;
-		
+		this.name = name;		
 		if (!AudioMaster.getBuffers().containsKey(path)){
 			AudioMaster.loadSound(path);
 		}
@@ -99,5 +98,6 @@ public class AudioSource {
 	public void setPosition(float x, float y, float z) {
 		AL10.alSource3f(sourceId, AL10.AL_POSITION, x, y, z);
 	}
+	
 	
 }

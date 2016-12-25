@@ -15,7 +15,6 @@ import org.lwjgl.util.vector.Vector4f;
 import cameras.Camera;
 import entities.Entity;
 import entities.Light;
-import environmentMap.EnvironmentMapRenderer;
 import models.TexturedModel;
 import normalMappingRenderer.NormalMappingRenderer;
 import scene.ES;
@@ -24,7 +23,6 @@ import shadows.ShadowMapMasterRenderer;
 import terrains.Terrain;
 import textures.Texture;
 import toolbox.OGLUtils;
-import voxels.VoxelGrid;
 
 public class MasterRenderer {
 		
@@ -44,8 +42,7 @@ public class MasterRenderer {
 	
 	private Map<TexturedModel, List<Entity>> entities = new HashMap<TexturedModel, List<Entity>>();
 	private Map<TexturedModel, List<Entity>> normalMapEntities = new HashMap<TexturedModel, List<Entity>>();
-	private Collection<Terrain> terrains = new ArrayList<Terrain>();
-	private Collection<VoxelGrid> grids = new ArrayList<VoxelGrid>(); 
+	private Collection<Terrain> terrains = new ArrayList<Terrain>(); 
 		
 	public MasterRenderer(Loader loader, Camera camera) {
 		OGLUtils.cullBackFaces(true);
@@ -79,7 +76,6 @@ public class MasterRenderer {
 		terrains.clear();
 		entities.clear();
 		normalMapEntities.clear();
-		grids.clear();
 	}
 	
 	public void rendereLowQualityScene(Map<TexturedModel, List<Entity>> entities, Collection<Terrain> terrains, Collection<Light> lights, Camera camera) {
@@ -116,9 +112,6 @@ public class MasterRenderer {
 		}
 	}
 	
-	public void processVoxel(VoxelGrid grid) {
-		this.grids.add(grid);
-	}	
 	
 	public void renderScene(Scene scene, Vector4f clipPlane) {
 			this.environmentMap = scene.getEnvironmentMap();
@@ -133,10 +126,7 @@ public class MasterRenderer {
 					processNormalMapEntity(entity);
 				}					
 			}
-			
-			for(VoxelGrid grid : scene.getVoxelGrids().values()) {
-				processVoxel(grid);
-			}
+		
 			render(scene.getLights().values(), scene.getCamera(), clipPlane);
 		}
 	

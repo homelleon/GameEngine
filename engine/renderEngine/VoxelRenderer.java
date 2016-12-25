@@ -1,6 +1,7 @@
 package renderEngine;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
@@ -18,12 +19,13 @@ import scene.ES;
 import textures.ModelTexture;
 import toolbox.Maths;
 import toolbox.ObjectUtils;
-import voxels.VoxelGrid;
+import voxels.Block;
+import voxels.Chunk;
 import voxels.VoxelShader;
 
 public class VoxelRenderer {
 	
-	private static final float size = ES.VOXEL_SIZE;
+	private static final float size = ES.VOXEL_BLOCK_SIZE;
 	
 	private static final float[] VERTICES = {        
 		    // -z
@@ -188,7 +190,7 @@ public class VoxelRenderer {
 		this.texture = cube.getTexture();
 	}
 	
-	public void render(Collection<VoxelGrid> grids, Vector4f clipPlane, Collection<Light> lights, Camera camera, Matrix4f toShadowMapSpace) {
+	public void render(List<Chunk> chunks, Vector4f clipPlane, Collection<Light> lights, Camera camera, Matrix4f toShadowMapSpace) {
 		shader.start();
 		shader.loadClipPlane(clipPlane);
 		shader.loadSkyColour(ES.DISPLAY_RED, ES.DISPLAY_GREEN, ES.DISPLAY_BLUE);
@@ -199,12 +201,12 @@ public class VoxelRenderer {
 		shader.loadShadowVariables(ES.SHADOW_DISTANCE, ES.SHADOW_MAP_SIZE, ES.SHADOW_TRANSITION_DISTANCE, ES.SHADOW_PCF);
 		prepareModel(cube.getRawModel());
 		bindTexture(texture);
-		for(VoxelGrid grid : grids) {
-			for(int i = 0; i<grid.getSize(); i++) {
-				for(int j = 0; j<grid.getSize(); j++) {
-					for(int k = 0; k<grid.getSize(); k++) {
-						if(!grid.getVoxel(i, j, k).getIsAir()) {
-							prepareInstance(new Vector3f(i * ES.VOXEL_SIZE + grid.getPosition().x, j * ES.VOXEL_SIZE + grid.getPosition().y, k * ES.VOXEL_SIZE + grid.getPosition().z));
+		for(int i = 0; i < chunks.size(); i++) {
+			for(int x = 0; x < ES.VOXEL_BLOCK_SIZE; x++) {
+				for(int y = 0; y < ES.VOXEL_BLOCK_SIZE; y++) {
+					for(int z = 0; z < ES.VOXEL_BLOCK_SIZE; z++) {
+						for(Block block : chunks.get(i).getBlock(x, y, z)) {
+							prepareInstance(block);
 							GL11.glDrawElements(GL11.GL_TRIANGLES, cube.getRawModel().getVertexCount(), 
 									GL11.GL_UNSIGNED_INT, 0);
 						}
@@ -214,6 +216,10 @@ public class VoxelRenderer {
 		}
 		unbindTexturedModel();
 		shader.stop();
+	}
+	
+	private void renderVoxel(Block block) {
+		
 	}
 	
 	private void prepareInstance(Vector3f position) {

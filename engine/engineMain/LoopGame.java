@@ -92,12 +92,7 @@ public class LoopGame implements Loop {
 		
 		/*------------------CHUNKS-------------------*/
 		
-		scene.createVoxelTerrain(80, new Vector3f(0,0,0));
-		
-		
-		/*------------------CAMERA--------------------*/
-		Camera camera = new CameraPlayer(player1, cameraName);		
-
+		scene.createVoxelTerrain(80, new Vector3f(0,0,0));		
 		
 		/*------------------LIGHTS----------------*/
 		//lights.add(new Light(new Vector3f(200,2,200),new Vector3f(10,0,0), new Vector3f(1, 0.01f, 0.002f)));
@@ -117,13 +112,13 @@ public class LoopGame implements Loop {
 		/*--------------AUDIO----------------*/
 		
 		AudioMaster.init();
-		AudioMaster.setListenerData(0,0,0);
+		AudioMaster.setListenerData(player1.getPosition());
 		AL10.alDistanceModel(AL11.AL_LINEAR_DISTANCE_CLAMPED);
-		AudioSource ambientSource = new AudioSource("birds", "forest.wav", 200);
+		AudioSource ambientSource = new AudioSource("birds", "forest.wav", 1000);
 		ambientSource.setLooping(true);
 		ambientSource.setVolume(0.3f);
 		ambientSource.play();
-		ambientSource.setPosition(10, 20, 10);			
+		ambientSource.setPosition(400, 50, 400);			
 			
 		/*--------------WATER----------------*/
 
@@ -134,17 +129,13 @@ public class LoopGame implements Loop {
 		waterList.stream().forEach((i) -> i.setWaterSpeed(0.7f));
 		waterList.stream().forEach((i) -> i.setWaveStrength(0.1f));
 
-		/*---------------PREPARE-------------*/
-
-		//game.onStart();
-		
 		/*---------------SCENE-------------*/
 		
 		scene.setPlayer(player1);
 		scene.addEntity(player1);
 		scene.addAllEntities(ObjectUtils.createGrassField(500, 500, 50, 1, 0.1f, loader));
 		scene.addAllEntities(EntitiesManager.createNormalMappedEntities(loader));
-		scene.setCamera(camera);
+		scene.setCamera(new CameraPlayer(player1, cameraName));
 		scene.setSun(new Light("Sun", new Vector3f(-100000,150000,-100000), new Vector3f(1.3f,1.3f,1.3f)));
 		scene.addLight(scene.getSun());
 		scene.addAudioSource(ambientSource);

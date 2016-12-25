@@ -70,10 +70,8 @@ public class ES {
 	public static final int MAX_LIGHTS = 10;
 	
 	//****************VOZEL SETTINGS****************************************//
-	public static final float VOXEL_SIZE = 2f;
-	public static final int VOXEL_BLOCK_SIZE = 8;
+	public static final float VOXEL_BLOCK_SIZE = 2f;
 	public static final int VOXEL_CHUNK_SIZE = 2;
-	public static final int VOXEL_AREA_SIZE = 2;
 
 	
 	//*****************PATH SETTINGS*************************************//

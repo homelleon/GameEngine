@@ -1,6 +1,7 @@
 package scene;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 import org.lwjgl.util.vector.Vector3f;
@@ -15,7 +16,7 @@ import guis.GuiTexture;
 import particles.ParticleSystem;
 import terrains.Terrain;
 import textures.Texture;
-import voxels.VoxelGrid;
+import voxels.Chunk;
 import water.WaterTile;
 
 public interface Scene {
@@ -43,9 +44,9 @@ public interface Scene {
 	void addWater(WaterTile water);
 	void addAllWaters(Collection<WaterTile> waterList);	
 	
-	Map<String, VoxelGrid> getVoxelGrids();
-	void addVoxelGrid(VoxelGrid grid);
-	void addAllVoxelGrids(Collection<VoxelGrid> gridList);
+	List<Chunk> getChunks();
+	void addChunk(Chunk chunk);
+	void addAllChunks(Collection<Chunk> chunkList);
 	
 	Map<String, ParticleSystem> getParticles();
 	void addParticle(ParticleSystem particle);
@@ -69,7 +70,6 @@ public interface Scene {
 	
 	void spreadEntitiesOnHeights();
 	void spreadParitclesOnHeights(Collection<ParticleSystem> systems);
-	void createVoxelTerrain(int size, Vector3f position);
 	void cleanUp();
 
 }
