@@ -9,15 +9,15 @@ import scene.ES;
 
 public class Chunk {
 	
-	private Block[][][] blocks;
+	private Block[][][] blocks = new Block[ES.VOXEL_CHUNK_SIZE][ES.VOXEL_CHUNK_SIZE][ES.VOXEL_CHUNK_SIZE];
 	
 	private boolean isActive = false;
 		
 	public Chunk() {
-		for(int xB = 0; xB < ES.VOXEL_CHUNK_SIZE; xB++) {
-			for(int yB = 0; yB < ES.VOXEL_CHUNK_SIZE; yB++) {
-				for(int zB = 0; zB < ES.VOXEL_CHUNK_SIZE; zB++) {
-					blocks[xB][yB][zB] = new Block();
+		for(int x = 0; x < ES.VOXEL_CHUNK_SIZE; x++) {
+			for(int y = 0; y < ES.VOXEL_CHUNK_SIZE; y++) {
+				for(int z = 0; z < ES.VOXEL_CHUNK_SIZE; z++) {
+					blocks[x][y][z] = new Block();
 				}
 			}
 		}

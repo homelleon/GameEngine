@@ -1,7 +1,6 @@
 package renderEngine;
 
 import java.util.Collection;
-import java.util.List;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
@@ -21,6 +20,7 @@ import toolbox.Maths;
 import toolbox.ObjectUtils;
 import voxels.Block;
 import voxels.Chunk;
+import voxels.ChunkManager;
 import voxels.VoxelShader;
 
 public class VoxelRenderer {
@@ -190,7 +190,7 @@ public class VoxelRenderer {
 		this.texture = cube.getTexture();
 	}
 	
-	public void render(List<Chunk> chunks, Vector4f clipPlane, Collection<Light> lights, Camera camera, Matrix4f toShadowMapSpace) {
+	public void render(ChunkManager chunker, Vector4f clipPlane, Collection<Light> lights, Camera camera, Matrix4f toShadowMapSpace) {
 		shader.start();
 		shader.loadClipPlane(clipPlane);
 		shader.loadSkyColour(ES.DISPLAY_RED, ES.DISPLAY_GREEN, ES.DISPLAY_BLUE);
@@ -201,25 +201,21 @@ public class VoxelRenderer {
 		shader.loadShadowVariables(ES.SHADOW_DISTANCE, ES.SHADOW_MAP_SIZE, ES.SHADOW_TRANSITION_DISTANCE, ES.SHADOW_PCF);
 		prepareModel(cube.getRawModel());
 		bindTexture(texture);
-		for(int i = 0; i < chunks.size(); i++) {
-			for(int x = 0; x < ES.VOXEL_BLOCK_SIZE; x++) {
-				for(int y = 0; y < ES.VOXEL_BLOCK_SIZE; y++) {
-					for(int z = 0; z < ES.VOXEL_BLOCK_SIZE; z++) {
-						for(Block block : chunks.get(i).getBlock(x, y, z)) {
-							prepareInstance(block);
+		for(int i = 0; i < chunker.getSize(); i++) {
+			for(int x = 0; x < ES.VOXEL_CHUNK_SIZE; x++) {
+				for(int y = 0; y < ES.VOXEL_CHUNK_SIZE; y++) {
+					for(int z = 0; z < ES.VOXEL_CHUNK_SIZE; z++) {
+						if(chunker.getChunk(i).getBlock(x, y, z).getIsActive()) {
+							prepareInstance(chunker.getBlockPosition(i, x, y, z));
 							GL11.glDrawElements(GL11.GL_TRIANGLES, cube.getRawModel().getVertexCount(), 
 									GL11.GL_UNSIGNED_INT, 0);
-						}
+						}	
 					}
 				}
 			}
 		}
 		unbindTexturedModel();
 		shader.stop();
-	}
-	
-	private void renderVoxel(Block block) {
-		
 	}
 	
 	private void prepareInstance(Vector3f position) {

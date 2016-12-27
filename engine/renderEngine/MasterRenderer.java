@@ -10,6 +10,7 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 
 import cameras.Camera;
@@ -23,10 +24,13 @@ import shadows.ShadowMapMasterRenderer;
 import terrains.Terrain;
 import textures.Texture;
 import toolbox.OGLUtils;
+import voxels.ChunkManager;
 
 public class MasterRenderer {
 		
 	private Matrix4f projectionMatrix;
+	
+	private ChunkManager chunker;
 	
 	private EntityRenderer entityRenderer;	
 	private TerrainRenderer terrainRenderer;	
@@ -53,6 +57,15 @@ public class MasterRenderer {
 		this.normalMapRenderer = new NormalMappingRenderer(projectionMatrix);
 		this.voxelRenderer = new VoxelRenderer(loader, projectionMatrix);
 		this.shadowMapRenderer = new ShadowMapMasterRenderer(camera);
+		this.chunker = new ChunkManager(2, new Vector3f(0,0,0));
+		chunker.getChunk(0).getBlock(0, 0, 0).setIsActive(true);
+		chunker.getChunk(0).getBlock(0, 1, 0).setIsActive(true);
+		chunker.getChunk(0).getBlock(1, 0, 0).setIsActive(true);
+		chunker.getChunk(0).getBlock(0, 0, 1).setIsActive(true);
+		chunker.getChunk(0).getBlock(0, 0, 2).setIsActive(true);
+		chunker.getChunk(1).getBlock(0, 0, 0).setIsActive(true);
+		chunker.getChunk(1).getBlock(0, 1, 0).setIsActive(true);
+		chunker.getChunk(1).getBlock(0, 0, 1).setIsActive(true);
 	}
 	
 	public Matrix4f getProjectionMatrix() {
@@ -67,7 +80,7 @@ public class MasterRenderer {
 		checkWiredFrameOff(entitiyWiredFrame);
 		
 		checkWiredFrameOn(terrainWiredFrame);
-		//voxelRenderer.render(grids, clipPlane, lights, camera, shadowMapRenderer.getToShadowMapSpaceMatrix());
+		voxelRenderer.render(chunker, clipPlane, lights, camera, shadowMapRenderer.getToShadowMapSpaceMatrix());
 		terrainRenderer.render(terrains, clipPlane, lights, camera, shadowMapRenderer.getToShadowMapSpaceMatrix());
 		checkWiredFrameOff(terrainWiredFrame);
 		
