@@ -91,8 +91,7 @@ public class LoopGame implements Loop {
 
 		
 		/*------------------CHUNKS-------------------*/
-		
-		scene.createVoxelTerrain(80, new Vector3f(0,0,0));		
+			
 		
 		/*------------------LIGHTS----------------*/
 		//lights.add(new Light(new Vector3f(200,2,200),new Vector3f(10,0,0), new Vector3f(1, 0.01f, 0.002f)));
