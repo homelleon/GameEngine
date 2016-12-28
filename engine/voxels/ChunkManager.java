@@ -42,9 +42,10 @@ public class ChunkManager {
 	
 	public Vector3f getChunkPosition(int index) {
 		float step = ES.VOXEL_CHUNK_SIZE * ES.VOXEL_BLOCK_SIZE;
-		System.out.println((float) Math.floor(index / size));
-		return new Vector3f(position.x + (float) Math.floor(index / (size * size * size)) * step, 
-				position.y + (float) Math.floor(index / (size * size)) * step, position.z + (float) (Math.floor(index / size) - size) * step);
+		System.out.println(index - ((float) Math.floor(index / size)) * index);
+		return new Vector3f(position.x + (index - (float) Math.floor(index / (size * size * size)) * index) * step, 
+				position.y + (index - (float) Math.floor(index / (size * size)) * index) * step, 
+				position.z + (index - (float) Math.floor(index / size) * index) * step);
 	}
 	
 	public Vector3f getBlockPosition(int index, int x, int y, int z) {

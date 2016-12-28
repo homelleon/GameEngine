@@ -71,7 +71,7 @@ public class ES {
 	
 	//****************VOZEL SETTINGS****************************************//
 	public static final float VOXEL_BLOCK_SIZE = 2f;
-	public static final int VOXEL_CHUNK_SIZE = 16;
+	public static final int VOXEL_CHUNK_SIZE = 5;
 
 	
 	//*****************PATH SETTINGS*************************************//
