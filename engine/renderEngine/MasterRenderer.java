@@ -57,7 +57,7 @@ public class MasterRenderer {
 		this.normalMapRenderer = new NormalMappingRenderer(projectionMatrix);
 		this.voxelRenderer = new VoxelRenderer(loader, projectionMatrix);
 		this.shadowMapRenderer = new ShadowMapMasterRenderer(camera);
-		this.chunker = new ChunkManager(3, new Vector3f(0,0,0));
+		this.chunker = new ChunkManager(2, new Vector3f(0,0,0));
 		chunker.getChunk(0).getBlock(0, 0, 0).setIsActive(true);
 		chunker.getChunk(0).getBlock(0, 1, 0).setIsActive(true);
 		chunker.getChunk(0).getBlock(1, 0, 0).setIsActive(true);
@@ -69,6 +69,7 @@ public class MasterRenderer {
 		chunker.getChunk(2).getBlock(0, 0, 1).setIsActive(true);
 		chunker.getChunk(2).getBlock(0, 2, 1).setIsActive(true);
 		chunker.getChunk(3).getBlock(0, 0, 0).setIsActive(true);
+		chunker.getChunk(4).getBlock(0, 0, 0).setIsActive(true);
 	}
 	
 	public Matrix4f getProjectionMatrix() {
