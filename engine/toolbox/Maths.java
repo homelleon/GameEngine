@@ -164,6 +164,20 @@ public class Maths {
 	    return distance;
 	}	
 	
+	/*
+	 * @homelleon
+	 * "tailOfDivisionNoReminder"
+	 * function to find tail number
+	 * that is got after dividing
+	 * one number on an other without
+	 * reminder (can't explain it
+	 * because of poor English) 
+	 */
+	
+	public static int tailOfDivisionNoReminder(int value1, int value2) {
+		return value1 - (int) Math.floor(value1/value2) * value2;
+	}
+	
 	public static boolean pointIsOnRay(Vector3f point, Vector3f ray) {
 		boolean isOnRay = false;
 		

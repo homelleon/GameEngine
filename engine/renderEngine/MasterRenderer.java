@@ -57,19 +57,17 @@ public class MasterRenderer {
 		this.normalMapRenderer = new NormalMappingRenderer(projectionMatrix);
 		this.voxelRenderer = new VoxelRenderer(loader, projectionMatrix);
 		this.shadowMapRenderer = new ShadowMapMasterRenderer(camera);
-		this.chunker = new ChunkManager(2, new Vector3f(0,0,0));
-		chunker.getChunk(0).getBlock(0, 0, 0).setIsActive(true);
-		chunker.getChunk(0).getBlock(0, 1, 0).setIsActive(true);
-		chunker.getChunk(0).getBlock(1, 0, 0).setIsActive(true);
-		chunker.getChunk(0).getBlock(0, 0, 1).setIsActive(true);
-		chunker.getChunk(0).getBlock(0, 0, 2).setIsActive(true);
-		chunker.getChunk(1).getBlock(0, 0, 0).setIsActive(true);
-		chunker.getChunk(1).getBlock(0, 1, 0).setIsActive(true);
-		chunker.getChunk(1).getBlock(0, 0, 1).setIsActive(true);
-		chunker.getChunk(2).getBlock(0, 0, 1).setIsActive(true);
-		chunker.getChunk(2).getBlock(0, 2, 1).setIsActive(true);
-		chunker.getChunk(3).getBlock(0, 0, 0).setIsActive(true);
-		chunker.getChunk(4).getBlock(0, 0, 0).setIsActive(true);
+		int size = 3;
+		this.chunker = new ChunkManager(size, new Vector3f(0,0,0));
+		for(int i = 0; i < size * size * size; i++) {
+			for(int x = 0; x < ES.VOXEL_CHUNK_SIZE; x++) {
+				for(int y = 0; y < ES.VOXEL_CHUNK_SIZE; y++) {
+					for(int z = 0; z < ES.VOXEL_CHUNK_SIZE; z++) {
+						chunker.getChunk(i).getBlock(x, y, z).setIsActive(true);
+					}
+				}
+			}			
+		}
 	}
 	
 	public Matrix4f getProjectionMatrix() {

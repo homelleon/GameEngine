@@ -17,6 +17,7 @@ import models.TexturedModel;
 import scene.ES;
 import textures.ModelTexture;
 import toolbox.Maths;
+import toolbox.OGLUtils;
 import toolbox.ObjectUtils;
 import voxels.Block;
 import voxels.Chunk;
@@ -27,7 +28,7 @@ public class VoxelRenderer {
 	
 	private static final float size = ES.VOXEL_BLOCK_SIZE;
 	
-	private static final float[] VERTICES = {        
+	private static final float[] VERTICES1 = {        
 		    // -z
 			-size,  size, -size,
 		    -size, -size, -size,
@@ -70,6 +71,25 @@ public class VoxelRenderer {
 		    size, -size, -size,
 		    -size, -size,  size,
 		    size, -size,  size
+		};
+	
+	private static final float[] VERTICES = {        
+		 //A
+			size, -size, -size,
+		 //B
+			size, -size, size,
+		 //C
+			-size, -size, size,
+		 //D
+			-size, -size, -size,
+		 //A1
+			size, size, -size,
+		 //B1
+			size, size, size,
+		 //C1
+			-size, size, size,
+		 //D1
+			-size, size, -size		    
 		};
 	
 	private static final float[] VERTICES_X = {
@@ -127,48 +147,61 @@ public class VoxelRenderer {
 	};
 	
 	private static final float[] TEXTURES = {
-			0, 1, 0,
-			0, 1, 0,
-			0, 1, 0,
-			0, 1, 0,
-			0, 1, 0,
-			0, 1, 0,
-			0, 1, 0,
-			0, 1, 0,
-			0, 1, 0,
-			0, 1, 0,
-			0, 1, 0,
-			0, 1, 0
+			0, 0,
+			1, 0,
+			0, 1,
+			1, 1,
+			0, 0,
+			1, 0,
+			0, 1,
+			1, 1,
+			0, 0,
+			1, 0,
+			0, 1,
+			1, 1,
+			0, 0,
+			1, 0,
+			0, 1,
+			1, 1,
+			0, 0,
+			1, 0,
+			0, 1,
+			1, 1,
+			0, 0,
+			1, 0,
+			0, 1,
+			1, 1
 	};
 	
 	private static final float[] NORMALS = {
-			1, 0, 0, 
+			0, 0, -1, 
+			0, 0, -1,
+			-1, 0, 0,
+			-1, 0, 0,
 			1, 0, 0,
 			1, 0, 0,
-			1, 0, 0,
-			1, 0, 0,
-			1, 0, 0,
-			1, 0, 0, 
-			1, 0, 0,
-			1, 0, 0,
-			1, 0, 0,
-			1, 0, 0,
-			1, 0, 0
+			0, 0, 1, 
+			0, 0, 1,
+			0, 1, 0,
+			0, 1, 0,
+			0, -1, 0,
+			0, -1, 0
 	};
 	
 	private static final int[] INDICES = {
-			0, -1, 0, 
-			0, -1, 0,
-			0, -1, 0,
-			0, -1, 0,
-			0, -1, 0,
-			0, -1, 0,
-			0, -1, 0, 
-			0, -1, 0,
-			0, -1, 0,
-			0, -1, 0,
-			0, -1, 0,
-			0, -1, 0	
+			//AA1D1D (-z)
+			4, 0, 7, 7, 0, 3,
+			//DD1C1C (-x)
+			7, 3, 6, 6, 3, 2,
+			//ABB1A1 (x)
+			1, 0, 5, 5, 0, 4,
+			//BCC1B1 (z)
+			2, 1, 6, 6, 1, 5,
+			//A1B1C1D1 (y)
+			5, 4, 6, 6, 4, 7,
+			//ADCB (-y) 
+			3, 0, 2, 2, 0, 1
+			
 	};
 	
 	private static String[] TEXTURE_FILES = {"right", "left", "top", "bottom", "back", "front"};
@@ -186,7 +219,10 @@ public class VoxelRenderer {
 		this.shader.connectTextureUnits();
 		this.shader.stop();
 		this.loader = loader;
-		this.cube = ObjectUtils.loadStaticModel("cube", "cube1", loader);
+		RawModel rawModel = loader.loadToVAO(VERTICES, TEXTURES, NORMALS, INDICES);
+		this.cube = new TexturedModel("cube", rawModel,
+	    		new ModelTexture("cube1", loader.loadTexture(ES.MODEL_TEXTURE_PATH, "cube1")));
+		//this.cube = ObjectUtils.loadStaticModel("cube", "cube1", loader);
 		this.texture = cube.getTexture();
 	}
 	
@@ -200,6 +236,7 @@ public class VoxelRenderer {
 		shader.loadToShadowSpaceMatrix(toShadowMapSpace);
 		shader.loadShadowVariables(ES.SHADOW_DISTANCE, ES.SHADOW_MAP_SIZE, ES.SHADOW_TRANSITION_DISTANCE, ES.SHADOW_PCF);
 		prepareModel(cube.getRawModel());
+		//OGLUtils.doWiredFrame(true);
 		bindTexture(texture);
 		for(int i = 0; i < chunker.getSize(); i++) {
 			for(int x = 0; x < ES.VOXEL_CHUNK_SIZE; x++) {
@@ -214,6 +251,7 @@ public class VoxelRenderer {
 				}
 			}
 		}
+		OGLUtils.doWiredFrame(false);
 		unbindTexturedModel();
 		shader.stop();
 	}
