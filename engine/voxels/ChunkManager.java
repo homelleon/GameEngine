@@ -17,9 +17,9 @@ public class ChunkManager {
 	public ChunkManager(int size, Vector3f position) {
 		this.size = size;
 		this.position = position;
-		for(int x = 0; x < size; x++) {
-			for(int y = 0; y < size; y++) {				
-				for(int z = 0; z < size; z++) {					
+		for(int x = 0; x <= size; x++) {
+			for(int y = 0; y <= size; y++) {				
+				for(int z = 0; z <= size; z++) {					
 					this.chunks.add(new Chunk());
 				}
 			}

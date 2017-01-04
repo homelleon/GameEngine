@@ -60,9 +60,9 @@ public class MasterRenderer {
 		int size = 3;
 		this.chunker = new ChunkManager(size, new Vector3f(0,0,0));
 		for(int i = 0; i < size * size * size; i++) {
-			for(int x = 0; x < ES.VOXEL_CHUNK_SIZE; x++) {
-				for(int y = 0; y < ES.VOXEL_CHUNK_SIZE; y++) {
-					for(int z = 0; z < ES.VOXEL_CHUNK_SIZE; z++) {
+			for(int x = 0; x <= ES.VOXEL_CHUNK_SIZE; x++) {
+				for(int y = 0; y <= ES.VOXEL_CHUNK_SIZE; y++) {
+					for(int z = 0; z <= ES.VOXEL_CHUNK_SIZE; z++) {
 						chunker.getChunk(i).getBlock(x, y, z).setIsActive(true);
 					}
 				}
