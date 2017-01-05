@@ -119,6 +119,7 @@ public class VoxelRenderer {
 	};
 	
 	
+	
 	private static String[] TEXTURE_FILES = {"right", "left", "top", "bottom", "back", "front"};
 	
 	private TexturedModel cube;
@@ -137,7 +138,6 @@ public class VoxelRenderer {
 		RawModel rawModel = loader.loadToVAO(VERTICES, TEXTURES, NORMALS, INDICES);
 		this.cube = new TexturedModel("cube", rawModel,
 	    		new ModelTexture("bark", loader.loadTexture(ES.MODEL_TEXTURE_PATH, "crate")));
-		//this.cube = ObjectUtils.loadStaticModel("cube", "cube1", loader);
 		this.texture = cube.getTexture();
 		texture.setNumberOfRows(1);
 	}
@@ -162,8 +162,10 @@ public class VoxelRenderer {
 						if(!isAllSideCovered(chunker.getChunk(i), x, y, z)) {
 							if(chunker.getChunk(i).getBlock(x, y, z).getIsActive()) {
 								prepareInstance(chunker.getBlockPosition(i, x, y, z));
-								GL11.glDrawElements(GL11.GL_TRIANGLES, cube.getRawModel().getVertexCount(), 
-									GL11.GL_UNSIGNED_INT, 0);
+								GL11.glDrawElements(GL11.GL_TRIANGLES, 24, 
+										GL11.GL_UNSIGNED_INT, 48);
+//								GL11.glDrawElements(GL11.GL_TRIANGLES, cube.getRawModel().getVertexCount(), 
+//									GL11.GL_UNSIGNED_INT, 0);
 								t += 1;
 							}
 						}	
@@ -200,11 +202,6 @@ public class VoxelRenderer {
 		shader.loadShineVariables(texture.getShineDamper(), texture.getReflectivity());
 		GL13.glActiveTexture(GL13.GL_TEXTURE0);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture.getID());
-//		shader.loadUsesSpecularMap(texture.hasSpecularMap());		
-//		if(texture.hasSpecularMap()) {
-//			GL13.glActiveTexture(GL13.GL_TEXTURE1);
-//			GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture.getSpecularMap());
-//		}
 	}
 	
 	private void unbindTexturedModel() {
