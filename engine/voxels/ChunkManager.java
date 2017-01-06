@@ -7,6 +7,7 @@ import org.lwjgl.util.vector.Vector3f;
 
 import scene.ES;
 import toolbox.Maths;
+import toolbox.Vector3i;
 
 public class ChunkManager {
 	
@@ -57,9 +58,49 @@ public class ChunkManager {
 				chunkPosition.y + y * step, chunkPosition.z + z * step);
 	}
 	
+	public Vector3i getChunkXYZPosition(int index) {
+		int x = (int) Math.floor(index / Maths.sqr(size));
+		int y = (int) Math.floor(index / size);
+		int z = index;
+		return new Vector3i(Maths.tailOfDivisionNoReminder(x, size),
+				Maths.tailOfDivisionNoReminder(y, size), 
+				Maths.tailOfDivisionNoReminder(z, size));
+	}
+	
+	public boolean isChunkExist(int index) {
+		boolean isExist = false;
+		if(index >= 0 && index <this.chunks.size()) {
+			isExist = true;
+		}
+		return isExist;
+	}
+	
+	public boolean isChunkExist(int x, int y, int z) {
+		boolean isExist = false;
+		int index = x * size * size + y * size + z;
+		if(index >= 0 && index <this.chunks.size()) {
+			isExist = true;
+		}
+		return isExist;
+	}
+	
+	public boolean isChunkExist(Vector3i position) {
+		boolean isExist = false;
+		int index = position.x * size * size + 
+				position.y * size + position.z;
+		if(index >= 0 && index <this.chunks.size()) {
+			isExist = true;
+		}
+		return isExist;
+	}
+	
 	public Chunk getChunk(int x, int y, int z) {
 			return chunks.get(x * size * size + y * size + z); 
 	}
+	
+	public Chunk getChunk(Vector3i position) {
+		return chunks.get(position.x * size * size + position.y * size + position.z); 
+} 
 	
 	public Chunk getChunk(int index) {
 		return chunks.get(index);

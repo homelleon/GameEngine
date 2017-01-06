@@ -3,6 +3,7 @@ package renderEngine;
 import java.util.Collection;
 
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
@@ -18,10 +19,10 @@ import scene.ES;
 import textures.ModelTexture;
 import toolbox.Maths;
 import toolbox.OGLUtils;
-import toolbox.ObjectUtils;
-import voxels.Block;
+import toolbox.Vector3i;
 import voxels.Chunk;
 import voxels.ChunkManager;
+import voxels.FaceCullingData;
 import voxels.VoxelShader;
 
 public class VoxelRenderer {
@@ -125,6 +126,7 @@ public class VoxelRenderer {
 	private TexturedModel cube;
 	private ModelTexture texture;
 	private VoxelShader shader;
+	
 	Matrix4f projectionMatrix;
 	Loader loader;
 	
@@ -156,19 +158,29 @@ public class VoxelRenderer {
 		bindTexture(texture);
 		int t = 0;
 		for(int i = 0; i < chunker.getSize(); i++) {
-			for(int x = 0; x <= ES.VOXEL_CHUNK_SIZE; x++) {
-				for(int y = 0; y <= ES.VOXEL_CHUNK_SIZE; y++) {
-					for(int z = 0; z <= ES.VOXEL_CHUNK_SIZE; z++) {
-						if(!isAllSideCovered(chunker.getChunk(i), x, y, z)) {
-							if(chunker.getChunk(i).getBlock(x, y, z).getIsActive()) {
-								prepareInstance(chunker.getBlockPosition(i, x, y, z));
-								GL11.glDrawElements(GL11.GL_TRIANGLES, 24, 
-										GL11.GL_UNSIGNED_INT, 48);
-//								GL11.glDrawElements(GL11.GL_TRIANGLES, cube.getRawModel().getVertexCount(), 
-//									GL11.GL_UNSIGNED_INT, 0);
-								t += 1;
+			if(chunker.getChunk(i).getIsAcitve()) {
+				FaceCullingData chunkFCData = isNeedChunkCulling(chunker, i);
+				if(!isAllFaceCulled(chunkFCData)) {
+					for(int x = 0; x <= ES.VOXEL_CHUNK_SIZE; x++) {					
+						for(int y = 0; y <= ES.VOXEL_CHUNK_SIZE; y++) {
+							for(int z = 0; z <= ES.VOXEL_CHUNK_SIZE; z++) {
+								FaceCullingData blockFCData = isNeedBlockCulling(chunker.getChunk(i), x, y, z);
+								if(!isAllFaceCulled(blockFCData)) {
+									if(chunker.getChunk(i).getBlock(x, y, z).getIsActive()) {
+										prepareInstance(chunker.getBlockPosition(i, x, y, z));
+										for(int j = 0; j < 6; j ++) {
+											int startCount = 0;
+											if(blockFCData.getFace(j) == false) {										
+												GL12.glDrawRangeElements(GL11.GL_TRIANGLES, 0, 6, 6, GL11.GL_UNSIGNED_INT, 24 * j);
+												t += 1;
+											}
+										}
+										blockFCData = null;
+										chunkFCData = null;
+									}
+								}	
 							}
-						}	
+						}
 					}
 				}
 			}
@@ -212,42 +224,77 @@ public class VoxelRenderer {
 		GL30.glBindVertexArray(0);
 	}
 	
-	private boolean isAllSideCovered(Chunk chunk, int x, int y, int z) {
-		boolean isCovered = false;
-		int coveredSide = 0;
-		if(isXPositiveCovered(chunk, x, y, z)) {
-			coveredSide += 1;
+	private FaceCullingData isNeedBlockCulling(Chunk chunk, int x, int y, int z) {
+		FaceCullingData fcData = new FaceCullingData();
+		if(isFrontCovered(chunk, x, y, z)) {
+			fcData.setFaceRendering(0, true);
 		}
 		
-		if(isXNegativeCovered(chunk, x, y, z)) {
-			coveredSide += 1;
+		if(isBackCovered(chunk, x, y, z)) {
+			fcData.setFaceRendering(1, true);
 		}
 		
-		if(isYPositiveCovered(chunk, x, y, z)) {
-			coveredSide += 1;
+		if(isTopCovered(chunk, x, y, z)) {
+			fcData.setFaceRendering(2, true);
 		}
 		
-		if(isYNegativeCovered(chunk, x, y, z)) {
-			coveredSide += 1;
+		if(isBottomCovered(chunk, x, y, z)) {
+			fcData.setFaceRendering(3, true);
 		}
 		
-		if(isZPositiveCovered(chunk, x, y, z)) {
-			coveredSide += 1;
+		if(isLeftCovered(chunk, x, y, z)) {
+			fcData.setFaceRendering(4, true);
 		}
 		
-		if(isZNegativeCovered(chunk, x, y, z)) {
-			coveredSide += 1;
+		if(isRightCovered(chunk, x, y, z)) {
+			fcData.setFaceRendering(5, true);
 		}
 		
-		if(coveredSide == 6) {
-			isCovered = true;
-		}
-		return isCovered;
+		return fcData;
 	}
 	
-	private boolean isXPositiveCovered(Chunk chunk, int x, int y, int z) {
+	private FaceCullingData isNeedChunkCulling(ChunkManager chunker, int index) {
+		FaceCullingData fcData = new FaceCullingData();
+		if(isFrontCovered(chunker, index)) {
+			fcData.setFaceRendering(0, true);
+		}
+		
+		if(isBackCovered(chunker, index)) {
+			fcData.setFaceRendering(1, true);
+		}
+		
+		if(isTopCovered(chunker, index)) {
+			fcData.setFaceRendering(2, true);
+		}
+		
+		if(isBottomCovered(chunker, index)) {
+			fcData.setFaceRendering(3, true);
+		}
+		
+		if(isLeftCovered(chunker, index)) {
+			fcData.setFaceRendering(4, true);
+		}
+		
+		if(isRightCovered(chunker, index)) {
+			fcData.setFaceRendering(5, true);
+		}
+		
+		return fcData;
+	}
+	
+	private boolean isAllFaceCulled(FaceCullingData fcData) {
+		boolean isAllFaceCulled = true;
+		for(int i = 0; i < 6; i ++) {
+			if (fcData.getFace(i) == false) {
+				isAllFaceCulled = false;
+			}
+		}
+		return isAllFaceCulled;
+	}
+	
+	private boolean isRightCovered(Chunk chunk, int x, int y, int z) {
 		boolean isCovered = false;
-		if(chunk.blockExist(x + 1, y, z)) {
+		if(chunk.isBlockExist(x + 1, y, z)) {
 			if(chunk.getBlock(x + 1, y, z).getIsActive()) {
 				isCovered = true;
 			}
@@ -255,9 +302,9 @@ public class VoxelRenderer {
 		return isCovered;
 	}
 	
-	private boolean isXNegativeCovered(Chunk chunk, int x, int y, int z) {
+	private boolean isLeftCovered(Chunk chunk, int x, int y, int z) {
 		boolean isCovered = false;
-		if(chunk.blockExist(x - 1, y, z)) {
+		if(chunk.isBlockExist(x - 1, y, z)) {
 			if(chunk.getBlock(x - 1, y, z).getIsActive()) {
 				isCovered = true;
 			}
@@ -265,9 +312,9 @@ public class VoxelRenderer {
 		return isCovered;
 	}
 	
-	private boolean isYPositiveCovered(Chunk chunk, int x, int y, int z) {
+	private boolean isTopCovered(Chunk chunk, int x, int y, int z) {
 		boolean isCovered = false;
-		if(chunk.blockExist(x, y + 1, z)) {
+		if(chunk.isBlockExist(x, y + 1, z)) {
 			if(chunk.getBlock(x, y + 1, z).getIsActive()) {
 				isCovered = true;
 			}
@@ -275,9 +322,9 @@ public class VoxelRenderer {
 		return isCovered;
 	}
 	
-	private boolean isYNegativeCovered(Chunk chunk, int x, int y, int z) {
+	private boolean isBottomCovered(Chunk chunk, int x, int y, int z) {
 		boolean isCovered = false;
-		if(chunk.blockExist(x, y - 1, z)) {
+		if(chunk.isBlockExist(x, y - 1, z)) {
 			if(chunk.getBlock(x, y - 1, z).getIsActive()) {
 				isCovered = true;
 			}
@@ -285,9 +332,9 @@ public class VoxelRenderer {
 		return isCovered;
 	}
 	
-	private boolean isZPositiveCovered(Chunk chunk, int x, int y, int z) {
+	private boolean isFrontCovered(Chunk chunk, int x, int y, int z) {
 		boolean isCovered = false;
-		if(chunk.blockExist(x, y, z + 1)) {
+		if(chunk.isBlockExist(x, y, z + 1)) {
 			if(chunk.getBlock(x, y, z + 1).getIsActive()) {
 				isCovered = true;
 			}
@@ -295,14 +342,93 @@ public class VoxelRenderer {
 		return isCovered;
 	}
 	
-	private boolean isZNegativeCovered(Chunk chunk, int x, int y, int z) {
+	private boolean isBackCovered(Chunk chunk, int x, int y, int z) {
 		boolean isCovered = false;
-		if(chunk.blockExist(x, y, z - 1)) {
+		if(chunk.isBlockExist(x, y, z - 1)) {
 			if(chunk.getBlock(x, y, z - 1).getIsActive()) {
 				isCovered = true;
 			}
 		}
 		return isCovered;
 	}
+	
+	private boolean isFrontCovered(ChunkManager chunker, int index) {
+		boolean isCovered = false;
+		Vector3i position = chunker.getChunkXYZPosition(index);
+		position.z += 1;
+		if(chunker.isChunkExist(position)) {
+			if(chunker.getChunk(position).getIsAcitve()) {
+				isCovered = true;
+			}
+		}
+		return isCovered;
+	}
+	
+	private boolean isBackCovered(ChunkManager chunker, int index) {
+		boolean isCovered = false;
+		Vector3i position = chunker.getChunkXYZPosition(index);
+		position.z -= 1;
+		if(chunker.isChunkExist(position)) {
+			if(chunker.getChunk(position).getIsAcitve()) {
+				isCovered = true;
+			}
+		}
+		return isCovered;
+	}
+
+	
+	private boolean isTopCovered(ChunkManager chunker, int index) {
+		boolean isCovered = false;
+		Vector3i position = chunker.getChunkXYZPosition(index);
+		position.y += 1;
+		if(chunker.isChunkExist(position)) {
+			if(chunker.getChunk(position).getIsAcitve()) {
+				isCovered = true;
+			}
+		}
+		return isCovered;
+	}
+
+	
+	private boolean isBottomCovered(ChunkManager chunker, int index) {
+		boolean isCovered = false;
+		Vector3i position = chunker.getChunkXYZPosition(index);
+		position.y -= 1;
+		if(chunker.isChunkExist(position)) {
+			if(chunker.getChunk(position).getIsAcitve()) {
+				isCovered = true;
+			}
+		}
+		return isCovered;
+	}
+
+	
+	private boolean isLeftCovered(ChunkManager chunker, int index) {
+		boolean isCovered = false;
+		Vector3i position = chunker.getChunkXYZPosition(index);
+		position.x -= 1;
+		if(chunker.isChunkExist(position)) {
+			if(chunker.getChunk(position).getIsAcitve()) {
+				isCovered = true;
+			}
+		}
+		return isCovered;
+	}
+
+	
+	private boolean isRightCovered(ChunkManager chunker, int index) {
+		boolean isCovered = false;
+		Vector3i position = chunker.getChunkXYZPosition(index);
+		position.x += 1;
+		if(chunker.isChunkExist(position)) {
+			if(chunker.getChunk(position).getIsAcitve()) {
+				isCovered = true;
+			}
+		}
+		return isCovered;
+	}
+
+	
+	
 
 }
