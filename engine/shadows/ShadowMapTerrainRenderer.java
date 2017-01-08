@@ -45,11 +45,9 @@ public class ShadowMapTerrainRenderer {
 			bindModel(rawModel);
 			//GL13.glActiveTexture(GL13.GL_TEXTURE0);
 			//GL11.glBindTexture(GL11.GL_TEXTURE_2D, terrain.getTexturePack().getBackgroundTexture().getTextureID());
-			if(terrain.isRendered()){
 				prepareInstance(terrain);
 				GL11.glDrawElements(GL11.GL_TRIANGLES, terrain.getModel().getVertexCount(), 
 						GL11.GL_UNSIGNED_INT, 0);
-			}				
 			//unbindTexturedModel();
 		}
 	}

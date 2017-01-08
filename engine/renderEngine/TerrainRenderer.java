@@ -42,13 +42,11 @@ public class TerrainRenderer {
 		shader.loadShadowVariables(ES.SHADOW_DISTANCE, ES.SHADOW_MAP_SIZE, ES.SHADOW_TRANSITION_DISTANCE, ES.SHADOW_PCF);
 		
 		for(Terrain terrain : terrains) {
-			if(terrain.isRendered()) {
-				prepareTerrain(terrain);
-				loadModelMatrix(terrain);
-				GL11.glDrawElements(GL11.GL_TRIANGLES, terrain.getModel().getVertexCount(), 
-						GL11.GL_UNSIGNED_INT, 0);
-				unbindTexture();
-			}
+			prepareTerrain(terrain);
+			loadModelMatrix(terrain);
+			GL11.glDrawElements(GL11.GL_TRIANGLES, terrain.getModel().getVertexCount(), 
+					GL11.GL_UNSIGNED_INT, 0);
+			unbindTexture();
 			
 		}
 		

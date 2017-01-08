@@ -17,9 +17,6 @@ public interface Terrain {
 	public boolean isVisible();
 	public void setVisible(boolean isVisible);
 
-	public boolean isRendered();
-	public void setRendered(boolean isRendered);
-
 	public TerrainTexturePack getTexturePack();
 	public TerrainTexture getBlendMap();	
 	public String getHeightMapName();	

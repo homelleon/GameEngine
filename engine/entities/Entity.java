@@ -12,9 +12,6 @@ public interface Entity {
 	public boolean isVisible();
 	public void setVisible(boolean isVisible);
 
-	public boolean isRendered();
-	public void setRendered(boolean isRendered);
-
 	public float getTextureXOffset();	
 	public float getTextureYOffset();
 	
@@ -41,6 +38,8 @@ public interface Entity {
 	public void setRotZ(float rotZ);
 	public float getScale();
 	public void setScale(float scale);
+	
+	public float getSphereRadius();
 	
 	
 }

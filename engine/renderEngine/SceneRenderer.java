@@ -16,8 +16,6 @@ import guis.GuiRenderer;
 import maps.GameMap;
 import maps.MapsTXTWriter;
 import maps.MapsWriter;
-import optimisations.MasterOptimisation;
-import optimisations.Optimisation;
 import particles.ParticleMaster;
 import postProcessing.Fbo;
 import postProcessing.PostProcessing;
@@ -39,13 +37,11 @@ public class SceneRenderer {
     protected Fbo outputFbo;
     protected Fbo outputFbo2;
     protected MousePicker picker;
-    protected Optimisation optimisation;
     
     public void init(Scene scene, Loader loader) {
     	this.renderer = new MasterRenderer(loader, scene.getCamera());
     	this.enviroRenderer = new EnvironmentMapRenderer();
 		this.guiRenderer = new GuiRenderer(loader);	
-		this.optimisation = new MasterOptimisation(scene.getCamera(), renderer.getProjectionMatrix());
 		ParticleMaster.init(loader, renderer.getProjectionMatrix());
 		this.multisampleFbo = new Fbo(Display.getWidth(), Display.getHeight());
 		this.outputFbo = new Fbo(Display.getWidth(), Display.getHeight(), Fbo.DEPTH_TEXTURE);
@@ -85,8 +81,7 @@ public class SceneRenderer {
 	private void renderToScreen(Scene scene, FontType font) {
 		waterFBOs.unbindCurrentFrameBuffer();
 		multisampleFbo.bindFrameBuffer();
-		optimisation.optimize(scene.getCamera(), scene.getEntities().values(), scene.getTerrains().values(), scene.getChunks());
-	    renderer.renderScene(scene, new Vector4f(0, -1, 0, 15));
+		renderer.renderScene(scene, new Vector4f(0, -1, 0, 15));
 	    waterRenderer.render(scene.getWaters().values(), scene.getCamera(), scene.getSun());
 	    ParticleMaster.renderParticles(scene.getCamera());
 	    multisampleFbo.unbindFrameBuffer();

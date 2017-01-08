@@ -50,9 +50,9 @@ public class PlayerTextured extends EntityTextured implements Player {
 		super.increasePosition(0, upwardsSpeed * DisplayManager.getFrameTimeSeconds(), 0);
 		
 		float terrainHeight = 0; 
-//		for(Terrain terrain : terrains) {		
-//			terrainHeight += terrain.getHeightOfTerrain(super.getPosition().x, super.getPosition().z);								
-//		}
+		for(Terrain terrain : terrains) {		
+			terrainHeight += terrain.getHeightOfTerrain(super.getPosition().x, super.getPosition().z);								
+		}
 		
 		if(super.getPosition().y < terrainHeight) {
 			upwardsSpeed = 0;

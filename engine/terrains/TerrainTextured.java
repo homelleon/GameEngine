@@ -31,7 +31,6 @@ public class TerrainTextured implements Terrain {
 	private boolean isProcedureGenerated = false;
 	private String name;
 	private boolean isVisible = true;
-	private boolean isRendered = false;
 	private float amplitude;
 	private int octaves;
 	private float roughness;
@@ -87,14 +86,6 @@ public class TerrainTextured implements Terrain {
 
 	public void setVisible(boolean isVisible) {
 		this.isVisible = isVisible;
-	}
-
-	public boolean isRendered() {
-		return isRendered;
-	}
-
-	public void setRendered(boolean isRendered) {
-		this.isRendered = isRendered;
 	}
 
 	public TerrainTexturePack getTexturePack() {

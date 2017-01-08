@@ -23,6 +23,7 @@ import scene.Scene;
 import shadows.ShadowMapMasterRenderer;
 import terrains.Terrain;
 import textures.Texture;
+import toolbox.Frustum;
 import toolbox.OGLUtils;
 import voxels.ChunkManager;
 
@@ -39,6 +40,7 @@ public class MasterRenderer {
 	private VoxelRenderer voxelRenderer;
 	private ShadowMapMasterRenderer shadowMapRenderer;
 	private Texture environmentMap;
+	private Frustum frustum = new Frustum();
 	
 	private boolean terrainWiredFrame = false;
 	private boolean entitiyWiredFrame = false;
@@ -105,15 +107,17 @@ public class MasterRenderer {
 	}
 	
 	public void processEntity(Entity entity) {
-		TexturedModel entityModel = entity.getModel();
-		List<Entity> batch = entities.get(entityModel);
-		if(batch!=null) {
-			batch.add(entity);	
-		}else{
-			List<Entity> newBatch = new ArrayList<Entity>();
-			newBatch.add(entity);
-			entities.put(entityModel, newBatch);		
-		}
+		if(checkVisibility(entity)) {
+			TexturedModel entityModel = entity.getModel();
+			List<Entity> batch = entities.get(entityModel);
+			if(batch!=null) {
+				batch.add(entity);	
+			}else{
+				List<Entity> newBatch = new ArrayList<Entity>();
+				newBatch.add(entity);
+				entities.put(entityModel, newBatch);		
+			}
+		} 
 	}
 	
 	public void processNormalMapEntity(Entity entity) {
@@ -128,23 +132,33 @@ public class MasterRenderer {
 		}
 	}
 	
+	private boolean checkVisibility(Entity entity) {
+		boolean isVisible = false;
+		float distance = frustum.distanceSphereInFrustum(entity.getPosition(), entity.getSphereRadius());
+		if (distance <= ES.RENDERING_VIEW_DISTANCE && distance >0) {
+			isVisible = true;
+		}
+		return isVisible;
+	}
+	
 	
 	public void renderScene(Scene scene, Vector4f clipPlane) {
-			this.environmentMap = scene.getEnvironmentMap();
-			for (Terrain terrain : scene.getTerrains().values()) {
-				processTerrain(terrain);
-			}
-			
-			for (Entity entity : scene.getEntities().values()) {
-				if(entity.getType() == ES.ENTITY_TYPE_SIMPLE) {
-					processEntity(entity);
-				} else if(entity.getType() == ES.ENTITY_TYPE_NORMAL) {
-					processNormalMapEntity(entity);
-				}					
-			}
-		
-			render(scene.getLights().values(), scene.getCamera(), clipPlane);
+		this.frustum.extractFrustrum(scene.getCamera(), projectionMatrix);
+		this.environmentMap = scene.getEnvironmentMap();
+		for (Terrain terrain : scene.getTerrains().values()) {
+			processTerrain(terrain);
 		}
+			
+		for (Entity entity : scene.getEntities().values()) {
+			if(entity.getType() == ES.ENTITY_TYPE_SIMPLE) {
+				processEntity(entity);
+			} else if(entity.getType() == ES.ENTITY_TYPE_NORMAL) {
+				processNormalMapEntity(entity);
+			}					
+		}
+		
+		render(scene.getLights().values(), scene.getCamera(), clipPlane);
+	}
 	
 	public void renderShadowMap(Scene scene) {
 		for(Entity entity : scene.getEntities().values()) {

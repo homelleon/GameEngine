@@ -21,6 +21,7 @@ import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.opengl.GL33;
 import org.lwjgl.opengl.GLContext;
+import org.lwjgl.util.vector.Vector3f;
 import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
 
@@ -29,6 +30,7 @@ import de.matthiasmann.twl.utils.PNGDecoder.Format;
 import models.RawModel;
 import scene.ES;
 import textures.TextureData;
+import toolbox.Maths;
 
 public class Loader {
 	
@@ -48,14 +50,15 @@ public class Loader {
 	private List<Integer> vbos = new ArrayList<Integer>();
 	private Map<String, Integer> textures = new HashMap<String, Integer>();
 	
-	public RawModel loadToVAO(float[] positions, float[] textureCoords,float[] normals, int[] indices) {
+	public RawModel loadToVAO(float[] positions, float[] textureCoords, float[] normals, int[] indices) {
 		int vaoID = createVAO();
 		bindIndicesBuffer(indices);
 		storeDataInAttributeList(0, 3, positions);
 		storeDataInAttributeList(1, 2, textureCoords);
 		storeDataInAttributeList(2, 3, normals);
 		unbindVAO();
-		return new RawModel(vaoID, indices.length);
+		float radius = getDistFarVertToCenter(positions);
+		return new RawModel(vaoID, indices.length, radius);
 		
 	}
 	
@@ -86,7 +89,8 @@ public class Loader {
 		storeDataInAttributeList(2, 3, normals);
 		storeDataInAttributeList(3, 3, tangents);
 		unbindVAO();
-		return new RawModel(vaoID,indices.length);
+		float radius = getDistFarVertToCenter(positions);
+		return new RawModel(vaoID,indices.length, radius);
 		
 	}
 		
@@ -114,7 +118,8 @@ public class Loader {
 		int vaoID = createVAO();
 		this.storeDataInAttributeList(0,dimensions,positions);
 		unbindVAO();
-		return new RawModel(vaoID, positions.length/dimensions);
+		float radius = getDistFarVertToCenter(positions);
+		return new RawModel(vaoID, positions.length/dimensions, radius);
 		
 	}
 	
@@ -270,6 +275,21 @@ public class Loader {
 		buffer.put(data);
 		buffer.flip();
 		return buffer;
+	}
+	
+	private float getDistFarVertToCenter(float[] positions) {
+		float distance = 0;
+		Vector3f center = new Vector3f(0,0,0);
+		Vector3f point;
+		for(int i = 1; i < positions.length / 3; i++) {
+			point = new Vector3f(positions[3 * i - 3],
+					positions[3 * i - 2], positions[3 * i - 1]);
+			float length = Maths.distance2Points(point, center);
+			if(length > distance) {
+				distance = length;
+			}
+		}
+		return distance;
 	}
 	
 

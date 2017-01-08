@@ -12,9 +12,9 @@ public class EntityTextured implements Entity {
 	private Vector3f position;
 	private float rotX,rotY,rotZ;
 	private float scale;
+	private float radius = 1f;
 	private boolean isDetail = false;
 	private boolean isVisible = true;
-	private boolean isRendered = false;
 	
 	private int textureIndex = 0;
 	private int typeID = ES.ENTITY_TYPE_SIMPLE;
@@ -22,6 +22,7 @@ public class EntityTextured implements Entity {
 	public EntityTextured(String name, TexturedModel model, Vector3f position, float rotX, float rotY, float rotZ, float scale) {
 		this.name = name;
 		this.model = model;
+		this.radius = model.getRawModel().getRadius() * scale;
 		this.position = position;
 		this.rotX = rotX;
 		this.rotY = rotY;
@@ -32,6 +33,7 @@ public class EntityTextured implements Entity {
 	public EntityTextured(String name, int typeID, TexturedModel model, Vector3f position, float rotX, float rotY, float rotZ, float scale) {
 		this.name = name;
 		this.model = model;
+		this.radius = model.getRawModel().getRadius() * scale;
 		this.typeID = typeID;
 		this.position = position;
 		this.rotX = rotX;
@@ -44,6 +46,7 @@ public class EntityTextured implements Entity {
 		this.name = name;
 		this.textureIndex = textureIndex;
 		this.model = model;
+		this.radius = model.getRawModel().getRadius() * scale;
 		this.position = position;
 		this.rotX = rotX;
 		this.rotY = rotY;
@@ -65,14 +68,6 @@ public class EntityTextured implements Entity {
 
 	public void setVisible(boolean isVisible) {
 		this.isVisible = isVisible;
-	}
-
-	public boolean isRendered() {
-		return isRendered;
-	}
-
-	public void setRendered(boolean isRendered) {
-		this.isRendered = isRendered;
 	}
 
 	public float getTextureXOffset() {
@@ -114,36 +109,50 @@ public class EntityTextured implements Entity {
 	public void setModel(TexturedModel model) {
 		this.model = model;
 	}
+	
 	public Vector3f getPosition() {
 		return position;
 	}
+	
 	public void setPosition(Vector3f position) {
 		this.position = position;
 	}
+	
 	public float getRotX() {
 		return rotX;
 	}
+	
 	public void setRotX(float rotX) {
 		this.rotX = rotX;
 	}
+	
 	public float getRotY() {
 		return rotY;
 	}
+	
 	public void setRotY(float rotY) {
 		this.rotY = rotY;
 	}
+	
 	public float getRotZ() {
 		return rotZ;
 	}
+	
 	public void setRotZ(float rotZ) {
 		this.rotZ = rotZ;
 	}
 	public float getScale() {
 		return scale;
 	}
+	
 	public void setScale(float scale) {
 		this.scale = scale;
 	}
+	
+	public float getSphereRadius() {
+		return this.radius;
+	}	
+	
 
 
 }
