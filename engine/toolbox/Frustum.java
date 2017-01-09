@@ -1,5 +1,8 @@
 package toolbox;
 
+import java.nio.ByteBuffer;
+
+import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 
@@ -9,7 +12,7 @@ public class Frustum {
 	
 	private float[][] plane = new float[6][4];
 	
-	public void extractFrustrum(Camera camera, Matrix4f projectionMatrix) {
+	public void extractFrustum(Camera camera, Matrix4f projectionMatrix) {
 		Matrix4f clip;
 		float t;
 		
@@ -18,6 +21,7 @@ public class Frustum {
 		/* multiply matrix */
 		clip = Matrix4f.mul(viewMatrix, projectionMatrix, null);
 		
+		/* RIGHT */
 		/* find A,B,C,D on the RIGHT plane */
 		this.plane[0][0] = clip.m03 - clip.m00;
 		this.plane[0][1] = clip.m13 - clip.m10;
@@ -33,6 +37,7 @@ public class Frustum {
 		plane[0][2] /= t;
 		plane[0][3] /= t;
 		
+		/* LEFT */
 		/* find A,B,C,D for the LEFT plane */
 		this.plane[1][0] = clip.m03 + clip.m00;
 		this.plane[1][1] = clip.m13 + clip.m10;
@@ -48,6 +53,7 @@ public class Frustum {
 		plane[1][2] /= t;
 		plane[1][3] /= t;
 		
+		/* BOTTOM */
 		/* find A,B,C,D for the BOTTOM plane */
 		this.plane[2][0] = clip.m03 + clip.m01;
 		this.plane[2][1] = clip.m13 + clip.m11;
@@ -63,6 +69,7 @@ public class Frustum {
 		plane[2][2] /= t;
 		plane[2][3] /= t;
 		
+		/* TOP */
 		/* find A,B,C,D for the TOP plane */
 		this.plane[3][0] = clip.m03 - clip.m01;
 		this.plane[3][1] = clip.m13 - clip.m11;
@@ -78,7 +85,7 @@ public class Frustum {
 		plane[3][2] /= t;
 		plane[3][3] /= t;
 		
-
+		/* BACK */
 		/* find A,B,C,D for the BACK plane */
 		this.plane[4][0] = clip.m03 - clip.m02;
 		this.plane[4][1] = clip.m13 - clip.m12;
@@ -94,6 +101,7 @@ public class Frustum {
 		plane[4][2] /= t;
 		plane[4][3] /= t;
 		
+		/* FRONT */
 		/* find A,B,C,D for the FRONT plane */
 		this.plane[5][0] = clip.m03 + clip.m02;
 		this.plane[5][1] = clip.m13 + clip.m12;
@@ -101,14 +109,13 @@ public class Frustum {
 		this.plane[5][3] = clip.m33 + clip.m32;
 		
 		/* normalize equation of plane */
-		t = (float) Math.sqrt( Maths.sqr(plane[5][0]) +
+		t = (float) Math.sqrt(Maths.sqr(plane[5][0]) +
 				Maths.sqr(plane[5][1]) + 
 				Maths.sqr(plane[5][2]));
 		plane[5][0] /= t;
 		plane[5][1] /= t;
 		plane[5][2] /= t;
-		plane[5][3] /= t;
-		
+		plane[5][3] /= t;		
 	}
 	
 	public boolean pointInFrustum(Vector3f position) {
@@ -136,17 +143,21 @@ public class Frustum {
 	public float distanceSphereInFrustum(Vector3f position, float radius) {
 		float distance = 0;
 		boolean isInFrustum = true;
+		System.out.println(radius);	
+		
 		for(int p = 0; p < 6; p++) {
 			distance = plane[p][0] * position.x + plane[p][1] * position.y + plane[p][2] * position.z + plane[p][3];
 			if(distance <= -radius) {
 				isInFrustum = false;
+				break;
 			}
-		}
+		}	
+		
 		if(isInFrustum) {
 			distance = distance + radius;
 		} else {
 			distance = 0;
-		}
+		}		
 		return distance;
 	} 
 

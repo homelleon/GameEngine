@@ -185,7 +185,7 @@ public class VoxelRenderer {
 				}
 			}
 		}
-		System.out.println(t);
+		//System.out.println(t);
 		OGLUtils.doWiredFrame(false);
 		unbindTexturedModel();
 		shader.stop();

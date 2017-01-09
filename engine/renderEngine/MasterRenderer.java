@@ -134,8 +134,9 @@ public class MasterRenderer {
 	
 	private boolean checkVisibility(Entity entity) {
 		boolean isVisible = false;
+		System.out.println(entity.getName());
 		float distance = frustum.distanceSphereInFrustum(entity.getPosition(), entity.getSphereRadius());
-		if (distance <= ES.RENDERING_VIEW_DISTANCE && distance >0) {
+		if (distance <= ES.RENDERING_VIEW_DISTANCE && distance > 0) {
 			isVisible = true;
 		}
 		return isVisible;
@@ -143,7 +144,7 @@ public class MasterRenderer {
 	
 	
 	public void renderScene(Scene scene, Vector4f clipPlane) {
-		this.frustum.extractFrustrum(scene.getCamera(), projectionMatrix);
+		this.frustum.extractFrustum(scene.getCamera(), projectionMatrix);
 		this.environmentMap = scene.getEnvironmentMap();
 		for (Terrain terrain : scene.getTerrains().values()) {
 			processTerrain(terrain);
