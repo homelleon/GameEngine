@@ -121,22 +121,23 @@ public class MasterRenderer {
 	}
 	
 	public void processNormalMapEntity(Entity entity) {
-		TexturedModel entityModel = entity.getModel();
-		List<Entity> batch = normalMapEntities.get(entityModel);
-		if(batch!=null) {
-			batch.add(entity);	
-		}else{
-			List<Entity> newBatch = new ArrayList<Entity>();
-			newBatch.add(entity);
-			normalMapEntities.put(entityModel, newBatch);	
+		if(checkVisibility(entity)) {
+			TexturedModel entityModel = entity.getModel();
+			List<Entity> batch = normalMapEntities.get(entityModel);
+			if(batch!=null) {
+				batch.add(entity);	
+			}else{
+				List<Entity> newBatch = new ArrayList<Entity>();
+				newBatch.add(entity);
+				normalMapEntities.put(entityModel, newBatch);	
+			}
 		}
 	}
 	
 	private boolean checkVisibility(Entity entity) {
 		boolean isVisible = false;
-		System.out.println(entity.getName());
 		float distance = frustum.distanceSphereInFrustum(entity.getPosition(), entity.getSphereRadius());
-		if (distance <= ES.RENDERING_VIEW_DISTANCE && distance > 0) {
+		if (distance > 0 && distance <= ES.RENDERING_VIEW_DISTANCE) {
 			isVisible = true;
 		}
 		return isVisible;
@@ -161,6 +162,7 @@ public class MasterRenderer {
 		render(scene.getLights().values(), scene.getCamera(), clipPlane);
 	}
 	
+	//TODO: different from renderScene processEntity method (avoid frustum)
 	public void renderShadowMap(Scene scene) {
 		for(Entity entity : scene.getEntities().values()) {
 			if(entity.getType() == ES.ENTITY_TYPE_SIMPLE) {

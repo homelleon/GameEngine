@@ -11,16 +11,14 @@ import cameras.Camera;
 public class Frustum {
 	
 	private float[][] plane = new float[6][4];
-	
+		
 	public void extractFrustum(Camera camera, Matrix4f projectionMatrix) {
 		Matrix4f clip;
 		float t;
 		
 		Matrix4f viewMatrix = Maths.createViewMatrix(camera);
-		
 		/* multiply matrix */
-		clip = Matrix4f.mul(viewMatrix, projectionMatrix, null);
-		
+		clip = Matrix4f.mul(projectionMatrix, viewMatrix, null);
 		/* RIGHT */
 		/* find A,B,C,D on the RIGHT plane */
 		this.plane[0][0] = clip.m03 - clip.m00;
@@ -45,7 +43,7 @@ public class Frustum {
 		this.plane[1][3] = clip.m33 + clip.m30;
 		
 		/* normalize equation of plane */
-		t = (float) Math.sqrt( Maths.sqr(plane[1][0]) +
+		t = (float) Math.sqrt(Maths.sqr(plane[1][0]) +
 				Maths.sqr(plane[1][1]) + 
 				Maths.sqr(plane[1][2]));
 		plane[1][0] /= t;
@@ -61,7 +59,7 @@ public class Frustum {
 		this.plane[2][3] = clip.m33 + clip.m31;
 		
 		/* normalize equation of plane */
-		t = (float) Math.sqrt( Maths.sqr(plane[2][0]) +
+		t = (float) Math.sqrt(Maths.sqr(plane[2][0]) +
 				Maths.sqr(plane[2][1]) + 
 				Maths.sqr(plane[2][2]));
 		plane[2][0] /= t;
@@ -143,7 +141,6 @@ public class Frustum {
 	public float distanceSphereInFrustum(Vector3f position, float radius) {
 		float distance = 0;
 		boolean isInFrustum = true;
-		System.out.println(radius);	
 		
 		for(int p = 0; p < 6; p++) {
 			distance = plane[p][0] * position.x + plane[p][1] * position.y + plane[p][2] * position.z + plane[p][3];
