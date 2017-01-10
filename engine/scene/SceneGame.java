@@ -28,7 +28,7 @@ public class SceneGame implements Scene {
 	private Camera camera;
 	private Light sun;
 	
-	private Texture environmentMap = Texture.newEmptyCubeMap(128);
+	private Texture environmentMap = Texture.newEmptyCubeMap(32);
 	
 	private Map<String, Entity> entities = new WeakHashMap<String, Entity>();
 	private Map<String, Terrain> terrains = new WeakHashMap<String, Terrain>();

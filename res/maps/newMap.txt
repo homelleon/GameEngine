@@ -5,7 +5,7 @@
 <e> Cuby5 cube Cube1 44.0 6.9643636 25.0 4.0 false
 <e> Cuby6 cube Cube1 46.0 7.244837 25.0 4.0 false
 <e> Cuby3 cube Cube1 30.0 0.3973266 25.0 4.0 false
-<e> Cuby4 cube Cube1 42.0 10 30.0 4.0 false
+<e> Cuby4 cube Cube1 100.0 10 100.0 25.0 false
 <e> Bo cube Cube1 70.0 -5.780105 70.0 8.0 false
 <e> Cuby1 cube Cube1 50.0 7.791623 25.0 4.0 false
 <e> Cuby2 cube Cube1 20.0 -3.1758592 25.0 4.0 false

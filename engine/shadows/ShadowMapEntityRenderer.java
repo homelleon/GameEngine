@@ -52,11 +52,9 @@ public class ShadowMapEntityRenderer {
 				OGLUtils.cullBackFaces(false);
 			}
 			for (Entity entity : entities.get(model)) {
-				if(Maths.distanceFromCamera(entity,camera) <= ES.SHADOW_DISTANCE) {
-					prepareInstance(entity);
-					GL11.glDrawElements(GL11.GL_TRIANGLES, rawModel.getVertexCount(),
-							GL11.GL_UNSIGNED_INT, 0);
-				}
+				prepareInstance(entity);
+				GL11.glDrawElements(GL11.GL_TRIANGLES, rawModel.getVertexCount(),
+						GL11.GL_UNSIGNED_INT, 0);			
 			}
 			if(model.getTexture().isHasTransparency()){
 				OGLUtils.cullBackFaces(true);

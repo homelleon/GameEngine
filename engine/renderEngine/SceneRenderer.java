@@ -56,12 +56,10 @@ public class SceneRenderer {
 		
 		this.picker = new MousePicker(scene.getCamera(), renderer.getProjectionMatrix());
 		
-		enviroRenderer.render(scene, renderer, scene.getEntities().get("stall"));
+		enviroRenderer.render(scene, renderer, scene.getEntities().get("Cuby4"));
     }
 	
 	public void render(Scene scene, FontType font, Loader loader) {
-				
-
 		if(Keyboard.isKeyDown(Keyboard.KEY_T)) {
 			MapsWriter mapWriter = new MapsTXTWriter();
 			GameMap map = new GameMap("newMap", loader);
@@ -72,7 +70,7 @@ public class SceneRenderer {
 		}
 		
     	move(scene);
-    	enviroRenderer.render(scene, renderer, scene.getEntities().get("stall"));
+    	enviroRenderer.render(scene, renderer, scene.getEntities().get("Cuby4"));
 		renderParticles(scene);
 		renderWaterSurface(scene);		
 	    renderToScreen(scene, font);	

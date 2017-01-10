@@ -156,7 +156,7 @@ public class ShadowBox {
 	 *            - the center point of the frustum's near plane.
 	 * @param centerFar
 	 *            - the center point of the frustum's (possibly adjusted) far
-	 *            plane.
+	 *            plane.¸
 	 * @return The positions of the vertices of the frustum in light space.
 	 */
 	private Vector4f[] calculateFrustumVertices(Matrix4f rotation, Vector3f forwardVector,

@@ -39,6 +39,7 @@ public class EnvironmentMapRenderer {
 				processEntity(entity);
 			}
 		}
+		
 		for(int i=0;i<6;i++) {
 			GL30.glFramebufferTexture2D(GL30.GL_FRAMEBUFFER, GL30.GL_COLOR_ATTACHMENT0, GL13.GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, scene.getEnvironmentMap().textureId, 0);
 			cubeCamera.switchToFace(i);

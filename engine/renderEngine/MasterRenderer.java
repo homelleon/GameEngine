@@ -133,11 +133,49 @@ public class MasterRenderer {
 			}
 		}
 	}
+		
+	public void processShadowEntity(Entity entity) {
+		if(checkShadowVisibility(entity)) {
+			TexturedModel entityModel = entity.getModel();
+			List<Entity> batch = entities.get(entityModel);
+			if(batch!=null) {
+				batch.add(entity);	
+			}else{
+				List<Entity> newBatch = new ArrayList<Entity>();
+				newBatch.add(entity);
+				entities.put(entityModel, newBatch);		
+			}
+		}
+	}
+		
+	public void processShadowNormalMapEntity(Entity entity) {
+		if(checkShadowVisibility(entity)) {
+			TexturedModel entityModel = entity.getModel();
+			List<Entity> batch = normalMapEntities.get(entityModel);
+			if(batch!=null) {
+				batch.add(entity);	
+			}else{
+				List<Entity> newBatch = new ArrayList<Entity>();
+				newBatch.add(entity);
+				normalMapEntities.put(entityModel, newBatch);	
+			}
+		}
+	}
 	
 	private boolean checkVisibility(Entity entity) {
 		boolean isVisible = false;
 		float distance = frustum.distanceSphereInFrustum(entity.getPosition(), entity.getSphereRadius());
 		if (distance > 0 && distance <= ES.RENDERING_VIEW_DISTANCE) {
+			isVisible = true;
+		}
+		return isVisible;
+	}
+	
+	private boolean checkShadowVisibility(Entity entity) {
+		boolean isVisible = false;
+		Vector3f position = new Vector3f(entity.getPosition().x, 0, entity.getPosition().z);
+		float distance = frustum.distanceSphereInFrustum(position, entity.getSphereRadius());
+		if (distance >= -ES.SHADOW_DISTANCE && distance <= ES.SHADOW_DISTANCE) {
 			isVisible = true;
 		}
 		return isVisible;
@@ -162,13 +200,12 @@ public class MasterRenderer {
 		render(scene.getLights().values(), scene.getCamera(), clipPlane);
 	}
 	
-	//TODO: different from renderScene processEntity method (avoid frustum)
 	public void renderShadowMap(Scene scene) {
 		for(Entity entity : scene.getEntities().values()) {
 			if(entity.getType() == ES.ENTITY_TYPE_SIMPLE) {
-				processEntity(entity);
+				processShadowEntity(entity);
 			} else if(entity.getType() == ES.ENTITY_TYPE_NORMAL) {
-				processNormalMapEntity(entity);
+				processShadowNormalMapEntity(entity);
 			}
 		}
 		

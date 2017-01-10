@@ -6,7 +6,7 @@ import org.lwjgl.util.vector.Vector3f;
 public class CameraCubeMap implements Camera {
 	
     private static final float NEAR_PLANE = 0.1f;
-    private static final float FAR_PLANE = 200f;
+    private static final float FAR_PLANE = 400f;
     private static final float FOV = 90;// don't change!
     private static final float ASPECT_RATIO = 1;
 	
@@ -18,7 +18,7 @@ public class CameraCubeMap implements Camera {
 	
 	private float pitch = 0;
 	private float yaw; 
-	private float roll;
+	private float roll = 0;
 	
 	public CameraCubeMap(Vector3f position) {
 		this.position = position;	
@@ -56,36 +56,6 @@ public class CameraCubeMap implements Camera {
         case 4:
             pitch = 0;
             yaw = 180;
-            break;
-        case 5:
-            pitch = 0;
-            yaw = 0;
-            break;
-        }
-        updateViewMatrix();
-    }
-
-	public void switchToFaceà(int faceIndex) {
-        switch (faceIndex) {
-        case 0:
-            pitch = 0;
-            yaw = 0;
-            break;
-        case 1:
-            pitch = 0;
-            yaw = 0;
-            break;
-        case 2:
-            pitch = -90;
-            yaw = 0;
-            break;
-        case 3:
-            pitch = 90;
-            yaw = 0;
-            break;
-        case 4:
-            pitch = 0;
-            yaw = 0;
             break;
         case 5:
             pitch = 0;
