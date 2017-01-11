@@ -42,6 +42,23 @@ public class MousePicker {
 		return worldRay;		
 	}
 	
+	public boolean intesects(Vector3f position, float radius) {
+		boolean isIntersects = false;
+		Vector3f l = new Vector3f(position.x - camera.getPosition().x, 
+				position.y - camera.getPosition().y, 
+				position.z - camera.getPosition().z);
+		Vector3f currRay = getCurrentRay(); 
+		float d = Vector3f.dot(l, currRay);
+		float lSq = Vector3f.dot(l, l);
+	    if ( d < 0 && lSq > radius ) {
+	    	return false;
+	    } else {
+		    float mSq = lSq - d*d;
+	    	isIntersects = (mSq <= radius);
+	    }		
+		return isIntersects;
+	}
+	
 	private Vector3f toWorldCoords(Vector4f eyeCoords) {
 		Matrix4f invertedView = Matrix4f.invert(viewMatrix, null);
 		Vector4f rayWorld = Matrix4f.transform(invertedView, eyeCoords, null);

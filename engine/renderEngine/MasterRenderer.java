@@ -59,7 +59,7 @@ public class MasterRenderer {
 		this.normalMapRenderer = new NormalMappingRenderer(projectionMatrix);
 		this.voxelRenderer = new VoxelRenderer(loader, projectionMatrix);
 		this.shadowMapRenderer = new ShadowMapMasterRenderer(camera);
-		int size = 5;
+		int size = 3;
 		this.chunker = new ChunkManager(size, new Vector3f(0,0,0));
 		for(int i = 0; i < size * size * size; i++) {
 			for(int x = 0; x <= ES.VOXEL_CHUNK_SIZE; x++) {
@@ -77,7 +77,7 @@ public class MasterRenderer {
 		return projectionMatrix;
 	}
 	
-	public void render(Collection<Light> lights, Camera camera, Vector4f clipPlane) {	
+	public void render(Collection<Light> lights, Camera camera, Vector4f clipPlane, boolean isVoxel) {	
 		prepare();	
 		checkWiredFrameOn(entitiyWiredFrame);
 		entityRenderer.render(entities, clipPlane, lights, camera, shadowMapRenderer.getToShadowMapSpaceMatrix(), environmentMap);
@@ -85,7 +85,9 @@ public class MasterRenderer {
 		checkWiredFrameOff(entitiyWiredFrame);
 		
 		checkWiredFrameOn(terrainWiredFrame);
-		voxelRenderer.render(chunker, clipPlane, lights, camera, shadowMapRenderer.getToShadowMapSpaceMatrix());
+		if(isVoxel) {
+			voxelRenderer.render(chunker, clipPlane, lights, camera, shadowMapRenderer.getToShadowMapSpaceMatrix(), frustum);
+		}
 		terrainRenderer.render(terrains, clipPlane, lights, camera, shadowMapRenderer.getToShadowMapSpaceMatrix());
 		checkWiredFrameOff(terrainWiredFrame);
 		
@@ -182,7 +184,7 @@ public class MasterRenderer {
 	}
 	
 	
-	public void renderScene(Scene scene, Vector4f clipPlane) {
+	public void renderScene(Scene scene, Vector4f clipPlane, boolean isVoxel) {
 		this.frustum.extractFrustum(scene.getCamera(), projectionMatrix);
 		this.environmentMap = scene.getEnvironmentMap();
 		for (Terrain terrain : scene.getTerrains().values()) {
@@ -197,7 +199,7 @@ public class MasterRenderer {
 			}					
 		}
 		
-		render(scene.getLights().values(), scene.getCamera(), clipPlane);
+		render(scene.getLights().values(), scene.getCamera(), clipPlane, isVoxel);
 	}
 	
 	public void renderShadowMap(Scene scene) {

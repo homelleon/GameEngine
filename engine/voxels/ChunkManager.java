@@ -58,7 +58,7 @@ public class ChunkManager {
 				chunkPosition.y + y * step, chunkPosition.z + z * step);
 	}
 	
-	public Vector3i getChunkXYZPosition(int index) {
+	public Vector3i getChunkXYZIndex(int index) {
 		int x = (int) Math.floor(index / Maths.sqr(size));
 		int y = (int) Math.floor(index / size);
 		int z = index;
@@ -78,7 +78,7 @@ public class ChunkManager {
 	public boolean isChunkExist(int x, int y, int z) {
 		boolean isExist = false;
 		int index = x * size * size + y * size + z;
-		if(index >= 0 && index <this.chunks.size()) {
+		if(index >= 0 && index < this.chunks.size()) {
 			isExist = true;
 		}
 		return isExist;
@@ -88,7 +88,7 @@ public class ChunkManager {
 		boolean isExist = false;
 		int index = position.x * size * size + 
 				position.y * size + position.z;
-		if(index >= 0 && index <this.chunks.size()) {
+		if(index >= 0 && index < this.chunks.size()) {
 			isExist = true;
 		}
 		return isExist;
