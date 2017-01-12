@@ -28,8 +28,9 @@ import voxels.VoxelShader;
 
 public class VoxelRenderer {
 	
-	private static final float SIZE = 1.5f * ES.VOXEL_BLOCK_SIZE;
-	private static final float CHUNK_RADIUS = 1.5f * SIZE * ES.VOXEL_CHUNK_SIZE;
+	private static final float SIZE = ES.VOXEL_BLOCK_SIZE / 2;
+	private static final float BLOCK_RADIUS = 3 * SIZE;
+	private static final float CHUNK_RADIUS = 3 * BLOCK_RADIUS * ES.VOXEL_CHUNK_SIZE;
 		
 	private static final float[] VERTICES = {
 			//front
@@ -179,7 +180,7 @@ public class VoxelRenderer {
 						for(int x = 0; x <= ES.VOXEL_CHUNK_SIZE; x++) {					
 							for(int y = 0; y <= ES.VOXEL_CHUNK_SIZE; y++) {
 								for(int z = 0; z <= ES.VOXEL_CHUNK_SIZE; z++) {
-									if(checkVisibility(frustum, chunker.getBlockPosition(i, x, y, z), SIZE)) {
+									if(checkVisibility(frustum, chunker.getBlockPosition(i, x, y, z), BLOCK_RADIUS)) {
 										FaceCullingData blockFCData = isNeedBlockCulling(chunker.getChunk(i), x, y, z);
 										if(!isAllFaceCulled(blockFCData)) {
 											if(chunker.getChunk(i).getBlock(x, y, z).getIsActive()) {												
@@ -202,7 +203,7 @@ public class VoxelRenderer {
 			}
 		}
 //		System.out.println(s);
-		System.out.println(t);
+//		System.out.println(t);
 //		System.out.println(counter);
 		counter = 0;
 		OGLUtils.doWiredFrame(false);

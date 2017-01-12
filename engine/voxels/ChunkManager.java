@@ -46,9 +46,12 @@ public class ChunkManager {
 		int x = (int) Math.floor(index / Maths.sqr(size));
 		int y = (int) Math.floor(index / size);
 		int z = index;
-		return new Vector3f(position.x + Maths.tailOfDivisionNoReminder(x, size) * step, 
-				position.y +  Maths.tailOfDivisionNoReminder(y, size)* step, 
-				position.z +  Maths.tailOfDivisionNoReminder(z, size) * step);
+		return new Vector3f(position.x + 
+				Maths.tailOfDivisionNoReminder(x, size) * step, 
+				position.y +  
+				Maths.tailOfDivisionNoReminder(y, size)* step, 
+				position.z +  
+				Maths.tailOfDivisionNoReminder(z, size) * step);
 	}
 	
 	public Vector3f getBlockPosition(int index, int x, int y, int z) {
@@ -99,7 +102,8 @@ public class ChunkManager {
 	}
 	
 	public Chunk getChunk(Vector3i position) {
-		return chunks.get(position.x * size * size + position.y * size + position.z); 
+		return chunks.get(position.x * size * size + 
+				position.y * size + position.z); 
 } 
 	
 	public Chunk getChunk(int index) {

@@ -1,6 +1,7 @@
 package renderEngine;
 
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Vector2f;
@@ -14,6 +15,7 @@ import fontMeshCreator.FontType;
 import fontMeshCreator.GuiText;
 import fontRendering.TextMaster;
 import guis.GuiRenderer;
+import inputs.MouseGame;
 import maps.GameMap;
 import maps.MapsTXTWriter;
 import maps.MapsWriter;
@@ -38,6 +40,9 @@ public class SceneRenderer {
     protected Fbo outputFbo;
     protected Fbo outputFbo2;
     protected MousePicker picker;
+    
+    private int mouseTimer = 0;
+    private boolean isMouseClicked = false;
     
     public void init(Scene scene, Loader loader) {
     	this.masterRenderer = new MasterRenderer(loader, scene.getCamera());
@@ -89,12 +94,15 @@ public class SceneRenderer {
 	    PostProcessing.doPostProcessing(outputFbo.getColourTexture(), outputFbo2.getColourTexture());
 	    guiRenderer.render(scene.getGuis().values());
 	    renderText(font);
-	    /* intersection of entities with mouse ray */ 
-	    for(Entity entity : scene.getEntities().values()) {
-	    	if(picker.intesects(entity.getPosition(), entity.getSphereRadius())) {
-//	    		System.out.println(entity.getName());
-	    	}
-	    }
+	    /* intersection of entities with mouse ray */
+	    if(MouseGame.isOncePressed(MouseGame.LEFT_CLICK)) {
+		    for(Entity entity : scene.getEntities().values()) {
+		    	if(picker.intesects(entity.getPosition(), entity.getSphereRadius()+2)) {
+		    		System.out.println(entity.getName());
+		    		break;
+		    	}
+		    }
+	    }	    
 	}
 	
 	private void renderWaterSurface(Scene scene) {

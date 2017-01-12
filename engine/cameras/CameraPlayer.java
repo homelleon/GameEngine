@@ -4,6 +4,7 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.util.vector.Vector3f;
 
 import entities.Player;
+import inputs.MouseGame;
 import scene.ES;
 
 public class CameraPlayer implements Camera { 
@@ -121,7 +122,7 @@ public class CameraPlayer implements Camera {
 			}
 		}
 		
-		if(Mouse.isButtonDown(2)) {	
+		if(MouseGame.isPressed(MouseGame.MIDDLE_CLICK)) {	
 			float angleChange = (Mouse.getX() - ES.DISPLAY_WIDTH/2) * ES.MOUSE_X_SPEED;
 			angleAroundPlayer = -angleChange;		
 		}else{

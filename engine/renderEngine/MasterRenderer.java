@@ -119,7 +119,9 @@ public class MasterRenderer {
 				newBatch.add(entity);
 				entities.put(entityModel, newBatch);		
 			}
-		} 
+		} else {
+			System.out.println(entity.getName());
+		}
 	}
 	
 	public void processNormalMapEntity(Entity entity) {

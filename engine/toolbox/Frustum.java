@@ -1,8 +1,5 @@
 package toolbox;
 
-import java.nio.ByteBuffer;
-
-import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 

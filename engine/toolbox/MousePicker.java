@@ -54,7 +54,7 @@ public class MousePicker {
 	    	return false;
 	    } else {
 		    float mSq = lSq - d*d;
-	    	isIntersects = (mSq <= radius);
+	    	isIntersects = (mSq <= Maths.sqr(radius));
 	    }		
 		return isIntersects;
 	}

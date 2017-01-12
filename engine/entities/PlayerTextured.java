@@ -7,6 +7,7 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.util.vector.Vector3f;
 
 import engineMain.DisplayManager;
+import inputs.MouseGame;
 import models.TexturedModel;
 import scene.ES;
 import terrains.Terrain;
@@ -100,7 +101,7 @@ public class PlayerTextured extends EntityTextured implements Player {
 			}
 		}
 		
-		if(!Mouse.isButtonDown(2)) {
+		if(!MouseGame.isPressed(MouseGame.MIDDLE_CLICK)) {
 			this.currentTurnSpeed = -TURN_SPEED * (Mouse.getX() - ES.DISPLAY_WIDTH / 2) * ES.MOUSE_X_SPEED;
 			Mouse.setCursorPosition(ES.DISPLAY_WIDTH / 2, ES.DISPLAY_HEIGHT / 2);
 		}			

@@ -25,6 +25,7 @@ import fontRendering.TextMaster;
 import gameMain.Game;
 import gameMain.MyGame;
 import guis.GuiManager;
+import inputs.MouseGame;
 import maps.GameMap;
 import maps.MapsLoader;
 import maps.MapsTXTLoader;
@@ -94,9 +95,7 @@ public class LoopGame implements Loop {
 			
 		
 		/*------------------LIGHTS----------------*/
-		//lights.add(new Light(new Vector3f(200,2,200),new Vector3f(10,0,0), new Vector3f(1, 0.01f, 0.002f)));
-		//lights.add(new Light(new Vector3f(20,2,20),new Vector3f(0,10,0), new Vector3f(0, 0.01f, 0.002f)));
-
+		
 
 		/*----------------FONTS-----------------*/
 		TextMaster.init(loader);
@@ -137,6 +136,9 @@ public class LoopGame implements Loop {
 		scene.setCamera(new CameraPlayer(player1, cameraName));
 		scene.setSun(new Light("Sun", new Vector3f(-100000,150000,-100000), new Vector3f(1.3f,1.3f,1.3f)));
 		scene.addLight(scene.getSun());
+		scene.addLight(new Light("Light1", new Vector3f(200,2,200),new Vector3f(10,0,0), new Vector3f(1.1f, 0.01f, 0.002f)));
+		scene.addLight(new Light("Light2", new Vector3f(20,2,20),new Vector3f(0,5,0), new Vector3f(1, 0.01f, 0.002f)));
+
 		scene.addAudioSource(ambientSource);
 		scene.addAllGuis(GuiManager.createGui(loader));
 		scene.addAllWaters(waterList);
@@ -149,14 +151,16 @@ public class LoopGame implements Loop {
 	@Override
 	public void run() {	
 		sceneRenderer.init(scene, loader);
+		MouseGame.initilize(10);
 		game.onStart();
 		while(!Display.isCloseRequested()) {
 			if(Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
 				break;
-			}	
+			}
 			game.onUpdate();
 			sceneRenderer.render(scene, font, loader);
-			DisplayManager.updateDisplay();		
+			MouseGame.update();
+			DisplayManager.updateDisplay();
 		}
 		
 		cleanUp();

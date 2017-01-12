@@ -17,7 +17,7 @@ public class ES {
 	public static final int DISPLAY_HEIGHT = 600; //1080; 
 	public static final int FAR_PLANE = 10000000;
 	public static final float NEAR_PLANE = 0.5f;
-	public static final int FPS_CAP = 120;
+	public static final int FPS_CAP = 60;
 	public static final float FOV = 70;
 	public static final int MULTISAMPLE = 4;
 	
@@ -70,7 +70,7 @@ public class ES {
 	public static final int MAX_LIGHTS = 10;
 	
 	//****************VOZEL SETTINGS****************************************//
-	public static final float VOXEL_BLOCK_SIZE = 2f;
+	public static final float VOXEL_BLOCK_SIZE = 5f;
 	public static final int VOXEL_CHUNK_SIZE = 5;
 
 	
