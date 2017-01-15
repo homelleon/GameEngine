@@ -1,7 +1,9 @@
 package renderEngine;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Vector2f;
@@ -22,7 +24,9 @@ import maps.MapsWriter;
 import particles.ParticleMaster;
 import postProcessing.Fbo;
 import postProcessing.PostProcessing;
+import scene.ES;
 import scene.Scene;
+import toolbox.Maths;
 import toolbox.MousePicker;
 import toolbox.OGLUtils;
 import water.WaterFrameBuffers;
@@ -95,13 +99,43 @@ public class SceneRenderer {
 	    guiRenderer.render(scene.getGuis().values());
 	    renderText(font);
 	    /* intersection of entities with mouse ray */
+
+
 	    if(MouseGame.isOncePressed(MouseGame.LEFT_CLICK)) {
+		    List<Entity> frustumEntities = new ArrayList<Entity>();
 		    for(Entity entity : scene.getEntities().values()) {
-		    	if(picker.intesects(entity.getPosition(), entity.getSphereRadius()+2)) {
-		    		System.out.println(entity.getName());
-		    		break;
+		    	if(masterRenderer.frustum.sphereInFrustum(entity.getPosition(), entity.getSphereRadius())) {
+		    		frustumEntities.add(entity);
 		    	}
 		    }
+		    if(!frustumEntities.isEmpty()) {
+				float distance = ES.RENDERING_VIEW_DISTANCE;
+			    List<Entity> pointedEntities = new ArrayList<Entity>();
+			    for(Entity entity : frustumEntities) {
+			    	if(picker.intesects(entity.getPosition(), entity.getSphereRadius())) {
+			    		pointedEntities.add(entity);
+			    	}
+			    }
+			    float midDist = 0;
+			    int index = -1;
+			    for(int i = 0; i < pointedEntities.size(); i++) {
+			    	midDist = Maths.distanceFromCamera(pointedEntities.get(i), scene.getCamera());
+			    	if(midDist <= distance) {
+			    		distance = midDist;
+			    		index = i;
+			    	}
+			    }
+			    if(index >=0) {
+			    	System.out.println(pointedEntities.get(index).getName());
+			    	int power = 4;
+			    	pointedEntities.get(index).increasePosition(power * picker.getCurrentRay().x, 
+			    			power * picker.getCurrentRay().y, power * picker.getCurrentRay().z);
+			    }
+			    pointedEntities.clear();
+			    pointedEntities = null;
+		    }
+		    frustumEntities.clear();
+		    frustumEntities = null;
 	    }	    
 	}
 	

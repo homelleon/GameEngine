@@ -174,7 +174,6 @@ public class VoxelRenderer {
 			if(checkVisibility(frustum, chunker.getChunkPosition(i), CHUNK_RADIUS)) {
 				if(chunker.getChunk(i).getIsAcitve()) {
 					FaceCullingData chunkFCData = isNeedChunkCulling(chunker, i);
-					if(!isAllFaceCulled(chunkFCData)) {
 //						s = s + " " + i;
 						t += 1;
 						for(int x = 0; x <= ES.VOXEL_CHUNK_SIZE; x++) {					
@@ -196,8 +195,7 @@ public class VoxelRenderer {
 									}
 								}
 							}
-						}
-					}
+						}					
 					chunkFCData = null;
 				}
 			}
@@ -214,7 +212,7 @@ public class VoxelRenderer {
 	private boolean checkVisibility(Frustum frustum, Vector3f position, float radius) {
 		boolean isVisible = false;
 		float distance = frustum.distanceSphereInFrustum(position, radius);
-		if(distance > 0 && distance <= ES.RENDERING_VIEW_DISTANCE) {
+		if(distance > 0 && distance <= 2 * ES.RENDERING_VIEW_DISTANCE) {
 			isVisible = true;
 		}
 		return isVisible;

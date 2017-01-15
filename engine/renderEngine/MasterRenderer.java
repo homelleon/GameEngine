@@ -40,7 +40,7 @@ public class MasterRenderer {
 	private VoxelRenderer voxelRenderer;
 	private ShadowMapMasterRenderer shadowMapRenderer;
 	private Texture environmentMap;
-	private Frustum frustum = new Frustum();
+	public Frustum frustum = new Frustum();
 	
 	private boolean terrainWiredFrame = false;
 	private boolean entitiyWiredFrame = false;
@@ -59,7 +59,7 @@ public class MasterRenderer {
 		this.normalMapRenderer = new NormalMappingRenderer(projectionMatrix);
 		this.voxelRenderer = new VoxelRenderer(loader, projectionMatrix);
 		this.shadowMapRenderer = new ShadowMapMasterRenderer(camera);
-		int size = 3;
+		int size = 2;
 		this.chunker = new ChunkManager(size, new Vector3f(0,0,0));
 		for(int i = 0; i < size * size * size; i++) {
 			for(int x = 0; x <= ES.VOXEL_CHUNK_SIZE; x++) {
@@ -119,8 +119,6 @@ public class MasterRenderer {
 				newBatch.add(entity);
 				entities.put(entityModel, newBatch);		
 			}
-		} else {
-			System.out.println(entity.getName());
 		}
 	}
 	
