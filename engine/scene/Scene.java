@@ -4,8 +4,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import org.lwjgl.util.vector.Vector3f;
-
 import audio.AudioSource;
 import cameras.Camera;
 import entities.Entity;
@@ -16,6 +14,7 @@ import guis.GuiTexture;
 import particles.ParticleSystem;
 import terrains.Terrain;
 import textures.Texture;
+import toolbox.Frustum;
 import voxels.Chunk;
 import water.WaterTile;
 
@@ -67,6 +66,8 @@ public interface Scene {
 	Map<String, GuiText> getTexts();
 	void addText(GuiText text);
 	void addAllTexts(Collection<GuiText> textList);
+	
+	Frustum getFrustum();
 	
 	void spreadEntitiesOnHeights();
 	void spreadParitclesOnHeights(Collection<ParticleSystem> systems);

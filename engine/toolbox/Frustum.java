@@ -6,7 +6,7 @@ import org.lwjgl.util.vector.Vector3f;
 import cameras.Camera;
 
 public class Frustum {
-	
+ 
 	private float[][] plane = new float[6][4];
 		
 	public void extractFrustum(Camera camera, Matrix4f projectionMatrix) {

@@ -19,6 +19,7 @@ import maps.GameMap;
 import particles.ParticleSystem;
 import terrains.Terrain;
 import textures.Texture;
+import toolbox.Frustum;
 import voxels.Chunk;
 import water.WaterTile;
 
@@ -29,6 +30,8 @@ public class SceneGame implements Scene {
 	private Light sun;
 	
 	private Texture environmentMap = Texture.newEmptyCubeMap(32);
+	
+	private Frustum frustum = new Frustum();
 	
 	private Map<String, Entity> entities = new WeakHashMap<String, Entity>();
 	private Map<String, Terrain> terrains = new WeakHashMap<String, Terrain>();
@@ -277,6 +280,11 @@ public class SceneGame implements Scene {
 		for(GuiText text : textList) {
 			this.texts.put(text.getName(), text);
 		}
+	}
+	
+	@Override
+	public Frustum getFrustum() {
+		return this.frustum;
 	}
 	
 	@Override

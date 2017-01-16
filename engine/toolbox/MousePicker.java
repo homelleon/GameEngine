@@ -1,5 +1,8 @@
 package toolbox;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Matrix4f;
@@ -8,6 +11,10 @@ import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 
 import cameras.Camera;
+import entities.Entity;
+import renderEngine.MasterRenderer;
+import scene.ES;
+import scene.Scene;
 
 public class MousePicker {
 	
@@ -77,6 +84,40 @@ public class MousePicker {
 		float x = (2f*mouseX) / Display.getWidth() - 1;
 		float y = (2f*mouseY) / Display.getHeight() - 1f;
 		return new Vector2f(x, y);
+	}
+	
+	public Entity chooseObjectByRay(Scene scene, MasterRenderer renderer) {
+		Entity pickedEntity = null;
+		List<Entity> frustumEntities = new ArrayList<Entity>();
+		for (Entity entity : renderer.createFrustumEntities(scene)) {
+			if (renderer.getFrustum().sphereInFrustum(entity.getPosition(), entity.getSphereRadius())) {
+				frustumEntities.add(entity);
+			}
+		}
+		if (!frustumEntities.isEmpty()) {
+			float distance = ES.RENDERING_VIEW_DISTANCE;
+			List<Entity> pointedEntities = new ArrayList<Entity>();
+			for (Entity entity : frustumEntities) {
+				if (intesects(entity.getPosition(), entity.getSphereRadius())) {
+					pointedEntities.add(entity);
+				}
+			}
+			float midDist = 0;
+			int index = -1;
+			for (int i = 0; i < pointedEntities.size(); i++) {
+				midDist = Maths.distanceFromCamera(pointedEntities.get(i), camera);
+				if (midDist <= distance) {
+					distance = midDist;
+					index = i;
+				}
+			}
+			if (index >= 0) {
+				pickedEntity = pointedEntities.get(index);				
+			}
+			pointedEntities.clear();
+			pointedEntities = null;
+		}
+		return pickedEntity;
 	}
 	
 	

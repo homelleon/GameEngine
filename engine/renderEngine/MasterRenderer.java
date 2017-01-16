@@ -40,7 +40,7 @@ public class MasterRenderer {
 	private VoxelRenderer voxelRenderer;
 	private ShadowMapMasterRenderer shadowMapRenderer;
 	private Texture environmentMap;
-	public Frustum frustum = new Frustum();
+	private Frustum frustum = new Frustum();
 	
 	private boolean terrainWiredFrame = false;
 	private boolean entitiyWiredFrame = false;
@@ -75,33 +75,6 @@ public class MasterRenderer {
 	
 	public Matrix4f getProjectionMatrix() {
 		return projectionMatrix;
-	}
-	
-	public void render(Collection<Light> lights, Camera camera, Vector4f clipPlane, boolean isVoxel) {	
-		prepare();	
-		checkWiredFrameOn(entitiyWiredFrame);
-		entityRenderer.render(entities, clipPlane, lights, camera, shadowMapRenderer.getToShadowMapSpaceMatrix(), environmentMap);
-		normalMapRenderer.render(normalMapEntities, clipPlane, lights, camera, shadowMapRenderer.getToShadowMapSpaceMatrix());
-		checkWiredFrameOff(entitiyWiredFrame);
-		
-		checkWiredFrameOn(terrainWiredFrame);
-		if(isVoxel) {
-			voxelRenderer.render(chunker, clipPlane, lights, camera, shadowMapRenderer.getToShadowMapSpaceMatrix(), frustum);
-		}
-		terrainRenderer.render(terrains, clipPlane, lights, camera, shadowMapRenderer.getToShadowMapSpaceMatrix());
-		checkWiredFrameOff(terrainWiredFrame);
-		
-		skyboxRenderer.render(camera);
-			
-		terrains.clear();
-		entities.clear();
-		normalMapEntities.clear();
-	}
-	
-	public void rendereLowQualityScene(Map<TexturedModel, List<Entity>> entities, Collection<Terrain> terrains, Collection<Light> lights, Camera camera) {
-		entityRenderer.renderLow(entities, lights, camera);
-		terrainRenderer.renderLow(terrains, lights, camera);
-		skyboxRenderer.render(camera);
 	}
 	
 	public void processTerrain(Terrain terrain) {
@@ -189,7 +162,7 @@ public class MasterRenderer {
 		this.environmentMap = scene.getEnvironmentMap();
 		for (Terrain terrain : scene.getTerrains().values()) {
 			processTerrain(terrain);
-		}
+		}		
 			
 		for (Entity entity : scene.getEntities().values()) {
 			if(entity.getType() == ES.ENTITY_TYPE_SIMPLE) {
@@ -200,6 +173,33 @@ public class MasterRenderer {
 		}
 		
 		render(scene.getLights().values(), scene.getCamera(), clipPlane, isVoxel);
+	}
+	
+	public void render(Collection<Light> lights, Camera camera, Vector4f clipPlane, boolean isVoxel) {	
+		prepare();	
+		checkWiredFrameOn(entitiyWiredFrame);
+		entityRenderer.render(entities, clipPlane, lights, camera, shadowMapRenderer.getToShadowMapSpaceMatrix(), environmentMap);
+		normalMapRenderer.render(normalMapEntities, clipPlane, lights, camera, shadowMapRenderer.getToShadowMapSpaceMatrix());
+		checkWiredFrameOff(entitiyWiredFrame);
+		
+		checkWiredFrameOn(terrainWiredFrame);
+		if(isVoxel) {
+			voxelRenderer.render(chunker, clipPlane, lights, camera, shadowMapRenderer.getToShadowMapSpaceMatrix(), frustum);
+		}
+		terrainRenderer.render(terrains, clipPlane, lights, camera, shadowMapRenderer.getToShadowMapSpaceMatrix());
+		checkWiredFrameOff(terrainWiredFrame);
+		
+		skyboxRenderer.render(camera);
+			
+		terrains.clear();
+		entities.clear();
+		normalMapEntities.clear();
+	}
+	
+	public void rendereLowQualityScene(Map<TexturedModel, List<Entity>> entities, Collection<Terrain> terrains, Collection<Light> lights, Camera camera) {
+		entityRenderer.renderLow(entities, lights, camera);
+		terrainRenderer.renderLow(terrains, lights, camera);
+		skyboxRenderer.render(camera);
 	}
 	
 	public void renderShadowMap(Scene scene) {
@@ -251,11 +251,24 @@ public class MasterRenderer {
 		projectionMatrix.m33 = 0;
 	}
 	
+	public Collection<Entity> createFrustumEntities(Scene scene) {
+		frustum.extractFrustum(scene.getCamera(), projectionMatrix);
+		List<Entity> frustumEntities = new ArrayList<Entity>();
+		for (Entity entity : scene.getEntities().values()) {
+			if (frustum.sphereInFrustum(entity.getPosition(), entity.getSphereRadius())) {
+				frustumEntities.add(entity);
+			}
+		}
+		return frustumEntities;
+	}
+	
 	public EntityRenderer getEntityRenderer() {
 		return this.entityRenderer;
 	}
 	
-	
+	public Frustum getFrustum() {
+		return this.frustum;
+	}
 	
 	public void setEntityWiredFrame(boolean entitiyWiredFrame) {
 		this.entitiyWiredFrame = entitiyWiredFrame;
