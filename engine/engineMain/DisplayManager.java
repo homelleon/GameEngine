@@ -25,11 +25,11 @@ public class DisplayManager {
 	private static int height;
 	private static int width;
 	
-	public static void creatDisplay() {	
-		creatDisplay(ES.DISPLAY_GAME_MODE);	
+	public static void createDisplay() {	
+		createDisplay(ES.DISPLAY_GAME_MODE);	
 	}
 	
-public static void creatDisplay(int mode) {
+public static void createDisplay(int mode) {
 	
 	if (mode == ES.DISPLAY_EDIT_MODE) {		
 		Frame frame = new FrameEditor("Editor");

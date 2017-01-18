@@ -34,6 +34,7 @@ public class SceneGame implements Scene {
 	private Frustum frustum = new Frustum();
 	
 	private Map<String, Entity> entities = new WeakHashMap<String, Entity>();
+	private Map<String, Entity> pointedEntities = new WeakHashMap<String, Entity>();
 	private Map<String, Terrain> terrains = new WeakHashMap<String, Terrain>();
 	private Map<String, WaterTile> waters = new WeakHashMap<String, WaterTile>();
 	private List<Chunk> chunks = new ArrayList<Chunk>();
@@ -110,6 +111,30 @@ public class SceneGame implements Scene {
 		}
 	}
 	
+	/* 
+	 * @Pointed enitites
+	 */
+	@Override
+	public Map<String, Entity> getPointedEntities() {
+		return this.pointedEntities;
+	}
+
+	@Override
+	public void addPointedEntity(Entity entity) {
+		this.pointedEntities.put(entity.getName(), entity);	
+	}
+
+	@Override
+	public void addPointedEntities(Collection<Entity> entityList) {
+		for(Entity entity : entityList) {
+			this.pointedEntities.put(entity.getName(), entity);
+		}
+	}	
+
+	@Override
+	public void clearPointedEntities() {
+		this.pointedEntities.clear();		
+	}	
 
 	/* 
 	 * @Terrains

@@ -7,6 +7,7 @@ import java.util.Random;
 import org.lwjgl.util.vector.Vector3f;
 
 import entities.Entity;
+import entities.EntityManager;
 import entities.EntityTextured;
 import models.RawModel;
 import models.TexturedModel;
@@ -69,14 +70,16 @@ public class ObjectUtils {
 		for(Integer j = 0; j < r; j++) {
 			for(Integer i = 0; i < r; i++) {
 				sizeNoise = 1 + 2*(float) random.nextDouble();
-				Entity grassEntity = new EntityTextured("Grass" + String.valueOf(i) + "/" + String.valueOf(j), grass, texIndex, 
+				Entity grassEntity = new EntityTextured("Grass" + 
+				String.valueOf(i) + "/" + String.valueOf(j), 
+				EntityManager.ENTITY_TYPE_DETAIL, grass, texIndex, 
 						new Vector3f(x + density*i, 0, z + density*j), 0, 0, 0, sizeNoise);
-				grassEntity.setIsDetail(true);
 				grasses.add(grassEntity);
-				Entity grassEntity1 = new EntityTextured("Grass" + String.valueOf(i) + "/" + String.valueOf(j), grass, texIndex, 
+				Entity grassEntity1 = new EntityTextured("Grass" + 
+				String.valueOf(i) + "/" + String.valueOf(j), 
+				EntityManager.ENTITY_TYPE_DETAIL, grass, texIndex, 
 						new Vector3f((float) (x + density*i), 0, 
 								(float) (z + density*j)), 0, 100, 0, sizeNoise);
-				grassEntity1.setIsDetail(true);
 				grasses.add(grassEntity1);
 	
 			}

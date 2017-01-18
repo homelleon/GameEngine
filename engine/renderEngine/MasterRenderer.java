@@ -15,6 +15,7 @@ import org.lwjgl.util.vector.Vector4f;
 
 import cameras.Camera;
 import entities.Entity;
+import entities.EntityManager;
 import entities.Light;
 import models.TexturedModel;
 import normalMappingRenderer.NormalMappingRenderer;
@@ -165,9 +166,9 @@ public class MasterRenderer {
 		}		
 			
 		for (Entity entity : scene.getEntities().values()) {
-			if(entity.getType() == ES.ENTITY_TYPE_SIMPLE) {
+			if(entity.getType() == EntityManager.ENTITY_TYPE_SIMPLE) {
 				processEntity(entity);
-			} else if(entity.getType() == ES.ENTITY_TYPE_NORMAL) {
+			} else if(entity.getType() == EntityManager.ENTITY_TYPE_NORMAL) {
 				processNormalMapEntity(entity);
 			}					
 		}
@@ -204,9 +205,9 @@ public class MasterRenderer {
 	
 	public void renderShadowMap(Scene scene) {
 		for(Entity entity : scene.getEntities().values()) {
-			if(entity.getType() == ES.ENTITY_TYPE_SIMPLE) {
+			if(entity.getType() == EntityManager.ENTITY_TYPE_SIMPLE) {
 				processShadowEntity(entity);
-			} else if(entity.getType() == ES.ENTITY_TYPE_NORMAL) {
+			} else if(entity.getType() == EntityManager.ENTITY_TYPE_NORMAL) {
 				processShadowNormalMapEntity(entity);
 			}
 		}

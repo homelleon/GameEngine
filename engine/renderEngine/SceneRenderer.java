@@ -100,14 +100,17 @@ public class SceneRenderer {
 		renderText(font);
 		/* intersection of entities with mouse ray */
 
-		if (MouseGame.isOncePressed(MouseGame.LEFT_CLICK)) {						
-			Entity pickedEntity = picker.chooseObjectByRay(scene, masterRenderer);			
-			System.out.println(pickedEntity.getName());
+		if (MouseGame.isOncePressed(MouseGame.LEFT_CLICK)) {	
+			scene.addPointedEntity(picker.chooseObjectByRay(scene, masterRenderer));	
+		}
+		
+		for(Entity entity : scene.getPointedEntities().values()) {
+			System.out.println(entity.getName());
 			int power = 4;
 			Vector3f rayDirection = picker.getCurrentRay();
-			pickedEntity.increasePosition(power * rayDirection.x,
+			entity.increasePosition(power * rayDirection.x,
 					power * rayDirection.y, power * rayDirection.z);
-		}
+		}		
 	}
 
 

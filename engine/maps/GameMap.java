@@ -10,6 +10,7 @@ import org.lwjgl.util.vector.Vector3f;
 import audio.AudioSource;
 import cameras.Camera;
 import entities.Entity;
+import entities.EntityManager;
 import entities.EntityTextured;
 import entities.Light;
 import entities.Player;
@@ -248,7 +249,7 @@ public class GameMap {
 	
 	public void createEntity(String name, String model, String texName, String normal, String specular, Vector3f position, float rotX, float rotY, float rotZ, float scale) {
 		TexturedModel staticModel = ObjectUtils.loadNormalModel(name, texName, normal, specular, loader);
-		EntityTextured entity = new EntityTextured(name, ES.ENTITY_TYPE_NORMAL, staticModel, position, rotX, rotY, rotZ, scale);
+		EntityTextured entity = new EntityTextured(name, EntityManager.ENTITY_TYPE_NORMAL, staticModel, position, rotX, rotY, rotZ, scale);
 		this.entities.put(name, entity);
 	}
 	

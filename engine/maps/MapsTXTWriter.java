@@ -39,8 +39,6 @@ public class MapsTXTWriter implements MapsWriter {
 					line += String.valueOf(entity.getPosition().z);
 					line += " ";
 					line += String.valueOf(entity.getScale());
-					line += " ";
-					line += String.valueOf(entity.isDetail());
 					lines.add(line);
 				}
 			}

@@ -35,6 +35,11 @@ public interface Scene {
 	void addEntity(Entity entity);
 	void addAllEntities(Collection<Entity> entityList);
 	
+	Map<String, Entity> getPointedEntities();
+	void addPointedEntity(Entity entity);
+	void addPointedEntities(Collection<Entity> entityList);
+	void clearPointedEntities();
+	
 	Map<String, Terrain> getTerrains();
 	void addTerrain(Terrain terrain);
 	void addAllTerrains(Collection<Terrain> terrainList);

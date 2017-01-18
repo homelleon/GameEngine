@@ -49,7 +49,7 @@ public class MousePicker {
 		return worldRay;		
 	}
 	
-	public boolean intesects(Vector3f position, float radius) {
+	public boolean intersects(Vector3f position, float radius) {
 		boolean isIntersects = false;
 		Vector3f l = new Vector3f(position.x - camera.getPosition().x, 
 				position.y - camera.getPosition().y, 
@@ -88,35 +88,30 @@ public class MousePicker {
 	
 	public Entity chooseObjectByRay(Scene scene, MasterRenderer renderer) {
 		Entity pickedEntity = null;
-		List<Entity> frustumEntities = new ArrayList<Entity>();
-		for (Entity entity : renderer.createFrustumEntities(scene)) {
-			if (renderer.getFrustum().sphereInFrustum(entity.getPosition(), entity.getSphereRadius())) {
-				frustumEntities.add(entity);
+		scene.getFrustum().updateFrustumEntities(scene.getEntities().values());
+
+		List<Entity> pointedEntities = new ArrayList<Entity>();
+		for (Entity entity : scene.getFrustum().getEntities()) {
+			if (intersects(entity.getPosition(), entity.getSphereRadius())) {
+				pointedEntities.add(entity);
 			}
 		}
-		if (!frustumEntities.isEmpty()) {
-			float distance = ES.RENDERING_VIEW_DISTANCE;
-			List<Entity> pointedEntities = new ArrayList<Entity>();
-			for (Entity entity : frustumEntities) {
-				if (intesects(entity.getPosition(), entity.getSphereRadius())) {
-					pointedEntities.add(entity);
-				}
+		float distance = ES.RENDERING_VIEW_DISTANCE + 1;
+		float midDist = 0;
+		int index = -1;
+		for (int i = 0; i < pointedEntities.size(); i++) {
+			midDist = Maths.distanceFromCamera(pointedEntities.get(i), camera);
+			if (midDist <= distance) {
+				distance = midDist;
+				index = i;
 			}
-			float midDist = 0;
-			int index = -1;
-			for (int i = 0; i < pointedEntities.size(); i++) {
-				midDist = Maths.distanceFromCamera(pointedEntities.get(i), camera);
-				if (midDist <= distance) {
-					distance = midDist;
-					index = i;
-				}
-			}
-			if (index >= 0) {
-				pickedEntity = pointedEntities.get(index);				
-			}
-			pointedEntities.clear();
-			pointedEntities = null;
 		}
+		if (index >= 0) {
+			pickedEntity = pointedEntities.get(index);				
+		}
+		pointedEntities.clear();
+		pointedEntities = null;
+		
 		return pickedEntity;
 	}
 	

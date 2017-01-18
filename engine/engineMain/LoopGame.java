@@ -13,9 +13,8 @@ import org.lwjgl.util.vector.Vector3f;
 
 import audio.AudioMaster;
 import audio.AudioSource;
-import cameras.Camera;
 import cameras.CameraPlayer;
-import entities.EntitiesManager;
+import entities.EntityManager;
 import entities.Light;
 import entities.Player;
 import entities.PlayerTextured;
@@ -60,13 +59,9 @@ public class LoopGame implements Loop {
     
     private boolean mapIsLoaded = false;
     private boolean isPaused = false;
-	
-	public LoopGame() {
-		init();
-	}
 
 	private void init() {
-		DisplayManager.creatDisplay();
+		DisplayManager.createDisplay();
 		/*--------------PRE LOAD TOOLS-------------*/
 		this.loader = Loader.getInstance();
 		
@@ -78,9 +73,7 @@ public class LoopGame implements Loop {
 		this.scene = new SceneGame(map);
 
 		this.sceneRenderer = new SceneRenderer();
-		
-        /*--------------GAME OBJECTS-------------*/
-		
+
 		
 		/*------------------PLAYER-----------------*/
 		TexturedModel cubeModel = ObjectUtils.loadStaticModel("cube", "cube1", loader);
@@ -89,13 +82,6 @@ public class LoopGame implements Loop {
 		player1.getModel().getTexture().setRefractiveFactor(1.0f);
 		player1.getModel().getTexture().setRefractiveIndex(1.33f);
 		player1.getModel().getTexture().setShineDamper(5.0f);
-
-		
-		/*------------------CHUNKS-------------------*/
-			
-		
-		/*------------------LIGHTS----------------*/
-		
 
 		/*----------------FONTS-----------------*/
 		TextMaster.init(loader);
@@ -132,7 +118,7 @@ public class LoopGame implements Loop {
 		scene.setPlayer(player1);
 		scene.addEntity(player1);
 		scene.addAllEntities(ObjectUtils.createGrassField(500, 500, 50, 1, 0.1f, loader));
-		scene.addAllEntities(EntitiesManager.createNormalMappedEntities(loader));
+		scene.addAllEntities(EntityManager.createNormalMappedEntities(loader));
 		scene.setCamera(new CameraPlayer(player1, cameraName));
 		scene.setSun(new Light("Sun", new Vector3f(-100000,150000,-100000), new Vector3f(1.3f,1.3f,1.3f)));
 		scene.addLight(scene.getSun());
@@ -150,24 +136,36 @@ public class LoopGame implements Loop {
 	
 	@Override
 	public void run() {	
-		sceneRenderer.init(scene, loader);
-		MouseGame.initilize(10);
-		game.onStart();
+		prepare();
 		while(!Display.isCloseRequested()) {
 			if(Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
 				break;
 			}
-			game.onUpdate();
-			sceneRenderer.render(scene, font, loader);
-			MouseGame.update();
-			DisplayManager.updateDisplay();
-		}
-		
-		cleanUp();
-		DisplayManager.closeDisplay();
-		
+			update();
+		}		
+		cleanUp();		
 	}
-	     
+	
+	private void prepare() {
+		init();
+		sceneRenderer.init(scene, loader);
+		MouseGame.initilize(10);
+		game.onStart();
+	}
+	
+	private void update() {		
+		game.onUpdate();
+		sceneRenderer.render(scene, font, loader);
+		MouseGame.update();
+		DisplayManager.updateDisplay();
+	}
+		
+	private void cleanUp() {
+		scene.cleanUp();
+		loader.cleanUp();
+		sceneRenderer.cleanUp();
+		DisplayManager.closeDisplay();
+    }
 	
 	private void loadMap(String name) {
 		MapsLoader mapLoader = new MapsTXTLoader();
@@ -199,17 +197,6 @@ public class LoopGame implements Loop {
     @Override
 	public void setScenePaused(boolean value) {
 		isPaused = value;
-	}		
-
-	
-	private void cleanUp() {
-		scene.cleanUp();
-		loader.cleanUp();
-		sceneRenderer.cleanUp();
-    }
-
-	
-
-
-
+	}	
+    
 }

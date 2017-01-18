@@ -6,16 +6,14 @@ import models.TexturedModel;
 
 public interface Entity {
 	
-	public void setIsDetail(boolean value);	
-	public boolean isDetail();
+	public boolean getIsVisible();
+	public void setIsVisible(boolean isVisible);
 	
-	public boolean isVisible();
-	public void setVisible(boolean isVisible);
+	public boolean getIsChosen();
+	public void setIsChosen(boolean isChosen);
 
 	public float getTextureXOffset();	
 	public float getTextureYOffset();
-	
-
 	
 	public void increasePosition(float dx, float dy, float dz);
 	

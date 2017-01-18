@@ -15,9 +15,10 @@ public class EntityTextured implements Entity {
 	private float radius = 1f;
 	private boolean isDetail = false;
 	private boolean isVisible = true;
+	private boolean isChosen = false;
 	
 	private int textureIndex = 0;
-	private int typeID = ES.ENTITY_TYPE_SIMPLE;
+	private int typeID = EntityManager.ENTITY_TYPE_SIMPLE;
 	
 	public EntityTextured(String name, TexturedModel model, Vector3f position, float rotX, float rotY, float rotZ, float scale) {
 		this.name = name;
@@ -42,7 +43,7 @@ public class EntityTextured implements Entity {
 		this.scale = scale; 
 	}
 	
-	public EntityTextured(String name, TexturedModel model, int textureIndex, Vector3f position, float rotX, float rotY, float rotZ, float scale) {
+	public EntityTextured(String name, int typeID, TexturedModel model, int textureIndex, Vector3f position, float rotX, float rotY, float rotZ, float scale) {
 		this.name = name;
 		this.textureIndex = textureIndex;
 		this.model = model;
@@ -54,19 +55,19 @@ public class EntityTextured implements Entity {
 		this.scale = scale;
 	}
 	
-	public void setIsDetail(boolean value) {
-		this.isDetail = value;
+	public void setIsChosen(boolean isChosen) {
+		this.isChosen = isChosen;
 	}
 	
-	public boolean isDetail() {
-		return isDetail;
+	public boolean getIsChosen() {
+		return this.isChosen;
 	}
 	
-	public boolean isVisible() {
+	public boolean getIsVisible() {
 		return isVisible;
 	}
 
-	public void setVisible(boolean isVisible) {
+	public void setIsVisible(boolean isVisible) {
 		this.isVisible = isVisible;
 	}
 
@@ -151,8 +152,7 @@ public class EntityTextured implements Entity {
 	
 	public float getSphereRadius() {
 		return this.radius;
-	}	
-	
+	}
 
 
 }

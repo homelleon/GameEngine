@@ -1,12 +1,18 @@
 package toolbox;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 
 import cameras.Camera;
+import entities.Entity;
+import scene.ES;
 
 public class Frustum {
- 
+	
+	private Collection<Entity> entities = new ArrayList<Entity>(); 
 	private float[][] plane = new float[6][4];
 		
 	public void extractFrustum(Camera camera, Matrix4f projectionMatrix) {
@@ -153,6 +159,20 @@ public class Frustum {
 			distance = 0;
 		}		
 		return distance;
-	} 
+	} 	
+
+	public void updateFrustumEntities(Collection<Entity> entities) {
+		for(Entity entity : entities) {
+			float distance;
+			distance = distanceSphereInFrustum(entity.getPosition(), entity.getSphereRadius());
+			if(distance > 0 && distance <= ES.RENDERING_VIEW_DISTANCE) {
+				this.entities.add(entity);
+			}
+		}
+	}
+	
+	public Collection<Entity> getEntities() {
+		return this.entities;
+	}
 
 }
