@@ -44,7 +44,7 @@ public class EnvironmentMapRenderer {
 			GL30.glFramebufferTexture2D(GL30.GL_FRAMEBUFFER, GL30.GL_COLOR_ATTACHMENT0, GL13.GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, scene.getEnvironmentMap().textureId, 0);
 			cubeCamera.switchToFace(i);
 		
-			renderer.rendereLowQualityScene(entities, scene.getTerrains().values(), scene.getLights().values(), cubeCamera);
+			renderer.renderLowQualityScene(entities, scene.getTerrains().values(), scene.getLights().values(), cubeCamera);
 		}
 		GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0);
 		GL11.glViewport(0, 0, Display.getWidth(), Display.getHeight());	

@@ -29,7 +29,7 @@ public class SceneGame implements Scene {
 	private Camera camera;
 	private Light sun;
 	
-	private Texture environmentMap = Texture.newEmptyCubeMap(32);
+	private Texture environmentMap = Texture.newEmptyCubeMap(128);
 	
 	private Frustum frustum = new Frustum();
 	

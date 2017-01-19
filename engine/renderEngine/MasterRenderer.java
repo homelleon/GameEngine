@@ -31,6 +31,8 @@ import voxels.ChunkManager;
 public class MasterRenderer {
 		
 	private Matrix4f projectionMatrix;
+	private Matrix4f normalDistProjectionMatrix;
+	private Matrix4f lowDistProjectionMatrix;
 	
 	private ChunkManager chunker;
 	
@@ -54,6 +56,8 @@ public class MasterRenderer {
 	public MasterRenderer(Loader loader, Camera camera) {
 		OGLUtils.cullBackFaces(true);
 		createProjectionMatrix();
+		createLowDistProjectionMatrix();
+		projectionMatrix = normalDistProjectionMatrix;
 		this.entityRenderer = new EntityRenderer(projectionMatrix);
 		this.terrainRenderer = new TerrainRenderer(projectionMatrix);
 		this.skyboxRenderer = new SkyboxRenderer(loader, projectionMatrix);
@@ -157,8 +161,15 @@ public class MasterRenderer {
 		return isVisible;
 	}
 	
+	public void renderScene(Scene scene, Vector4f clipPlane) {
+		renderScene(scene, clipPlane, false);
+	}
 	
-	public void renderScene(Scene scene, Vector4f clipPlane, boolean isVoxel) {
+	
+	public void renderScene(Scene scene, Vector4f clipPlane, boolean isLowDist) {
+		if(isLowDist) {
+			//this.projectionMatrix = this.lowDistProjectionMatrix;
+		}
 		this.frustum.extractFrustum(scene.getCamera(), projectionMatrix);
 		this.environmentMap = scene.getEnvironmentMap();
 		for (Terrain terrain : scene.getTerrains().values()) {
@@ -173,10 +184,13 @@ public class MasterRenderer {
 			}					
 		}
 		
-		render(scene.getLights().values(), scene.getCamera(), clipPlane, isVoxel);
+		render(scene.getLights().values(), scene.getCamera(), clipPlane, isLowDist);
+		if(isLowDist) {
+			//this.projectionMatrix = this.normalDistProjectionMatrix;
+		}
 	}
 	
-	public void render(Collection<Light> lights, Camera camera, Vector4f clipPlane, boolean isVoxel) {	
+	public void render(Collection<Light> lights, Camera camera, Vector4f clipPlane, boolean isLowDistance) {	
 		prepare();	
 		checkWiredFrameOn(entitiyWiredFrame);
 		entityRenderer.render(entities, clipPlane, lights, camera, shadowMapRenderer.getToShadowMapSpaceMatrix(), environmentMap);
@@ -184,8 +198,8 @@ public class MasterRenderer {
 		checkWiredFrameOff(entitiyWiredFrame);
 		
 		checkWiredFrameOn(terrainWiredFrame);
-		if(isVoxel) {
-			voxelRenderer.render(chunker, clipPlane, lights, camera, shadowMapRenderer.getToShadowMapSpaceMatrix(), frustum);
+		if(!isLowDistance) {
+			//voxelRenderer.render(chunker, clipPlane, lights, camera, shadowMapRenderer.getToShadowMapSpaceMatrix(), frustum);
 		}
 		terrainRenderer.render(terrains, clipPlane, lights, camera, shadowMapRenderer.getToShadowMapSpaceMatrix());
 		checkWiredFrameOff(terrainWiredFrame);
@@ -197,7 +211,7 @@ public class MasterRenderer {
 		normalMapEntities.clear();
 	}
 	
-	public void rendereLowQualityScene(Map<TexturedModel, List<Entity>> entities, Collection<Terrain> terrains, Collection<Light> lights, Camera camera) {
+	public void renderLowQualityScene(Map<TexturedModel, List<Entity>> entities, Collection<Terrain> terrains, Collection<Light> lights, Camera camera) {
 		entityRenderer.renderLow(entities, lights, camera);
 		terrainRenderer.renderLow(terrains, lights, camera);
 		skyboxRenderer.render(camera);
@@ -238,18 +252,34 @@ public class MasterRenderer {
 	}
 	
 	private void createProjectionMatrix() {
-		projectionMatrix = new Matrix4f();
+		normalDistProjectionMatrix = new Matrix4f();
 		float aspectRatio = (float) Display.getWidth()/(float) Display.getHeight();
 		float y_scale = (float) (1f / Math.tan(Math.toRadians(ES.FOV / 2f)) * aspectRatio);
 		float x_scale = y_scale / aspectRatio;
 		float frustrum_length = ES.FAR_PLANE - ES.NEAR_PLANE;
 		
-		projectionMatrix.m00 = x_scale;
-		projectionMatrix.m11 = y_scale;
-		projectionMatrix.m22 = -((ES.FAR_PLANE + ES.NEAR_PLANE) / frustrum_length);
-		projectionMatrix.m23 = -1;
-		projectionMatrix.m32 = -((2 * ES.NEAR_PLANE * ES.FAR_PLANE) / frustrum_length);
-		projectionMatrix.m33 = 0;
+		normalDistProjectionMatrix.m00 = x_scale;
+		normalDistProjectionMatrix.m11 = y_scale;
+		normalDistProjectionMatrix.m22 = -((ES.FAR_PLANE + ES.NEAR_PLANE) / frustrum_length);
+		normalDistProjectionMatrix.m23 = -1;
+		normalDistProjectionMatrix.m32 = -((2 * ES.NEAR_PLANE * ES.FAR_PLANE) / frustrum_length);
+		normalDistProjectionMatrix.m33 = 0;
+	}
+	
+	private void createLowDistProjectionMatrix() {
+		lowDistProjectionMatrix = new Matrix4f();
+		float farPlane = 100;
+		float aspectRatio = (float) Display.getWidth()/(float) Display.getHeight();
+		float y_scale = (float) (1f / Math.tan(Math.toRadians(ES.FOV / 2f)) * aspectRatio);
+		float x_scale = y_scale / aspectRatio;
+		float frustrum_length = farPlane - ES.NEAR_PLANE;
+		
+		lowDistProjectionMatrix.m00 = x_scale;
+		lowDistProjectionMatrix.m11 = y_scale;
+		lowDistProjectionMatrix.m22 = -((farPlane + ES.NEAR_PLANE) / frustrum_length);
+		lowDistProjectionMatrix.m23 = -1;
+		lowDistProjectionMatrix.m32 = -((2 * ES.NEAR_PLANE * farPlane) / frustrum_length);
+		lowDistProjectionMatrix.m33 = 0;
 	}
 	
 	public Collection<Entity> createFrustumEntities(Scene scene) {

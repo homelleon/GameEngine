@@ -80,7 +80,7 @@ public class SceneRenderer {
 		}
 
 		move(scene);
-		enviroRenderer.render(scene, masterRenderer, scene.getEntities().get("Cuby4"));
+		//enviroRenderer.render(scene, masterRenderer, scene.getEntities().get("Cuby4"));
 		renderParticles(scene);
 		renderWaterSurface(scene);
 		renderToScreen(scene, font);
@@ -89,7 +89,7 @@ public class SceneRenderer {
 	private void renderToScreen(Scene scene, FontType font) {
 		waterFBOs.unbindCurrentFrameBuffer();
 		multisampleFbo.bindFrameBuffer();
-		masterRenderer.renderScene(scene, new Vector4f(0, -1, 0, 15), true);
+		masterRenderer.renderScene(scene, new Vector4f(0, -1, 0, 15));
 		waterRenderer.render(scene.getWaters().values(), scene.getCamera(), scene.getSun());
 		ParticleMaster.renderParticles(scene.getCamera());
 		multisampleFbo.unbindFrameBuffer();
@@ -127,7 +127,7 @@ public class SceneRenderer {
 		float distance = 2 * (scene.getCamera().getPosition().y - scene.getWaters().get("Water").getHeight());
 		scene.getCamera().getPosition().y -= distance;
 		scene.getCamera().invertPitch();
-		masterRenderer.renderScene(scene, new Vector4f(0, 1, 0, -scene.getWaters().get("Water").getHeight()), false);
+		masterRenderer.renderScene(scene, new Vector4f(0, 1, 0, -scene.getWaters().get("Water").getHeight()), true);
 		scene.getCamera().getPosition().y += distance;
 		scene.getCamera().invertPitch();
 	}
@@ -135,7 +135,7 @@ public class SceneRenderer {
 	private void renderWaterRefraction(Scene scene) {
 		waterFBOs.bindRefractionFrameBuffer();
 		masterRenderer.renderScene(scene, new Vector4f(0, -1, 0, scene.getWaters().get("Water").getHeight() + 1f),
-				false);
+				true);
 	}
 
 	protected void renderParticles(Scene scene) {
