@@ -45,7 +45,7 @@ public class MasterRenderer {
 	private Texture environmentMap;
 	private Frustum frustum = new Frustum();
 	
-	private boolean terrainWiredFrame = false;
+	private boolean terrainWiredFrame = true;
 	private boolean entitiyWiredFrame = false;
 	
 	

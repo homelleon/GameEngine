@@ -10,6 +10,6 @@
 <e> Cuby1 cube Cube1 50.0 7.791623 25.0 4.0 false
 <e> Cuby2 cube Cube1 20.0 -3.1758592 25.0 4.0 false
 <e> cube cube cube1 100.0 24.86358 10.0 1.0 false
-<t> Terrain1 0 0 grass ground floweredGrass road blendMap true 200.0 5 0.5
+<t> Terrain1 0 0 grass ground floweredGrass road blendMap true 50 6 0.5
 <t> Terrain2 1 0 grass ground floweredGrass road blendMap true 100.0 5 0.5
 <end>

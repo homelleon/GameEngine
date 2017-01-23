@@ -81,6 +81,7 @@ public class SceneRenderer {
 
 		move(scene);
 		//enviroRenderer.render(scene, masterRenderer, scene.getEntities().get("Cuby4"));
+		masterRenderer.renderShadowMap(scene);
 		renderParticles(scene);
 		renderWaterSurface(scene);
 		renderToScreen(scene, font);
@@ -122,7 +123,6 @@ public class SceneRenderer {
 	}
 
 	private void renderWaterReflection(Scene scene) {
-		masterRenderer.renderShadowMap(scene);
 		waterFBOs.bindReflectionFrameBuffer();
 		float distance = 2 * (scene.getCamera().getPosition().y - scene.getWaters().get("Water").getHeight());
 		scene.getCamera().getPosition().y -= distance;

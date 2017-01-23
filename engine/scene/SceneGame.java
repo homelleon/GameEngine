@@ -315,10 +315,10 @@ public class SceneGame implements Scene {
 	@Override
 	public void spreadEntitiesOnHeights() {
 		if (!entities.isEmpty()) {
-			for(Entity entity : this.entities.values()){
+			for(Entity entity : this.entities.values()) {
 				float terrainHeight = 0;
 				
-				for(Terrain terrain : this.terrains.values()){
+				for(Terrain terrain : this.terrains.values()) {
 					terrainHeight += terrain.getHeightOfTerrain(entity.getPosition().x, entity.getPosition().z);
 				}
 				entity.setPosition(new Vector3f(entity.getPosition().x, terrainHeight, entity.getPosition().z));
@@ -329,10 +329,10 @@ public class SceneGame implements Scene {
 	@Override
 	public void spreadParitclesOnHeights(Collection<ParticleSystem> systems) {
 		if (!systems.isEmpty()) {
-			for(ParticleSystem system : systems){
+			for(ParticleSystem system : systems) {
 				float terrainHeight = 0;
 				
-				for(Terrain terrain : this.terrains.values()){
+				for(Terrain terrain : this.terrains.values()) {
 					terrainHeight += terrain.getHeightOfTerrain(system.getPosition().x, system.getPosition().z);
 				}
 				system.setPosition(new Vector3f(system.getPosition().x, terrainHeight, system.getPosition().z));
