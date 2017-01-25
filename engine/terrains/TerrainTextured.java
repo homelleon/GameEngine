@@ -197,7 +197,7 @@ public class TerrainTextured implements Terrain {
 		this.isProcedureGenerated = true;
 		HeightsGenerator generator = new HeightsGenerator(amp, oct, rough);
 		
-		int VERTEX_COUNT = 512;
+		int VERTEX_COUNT = 128;
 		heights = new float[VERTEX_COUNT][VERTEX_COUNT];
 		int count = VERTEX_COUNT * VERTEX_COUNT;
 		float[] vertices = new float[count * 3];

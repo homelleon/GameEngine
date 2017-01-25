@@ -166,10 +166,7 @@ public class MasterRenderer {
 	}
 	
 	
-	public void renderScene(Scene scene, Vector4f clipPlane, boolean isLowDist) {
-		if(isLowDist) {
-			//this.projectionMatrix = this.lowDistProjectionMatrix;
-		}
+	public void renderScene(Scene scene, Vector4f clipPlane, boolean isLowDistance) {
 		this.frustum.extractFrustum(scene.getCamera(), projectionMatrix);
 		this.environmentMap = scene.getEnvironmentMap();
 		for (Terrain terrain : scene.getTerrains().values()) {
@@ -184,10 +181,8 @@ public class MasterRenderer {
 			}					
 		}
 		
-		render(scene.getLights().values(), scene.getCamera(), clipPlane, isLowDist);
-		if(isLowDist) {
-			//this.projectionMatrix = this.normalDistProjectionMatrix;
-		}
+		render(scene.getLights().values(), scene.getCamera(), clipPlane, isLowDistance);
+		
 	}
 	
 	public void render(Collection<Light> lights, Camera camera, Vector4f clipPlane, boolean isLowDistance) {	

@@ -1,11 +1,9 @@
 package gameMain;
 
-import org.lwjgl.util.vector.Vector3f;
+import org.lwjgl.opengl.GL11;
 
 import engineMain.EngineMain;
 import entities.Entity;
-import particles.ParticleSystem;
-import physicMain.PE10;
 import scene.Scene;
 
 public class MyGame implements Game {
@@ -23,6 +21,9 @@ public class MyGame implements Game {
 		public void onStart() {
 			//PE10.initialize();
 			scene = EngineMain.getScene();
+			System.out.println(GL11.glGetString(GL11.GL_VENDOR));
+			System.out.println(GL11.glGetString(GL11.GL_RENDERER));
+			System.out.println(GL11.glGetString(GL11.GL_VERSION));
 			//scene.setTerrainWiredFrame(true);
 			//world1 = PE10.peCreateWorld(new Vector3f(0,0,0), new Vector3f(0,0,0));
 			cube7 = scene.getEntities().get("Cuby4");
