@@ -26,9 +26,9 @@ uniform int shadowPCFCount;
 //light
 uniform vec3 lightColour[10];
 uniform vec3 attenuation[10];
+uniform int lightCount;
 uniform float shineDamper;
 uniform float reflectivity;
-uniform int lightCount;
 
 uniform vec3 skyColour;
 
@@ -92,7 +92,7 @@ void main(void) {
 			totalDiffuse = vec3(1.0);
 		}
 	}
-	
+		
 	vec4 reflectedColour = texture(enviroMap, reflectedVector);
 	vec4 refractedColour = texture(enviroMap, refractedVector);
 

@@ -139,7 +139,6 @@ public class SceneRenderer {
 	}
 
 	protected void renderParticles(Scene scene) {
-		scene.getParticles().get("Cosmic").setPosition(scene.getPlayer().getPosition());
 		scene.getParticles().get("Cosmic").generateParticles();
 		scene.getParticles().get("Star").generateParticles();
 		ParticleMaster.update(scene.getCamera());
