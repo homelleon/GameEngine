@@ -17,19 +17,24 @@ uniform sampler2D textureSampler;
 uniform sampler2D specularMap;
 uniform samplerCube enviroMap;
 
+//shadows
 uniform float usesSpecularMap;
 uniform sampler2D shadowMap;
+uniform float shadowMapSize;
+uniform int shadowPCFCount;
+
+//light
 uniform vec3 lightColour[10];
 uniform vec3 attenuation[10];
 uniform float shineDamper;
 uniform float reflectivity;
-uniform vec3 skyColour;
 uniform int lightCount;
+
+uniform vec3 skyColour;
+
+//---reflection and refraction
 uniform float reflectiveFactor;
 uniform float refractiveFactor;
-
-uniform float shadowMapSize;
-uniform int shadowPCFCount;
 
 void main(void) {
 

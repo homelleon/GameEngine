@@ -1,4 +1,4 @@
-//VERTEX SHADER
+//---ENTITY VERTEX SHADER
 #version 400 core
 
 in vec3 position;
@@ -12,33 +12,40 @@ out vec3 toLightVector[10];
 out vec3 toCameraVector;
 out float visibility;
 out vec4 shadowCoords;
+
+//---out reflection and refraction
 out vec3 reflectedVector;
 out vec3 refractedVector;
 
 uniform mat4 transformationMatrix;
 uniform mat4 projectionMatrix;
 uniform mat4 viewMatrix;
+
+uniform vec3 cameraPosition;
+uniform vec4 plane;
+
+//---light
 uniform vec3 lightPosition[10];
 uniform int lightCount;
-uniform vec3 cameraPosition;
+uniform float useFakeLighting;
+
+//---reflection and refraction
 uniform float reflectiveFactor;
 uniform float refractiveFactor;
 uniform float refractiveIndex;
 
+//---shadows
 uniform mat4 toShadowMapSpace;
 uniform float shadowDistance;
 uniform float shadowTransitionDistance;
 
-uniform float useFakeLighting;
-
+//---texture
 uniform float numberOfRows;
 uniform vec2 offset;
 
+//---fog
 uniform float fogDensity;
-
 const float gradient = 3.0;
-
-uniform vec4 plane;
 
 void main(void) {
 
