@@ -1,9 +1,5 @@
 package renderEngine;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL30;
@@ -88,6 +84,7 @@ public class SceneRenderer {
 	}
 
 	private void renderToScreen(Scene scene, FontType font) {
+		boolean isMousePointed = false;
 		waterFBOs.unbindCurrentFrameBuffer();
 		multisampleFbo.bindFrameBuffer();
 		masterRenderer.renderScene(scene, new Vector4f(0, -1, 0, 15));
@@ -102,16 +99,23 @@ public class SceneRenderer {
 		/* intersection of entities with mouse ray */
 
 		if (MouseGame.isOncePressed(MouseGame.LEFT_CLICK)) {	
-			scene.addPointedEntity(picker.chooseObjectByRay(scene, masterRenderer));	
+			scene.addPointedEntity(picker.chooseObjectByRay(scene, masterRenderer));
+			isMousePointed = true;
+			
+		}
+		if (MouseGame.isOncePressed(MouseGame.RIGHT_CLICK)) {
+			scene.clearPointedEntities();
 		}
 		
-		for(Entity entity : scene.getPointedEntities().values()) {
-			System.out.println(entity.getName());
-			int power = 4;
-			Vector3f rayDirection = picker.getCurrentRay();
-			entity.increasePosition(power * rayDirection.x,
-					power * rayDirection.y, power * rayDirection.z);
-		}		
+		if(isMousePointed) {
+			for(Entity entity : scene.getPointedEntities().values()) {
+				System.out.println(entity.getName());
+				int power = 4;
+				Vector3f rayDirection = picker.getCurrentRay();
+				entity.increasePosition(power * rayDirection.x,
+						power * rayDirection.y, power * rayDirection.z);
+			}		
+		}
 	}
 
 
@@ -145,7 +149,7 @@ public class SceneRenderer {
 	}
 
 	protected void renderText(FontType font) {
-		GuiText fpsText = createFPSText(1 / DisplayManager.getFrameTimeSeconds(), font);
+		GuiText fpsText = createFPSText(Math.round(1 / DisplayManager.getFrameTimeSeconds()), font);
 		fpsText.setColour(1, 0, 0);
 		GuiText coordsText = createPickerCoordsText(picker, font);
 		coordsText.setColour(1, 0, 0);

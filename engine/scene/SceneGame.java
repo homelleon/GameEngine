@@ -121,7 +121,9 @@ public class SceneGame implements Scene {
 
 	@Override
 	public void addPointedEntity(Entity entity) {
-		this.pointedEntities.put(entity.getName(), entity);	
+		if(entity != null) {
+			this.pointedEntities.put(entity.getName(), entity);
+		}
 	}
 
 	@Override
