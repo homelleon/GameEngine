@@ -4,7 +4,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import audio.AudioMaster;
 import audio.AudioSource;
+import audio.AudioSourceSimple;
 import cameras.Camera;
 import entities.Entity;
 import entities.Light;
@@ -30,6 +32,9 @@ public interface Scene {
 	
 	Light getSun();
 	void setSun(Light sun);
+	
+	public void setAudioMaster(AudioMaster master);
+	public AudioMaster getAudioMaster();
 	
 	Map<String, Entity> getEntities();
 	void addEntity(Entity entity);

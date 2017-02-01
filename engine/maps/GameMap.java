@@ -8,6 +8,7 @@ import java.util.WeakHashMap;
 import org.lwjgl.util.vector.Vector3f;
 
 import audio.AudioSource;
+import audio.AudioSourceSimple;
 import cameras.Camera;
 import entities.Entity;
 import entities.EntityManager;
@@ -260,8 +261,8 @@ public class GameMap {
 	}
 	
 	public void createAudioSource(String name, String path, int maxDistance, Vector3f coords) {
-		AudioSource source = new AudioSource(name, path, maxDistance, coords);
-		this.audioSorces.put(name, source);
+		//AudioSource source = new AudioSource(name, path, maxDistance, coords);
+		//this.audioSorces.put(name, source);
 	}
 
 }

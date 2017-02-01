@@ -162,8 +162,8 @@ public class MapsTXTParser implements MapsParser {
         List<AudioSource> audios = new ArrayList<AudioSource>();    
         
         for(int i=0;i<audios.size();i++) {
-        	AudioSource source = new AudioSource(aNames.get(i), aPaths.get(i), aMaxDistances.get(i), aCoords.get(i));
-        	audios.add(source);
+        	//AudioSource source = new AudioSource(aNames.get(i), aPaths.get(i), aMaxDistances.get(i), aCoords.get(i));
+        	//audios.add(source);
         }
         
 		GameMap map = new GameMap(fileName, loader);

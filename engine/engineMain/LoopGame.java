@@ -12,7 +12,9 @@ import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
 import audio.AudioMaster;
+import audio.AudioMasterBuffered;
 import audio.AudioSource;
+import audio.AudioSourceSimple;
 import cameras.CameraPlayer;
 import entities.EntityManager;
 import entities.Light;
@@ -95,14 +97,15 @@ public class LoopGame implements Loop {
 		
 		/*--------------AUDIO----------------*/
 		
-		AudioMaster.init();
-		AudioMaster.setListenerData(player1.getPosition());
+		AudioMaster aduioMaster = new AudioMasterBuffered();	
+		aduioMaster.init();
+		aduioMaster.setListenerData(player1.getPosition());
 		AL10.alDistanceModel(AL11.AL_LINEAR_DISTANCE_CLAMPED);
-		AudioSource ambientSource = new AudioSource("birds", "forest.wav", 1000);
+		AudioSource ambientSource = new AudioSourceSimple("birds", "forest.wav", 1000, aduioMaster);
 		ambientSource.setLooping(true);
 		ambientSource.setVolume(0.3f);
 		ambientSource.play();
-		ambientSource.setPosition(400, 50, 400);			
+		ambientSource.setPosition(new Vector3f(400, 50, 400));			
 			
 		/*--------------WATER----------------*/
 
@@ -115,6 +118,7 @@ public class LoopGame implements Loop {
 
 		/*---------------SCENE-------------*/
 		
+		scene.setAudioMaster(aduioMaster);
 		scene.setPlayer(player1);
 		scene.addEntity(player1);
 		scene.addAllEntities(ObjectUtils.createGrassField(500, 500, 50, 1, 0.1f, loader));
@@ -155,7 +159,7 @@ public class LoopGame implements Loop {
 	
 	private void update() {		
 		game.onUpdate();
-		sceneRenderer.render(scene, font, loader);
+		sceneRenderer.render(font, loader);
 		MouseGame.update();
 		DisplayManager.updateDisplay();
 	}

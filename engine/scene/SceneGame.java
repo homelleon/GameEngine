@@ -8,6 +8,7 @@ import java.util.WeakHashMap;
 
 import org.lwjgl.util.vector.Vector3f;
 
+import audio.AudioMaster;
 import audio.AudioSource;
 import cameras.Camera;
 import entities.Entity;
@@ -32,6 +33,7 @@ public class SceneGame implements Scene {
 	private Texture environmentMap = Texture.newEmptyCubeMap(128);
 	
 	private Frustum frustum = new Frustum();
+	private AudioMaster audioMaster;
 	
 	private Map<String, Entity> entities = new WeakHashMap<String, Entity>();
 	private Map<String, Entity> pointedEntities = new WeakHashMap<String, Entity>();
@@ -89,6 +91,14 @@ public class SceneGame implements Scene {
 	@Override
 	public void setSun(Light sun) {
 		this.sun = sun;
+	}
+	
+	public void setAudioMaster(AudioMaster master) {
+		this.audioMaster = master;
+	}
+	
+	public AudioMaster getAudioMaster() {
+		return this.audioMaster;
 	}
 	
 	/* 
