@@ -5,7 +5,7 @@ import org.lwjgl.util.vector.Vector3f;
 
 /*
  *  AduioSource - источник аудио
- *  02.01.17
+ *  01.02.17
  * ------------------------------
 */
 

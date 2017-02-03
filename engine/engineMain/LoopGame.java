@@ -43,6 +43,11 @@ import water.WaterTile;
 
 public class LoopGame implements Loop {
 	
+	/*
+	 * LoopGame - главный игровой цикл
+	 * 03.02.17
+	 * --------------------
+	 */
 	private static final String SETTINGS_NAME = "settings";
 		
 	private Loader loader;
@@ -61,7 +66,8 @@ public class LoopGame implements Loop {
     
     private boolean mapIsLoaded = false;
     private boolean isPaused = false;
-
+    
+    //инициализация
 	private void init() {
 		DisplayManager.createDisplay();
 		/*--------------PRE LOAD TOOLS-------------*/
@@ -138,6 +144,7 @@ public class LoopGame implements Loop {
 		scene.getEntities().get("Cuby4").getModel().getTexture().setReflectiveFactor(1.2f);
 	}
 	
+	//запуск
 	@Override
 	public void run() {	
 		prepare();
@@ -150,6 +157,7 @@ public class LoopGame implements Loop {
 		cleanUp();		
 	}
 	
+	//подготовка инструментов перед сценой
 	private void prepare() {
 		init();
 		sceneRenderer.init(scene, loader);
@@ -157,13 +165,15 @@ public class LoopGame implements Loop {
 		game.onStart();
 	}
 	
+	//обновление инструментов
 	private void update() {		
 		game.onUpdate();
 		sceneRenderer.render(font, loader);
 		MouseGame.update();
 		DisplayManager.updateDisplay();
 	}
-		
+	
+	//очистка инструментов сцены
 	private void cleanUp() {
 		scene.cleanUp();
 		loader.cleanUp();
@@ -171,33 +181,39 @@ public class LoopGame implements Loop {
 		DisplayManager.closeDisplay();
     }
 	
+	//загрузка карты
 	private void loadMap(String name) {
 		MapsLoader mapLoader = new MapsTXTLoader();
 		this.map = mapLoader.loadMap(name, loader);	
 		this.mapIsLoaded = true;
 	}
 	
+	//загрузка игровых настроек
 	private void loadGameSettings() {
 		SettingsLoader setLoader = new SettingsTXTLoader();  
 		GameSettings settings = setLoader.loadSettings(SETTINGS_NAME);
 		loadMap(settings.getMapName());			
 	}
 	
+	//вернуть сцену
 	@Override
 	public Scene getScene() {
 		return this.scene;
 	}    	    
     
+	//установить сетку для ландшафта
     @Override
     public void setTerrainWiredFrame(boolean value) {
 		renderer.setTerrainWiredFrame(value);
 	}
     
+    //установить сетку для объектов
     @Override
 	public void setEntityWiredFrame(boolean value) {
 		renderer.setEntityWiredFrame(value);
 	}
 	
+    //установка паузы для сцены
     @Override
 	public void setScenePaused(boolean value) {
 		isPaused = value;

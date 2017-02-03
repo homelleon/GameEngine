@@ -7,9 +7,16 @@ import postProcessing.ImageRenderer;
 
 public class CombineFilter {
 	
-	private ImageRenderer renderer;
-	private CombineShader shader; 
+	/*
+	 *  CombineFilter - фильтр для объединения других фильтров постобработки
+	 *  03.02.17
+	 * ------------------------------
+	*/
 	
+	private ImageRenderer renderer;   //отрисовщик изображения
+	private CombineShader shader; 	  //шейдер объединения постобработки
+	
+	//конструктор
 	public CombineFilter() {
 		shader = new CombineShader();
 		shader.start();
@@ -18,6 +25,17 @@ public class CombineFilter {
 		renderer = new ImageRenderer();
 	}
 	
+	/**
+	 * 
+	 * @param colourTexture       
+	 * 						- входная текстура
+	 * @param highlightTexture2
+	 * 							- текстура для 1-го применения 2х постобработки
+	 * @param highlightTexture4
+	 * 							- текстура для 2-го применения 2х постобработки
+	 * @param highlightTexture8
+	 * 							- текстура для 3-го применения 2х постобработки
+	 */
 	public void render(int colourTexture, int highlightTexture2, int highlightTexture4, int highlightTexture8) {
 		shader.start();
 		GL13.glActiveTexture(GL13.GL_TEXTURE0);
@@ -32,6 +50,7 @@ public class CombineFilter {
 		shader.stop();
 	}
 	
+	//очистка фильтра
 	public void cleanUp() {
 		renderer.cleanUp();
 		shader.cleanUp();

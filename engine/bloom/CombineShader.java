@@ -4,6 +4,12 @@ import scene.ES;
 import shaders.ShaderProgram;
 
 public class CombineShader extends ShaderProgram { 
+	
+	/*
+	 *  CombineShader - шейдер для объединения других фильтров постобработки
+	 *  03.02.17
+	 * ------------------------------
+	*/
 
 	private static final String VERTEX_FILE = ES.BLOOM_SHADER_PATH + "simpleVertex.txt";
 	private static final String FRAGMENT_FILE = ES.BLOOM_SHADER_PATH + "combineFragment.txt";

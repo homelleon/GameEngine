@@ -9,6 +9,11 @@ import scene.ES;
 
 public class CameraFree implements Camera {
 	
+	/*
+	 * CameraFree - свободная камера
+	 * 
+	 */
+	
 	private static final float SPEED = 100;
 	private static final float RUN_SPEED = 4;
 	
@@ -28,47 +33,55 @@ public class CameraFree implements Camera {
 	public boolean perspectiveMode = false;
 	public boolean isUnderWater = false;
 	
-	
+	//вернуть имя
 	public String getName() {
 		return name;
 	}
-
+	
+	//конструктор
 	public CameraFree(float posX,float posY,float posZ) {
 		this.setPosition(posX, posY, posZ);		
 		this.name = "FreeCamera";
 	}
 	
+	//конструктор
 	public CameraFree(String name, float posX,float posY,float posZ) {
 		this.setPosition(posX, posY, posZ);	
 		this.name = name;
 	}
 	
+	//установить позицию камеры
 	public void setPosition(float posX, float posY, float posZ) {
 		this.position.x = posX;
 		this.position.y = posY;
 		this.position.z = posZ;
 	}
 	
+	//установить тангаж
 	public void setPitch(float anglePitch) {
 		this.pitch = anglePitch;
 	}
 	
+	//установить рысканье
 	public void setYaw(float angleYaw) {
 		this.yaw = angleYaw;
 	}
 	
+	//увеличить поворот по 3-м осям
 	public void increaseRotation(float dx, float dy, float dz) {
 		this.roll += dx;
 		this.yaw += dy;
 		this.pitch += dz;
 	}
 	
+	//увеличить позицию по 3-м осям
 	public void increasePosition(float dx, float dy, float dz) {
 		this.position.x += dx;
 		this.position.y += dy;
 		this.position.z += dz;
 	}
 	
+	//движение
 	public void move() {
 		chekInputs();
 		float yawAngle = currentTurnSpeed * DisplayManager.getFrameTimeSeconds(); 
@@ -89,6 +102,7 @@ public class CameraFree implements Camera {
 				
 	}
 	
+	//проверка ввода с клавиатуры
 	private void chekInputs() {
 		if(Keyboard.isKeyDown(ES.KEY_EDITOR_CENTER_VIEW)) {
 			roll = 0;
@@ -133,27 +147,33 @@ public class CameraFree implements Camera {
 			currentPitchSpeed = 0;
 		}				
 	}
-
+	
+	//вернуть позицию
 	public Vector3f getPosition() {
 		return position;
 	}
-
+	
+	//вернуть тангаж
 	public float getPitch() {
 		return pitch;
 	}
 	
+	//инвертировать тангаж
 	public void invertPitch() {
 		this.pitch = -pitch;
 	}
-
+	
+	//вернуть рысканье
 	public float getYaw() {
 		return yaw;
 	}
-
+	
+	//вернуть крен
 	public float getRoll() {
 		return roll;
 	}
-
+	
+	//переключить между поворотами камеры
 	@Override
 	public void switchToFace(int faceIndex) {
 		// TODO Auto-generated method stub

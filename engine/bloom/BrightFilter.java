@@ -5,6 +5,12 @@ import org.lwjgl.opengl.GL13;
 
 import postProcessing.ImageRenderer;
 
+/*
+ *  BrightFilter - фильтр €ркости (постобработка).
+ *  03.02.17
+ * ------------------------------
+*/
+
 public class BrightFilter { 
 
 	private ImageRenderer renderer;
@@ -23,10 +29,12 @@ public class BrightFilter {
 		shader.stop();
 	}
 	
+	//вернуть текстуру (integer)
 	public int getOutputTexture() {
 		return renderer.getOutputTexture();
 	}
 	
+	//очистить
 	public void cleanUp() {
 		renderer.cleanUp();
 		shader.cleanUp();

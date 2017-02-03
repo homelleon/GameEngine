@@ -9,6 +9,7 @@ import scene.ES;
 
 public class SettingsTXTLoader implements SettingsLoader {
  
+	//загрузка настроек игры
 	@Override
 	public GameSettings loadSettings(String fileName) {
 		FileReader isr = null;

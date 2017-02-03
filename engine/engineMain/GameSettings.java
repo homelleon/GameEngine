@@ -4,6 +4,11 @@ public class GameSettings {
 	
 	private static GameSettings instance; 
 	
+	/*
+	 * GameSettings - настройки игры
+	 * 03.02.17
+	 * --------------------
+	 */
 	String mapName;
 	
 	private GameSettings() {}
