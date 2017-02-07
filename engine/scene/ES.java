@@ -6,13 +6,13 @@ import org.lwjgl.util.vector.Vector4f;
 /* 
  * 
  * Engine Settings 
- * here is all constants for the game
+ * here is all constants for the engine
  * 
  */
 
 public class ES {
 	
-	//*****************DISPLAY SETTINGS**********************************//
+	/* display settings */
 	public static final int DISPLAY_WIDTH = 1920; //800; //1920;  
 	public static final int DISPLAY_HEIGHT = 1080; //600; //1080; 
 	public static final int FAR_PLANE = 10000;
@@ -27,11 +27,11 @@ public class ES {
 	
 	public static final float DISPLAY_CONTRAST = 0.5f;
 	
-	//****************AUIDO SETTINGS****************************************//
+	/* audio settings */
 	public static final float MUSIC_VOLUME = 0.05f;
 	public static final float ENVIRONMENT_VOLUME = 0.2f;
 	
-	//****************CONTROLS SETTINGS**************************************//
+	/* controls settings */
 	public static final float MOUSE_X_SPEED = 0.2f;
 	public static final float MOUSE_Y_SPEED = 0.2f;
 	public static final float MOUSE_ZOOM_SPEED = 0.1f;
@@ -39,7 +39,7 @@ public class ES {
 	public static final int KEY_EXIT = Keyboard.KEY_ESCAPE;
 	public static final int KEY_APPLY = Keyboard.KEY_INSERT;
 	
-	//****************PLYAER CONTROLS***************************************//
+	/* player control */
 	public static final int KEY_PLAYER_MOVE_FORWARD = Keyboard.KEY_W;
 	public static final int KEY_PLAYER_MOVE_BACKWARD = Keyboard.KEY_S;
 	public static final int KEY_PLAYER_MOVE_LEFT = Keyboard.KEY_A;
@@ -47,7 +47,7 @@ public class ES {
 	public static final int KEY_PLAYER_JUMP = Keyboard.KEY_SPACE;
 	public static final int KEY_PLAYER_ACCELERATE = Keyboard.KEY_LSHIFT;
 	
-	//****************EDIT CAMERA CONTROLS**********************************//
+	/* edit camera control */
 	public static final int KEY_EDITOR_MOVE_FORWARD = Keyboard.KEY_W;
 	public static final int KEY_EDITOR_MOVE_BACKWARD = Keyboard.KEY_S;
 	public static final int KEY_EDITOR_MOVE_LEFT = Keyboard.KEY_A;
@@ -57,7 +57,7 @@ public class ES {
 	public static final int KEY_EDITOR_ACCELERATE = Keyboard.KEY_LSHIFT;
 	public static final int KEY_EDITOR_CENTER_VIEW = Keyboard.KEY_HOME;
 	
-	//*****************SIMULATION SETTINGS*************************************//	
+	/* simulation settings */
 	public static final float GRAVITY = -50;
 	public static final float TIME_LENGTH = 1;
 	public static final float FOG_DENSITY = 0.002f;
@@ -69,12 +69,12 @@ public class ES {
 	public static final float DETAIL_VIEW_DISTANCE = 150;
 	public static final int MAX_LIGHTS = 10;
 	
-	//****************VOZEL SETTINGS****************************************//
+	/* voxel settings */
 	public static final float VOXEL_BLOCK_SIZE = 5f;
 	public static final int VOXEL_CHUNK_SIZE = 5;
 
 	
-	//*****************PATH SETTINGS*************************************//
+	/* path settings */
 	public final static String RES_PATH = "res/";
 	public final static String GAME_PATH = "game/";
 	public final static String SOURCE_PATH = "/";
@@ -112,17 +112,22 @@ public class ES {
 	
 	public final static String GAME_SETTINGS_PATH = GAME_PATH + "gameMain/";
 	
-	//*****************RENDER SETTINGS**********************************//
+	/* render settings */
 	public final static Vector4f NO_CLIP = new Vector4f(0, 0, 0, 1);
 	
-	//****************GLOBAL WORLD SETTINGS*********************************//
+	/* global world settings */
 	public final static float SUN_MAX_HEIGHT = 4000; 
 	public final static float SUN_MIN_HEIGHT = -4000;
 	
-	//****************DISPLAY MODE CONSTANTS*******************************//
+	/* display mode constants */
 	public final static int DISPLAY_DEBUG_MODE = 0;
 	public final static int DISPLAY_EDIT_MODE = 1;
 	public final static int DISPLAY_GAME_MODE = 2;
+	
+	/* entity type */
+	public final static int ENTITY_TYPE_SIMPLE = 0;
+	public final static int ENTITY_TYPE_NORMAL = 1;
+	public final static int ENTITY_TYPE_DETAIL = 2;
 
 	
 

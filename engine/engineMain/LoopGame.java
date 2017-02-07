@@ -16,7 +16,7 @@ import audio.AudioMasterBuffered;
 import audio.AudioSource;
 import audio.AudioSourceSimple;
 import cameras.CameraPlayer;
-import entities.EntityManager;
+import entities.EntityManagerStructured;
 import entities.Light;
 import entities.Player;
 import entities.PlayerTextured;
@@ -127,7 +127,7 @@ public class LoopGame implements Loop {
 		scene.setPlayer(player1);
 		scene.addEntity(player1);
 		scene.addAllEntities(ObjectUtils.createGrassField(500, 500, 50, 1, 0.1f, loader));
-		scene.addAllEntities(EntityManager.createNormalMappedEntities(loader));
+		scene.addAllEntities(EntityManagerStructured.createNormalMappedEntities(loader));
 		scene.setCamera(new CameraPlayer(player1, cameraName));
 		scene.setSun(new Light("Sun", new Vector3f(-100000,150000,-100000), new Vector3f(1.3f,1.3f,1.3f)));
 		scene.addLight(scene.getSun());

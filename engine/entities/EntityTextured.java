@@ -23,7 +23,7 @@ public class EntityTextured implements Entity {
 	private boolean isChosen = false; //выбранный
 	
 	private int textureIndex = 0; //индекс текстуры
-	private int typeID = EntityManager.ENTITY_TYPE_SIMPLE; //тип объекта
+	private int typeID = ES.ENTITY_TYPE_SIMPLE; //тип объекта
 	
 	public EntityTextured(String name, TexturedModel model, Vector3f position, float rotX, float rotY, float rotZ, float scale) {
 		this.name = name;
