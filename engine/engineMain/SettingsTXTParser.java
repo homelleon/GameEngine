@@ -5,7 +5,6 @@ import java.io.IOException;
 
 public class SettingsTXTParser implements SettingsParser {
  
-	//чтение настроек игры
 	@Override
 	public GameSettings readSettings(String fileName, BufferedReader reader) {
 		GameSettings settings = GameSettings.getInstance();

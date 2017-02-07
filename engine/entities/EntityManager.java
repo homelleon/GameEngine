@@ -25,7 +25,6 @@ public class EntityManager {
 	public final static int ENTITY_TYPE_NORMAL = 1;
 	public final static int ENTITY_TYPE_DETAIL = 2;
 	
-	//создать модели
 	public static List<Entity> createEntities(Loader loader) {
 		List<Entity> entities = new ArrayList<Entity>();
 		//******StaticModels***************//
@@ -68,7 +67,6 @@ public class EntityManager {
 		return entities;
 	}
 	
-	//создание объектов с нормальной карты
 	public static List<Entity> createNormalMappedEntities(Loader loader) {
 		List<Entity> entities = new ArrayList<Entity>();
 		TexturedModel barrelModel = new TexturedModel("barrel", NormalMappedObjLoader.loadOBJ("barrel", loader),

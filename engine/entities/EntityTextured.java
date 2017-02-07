@@ -25,7 +25,6 @@ public class EntityTextured implements Entity {
 	private int textureIndex = 0; //индекс текстуры
 	private int typeID = EntityManager.ENTITY_TYPE_SIMPLE; //тип объекта
 	
-	//конструктор
 	public EntityTextured(String name, TexturedModel model, Vector3f position, float rotX, float rotY, float rotZ, float scale) {
 		this.name = name;
 		this.model = model;
@@ -37,7 +36,6 @@ public class EntityTextured implements Entity {
 		this.scale = scale; 
 	}
 	
-	//конструктор
 	public EntityTextured(String name, int typeID, TexturedModel model, Vector3f position, float rotX, float rotY, float rotZ, float scale) {
 		this.name = name;
 		this.model = model;
@@ -50,7 +48,6 @@ public class EntityTextured implements Entity {
 		this.scale = scale; 
 	}
 	
-	//конструктор
 	public EntityTextured(String name, int typeID, TexturedModel model, int textureIndex, Vector3f position, float rotX, float rotY, float rotZ, float scale) {
 		this.name = name;
 		this.textureIndex = textureIndex;
@@ -62,8 +59,7 @@ public class EntityTextured implements Entity {
 		this.rotZ = rotZ;
 		this.scale = scale;
 	}
-	
-	//управление выбором объекта	
+		
 	public void setIsChosen(boolean isChosen) {
 		this.isChosen = isChosen;
 	}
@@ -72,7 +68,6 @@ public class EntityTextured implements Entity {
 		return this.isChosen;
 	}
 	
-	//управление видимостью
 	public boolean getIsVisible() {
 		return isVisible;
 	}
@@ -81,7 +76,6 @@ public class EntityTextured implements Entity {
 		this.isVisible = isVisible;
 	}
 	
-	//вернуть координаты смещения текстур
 	public float getTextureXOffset() {
 		int column = textureIndex % model.getTexture().getNumberOfRows();
 		return (float)column/(float)model.getTexture().getNumberOfRows();
@@ -92,41 +86,34 @@ public class EntityTextured implements Entity {
 		return (float)row/(float)model.getTexture().getNumberOfRows();
 	}	
 
-	//увеличить позицию
 	public void increasePosition(float dx, float dy, float dz) {
 		this.position.x += dx;
 		this.position.y += dy;
 		this.position.z += dz;
 	}
 	
-	//увеличить вращение
 	public void increaseRotation(float dx, float dy, float dz) {
 		this.rotX += dx;
 		this.rotY += dy;
 		this.rotZ += dz;
 	}
 	
-	//вернуть имя
 	public String getName() {
 		return name;
 	}
 	
-	//вернуть тип
 	public int getType() {
 		return this.typeID;
 	}	
 	
-	//вернуть модель с текстурой
 	public TexturedModel getModel() {
 		return model;
 	}
 	
-	//установить модель с текстурой
 	public void setModel(TexturedModel model) {
 		this.model = model;
 	}
-	
-	//управление позицией
+
 	public Vector3f getPosition() {
 		return position;
 	}
@@ -135,7 +122,6 @@ public class EntityTextured implements Entity {
 		this.position = position;
 	}
 	
-	//вернуть вращение
 	public float getRotX() {
 		return rotX;
 	}
@@ -160,7 +146,6 @@ public class EntityTextured implements Entity {
 		this.rotZ = rotZ;
 	}
 	
-	//управление масштабом
 	public float getScale() {
 		return scale;
 	}
@@ -169,7 +154,6 @@ public class EntityTextured implements Entity {
 		this.scale = scale;
 	}
 	
-	//вернуть радиус ограничивающей сферы
 	public float getSphereRadius() {
 		return this.radius;
 	}

@@ -35,24 +35,20 @@ public class CameraPlayer implements Camera {
 	public boolean perspectiveMode = false;
 	public boolean isUnderWater = false;
 	
-	//вернуть имя
 	public String getName() {
 		return name;
 	}
 	
-	//конструктор
 	public CameraPlayer(Player player) {
 		this.player = player;
 		this.name = "NoName";
 	}
 	
-	//конструктор
 	public CameraPlayer(Player player, String name) {
 		this.player = player;
 		this.name = name;	
 	}
 	
-	//установить позицию
 	public void setPosition(float posX, float posY, float posZ) {
 		this.position.x = posX;
 		this.position.y = posY;
@@ -69,7 +65,6 @@ public class CameraPlayer implements Camera {
 		this.yaw = angleYaw;
 	}
 	
-	//движение
 	public void move() {
 			calculateZoom();
 			calculatePitchAndAngle();
@@ -79,7 +74,6 @@ public class CameraPlayer implements Camera {
 			this.yaw = 180 - ((player).getRotY() + angleAroundPlayer);		
 	}
 	
-	//вернуть позицию
 	public Vector3f getPosition() {
 		return position;
 	}
@@ -114,17 +108,15 @@ public class CameraPlayer implements Camera {
 		position.y = player.getPosition().y + 5 + verticDistance;
 	}
 	
-	//вычислить позицию камеры по горизонтали относительно игрока
 	private float calculateHorizontalDistance() {
 		return (float) (distanceFromPlayer * Math.cos(Math.toRadians(pitch)));
 	}
 	
-	//вычислить позицию камеры по вертикали относительно игрока
 	private float calculateVerticalDistance() {
 		return (float) (distanceFromPlayer * Math.sin(Math.toRadians(pitch)));
 	}
 	
-	//вычислить масштаб бриближения камеры относительно игрока
+	//вычислить масштаб приближения камеры относительно игрока
 	private void calculateZoom() {
 		float zoomLevel = Mouse.getDWheel() * ES.MOUSE_ZOOM_SPEED;
 		if(((distanceFromPlayer<maxDistanceFromPlayer)&&(zoomLevel<0))
@@ -133,7 +125,6 @@ public class CameraPlayer implements Camera {
 		}
 	}
 	
-	//вычислить тангаж и угол относительно игрока
 	private void calculatePitchAndAngle() {
 		if(!Mouse.isButtonDown(2)) {
 			float pitchChange = (Mouse.getY() - ES.DISPLAY_HEIGHT/2) * ES.MOUSE_Y_SPEED;
@@ -151,7 +142,6 @@ public class CameraPlayer implements Camera {
 		}
 	}
 	
-	//вычилить находится ли камера под водой
 	private void underWaterCalculate() {
 		if(this.position.y <=0) {
 			isUnderWater = true;

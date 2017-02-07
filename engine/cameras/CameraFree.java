@@ -33,18 +33,15 @@ public class CameraFree implements Camera {
 	public boolean perspectiveMode = false;
 	public boolean isUnderWater = false;
 	
-	//вернуть имя
 	public String getName() {
 		return name;
 	}
 	
-	//конструктор
 	public CameraFree(float posX,float posY,float posZ) {
 		this.setPosition(posX, posY, posZ);		
 		this.name = "FreeCamera";
 	}
 	
-	//конструктор
 	public CameraFree(String name, float posX,float posY,float posZ) {
 		this.setPosition(posX, posY, posZ);	
 		this.name = name;
@@ -67,21 +64,18 @@ public class CameraFree implements Camera {
 		this.yaw = angleYaw;
 	}
 	
-	//увеличить поворот по 3-м осям
 	public void increaseRotation(float dx, float dy, float dz) {
 		this.roll += dx;
 		this.yaw += dy;
 		this.pitch += dz;
 	}
 	
-	//увеличить позицию по 3-м осям
 	public void increasePosition(float dx, float dy, float dz) {
 		this.position.x += dx;
 		this.position.y += dy;
 		this.position.z += dz;
 	}
-	
-	//движение
+
 	public void move() {
 		chekInputs();
 		float yawAngle = currentTurnSpeed * DisplayManager.getFrameTimeSeconds(); 
@@ -148,7 +142,6 @@ public class CameraFree implements Camera {
 		}				
 	}
 	
-	//вернуть позицию
 	public Vector3f getPosition() {
 		return position;
 	}

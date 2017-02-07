@@ -16,14 +16,12 @@ public class Light {
 	
 	private String name;
 	
-	//конструктор
 	public Light(String name, Vector3f position, Vector3f colour) {
 		this.position = position;
 		this.colour = colour;
 		this.name = name;
 	}
 	
-	//конструктор
 	public Light(String name, Vector3f position, Vector3f colour, Vector3f attenuation) {
 		this.position = position;
 		this.colour = colour;
@@ -32,7 +30,6 @@ public class Light {
 		
 	}
 	
-	//вернуть имя
 	public String getName() { 
 		return name;
 	}
@@ -42,22 +39,18 @@ public class Light {
 		return attenuation;
 	}
 	
-	//вернуть позицию
 	public Vector3f getPosition() {
 		return position;
 	}
 	
-	//установить позицию
 	public void setPosition(Vector3f position) {
 		this.position = position;
 	}
 	
-	//вернуть цвет
 	public Vector3f getColour() {
 		return colour;
 	}
 	
-	//установить цвет
 	public void setColour(Vector3f colour) {
 		this.colour = colour;
 	}

@@ -25,25 +25,21 @@ public class CameraCubeMap implements Camera {
 	private float yaw; 
 	private float roll = 0;
 	
-	//конструктор
 	public CameraCubeMap(Vector3f position) {
 		this.position = position;	
 		createProjectionMatrix();
 	}
-	
-	//установка позиции камеры
+
 	public void setPosition(float posX, float posY, float posZ) {
 		this.position.x = posX;
 		this.position.y = posY;
 		this.position.z = posZ;
 	}
-	
-	//вернуть позицию камеры
+
 	public Vector3f getPosition() {
 		return position;
 	}
-	
-	//переключить между поворотами камеры
+
 	public void switchToFace(int faceIndex) {
         switch (faceIndex) {
         case 0:
@@ -74,22 +70,18 @@ public class CameraCubeMap implements Camera {
         updateViewMatrix();
     }
 	
-	//вернуть видовую матрицу
 	public Matrix4f getViewMatrix() {
         return viewMatrix;
     }
-	
-	//вернуть проектную матрицу
+
 	public Matrix4f getProjectionMatrix() {
         return projectionMatrix;
     }
  
-	//вернуть проектно-видовую матрицу
     public Matrix4f getProjectionViewMatrix() {
         return projectionViewMatrix;
     }
- 
-    //создать проектную матрицу
+
     private void createProjectionMatrix() {
         float y_scale = (float) ((1f / Math.tan(Math.toRadians(FOV / 2f))));
         float x_scale = y_scale / ASPECT_RATIO;
@@ -103,7 +95,6 @@ public class CameraCubeMap implements Camera {
         projectionMatrix.m33 = 0;
     }
     
-    //обновить видовую матрицу
     private void updateViewMatrix() {
         viewMatrix.setIdentity();
         Matrix4f.rotate((float) Math.toRadians(180), new Vector3f(0, 0, 1), viewMatrix, viewMatrix);
@@ -115,7 +106,6 @@ public class CameraCubeMap implements Camera {
         Matrix4f.mul(projectionMatrix, viewMatrix, projectionViewMatrix);
     }
     
-    //вернуть имя камеры
 	@Override
 	public String getName() {
 		// TODO Auto-generated method stub
@@ -135,8 +125,7 @@ public class CameraCubeMap implements Camera {
 		// TODO Auto-generated method stub
 		
 	}
-	
-	//движение
+
 	@Override
 	public void move() {
 		// TODO Auto-generated method stub

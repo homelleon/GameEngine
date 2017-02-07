@@ -54,7 +54,6 @@ public class EntityShader extends ShaderProgram {
 	private int location_usesSpecularMap; //использовать карту бликов
 	private int location_modelTexture; //текстура модели
 		
-	//конструктор
 	public EntityShader() {
 		super(VERTEX_FILE, FRAGMENT_FILE);
 	}
@@ -68,7 +67,6 @@ public class EntityShader extends ShaderProgram {
 		super.bindAttribute(2, "normal");	
 	}
 	
-	//связать текстуры
 	public void connectTextureUnits() {
 		super.loadInt(location_modelTexture, 0);
 		super.loadInt(location_specularMap, 1);
@@ -76,12 +74,10 @@ public class EntityShader extends ShaderProgram {
 		super.loadInt(location_shadowMap, 5);
 	}
 	
-	//загрузить использование зеркальной карты
 	public void loadUsesSpecularMap(boolean useMap) {
 		super.loadBoolean(location_usesSpecularMap, useMap);
 	}
 	
-	//связь атрибутов с шейдером
 	@Override
 	protected void getAllUniformLocations() {
 		location_transformationMatrix = super.getUniformLocation("transformationMatrix");
@@ -121,12 +117,10 @@ public class EntityShader extends ShaderProgram {
 		}
 	}
 	
-	//загрузка в область теней
 	public void loadToShadowSpaceMatrix(Matrix4f matrix) {
 		super.loadMatrix(location_toShadowMapSpace, matrix);
 	}
 	
-	//Загрузка параметров теней
 	public void loadShadowVariables(float shadowDistance, float size, float transitionDistance, int pcfCount) {	
 		super.loadFloat(location_shadowDistance, shadowDistance);
 		super.loadFloat(location_shadowMapSize, size);
@@ -134,66 +128,54 @@ public class EntityShader extends ShaderProgram {
 		super.loadInt(location_shadowPCFCount, pcfCount);
 	}
 	
-	//загрузка сечения
 	public void loadClipPlane(Vector4f plane) {
 		super.load4DVector(location_plane, plane);
 	}
 	
-	//загрузка числа строк текстуры
 	public void loadNumberOfRows(int numberOfRows) {
 		super.loadFloat(location_numberOfRows, numberOfRows);
 	}
 	
-	//загрузка смещения текстурных координат
 	public void loadOffset(float x, float y) {
 		super.load2DVector(location_offset, new Vector2f(x,y));
 	}
 	
-	//загрузка цвета неба
 	public void loadSkyColour(float r, float g, float b) {
 		super.loadVector(location_skyColour, new Vector3f(r,g,b));
 	}
 	
-	//загрузка параметров искусственного освещения
 	public void loadFakeLightingVariable(boolean useFake) {
 		super.loadBoolean(location_useFakeLighting, useFake);
 	}
 	
-	//загрузка параметров свечения
 	public void loadShineVariables(float damper, float reflectivity) {
 		super.loadFloat(location_shineDamper, damper);
 		super.loadFloat(location_reflectivity, reflectivity);
 	}
 	
-	//загрузка степени отражения
 	public void loadReflectiveFactor(float index) {
 		super.loadFloat(location_reflectiveFactor, index);
 	}
 	
-	//загрузка параметров преломанения
 	public void loadRefractVariables(float index, float factor) {
 		super.loadFloat(location_refractiveIndex, index);
 		super.loadFloat(location_refractiveFactor, factor);
 	}
 	
-	//загрузка плотности тумана
 	public void loadFogDensity(float density) {
 		super.loadFloat(location_fogDensity, density);
 	}
 	
-	//загрузка камеры
 	public void loadCamera(Camera camera) {
 		Matrix4f viewMatrix = Maths.createViewMatrix(camera);
 		super.loadMatrix(location_viewMatrix, viewMatrix);
 		super.loadVector(location_cameraPosition, camera.getPosition());
 	}
 	
-	//загрузка матрицы трансформации
 	public void loadTranformationMatrix(Matrix4f matrix) {
 		super.loadMatrix(location_transformationMatrix, matrix);
 	}
 	
-	//загрузка источников света
 	public void loadLights(Collection<Light> lights) {
 		super.loadInt(location_lightCount, ES.MAX_LIGHTS);
 		Iterator<Light> iterator = lights.iterator();
@@ -212,13 +194,11 @@ public class EntityShader extends ShaderProgram {
 		
 	}
 	
-	//загрузка видовой матрицы
 	public void loadViewMatrix(Camera camera) {
 		Matrix4f viewMatrix = Maths.createViewMatrix(camera);
 		super.loadMatrix(location_viewMatrix, viewMatrix);
 	}
-	
-	//загрузка проективной матрицы
+
 	public void loadProjectionMatrix(Matrix4f projection) {
 		super.loadMatrix(location_projectionMatrix, projection);
 	}

@@ -13,8 +13,8 @@ public class CombineFilter {
 	 * ------------------------------
 	*/
 	
-	private ImageRenderer renderer;   //отрисовщик изображения
-	private CombineShader shader; 	  //шейдер объединения постобработки
+	private ImageRenderer renderer;  
+	private CombineShader shader; 	  
 	
 	//конструктор
 	public CombineFilter() {

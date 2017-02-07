@@ -31,7 +31,6 @@ public class DisplayManager {
 	private static int height; //высота окна
 	private static int width;  //ширина окна
 	
-	// конструктор
 	public static void createDisplay() {	
 		createDisplay(ES.DISPLAY_GAME_MODE);	
 	}
@@ -91,7 +90,6 @@ public class DisplayManager {
 		lastFrameTime = getCurrentTime();		
 	}
 	
-	//обновить дисплей
 	public static void updateDisplay() {
 		Display.sync(ES.FPS_CAP);
 		Display.update();
@@ -100,27 +98,22 @@ public class DisplayManager {
 		lastFrameTime = currentFrameTime;		
 	}
 	
-	//вернуть время окна
 	public static float getFrameTimeSeconds() {
 		return delta;
 	}
 	
-	//закрыть окно
 	public static void closeDisplay() {		
 		Display.destroy();		
 	}
 	
-	//вернуть текущее время
 	private static long getCurrentTime() {
 		return Sys.getTime() * 1000 / Sys.getTimerResolution();
 	}
 	
-	//вернуть высоту окна
 	public static int getHeight() {
 		return height;
 	}
 	
-	//вернуть ширину окна
 	public static int getWidth() {
 		return width;
 	}	
