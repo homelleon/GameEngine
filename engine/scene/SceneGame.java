@@ -12,6 +12,8 @@ import audio.AudioMaster;
 import audio.AudioSource;
 import cameras.Camera;
 import entities.Entity;
+import entities.EntityManager;
+import entities.EntityManagerStructured;
 import entities.Light;
 import entities.Player;
 import fontMeshCreator.GuiText;
@@ -35,6 +37,7 @@ public class SceneGame implements Scene {
 	private Frustum frustum = new Frustum();
 	private AudioMaster audioMaster;
 	
+	private EntityManager entityManager = new EntityManagerStructured();
 	private Map<String, Entity> entities = new WeakHashMap<String, Entity>();
 	private Map<String, Entity> pointedEntities = new WeakHashMap<String, Entity>();
 	private Map<String, Terrain> terrains = new WeakHashMap<String, Terrain>();
@@ -49,7 +52,7 @@ public class SceneGame implements Scene {
 	public SceneGame() {}
 	
 	public SceneGame(GameMap map) {
-		this.addAllEntities(map.getEntities().values());
+		this.getEntities().addAll(map.getEntities().values());
 		this.addAllTerrains(map.getTerrains().values());
 		this.addAllWaters(map.getWaters().values());
 		this.addAllParticles(map.getParticles().values());
@@ -105,48 +108,9 @@ public class SceneGame implements Scene {
 	 * @Enitites
 	 */
 	@Override
-	public Map<String, Entity> getEntities() {
-		return this.entities;
+	public EntityManager getEntities() {
+		return this.entityManager;
 	}
-
-	@Override
-	public void addEntity(Entity entity) {
-		this.entities.put(entity.getName(), entity);
-	}
-
-	@Override
-	public void addAllEntities(Collection<Entity> entityList) {
-		for(Entity entity : entityList) {
-			this.entities.put(entity.getName(), entity);
-		}
-	}
-	
-	/* 
-	 * @Pointed enitites
-	 */
-	@Override
-	public Map<String, Entity> getPointedEntities() {
-		return this.pointedEntities;
-	}
-
-	@Override
-	public void addPointedEntity(Entity entity) {
-		if(entity != null) {
-			this.pointedEntities.put(entity.getName(), entity);
-		}
-	}
-
-	@Override
-	public void addPointedEntities(Collection<Entity> entityList) {
-		for(Entity entity : entityList) {
-			this.pointedEntities.put(entity.getName(), entity);
-		}
-	}	
-
-	@Override
-	public void clearPointedEntities() {
-		this.pointedEntities.clear();		
-	}	
 
 	/* 
 	 * @Terrains

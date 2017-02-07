@@ -6,9 +6,9 @@ import java.util.Map;
 
 import audio.AudioMaster;
 import audio.AudioSource;
-import audio.AudioSourceSimple;
 import cameras.Camera;
 import entities.Entity;
+import entities.EntityManager;
 import entities.Light;
 import entities.Player;
 import fontMeshCreator.GuiText;
@@ -36,14 +36,7 @@ public interface Scene {
 	public void setAudioMaster(AudioMaster master);
 	public AudioMaster getAudioMaster();
 	
-	Map<String, Entity> getEntities();
-	void addEntity(Entity entity);
-	void addAllEntities(Collection<Entity> entityList);
-	
-	Map<String, Entity> getPointedEntities();
-	void addPointedEntity(Entity entity);
-	void addPointedEntities(Collection<Entity> entityList);
-	void clearPointedEntities();
+	EntityManager getEntities();
 	
 	Map<String, Terrain> getTerrains();
 	void addTerrain(Terrain terrain);

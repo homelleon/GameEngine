@@ -125,9 +125,9 @@ public class LoopGame implements Loop {
 		
 		scene.setAudioMaster(aduioMaster);
 		scene.setPlayer(player1);
-		scene.addEntity(player1);
-		scene.addAllEntities(ObjectUtils.createGrassField(500, 500, 50, 1, 0.1f, loader));
-		scene.addAllEntities(EntityManagerStructured.createNormalMappedEntities(loader));
+		scene.getEntities().add(player1);
+		scene.getEntities().addAll(ObjectUtils.createGrassField(500, 500, 50, 1, 0.1f, loader));
+		scene.getEntities().addAll(EntityManagerStructured.createNormalMappedEntities(loader));
 		scene.setCamera(new CameraPlayer(player1, cameraName));
 		scene.setSun(new Light("Sun", new Vector3f(-100000,150000,-100000), new Vector3f(1.3f,1.3f,1.3f)));
 		scene.addLight(scene.getSun());
@@ -140,7 +140,7 @@ public class LoopGame implements Loop {
 		scene.addAllParticles(ParticlesManager.createParticleSystem(loader));
 		
 		scene.spreadEntitiesOnHeights();
-		scene.getEntities().get("Cuby4").getModel().getTexture().setReflectiveFactor(1.2f);
+		scene.getEntities().getByName("Cuby4").getModel().getTexture().setReflectiveFactor(1.2f);
 	}
 	
 	@Override

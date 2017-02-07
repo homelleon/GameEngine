@@ -34,7 +34,7 @@ public class EnvironmentMapRenderer {
 		GL30.glFramebufferRenderbuffer(GL30.GL_FRAMEBUFFER, GL30.GL_DEPTH_ATTACHMENT, GL30.GL_RENDERBUFFER, depthBuffer);
 		
 		GL11.glViewport(0, 0, scene.getEnvironmentMap().size, scene.getEnvironmentMap().size);
-		for(Entity entity : scene.getEntities().values()) {
+		for(Entity entity : scene.getEntities().getAll()) {
 			if(entity != shinyEntity) {
 				processEntity(entity);
 			}

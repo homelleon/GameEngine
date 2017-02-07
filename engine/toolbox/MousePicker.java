@@ -88,7 +88,7 @@ public class MousePicker {
 	
 	public Entity chooseObjectByRay(Scene scene, MasterRenderer renderer) {
 		Entity pickedEntity = null;
-		scene.getFrustum().updateFrustumEntities(scene.getEntities().values());
+		scene.getFrustum().updateFrustumEntities(scene.getEntities().getAll());
 
 		List<Entity> pointedEntities = new ArrayList<Entity>();
 		for (Entity entity : scene.getFrustum().getEntities()) {

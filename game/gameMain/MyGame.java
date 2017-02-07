@@ -26,7 +26,7 @@ public class MyGame implements Game {
 			System.out.println(GL11.glGetString(GL11.GL_VERSION));
 			//scene.setTerrainWiredFrame(true);
 			//world1 = PE10.peCreateWorld(new Vector3f(0,0,0), new Vector3f(0,0,0));
-			cube7 = scene.getEntities().get("Cuby4");
+			cube7 = scene.getEntities().getByName("Cuby4");
 			cube7.increasePosition(0, 10, 0);
 			//PE10.peAttachBody(tree1, PE10.BODY_3D_SPHERE, world1);
 			//PE10.peAttachBody(tree2, PE10.BODY_3D_SPHERE, world1);

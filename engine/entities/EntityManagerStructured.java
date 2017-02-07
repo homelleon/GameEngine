@@ -24,7 +24,7 @@ public class EntityManagerStructured implements EntityManager {
 	 */
 	
 	public Map<String, Entity> allEntities = new HashMap<String, Entity>();
-	public Map<Float, Entity> frustumEntities = new HashMap<Float, Entity>();
+	public Map<Float, List<Entity>> frustumEntities = new HashMap<Float, List<Entity>>();
 	public List<Entity> pointedEntities = new ArrayList<Entity>();
 	
 	//TODO: delete after upgrading of map
@@ -54,46 +54,119 @@ public class EntityManagerStructured implements EntityManager {
 	}
 
 	@Override
-	public void addEntities(Collection<Entity> entityList) {
-		for(Entity entity : entityList) {
-			this.allEntities.put(entity.getName(), entity);
+	public void addAll(Collection<Entity> entityList) {
+		if(entityList == null) {
+			throw(new NullPointerException("Tried to add null entityList in " + this.toString()));
+		} else if (entityList.isEmpty()) {
+			throw(new NullPointerException("Tried to add empty entityList in " + this.toString()));
+		} else {
+			for(Entity entity : entityList) {
+				this.allEntities.put(entity.getName(), entity);
+			}
+		}
+	}
+	
+	@Override
+	public void addPointedList(Collection<Entity> pointedList) {
+		if(pointedList == null) {
+			throw(new NullPointerException("Tried to add null pointedList in " + this.toString()));
+		} else if (pointedList.isEmpty()) {
+			throw(new NullPointerException("Tried to add empty pointedList in " + this.toString()));
+		} else {
+			for(Entity entity : pointedList) {
+				this.pointedEntities.add(entity);
+			}
+		}
+	}	
+
+	@Override
+	public void addFrustumMap(Map<Float, List<Entity>> frustumMap) {
+		if(frustumMap == null) {
+			throw(new NullPointerException("Tried to add null frustumMap in " + this.toString()));
+		} else if (frustumMap.isEmpty()) {
+			throw(new NullPointerException("Tried to add empty frustumMap in " + this.toString()));
+		} else {
+			for(Float key : frustumMap.keySet()) {
+				List<Entity> batch = new ArrayList<Entity>();
+				for(Entity entity : frustumMap.get(key)) {
+					batch.add(entity);
+				}
+				this.frustumEntities.put(key, batch);
+			}
+		}
+	}
+
+
+	@Override
+	public void add(Entity entity) {
+		if(entity == null) {
+			throw(new NullPointerException("Tried to add null entity in " + this.toString()));
+		} else {
+			this.allEntities.put(entity.getName(), entity); 		
+		}
+	}
+	
+	@Override
+	public void addPointed(Entity entity) {
+		if(entity == null) {
+			throw(new NullPointerException("Tried to add null pointedEntity in " + this.toString()));
+		} else {
+			this.pointedEntities.add(entity); 		
 		}
 	}
 
 	@Override
-	public void addEntity(Entity entity) {
-		this.allEntities.put(entity.getName(), entity);		
+	public void addInFrustum(float distance, Entity entity) {
+		if(entity == null) {
+			throw(new NullPointerException("Tried to add null frustumEntity in " + this.toString()));
+		} else {
+			if(this.frustumEntities.containsKey(distance)) {
+				this.frustumEntities.get(distance).add(entity);
+			} else {
+				List<Entity> batch = new ArrayList<Entity>();
+				batch.add(entity);
+				this.frustumEntities.put(distance, batch);
+			}			 		
+		}
 	}
 
 	@Override
-	public void clearAllEntities() {
+	public void clearAll() {
 		this.allEntities.clear();
 		this.pointedEntities.clear();
 		this.frustumEntities.clear();
 	}
 
 	@Override
-	public Entity getEntity(String name) {
-
-		return null;
+	public Entity getByName(String name) {
+		Entity entity = null;
+		if(this.allEntities.containsKey(name)) {
+			entity = this.allEntities.get(name);
+		}
+		return entity;
 	}
 
 	@Override
-	public Collection getAllEntities() {
-		// TODO Auto-generated method stub
-		return null;
+	public Collection<Entity> getAll() {
+		return this.allEntities.values();
 	}
 
 	@Override
-	public Map<Float, Entity> getFrustumEntities() {
-		// TODO Auto-generated method stub
-		return null;
+	public Map<Float, List<Entity>> getFromFrustum() {
+		return this.frustumEntities;
 	}
 
 	@Override
-	public List<Entity> getPointedEntities() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Entity> getPointed() {
+		return this.pointedEntities;
 	}
+
+	@Override
+	public void clearPointed() {
+		this.pointedEntities.clear();		
+	}
+
+
+
 
 }

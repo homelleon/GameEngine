@@ -4,14 +4,20 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import cameras.Camera;
+
 public interface EntityManager {
 	
-	void addEntities(Collection<Entity> entityList);
-	void addEntity(Entity entity);
-	void clearAllEntities();
-	Entity getEntity(String name);
-	Collection getAllEntities();
-	Map<Float, Entity> getFrustumEntities();
-	List<Entity> getPointedEntities();
-
+	void addAll(Collection<Entity> entityList);
+	void addPointedList(Collection<Entity> pointedList);
+	void addFrustumMap(Map<Float, List<Entity>> frustumMap);
+	void add(Entity entity); 
+	void addPointed(Entity entity);
+	void addInFrustum(float distance, Entity entity);
+	void clearPointed();
+	void clearAll();
+	Entity getByName(String name);
+	Collection<Entity> getAll();
+	Map<Float, List<Entity>> getFromFrustum();
+	List<Entity> getPointed();
 }

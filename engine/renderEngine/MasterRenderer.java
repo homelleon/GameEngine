@@ -173,7 +173,7 @@ public class MasterRenderer {
 			processTerrain(terrain);
 		}		
 			
-		for (Entity entity : scene.getEntities().values()) {
+		for (Entity entity : scene.getEntities().getAll()) {
 			if(entity.getType() == ES.ENTITY_TYPE_SIMPLE) {
 				processEntity(entity);
 			} else if(entity.getType() == ES.ENTITY_TYPE_NORMAL) {
@@ -213,7 +213,7 @@ public class MasterRenderer {
 	}
 	
 	public void renderShadowMap(Scene scene) {
-		for(Entity entity : scene.getEntities().values()) {
+		for(Entity entity : scene.getEntities().getAll()) {
 			if(entity.getType() == ES.ENTITY_TYPE_SIMPLE) {
 				processShadowEntity(entity);
 			} else if(entity.getType() == ES.ENTITY_TYPE_NORMAL) {
@@ -280,7 +280,7 @@ public class MasterRenderer {
 	public Collection<Entity> createFrustumEntities(Scene scene) {
 		frustum.extractFrustum(scene.getCamera(), projectionMatrix);
 		List<Entity> frustumEntities = new ArrayList<Entity>();
-		for (Entity entity : scene.getEntities().values()) {
+		for (Entity entity : scene.getEntities().getAll()) {
 			if (frustum.sphereInFrustum(entity.getPosition(), entity.getSphereRadius())) {
 				frustumEntities.add(entity);
 			}

@@ -64,7 +64,7 @@ public class SceneRenderer {
 
 		this.picker = new MousePicker(scene.getCamera(), masterRenderer.getProjectionMatrix());
 
-		enviroRenderer.render(scene, masterRenderer, scene.getEntities().get("Cuby4"));
+		enviroRenderer.render(scene, masterRenderer, scene.getEntities().getByName("Cuby4"));
 	}
 
 	public void render(FontType font, Loader loader) {
@@ -101,16 +101,19 @@ public class SceneRenderer {
 		/* intersection of entities with mouse ray */
 
 		if (MouseGame.isOncePressed(MouseGame.LEFT_CLICK)) {	
-			scene.addPointedEntity(picker.chooseObjectByRay(scene, masterRenderer));
+			Entity pointedEntity = picker.chooseObjectByRay(scene, masterRenderer);
+			if(pointedEntity != null) {
+				scene.getEntities().addPointed(pointedEntity);
+			}
 			isMousePointed = true;
 			
 		}
 		if (MouseGame.isOncePressed(MouseGame.RIGHT_CLICK)) {
-			scene.clearPointedEntities();
+			scene.getEntities().clearPointed();
 		}
 		
 		if(isMousePointed) {
-			for(Entity entity : scene.getPointedEntities().values()) {
+			for(Entity entity : scene.getEntities().getPointed()) {
 				System.out.println(entity.getName());
 				int power = 4;
 				Vector3f rayDirection = picker.getCurrentRay();
