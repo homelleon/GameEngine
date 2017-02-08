@@ -18,9 +18,9 @@ public interface Entity {
 	public float getTextureXOffset();	
 	public float getTextureYOffset();
 	
-	//увеличить позицией
+	//увеличить позицию
 	public void increasePosition(float dx, float dy, float dz);
-	
+	public void move(float forwardSpeed, float strafeSpeed);
 	//увеличить поворот
 	public void increaseRotation(float dx, float dy, float dz);
 	

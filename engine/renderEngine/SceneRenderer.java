@@ -22,6 +22,7 @@ import maps.MapsWriter;
 import particles.ParticleMaster;
 import postProcessing.Fbo;
 import postProcessing.PostProcessing;
+import scene.ES;
 import scene.Scene;
 import toolbox.MousePicker;
 import toolbox.OGLUtils;
@@ -86,7 +87,7 @@ public class SceneRenderer {
 	}
 
 	private void renderToScreen(FontType font) {
-		boolean isMousePointed = false;
+
 		waterFBOs.unbindCurrentFrameBuffer();
 		multisampleFbo.bindFrameBuffer();
 		masterRenderer.renderScene(scene, new Vector4f(0, -1, 0, 15));
@@ -98,20 +99,58 @@ public class SceneRenderer {
 		PostProcessing.doPostProcessing(outputFbo.getColourTexture(), outputFbo2.getColourTexture());
 		guiRenderer.render(scene.getGuis().values());
 		renderText(font);
+		checkControls();		
+	}
+	
+	private void checkControls() {
+		boolean isMousePointed = false;
 		/* intersection of entities with mouse ray */
-
+		//TODO: make class for control
 		if (MouseGame.isOncePressed(MouseGame.LEFT_CLICK)) {	
 			Entity pointedEntity = picker.chooseObjectByRay(scene, masterRenderer);
 			if(pointedEntity != null) {
 				scene.getEntities().addPointed(pointedEntity);
 			}
-			isMousePointed = true;
-			
+			isMousePointed = true;			
 		}
+		
 		if (MouseGame.isOncePressed(MouseGame.RIGHT_CLICK)) {
 			scene.getEntities().clearPointed();
 		}
 		
+		if (Keyboard.isKeyDown(ES.KEY_OBJECT_MOVE_FORWARD)) {
+			scene.getEntities().getPointed().forEach(i -> i.move(1, 0));
+		}
+		
+		if (Keyboard.isKeyDown(ES.KEY_OBJECT_MOVE_BACKWARD)) {
+			scene.getEntities().getPointed().forEach(i -> i.move(-1, 0));
+		}		
+		
+		if (Keyboard.isKeyDown(ES.KEY_OBJECT_MOVE_LEFT)) {
+			scene.getEntities().getPointed().forEach(i -> i.move(0, 1));
+		}
+		
+		if (Keyboard.isKeyDown(ES.KEY_OBJECT_MOVE_RIGHT)) {
+			scene.getEntities().getPointed().forEach(i -> i.move(0, -1));
+		}
+		
+		if (Keyboard.isKeyDown(ES.KEY_OBJECT_MOVE_UP)) {
+			scene.getEntities().getPointed().forEach(i -> i.increasePosition(0, 1, 0));
+		}
+		
+		if (Keyboard.isKeyDown(ES.KEY_OBJECT_MOVE_DOWN)) {
+			scene.getEntities().getPointed().forEach(i -> i.increasePosition(0, -1, 0));
+		}
+		
+		if (Keyboard.isKeyDown(ES.KEY_OBJECT_ROTATE_LEFT)) {
+			scene.getEntities().getPointed().forEach(i -> i.increaseRotation(0, 1, 0));
+		}
+		
+		if (Keyboard.isKeyDown(ES.KEY_OBJECT_ROTATE_RIGHT)) {
+			scene.getEntities().getPointed().forEach(i -> i.increaseRotation(0, -1, 0));
+		}
+		
+		/* move in ray direction */
 		if(isMousePointed) {
 			for(Entity entity : scene.getEntities().getPointed()) {
 				System.out.println(entity.getName());

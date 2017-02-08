@@ -74,6 +74,7 @@ public class EntityManagerStructured implements EntityManager {
 			throw(new NullPointerException("Tried to add empty pointedList in " + this.toString()));
 		} else {
 			for(Entity entity : pointedList) {
+				entity.setIsChosen(true);
 				this.pointedEntities.add(entity);
 			}
 		}
@@ -111,6 +112,7 @@ public class EntityManagerStructured implements EntityManager {
 		if(entity == null) {
 			throw(new NullPointerException("Tried to add null pointedEntity in " + this.toString()));
 		} else {
+			entity.setIsChosen(true);
 			this.pointedEntities.add(entity); 		
 		}
 	}
@@ -163,6 +165,9 @@ public class EntityManagerStructured implements EntityManager {
 
 	@Override
 	public void clearPointed() {
+		for(Entity entity : this.pointedEntities) {
+			entity.setIsChosen(false);
+		}
 		this.pointedEntities.clear();		
 	}
 

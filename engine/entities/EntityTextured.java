@@ -92,6 +92,14 @@ public class EntityTextured implements Entity {
 		this.position.z += dz;
 	}
 	
+	public void move(float forwardSpeed, float strafeSpeed) {
+		float dx = (float) (forwardSpeed * Math.sin(Math.toRadians(getRotY())) 
+				+ (strafeSpeed * Math.sin(Math.toRadians(getRotY() + 90))));
+		float dz = (float) (forwardSpeed * Math.cos(Math.toRadians(getRotY())) 
+				+ (strafeSpeed * Math.cos(Math.toRadians(getRotY() + 90))));
+		increasePosition(dx, 0, dz);
+	}
+	
 	public void increaseRotation(float dx, float dy, float dz) {
 		this.rotX += dx;
 		this.rotY += dy;

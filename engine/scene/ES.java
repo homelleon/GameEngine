@@ -47,6 +47,16 @@ public class ES {
 	public static final int KEY_PLAYER_JUMP = Keyboard.KEY_SPACE;
 	public static final int KEY_PLAYER_ACCELERATE = Keyboard.KEY_LSHIFT;
 	
+	/* chosen object control */
+	public static final int KEY_OBJECT_MOVE_UP = Keyboard.KEY_HOME;
+	public static final int KEY_OBJECT_MOVE_DOWN = Keyboard.KEY_END;
+	public static final int KEY_OBJECT_MOVE_LEFT = Keyboard.KEY_LEFT;
+	public static final int KEY_OBJECT_MOVE_RIGHT = Keyboard.KEY_RIGHT;
+	public static final int KEY_OBJECT_MOVE_FORWARD = Keyboard.KEY_UP;
+	public static final int KEY_OBJECT_MOVE_BACKWARD = Keyboard.KEY_DOWN;
+	public static final int KEY_OBJECT_ROTATE_LEFT = Keyboard.KEY_DELETE;
+	public static final int KEY_OBJECT_ROTATE_RIGHT = Keyboard.KEY_NEXT;	
+	
 	/* edit camera control */
 	public static final int KEY_EDITOR_MOVE_FORWARD = Keyboard.KEY_W;
 	public static final int KEY_EDITOR_MOVE_BACKWARD = Keyboard.KEY_S;
