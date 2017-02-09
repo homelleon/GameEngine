@@ -13,7 +13,7 @@ import normalMappingObjConverter.NormalMappedObjLoader;
 import renderEngine.Loader;
 import scene.ES;
 import textures.ModelTexture;
-import toolbox.ObjectUtils;
+import toolbox.Frustum;
 
 public class EntityManagerStructured implements EntityManager {
 	
@@ -131,6 +131,27 @@ public class EntityManagerStructured implements EntityManager {
 			}			 		
 		}
 	}
+	
+	@Override
+	public void updateWithFrustum(Frustum frustum) {
+		this.frustumEntities.clear();
+		for(Entity entity : this.allEntities.values()) {
+			float distance = 
+					frustum.distanceSphereInFrustum(
+							entity.getPosition(), 
+							entity.getSphereRadius());
+			if (distance >=0 && distance < ES.RENDERING_VIEW_DISTANCE) {
+				List<Entity> batch;
+				if(this.frustumEntities.containsKey(distance)) {
+					batch = frustumEntities.get(distance);
+				} else {
+					batch = new ArrayList<Entity>();
+				}
+				batch.add(entity);
+				this.frustumEntities.put(distance, batch);
+			}
+		}
+	}
 
 	@Override
 	public void clearAll() {
@@ -171,7 +192,5 @@ public class EntityManagerStructured implements EntityManager {
 		this.pointedEntities.clear();		
 	}
 
-
-
-
+	
 }

@@ -2,6 +2,7 @@ package toolbox;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
@@ -161,14 +162,16 @@ public class Frustum {
 		return distance;
 	} 	
 
-	public void updateFrustumEntities(Collection<Entity> entities) {
+	public List<Entity> updateFrustumEntities(Collection<Entity> entities) {
+		List<Entity> frustumEntities = new ArrayList<Entity>(); 
 		for(Entity entity : entities) {
 			float distance;
 			distance = distanceSphereInFrustum(entity.getPosition(), entity.getSphereRadius());
 			if(distance > 0 && distance <= ES.RENDERING_VIEW_DISTANCE) {
-				this.entities.add(entity);
+				frustumEntities.add(entity);
 			}
 		}
+		return frustumEntities;
 	}
 	
 	public Collection<Entity> getEntities() {

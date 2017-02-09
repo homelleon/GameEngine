@@ -86,14 +86,14 @@ public class MousePicker {
 		return new Vector2f(x, y);
 	}
 	
-	public Entity chooseObjectByRay(Scene scene, MasterRenderer renderer) {
+	public Entity chooseObjectByRay(Scene scene) {
 		Entity pickedEntity = null;
-		scene.getFrustum().updateFrustumEntities(scene.getEntities().getAll());
-
 		List<Entity> pointedEntities = new ArrayList<Entity>();
-		for (Entity entity : scene.getFrustum().getEntities()) {
-			if (intersects(entity.getPosition(), entity.getSphereRadius())) {
-				pointedEntities.add(entity);
+		for(List<Entity> frustumList : scene.getEntities().getFromFrustum().values()) {
+			for (Entity entity : frustumList) {
+				if (intersects(entity.getPosition(), entity.getSphereRadius())) {
+					pointedEntities.add(entity);
+				}
 			}
 		}
 		float distance = ES.RENDERING_VIEW_DISTANCE + 1;

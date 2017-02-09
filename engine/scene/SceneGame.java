@@ -23,6 +23,7 @@ import particles.ParticleSystem;
 import terrains.Terrain;
 import textures.Texture;
 import toolbox.Frustum;
+import toolbox.MousePicker;
 import voxels.Chunk;
 import water.WaterTile;
 
@@ -35,6 +36,7 @@ public class SceneGame implements Scene {
 	private Texture environmentMap = Texture.newEmptyCubeMap(128);
 	
 	private Frustum frustum = new Frustum();
+	private MousePicker picker;
 	private AudioMaster audioMaster;
 	
 	private EntityManager entityManager = new EntityManagerStructured();
@@ -287,6 +289,18 @@ public class SceneGame implements Scene {
 	public Frustum getFrustum() {
 		return this.frustum;
 	}
+	
+
+	@Override
+	public MousePicker getPicker() {
+		return this.picker;
+	}
+
+	@Override
+	public void setPicker(MousePicker picker) {
+		this.picker = picker;
+	}
+	
 	
 	@Override
 	public void spreadEntitiesOnHeights() {

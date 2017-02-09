@@ -4,25 +4,22 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Vector2f;
-import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 
-import audio.AudioMasterBuffered;
 import engineMain.DisplayManager;
-import entities.Entity;
 import environmentMap.EnvironmentMapRenderer;
 import fontMeshCreator.FontType;
 import fontMeshCreator.GuiText;
 import fontRendering.TextMaster;
 import guis.GuiRenderer;
-import inputs.MouseGame;
+import inputs.Controls;
+import inputs.ControlsInGame;
 import maps.GameMap;
 import maps.MapsTXTWriter;
 import maps.MapsWriter;
 import particles.ParticleMaster;
 import postProcessing.Fbo;
 import postProcessing.PostProcessing;
-import scene.ES;
 import scene.Scene;
 import toolbox.MousePicker;
 import toolbox.OGLUtils;
@@ -34,14 +31,15 @@ public class SceneRenderer {
 
 	private MasterRenderer masterRenderer;
 	private WaterRenderer waterRenderer;
-	protected EnvironmentMapRenderer enviroRenderer;
-	protected GuiRenderer guiRenderer;
+	private EnvironmentMapRenderer enviroRenderer;
+	private GuiRenderer guiRenderer;
 	private WaterFrameBuffers waterFBOs;
-	protected Fbo multisampleFbo;
-	protected Fbo outputFbo;
-	protected Fbo outputFbo2;
-	protected MousePicker picker;
-	protected Scene scene;
+	private Fbo multisampleFbo;
+	private Fbo outputFbo;
+	private Fbo outputFbo2;
+	private MousePicker picker;
+	private Scene scene;
+	private Controls controls;
 
 	private int mouseTimer = 0;
 	private boolean isMouseClicked = false;
@@ -64,7 +62,8 @@ public class SceneRenderer {
 		this.waterRenderer = new WaterRenderer(loader, waterShader, masterRenderer.getProjectionMatrix(), waterFBOs);
 
 		this.picker = new MousePicker(scene.getCamera(), masterRenderer.getProjectionMatrix());
-
+		scene.setPicker(picker);
+		this.controls = new ControlsInGame();
 		enviroRenderer.render(scene, masterRenderer, scene.getEntities().getByName("Cuby4"));
 	}
 
@@ -77,8 +76,9 @@ public class SceneRenderer {
 			mapWriter.write(map);
 			System.out.println("save");
 		}
-
+		
 		move();
+		scene.getEntities().updateWithFrustum(scene.getFrustum());
 		//enviroRenderer.render(scene, masterRenderer, scene.getEntities().get("Cuby4"));
 		masterRenderer.renderShadowMap(scene);
 		renderParticles();
@@ -87,7 +87,6 @@ public class SceneRenderer {
 	}
 
 	private void renderToScreen(FontType font) {
-
 		waterFBOs.unbindCurrentFrameBuffer();
 		multisampleFbo.bindFrameBuffer();
 		masterRenderer.renderScene(scene, new Vector4f(0, -1, 0, 15));
@@ -98,70 +97,8 @@ public class SceneRenderer {
 		multisampleFbo.resolveToFbo(GL30.GL_COLOR_ATTACHMENT1, outputFbo2);
 		PostProcessing.doPostProcessing(outputFbo.getColourTexture(), outputFbo2.getColourTexture());
 		guiRenderer.render(scene.getGuis().values());
-		renderText(font);
-		checkControls();		
+		renderText(font);		
 	}
-	
-	private void checkControls() {
-		boolean isMousePointed = false;
-		/* intersection of entities with mouse ray */
-		//TODO: make class for control
-		if (MouseGame.isOncePressed(MouseGame.LEFT_CLICK)) {	
-			Entity pointedEntity = picker.chooseObjectByRay(scene, masterRenderer);
-			if(pointedEntity != null) {
-				scene.getEntities().addPointed(pointedEntity);
-			}
-			isMousePointed = true;			
-		}
-		
-		if (MouseGame.isOncePressed(MouseGame.RIGHT_CLICK)) {
-			scene.getEntities().clearPointed();
-		}
-		
-		if (Keyboard.isKeyDown(ES.KEY_OBJECT_MOVE_FORWARD)) {
-			scene.getEntities().getPointed().forEach(i -> i.move(1, 0));
-		}
-		
-		if (Keyboard.isKeyDown(ES.KEY_OBJECT_MOVE_BACKWARD)) {
-			scene.getEntities().getPointed().forEach(i -> i.move(-1, 0));
-		}		
-		
-		if (Keyboard.isKeyDown(ES.KEY_OBJECT_MOVE_LEFT)) {
-			scene.getEntities().getPointed().forEach(i -> i.move(0, 1));
-		}
-		
-		if (Keyboard.isKeyDown(ES.KEY_OBJECT_MOVE_RIGHT)) {
-			scene.getEntities().getPointed().forEach(i -> i.move(0, -1));
-		}
-		
-		if (Keyboard.isKeyDown(ES.KEY_OBJECT_MOVE_UP)) {
-			scene.getEntities().getPointed().forEach(i -> i.increasePosition(0, 1, 0));
-		}
-		
-		if (Keyboard.isKeyDown(ES.KEY_OBJECT_MOVE_DOWN)) {
-			scene.getEntities().getPointed().forEach(i -> i.increasePosition(0, -1, 0));
-		}
-		
-		if (Keyboard.isKeyDown(ES.KEY_OBJECT_ROTATE_LEFT)) {
-			scene.getEntities().getPointed().forEach(i -> i.increaseRotation(0, 1, 0));
-		}
-		
-		if (Keyboard.isKeyDown(ES.KEY_OBJECT_ROTATE_RIGHT)) {
-			scene.getEntities().getPointed().forEach(i -> i.increaseRotation(0, -1, 0));
-		}
-		
-		/* move in ray direction */
-		if(isMousePointed) {
-			for(Entity entity : scene.getEntities().getPointed()) {
-				System.out.println(entity.getName());
-				int power = 4;
-				Vector3f rayDirection = picker.getCurrentRay();
-				entity.increasePosition(power * rayDirection.x,
-						power * rayDirection.y, power * rayDirection.z);
-			}		
-		}
-	}
-
 
 	private void renderWaterSurface() {
 		OGLUtils.clipDistance(true);
@@ -213,6 +150,7 @@ public class SceneRenderer {
 	}
 
 	private void move() {
+		controls.update(scene);
 		scene.getCamera().move();
 		scene.getPlayer().move(scene.getTerrains().values());
 		scene.getAudioMaster().setListenerData(scene.getCamera().getPosition());
@@ -224,6 +162,7 @@ public class SceneRenderer {
 
 	public void cleanUp() {
 		scene.getAudioMaster().cleanUp();
+		scene.getEntities().clearAll();
 		PostProcessing.cleanUp();
 		outputFbo.cleanUp();
 		outputFbo2.cleanUp();

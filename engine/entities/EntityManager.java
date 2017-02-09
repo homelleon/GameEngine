@@ -4,7 +4,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import cameras.Camera;
+import toolbox.Frustum;
 
 public interface EntityManager {
 	
@@ -14,6 +14,7 @@ public interface EntityManager {
 	void add(Entity entity); 
 	void addPointed(Entity entity);
 	void addInFrustum(float distance, Entity entity);
+	void updateWithFrustum(Frustum frustum);
 	void clearPointed();
 	void clearAll();
 	Entity getByName(String name);

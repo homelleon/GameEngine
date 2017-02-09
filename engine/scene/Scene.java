@@ -7,7 +7,6 @@ import java.util.Map;
 import audio.AudioMaster;
 import audio.AudioSource;
 import cameras.Camera;
-import entities.Entity;
 import entities.EntityManager;
 import entities.Light;
 import entities.Player;
@@ -17,6 +16,7 @@ import particles.ParticleSystem;
 import terrains.Terrain;
 import textures.Texture;
 import toolbox.Frustum;
+import toolbox.MousePicker;
 import voxels.Chunk;
 import water.WaterTile;
 
@@ -71,6 +71,9 @@ public interface Scene {
 	void addAllTexts(Collection<GuiText> textList);
 	
 	Frustum getFrustum();
+	
+	MousePicker getPicker();
+	void setPicker(MousePicker picker);
 	
 	void spreadEntitiesOnHeights();
 	void spreadParitclesOnHeights(Collection<ParticleSystem> systems);
