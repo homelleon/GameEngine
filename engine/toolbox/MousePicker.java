@@ -49,6 +49,7 @@ public class MousePicker {
 		return worldRay;		
 	}
 	
+	/* intersection with sphere */
 	public boolean intersects(Vector3f position, float radius) {
 		boolean isIntersects = false;
 		Vector3f l = new Vector3f(position.x - camera.getPosition().x, 
@@ -63,6 +64,32 @@ public class MousePicker {
 		    float mSq = lSq - d*d;
 	    	isIntersects = (mSq <= Maths.sqr(radius));
 	    }		
+		return isIntersects;
+	}
+	
+	/* intersection with box */
+	public boolean intersects(Vector3f min, Vector3f max) {
+		boolean isIntersects = false;
+		Vector3f invertRay = getCurrentRay();
+		invertRay = new Vector3f(1 / invertRay.x, 1 / invertRay.y, 1 / invertRay.z);
+		float lo = invertRay.x * min.x;
+		float hi = invertRay.x * max.x;
+		float tmin = Math.min(lo, hi);
+		float tmax = Math.max(lo, hi);
+		
+		float lo1 = invertRay.y * min.y;
+		float hi1 = invertRay.y * max.y;
+		tmin = Math.max(tmin, Math.min(lo1, hi1));
+		tmax = Math.min(tmax, Math.max(lo1, hi1));
+		
+		float lo2 = invertRay.z * min.z;
+		float hi2 = invertRay.z * max.z;
+		tmin = Math.max(tmin, Math.min(lo2, hi2));
+		tmax = Math.min(tmax, Math.max(lo2, hi2));
+		if((tmin < tmax) && (tmax > 0)) {
+			isIntersects = true; 
+		}
+		
 		return isIntersects;
 	}
 	
@@ -92,9 +119,16 @@ public class MousePicker {
 		for(List<Entity> frustumList : scene.getEntities().getFromFrustum().values()) {
 			for (Entity entity : frustumList) {
 				if (intersects(entity.getPosition(), entity.getSphereRadius())) {
-					pointedEntities.add(entity);
+					Vector3f min = entity.getModel().getRawModel().getBBox().getMin();
+					Vector3f max = entity.getModel().getRawModel().getBBox().getMax();
+					Vector3f position = entity.getPosition();
+					float scale = entity.getScale();
+					if (intersects(min, max)) {
+						pointedEntities.add(entity);
+					}
 				}
-			}
+			
+			}			
 		}
 		float distance = ES.RENDERING_VIEW_DISTANCE + 1;
 		float midDist = 0;

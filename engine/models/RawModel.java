@@ -28,6 +28,11 @@ public class RawModel {
 		this.box = box;
 		this.name = "NoName";
 	}
+	
+	public RawModel(int vaoID, int vertexCount) {
+		this.vaoID = vaoID;
+		this.vertexCount = vertexCount;
+	}
 
 	public String getName() {
 		return this.name;

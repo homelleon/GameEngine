@@ -52,6 +52,23 @@ public class Loader {
 	private List<Integer> vbos = new ArrayList<Integer>();
 	private Map<String, Integer> textures = new HashMap<String, Integer>();
 	
+	public RawModel loadToVao(float[] positions, float[] normals, int[] indices) {
+		int vaoID = createVAO();
+		bindIndicesBuffer(indices);
+		storeDataInAttributeList(0, 3, positions);
+		storeDataInAttributeList(2, 3, normals);
+		unbindVAO();
+		return new RawModel(vaoID, indices.length);
+	}
+	
+	public int loadToVAO(float[] positions,float[] textureCoords) {
+		int vaoID = createVAO();
+		storeDataInAttributeList(0, 2, positions);
+		storeDataInAttributeList(1, 2, textureCoords);
+		unbindVAO();
+		return vaoID;	
+	}
+	
 	public RawModel loadToVAO(float[] positions, float[] textureCoords, float[] normals, int[] indices) {
 		int vaoID = createVAO();
 		bindIndicesBuffer(indices);
@@ -59,11 +76,9 @@ public class Loader {
 		storeDataInAttributeList(1, 2, textureCoords);
 		storeDataInAttributeList(2, 3, normals);
 		unbindVAO();
-		float radius = getDistFarVertToCenter(positions);
 		BoundingSphere sphere = new BoundingSphere(positions);
-		BoundingBox box = new BoundingBox(positions);
+		BoundingBox box = new BoundingBox(positions, this);
 		return new RawModel(vaoID, indices.length, sphere, box);
-		
 	}
 	
 	public void updateVbo(int vbo, float[] data, FloatBuffer buffer) {
@@ -76,15 +91,6 @@ public class Loader {
 		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
 	}
 	
-	public int loadToVAO(float[] positions,float[] textureCoords) {
-		int vaoID = createVAO();
-		storeDataInAttributeList(0, 2, positions);
-		storeDataInAttributeList(1, 2, textureCoords);
-		unbindVAO();
-		return vaoID;
-		
-	}
-	
 	public RawModel loadToVAO(float[] positions,float[] textureCoords,float[] normals, float[] tangents, int[] indices) {
 		int vaoID = createVAO();
 		bindIndicesBuffer(indices);
@@ -95,7 +101,7 @@ public class Loader {
 		unbindVAO();
 		float radius = getDistFarVertToCenter(positions);
 		BoundingSphere sphere = new BoundingSphere(positions);
-		BoundingBox box = new BoundingBox(positions);
+		BoundingBox box = new BoundingBox(positions, this);
 		return new RawModel(vaoID,indices.length, sphere, box);
 		
 	}
@@ -126,7 +132,7 @@ public class Loader {
 		unbindVAO();
 		float radius = getDistFarVertToCenter(positions);
 		BoundingSphere sphere = new BoundingSphere(positions);
-		BoundingBox box = new BoundingBox(positions);
+		BoundingBox box = new BoundingBox(positions, this);
 		return new RawModel(vaoID, positions.length/dimensions, sphere, box);
 		
 	}

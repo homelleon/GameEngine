@@ -41,6 +41,7 @@ public class MasterRenderer {
 	private NormalMappingRenderer normalMapRenderer;
 	private SkyboxRenderer skyboxRenderer;
 	private VoxelRenderer voxelRenderer;
+	private BoundingRenderer boundingRenderer;
 	private ShadowMapMasterRenderer shadowMapRenderer;
 	private Texture environmentMap;
 	private Frustum frustum = new Frustum();
@@ -63,6 +64,7 @@ public class MasterRenderer {
 		this.skyboxRenderer = new SkyboxRenderer(loader, projectionMatrix);
 		this.normalMapRenderer = new NormalMappingRenderer(projectionMatrix);
 		this.voxelRenderer = new VoxelRenderer(loader, projectionMatrix);
+		this.boundingRenderer = new BoundingRenderer(projectionMatrix);
 		this.shadowMapRenderer = new ShadowMapMasterRenderer(camera);
 		int size = 2;
 		this.chunker = new ChunkManager(size, new Vector3f(0,0,0));
@@ -189,7 +191,9 @@ public class MasterRenderer {
 		prepare();	
 		checkWiredFrameOn(entitiyWiredFrame);
 		entityRenderer.render(entities, clipPlane, lights, camera, shadowMapRenderer.getToShadowMapSpaceMatrix(), environmentMap);
+		boundingRenderer.render(entities, camera);
 		normalMapRenderer.render(normalMapEntities, clipPlane, lights, camera, shadowMapRenderer.getToShadowMapSpaceMatrix());
+		boundingRenderer.render(normalMapEntities, camera);
 		checkWiredFrameOff(entitiyWiredFrame);
 		
 		checkWiredFrameOn(terrainWiredFrame);
