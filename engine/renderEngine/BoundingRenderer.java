@@ -4,11 +4,14 @@ import java.util.List;
 import java.util.Map;
 
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL20;
+import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Matrix4f;
 
 import boundings.BoundingShader;
 import cameras.Camera;
 import entities.Entity;
+import models.RawModel;
 import models.TexturedModel;
 import toolbox.Maths;
 
@@ -34,6 +37,14 @@ public class BoundingRenderer {
 			}
 		}
 		shader.stop();
+	}
+	
+	public void prepareModel(TexturedModel model) {
+		RawModel rawModel = model.getRawModel();
+		GL30.glBindVertexArray(rawModel.getVaoID());
+		GL20.glEnableVertexAttribArray(0);
+		GL20.glEnableVertexAttribArray(1);
+		GL20.glEnableVertexAttribArray(2);
 	}
 	
 	public void prepareInstance(Entity entity) {
