@@ -53,6 +53,7 @@ public class EntityShader extends ShaderProgram {
 	private int location_specularMap; //карта бликов
 	private int location_usesSpecularMap; //использовать карту бликов
 	private int location_modelTexture; //текстура модели
+	private int location_isChosen; //Выбранный объект
 		
 	public EntityShader() {
 		super(VERTEX_FILE, FRAGMENT_FILE);
@@ -105,6 +106,7 @@ public class EntityShader extends ShaderProgram {
 		location_usesSpecularMap = super.getUniformLocation("usesSpecularMap");
 		location_modelTexture = super.getUniformLocation("modelTexture");
 		location_enviroMap = super.getUniformLocation("enviroMap");
+		location_isChosen = super.getUniformLocation("isChosen");
 		
 		location_lightCount = super.getUniformLocation("lightCount");
 		location_lightPosition = new int[ES.MAX_LIGHTS];
@@ -126,6 +128,10 @@ public class EntityShader extends ShaderProgram {
 		super.loadFloat(location_shadowMapSize, size);
 		super.loadFloat(location_shadowTransitionDistance, transitionDistance);
 		super.loadInt(location_shadowPCFCount, pcfCount);
+	}
+	
+	public void loadManipulateVariables(boolean isChosen) {
+		super.loadBoolean(location_isChosen, isChosen);
 	}
 	
 	public void loadClipPlane(Vector4f plane) {

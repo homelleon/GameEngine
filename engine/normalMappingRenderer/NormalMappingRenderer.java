@@ -93,6 +93,7 @@ public class NormalMappingRenderer {
 				entity.getRotY(), entity.getRotZ(), entity.getScale());
 		shader.loadTransformationMatrix(transformationMatrix);
 		shader.loadOffset(entity.getTextureXOffset(), entity.getTextureYOffset());
+		shader.loadManipulationVariables(entity.getIsChosen());
 	}
 
 	private void prepare(Vector4f clipPlane, Collection<Light> lights, Camera camera) {

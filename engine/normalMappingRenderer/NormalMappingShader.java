@@ -41,6 +41,7 @@ public class NormalMappingShader extends ShaderProgram{
 	private int location_shadowPCFCount;
 	private int location_specularMap;
 	private int location_usesSpecularMap;
+	private int location_isChosen;
 
 	public NormalMappingShader() {
 		super(VERTEX_FILE, FRAGMENT_FILE);
@@ -78,6 +79,7 @@ public class NormalMappingShader extends ShaderProgram{
 		location_shadowPCFCount = super.getUniformLocation("shadowPCFCount");
 		location_specularMap = super.getUniformLocation("specularMap");
 		location_usesSpecularMap = super.getUniformLocation("usesSpecularMap");	
+		location_isChosen = super.getUniformLocation("isChosen");
 		
 		location_lightCount = super.getUniformLocation("lightCount");
 		location_lightPositionEyeSpace = new int[ES.MAX_LIGHTS];
@@ -114,6 +116,10 @@ public class NormalMappingShader extends ShaderProgram{
 		super.loadInt(location_specularMap, 1);
 		super.loadInt(location_normalMap, 2);
 		super.loadInt(location_shadowMap, 5);
+	}
+	
+	protected void loadManipulationVariables(boolean isChosen) {
+		super.loadBoolean(location_isChosen, isChosen);
 	}
 	
 	protected void loadClipPlane(Vector4f plane) {

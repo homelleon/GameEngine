@@ -25,6 +25,8 @@ import org.lwjgl.util.vector.Vector3f;
 import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
 
+import boundings.BoundingBox;
+import boundings.BoundingSphere;
 import de.matthiasmann.twl.utils.PNGDecoder;
 import de.matthiasmann.twl.utils.PNGDecoder.Format;
 import models.RawModel;
@@ -58,7 +60,9 @@ public class Loader {
 		storeDataInAttributeList(2, 3, normals);
 		unbindVAO();
 		float radius = getDistFarVertToCenter(positions);
-		return new RawModel(vaoID, indices.length, radius);
+		BoundingSphere sphere = new BoundingSphere(positions);
+		BoundingBox box = new BoundingBox(positions);
+		return new RawModel(vaoID, indices.length, sphere, box);
 		
 	}
 	
@@ -90,7 +94,9 @@ public class Loader {
 		storeDataInAttributeList(3, 3, tangents);
 		unbindVAO();
 		float radius = getDistFarVertToCenter(positions);
-		return new RawModel(vaoID,indices.length, radius);
+		BoundingSphere sphere = new BoundingSphere(positions);
+		BoundingBox box = new BoundingBox(positions);
+		return new RawModel(vaoID,indices.length, sphere, box);
 		
 	}
 		
@@ -119,7 +125,9 @@ public class Loader {
 		this.storeDataInAttributeList(0,dimensions,positions);
 		unbindVAO();
 		float radius = getDistFarVertToCenter(positions);
-		return new RawModel(vaoID, positions.length/dimensions, radius);
+		BoundingSphere sphere = new BoundingSphere(positions);
+		BoundingBox box = new BoundingBox(positions);
+		return new RawModel(vaoID, positions.length/dimensions, sphere, box);
 		
 	}
 	

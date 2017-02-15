@@ -143,6 +143,7 @@ public class EntityRenderer {
 				entity.getRotX(), entity.getRotY(), entity.getRotZ(), entity.getScale());
 		shader.loadTranformationMatrix(transformationMatrix);
 		shader.loadOffset(entity.getTextureXOffset(), entity.getTextureYOffset());
+		shader.loadManipulateVariables(entity.getIsChosen());
 	}
 	
 	public Texture getEnvironmentMap() {

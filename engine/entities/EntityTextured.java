@@ -2,6 +2,8 @@ package entities;
 
 import org.lwjgl.util.vector.Vector3f;
 
+import boundings.BoundingBox;
+import boundings.BoundingSphere;
 import models.TexturedModel;
 import scene.ES;
 
@@ -28,7 +30,7 @@ public class EntityTextured implements Entity {
 	public EntityTextured(String name, TexturedModel model, Vector3f position, float rotX, float rotY, float rotZ, float scale) {
 		this.name = name;
 		this.model = model;
-		this.radius = model.getRawModel().getRadius() * scale;
+		this.radius = model.getRawModel().getBSphere().getRadius() * scale;
 		this.position = position;
 		this.rotX = rotX;
 		this.rotY = rotY;
@@ -39,7 +41,7 @@ public class EntityTextured implements Entity {
 	public EntityTextured(String name, int typeID, TexturedModel model, Vector3f position, float rotX, float rotY, float rotZ, float scale) {
 		this.name = name;
 		this.model = model;
-		this.radius = model.getRawModel().getRadius() * scale;
+		this.radius = model.getRawModel().getBSphere().getRadius() * scale;
 		this.typeID = typeID;
 		this.position = position;
 		this.rotX = rotX;
@@ -52,7 +54,7 @@ public class EntityTextured implements Entity {
 		this.name = name;
 		this.textureIndex = textureIndex;
 		this.model = model;
-		this.radius = model.getRawModel().getRadius() * scale;
+		this.radius = model.getRawModel().getBSphere().getRadius() * scale;
 		this.position = position;
 		this.rotX = rotX;
 		this.rotY = rotY;
@@ -165,6 +167,5 @@ public class EntityTextured implements Entity {
 	public float getSphereRadius() {
 		return this.radius;
 	}
-
 
 }

@@ -30,6 +30,7 @@ uniform float fogDensity;
 const float gradient = 2.0;
 
 
+
 void main(void) {
 	
 	vec4 worldPosition = transformationMatrix * vec4(position,1.0);
@@ -66,5 +67,6 @@ void main(void) {
 	//distance = distance - (shadowDistance - shadowTransitionDistance);
     distance = distance / shadowTransitionDistance;
     shadowCoords.w = clamp(1.0 - distance, 0.0, 1.0);
+    
 	
 }

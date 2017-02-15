@@ -71,16 +71,6 @@ public class ControlsInGame implements Controls {
 			scene.getEntities().getPointed().forEach(i -> i.increaseRotation(0, -1, 0));
 		}
 		
-		/* move in ray direction */
-		if(isMousePointed) {
-			for(Entity entity : scene.getEntities().getPointed()) {
-				System.out.println(entity.getName());
-				int power = 4;
-				Vector3f rayDirection = scene.getPicker().getCurrentRay();
-				entity.increasePosition(power * rayDirection.x,
-						power * rayDirection.y, power * rayDirection.z);
-			}		
-		}
 	}
 	
 

@@ -1,23 +1,31 @@
 package models;
 
+import boundings.BoundingBox;
+import boundings.BoundingSphere;
+
 public class RawModel {
 	
 	private int vaoID;
 	private int vertexCount;
-	private float radius;
+	private BoundingSphere sphere;
+	private BoundingBox box;
 	private String name;
 	
-	public RawModel(String name, int vaoID, int vertexCount, float radius) {
+	public RawModel(String name, int vaoID, int vertexCount, 
+			BoundingSphere sphere, BoundingBox box) {
 		this.vaoID = vaoID;
 		this.vertexCount = vertexCount;
-		this.radius = radius;
+		this.sphere = sphere;
+		this.box = box;
 		this.name = name;
 	}
 	
-	public RawModel(int vaoID, int vertexCount, float radius) {
+	public RawModel(int vaoID, int vertexCount, 
+			BoundingSphere sphere, BoundingBox box) {
 		this.vaoID = vaoID;
 		this.vertexCount = vertexCount;
-		this.radius = radius;
+		this.sphere = sphere;
+		this.box = box;
 		this.name = "NoName";
 	}
 
@@ -33,8 +41,12 @@ public class RawModel {
 		return this.vertexCount;
 	}
 	
-	public float getRadius() {
-		return this.radius;
+	public BoundingSphere getBSphere() {
+		return this.sphere;
+	}
+	
+	public BoundingBox getBBox() {
+		return this.box;
 	}
 
 }

@@ -107,6 +107,7 @@ public class ES {
 	
 	public final static String SHADER_PATH = SOURCE_PATH + "shaders/";
 	public final static String ENTITY_SHADER_PATH = SOURCE_PATH + "entities/";
+	public final static String BOUNDING_SHADER_PATH = SOURCE_PATH + "boundings/";
 	public final static String TERRAIN_SHADER_PATH = SOURCE_PATH + "terrains/";
 	public final static String VOXEL_SHADER_PATH = SOURCE_PATH + "voxels/";
 	public final static String GUI_SHADER_PATH = SOURCE_PATH + "guis/";
@@ -138,6 +139,12 @@ public class ES {
 	public final static int ENTITY_TYPE_SIMPLE = 0;
 	public final static int ENTITY_TYPE_NORMAL = 1;
 	public final static int ENTITY_TYPE_DETAIL = 2;
+	
+	/* bounding box type */
+	public final static int BOUNDING_BOX_MIN_MAX = 0;
+	public final static int BOUNDING_BOX_DIAM = 1;
+	public final static int BOUNDING_BOX_RADIUS = 2;
+
 
 	
 
