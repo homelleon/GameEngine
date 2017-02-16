@@ -36,7 +36,11 @@ public class EntityRenderer {
 		shader.stop();
 	}
 	
-	public void render(Map<TexturedModel, List<Entity>> entities, Vector4f clipPlane, Collection<Light> lights, Camera camera, Matrix4f toShadowMapSpace, Texture environmentMap) {
+	/** Rendering map of entities using entityShader and OpenGL 
+	 * per indicies rendering engine */	
+	public void render(Map<TexturedModel, List<Entity>> entities, 
+			Vector4f clipPlane, Collection<Light> lights, Camera camera, 
+			Matrix4f toShadowMapSpace, Texture environmentMap) {
 		this.environmentMap = environmentMap;
 		shader.start();
 		shader.loadClipPlane(clipPlane);
@@ -59,7 +63,10 @@ public class EntityRenderer {
 		shader.stop();
 	}
 	
-	public void renderLow(Map<TexturedModel, List<Entity>> entities, Collection<Light> lights, Camera camera) {
+	/** Rendering enities for low quality scene using more complex 
+	 * shader uniforms and OpenGL per indicies rendering engine */
+	public void renderLow(Map<TexturedModel, List<Entity>> entities, 
+			Collection<Light> lights, Camera camera) {
 		GL11.glClearColor(1, 1, 1, 1);
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 		shader.start();
@@ -86,6 +93,7 @@ public class EntityRenderer {
 		shader.cleanUp();
 	}
 	
+	/** prepare low quality TexturedModel for using in shader program */
 	private void prepareLowTexturedModel(TexturedModel model) {
 		RawModel rawModel = model.getRawModel();
 		GL30.glBindVertexArray(rawModel.getVaoID());
@@ -101,6 +109,7 @@ public class EntityRenderer {
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, model.getTexture().getID());
 	}
 	
+	/** prepare TexturedModel for using in shader program */
 	private void prepareTexturedModel(TexturedModel model) {
 		RawModel rawModel = model.getRawModel();
 		GL30.glBindVertexArray(rawModel.getVaoID());
