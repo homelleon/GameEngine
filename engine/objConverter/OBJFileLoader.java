@@ -35,11 +35,17 @@ public class OBJFileLoader {
                 line = reader.readLine();
                 if (line.startsWith("v ")) {
                     String[] currentLine = line.split(" ");
-                    Vector3f vertex = new Vector3f((float) Float.valueOf(currentLine[1]),
-                            (float) Float.valueOf(currentLine[2]),
-                            (float) Float.valueOf(currentLine[3]));
-                    Vertex newVertex = new Vertex(vertices.size(), vertex);
-                    vertices.add(newVertex);
+                    	try {
+	                    Vector3f vertex = new Vector3f((float) Float.valueOf(currentLine[1]),
+	                            (float) Float.valueOf(currentLine[2]),
+	                            (float) Float.valueOf(currentLine[3]));   
+	                    Vertex newVertex = new Vertex(vertices.size(), vertex);
+	                    vertices.add(newVertex);
+                    	} catch (NumberFormatException e) {      
+                    		System.err.println(e);
+                      		System.out.println(currentLine[1]);
+                    	}
+                    
  
                 } else if (line.startsWith("vt ")) {
                     String[] currentLine = line.split(" ");

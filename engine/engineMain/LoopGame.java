@@ -33,7 +33,7 @@ import maps.MapsTXTLoader;
 import models.TexturedModel;
 import particles.ParticlesManager;
 import renderEngine.Loader;
-import renderEngine.MasterRenderer;
+import renderEngine.MasterRendererSimple;
 import renderEngine.SceneRenderer;
 import scene.ES;
 import scene.Scene;
@@ -51,7 +51,7 @@ public class LoopGame implements Loop {
 	private static final String SETTINGS_NAME = "settings";
 		
 	private Loader loader;
-	private MasterRenderer renderer;
+	private MasterRendererSimple renderer;
     private SceneRenderer sceneRenderer;
 
     private String cameraName;

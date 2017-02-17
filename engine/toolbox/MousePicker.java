@@ -12,7 +12,7 @@ import org.lwjgl.util.vector.Vector4f;
 
 import cameras.Camera;
 import entities.Entity;
-import renderEngine.MasterRenderer;
+import renderEngine.MasterRendererSimple;
 import scene.ES;
 import scene.Scene;
 

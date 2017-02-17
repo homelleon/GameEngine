@@ -15,14 +15,14 @@ import cameras.Camera;
 import cameras.CameraCubeMap;
 import entities.Entity;
 import models.TexturedModel;
-import renderEngine.MasterRenderer;
+import renderEngine.MasterRendererSimple;
 import scene.Scene;
 
 public class EnvironmentMapRenderer {
 	
 	Map<TexturedModel, List<Entity>> entities = new HashMap<TexturedModel, List<Entity>>();
 
-	public void render(Scene scene, MasterRenderer renderer, Entity shinyEntity) {
+	public void render(Scene scene, MasterRendererSimple renderer, Entity shinyEntity) {
 		Camera cubeCamera = new CameraCubeMap(shinyEntity.getPosition());
 		int fbo = GL30.glGenFramebuffers();
 		GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, fbo);

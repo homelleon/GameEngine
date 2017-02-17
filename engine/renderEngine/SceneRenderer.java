@@ -29,7 +29,7 @@ import water.WaterShader;
 
 public class SceneRenderer {
 
-	private MasterRenderer masterRenderer;
+	private MasterRendererSimple masterRenderer;
 	private WaterRenderer waterRenderer;
 	private EnvironmentMapRenderer enviroRenderer;
 	private GuiRenderer guiRenderer;
@@ -46,7 +46,7 @@ public class SceneRenderer {
 
 	public void init(Scene scene, Loader loader) {
 		this.scene = scene;
-		this.masterRenderer = new MasterRenderer(loader, scene.getCamera());
+		this.masterRenderer = new MasterRendererSimple(loader, scene.getCamera());
 		this.enviroRenderer = new EnvironmentMapRenderer();
 		this.guiRenderer = new GuiRenderer(loader);
 		ParticleMaster.init(loader, masterRenderer.getProjectionMatrix());
