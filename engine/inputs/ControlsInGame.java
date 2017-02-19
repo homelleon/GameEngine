@@ -1,26 +1,34 @@
 package inputs;
 
 import org.lwjgl.input.Keyboard;
-import org.lwjgl.util.vector.Vector3f;
 
 import entities.Entity;
+import renderEngine.MasterRenderer;
+import renderEngine.MasterRendererSimple;
+import renderEngine.SceneRenderer;
 import scene.ES;
 import scene.Scene;
 
 public class ControlsInGame implements Controls {
 	
 	private final int ECHO = 3;	
-	private MouseGame mouse;
-	
-	
+	private MouseGame mouse;	
 
 	public ControlsInGame() {
 		this.mouse = new MouseGame(ECHO);
 	}
 
 	@Override
-	public void update(Scene scene) {		
+	public void update(Scene scene, SceneRenderer renderer) {		
 		pointedEntitiesControls(scene);
+		sceneControls(renderer);
+	}
+	
+	private void sceneControls(SceneRenderer renderer) {
+		if(Keyboard.isKeyDown(ES.KEY_DEBUG_BOUNDING_BOX)) {
+			MasterRendererSimple masterRenderer = renderer.getMasterRenderer();
+			masterRenderer.switchBoundingBoxes(!masterRenderer.getShowBoundingBox());
+		}
 	}
 	
 	private void pointedEntitiesControls(Scene scene) {

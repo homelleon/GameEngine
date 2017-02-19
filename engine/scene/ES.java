@@ -67,6 +67,9 @@ public class ES {
 	public static final int KEY_EDITOR_ACCELERATE = Keyboard.KEY_LSHIFT;
 	public static final int KEY_EDITOR_CENTER_VIEW = Keyboard.KEY_HOME;
 	
+	/* debug control */
+	public static final int KEY_DEBUG_BOUNDING_BOX = Keyboard.KEY_B;
+	
 	/* simulation settings */
 	public static final float GRAVITY = -50;
 	public static final float TIME_LENGTH = 1;

@@ -30,7 +30,7 @@ public class BoundingRenderer {
 		shader.stop();		
 	}
 	
-	public void render(Map<TexturedModel, List<Entity>> entities, Camera camera) {		
+	public void render(Map<TexturedModel, List<Entity>> entities, Map<TexturedModel, List<Entity>> normalEntities, Camera camera) {		
 		checkWiredFrameOn(boundingWiredFrame);
 		shader.start();
 		shader.loadViewMatrix(camera);
@@ -38,6 +38,16 @@ public class BoundingRenderer {
 			RawModel bModel = model.getRawModel().getBBox().getModel();
 			prepareModel(bModel);
 			for(Entity entity : entities.get(model)) {
+				prepareInstance(entity);
+				GL11.glDrawElements(GL11.GL_TRIANGLES, model.getRawModel().getBBox().getModel().getVertexCount(), 
+						GL11.GL_UNSIGNED_INT, 0);
+			}
+			unbindModel();
+		}
+		for(TexturedModel model : normalEntities.keySet()) {
+			RawModel bModel = model.getRawModel().getBBox().getModel();
+			prepareModel(bModel);
+			for(Entity entity : normalEntities.get(model)) {
 				prepareInstance(entity);
 				GL11.glDrawElements(GL11.GL_TRIANGLES, model.getRawModel().getBBox().getModel().getVertexCount(), 
 						GL11.GL_UNSIGNED_INT, 0);

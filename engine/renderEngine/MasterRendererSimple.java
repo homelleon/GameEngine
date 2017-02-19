@@ -15,7 +15,6 @@ import org.lwjgl.util.vector.Vector4f;
 
 import cameras.Camera;
 import entities.Entity;
-import entities.EntityManagerStructured;
 import entities.Light;
 import models.TexturedModel;
 import normalMappingRenderer.NormalMappingRenderer;
@@ -48,6 +47,7 @@ public class MasterRendererSimple {
 	
 	private boolean terrainWiredFrame = false;
 	private boolean entitiyWiredFrame = false;
+	private boolean showBoundingBox = false;
 	
 	
 	private Map<TexturedModel, List<Entity>> entities = new HashMap<TexturedModel, List<Entity>>();
@@ -191,9 +191,10 @@ public class MasterRendererSimple {
 		prepare();	
 		checkWiredFrameOn(entitiyWiredFrame);
 		entityRenderer.render(entities, clipPlane, lights, camera, shadowMapRenderer.getToShadowMapSpaceMatrix(), environmentMap);
-		boundingRenderer.render(entities, camera);
+		if(showBoundingBox) {
+			boundingRenderer.render(entities, normalMapEntities, camera);	
+		}
 		normalMapRenderer.render(normalMapEntities, clipPlane, lights, camera, shadowMapRenderer.getToShadowMapSpaceMatrix());
-		boundingRenderer.render(normalMapEntities, camera);
 		checkWiredFrameOff(entitiyWiredFrame);
 		
 		checkWiredFrameOn(terrainWiredFrame);
@@ -296,15 +297,21 @@ public class MasterRendererSimple {
 		return this.entityRenderer;
 	}
 	
+	public void switchBoundingBoxes(boolean value) {
+		this.showBoundingBox = value;
+	}
+	
+	public boolean getShowBoundingBox() {
+		return this.showBoundingBox;
+	}
+	
 	public Frustum getFrustum() {
 		return this.frustum;
 	}
 	
 	public void setEntityWiredFrame(boolean entitiyWiredFrame) {
 		this.entitiyWiredFrame = entitiyWiredFrame;
-	}
-	
-	
+	}	
 
 	public void setTerrainWiredFrame(boolean terrainWiredFrame) {
 		this.terrainWiredFrame = terrainWiredFrame;

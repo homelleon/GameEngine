@@ -150,14 +150,14 @@ public class SceneRenderer {
 	}
 
 	private void move() {
-		controls.update(scene);
+		controls.update(scene, this);
 		scene.getCamera().move();
 		scene.getPlayer().move(scene.getTerrains().values());
 		scene.getAudioMaster().setListenerData(scene.getCamera().getPosition());
 	}
-
-	public EntityRenderer getEntityRenderer() {
-		return masterRenderer.getEntityRenderer();
+	
+	public MasterRendererSimple getMasterRenderer() {
+		return this.masterRenderer;
 	}
 
 	public void cleanUp() {
