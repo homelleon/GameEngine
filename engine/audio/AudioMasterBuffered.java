@@ -11,11 +11,13 @@ import org.lwjgl.util.vector.Vector3f;
 
 import scene.ES;
 
-/*
- *  AduioMasterBuffered - мастер адиофайлов.
- *  01.02.17
- * ------------------------------
-*/
+/**
+ * Class of 3 dimentional sound engine storeing audio buffers in map.
+ * 
+ * @author homelleon 
+ * @version 1.0
+ *
+ */
 
 public class AudioMasterBuffered implements AudioMaster { 
 	
@@ -28,7 +30,7 @@ public class AudioMasterBuffered implements AudioMaster {
 			e.printStackTrace();
 		}
 	}		
-
+	
 	public Map<String, Integer> getBuffers() {
 		return buffers;
 	}

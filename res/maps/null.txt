@@ -1,0 +1,2 @@
+#This map is createrd by MapFileWriter
+<end>

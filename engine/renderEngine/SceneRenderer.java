@@ -14,6 +14,7 @@ import fontRendering.TextMaster;
 import guis.GuiRenderer;
 import inputs.Controls;
 import inputs.ControlsInGame;
+import inputs.KeyboardGame;
 import maps.GameMap;
 import maps.MapsTXTWriter;
 import maps.MapsWriter;
@@ -68,15 +69,8 @@ public class SceneRenderer {
 	}
 
 	public void render(FontType font, Loader loader) {
-		if (Keyboard.isKeyDown(Keyboard.KEY_T)) {
-			MapsWriter mapWriter = new MapsTXTWriter();
-			GameMap map = new GameMap("newMap", loader);
-			map.setEntities(map.getEntities().values());
-			map.setTerrains(map.getTerrains().values());
-			mapWriter.write(map);
-			System.out.println("save");
-		}
-		
+		saveMap(loader);
+		checkInputs();
 		move();
 		scene.getEntities().updateWithFrustum(scene.getFrustum());
 		//enviroRenderer.render(scene, masterRenderer, scene.getEntities().get("Cuby4"));
@@ -84,6 +78,26 @@ public class SceneRenderer {
 		renderParticles();
 		renderWaterSurface();
 		renderToScreen(font);
+	}
+	
+	private void saveMap(Loader loader) {
+		if (KeyboardGame.isKeyPressed(Keyboard.KEY_T)) {
+			MapsWriter mapWriter = new MapsTXTWriter();
+			GameMap map = new GameMap("newMap", loader);
+			map.setEntities(map.getEntities().values());
+			map.setTerrains(map.getTerrains().values());
+			mapWriter.write(map);
+			System.out.println("save");
+		}
+	}
+	
+	private void checkInputs() {
+		if (KeyboardGame.isKeyPressed(Keyboard.KEY_H)) {
+			System.out.println("Key H pressed");
+		}
+		if (KeyboardGame.isKeyReleased(Keyboard.KEY_H)) {
+			System.out.println("Key H released");
+		}
 	}
 
 	private void renderToScreen(FontType font) {
