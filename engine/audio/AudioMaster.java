@@ -20,7 +20,7 @@ public interface AudioMaster {
 	  * Returns map of all buffers in Audio Master.
 	  * 
 	  * @return Map<String, Integer> 
-  * 								audio buffers 
+   									audio buffers 
 	  */
 	 public Map<String, Integer> getBuffers();
 	 
