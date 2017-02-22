@@ -108,8 +108,35 @@ public interface AudioSource {
 		 */
 		public boolean isPlaying(); //вернуть, если проигрывается
 		
+		/**
+		 * Change volume of the audio source.
+		 * 
+		 * @param volume float value represents loudness of sound
+		 * @see #setPitch(float)
+		 */
 		public void setVolume(float volume); 		//установить громкость
+		
+		/**
+		 * Change pitch of audio source.
+		 * 
+		 * @param pitch float value represents height of sound
+		 * @see #setVolume(float) 
+		 */
 		public void setPitch(float pitch); 	//установить высоту звука
+		
+		/**
+		 * Change position of audio source in 3 dimentional space.
+		 * 
+		 * @param position Vector3f representation of value to set
+		 * @see #setVelocity(Vector3f)
+		 */
 		public void setPosition(Vector3f position); //установить позицию звука
+		
+		/**
+		 * Returns position of sound source in 3 dimentional space.
+		 * 
+		 * @return 3 dimentional value of sound source position
+		 */
+		public Vector3f getPosition();
 
 }

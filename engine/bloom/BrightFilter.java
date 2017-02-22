@@ -5,12 +5,12 @@ import org.lwjgl.opengl.GL13;
 
 import postProcessing.ImageRenderer;
 
-/*
- *  BrightFilter - фильтр €ркости (постобработка).
- *  03.02.17
- * ------------------------------
-*/
-
+/**
+ * Postprocessing filter that change brightness of the scene. 
+ * 
+ * @author homelleon
+ * @version 1.0
+ */
 public class BrightFilter { 
 
 	private ImageRenderer renderer;

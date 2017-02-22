@@ -5,18 +5,26 @@ import org.lwjgl.opengl.GL13;
 
 import postProcessing.ImageRenderer;
 
+/**
+ * Post processing filter that make glow effect using Combine shader, Image 
+ * Renderer and entering textures.
+ * 
+ *  @author homelleon
+ *  @version 1.0
+ */
+
 public class CombineFilter {
-	
-	/*
-	 *  CombineFilter - фильтр для объединения других фильтров постобработки
-	 *  03.02.17
-	 * ------------------------------
-	*/
 	
 	private ImageRenderer renderer;  
 	private CombineShader shader; 	  
 	
-	//конструктор
+	/**
+	 * Simple constructor that initializes {@link CombineShader}, connects
+	 * texture untis in it and also initialize {@link ImageRenderer}. 
+	 * 
+	 * @see CombineShader
+	 * @see ImageRenderer
+	 */
 	public CombineFilter() {
 		shader = new CombineShader();
 		shader.start();
@@ -26,15 +34,17 @@ public class CombineFilter {
 	}
 	
 	/**
+	 * Method that renders texture buffer on the screan combining entering 
+	 * texture with highlight textures to make glow effect.  
 	 * 
 	 * @param colourTexture       
-	 * 						- входная текстура
+	 * 								int value of entering texture
 	 * @param highlightTexture2
-	 * 							- текстура для 1-го применения 2х постобработки
+	 * 								int value of highlight texture to process
 	 * @param highlightTexture4
-	 * 							- текстура для 2-го применения 2х постобработки
+	 * 							 	int value of highlight texture to process
 	 * @param highlightTexture8
-	 * 							- текстура для 3-го применения 2х постобработки
+	 * 								int value of highlight texture to process
 	 */
 	public void render(int colourTexture, int highlightTexture2, int highlightTexture4, int highlightTexture8) {
 		shader.start();
@@ -50,7 +60,9 @@ public class CombineFilter {
 		shader.stop();
 	}
 	
-	//очистка фильтра
+	/**
+	 * Method that clean CombineShader and ImageRenderer objects.
+	 */
 	public void cleanUp() {
 		renderer.cleanUp();
 		shader.cleanUp();

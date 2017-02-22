@@ -5,11 +5,12 @@ import java.util.Map;
 import org.lwjgl.util.vector.Vector3f;
 
 /**
- * Manages the audio used in OpenAL library that represent 3 dimentional
- * sound engine.
+ * Interface that describe tools to manage the audio used in OpenAL library
+ * representing 3 dimentional sound engine.
  * 
  * @author homelleon
  * @version 1.0 
+ * @see AudioMasterBuffered
  */
 public interface AudioMaster {
 	
@@ -25,12 +26,13 @@ public interface AudioMaster {
 	 public Map<String, Integer> getBuffers();
 	 
 	 /** 
-	  * Returns auido buffer by path of audio
+	  * Returns a single auido buffer finding by path of audio file.
 	  *  
 	  * @param path 
-	  * 			position of audio file
-	  * @return int 
-	  * 			buffer ID
+	  * 			position of audio file in file system starting in Audio
+	  * 			folder
+	  * 
+	  * @return 	int buffer ID
 	  */
 	 int getBuffer(String path); 
 	 
@@ -38,7 +40,7 @@ public interface AudioMaster {
 	  * Setting position of user in 3 dimentional space.
 	  * 
 	  * @param position
-	  * 				Vector3f
+	  * 				Vector3f value of position in 3 dimentional space
 	  */
 	 void setListenerData(Vector3f position);
 	 
@@ -46,10 +48,10 @@ public interface AudioMaster {
 	  * Loads sound file into audio buffer map and sets key with the name of 
 	  * the file.
 	  * 
-	  * @param file
+	  * @param file	
 	  * 			String name of file to load
-	  * @return int
-	  * 			buffer ID of loaded file
+	  * 
+	  * @return 	int buffer ID of loaded file
 	  */
 	 int loadSound(String file);
 	 

@@ -6,6 +6,15 @@ import org.lwjgl.openal.AL10;
 import org.lwjgl.openal.AL11;
 import org.lwjgl.util.vector.Vector3f;
 
+/**
+ * Runnable test class for Audio Engine.
+ * <p>Uses few sound files to create audio buffers and play it during small time.
+ * 
+ * @author homelleon
+ * 
+ * @version 1.0
+ *
+ */
 public class Test {
 
 	public static void main(String[] args) throws IOException, InterruptedException {
