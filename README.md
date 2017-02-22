@@ -17,5 +17,6 @@ graphics:
 - water reflection and refraction
 - frustum culling technic to increase graphic performance
 - ray casting technic to choose entities by selecting it with mouse coursor
+
 sound:
 - uses 3 dimentional audio buffer sound engine based on OpenAL library
