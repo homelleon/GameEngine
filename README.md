@@ -6,9 +6,11 @@ OutworldMind Engine
 This is a Game Engine for implementing game or graphic editor that is written in Java 8 language. 
 Uses LWJGL to control OpenGL and OpenAL libraries. 
 
-Implemented functions:
+Implemented functions.
+
 base:
 - map save/load functionality to use .txt file to load or save objects at scene.
+
 graphics:
 - all objects are stored in buffers
 - uses shader program　uniforms to change position and graphic technics
