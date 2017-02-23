@@ -7,6 +7,7 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.util.vector.Vector3f;
 
 import engineMain.DisplayManager;
+import inputs.KeyboardGame;
 import inputs.MouseGame;
 import models.TexturedModel;
 import scene.ES;
@@ -71,32 +72,32 @@ public class PlayerTextured extends EntityTextured implements Player {
 	
 	private void checkInputs() {
 		if (!isInAir) {
-			if((Keyboard.isKeyDown(ES.KEY_PLAYER_MOVE_FORWARD)) 
-					&& (Keyboard.isKeyDown(ES.KEY_PLAYER_ACCELERATE) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT))) {
+			if((KeyboardGame.isKeyDown(ES.KEY_PLAYER_MOVE_FORWARD)) 
+					&& (KeyboardGame.isKeyDown(ES.KEY_PLAYER_ACCELERATE) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT))) {
 				this.currentForwardSpeed = RUN_SPEED;
-			}else if(Keyboard.isKeyDown(ES.KEY_PLAYER_MOVE_FORWARD)) {
+			}else if(KeyboardGame.isKeyDown(ES.KEY_PLAYER_MOVE_FORWARD)) {
 				this.currentForwardSpeed = MOVE_SPEED;			
-			}else if(Keyboard.isKeyDown(ES.KEY_PLAYER_MOVE_BACKWARD)) {
+			}else if(KeyboardGame.isKeyDown(ES.KEY_PLAYER_MOVE_BACKWARD)) {
 				this.currentForwardSpeed = -MOVE_SPEED; 
 			}else{
 				this.currentForwardSpeed = 0;	
 			}
 			
-			if((Keyboard.isKeyDown(ES.KEY_PLAYER_MOVE_LEFT)) 
-					&& (Keyboard.isKeyDown(ES.KEY_PLAYER_ACCELERATE) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT))) {
+			if((KeyboardGame.isKeyDown(ES.KEY_PLAYER_MOVE_LEFT)) 
+					&& (KeyboardGame.isKeyDown(ES.KEY_PLAYER_ACCELERATE) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT))) {
 				this.currentStrafeSpeed = RUN_SPEED;
-			} else if ((Keyboard.isKeyDown(ES.KEY_PLAYER_MOVE_RIGHT)) 
-					&& (Keyboard.isKeyDown(ES.KEY_PLAYER_ACCELERATE) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT))) {
+			} else if ((KeyboardGame.isKeyDown(ES.KEY_PLAYER_MOVE_RIGHT)) 
+					&& (KeyboardGame.isKeyDown(ES.KEY_PLAYER_ACCELERATE) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT))) {
 				this.currentStrafeSpeed = -RUN_SPEED;
-			} else if(Keyboard.isKeyDown(ES.KEY_PLAYER_MOVE_LEFT)) {
+			} else if(KeyboardGame.isKeyDown(ES.KEY_PLAYER_MOVE_LEFT)) {
 				this.currentStrafeSpeed = MOVE_SPEED;
-			}else if(Keyboard.isKeyDown(ES.KEY_PLAYER_MOVE_RIGHT)) {
+			}else if(KeyboardGame.isKeyDown(ES.KEY_PLAYER_MOVE_RIGHT)) {
 				this.currentStrafeSpeed = -MOVE_SPEED;
 			}else{
 				this.currentStrafeSpeed = 0;
 			}
 		
-			if(Keyboard.isKeyDown(ES.KEY_PLAYER_JUMP)) { 
+			if(KeyboardGame.isKeyDown(ES.KEY_PLAYER_JUMP)) { 
 				jump();
 			}
 		}

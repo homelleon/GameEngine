@@ -16,6 +16,7 @@ import org.lwjgl.opengl.PixelFormat;
 
 import frames.Frame;
 import frames.FrameEditor;
+import inputs.KeyboardGame;
 import scene.ES;
 
 /*
@@ -92,6 +93,7 @@ public class DisplayManager {
 	
 	public static void updateDisplay() {
 		Display.sync(ES.FPS_CAP);
+		KeyboardGame.update();
 		Display.update();
 		long currentFrameTime = getCurrentTime();
 		delta = (currentFrameTime - lastFrameTime) / 1000f;

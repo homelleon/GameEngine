@@ -304,8 +304,8 @@ public class SceneGame implements Scene {
 	
 	@Override
 	public void spreadEntitiesOnHeights() {
-		if (!entities.isEmpty()) {
-			for(Entity entity : this.entities.values()) {
+		if (!entityManager.getAll().isEmpty()) {
+			for(Entity entity : this.entityManager.getAll()) {
 				float terrainHeight = 0;
 				
 				for(Terrain terrain : this.terrains.values()) {

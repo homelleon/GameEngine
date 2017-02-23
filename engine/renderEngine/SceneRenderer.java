@@ -28,6 +28,14 @@ import water.WaterFrameBuffers;
 import water.WaterRenderer;
 import water.WaterShader;
 
+/**
+ * Class that render scene objects and check controls. 
+ * TODO: need to refactor
+ * 
+ * @author homelleon
+ * @version 1.0
+ *
+ */
 public class SceneRenderer {
 
 	private MasterRendererSimple masterRenderer;
@@ -41,9 +49,6 @@ public class SceneRenderer {
 	private MousePicker picker;
 	private Scene scene;
 	private Controls controls;
-
-	private int mouseTimer = 0;
-	private boolean isMouseClicked = false;
 
 	public void init(Scene scene, Loader loader) {
 		this.scene = scene;
@@ -69,11 +74,11 @@ public class SceneRenderer {
 	}
 
 	public void render(FontType font, Loader loader) {
-		saveMap(loader);
 		checkInputs();
+		saveMap(loader);
 		move();
 		scene.getEntities().updateWithFrustum(scene.getFrustum());
-		//enviroRenderer.render(scene, masterRenderer, scene.getEntities().get("Cuby4"));
+		enviroRenderer.render(scene, masterRenderer, scene.getEntities().getByName("Cuby4"));
 		masterRenderer.renderShadowMap(scene);
 		renderParticles();
 		renderWaterSurface();
@@ -92,12 +97,18 @@ public class SceneRenderer {
 	}
 	
 	private void checkInputs() {
-		if (KeyboardGame.isKeyPressed(Keyboard.KEY_H)) {
-			System.out.println("Key H pressed");
-		}
 		if (KeyboardGame.isKeyReleased(Keyboard.KEY_H)) {
+
 			System.out.println("Key H released");
 		}
+		if (KeyboardGame.isKeyPressed(Keyboard.KEY_H)) {
+			System.out.println("H");
+			System.out.println("Key H pressed");
+		} 
+		if(KeyboardGame.isKeyPressed(Keyboard.KEY_Y)) {
+			scene.spreadEntitiesOnHeights();
+		}		
+		
 	}
 
 	private void renderToScreen(FontType font) {

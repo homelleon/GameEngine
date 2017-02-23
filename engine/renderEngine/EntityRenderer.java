@@ -23,10 +23,33 @@ import textures.Texture;
 import toolbox.Maths;
 import toolbox.OGLUtils;
 
+/**
+ * Render engine for entities.
+ * <p>Uses map of entities and input variables to draw entities in the scene.
+ * <p>Also can draw low quality entities clipping heavy shader program 
+ * uniforms. 
+ * 
+ * @author homelleon
+ * @version 1.0
+ * 
+ * @see Entity
+ * @see MasterRenderer
+ */
 public class EntityRenderer {
 
 	private EntityShader shader;
 	private Texture environmentMap;
+	
+	/**
+	 * Entity render engine constructor.
+	 * <p>Initializes EntityShader and loads texture units and projection
+	 * matrix in it.   
+	 *  
+	 * @param projectionMatrix
+	 * 							- {@link Matrix4f} value to draw entities 
+	 * 							in the scene using its projection in the game
+	 * 							world space
+	 */
 	
 	public EntityRenderer(Matrix4f projectionMatrix) {
 		this.shader = new EntityShader();
@@ -36,8 +59,32 @@ public class EntityRenderer {
 		shader.stop();
 	}
 	
-	/** Rendering map of entities using entityShader and OpenGL 
-	 * per indicies rendering engine */	
+	/**
+	 * Rendering map of entities using entityShader and OpenGL 
+	 * per indicies rendering engine.
+	 * 
+	 * @param entities
+	 * 							- map of {@link Entity} list with {@link TexturedModel}
+	 * 							key that have to be rendered
+	 * @param clipPlane
+	 * 							- {@link Vector4f} plane that clipps scene
+	 * @param lights
+	 * 							- collection of {@link Light} that effects on 
+	 * 							scene
+	 * @param camera			
+	 * 							- {@link Camera} that represents point of view
+	 * @param toShadowMapSpace
+	 * 							- {@link Matrix4f} value of space where shadow map is 
+	 * 							rendered
+	 * @param environmentMap
+	 * 							- {@link Texture} value of reflection map to render
+	 * 							at reflecting objects
+	 * 
+	 * @see Entity
+	 * @see Light
+	 * @see Camera
+	 * @see Texture
+	 */
 	public void render(Map<TexturedModel, List<Entity>> entities, 
 			Vector4f clipPlane, Collection<Light> lights, Camera camera, 
 			Matrix4f toShadowMapSpace, Texture environmentMap) {
@@ -63,8 +110,24 @@ public class EntityRenderer {
 		shader.stop();
 	}
 	
-	/** Rendering enities for low quality scene using more complex 
-	 * shader uniforms and OpenGL per indicies rendering engine */
+
+	/**
+	 * Rendering enities for low quality scene using more complex 
+	 * shader uniforms and OpenGL per indicies rendering engine 
+	 * 	 
+	 * @param entities
+	 * 					- map of {@link Entity} list with {@link TexturedModel}
+	 * 					key that have to be rendered
+	 * @param lights	- collection of {@link Light} that effects on 
+	 * 					scene
+	 * 					
+	 * @param camera
+	 * 					- {@link Camera} that represents point of view
+	 * 
+	 * @see Entity
+	 * @see Light
+	 * @see Camera
+	 */
 	public void renderLow(Map<TexturedModel, List<Entity>> entities, 
 			Collection<Light> lights, Camera camera) {
 		GL11.glClearColor(1, 1, 1, 1);
@@ -93,7 +156,12 @@ public class EntityRenderer {
 		shader.cleanUp();
 	}
 	
-	/** prepare low quality TexturedModel for using in shader program */
+	/**
+	 * Prepare low quality TexturedModel for using in shader program 
+	 * 
+	 * @param model
+	 * 				- {@link TexturedModel} used to bind VBO attributes
+	 */
 	private void prepareLowTexturedModel(TexturedModel model) {
 		RawModel rawModel = model.getRawModel();
 		GL30.glBindVertexArray(rawModel.getVaoID());
@@ -109,7 +177,12 @@ public class EntityRenderer {
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, model.getTexture().getID());
 	}
 	
-	/** prepare TexturedModel for using in shader program */
+	/**
+	 * Prepare TexturedModel for using in shader program 
+	 * 
+	 * @param model
+	 * 				- {@link TexturedModel} used to bind VBO attributes
+	 */
 	private void prepareTexturedModel(TexturedModel model) {
 		RawModel rawModel = model.getRawModel();
 		GL30.glBindVertexArray(rawModel.getVaoID());
@@ -139,6 +212,9 @@ public class EntityRenderer {
 		}
 	}
 	
+	/**
+	 * Unbinds VBO for used model	
+	 */
 	private void unbindTexturedModel() {
 		OGLUtils.cullBackFaces(true);
 		GL20.glDisableVertexAttribArray(0);
@@ -146,6 +222,13 @@ public class EntityRenderer {
 		GL20.glDisableVertexAttribArray(2);
 		GL30.glBindVertexArray(0);
 	}
+	
+	/**
+	 * Prepare entity shader for each entity used as value.
+	 * 
+	 * @param entity
+	 * 					-{@link Entity} used to prepare entity shader
+	 */
 	
 	private void prepareInstance(Entity entity) {
 		Matrix4f transformationMatrix = Maths.createTransformationMatrix(entity.getPosition(),
@@ -155,6 +238,11 @@ public class EntityRenderer {
 		shader.loadManipulateVariables(entity.getIsChosen());
 	}
 	
+	/**
+	 * Returns environment map used to attach at reflecting surfaces.
+	 * 
+	 * @return Texture value of environment map
+	 */
 	public Texture getEnvironmentMap() {
 		return environmentMap;
 	}
