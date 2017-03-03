@@ -175,7 +175,7 @@ public class SceneRenderer {
 	}
 
 	private void move() {
-		controls.update(scene, this);
+		controls.update(scene);
 		scene.getCamera().move();
 		scene.getPlayer().move(scene.getTerrains().values());
 		scene.getAudioMaster().setListenerData(scene.getCamera().getPosition());

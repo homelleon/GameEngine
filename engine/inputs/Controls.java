@@ -5,6 +5,6 @@ import scene.Scene;
 
 public interface Controls {
 	
-	void update(Scene scene, SceneRenderer renderer);
+	void update(Scene scene);
 
 }

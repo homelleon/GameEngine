@@ -14,6 +14,7 @@ import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 
 import cameras.Camera;
+import debug.DebugUI;
 import entities.Entity;
 import entities.Light;
 import models.TexturedModel;
@@ -47,7 +48,6 @@ public class MasterRendererSimple {
 	
 	private boolean terrainWiredFrame = false;
 	private boolean entitiyWiredFrame = false;
-	private boolean showBoundingBox = false;
 	
 	
 	private Map<TexturedModel, List<Entity>> entities = new HashMap<TexturedModel, List<Entity>>();
@@ -191,7 +191,7 @@ public class MasterRendererSimple {
 		prepare();	
 		checkWiredFrameOn(entitiyWiredFrame);
 		entityRenderer.render(entities, clipPlane, lights, camera, shadowMapRenderer.getToShadowMapSpaceMatrix(), environmentMap);
-		if(showBoundingBox) {
+		if(DebugUI.boundingMode != DebugUI.BOUNDING_NONE) {
 			boundingRenderer.render(entities, normalMapEntities, camera);	
 		}
 		normalMapRenderer.render(normalMapEntities, clipPlane, lights, camera, shadowMapRenderer.getToShadowMapSpaceMatrix());
@@ -199,7 +199,7 @@ public class MasterRendererSimple {
 		
 		checkWiredFrameOn(terrainWiredFrame);
 		if(!isLowDistance) {
-			//voxelRenderer.render(chunker, clipPlane, lights, camera, shadowMapRenderer.getToShadowMapSpaceMatrix(), frustum);
+			voxelRenderer.render(chunker, clipPlane, lights, camera, shadowMapRenderer.getToShadowMapSpaceMatrix(), frustum);
 		}
 		terrainRenderer.render(terrains, clipPlane, lights, camera, shadowMapRenderer.getToShadowMapSpaceMatrix());
 		checkWiredFrameOff(terrainWiredFrame);
@@ -295,14 +295,6 @@ public class MasterRendererSimple {
 	
 	public EntityRenderer getEntityRenderer() {
 		return this.entityRenderer;
-	}
-	
-	public void switchBoundingBoxes(boolean value) {
-		this.showBoundingBox = value;
-	}
-	
-	public boolean getShowBoundingBox() {
-		return this.showBoundingBox;
 	}
 	
 	public Frustum getFrustum() {

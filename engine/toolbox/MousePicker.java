@@ -16,6 +16,12 @@ import renderEngine.MasterRendererSimple;
 import scene.ES;
 import scene.Scene;
 
+/**
+ * Ray casting from coursor.
+ * 
+ * @author homelleon
+ *
+ */
 public class MousePicker {
 	
 	private Vector3f currentRay;
@@ -24,21 +30,43 @@ public class MousePicker {
 	private Matrix4f viewMatrix;
 	private Camera camera;
 	
-	public MousePicker(Camera cam, Matrix4f projection) {
-		this.camera = cam;
-		this.projectionMatrix = projection;
+	/**
+	 * Mouse ray constructor.
+	 * 
+	 * @param camera			
+	 * 							{@link Camera} with current view position
+	 * @param projectionMatrix
+	 * 							{@link Matrix4f} value of object projection
+	 */
+	public MousePicker(Camera camera, Matrix4f projectionMatrix) {
+		this.camera = camera;
+		this.projectionMatrix = projectionMatrix;
 		this.viewMatrix = Maths.createViewMatrix(camera);
 	}
 	
+	/**
+	 * Returns current ray direction.
+	 * 
+	 * @return {@link Vector3f} value of current ray
+	 */
 	public Vector3f getCurrentRay() {
 		return currentRay;
 	}
 	
+	/**
+	 * Update viewMatrix and the current ray for MousePicker. 
+	 */
 	public void update() {
 		viewMatrix = Maths.createViewMatrix(camera);
 		currentRay = calculateMouseRay();
 	}
 	
+	/**
+	 * Method that calculate ray casting from the screen of the camera
+	 * transforming to the world space.
+	 *  
+	 * @return {@link Vector3f} value of a ray in a world space.
+	 */
 	private Vector3f calculateMouseRay() {
 		float mouseX = Mouse.getX();
 		float mouseY = Mouse.getY();	
@@ -49,6 +77,17 @@ public class MousePicker {
 		return worldRay;		
 	}
 	
+	/**
+	 * Calculate if the ray interects the sphere. 
+	 * <p>Uses to check if a bounding sphere was intersected by a ray.
+	 * 
+	 * @param position
+	 * 					Vector3f value of a current sphere center position
+	 * @param radius
+	 * 					float value of a sphere radius 
+	 * @return			true if the sphere was intersected</br>
+     * 					false if the sphere wasn't intersected
+	 */
 	/* intersection with sphere */
 	public boolean intersects(Vector3f position, float radius) {
 		boolean isIntersects = false;
@@ -67,8 +106,19 @@ public class MousePicker {
 		return isIntersects;
 	}
 	
+	/**
+	 * Calculate if the ray interects the box. 
+	 * <p>Uses to check if a bounding box was intersected by a ray.
+	 * 
+	 * @param min
+	 * 				Vector3f value of a minimum point of a box
+	 * @param max
+	 * 				Vector3f value of a maximum point of a box
+	 * @return		true if the box was intersected</br>
+	 * 				false if the box wasn't intersected
+	 */
 	/* intersection with box */
-	public boolean intersects(Vector3f min, Vector3f max) {
+	public boolean intersectsW(Vector3f min, Vector3f max) {
 		boolean isIntersects = false;
 		Vector3f invertRay = getCurrentRay();
 		invertRay = new Vector3f(1 / invertRay.x, 1 / invertRay.y, 1 / invertRay.z);
@@ -93,6 +143,65 @@ public class MousePicker {
 		return isIntersects;
 	}
 	
+	public boolean intersects(Vector3f min, Vector3f max) {
+		Vector3f dir = getCurrentRay();
+		Vector3f center = camera.getPosition();
+		
+		float tmin = (min.x - center.x) / dir.x;
+		float tmax = (max.x - center.x) / dir.x;
+		
+		if(tmin > tmax) {
+			Maths.swapFloat(tmin, tmax);
+		}
+		
+		float tymin = (min.y - center.y) / dir.y;
+		float tymax = (max.y - center.y) / dir.y;
+		
+		if(tymin > tymax) {
+			Maths.swapFloat(tymin, tymax);
+		}
+		
+		if((tmin > tymax) || (tymin > tmax)) {
+			return false;
+		}
+		
+		if(tymin > tmin) {
+			tmin = tymin;
+		}
+		
+		if(tymax < tmax) {
+			tmax = tymax;
+		}
+		
+		float tzmin = (min.z - center.z) / dir.z;
+		float tzmax = (max.z - center.z) / dir.z;
+		
+		if(tzmin > tzmax) {
+			Maths.swapFloat(tzmin, tzmax);
+		}
+		
+		if((tmin > tzmax) || (tzmin > tmax)) {
+			return false;
+		}
+		
+		if(tzmin > tmin) {
+			tmin = tzmin;
+		}
+		
+		if(tzmax < tmax) {
+			tmax = tzmax;
+		}
+		
+		return true;
+	}
+	
+	/**
+	 * Method that traslate coursor from eye space to the world space.
+	 * 
+	 * @param eyeCoords
+	 * 					Vector4f value of coordinates in eye space 
+	 * @return			Vector3f value of coordinates in world space
+	 */
 	private Vector3f toWorldCoords(Vector4f eyeCoords) {
 		Matrix4f invertedView = Matrix4f.invert(viewMatrix, null);
 		Vector4f rayWorld = Matrix4f.transform(invertedView, eyeCoords, null);
@@ -101,15 +210,30 @@ public class MousePicker {
 		return mouseRay;
 	}
 	
+	/**
+	 * Method that translate clipping plane coordinates to eye-space coordinates.
+	 * 
+	 * @param clipCoords
+	 * 					Vector4f value of clipping plane coordinates.
+	 * @return			Vector4f value of eye-space plane coordinates.
+	 */
 	private Vector4f toEyeCoords(Vector4f clipCoords) {
 		Matrix4f invertedProjection = Matrix4f.invert(projectionMatrix, null);
 		Vector4f eyeCoords = Matrix4f.transform(invertedProjection, clipCoords, null);
 		return new Vector4f(eyeCoords.x, eyeCoords.y, -1f, 0f);
 	}
 	
+	/**
+	 * Method that normailze coordinates of a current coursor position.
+	 * 
+	 * @param mouseX float value of X coordinat of a coursor on the screen
+	 * @param mouseY float value of Y coordinat of a coursor on the screen
+	 * @return       Vector2f value of normialize and transponded mouse 
+	 * 			     coordinates
+	 */
 	private Vector2f getNormalizedDeviceCoords(float mouseX, float mouseY) {
-		float x = (2f*mouseX) / Display.getWidth() - 1;
-		float y = (2f*mouseY) / Display.getHeight() - 1f;
+		float x = (2f * mouseX) / Display.getWidth() - 1;
+		float y = (2f * mouseY) / Display.getHeight() - 1f;
 		return new Vector2f(x, y);
 	}
 	

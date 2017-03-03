@@ -93,12 +93,5 @@ public class BoundingRenderer {
 	public void setWiredFrame(boolean value) {
 		this.boundingWiredFrame = value;
 	}
-	
-//	private RawModel createBBoxModel(Entity entity) {
-//		BoundingBox bbox = entity.getModel().getRawModel().getBBox();
-//		Vector3f min = bbox.getMin();
-//		Vector3f max = bbox.getMax();
-//		
-//	}
 
 }

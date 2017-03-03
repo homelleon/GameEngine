@@ -68,7 +68,8 @@ public class ES {
 	public static final int KEY_EDITOR_CENTER_VIEW = Keyboard.KEY_HOME;
 	
 	/* debug control */
-	public static final int KEY_DEBUG_BOUNDING_BOX = Keyboard.KEY_B;
+	public static final int KEY_DEBUG_BOUNDING_BOX = Keyboard.KEY_F2;
+	public static final int KEY_DEBUG_INFORMATION = Keyboard.KEY_F1;
 	
 	/* simulation settings */
 	public static final float GRAVITY = -50;

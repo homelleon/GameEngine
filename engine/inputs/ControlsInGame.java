@@ -2,6 +2,7 @@ package inputs;
 
 import org.lwjgl.input.Keyboard;
 
+import debug.DebugUI;
 import entities.Entity;
 import renderEngine.MasterRenderer;
 import renderEngine.MasterRendererSimple;
@@ -19,28 +20,28 @@ public class ControlsInGame implements Controls {
 	}
 
 	@Override
-	public void update(Scene scene, SceneRenderer renderer) {		
+	public void update(Scene scene) {		
 		pointedEntitiesControls(scene);
-		sceneControls(renderer);
+		sceneControls();
 	}
 	
-	private void sceneControls(SceneRenderer renderer) {
-		if(Keyboard.isKeyDown(ES.KEY_DEBUG_BOUNDING_BOX)) {
-			MasterRendererSimple masterRenderer = renderer.getMasterRenderer();
-			masterRenderer.switchBoundingBoxes(!masterRenderer.getShowBoundingBox());
+	private void sceneControls() {
+		if(KeyboardGame.isKeyPressed(ES.KEY_DEBUG_BOUNDING_BOX)) {
+			DebugUI.switchBounding();
+		}
+		if(KeyboardGame.isKeyPressed(ES.KEY_DEBUG_INFORMATION)) {
+			DebugUI.swithDebugInformation();
 		}
 	}
 	
 	private void pointedEntitiesControls(Scene scene) {
-		boolean isMousePointed = false;
 		/* intersection of entities with mouse ray */
 		//TODO: make class for control
 		if (MouseGame.isOncePressed(MouseGame.LEFT_CLICK)) {	
 			Entity pointedEntity = scene.getPicker().chooseObjectByRay(scene);
 			if(pointedEntity != null) {
 				scene.getEntities().addPointed(pointedEntity);
-			}
-			isMousePointed = true;			
+			}		
 		}
 		
 		if (MouseGame.isOncePressed(MouseGame.RIGHT_CLICK)) {

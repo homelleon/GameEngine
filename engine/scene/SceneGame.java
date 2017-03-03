@@ -40,8 +40,6 @@ public class SceneGame implements Scene {
 	private AudioMaster audioMaster;
 	
 	private EntityManager entityManager = new EntityManagerStructured();
-	private Map<String, Entity> entities = new WeakHashMap<String, Entity>();
-	private Map<String, Entity> pointedEntities = new WeakHashMap<String, Entity>();
 	private Map<String, Terrain> terrains = new WeakHashMap<String, Terrain>();
 	private Map<String, WaterTile> waters = new WeakHashMap<String, WaterTile>();
 	private List<Chunk> chunks = new ArrayList<Chunk>();
@@ -333,15 +331,15 @@ public class SceneGame implements Scene {
 	
 	public void cleanUp() {
 		this.environmentMap.delete();
-		entities.clear();
-		terrains.clear();
-		waters.clear();
-		chunks.clear();
-		particles.clear();
-		lights.clear();
-		audioSources.clear();
-		guis.clear();
-		texts.clear();		
+		this.entityManager.clearAll();
+		this.terrains.clear();
+		this.waters.clear();
+		this.chunks.clear();
+		this.particles.clear();
+		this.lights.clear();
+		this.audioSources.clear();
+		this.guis.clear();
+		this.texts.clear();		
 	}
 
 }

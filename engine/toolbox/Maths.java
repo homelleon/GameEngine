@@ -53,6 +53,12 @@ public class Maths {
 		return a*a;
 	}
 	
+	public static void swapFloat(float a, float b) {
+		float c = a;
+		a = b;
+		b = c;
+	}
+	
 	/* distance between 2 points in 3D */
 	public static float distance2Points(Vector3f point1, Vector3f point2) {
 		float distance = 0;
