@@ -25,21 +25,26 @@ public class CameraCubeMap implements Camera {
 	private float yaw; 
 	private float roll = 0;
 	
+	private String name = "CubeCamera";
+	
 	public CameraCubeMap(Vector3f position) {
 		this.position = position;	
 		createProjectionMatrix();
 	}
 
+	@Override
 	public void setPosition(float posX, float posY, float posZ) {
 		this.position.x = posX;
 		this.position.y = posY;
 		this.position.z = posZ;
 	}
-
+	
+	@Override
 	public Vector3f getPosition() {
 		return position;
 	}
-
+	
+	@Override
 	public void switchToFace(int faceIndex) {
         switch (faceIndex) {
         case 0:
@@ -70,18 +75,25 @@ public class CameraCubeMap implements Camera {
         updateViewMatrix();
     }
 	
+	@Override
 	public Matrix4f getViewMatrix() {
         return viewMatrix;
     }
-
+	
+	@Override
 	public Matrix4f getProjectionMatrix() {
         return projectionMatrix;
     }
- 
+	
+	@Override
     public Matrix4f getProjectionViewMatrix() {
         return projectionViewMatrix;
     }
 
+	/**
+	 * Method creates projection matrix based on field of view, aspect ratio,
+	 * far and near plane clipping.
+	 */
     private void createProjectionMatrix() {
         float y_scale = (float) ((1f / Math.tan(Math.toRadians(FOV / 2f))));
         float x_scale = y_scale / ASPECT_RATIO;
@@ -95,12 +107,20 @@ public class CameraCubeMap implements Camera {
         projectionMatrix.m33 = 0;
     }
     
+    /**
+     * Method updates current view matrix based on current camera angle and 
+     * position.    
+     */
     private void updateViewMatrix() {
         viewMatrix.setIdentity();
-        Matrix4f.rotate((float) Math.toRadians(180), new Vector3f(0, 0, 1), viewMatrix, viewMatrix);
-        Matrix4f.rotate((float) Math.toRadians(pitch), new Vector3f(1, 0, 0), viewMatrix, viewMatrix);
-        Matrix4f.rotate((float) Math.toRadians(yaw), new Vector3f(0, 1, 0), viewMatrix, viewMatrix);
-        Vector3f negativeCameraPos = new Vector3f(-position.x, -position.y, -position.z);
+        Matrix4f.rotate((float) Math.toRadians(180), new Vector3f(0, 0, 1), 
+        		viewMatrix, viewMatrix);
+        Matrix4f.rotate((float) Math.toRadians(pitch), new Vector3f(1, 0, 0), 
+        		viewMatrix, viewMatrix);
+        Matrix4f.rotate((float) Math.toRadians(yaw), new Vector3f(0, 1, 0), 
+        		viewMatrix, viewMatrix);
+        Vector3f negativeCameraPos = new Vector3f(-position.x, -position.y, 
+        		-position.z);
         Matrix4f.translate(negativeCameraPos, viewMatrix, viewMatrix);
  
         Matrix4f.mul(projectionMatrix, viewMatrix, projectionViewMatrix);
@@ -108,46 +128,46 @@ public class CameraCubeMap implements Camera {
     
 	@Override
 	public String getName() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.name;
 	}
 
 	//установить тангаж
 	@Override
 	public void setPitch(float anglePitch) {
-		// TODO Auto-generated method stub
-		
+		this.pitch = anglePitch;		
 	}
 	
 	//установить рысканье
 	@Override
 	public void setYaw(float angleYaw) {
-		// TODO Auto-generated method stub
-		
+		this.yaw = angleYaw;
 	}
 
 	@Override
 	public void move() {
-		// TODO Auto-generated method stub
-		
+		// nothing		
 	}
 	
 	//вернуть тангаж
+	@Override
 	public float getPitch() {
 		return pitch;
 	}
 	
 	//инвертировать тангаж
+	@Override
 	public void invertPitch() {
 		this.pitch = -pitch;
 	}
 	
 	//вернуть рыскание
+	@Override
 	public float getYaw() {
 		return yaw;
 	}
 	
 	//вернуть крен
+	@Override
 	public float getRoll() {
 		return roll;
 	}

@@ -1,6 +1,7 @@
 package cameras;
 
 import org.lwjgl.input.Mouse;
+import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 
 import entities.Player;
@@ -153,7 +154,47 @@ public class CameraPlayer implements Camera {
 	//переключить повороты камеры
 	@Override
 	public void switchToFace(int faceIndex) {
-				
+		switch (faceIndex) {
+        case 0:
+            pitch = 0;
+            yaw = 90;
+            break;
+        case 1:
+            pitch = 0;
+            yaw = -90;
+            break;
+        case 2:
+            pitch = -90;
+            yaw = 180;
+            break;
+        case 3:
+            pitch = 90;
+            yaw = 180;
+            break;
+        case 4:
+            pitch = 0;
+            yaw = 180;
+            break;
+        case 5:
+            pitch = 0;
+            yaw = 0;
+            break;
+        }
+	}
+
+	@Override
+	public Matrix4f getViewMatrix() {
+		return null;
+	}
+
+	@Override
+	public Matrix4f getProjectionMatrix() {
+		return null;
+	}
+
+	@Override
+	public Matrix4f getProjectionViewMatrix() {
+		return null;
 	}
 	
 }

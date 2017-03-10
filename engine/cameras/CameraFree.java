@@ -2,6 +2,7 @@ package cameras;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
+import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 
 import engineMain.DisplayManager;
@@ -169,9 +170,47 @@ public class CameraFree implements Camera {
 	//переключить между поворотами камеры
 	@Override
 	public void switchToFace(int faceIndex) {
-		// TODO Auto-generated method stub
-		
-	}	
-		
+		switch (faceIndex) {
+        case 0:
+            pitch = 0;
+            yaw = 90;
+            break;
+        case 1:
+            pitch = 0;
+            yaw = -90;
+            break;
+        case 2:
+            pitch = -90;
+            yaw = 180;
+            break;
+        case 3:
+            pitch = 90;
+            yaw = 180;
+            break;
+        case 4:
+            pitch = 0;
+            yaw = 180;
+            break;
+        case 5:
+            pitch = 0;
+            yaw = 0;
+            break;
+        }
+	}
+
+	@Override
+	public Matrix4f getViewMatrix() {
+		return null;
+	}
+
+	@Override
+	public Matrix4f getProjectionMatrix() {
+		return null;
+	}
+
+	@Override
+	public Matrix4f getProjectionViewMatrix() {
+		 return null;
+	}			
 	
 }
