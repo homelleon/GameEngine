@@ -79,11 +79,7 @@ public interface MasterRenderer {
 	 */
 	public void setTerrainWiredFrame(boolean terrainWiredFrame);
 	
-	/**
-	 * 
-	 * @return
-	 */
-	Matrix4f getProjectionMatrix();
+
 	
 	/**
 	 * 
@@ -97,6 +93,12 @@ public interface MasterRenderer {
 	
 	/**
 	 * 
+	 * @return
+	 */
+	Matrix4f getProjectionMatrix();
+	
+	/**
+	 * 
 	 * @param scene
 	 * @return
 	 */
@@ -107,4 +109,6 @@ public interface MasterRenderer {
 	 * @return
 	 */
 	Frustum getFrustum();
+	
+	
 }

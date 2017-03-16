@@ -40,7 +40,6 @@ public class SceneRenderer {
 
 	private MasterRendererSimple masterRenderer;
 	private WaterRenderer waterRenderer;
-	private EnvironmentMapRenderer enviroRenderer;
 	private GuiRenderer guiRenderer;
 	private WaterFrameBuffers waterFBOs;
 	private Fbo multisampleFbo;
@@ -53,7 +52,6 @@ public class SceneRenderer {
 	public void init(Scene scene, Loader loader) {
 		this.scene = scene;
 		this.masterRenderer = new MasterRendererSimple(loader, scene.getCamera());
-		this.enviroRenderer = new EnvironmentMapRenderer();
 		this.guiRenderer = new GuiRenderer(loader);
 		ParticleMaster.init(loader, masterRenderer.getProjectionMatrix());
 		this.multisampleFbo = new Fbo(Display.getWidth(), Display.getHeight());
@@ -70,7 +68,6 @@ public class SceneRenderer {
 		this.picker = new MousePicker(scene.getCamera(), masterRenderer.getProjectionMatrix());
 		scene.setPicker(picker);
 		this.controls = new ControlsInGame();
-		enviroRenderer.render(scene, masterRenderer, scene.getEntities().getByName("Cuby4"));
 	}
 
 	public void render(FontType font, Loader loader) {
@@ -78,7 +75,6 @@ public class SceneRenderer {
 		saveMap(loader);
 		move();
 		scene.getEntities().updateWithFrustum(scene.getFrustum());
-		enviroRenderer.render(scene, masterRenderer, scene.getEntities().getByName("Cuby4"));
 		masterRenderer.renderShadowMap(scene);
 		renderParticles();
 		renderWaterSurface();

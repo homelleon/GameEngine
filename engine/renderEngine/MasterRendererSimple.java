@@ -17,6 +17,7 @@ import cameras.Camera;
 import debug.DebugUI;
 import entities.Entity;
 import entities.Light;
+import environmentMap.EnvironmentMapRenderer;
 import models.TexturedModel;
 import normalMappingRenderer.NormalMappingRenderer;
 import scene.ES;
@@ -43,6 +44,7 @@ public class MasterRendererSimple implements MasterRenderer{
 	private VoxelRenderer voxelRenderer;
 	private BoundingRenderer boundingRenderer;
 	private ShadowMapMasterRenderer shadowMapRenderer;
+	private EnvironmentMapRenderer enviroRenderer;
 	
 	private SceneProcessor processor;
 	
@@ -71,6 +73,7 @@ public class MasterRendererSimple implements MasterRenderer{
 		this.voxelRenderer = new VoxelRenderer(loader, projectionMatrix);
 		this.boundingRenderer = new BoundingRenderer(projectionMatrix);
 		this.shadowMapRenderer = new ShadowMapMasterRenderer(camera);
+		this.enviroRenderer = new EnvironmentMapRenderer();
 		this.processor = new SceneProcessorSimple();
 		int size = 2;
 		this.chunker = new ChunkManager(size, new Vector3f(0,0,0));
@@ -85,12 +88,6 @@ public class MasterRendererSimple implements MasterRenderer{
 		}
 		//chunker.getChunk(2).setIsActive(false);
 	}
-	
-	@Override
-	public Matrix4f getProjectionMatrix() {
-		return projectionMatrix;
-	}
-	
 	
 	@Override
 	public void renderScene(Scene scene, Vector4f clipPlane) {
@@ -112,7 +109,13 @@ public class MasterRendererSimple implements MasterRenderer{
 				processor.processNormalMapEntity(entity, normalMapEntities, frustum);
 			}					
 		}
-		
+		if(this.environmentDinamic) {
+			environmentRendered = false;
+		}
+		if(!environmentRendered) {
+			enviroRenderer.render(scene, this, scene.getEntities().getByName("Cuby4"));
+			this.environmentRendered = true;
+		}	
 		render(scene.getLights().values(), scene.getCamera(), clipPlane, isLowDistance);
 		
 	}
@@ -135,7 +138,7 @@ public class MasterRendererSimple implements MasterRenderer{
 		checkWiredFrameOff(terrainWiredFrame);
 		
 		skyboxRenderer.render(camera);
-			
+		
 		terrains.clear();
 		entities.clear();
 		normalMapEntities.clear();
@@ -148,9 +151,6 @@ public class MasterRendererSimple implements MasterRenderer{
 		skyboxRenderer.render(camera);
 	}
 	
-	private void renderEnvironment(Scene scene) {
-		
-	}
 	
 	private void processTerrain(Terrain terrain) {
 		terrains.add(terrain);
@@ -225,6 +225,11 @@ public class MasterRendererSimple implements MasterRenderer{
 	}
 	
 	@Override
+	public Matrix4f getProjectionMatrix() {
+		return projectionMatrix;
+	}
+	
+	@Override
 	public Collection<Entity> createFrustumEntities(Scene scene) {
 		frustum.extractFrustum(scene.getCamera(), projectionMatrix);
 		List<Entity> frustumEntities = new ArrayList<Entity>();
@@ -244,7 +249,7 @@ public class MasterRendererSimple implements MasterRenderer{
 	@Override
 	public Frustum getFrustum() {
 		return this.frustum;
-	}
+	}	
 	
 	@Override
 	public void setEntityWiredFrame(boolean entitiyWiredFrame) {
