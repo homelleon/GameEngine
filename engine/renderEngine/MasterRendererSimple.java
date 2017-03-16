@@ -28,7 +28,7 @@ import toolbox.Frustum;
 import toolbox.OGLUtils;
 import voxels.ChunkManager;
 
-public class MasterRendererSimple {
+public class MasterRendererSimple implements MasterRenderer{
 		
 	private Matrix4f projectionMatrix;
 	private Matrix4f normalDistProjectionMatrix;
@@ -43,11 +43,16 @@ public class MasterRendererSimple {
 	private VoxelRenderer voxelRenderer;
 	private BoundingRenderer boundingRenderer;
 	private ShadowMapMasterRenderer shadowMapRenderer;
+	
+	private SceneProcessor processor;
+	
 	private Texture environmentMap;
 	private Frustum frustum = new Frustum();
 	
 	private boolean terrainWiredFrame = false;
 	private boolean entitiyWiredFrame = false;
+	private boolean environmentDinamic = false;
+	private boolean environmentRendered = false;
 	
 	
 	private Map<TexturedModel, List<Entity>> entities = new HashMap<TexturedModel, List<Entity>>();
@@ -66,6 +71,7 @@ public class MasterRendererSimple {
 		this.voxelRenderer = new VoxelRenderer(loader, projectionMatrix);
 		this.boundingRenderer = new BoundingRenderer(projectionMatrix);
 		this.shadowMapRenderer = new ShadowMapMasterRenderer(camera);
+		this.processor = new SceneProcessorSimple();
 		int size = 2;
 		this.chunker = new ChunkManager(size, new Vector3f(0,0,0));
 		for(int i = 0; i < size * size * size; i++) {
@@ -80,94 +86,18 @@ public class MasterRendererSimple {
 		//chunker.getChunk(2).setIsActive(false);
 	}
 	
+	@Override
 	public Matrix4f getProjectionMatrix() {
 		return projectionMatrix;
 	}
 	
-	public void processTerrain(Terrain terrain) {
-		terrains.add(terrain);
-	}
 	
-	public void processEntity(Entity entity) {
-		if(checkVisibility(entity)) {
-			TexturedModel entityModel = entity.getModel();
-			List<Entity> batch = entities.get(entityModel);
-			if(batch!=null) {
-				batch.add(entity);	
-			}else{
-				List<Entity> newBatch = new ArrayList<Entity>();
-				newBatch.add(entity);
-				entities.put(entityModel, newBatch);		
-			}
-		}
-	}
-	
-	public void processNormalMapEntity(Entity entity) {
-		if(checkVisibility(entity)) {
-			TexturedModel entityModel = entity.getModel();
-			List<Entity> batch = normalMapEntities.get(entityModel);
-			if(batch!=null) {
-				batch.add(entity);	
-			}else{
-				List<Entity> newBatch = new ArrayList<Entity>();
-				newBatch.add(entity);
-				normalMapEntities.put(entityModel, newBatch);	
-			}
-		}
-	}
-		
-	public void processShadowEntity(Entity entity) {
-		if(checkShadowVisibility(entity)) {
-			TexturedModel entityModel = entity.getModel();
-			List<Entity> batch = entities.get(entityModel);
-			if(batch!=null) {
-				batch.add(entity);	
-			}else{
-				List<Entity> newBatch = new ArrayList<Entity>();
-				newBatch.add(entity);
-				entities.put(entityModel, newBatch);		
-			}
-		}
-	}
-		
-	public void processShadowNormalMapEntity(Entity entity) {
-		if(checkShadowVisibility(entity)) {
-			TexturedModel entityModel = entity.getModel();
-			List<Entity> batch = normalMapEntities.get(entityModel);
-			if(batch!=null) {
-				batch.add(entity);	
-			}else{
-				List<Entity> newBatch = new ArrayList<Entity>();
-				newBatch.add(entity);
-				normalMapEntities.put(entityModel, newBatch);	
-			}
-		}
-	}
-	
-	private boolean checkVisibility(Entity entity) {
-		boolean isVisible = false;
-		float distance = frustum.distanceSphereInFrustum(entity.getPosition(), entity.getSphereRadius());
-		if (distance > 0 && distance <= ES.RENDERING_VIEW_DISTANCE) {
-			isVisible = true;
-		}
-		return isVisible;
-	}
-	
-	private boolean checkShadowVisibility(Entity entity) {
-		boolean isVisible = false;
-		Vector3f position = new Vector3f(entity.getPosition().x, 0, entity.getPosition().z);
-		float distance = frustum.distanceSphereInFrustum(position, entity.getSphereRadius());
-		if (distance >= -ES.SHADOW_DISTANCE && distance <= ES.SHADOW_DISTANCE) {
-			isVisible = true;
-		}
-		return isVisible;
-	}
-	
+	@Override
 	public void renderScene(Scene scene, Vector4f clipPlane) {
 		renderScene(scene, clipPlane, false);
 	}
 	
-	
+	@Override
 	public void renderScene(Scene scene, Vector4f clipPlane, boolean isLowDistance) {
 		this.frustum.extractFrustum(scene.getCamera(), projectionMatrix);
 		this.environmentMap = scene.getEnvironmentMap();
@@ -177,9 +107,9 @@ public class MasterRendererSimple {
 			
 		for (Entity entity : scene.getEntities().getAll()) {
 			if(entity.getType() == ES.ENTITY_TYPE_SIMPLE) {
-				processEntity(entity);
+				processor.processEntity(entity, entities, frustum);
 			} else if(entity.getType() == ES.ENTITY_TYPE_NORMAL) {
-				processNormalMapEntity(entity);
+				processor.processNormalMapEntity(entity, normalMapEntities, frustum);
 			}					
 		}
 		
@@ -211,18 +141,29 @@ public class MasterRendererSimple {
 		normalMapEntities.clear();
 	}
 	
+	@Override
 	public void renderLowQualityScene(Map<TexturedModel, List<Entity>> entities, Collection<Terrain> terrains, Collection<Light> lights, Camera camera) {
 		entityRenderer.renderLow(entities, lights, camera);
 		terrainRenderer.renderLow(terrains, lights, camera);
 		skyboxRenderer.render(camera);
 	}
 	
+	private void renderEnvironment(Scene scene) {
+		
+	}
+	
+	private void processTerrain(Terrain terrain) {
+		terrains.add(terrain);
+	}
+	
+	
+	@Override
 	public void renderShadowMap(Scene scene) {
 		for(Entity entity : scene.getEntities().getAll()) {
 			if(entity.getType() == ES.ENTITY_TYPE_SIMPLE) {
-				processShadowEntity(entity);
+				processor.processShadowEntity(entity, entities, frustum);
 			} else if(entity.getType() == ES.ENTITY_TYPE_NORMAL) {
-				processShadowNormalMapEntity(entity);
+				processor.processShadowNormalMapEntity(entity, normalMapEntities, frustum);
 			}
 		}
 		
@@ -236,6 +177,7 @@ public class MasterRendererSimple {
 		return shadowMapRenderer.getShadowMap();
 	}
 	
+	@Override
 	public void cleanUp() {		
 		entityRenderer.cleanUp();
 		normalMapRenderer.cleanUp();
@@ -282,6 +224,7 @@ public class MasterRendererSimple {
 		lowDistProjectionMatrix.m33 = 0;
 	}
 	
+	@Override
 	public Collection<Entity> createFrustumEntities(Scene scene) {
 		frustum.extractFrustum(scene.getCamera(), projectionMatrix);
 		List<Entity> frustumEntities = new ArrayList<Entity>();
@@ -293,22 +236,26 @@ public class MasterRendererSimple {
 		return frustumEntities;
 	}
 	
+	@Override
 	public EntityRenderer getEntityRenderer() {
 		return this.entityRenderer;
 	}
 	
+	@Override
 	public Frustum getFrustum() {
 		return this.frustum;
 	}
 	
+	@Override
 	public void setEntityWiredFrame(boolean entitiyWiredFrame) {
 		this.entitiyWiredFrame = entitiyWiredFrame;
 	}	
-
+	
+	@Override
 	public void setTerrainWiredFrame(boolean terrainWiredFrame) {
 		this.terrainWiredFrame = terrainWiredFrame;
 	}
-
+	
 	private void checkWiredFrameOn(boolean value) {
 		if(value) {
 			OGLUtils.doWiredFrame(true);
