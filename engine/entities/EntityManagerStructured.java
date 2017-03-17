@@ -15,17 +15,28 @@ import scene.ES;
 import textures.ModelTexture;
 import toolbox.Frustum;
 
+/**
+ * Manages entities in the game engine.
+ * <p>Can differ entities that are situated in the frustum. Also can store
+ * entities chosen by player and entities for editor menu.
+ * <p>rus:<br> 
+ * Менеджер игровых сущностей.
+ * <p>Может разделять сущности, которые попадают в пирамиду проекции. Также
+ * может хранить сущности, выбранные игроком, и сущности для интерфейса
+ * редактора.
+ * 
+ * @author homelleon
+ * @version 1.0
+ *  
+ */
 public class EntityManagerStructured implements EntityManager {
 	
-	/*
-	 * EntityManager - менеджер моделей
-	 * 03.02.17
-	 * ------------
-	 */
+	
 	
 	public Map<String, Entity> allEntities = new HashMap<String, Entity>();
 	public Map<Float, List<Entity>> frustumEntities = new HashMap<Float, List<Entity>>();
 	public List<Entity> pointedEntities = new ArrayList<Entity>();
+	public List<Entity> editorEntities = new ArrayList<Entity>();
 	
 	//TODO: delete after upgrading of map
 	public static List<Entity> createNormalMappedEntities(Loader loader) {
@@ -79,6 +90,20 @@ public class EntityManagerStructured implements EntityManager {
 			}
 		}
 	}	
+	
+
+	@Override
+	public void setEditorList(List<Entity> editorList) {
+		if(editorList == null) {
+			throw(new NullPointerException("Tried to add null editorList in " + this.toString()));
+		} else if (editorList.isEmpty()) {
+			throw(new NullPointerException("Tried to add empty editorList in " + this.toString()));
+		} else {
+				this.editorEntities = editorList;
+		}
+
+		
+	}
 
 	@Override
 	public void addFrustumMap(Map<Float, List<Entity>> frustumMap) {
@@ -116,7 +141,12 @@ public class EntityManagerStructured implements EntityManager {
 			this.pointedEntities.add(entity); 		
 		}
 	}
-
+	
+	@Override
+	public void addForEditor(Entity entity) {
+		this.editorEntities.add(entity);		
+	}
+	
 	@Override
 	public void addInFrustum(float distance, Entity entity) {
 		if(entity == null) {
@@ -154,13 +184,6 @@ public class EntityManagerStructured implements EntityManager {
 	}
 
 	@Override
-	public void clearAll() {
-		this.allEntities.clear();
-		this.pointedEntities.clear();
-		this.frustumEntities.clear();
-	}
-
-	@Override
 	public Entity getByName(String name) {
 		Entity entity = null;
 		if(this.allEntities.containsKey(name)) {
@@ -183,6 +206,16 @@ public class EntityManagerStructured implements EntityManager {
 	public List<Entity> getPointed() {
 		return this.pointedEntities;
 	}
+	
+	@Override
+	public List<Entity> getForEditor() {
+		return this.editorEntities;
+	}
+	
+	@Override
+	public Entity getForEditorByIndex(int index) {
+		return this.editorEntities.get(index);
+	}
 
 	@Override
 	public void clearPointed() {
@@ -191,6 +224,12 @@ public class EntityManagerStructured implements EntityManager {
 		}
 		this.pointedEntities.clear();		
 	}
-
+	
+	@Override
+	public void clearAll() {
+		this.allEntities.clear();
+		this.pointedEntities.clear();
+		this.frustumEntities.clear();
+	}
 	
 }

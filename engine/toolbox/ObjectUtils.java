@@ -7,7 +7,6 @@ import java.util.Random;
 import org.lwjgl.util.vector.Vector3f;
 
 import entities.Entity;
-import entities.EntityManagerStructured;
 import entities.EntityTextured;
 import models.RawModel;
 import models.TexturedModel;

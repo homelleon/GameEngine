@@ -8,10 +8,8 @@ import java.util.WeakHashMap;
 import org.lwjgl.util.vector.Vector3f;
 
 import audio.AudioSource;
-import audio.AudioSourceSimple;
 import cameras.Camera;
 import entities.Entity;
-import entities.EntityManagerStructured;
 import entities.EntityTextured;
 import entities.Light;
 import entities.Player;

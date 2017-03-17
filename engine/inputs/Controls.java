@@ -1,6 +1,5 @@
 package inputs;
 
-import renderEngine.SceneRenderer;
 import scene.Scene;
 
 public interface Controls {

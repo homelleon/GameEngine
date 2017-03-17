@@ -2,8 +2,6 @@ package entities;
 
 import org.lwjgl.util.vector.Vector3f;
 
-import boundings.BoundingBox;
-import boundings.BoundingSphere;
 import models.TexturedModel;
 import scene.ES;
 
@@ -11,6 +9,12 @@ import scene.ES;
  * EntityTextured - объект с текстурой
  * 03.02.17
  * ------------
+ */
+/**
+ * Textured type of in-game entity.
+ *  
+ * @author homelleon
+ *
  */
 
 public class EntityTextured implements Entity {
@@ -27,6 +31,16 @@ public class EntityTextured implements Entity {
 	private int textureIndex = 0; //индекс текстуры
 	private int typeID = ES.ENTITY_TYPE_SIMPLE; //тип объекта
 	
+	/**
+	 * 
+	 * @param name
+	 * @param model
+	 * @param position
+	 * @param rotX
+	 * @param rotY
+	 * @param rotZ
+	 * @param scale
+	 */
 	public EntityTextured(String name, TexturedModel model, Vector3f position, float rotX, float rotY, float rotZ, float scale) {
 		this.name = name;
 		this.model = model;
@@ -38,6 +52,17 @@ public class EntityTextured implements Entity {
 		this.scale = scale; 
 	}
 	
+	/**
+	 * 
+	 * @param name
+	 * @param typeID
+	 * @param model
+	 * @param position
+	 * @param rotX
+	 * @param rotY
+	 * @param rotZ
+	 * @param scale
+	 */
 	public EntityTextured(String name, int typeID, TexturedModel model, Vector3f position, float rotX, float rotY, float rotZ, float scale) {
 		this.name = name;
 		this.model = model;
@@ -50,6 +75,18 @@ public class EntityTextured implements Entity {
 		this.scale = scale; 
 	}
 	
+	/**
+	 * 
+	 * @param name
+	 * @param typeID
+	 * @param model
+	 * @param textureIndex
+	 * @param position
+	 * @param rotX
+	 * @param rotY
+	 * @param rotZ
+	 * @param scale
+	 */
 	public EntityTextured(String name, int typeID, TexturedModel model, int textureIndex, Vector3f position, float rotX, float rotY, float rotZ, float scale) {
 		this.name = name;
 		this.textureIndex = textureIndex;

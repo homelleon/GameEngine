@@ -3,8 +3,6 @@ package engineMain;
 import java.awt.Canvas;
 import java.awt.Color;
 
-import javax.swing.JPanel;
-
 import org.lwjgl.LWJGLException;
 import org.lwjgl.Sys;
 import org.lwjgl.opengl.ContextAttribs;

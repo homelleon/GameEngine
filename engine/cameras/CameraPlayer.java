@@ -143,6 +143,7 @@ public class CameraPlayer implements Camera {
 		}
 	}
 	
+	@SuppressWarnings("unused")
 	private void underWaterCalculate() {
 		if(this.position.y <=0) {
 			isUnderWater = true;

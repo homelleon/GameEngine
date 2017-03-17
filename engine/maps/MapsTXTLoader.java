@@ -9,6 +9,7 @@ import scene.ES;
 
 public class MapsTXTLoader implements MapsLoader {
 	
+	
 	public GameMap loadMap(String fileName, Loader loader) {
 		FileReader isr = null;
         File mapFile = new File(ES.MAP_PATH + fileName + ".txt");
@@ -22,6 +23,11 @@ public class MapsTXTLoader implements MapsLoader {
         MapsParser mapParser = new MapsTXTParser();
         
 		return  mapParser.readMap(fileName, reader, loader);
+	}
+	
+	public ObjectMap loadObjectMap(String fileName, Loader loader) {
+		return null;
+		
 	}
 
 }

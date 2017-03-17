@@ -4,9 +4,6 @@ import org.lwjgl.input.Keyboard;
 
 import debug.DebugUI;
 import entities.Entity;
-import renderEngine.MasterRenderer;
-import renderEngine.MasterRendererSimple;
-import renderEngine.SceneRenderer;
 import scene.ES;
 import scene.Scene;
 

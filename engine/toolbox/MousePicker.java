@@ -12,7 +12,6 @@ import org.lwjgl.util.vector.Vector4f;
 
 import cameras.Camera;
 import entities.Entity;
-import renderEngine.MasterRendererSimple;
 import scene.ES;
 import scene.Scene;
 
@@ -247,8 +246,10 @@ public class MousePicker {
 					Vector3f max = entity.getModel().getRawModel().getBBox().getMax();
 					Vector3f position = entity.getPosition();
 					float scale = entity.getScale();
+					//only sphere intersection
+					pointedEntities.add(entity);
 					if (intersects(min, max)) {
-						pointedEntities.add(entity);
+					//box intersection
 					}
 				}
 			

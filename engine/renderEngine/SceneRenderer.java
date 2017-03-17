@@ -7,7 +7,6 @@ import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector4f;
 
 import engineMain.DisplayManager;
-import environmentMap.EnvironmentMapRenderer;
 import fontMeshCreator.FontType;
 import fontMeshCreator.GuiText;
 import fontRendering.TextMaster;
