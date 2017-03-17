@@ -17,6 +17,12 @@ public class SettingsTXTParser implements SettingsParser {
 	                    String[] currentLine = line.split(" ");	            
 	                    settings.setMapName(currentLine[1]);
 				}
+				
+				if (line.startsWith("objectMapName= ")) {
+                    String[] currentLine = line.split(" ");	            
+                    settings.setObjectMapName(currentLine[1]);
+				}
+				
 				if (line.startsWith("end")) {
 					break;
 				}

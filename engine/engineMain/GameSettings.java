@@ -10,6 +10,7 @@ public class GameSettings {
 	 * --------------------
 	 */
 	String mapName;
+	String objectMapName;
 	
 	private GameSettings() {}
 	
@@ -20,12 +21,21 @@ public class GameSettings {
 		return instance;
 	}
 	
+	void setMapName(String name) {
+		this.mapName = name;		
+	}
+	
 	String getMapName() {
 		return this.mapName;
 	}
-
-	void setMapName(String name) {
-		mapName = name;		
+	
+	void setObjectMapName(String name) {
+		this.objectMapName = name;
 	}
+	
+	String getObjectMapName() {
+		return this.objectMapName;
+	}
+
 
 }

@@ -2,4 +2,6 @@
 
 mapName= newMap
 
+objectMapName= objectMap
+
 end
