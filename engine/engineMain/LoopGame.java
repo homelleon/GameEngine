@@ -30,6 +30,7 @@ import inputs.MouseGame;
 import maps.GameMap;
 import maps.MapsLoader;
 import maps.MapsTXTLoader;
+import maps.ObjectMap;
 import models.TexturedModel;
 import particles.ParticlesManager;
 import renderEngine.Loader;
@@ -41,6 +42,14 @@ import scene.SceneGame;
 import toolbox.ObjectUtils;
 import water.WaterTile;
 
+/**
+ * Game looping system that initialize preloaded game variables and objects and
+ * updates main game systems. 
+ * 
+ * @author homelleon
+ * @version 1.0
+ * @see Loop
+ */
 public class LoopGame implements Loop {
 	
 	/*
@@ -67,6 +76,10 @@ public class LoopGame implements Loop {
     private boolean mapIsLoaded = false;
     private boolean isPaused = false;
     
+    /**
+     * Initilize display, load game settings and setup scene objects.
+     * @see #prepare() 
+     */
 	private void init() {
 		DisplayManager.createDisplay();
 		/*--------------PRE LOAD TOOLS-------------*/
@@ -123,6 +136,7 @@ public class LoopGame implements Loop {
 
 		/*---------------SCENE-------------*/
 		
+		/*TODO: replace it by map loading system*/
 		scene.setAudioMaster(aduioMaster);
 		scene.setPlayer(player1);
 		scene.getEntities().add(player1);
@@ -155,6 +169,10 @@ public class LoopGame implements Loop {
 		cleanUp();		
 	}
 	
+	/**
+	 * Initialize scene, rendering system, mouse settings, and game events on
+	 * start. 
+	 */
 	private void prepare() {
 		init();
 		sceneRenderer.init(scene, loader);
@@ -162,13 +180,22 @@ public class LoopGame implements Loop {
 		game.onStart();
 	}
 	
+	/**
+	 * Updates game events, mouse settings, display and render scene. 
+	 */
 	private void update() {		
-		game.onUpdate();
-		sceneRenderer.render(font, loader);
+		if(!this.isPaused) {
+			game.onUpdate();
+		}
+		sceneRenderer.render(font, loader, isPaused);
 		MouseGame.update();
 		DisplayManager.updateDisplay();
 	}
 	
+	/**
+	 * Starts cleaning process for game looping objects and close display to
+	 * exit the application. 
+	 */
 	private void cleanUp() {
 		scene.cleanUp();
 		loader.cleanUp();
@@ -176,17 +203,47 @@ public class LoopGame implements Loop {
 		DisplayManager.closeDisplay();
     }
 	
+	/**
+	 * Loads map for game objects that have to be in the scene.
+	 * 
+	 * @param name
+	 * 			   String value of the file name
+	 * 
+	 * @see #loadGameSettings()
+	 */
 	private void loadMap(String name) {
 		MapsLoader mapLoader = new MapsTXTLoader();
 		this.map = mapLoader.loadMap(name, loader);	
 		this.mapIsLoaded = true;
 	}
 	
+	/**
+	 * Loads object map for default editor object menu.
+	 * 
+	 * @param name
+	 * 			   String value of the file name
+	 * 
+	 * @see #loadGameSettings()
+	 */
+	private void loadObjectMap(String name) {
+		MapsLoader mapLoader = new MapsTXTLoader();
+		ObjectMap objectMap = mapLoader.loadObjectMap(name, loader);
+	}
+	
+	/**
+	 * Loads game settings and sets name to map and object map. After that it
+	 * loads map and object map using name written in the game settings file.
+	 * 
+	 * @see #loadMap(String)
+	 * @see #loadObjectMap(String)
+	 */
 	private void loadGameSettings() {
 		SettingsLoader setLoader = new SettingsTXTLoader();  
 		GameSettings settings = setLoader.loadSettings(SETTINGS_NAME);
-		loadMap(settings.getMapName());			
-	}
+		loadMap(settings.getMapName());		
+		loadObjectMap(settings.getObjectMapName());
+	}	
+
 	
 	@Override
 	public Scene getScene() {
@@ -206,6 +263,11 @@ public class LoopGame implements Loop {
     @Override
 	public void setScenePaused(boolean value) {
 		isPaused = value;
+	}
+
+	@Override
+	public boolean getIsScenePaused() {
+		return isPaused;
 	}	
     
 }

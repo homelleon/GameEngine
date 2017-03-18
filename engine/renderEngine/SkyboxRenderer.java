@@ -8,6 +8,7 @@ import org.lwjgl.util.vector.Matrix4f;
 
 import cameras.Camera;
 import engineMain.DisplayManager;
+import engineMain.EngineMain;
 import models.RawModel;
 import scene.ES;
 import skybox.SkyboxShader;
@@ -95,11 +96,14 @@ public class SkyboxRenderer {
 	}
 	
 	private void bindTextures() {
-		time += DisplayManager.getFrameTimeSeconds() * 200;
+		if(!EngineMain.getIsEnginePaused()) {
+			time += DisplayManager.getFrameTimeSeconds() * 200;
+		}
 		time %= 24000;
 		int texture1;
 		int texture2;
-		float blendFactor;		
+		float blendFactor;
+		
 		if(time >= 0 && time < 5000) {
 			texture1 = nightTexture;
 			texture2 = nightTexture;
@@ -117,7 +121,6 @@ public class SkyboxRenderer {
 			texture2 = nightTexture;
 			blendFactor = (time - 21000) / (24000 - 21000);
 		}
-
 		GL13.glActiveTexture(GL13.GL_TEXTURE0);
 		GL11.glBindTexture(GL13.GL_TEXTURE_CUBE_MAP, texture1);
 		GL13.glActiveTexture(GL13.GL_TEXTURE1);

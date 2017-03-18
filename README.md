@@ -20,12 +20,12 @@ FUNCTIONS
 ----------
 base
 ```
-- map save/load functionality to use .txt file to load or save objects at scene.
+- map save/load functionality to use .txt file to load or save objects in the scene.
 ```
 graphics:
 ```
 - all objects are stored in buffers
-- uses shader program　uniforms to change position and graphic technics
+- uses shader program uniforms to change position and visual effects
 - water reflection and refraction
 - frustum culling technic to increase graphic performance
 - ray casting technic to choose entities by selecting it with mouse coursor

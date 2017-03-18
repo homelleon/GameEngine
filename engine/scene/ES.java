@@ -38,6 +38,7 @@ public class ES {
 	
 	public static final int KEY_EXIT = Keyboard.KEY_ESCAPE;
 	public static final int KEY_APPLY = Keyboard.KEY_INSERT;
+	public static final int KEY_PAUSE = Keyboard.KEY_PAUSE;
 	
 	/* player control */
 	public static final int KEY_PLAYER_MOVE_FORWARD = Keyboard.KEY_W;

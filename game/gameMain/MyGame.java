@@ -12,12 +12,14 @@ public class MyGame implements Game {
 	private int world1;
 	private Scene scene;
 	Entity cube7;
+	int time = 0;
 	
 		/* 
 		 * use "Main.getMap()" to get methods of Map
 		 * and all objects on Map  
 		 * 
-		 */	
+		 */
+		@Override
 		public void onStart() {
 			//PE10.initialize();
 			scene = EngineMain.getScene();
@@ -41,11 +43,16 @@ public class MyGame implements Game {
 		 * 
 		 * Don't use while loop and etc
 		 */
+		
+		@Override
 		public void onUpdate() {
+			time += 1;
 			//cube7.increasePosition(0, 0.1f, 0);
 			//PE10.peUpdateWorld(world1);
 			//tree1.increasePosition(0, 0.1f, 0);
-			
+			if(time == 500) {
+				//EngineMain.pauseEngine(true);
+			}
 			
 		}
 }

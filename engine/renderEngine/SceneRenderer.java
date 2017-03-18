@@ -7,6 +7,7 @@ import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector4f;
 
 import engineMain.DisplayManager;
+import engineMain.EngineMain;
 import fontMeshCreator.FontType;
 import fontMeshCreator.GuiText;
 import fontRendering.TextMaster;
@@ -20,6 +21,7 @@ import maps.MapsWriter;
 import particles.ParticleMaster;
 import postProcessing.Fbo;
 import postProcessing.PostProcessing;
+import scene.ES;
 import scene.Scene;
 import toolbox.MousePicker;
 import toolbox.OGLUtils;
@@ -69,10 +71,12 @@ public class SceneRenderer {
 		this.controls = new ControlsInGame();
 	}
 
-	public void render(FontType font, Loader loader) {
+	public void render(FontType font, Loader loader, boolean isPaused) {
 		checkInputs();
 		saveMap(loader);
-		move();
+		if(!isPaused) {
+			move();
+		}
 		scene.getEntities().updateWithFrustum(scene.getFrustum());
 		masterRenderer.renderShadowMap(scene);
 		renderParticles();
@@ -92,6 +96,10 @@ public class SceneRenderer {
 	}
 	
 	private void checkInputs() {
+		if(KeyboardGame.isKeyPressed(ES.KEY_PAUSE)) {
+			EngineMain.pauseEngine(!EngineMain.getIsEnginePaused());
+		}
+		
 		if (KeyboardGame.isKeyReleased(Keyboard.KEY_H)) {
 
 			System.out.println("Key H released");

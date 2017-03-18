@@ -34,5 +34,13 @@ public class EngineMain {
 	public static Scene getScene() {
 		return loopGame.getScene();
 	}
+	
+	public static void pauseEngine(boolean value) {
+		loopGame.setScenePaused(value);
+	}
+	
+	public static boolean getIsEnginePaused() {
+		return loopGame.getIsScenePaused();
+	}
 
 }
