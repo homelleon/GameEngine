@@ -118,7 +118,7 @@ public class SceneRenderer {
 		waterFBOs.unbindCurrentFrameBuffer();
 		multisampleFbo.bindFrameBuffer();
 		masterRenderer.renderScene(scene, new Vector4f(0, -1, 0, 15));
-		waterRenderer.render(scene.getWaters().values(), scene.getCamera(), scene.getSun());
+		waterRenderer.render(scene.getWaters().getAll(), scene.getCamera(), scene.getSun());
 		ParticleMaster.renderParticles(scene.getCamera());
 		multisampleFbo.unbindFrameBuffer();
 		multisampleFbo.resolveToFbo(GL30.GL_COLOR_ATTACHMENT0, outputFbo);
@@ -137,23 +137,23 @@ public class SceneRenderer {
 
 	private void renderWaterReflection() {
 		waterFBOs.bindReflectionFrameBuffer();
-		float distance = 2 * (scene.getCamera().getPosition().y - scene.getWaters().get("Water").getHeight());
+		float distance = 2 * (scene.getCamera().getPosition().y - scene.getWaters().getByName("Water").getHeight());
 		scene.getCamera().getPosition().y -= distance;
 		scene.getCamera().invertPitch();
-		masterRenderer.renderScene(scene, new Vector4f(0, 1, 0, -scene.getWaters().get("Water").getHeight()), true);
+		masterRenderer.renderScene(scene, new Vector4f(0, 1, 0, -scene.getWaters().getByName("Water").getHeight()), true);
 		scene.getCamera().getPosition().y += distance;
 		scene.getCamera().invertPitch();
 	}
 
 	private void renderWaterRefraction() {
 		waterFBOs.bindRefractionFrameBuffer();
-		masterRenderer.renderScene(scene, new Vector4f(0, -1, 0, scene.getWaters().get("Water").getHeight() + 1f),
+		masterRenderer.renderScene(scene, new Vector4f(0, -1, 0, scene.getWaters().getByName("Water").getHeight() + 1f),
 				true);
 	}
 
 	protected void renderParticles() {
-		scene.getParticles().get("Cosmic").generateParticles();
-		scene.getParticles().get("Star").generateParticles();
+		scene.getParticles().getByName("Cosmic").generateParticles();
+		scene.getParticles().getByName("Star").generateParticles();
 		ParticleMaster.update(scene.getCamera());
 	}
 
@@ -180,7 +180,7 @@ public class SceneRenderer {
 	private void move() {
 		controls.update(scene);
 		scene.getCamera().move();
-		scene.getPlayer().move(scene.getTerrains().values());
+		scene.getPlayer().move(scene.getTerrains().getAll());
 		scene.getAudioMaster().setListenerData(scene.getCamera().getPosition());
 	}
 	

@@ -12,7 +12,7 @@ import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 
 import cameras.Camera;
-import entities.Light;
+import lights.Light;
 import models.RawModel;
 import models.TexturedModel;
 import scene.ES;

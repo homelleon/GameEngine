@@ -11,7 +11,7 @@ import org.lwjgl.util.vector.Vector3f;
 
 import cameras.Camera;
 import engineMain.DisplayManager;
-import entities.Light;
+import lights.Light;
 import models.RawModel;
 import renderEngine.Loader;
 import scene.ES;

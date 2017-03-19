@@ -3,11 +3,12 @@ package scene;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.util.vector.Vector4f;
 
-/* 
+/**
+ * <b>Engine Settings</b><br>
+ * Contains all in game settings and constant variables.
  * 
- * Engine Settings 
- * here is all constants for the engine
- * 
+ * @author homelleon
+ * @version 1.0
  */
 
 public class ES {

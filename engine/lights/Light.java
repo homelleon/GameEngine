@@ -1,4 +1,4 @@
-package entities;
+package lights;
 
 import org.lwjgl.util.vector.Vector3f;
 

@@ -16,8 +16,8 @@ import org.lwjgl.util.vector.Vector4f;
 import cameras.Camera;
 import debug.DebugUI;
 import entities.Entity;
-import entities.Light;
 import environmentMap.EnvironmentMapRenderer;
+import lights.Light;
 import models.TexturedModel;
 import normalMappingRenderer.NormalMappingRenderer;
 import scene.ES;
@@ -98,7 +98,7 @@ public class MasterRendererSimple implements MasterRenderer{
 	public void renderScene(Scene scene, Vector4f clipPlane, boolean isLowDistance) {
 		this.frustum.extractFrustum(scene.getCamera(), projectionMatrix);
 		this.environmentMap = scene.getEnvironmentMap();
-		for (Terrain terrain : scene.getTerrains().values()) {
+		for (Terrain terrain : scene.getTerrains().getAll()) {
 			processTerrain(terrain);
 		}		
 			
@@ -116,7 +116,7 @@ public class MasterRendererSimple implements MasterRenderer{
 			enviroRenderer.render(scene, this, scene.getEntities().getByName("Cuby4"));
 			this.environmentRendered = true;
 		}	
-		render(scene.getLights().values(), scene.getCamera(), clipPlane, isLowDistance);
+		render(scene.getLights().getAll(), scene.getCamera(), clipPlane, isLowDistance);
 		
 	}
 	

@@ -11,7 +11,7 @@ import org.lwjgl.util.vector.Vector3f;
 
 import cameras.Camera;
 import entities.Entity;
-import entities.Light;
+import lights.Light;
 import models.TexturedModel;
 import scene.ES;
 import terrains.Terrain;

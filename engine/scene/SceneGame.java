@@ -14,18 +14,25 @@ import cameras.Camera;
 import entities.Entity;
 import entities.EntityManager;
 import entities.EntityManagerStructured;
-import entities.Light;
 import entities.Player;
 import fontMeshCreator.GuiText;
 import guis.GuiTexture;
+import lights.Light;
+import lights.LightManager;
+import lights.LightManagerStructured;
 import maps.GameMap;
+import particles.ParticleManager;
+import particles.ParticleManagerStructured;
 import particles.ParticleSystem;
 import terrains.Terrain;
+import terrains.TerrainManager;
+import terrains.TerrainManagerStructured;
 import textures.Texture;
 import toolbox.Frustum;
 import toolbox.MousePicker;
 import voxels.Chunk;
-import water.WaterTile;
+import water.WaterManager;
+import water.WaterManagerStructured;
 
 public class SceneGame implements Scene {
 	
@@ -40,11 +47,11 @@ public class SceneGame implements Scene {
 	private AudioMaster audioMaster;
 	
 	private EntityManager entityManager = new EntityManagerStructured();
-	private Map<String, Terrain> terrains = new WeakHashMap<String, Terrain>();
-	private Map<String, WaterTile> waters = new WeakHashMap<String, WaterTile>();
+	private TerrainManager terrainManager = new TerrainManagerStructured();
+	private WaterManager waterManager = new WaterManagerStructured();
 	private List<Chunk> chunks = new ArrayList<Chunk>();
-	private Map<String, ParticleSystem> particles = new WeakHashMap<String, ParticleSystem>();
-	private Map<String, Light> lights = new WeakHashMap<String, Light>();
+	private ParticleManager particleManager = new ParticleManagerStructured();
+	private LightManager lightManager = new LightManagerStructured();
 	private Map<String, AudioSource> audioSources = new WeakHashMap<String, AudioSource>();
 	private Map<String, GuiTexture> guis = new WeakHashMap<String, GuiTexture>();
 	private Map<String, GuiText> texts = new WeakHashMap<String, GuiText>();
@@ -53,10 +60,10 @@ public class SceneGame implements Scene {
 	
 	public SceneGame(GameMap map) {
 		this.getEntities().addAll(map.getEntities().values());
-		this.addAllTerrains(map.getTerrains().values());
-		this.addAllWaters(map.getWaters().values());
-		this.addAllParticles(map.getParticles().values());
-		this.addAllLights(map.getLights().values());
+		this.getTerrains().addAll(map.getTerrains().values());
+		this.getWaters().addAll(map.getWaters().values());
+		this.getParticles().addAll(map.getParticles().values());
+		this.getLights().addAll(map.getLights().values());
 		this.addAllAudioSources(map.getAudioSources().values());
 		this.addAllGuis(map.getGuis().values());
 	}
@@ -117,20 +124,8 @@ public class SceneGame implements Scene {
 	 */
 
 	@Override
-	public Map<String, Terrain> getTerrains() {
-		return this.terrains;
-	}
-
-	@Override
-	public void addTerrain(Terrain terrain) {
-		this.terrains.put(terrain.getName(), terrain);
-	}
-
-	@Override
-	public void addAllTerrains(Collection<Terrain> terrainList) {
-		for(Terrain terrain : terrainList) {
-			this.terrains.put(terrain.getName(), terrain);
-		}
+	public TerrainManager getTerrains() {
+		return this.terrainManager;
 	}
 	
 	/* 
@@ -138,21 +133,10 @@ public class SceneGame implements Scene {
 	 */
 	
 	@Override
-	public Map<String, WaterTile> getWaters() {
-		return this.waters;
+	public WaterManager getWaters() {
+		return this.waterManager;
 	}
 
-	@Override
-	public void addWater(WaterTile water) {
-		this.waters.put(water.getName(), water);
-	}
-
-	@Override
-	public void addAllWaters(Collection<WaterTile> waterList) {
-		for(WaterTile water : waterList) {
-			this.waters.put(water.getName(), water);
-		}
-	}
 	
 	/* 
 	 * @VoxelGrids
@@ -180,22 +164,9 @@ public class SceneGame implements Scene {
 	 */
 
 	@Override
-	public Map<String, ParticleSystem> getParticles() {
-		return this.particles;
+	public ParticleManager getParticles() {
+		return this.particleManager;
 	}
-
-	@Override
-	public void addParticle(ParticleSystem particle) {
-		this.particles.put(particle.getName(), particle);
-	}
-
-	@Override
-	public void addAllParticles(Collection<ParticleSystem> particleList) {
-		for(ParticleSystem particle : particleList) {
-			this.particles.put(particle.getName(), particle);
-		}
-	}
-
 
 	/* 
 	 * @Lights
@@ -203,22 +174,9 @@ public class SceneGame implements Scene {
 	
 
 	@Override
-	public Map<String, Light> getLights() {
-		return this.lights;
+	public LightManager getLights() {
+		return this.lightManager;
 	}
-
-	@Override
-	public void addLight(Light light) {
-		this.lights.put(light.getName(), light);
-	}
-
-	@Override
-	public void addAllLights(Collection<Light> lightList) {
-		for(Light light : lightList) {
-			this.lights.put(light.getName(), light);
-		}
-	}
-	
 
 	/* 
 	 * @AudioSources
@@ -306,7 +264,7 @@ public class SceneGame implements Scene {
 			for(Entity entity : this.entityManager.getAll()) {
 				float terrainHeight = 0;
 				
-				for(Terrain terrain : this.terrains.values()) {
+				for(Terrain terrain : this.terrainManager.getAll()) {
 					terrainHeight += terrain.getHeightOfTerrain(entity.getPosition().x, entity.getPosition().z);
 				}
 				entity.setPosition(new Vector3f(entity.getPosition().x, terrainHeight, entity.getPosition().z));
@@ -320,7 +278,7 @@ public class SceneGame implements Scene {
 			for(ParticleSystem system : systems) {
 				float terrainHeight = 0;
 				
-				for(Terrain terrain : this.terrains.values()) {
+				for(Terrain terrain : this.terrainManager.getAll()) {
 					terrainHeight += terrain.getHeightOfTerrain(system.getPosition().x, system.getPosition().z);
 				}
 				system.setPosition(new Vector3f(system.getPosition().x, terrainHeight, system.getPosition().z));
@@ -328,15 +286,15 @@ public class SceneGame implements Scene {
 		}
 	}
 	
-	
+	@Override
 	public void cleanUp() {
 		this.environmentMap.delete();
 		this.entityManager.clearAll();
-		this.terrains.clear();
-		this.waters.clear();
+		this.terrainManager.clearAll();
+		this.waterManager.clearAll();
 		this.chunks.clear();
-		this.particles.clear();
-		this.lights.clear();
+		this.particleManager.clearAll();
+		this.lightManager.clearAll();
 		this.audioSources.clear();
 		this.guis.clear();
 		this.texts.clear();		

@@ -8,7 +8,7 @@ import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 
-import entities.Light;
+import lights.Light;
 import scene.ES;
 import shaders.ShaderProgram;
 

@@ -66,11 +66,7 @@ public class EntityManagerStructured implements EntityManager {
 
 	@Override
 	public void addAll(Collection<Entity> entityList) {
-		if(entityList == null) {
-			throw(new NullPointerException("Tried to add null entityList in " + this.toString()));
-		} else if (entityList.isEmpty()) {
-			throw(new NullPointerException("Tried to add empty entityList in " + this.toString()));
-		} else {
+		if((entityList != null) && (!entityList.isEmpty())) {
 			for(Entity entity : entityList) {
 				this.allEntities.put(entity.getName(), entity);
 			}
@@ -79,11 +75,7 @@ public class EntityManagerStructured implements EntityManager {
 	
 	@Override
 	public void addPointedList(Collection<Entity> pointedList) {
-		if(pointedList == null) {
-			throw(new NullPointerException("Tried to add null pointedList in " + this.toString()));
-		} else if (pointedList.isEmpty()) {
-			throw(new NullPointerException("Tried to add empty pointedList in " + this.toString()));
-		} else {
+		if((pointedList != null) && (!pointedList.isEmpty())) {
 			for(Entity entity : pointedList) {
 				entity.setIsChosen(true);
 				this.pointedEntities.add(entity);
@@ -94,12 +86,8 @@ public class EntityManagerStructured implements EntityManager {
 
 	@Override
 	public void setEditorList(List<Entity> editorList) {
-		if(editorList == null) {
-			throw(new NullPointerException("Tried to add null editorList in " + this.toString()));
-		} else if (editorList.isEmpty()) {
-			throw(new NullPointerException("Tried to add empty editorList in " + this.toString()));
-		} else {
-				this.editorEntities = editorList;
+		if(editorList != null) {
+			this.editorEntities = editorList;
 		}
 
 		
@@ -107,11 +95,7 @@ public class EntityManagerStructured implements EntityManager {
 
 	@Override
 	public void addFrustumMap(Map<Float, List<Entity>> frustumMap) {
-		if(frustumMap == null) {
-			throw(new NullPointerException("Tried to add null frustumMap in " + this.toString()));
-		} else if (frustumMap.isEmpty()) {
-			throw(new NullPointerException("Tried to add empty frustumMap in " + this.toString()));
-		} else {
+		if((frustumMap != null) && (!frustumMap.isEmpty())) {
 			for(Float key : frustumMap.keySet()) {
 				List<Entity> batch = new ArrayList<Entity>();
 				for(Entity entity : frustumMap.get(key)) {
@@ -125,18 +109,14 @@ public class EntityManagerStructured implements EntityManager {
 
 	@Override
 	public void add(Entity entity) {
-		if(entity == null) {
-			throw(new NullPointerException("Tried to add null entity in " + this.toString()));
-		} else {
+		if(entity != null) {
 			this.allEntities.put(entity.getName(), entity); 		
 		}
 	}
 	
 	@Override
 	public void addPointed(Entity entity) {
-		if(entity == null) {
-			throw(new NullPointerException("Tried to add null pointedEntity in " + this.toString()));
-		} else {
+		if(entity != null) {
 			entity.setIsChosen(true);
 			this.pointedEntities.add(entity); 		
 		}
@@ -149,9 +129,7 @@ public class EntityManagerStructured implements EntityManager {
 	
 	@Override
 	public void addInFrustum(float distance, Entity entity) {
-		if(entity == null) {
-			throw(new NullPointerException("Tried to add null frustumEntity in " + this.toString()));
-		} else {
+		if(entity != null) {
 			if(this.frustumEntities.containsKey(distance)) {
 				this.frustumEntities.get(distance).add(entity);
 			} else {
