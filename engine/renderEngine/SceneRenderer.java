@@ -70,7 +70,7 @@ public class SceneRenderer {
 		this.controls = new ControlsInGame();
 	}
 
-	public void render(FontType font, Loader loader, boolean isPaused) {
+	public void render(Loader loader, boolean isPaused) {
 		checkInputs();
 		saveMap(loader);
 		if(!isPaused) {
@@ -80,7 +80,7 @@ public class SceneRenderer {
 		masterRenderer.renderShadowMap(scene);
 		renderParticles();
 		renderWaterSurface();
-		renderToScreen(font);
+		renderToScreen();
 	}
 	
 	private void saveMap(Loader loader) {
@@ -106,14 +106,11 @@ public class SceneRenderer {
 		if (KeyboardGame.isKeyPressed(Keyboard.KEY_H)) {
 			System.out.println("H");
 			System.out.println("Key H pressed");
-		} 
-		if(KeyboardGame.isKeyPressed(Keyboard.KEY_Y)) {
-			scene.spreadEntitiesOnHeights();
-		}		
+		} 		
 		
 	}
 
-	private void renderToScreen(FontType font) {
+	private void renderToScreen() {
 		waterFBOs.unbindCurrentFrameBuffer();
 		multisampleFbo.bindFrameBuffer();
 		masterRenderer.renderScene(scene, new Vector4f(0, -1, 0, 15));
@@ -124,7 +121,7 @@ public class SceneRenderer {
 		multisampleFbo.resolveToFbo(GL30.GL_COLOR_ATTACHMENT1, outputFbo2);
 		PostProcessing.doPostProcessing(outputFbo.getColourTexture(), outputFbo2.getColourTexture());
 		guiRenderer.render(scene.getGuis().getAll());
-		renderText(font);		
+		renderText();		
 	}
 
 	private void renderWaterSurface() {
@@ -156,10 +153,10 @@ public class SceneRenderer {
 		ParticleMaster.update(scene.getCamera());
 	}
 
-	protected void renderText(FontType font) {
-		GuiText fpsText = createFPSText(Math.round(1 / DisplayManager.getFrameTimeSeconds()), font);
+	protected void renderText() {
+		GuiText fpsText = createFPSText(Math.round(1 / DisplayManager.getFrameTimeSeconds()), scene.getTexts().getMaster().getFont());
 		fpsText.setColour(1, 0, 0);
-		GuiText coordsText = createPickerCoordsText(picker, font);
+		GuiText coordsText = createPickerCoordsText(picker, scene.getTexts().getMaster().getFont());
 		coordsText.setColour(1, 0, 0);
 		scene.getTexts().getMaster().render();
 		fpsText.remove();

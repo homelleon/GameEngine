@@ -2,6 +2,7 @@ package texts;
 
 import java.util.Collection;
 
+import fontMeshCreator.FontType;
 import fontMeshCreator.GuiText;
 import fontRendering.TextMaster;
 import lights.Light;

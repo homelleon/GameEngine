@@ -77,6 +77,10 @@ public class ControlsInGame implements Controls {
 			scene.getEntities().getPointed().forEach(i -> i.increaseRotation(0, -1, 0));
 		}
 		
+		if(Keyboard.isKeyDown(Keyboard.KEY_P)) {
+			scene.spreadEntitiesOnHeights(scene.getEntities().getPointed());
+		}
+		
 	}
 	
 

@@ -1,5 +1,6 @@
 package fontRendering;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -9,16 +10,21 @@ import fontMeshCreator.FontType;
 import fontMeshCreator.GuiText;
 import fontMeshCreator.TextMeshData;
 import renderEngine.Loader;
+import scene.ES;
 
 public class TextMaster {
 	
 	private Loader loader;
 	private static Map<FontType, List<GuiText>> texts = new HashMap<FontType, List<GuiText>>();
 	private FontRenderer renderer;
+	private FontType font;
 	
 	public void init(Loader theLoader) {
 		renderer = new FontRenderer();
 		loader = theLoader;
+		this.font = 
+				new FontType(loader.loadTexture(ES.FONT_PATH, "candara"),
+						new File(ES.FONT_PATH + "candara.fnt"));
 	}
 	
 	public void render() {
@@ -45,6 +51,10 @@ public class TextMaster {
 			texts.remove(text.getFont());
 		}
 		
+	}
+	
+	public FontType getFont() {
+		return this.font;
 	}
 	
 	public void cleanUp() {

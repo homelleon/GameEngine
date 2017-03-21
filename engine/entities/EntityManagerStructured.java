@@ -12,6 +12,7 @@ import models.TexturedModel;
 import normalMappingObjConverter.NormalMappedObjLoader;
 import renderEngine.Loader;
 import scene.ES;
+import terrains.Terrain;
 import textures.ModelTexture;
 import toolbox.Frustum;
 
@@ -194,6 +195,7 @@ public class EntityManagerStructured implements EntityManager {
 	public Entity getForEditorByIndex(int index) {
 		return this.editorEntities.get(index);
 	}
+		
 
 	@Override
 	public void clearPointed() {

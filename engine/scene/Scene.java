@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import audio.AudioManager;
 import cameras.Camera;
+import entities.Entity;
 import entities.EntityManager;
 import entities.Player;
 import guis.GuiManager;
@@ -170,7 +171,7 @@ public interface Scene {
 	/**
 	 * Spreads all entities on the surface of terrain's height.
 	 */
-	void spreadEntitiesOnHeights();
+	void spreadEntitiesOnHeights(Collection<Entity> entityList);
 	
 	/**
 	 * Spreads all particles on the surface of terrain's height.

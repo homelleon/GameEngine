@@ -14,12 +14,13 @@ import java.util.Map;
 
 public class AudioManagerStructured implements AudioManager {
 	
-	Map<String, AudioSource> audioSources = new HashMap<String, AudioSource>();
-	AudioMaster audioMaster;
+	private Map<String, AudioSource> audioSources = new HashMap<String, AudioSource>();
+	private AudioMaster audioMaster;
 	
 	public AudioManagerStructured(AudioMaster audioMaster) {
-		this.audioMaster = audioMaster;
+		this.audioMaster = audioMaster;		
 	}
+
 
 	@Override
 	public void addAll(Collection<AudioSource> audioList) {

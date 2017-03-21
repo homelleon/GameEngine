@@ -2,12 +2,16 @@ package scene;
 
 import java.util.Collection;
 
+import org.lwjgl.openal.AL10;
+import org.lwjgl.openal.AL11;
 import org.lwjgl.util.vector.Vector3f;
 
 import audio.AudioManager;
 import audio.AudioManagerStructured;
 import audio.AudioMaster;
 import audio.AudioMasterBuffered;
+import audio.AudioSource;
+import audio.AudioSourceSimple;
 import cameras.Camera;
 import entities.Entity;
 import entities.EntityManager;
@@ -22,6 +26,7 @@ import maps.GameMap;
 import particles.ParticleManager;
 import particles.ParticleManagerStructured;
 import particles.ParticleSystem;
+import renderEngine.Loader;
 import terrains.Terrain;
 import terrains.TerrainManager;
 import terrains.TerrainManagerStructured;
@@ -47,6 +52,7 @@ public class SceneGame implements Scene {
 	private Frustum frustum = new Frustum();
 	private MousePicker picker;
 	private AudioMaster audioMaster = new AudioMasterBuffered();
+	private Loader loader;
 	
 	private EntityManager entityManager = new EntityManagerStructured();
 	private TerrainManager terrainManager = new TerrainManagerStructured();
@@ -61,14 +67,15 @@ public class SceneGame implements Scene {
 	
 	public SceneGame() {}
 	
-	public SceneGame(GameMap map) {
+	public SceneGame(GameMap map, Loader loader) {
+		this.loader = loader;
 		this.getEntities().addAll(map.getEntities().values());
 		this.getTerrains().addAll(map.getTerrains().values());
 		this.getWaters().addAll(map.getWaters().values());
 		this.getParticles().addAll(map.getParticles().values());
-		this.getLights().addAll(map.getLights().values());
+		this.getLights().addAll(map.getLights().values());		
 		this.getAudioSources().getMaster().init();
-		this.getAudioSources().addAll(map.getAudioSources().values());
+		this.getAudioSources().addAll(map.getAudioSources().values());		
 		this.getGuis().addAll(map.getGuis().values());
 		for(int i = 0; i < CHUNK_WORLD_SIZE * CHUNK_WORLD_SIZE *
 				CHUNK_WORLD_SIZE; i++) {
@@ -221,9 +228,9 @@ public class SceneGame implements Scene {
 	
 	
 	@Override
-	public void spreadEntitiesOnHeights() {
-		if (!entityManager.getAll().isEmpty()) {
-			for(Entity entity : this.entityManager.getAll()) {
+	public void spreadEntitiesOnHeights(Collection<Entity> entityList) {
+		if (!entityList.isEmpty()) {
+			for(Entity entity : entityList) {
 				float terrainHeight = 0;
 				
 				for(Terrain terrain : this.terrainManager.getAll()) {

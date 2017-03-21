@@ -4,6 +4,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import org.lwjgl.util.vector.Vector3f;
+
+import terrains.Terrain;
 import toolbox.Frustum;
 
 /**
