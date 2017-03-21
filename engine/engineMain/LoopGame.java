@@ -11,8 +11,6 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
-import audio.AudioMaster;
-import audio.AudioMasterBuffered;
 import audio.AudioSource;
 import audio.AudioSourceSimple;
 import cameras.CameraPlayer;
@@ -21,10 +19,9 @@ import entities.Player;
 import entities.PlayerTextured;
 import fontMeshCreator.FontType;
 import fontMeshCreator.GuiText;
-import fontRendering.TextMaster;
 import gameMain.Game;
 import gameMain.MyGame;
-import guis.GuiManager;
+import guis.GuiManagerStructured;
 import inputs.MouseGame;
 import lights.Light;
 import maps.GameMap;
@@ -104,22 +101,21 @@ public class LoopGame implements Loop {
 		player1.getModel().getTexture().setShineDamper(5.0f);
 
 		/*----------------FONTS-----------------*/
-		TextMaster.init(loader);
+		scene.getTexts().getMaster().init(loader);
 		this.font = 
 				new FontType(loader.loadTexture(ES.FONT_PATH, "candara"),
 						new File(ES.FONT_PATH + "candara.fnt"));
 		GuiText text = new GuiText("Version","This is an Alfa-version of the game engine", 
-				3, font, new Vector2f(0.25f, 0), 0.5f, true);
+				3, font, new Vector2f(0.25f, 0), 0.5f, true, scene.getTexts().getMaster());
 		
 		text.setColour(1, 0, 0);
 		
 		/*--------------AUDIO----------------*/
-		
-		AudioMaster aduioMaster = new AudioMasterBuffered();	
-		aduioMaster.init();
-		aduioMaster.setListenerData(player1.getPosition());
+			
+		scene.getAudioSources().getMaster().setListenerData(player1.getPosition());
 		AL10.alDistanceModel(AL11.AL_LINEAR_DISTANCE_CLAMPED);
-		AudioSource ambientSource = new AudioSourceSimple("birds", "forest.wav", 1000, aduioMaster);
+		AudioSource ambientSource = new AudioSourceSimple("birds", 
+				"forest.wav", 1000, scene.getAudioSources().getMaster());
 		ambientSource.setLooping(true);
 		ambientSource.setVolume(0.3f);
 		ambientSource.play();
@@ -137,7 +133,6 @@ public class LoopGame implements Loop {
 		/*---------------SCENE-------------*/
 		
 		/*TODO: replace it by map loading system*/
-		scene.setAudioMaster(aduioMaster);
 		scene.setPlayer(player1);
 		scene.getEntities().add(player1);
 		scene.getEntities().addAll(ObjectUtils.createGrassField(500, 500, 50, 1, 0.1f, loader));
@@ -148,8 +143,8 @@ public class LoopGame implements Loop {
 		scene.getLights().add(new Light("Light1", new Vector3f(200,2,200),new Vector3f(10,0,0), new Vector3f(1.1f, 0.01f, 0.002f)));
 		scene.getLights().add(new Light("Light2", new Vector3f(20,2,20),new Vector3f(0,5,0), new Vector3f(1, 0.01f, 0.002f)));
 
-		scene.addAudioSource(ambientSource);
-		scene.addAllGuis(GuiManager.createGui(loader));
+		scene.getAudioSources().add(ambientSource);
+		scene.getGuis().addAll(GuiManagerStructured.createGui(loader));
 		scene.getWaters().addAll(waterList);
 		scene.getParticles().addAll(ParticleManagerStructured.createParticleSystem(loader));
 		

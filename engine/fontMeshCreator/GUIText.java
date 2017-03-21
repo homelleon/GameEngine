@@ -64,7 +64,7 @@ public class GuiText {
 	 *            - whether the text should be centered or not. 
 	 */
 	public GuiText(String name, String text, float fontSize, FontType font, Vector2f position, float maxLineLength,
-			boolean centered) {
+			boolean centered, TextMaster master) {
 		this.name = name;
 		this.textString = text;
 		this.fontSize = fontSize;
@@ -73,7 +73,8 @@ public class GuiText {
 		this.lineMaxSize = maxLineLength;
 		this.centerText = centered;
 		makeFontSmooth();
-		TextMaster.loadText(this);
+		//TODO: need solve that staff
+		master.loadText(this);
 	}
 
 	

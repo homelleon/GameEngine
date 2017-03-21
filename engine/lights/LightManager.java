@@ -15,7 +15,7 @@ public interface LightManager {
 	 * Adds list of lights into lights map array.
 	 * 
 	 * @param lightList
-	 * 					  {@link Collection}<{@link Light}> value of terrain
+	 * 					  {@link Collection}<{@link Light}> value of lights
 	 * 					  list
 	 */
 	void addAll(Collection<Light> lightList);

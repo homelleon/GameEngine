@@ -10,7 +10,6 @@ import engineMain.DisplayManager;
 import engineMain.EngineMain;
 import fontMeshCreator.FontType;
 import fontMeshCreator.GuiText;
-import fontRendering.TextMaster;
 import guis.GuiRenderer;
 import inputs.Controls;
 import inputs.ControlsInGame;
@@ -124,7 +123,7 @@ public class SceneRenderer {
 		multisampleFbo.resolveToFbo(GL30.GL_COLOR_ATTACHMENT0, outputFbo);
 		multisampleFbo.resolveToFbo(GL30.GL_COLOR_ATTACHMENT1, outputFbo2);
 		PostProcessing.doPostProcessing(outputFbo.getColourTexture(), outputFbo2.getColourTexture());
-		guiRenderer.render(scene.getGuis().values());
+		guiRenderer.render(scene.getGuis().getAll());
 		renderText(font);		
 	}
 
@@ -162,26 +161,26 @@ public class SceneRenderer {
 		fpsText.setColour(1, 0, 0);
 		GuiText coordsText = createPickerCoordsText(picker, font);
 		coordsText.setColour(1, 0, 0);
-		TextMaster.render();
+		scene.getTexts().getMaster().render();
 		fpsText.remove();
 		coordsText.remove();
 	}
 
 	protected GuiText createFPSText(float FPS, FontType font) {
-		return new GuiText("FPS", "FPS: " + String.valueOf((int) FPS), 2, font, new Vector2f(0.65f, 0), 0.5f, true);
+		return new GuiText("FPS", "FPS: " + String.valueOf((int) FPS), 2, font, new Vector2f(0.65f, 0), 0.5f, true, scene.getTexts().getMaster());
 	}
 
 	protected GuiText createPickerCoordsText(MousePicker picker, FontType font) {
 		picker.update();
 		String text = (String) String.valueOf(picker.getCurrentRay());
-		return new GuiText("Coords", text, 1, font, new Vector2f(0.3f, 0.2f), 1f, true);
+		return new GuiText("Coords", text, 1, font, new Vector2f(0.3f, 0.2f), 1f, true, scene.getTexts().getMaster());
 	}
 
 	private void move() {
 		controls.update(scene);
 		scene.getCamera().move();
 		scene.getPlayer().move(scene.getTerrains().getAll());
-		scene.getAudioMaster().setListenerData(scene.getCamera().getPosition());
+		scene.getAudioSources().getMaster().setListenerData(scene.getCamera().getPosition());
 	}
 	
 	public MasterRendererSimple getMasterRenderer() {
@@ -189,13 +188,11 @@ public class SceneRenderer {
 	}
 
 	public void cleanUp() {
-		scene.getAudioMaster().cleanUp();
-		scene.getEntities().clearAll();
+		scene.cleanUp();
 		PostProcessing.cleanUp();
 		outputFbo.cleanUp();
 		outputFbo2.cleanUp();
 		multisampleFbo.cleanUp();
-		TextMaster.cleanUp();
 		waterFBOs.cleanUp();
 		guiRenderer.cleanUp();
 		masterRenderer.cleanUp();

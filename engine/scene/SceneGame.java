@@ -1,22 +1,20 @@
 package scene;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.WeakHashMap;
 
 import org.lwjgl.util.vector.Vector3f;
 
+import audio.AudioManager;
+import audio.AudioManagerStructured;
 import audio.AudioMaster;
-import audio.AudioSource;
+import audio.AudioMasterBuffered;
 import cameras.Camera;
 import entities.Entity;
 import entities.EntityManager;
 import entities.EntityManagerStructured;
 import entities.Player;
-import fontMeshCreator.GuiText;
-import guis.GuiTexture;
+import guis.GuiManager;
+import guis.GuiManagerStructured;
 import lights.Light;
 import lights.LightManager;
 import lights.LightManagerStructured;
@@ -27,15 +25,19 @@ import particles.ParticleSystem;
 import terrains.Terrain;
 import terrains.TerrainManager;
 import terrains.TerrainManagerStructured;
+import texts.TextManager;
+import texts.TextManagerStructured;
 import textures.Texture;
 import toolbox.Frustum;
 import toolbox.MousePicker;
-import voxels.Chunk;
+import voxels.ChunkManager;
+import voxels.ChunkManagerStructured;
 import water.WaterManager;
 import water.WaterManagerStructured;
 
 public class SceneGame implements Scene {
 	
+	private final static int CHUNK_WORLD_SIZE = 2;
 	private Player player;
 	private Camera camera;
 	private Light sun;
@@ -44,17 +46,18 @@ public class SceneGame implements Scene {
 	
 	private Frustum frustum = new Frustum();
 	private MousePicker picker;
-	private AudioMaster audioMaster;
+	private AudioMaster audioMaster = new AudioMasterBuffered();
 	
 	private EntityManager entityManager = new EntityManagerStructured();
 	private TerrainManager terrainManager = new TerrainManagerStructured();
 	private WaterManager waterManager = new WaterManagerStructured();
-	private List<Chunk> chunks = new ArrayList<Chunk>();
+	private ChunkManager chunkManager = 
+			new ChunkManagerStructured(CHUNK_WORLD_SIZE, new Vector3f(0,0,0));
 	private ParticleManager particleManager = new ParticleManagerStructured();
 	private LightManager lightManager = new LightManagerStructured();
-	private Map<String, AudioSource> audioSources = new WeakHashMap<String, AudioSource>();
-	private Map<String, GuiTexture> guis = new WeakHashMap<String, GuiTexture>();
-	private Map<String, GuiText> texts = new WeakHashMap<String, GuiText>();
+	private AudioManager audioManager = new AudioManagerStructured(audioMaster);
+	private GuiManager guiManager = new GuiManagerStructured();
+	private TextManager textManager = new TextManagerStructured();
 	
 	public SceneGame() {}
 	
@@ -64,8 +67,21 @@ public class SceneGame implements Scene {
 		this.getWaters().addAll(map.getWaters().values());
 		this.getParticles().addAll(map.getParticles().values());
 		this.getLights().addAll(map.getLights().values());
-		this.addAllAudioSources(map.getAudioSources().values());
-		this.addAllGuis(map.getGuis().values());
+		this.getAudioSources().getMaster().init();
+		this.getAudioSources().addAll(map.getAudioSources().values());
+		this.getGuis().addAll(map.getGuis().values());
+		for(int i = 0; i < CHUNK_WORLD_SIZE * CHUNK_WORLD_SIZE *
+				CHUNK_WORLD_SIZE; i++) {
+			for(int x = 0; x <= ES.VOXEL_CHUNK_SIZE; x++) {
+				for(int y = 0; y <= ES.VOXEL_CHUNK_SIZE; y++) {
+					for(int z = 0; z <= ES.VOXEL_CHUNK_SIZE; z++) {
+						chunkManager.getChunk(i).getBlock(x, y, z)
+						.setIsActive(true);
+					}
+				}
+			}			
+		}
+		//chunkManager.getChunk(2).setIsActive(false);
 	}
 	
 	@Override
@@ -103,14 +119,6 @@ public class SceneGame implements Scene {
 		this.sun = sun;
 	}
 	
-	public void setAudioMaster(AudioMaster master) {
-		this.audioMaster = master;
-	}
-	
-	public AudioMaster getAudioMaster() {
-		return this.audioMaster;
-	}
-	
 	/* 
 	 * @Enitites
 	 */
@@ -143,21 +151,10 @@ public class SceneGame implements Scene {
 	 */
 	
 	@Override
-	public List<Chunk> getChunks() {
-		return this.chunks;
+	public ChunkManager getChunks() {
+		return this.chunkManager;
 	}
 
-	@Override
-	public void addChunk(Chunk chunk) {
-		this.chunks.add(chunk);
-	}
-
-	@Override
-	public void addAllChunks(Collection<Chunk> chunkList) {
-		for(Chunk chunk : chunkList) {
-			this.chunks.add(chunk);
-		}
-	}
 	
 	/* 
 	 * @Particles
@@ -183,20 +180,8 @@ public class SceneGame implements Scene {
 	 */
 	
 	@Override
-	public Map<String, AudioSource> getAudioSources() {
-		return this.audioSources;
-	}
-
-	@Override
-	public void addAudioSource(AudioSource source) {
-		this.audioSources.put(source.getName(), source);
-	}
-
-	@Override
-	public void addAllAudioSources(Collection<AudioSource> sourceList) {
-		for(AudioSource source : sourceList) {
-			this.audioSources.put(source.getName(), source);
-		}
+	public AudioManager getAudioSources() {
+		return this.audioManager;
 	}
 	
 	/* 
@@ -204,20 +189,8 @@ public class SceneGame implements Scene {
 	 */
 
 	@Override
-	public Map<String, GuiTexture> getGuis() {
-		return this.guis;
-	}
-
-	@Override
-	public void addGui(GuiTexture gui) {
-		this.guis.put(gui.getName(), gui);
-	}
-
-	@Override
-	public void addAllGuis(Collection<GuiTexture> guiList) {
-		for(GuiTexture gui : guiList) {
-			this.guis.put(gui.getName(), gui);
-		}
+	public GuiManager getGuis() {
+		return this.guiManager;
 	}
 	
 	/* 
@@ -225,21 +198,10 @@ public class SceneGame implements Scene {
 	 */
 
 	@Override
-	public Map<String, GuiText> getTexts() {
-		return this.texts;
+	public TextManager getTexts() {
+		return this.textManager;
 	}
 
-	@Override
-	public void addText(GuiText text) {
-		this.texts.put(text.getName(), text);
-	}
-
-	@Override
-	public void addAllTexts(Collection<GuiText> textList) {
-		for(GuiText text : textList) {
-			this.texts.put(text.getName(), text);
-		}
-	}
 	
 	@Override
 	public Frustum getFrustum() {
@@ -292,12 +254,12 @@ public class SceneGame implements Scene {
 		this.entityManager.clearAll();
 		this.terrainManager.clearAll();
 		this.waterManager.clearAll();
-		this.chunks.clear();
+		this.chunkManager.clearAll();
 		this.particleManager.clearAll();
 		this.lightManager.clearAll();
-		this.audioSources.clear();
-		this.guis.clear();
-		this.texts.clear();		
+		this.audioManager.clearAll();
+		this.guiManager.clearAll();
+		this.textManager.clearAll();		
 	}
 
 }

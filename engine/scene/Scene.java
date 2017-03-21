@@ -1,26 +1,23 @@
 package scene;
 
 import java.util.Collection;
-import java.util.List;
-import java.util.Map;
 
-import audio.AudioMaster;
-import audio.AudioSource;
+import audio.AudioManager;
 import cameras.Camera;
 import entities.EntityManager;
 import entities.Player;
-import fontMeshCreator.GuiText;
-import guis.GuiTexture;
+import guis.GuiManager;
 import lights.Light;
 import lights.LightManager;
 import particles.ParticleManager;
 import particles.ParticleMaster;
 import particles.ParticleSystem;
 import terrains.TerrainManager;
+import texts.TextManager;
 import textures.Texture;
 import toolbox.Frustum;
 import toolbox.MousePicker;
-import voxels.Chunk;
+import voxels.ChunkManager;
 import water.WaterManager;
 
 /**
@@ -84,21 +81,6 @@ public interface Scene {
 	void setSun(Light sun);
 	
 	/**
-	 * Install audio master for sound control.
-	 * 
-	 * @param master
-	 * 				 AudioMaster value
-	 */
-	public void setAudioMaster(AudioMaster master);
-	
-	/**
-	 * Retunrs current audio master object.
-	 * 
-	 * @return AudioMaster value
-	 */
-	public AudioMaster getAudioMaster();
-	
-	/**
 	 * Returns entity manager object to control scene entities.
 	 *  
 	 * @return EntityManager value
@@ -120,27 +102,11 @@ public interface Scene {
 	WaterManager getWaters();
 	
 	/**
-	 * Returns list of chunks.
+	 * Returns chunk manager.
 	 * 
-	 * @return {@link List}<{@link Chunk}> value of chunk list 
+	 * @return {@link ChunkManager} value 
 	 */
-	List<Chunk> getChunks();
-	
-	/**
-	 * Adds one chunk into the chunk array of voxel manager.
-	 * 
-	 * @param chunk
-	 * 				{@link Chunk} value
-	 */
-	void addChunk(Chunk chunk);
-	
-	/**
-	 * Adds list of chunks into the chunk array of voxel manager.
-	 * 
-	 * @param chunkList
-	 * 					{@link Collection}<{@link Chunk}> value of chunk list
-	 */
-	void addAllChunks(Collection<Chunk> chunkList);
+	ChunkManager getChunks();
 	
 	/**
 	 * Returns partilce manager object to control particle systems.
@@ -157,80 +123,27 @@ public interface Scene {
 	LightManager getLights();
 	
 	/**
-	 * Returns map of audio sources groupped by name.
+	 * Returns audio manager.
 	 *  
-	 * @return {@link Map}<{@link String}, {@link AudioSource}> value of lights
-	 * 		   map
+	 * @return {@link AudioManager} value
 	 */
-	Map<String, AudioSource> getAudioSources();
+	AudioManager getAudioSources();
 	
 	/**
-	 * Adds one audio source into audio sources map array.
+	 * Returns graphic interfaces manager.
 	 * 
-	 * @param source
-	 * 				 {@link AudioSource} value
+	 * @return {@link GuiManager} value of graphic
+	 * 		   interfaces manager
 	 */
-	void addAudioSource(AudioSource source);
-	
-	/**
-	 * Adds list of audio sources into audio sources map array.
-	 * 
-	 * @param sourceList
-	 * 					 {@link Collection}<{@link AudioSource}> value of audio
-	 * 					 source list
-	 */
-	void addAllAudioSources(Collection<AudioSource> sourceList);	
-	
-	/**
-	 * Returns map of graphic interfaces groupped by name.
-	 * 
-	 * @return {@link Map}<{@link String}, {@link GuiTexture}> value of graphic
-	 * 		   interfaces map
-	 */
-	Map<String, GuiTexture> getGuis();
-	
-	/**
-	 * Adds one graphic interface into the graphic interfaces map array.
-	 * 
-	 * @param gui
-	 * 			 {@link GuiTexture} value of graphic interface
-	 */
-	void addGui(GuiTexture gui);
-	
-	/**
-	 * Adds list of graphic interfaces into the graphic interfaces map array.
-	 * 
-	 * @param guiList
-	 * 				  {@link Collection}<{@link GuiTexture}> value of graphic
-	 * 				  interfaces list
-	 */
-	void addAllGuis(Collection<GuiTexture> guiList);
+	GuiManager getGuis();
 
 	/**
-	 * Returns map of graphic interface text groupped by name.
+	 * Returns manager of graphic interface texta.
 	 * 
-	 * @return {@link Map}<{@link String}, {@link GuiText}> value of graphic
-	 * 		   interfaces map
+	 * @return {@link TextManager}> value of graphic
+	 * 		   interfaces texts manager
 	 */
-	Map<String, GuiText> getTexts();
-	
-	/**
-	 * Adds one graphic interface into the graphic interfaces map array.
-	 * 
-	 * @param text
-	 * 			  {@link GuiText} value of graphic interface text
-	 */
-	void addText(GuiText text);
-	
-	/**
-	 * Adds list of graphic interfaces list into the graphic interfaces map 
-	 * array.
-	 * 
-	 * @param textList
-	 * 				  {@link Collection}<{@link GuiText}> value of graphic
-	 * 				  interfaces list
-	 */
-	void addAllTexts(Collection<GuiText> textList);
+	TextManager getTexts();
 	
 	/**
 	 * Returns visual frustum object.

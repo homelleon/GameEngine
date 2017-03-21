@@ -23,6 +23,7 @@ import toolbox.OGLUtils;
 import toolbox.Vector3i;
 import voxels.Chunk;
 import voxels.ChunkManager;
+import voxels.ChunkManagerStructured;
 import voxels.FaceCullingData;
 import voxels.VoxelShader;
 
@@ -156,7 +157,7 @@ public class VoxelRenderer {
 		texture.setNumberOfRows(1);
 	}
 	
-	public void render(ChunkManager chunker, Vector4f clipPlane, Collection<Light> lights, Camera camera, Matrix4f toShadowMapSpace, Frustum frustum) {
+	public void render(ChunkManager chunkManager, Vector4f clipPlane, Collection<Light> lights, Camera camera, Matrix4f toShadowMapSpace, Frustum frustum) {
 		shader.start();
 		shader.loadClipPlane(clipPlane);
 		shader.loadSkyColour(ES.DISPLAY_RED, ES.DISPLAY_GREEN, ES.DISPLAY_BLUE);
@@ -170,20 +171,20 @@ public class VoxelRenderer {
 		bindTexture(texture);
 		int t = 0;
 		String s = "";
-		for(int i = 0; i < chunker.getSize(); i++) {
-			if(checkVisibility(frustum, chunker.getChunkPosition(i), CHUNK_RADIUS)) {
-				if(chunker.getChunk(i).getIsAcitve()) {
-					FaceCullingData chunkFCData = isNeedChunkCulling(chunker, i);
+		for(int i = 0; i < chunkManager.getSize(); i++) {
+			if(checkVisibility(frustum, chunkManager.getChunkPosition(i), CHUNK_RADIUS)) {
+				if(chunkManager.getChunk(i).getIsAcitve()) {
+					FaceCullingData chunkFCData = isNeedChunkCulling(chunkManager, i);
 //						s = s + " " + i;
 						t += 1;
 						for(int x = 0; x <= ES.VOXEL_CHUNK_SIZE; x++) {					
 							for(int y = 0; y <= ES.VOXEL_CHUNK_SIZE; y++) {
 								for(int z = 0; z <= ES.VOXEL_CHUNK_SIZE; z++) {
-									if(checkVisibility(frustum, chunker.getBlockPosition(i, x, y, z), BLOCK_RADIUS)) {
-										FaceCullingData blockFCData = isNeedBlockCulling(chunker.getChunk(i), x, y, z);
+									if(checkVisibility(frustum, chunkManager.getBlockPosition(i, new Vector3i(x, y, z)), BLOCK_RADIUS)) {
+										FaceCullingData blockFCData = isNeedBlockCulling(chunkManager.getChunk(i), x, y, z);
 										if(!isAllFaceCulled(blockFCData)) {
-											if(chunker.getChunk(i).getBlock(x, y, z).getIsActive()) {												
-												prepareInstance(chunker.getBlockPosition(i, x, y, z));
+											if(chunkManager.getChunk(i).getBlock(x, y, z).getIsActive()) {												
+												prepareInstance(chunkManager.getBlockPosition(i, new Vector3i(x, y, z)));
 												for(int j = 0; j < 6; j ++) {
 													if(!blockFCData.getFace(j)) {
 														GL12.glDrawRangeElements(GL11.GL_TRIANGLES, 0, 6, 6, GL11.GL_UNSIGNED_INT, 24 * j);

@@ -10,7 +10,6 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 
 import cameras.Camera;
@@ -33,10 +32,7 @@ public class MasterRendererSimple implements MasterRenderer{
 		
 	private Matrix4f projectionMatrix;
 	private Matrix4f normalDistProjectionMatrix;
-	private Matrix4f lowDistProjectionMatrix;
-	
-	private ChunkManager chunker;
-	
+	private Matrix4f lowDistProjectionMatrix;	
 	private EntityRenderer entityRenderer;	
 	private TerrainRenderer terrainRenderer;	
 	private NormalMappingRenderer normalMapRenderer;
@@ -74,19 +70,7 @@ public class MasterRendererSimple implements MasterRenderer{
 		this.boundingRenderer = new BoundingRenderer(projectionMatrix);
 		this.shadowMapRenderer = new ShadowMapMasterRenderer(camera);
 		this.enviroRenderer = new EnvironmentMapRenderer();
-		this.processor = new SceneProcessorSimple();
-		int size = 2;
-		this.chunker = new ChunkManager(size, new Vector3f(0,0,0));
-		for(int i = 0; i < size * size * size; i++) {
-			for(int x = 0; x <= ES.VOXEL_CHUNK_SIZE; x++) {
-				for(int y = 0; y <= ES.VOXEL_CHUNK_SIZE; y++) {
-					for(int z = 0; z <= ES.VOXEL_CHUNK_SIZE; z++) {
-						chunker.getChunk(i).getBlock(x, y, z).setIsActive(true);
-					}
-				}
-			}			
-		}
-		//chunker.getChunk(2).setIsActive(false);
+		this.processor = new SceneProcessorSimple();	
 	}
 	
 	@Override
@@ -99,7 +83,7 @@ public class MasterRendererSimple implements MasterRenderer{
 		this.frustum.extractFrustum(scene.getCamera(), projectionMatrix);
 		this.environmentMap = scene.getEnvironmentMap();
 		for (Terrain terrain : scene.getTerrains().getAll()) {
-			processTerrain(terrain);
+			processor.processTerrain(terrain, terrains);
 		}		
 			
 		for (Entity entity : scene.getEntities().getAll()) {
@@ -116,11 +100,11 @@ public class MasterRendererSimple implements MasterRenderer{
 			enviroRenderer.render(scene, this, scene.getEntities().getByName("Cuby4"));
 			this.environmentRendered = true;
 		}	
-		render(scene.getLights().getAll(), scene.getCamera(), clipPlane, isLowDistance);
+		render(scene.getChunks(), scene.getLights().getAll(), scene.getCamera(), clipPlane, isLowDistance);
 		
 	}
 	
-	private void render(Collection<Light> lights, Camera camera, Vector4f clipPlane, boolean isLowDistance) {	
+	private void render(ChunkManager chunkManager, Collection<Light> lights, Camera camera, Vector4f clipPlane, boolean isLowDistance) {	
 		prepare();	
 		checkWiredFrameOn(entitiyWiredFrame);
 		entityRenderer.render(entities, clipPlane, lights, camera, shadowMapRenderer.getToShadowMapSpaceMatrix(), environmentMap);
@@ -132,7 +116,7 @@ public class MasterRendererSimple implements MasterRenderer{
 		
 		checkWiredFrameOn(terrainWiredFrame);
 		if(!isLowDistance) {
-			voxelRenderer.render(chunker, clipPlane, lights, camera, shadowMapRenderer.getToShadowMapSpaceMatrix(), frustum);
+			voxelRenderer.render(chunkManager, clipPlane, lights, camera, shadowMapRenderer.getToShadowMapSpaceMatrix(), frustum);
 		}
 		terrainRenderer.render(terrains, clipPlane, lights, camera, shadowMapRenderer.getToShadowMapSpaceMatrix());
 		checkWiredFrameOff(terrainWiredFrame);
@@ -150,12 +134,6 @@ public class MasterRendererSimple implements MasterRenderer{
 		terrainRenderer.renderLow(terrains, lights, camera);
 		skyboxRenderer.render(camera);
 	}
-	
-	
-	private void processTerrain(Terrain terrain) {
-		terrains.add(terrain);
-	}
-	
 	
 	@Override
 	public void renderShadowMap(Scene scene) {

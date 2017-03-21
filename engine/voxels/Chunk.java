@@ -40,7 +40,6 @@ private Block[] blocks = new Block[(ES.VOXEL_CHUNK_SIZE + 1) * (ES.VOXEL_CHUNK_S
 		}
 		return isExist;
 	}
-
 	
 	public Block getBlock(int x, int y, int z) {
 		return blocks[x * ES.VOXEL_CHUNK_SIZE * ES.VOXEL_CHUNK_SIZE +

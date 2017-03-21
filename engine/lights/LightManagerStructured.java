@@ -14,7 +14,7 @@ import java.util.Map;
 
 public class LightManagerStructured implements LightManager {
 	
-	Map<String, Light> lights = new HashMap<String, Light>();
+	private Map<String, Light> lights = new HashMap<String, Light>();
 
 	@Override
 	public void addAll(Collection<Light> lightList) {
