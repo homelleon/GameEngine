@@ -52,7 +52,6 @@ public class SceneGame implements Scene {
 	private Frustum frustum = new Frustum();
 	private MousePicker picker;
 	private AudioMaster audioMaster = new AudioMasterBuffered();
-	private Loader loader;
 	
 	private EntityManager entityManager = new EntityManagerStructured();
 	private TerrainManager terrainManager = new TerrainManagerStructured();
@@ -67,8 +66,7 @@ public class SceneGame implements Scene {
 	
 	public SceneGame() {}
 	
-	public SceneGame(GameMap map, Loader loader) {
-		this.loader = loader;
+	public SceneGame(GameMap map) {
 		this.getEntities().addAll(map.getEntities().values());
 		this.getTerrains().addAll(map.getTerrains().values());
 		this.getWaters().addAll(map.getWaters().values());

@@ -63,7 +63,7 @@ public class LoopGame implements Loop {
 			loadMap("map");
 		}
 		
-		this.scene = new SceneGame(map, loader);		
+		this.scene = new SceneGame(map);		
 		this.sceneRenderer = new SceneRenderer();
 		this.sceneManager = new SceneManagerDefault();
 		scene.getTexts().getMaster().init(loader);

@@ -45,11 +45,41 @@ public class SceneManagerDefault implements SceneManager {
 		player1.getModel().getTexture().setShineDamper(5.0f);
 		
 		/*--------------TEXT----------------*/
-
-		GuiText text = new GuiText("Version","This is an Alfa-version of the game engine", 
-				3, scene.getTexts().getMaster().getFont(), new Vector2f(0.25f, 0), 0.5f, true, scene.getTexts().getMaster());
 		
-		text.setColour(1, 0, 0);
+		//Version
+		GuiText text1 = new GuiText("version","This is an Alfa-version of the game engine", 
+				1, scene.getTexts().getMaster().getFont(), new Vector2f(0.25f, 0), 0.5f, true, scene.getTexts().getMaster());
+		
+		text1.setColour(1, 0, 0);
+		
+		float hintTextX = 0.55f;
+		float hintTextY = 0.25f;
+		float hintTextSize = 1;
+		
+		GuiText textHint1 = new GuiText("hint1","- Press 'Esc' button exit the game", 
+				hintTextSize, scene.getTexts().getMaster().getFont(), new Vector2f(hintTextX, hintTextY), 0.5f, false, scene.getTexts().getMaster());
+		
+		textHint1.setColour(1, 1, 1);
+		
+		GuiText textHint2 = new GuiText("hint2","- Press 'Pause' button to pause the game", 
+				hintTextSize, scene.getTexts().getMaster().getFont(), new Vector2f(hintTextX, hintTextY + 0.05f), 0.5f, false, scene.getTexts().getMaster());
+		
+		textHint2.setColour(1, 1, 1);
+		
+		GuiText textHint3 = new GuiText("hint3","- Press mouse 'Left button' to choose objects", 
+				hintTextSize, scene.getTexts().getMaster().getFont(), new Vector2f(hintTextX, hintTextY + 0.1f), 0.5f, false, scene.getTexts().getMaster());
+		
+		textHint3.setColour(1, 1, 1);
+		
+		GuiText textHint4 = new GuiText("hint4","- Press mouse 'Right button' to cancel selection", 
+				hintTextSize, scene.getTexts().getMaster().getFont(), new Vector2f(hintTextX, hintTextY + 0.15f), 0.5f, false, scene.getTexts().getMaster());
+		
+		textHint4.setColour(1, 1, 1);
+		
+		GuiText textHint5 = new GuiText("hint5","- Press 'P' to spread chosen objects on the terrain surface", 
+				hintTextSize, scene.getTexts().getMaster().getFont(), new Vector2f(hintTextX, hintTextY + 0.2f), 0.5f, false, scene.getTexts().getMaster());
+		
+		textHint5.setColour(1, 1, 1);
 		
 		/*--------------AUDIO----------------*/
 		AL10.alDistanceModel(AL11.AL_LINEAR_DISTANCE_CLAMPED);

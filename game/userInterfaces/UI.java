@@ -7,6 +7,8 @@ import guis.GuiTexture;
 
 public interface UI {
 	
+	String getName();
+	
 	void addText(GuiText text);
 	GuiText getText(String name); 
 	Collection<GuiText> getAllTexts();
