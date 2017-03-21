@@ -18,7 +18,7 @@ public class AudioManagerStructured implements AudioManager {
 	private AudioMaster audioMaster;
 	
 	public AudioManagerStructured(AudioMaster audioMaster) {
-		this.audioMaster = audioMaster;		
+		this.audioMaster = audioMaster;
 	}
 
 
