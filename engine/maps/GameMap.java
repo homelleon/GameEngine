@@ -41,6 +41,7 @@ public class GameMap {
 	private Loader loader;
 	
 	public GameMap(String name, Loader loader) {
+		this.name = name;
 		this.loader = loader;
 	}	
 	
@@ -246,8 +247,10 @@ public class GameMap {
 		this.entities.put(name, entity);
 	}
 	
-	public void createEntity(String name, String model, String texName, String normal, String specular, Vector3f position, float rotX, float rotY, float rotZ, float scale) {
+	public void createEntity(String name, String model, String texName, String normal, String specular, Vector3f position, float rotX, float rotY, float rotZ, float scale, float shine, float reflectivity) {
 		TexturedModel staticModel = ObjectUtils.loadNormalModel(name, texName, normal, specular, loader);
+		staticModel.getTexture().setShineDamper(shine);
+		staticModel.getTexture().setReflectivity(reflectivity);
 		EntityTextured entity = new EntityTextured(name, ES.ENTITY_TYPE_NORMAL, staticModel, position, rotX, rotY, rotZ, scale);
 		this.entities.put(name, entity);
 	}

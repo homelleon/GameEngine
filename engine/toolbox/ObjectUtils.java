@@ -39,11 +39,15 @@ public class ObjectUtils {
 		ModelTexture texture = new ModelTexture(loader.loadTexture(ES.MODEL_TEXTURE_PATH,"barrel"));
 		TexturedModel model = new TexturedModel(objFile, rawModel, texture);
 		int normaMap = loader.loadTexture(ES.NORMAL_MAP_PATH, normalTexture);
-		int specularMap = loader.loadTexture(ES.SPECULAR_MAP_PATH, specularTexture);
 		model.getTexture().setNormalMap(normaMap);
 		model.getTexture().setShineDamper(10);
 		model.getTexture().setReflectivity(0.5f);
-		model.getTexture().setSpecularMap(specularMap);
+		System.out.println(specularTexture);
+		//TODO: настроить проверку на нуль
+		if(specularTexture != null) {
+			int specularMap = loader.loadTexture(ES.SPECULAR_MAP_PATH, specularTexture);
+			model.getTexture().setSpecularMap(specularMap);
+		}
 		return model;		
 	}
 	

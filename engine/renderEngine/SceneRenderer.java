@@ -87,9 +87,9 @@ public class SceneRenderer {
 		if (KeyboardGame.isKeyPressed(Keyboard.KEY_T)) {
 			MapsWriter mapWriter = new MapsTXTWriter();
 			GameMap map = new GameMap("newMap", loader);
-			map.setEntities(map.getEntities().values());
-			map.setTerrains(map.getTerrains().values());
-			mapWriter.write(map);
+			map.setEntities(scene.getEntities().getAll());
+			map.setTerrains(scene.getTerrains().getAll());
+			mapWriter.write(map, loader);
 			System.out.println("save");
 		}
 	}

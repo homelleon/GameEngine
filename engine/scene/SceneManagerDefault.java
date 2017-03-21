@@ -104,7 +104,6 @@ public class SceneManagerDefault implements SceneManager {
 		scene.getAudioSources().getMaster().setListenerData(scene.getPlayer().getPosition());
 		scene.getEntities().add(player1);
 		scene.getEntities().addAll(ObjectUtils.createGrassField(500, 500, 50, 1, 0.1f, loader));
-		scene.getEntities().addAll(EntityManagerStructured.createNormalMappedEntities(loader));
 		scene.setCamera(new CameraPlayer(player1, cameraName));
 		scene.setSun(new Light("Sun", new Vector3f(-100000,150000,-100000), new Vector3f(1.3f,1.3f,1.3f)));
 		scene.getLights().add(scene.getSun());

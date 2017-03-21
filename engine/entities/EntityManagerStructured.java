@@ -38,32 +38,6 @@ public class EntityManagerStructured implements EntityManager {
 	public Map<Float, List<Entity>> frustumEntities = new HashMap<Float, List<Entity>>();
 	public List<Entity> pointedEntities = new ArrayList<Entity>();
 	public List<Entity> editorEntities = new ArrayList<Entity>();
-	
-	//TODO: delete after upgrading of map
-	public static List<Entity> createNormalMappedEntities(Loader loader) {
-		List<Entity> entities = new ArrayList<Entity>();
-		TexturedModel barrelModel = new TexturedModel("barrel", NormalMappedObjLoader.loadOBJ("barrel", loader),
-				new ModelTexture(loader.loadTexture(ES.MODEL_TEXTURE_PATH,"barrel")));
-		barrelModel.getTexture().setNormalMap(loader.loadTexture(ES.NORMAL_MAP_PATH, "barrelNormal"));
-		barrelModel.getTexture().setShineDamper(10);
-		barrelModel.getTexture().setReflectivity(0.5f);
-		barrelModel.getTexture().setSpecularMap(loader.loadTexture(ES.SPECULAR_MAP_PATH, "barrelS"));
-
-		TexturedModel boulderModel = new TexturedModel("boulder", NormalMappedObjLoader.loadOBJ("boulder", loader),
-				new ModelTexture(loader.loadTexture(ES.MODEL_TEXTURE_PATH,"boulder")));
-		boulderModel.getTexture().setNormalMap(loader.loadTexture(ES.NORMAL_MAP_PATH, "boulderNormal"));
-		boulderModel.getTexture().setShineDamper(10);
-		boulderModel.getTexture().setReflectivity(0.5f);
-		
-		/* creating entities */
-		Entity barrel = new EntityTextured("barrel", ES.ENTITY_TYPE_NORMAL, barrelModel, new Vector3f(200, 0, 200), 0,0,0,1);
-		Entity boulder = new EntityTextured("boulder", ES.ENTITY_TYPE_NORMAL, boulderModel, new Vector3f(250, 0, 250), 0,0,0,1);
-		
-		entities.add(barrel);
-		entities.add(boulder);
-		
-		return entities; 
-	}
 
 	@Override
 	public void addAll(Collection<Entity> entityList) {

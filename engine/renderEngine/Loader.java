@@ -156,7 +156,7 @@ public class Loader {
 				GL11.glTexParameterf(GL11.GL_TEXTURE_2D, 
 						EXTTextureFilterAnisotropic.GL_TEXTURE_MAX_ANISOTROPY_EXT, amount);
 			}else{
-				System.out.println("Anisotropic filtering is not suported");
+				System.out.println("Anisotropic filtering is not supported");
 			}
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -166,8 +166,18 @@ public class Loader {
 		
 		int textureID = texture.getTextureID();
 		textures.put(fileName, textureID);
-		return textureID;
-		
+		return textureID;		
+	}
+	
+	public String getTextureByID(int id) {
+		String name = null;
+		for(String key : textures.keySet()) {
+			if(textures.get(key).equals(id)) {
+				name = key;
+				break;
+			}
+		}
+		return name;
 	}
 	
 	

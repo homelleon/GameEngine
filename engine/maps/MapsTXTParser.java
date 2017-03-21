@@ -10,6 +10,7 @@ import org.lwjgl.util.vector.Vector3f;
 
 import audio.AudioSource;
 import renderEngine.Loader;
+import scene.ES;
 import terrains.Terrain;
 import toolbox.ObjectUtils;
 
@@ -19,6 +20,7 @@ public class MapsTXTParser implements MapsParser {
 	public GameMap readMap(String fileName, BufferedReader reader, Loader loader) {
         String line;
         
+        System.out.println("Start loading map '" + fileName + "'...");
         /* entities */
 		List<String> eNames = new ArrayList<String>();
         List<String> eModels = new ArrayList<String>();
@@ -26,6 +28,10 @@ public class MapsTXTParser implements MapsParser {
         List<Vector3f> eCoords = new ArrayList<Vector3f>();
         List<Float> eScales = new ArrayList<Float>();  
         List<Boolean> eTypes = new ArrayList<Boolean>();
+        List<String> eNormTexts = new ArrayList<String>();
+        List<String> eSpecMaps = new ArrayList<String>();
+        List<Float> eShineDumpers = new ArrayList<Float>();
+        List<Float> eReflectivities = new ArrayList<Float>();
         
         /* terrains */
         List<String> tNames = new ArrayList<String>();
@@ -74,6 +80,17 @@ public class MapsTXTParser implements MapsParser {
                             (float) Float.valueOf(currentLine[6])));
                     eScales.add(Float.valueOf(currentLine[7]));
                     eTypes.add(Boolean.valueOf(currentLine[8]));
+                    if(Boolean.valueOf(currentLine[8])) {
+                    	eNormTexts.add(String.valueOf(currentLine[9]));
+                    	eSpecMaps.add(String.valueOf(currentLine[10]));
+                    	eShineDumpers.add(Float.valueOf(currentLine[11]));
+                    	eReflectivities.add(Float.valueOf(currentLine[12]));
+                    } else {
+                    	eNormTexts.add("");
+                    	eSpecMaps.add("");
+                    	eShineDumpers.add(0.0f);
+                    	eReflectivities.add(0.0f);
+                    }
 	        	}
 	        	
 	        	/*Read normal mapped entities*/
@@ -140,9 +157,10 @@ public class MapsTXTParser implements MapsParser {
         }        
                 
         //*Create terrains*//
-        List<Terrain> terrains = new ArrayList<Terrain>();
-        
+        System.out.println("Loading terrains...");
+        List<Terrain> terrains = new ArrayList<Terrain>();        
         for(int i=0;i<tNames.size();i++) {
+        	System.out.println(tNames.get(i));
         	if (tProcGens.get(i)) {
         		Terrain terrain = ObjectUtils.createMultiTexTerrain(tNames.get(i), (int) tCoords.get(i).x, 
 	        			(int) tCoords.get(i).y, tBaseTexs.get(i), trTexs.get(i), tgTexs.get(i), 
@@ -157,6 +175,7 @@ public class MapsTXTParser implements MapsParser {
         		terrains.add(terrain);
         	}
         }
+        System.out.println("Succed!");
         
         //*Create audios*//
         List<AudioSource> audios = new ArrayList<AudioSource>();    
@@ -169,14 +188,25 @@ public class MapsTXTParser implements MapsParser {
 		GameMap map = new GameMap(fileName, loader);
 		
 		/* create entities */
+		System.out.println("Loading entities...");
 		for(int i=0;i<eNames.size();i++) {
-			map.createEntity(eNames.get(i), eModels.get(i), eTextures.get(i), eCoords.get(i), 0, 0, 0, eScales.get(i));
+			System.out.println(eNames.get(i));
+			if(eTypes.get(i)) {
+				map.createEntity(eNames.get(i), eModels.get(i), 
+						eTextures.get(i), eNormTexts.get(i), eSpecMaps.get(i),
+						eCoords.get(i), 0, 0, 0, eScales.get(i), 
+						eShineDumpers.get(i), eReflectivities.get(i));
+			} else {
+				map.createEntity(eNames.get(i), eModels.get(i), 
+						eTextures.get(i), eCoords.get(i), 0, 0, 0, eScales.get(i));
+			}
         }
+		
+		System.out.println("Succed!");
 		
 		/* create particle systems */
 		for(int i=0;i<pNames.size();i++) { 
 			map.createParticles(pNames.get(i), pTexs.get(i), pDims.get(i), pAdds.get(i), pPpss.get(i), pSpeeds.get(i), pGravities.get(i), pLifes.get(i), pScales.get(i));
-
 		}
 		
 		//Clear
@@ -188,6 +218,9 @@ public class MapsTXTParser implements MapsParser {
         eCoords.clear();
         eScales.clear(); 
         eTypes.clear();
+        eNormTexts.clear();
+        eShineDumpers.clear();
+        eReflectivities.clear();
         
         /* terrains */
         tNames.clear();
@@ -222,6 +255,8 @@ public class MapsTXTParser implements MapsParser {
 		
 		map.setTerrains(terrains);
 		map.setAudioSources(audios);
+		
+		System.out.println("Loading complete!");
 		
 		return map;
 	}
