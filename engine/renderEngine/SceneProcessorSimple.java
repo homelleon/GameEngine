@@ -11,7 +11,7 @@ import entities.Entity;
 import models.TexturedModel;
 import scene.ES;
 import terrains.Terrain;
-import toolbox.Frustum;
+import viewCulling.Frustum;
 
 public class SceneProcessorSimple implements SceneProcessor {
 	

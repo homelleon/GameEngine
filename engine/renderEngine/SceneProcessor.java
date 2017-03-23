@@ -7,7 +7,7 @@ import java.util.Map;
 import entities.Entity;
 import models.TexturedModel;
 import terrains.Terrain;
-import toolbox.Frustum;
+import viewCulling.Frustum;
 
 public interface SceneProcessor {
 	

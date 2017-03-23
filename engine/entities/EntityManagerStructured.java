@@ -14,7 +14,7 @@ import renderEngine.Loader;
 import scene.ES;
 import terrains.Terrain;
 import textures.ModelTexture;
-import toolbox.Frustum;
+import viewCulling.Frustum;
 
 /**
  * Manages entities in the game engine.

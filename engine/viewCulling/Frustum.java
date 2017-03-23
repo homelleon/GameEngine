@@ -1,4 +1,4 @@
-package toolbox;
+package viewCulling;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -10,6 +10,7 @@ import org.lwjgl.util.vector.Vector3f;
 import cameras.Camera;
 import entities.Entity;
 import scene.ES;
+import toolbox.Maths;
 
 public class Frustum {
 	

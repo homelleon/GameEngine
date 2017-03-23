@@ -13,7 +13,7 @@ import lights.Light;
 import models.TexturedModel;
 import scene.Scene;
 import terrains.Terrain;
-import toolbox.Frustum;
+import viewCulling.Frustum;
 
 /**
  * Main interface of render Engine that contatins scene, environment and shadow

@@ -7,7 +7,7 @@ import java.util.Map;
 import org.lwjgl.util.vector.Vector3f;
 
 import terrains.Terrain;
-import toolbox.Frustum;
+import viewCulling.Frustum;
 
 /**
  * Entity control manager interface.

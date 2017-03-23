@@ -24,8 +24,8 @@ import scene.Scene;
 import shadows.ShadowMapMasterRenderer;
 import terrains.Terrain;
 import textures.Texture;
-import toolbox.Frustum;
 import toolbox.OGLUtils;
+import viewCulling.Frustum;
 import voxels.ChunkManager;
 
 public class MasterRendererSimple implements MasterRenderer{

@@ -16,8 +16,8 @@ import particles.ParticleSystem;
 import terrains.TerrainManager;
 import texts.TextManager;
 import textures.Texture;
-import toolbox.Frustum;
 import toolbox.MousePicker;
+import viewCulling.Frustum;
 import voxels.ChunkManager;
 import water.WaterManager;
 
