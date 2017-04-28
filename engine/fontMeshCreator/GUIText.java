@@ -73,17 +73,25 @@ public class GuiText {
 		this.lineMaxSize = maxLineLength;
 		this.centerText = centered;
 		makeFontSmooth();
-		//TODO: need solve that staff
+		//TODO: need solve that staff (static method was used - need to use non static method)
 		master.loadText(this);
 	}
 
-	
+	/**
+	 * Returns graphic width of interface text.
+	 * 
+	 * @return {@link Float} value of current width
+	 */
 	public float getWidth() {
 		return width;
 	}
 
 
-
+	/**
+	 * Returns graphic height of interface text.
+	 * 
+	 * @return {@link Float} value of current height
+	 */
 	public void setWidth(float width) {
 		this.width = width;
 	}
@@ -148,6 +156,11 @@ public class GuiText {
 		this.outlineColour = outlineColour;
 	}
 	
+	/**
+	 * Returns name of interface text.
+	 * 
+	 * @return {@link String} value of current name
+	 */
 	public String getName() {
 		return this.name;
 	}
