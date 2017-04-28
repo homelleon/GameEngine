@@ -8,7 +8,6 @@ import java.util.Map;
 
 import org.lwjgl.util.vector.Vector2f;
 
-import lights.Light;
 import renderEngine.Loader;
 import scene.ES;
 
