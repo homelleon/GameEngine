@@ -53,7 +53,7 @@ public class GUITextTXTParser implements GUITextParser {
 		for(int i = 0; i < nameList.size(); i++) {			
 			String text = txtLoader.loadFile(pathList.get(i));
 			System.out.println("text " + i);
-			//TODO: Problem is here 
+			//TODO: Problem is here (early initialization before master. Can't load font)
 			GuiText guiText = new GuiText(nameList.get(i), text, 4, 
 					master.getFont(), positionList.get(i), 
 					maxLengthList.get(i), centeredList.get(i), master);
