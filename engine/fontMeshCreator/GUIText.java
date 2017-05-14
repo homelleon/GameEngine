@@ -9,6 +9,7 @@ import fontRendering.TextMaster;
  * Represents a piece of text in the game.
  * 
  * @author Karl
+ * @author homelleon
  *
  */
 public class GuiText {
@@ -37,6 +38,8 @@ public class GuiText {
 	
 	private Vector2f offset = new Vector2f(0f, 0f);
 	private Vector3f outlineColour = new Vector3f(0f, 0f, 0f);
+	
+	private boolean isShown = false;
 
 	/**
 	 * Creates a new text, loads the text's quads into a VAO, and adds the text
@@ -74,7 +77,7 @@ public class GuiText {
 		this.centerText = centered;
 		makeFontSmooth();
 		//TODO: need solve that staff (static method was used - need to use non static method)
-		master.loadText(this);
+		master.loadText(this);		
 	}
 
 	/**
@@ -210,11 +213,21 @@ public class GuiText {
 	public int getNumberOfLines() {
 		return numberOfLines;
 	}
+	
+	/**
+	 * Sets position of top-left corner of the text in sceen-space.<br>
+	 * (0, 0) is the top left corner of the screen, (1, 1) is the bottom right.
+	 * 
+	 * @param position {@link Vector2f} value
+	 */
+	public void setPosition(Vector2f position) {
+		this.position = position;
+	}
 
 	/**
-	 * @return The position of the top-left corner of the text in screen-space.
-	 *         (0, 0) is the top left corner of the screen, (1, 1) is the bottom
-	 *         right.
+	 * @return {@link Vector2f} value of the position of the top-left corner of the 
+	 * text in screen-space.<br>(0, 0) is the top left corner of the screen,
+	 * (1, 1) is the bottom right.
 	 */
 	public Vector2f getPosition() {
 		return position;
@@ -247,6 +260,14 @@ public class GuiText {
 	 */
 	public int getVertexCount() {
 		return this.vertexCount;
+	}
+	
+	public void setIsShown(boolean value) {
+		this.isShown = value;
+	}
+	
+	public boolean getIsShown() {
+		return this.isShown;
 	}
 
 	/**

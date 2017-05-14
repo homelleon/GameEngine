@@ -19,7 +19,7 @@ import scene.ES;
  * @version 1.0
  */
 
-public class GuiManagerStructured implements GuiManager {
+public class GUIManagerStructured implements GuiManager {
 	
 	Map<String, GuiTexture> guis = new HashMap<String, GuiTexture>();
 	
