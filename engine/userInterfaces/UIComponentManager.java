@@ -1,7 +1,7 @@
 package userInterfaces;
 
 import fontMeshCreator.GuiText;
-import guis.GuiManager;
+import guis.GUIManager;
 import guis.GuiTexture;
 import texts.GUITextManager;
 
@@ -15,12 +15,12 @@ import texts.GUITextManager;
 public interface UIComponentManager {
 	
 	/**
-	 * Returns {@link GuiManager} that controlls user interface textures 
+	 * Returns {@link GUIManager} that controlls user interface textures 
 	 * ({@link GuiTexture}).
 	 * 
-	 * @return {@link GuiManager} value
+	 * @return {@link GUIManager} value
 	 */
-	GuiManager getTextures();
+	GUIManager getTextures();
 	
 	/**
 	 * Returns {@link GUITextManager} that controlls user interface texts 
@@ -31,7 +31,7 @@ public interface UIComponentManager {
 	GUITextManager getTexts();
 	
 	/**
-	 * Clean all textures and texts from {@link GuiManager} and {@link GUITextManager}.  
+	 * Clean all textures and texts from {@link GUIManager} and {@link GUITextManager}.  
 	 */
 	void cleanAll();	
 }

@@ -13,7 +13,7 @@ import entities.Entity;
 import entities.EntityManager;
 import entities.EntityManagerStructured;
 import entities.Player;
-import guis.GuiManager;
+import guis.GUIManager;
 import guis.GUIManagerStructured;
 import lights.Light;
 import lights.LightManager;
@@ -58,7 +58,7 @@ public class SceneGame implements Scene {
 	private ParticleManager particleManager = new ParticleManagerStructured();
 	private LightManager lightManager = new LightManagerStructured();
 	private AudioManager audioManager = new AudioManagerStructured(audioMaster);
-	private GuiManager guiManager = new GUIManagerStructured();
+	private GUIManager guiManager = new GUIManagerStructured();
 	private GUITextManager textManager = new GUITextManagerStructured();
 	private UIManager uiManager = new UIManagerBasic();
 	
@@ -192,7 +192,7 @@ public class SceneGame implements Scene {
 	 */
 
 	@Override
-	public GuiManager getGuis() {
+	public GUIManager getGuis() {
 		return this.guiManager;
 	}
 	

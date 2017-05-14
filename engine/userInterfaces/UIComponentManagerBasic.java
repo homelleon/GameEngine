@@ -1,16 +1,16 @@
 package userInterfaces;
 
 import guis.GUIManagerStructured;
-import guis.GuiManager;
+import guis.GUIManager;
 import texts.GUITextManager;
 import texts.GUITextManagerStructured;
 
 public class UIComponentManagerBasic implements UIComponentManager {
 	
-	private GuiManager guiManager;
+	private GUIManager guiManager;
 	private GUITextManager textManager;	
 	
-	public UIComponentManagerBasic(GuiManager guiManager, GUITextManager textManager) {
+	public UIComponentManagerBasic(GUIManager guiManager, GUITextManager textManager) {
 		this.textManager = textManager;
 		this.guiManager = guiManager;
 	}
@@ -22,7 +22,7 @@ public class UIComponentManagerBasic implements UIComponentManager {
 	}
 	
 	@Override
-	public GuiManager getTextures() {
+	public GUIManager getTextures() {
 		return guiManager;
 	}
 	

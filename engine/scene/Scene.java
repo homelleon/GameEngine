@@ -7,7 +7,7 @@ import cameras.Camera;
 import entities.Entity;
 import entities.EntityManager;
 import entities.Player;
-import guis.GuiManager;
+import guis.GUIManager;
 import lights.Light;
 import lights.LightManager;
 import particles.ParticleManager;
@@ -134,10 +134,10 @@ public interface Scene {
 	/**
 	 * Returns graphic interfaces manager.
 	 * 
-	 * @return {@link GuiManager} value of graphic
+	 * @return {@link GUIManager} value of graphic
 	 * 		   interfaces manager
 	 */
-	GuiManager getGuis();
+	GUIManager getGuis();
 
 	/**
 	 * Returns manager of graphic interface text.
