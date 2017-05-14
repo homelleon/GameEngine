@@ -9,7 +9,7 @@ import java.util.Collection;
  *
  */
 
-public interface GuiManager {
+public interface GUIManager {
 
 	/**
 	 * Adds list of graphic interfaces into graphic interfaces map array.
