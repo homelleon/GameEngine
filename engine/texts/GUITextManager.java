@@ -2,7 +2,6 @@ package texts;
 
 import java.util.Collection;
 
-import fontMeshCreator.FontType;
 import fontMeshCreator.GuiText;
 import fontRendering.TextMaster;
 import lights.Light;
@@ -14,7 +13,7 @@ import lights.Light;
  *
  */
 
-public interface TextManager {
+public interface GUITextManager {
 	
 	/**
 	 * Adds list of text into texts map array.
@@ -62,5 +61,12 @@ public interface TextManager {
 	 * Clear all texts map and arrays.
 	 */
 	void clearAll();
+	
+	/**
+	 * Reads interface texture entities from file.
+	 * 
+	 * @param fileName {@link String} value of file name
+	 */
+	void readFile(String fileName);
 
 }

@@ -2,23 +2,19 @@ package scene;
 
 import java.util.Collection;
 
-import org.lwjgl.openal.AL10;
-import org.lwjgl.openal.AL11;
 import org.lwjgl.util.vector.Vector3f;
 
 import audio.AudioManager;
 import audio.AudioManagerStructured;
 import audio.AudioMaster;
 import audio.AudioMasterBuffered;
-import audio.AudioSource;
-import audio.AudioSourceSimple;
 import cameras.Camera;
 import entities.Entity;
 import entities.EntityManager;
 import entities.EntityManagerStructured;
 import entities.Player;
 import guis.GuiManager;
-import guis.GuiManagerStructured;
+import guis.GUIManagerStructured;
 import lights.Light;
 import lights.LightManager;
 import lights.LightManagerStructured;
@@ -26,14 +22,15 @@ import maps.GameMap;
 import particles.ParticleManager;
 import particles.ParticleManagerStructured;
 import particles.ParticleSystem;
-import renderEngine.Loader;
 import terrains.Terrain;
 import terrains.TerrainManager;
 import terrains.TerrainManagerStructured;
-import texts.TextManager;
-import texts.TextManagerStructured;
+import texts.GUITextManager;
+import texts.GUITextManagerStructured;
 import textures.Texture;
 import toolbox.MousePicker;
+import userInterfaces.UIManager;
+import userInterfaces.UIManagerBasic;
 import viewCulling.Frustum;
 import voxels.ChunkManager;
 import voxels.ChunkManagerStructured;
@@ -61,8 +58,9 @@ public class SceneGame implements Scene {
 	private ParticleManager particleManager = new ParticleManagerStructured();
 	private LightManager lightManager = new LightManagerStructured();
 	private AudioManager audioManager = new AudioManagerStructured(audioMaster);
-	private GuiManager guiManager = new GuiManagerStructured();
-	private TextManager textManager = new TextManagerStructured();
+	private GuiManager guiManager = new GUIManagerStructured();
+	private GUITextManager textManager = new GUITextManagerStructured();
+	private UIManager uiManager = new UIManagerBasic();
 	
 	public SceneGame() {}
 	
@@ -203,8 +201,14 @@ public class SceneGame implements Scene {
 	 */
 
 	@Override
-	public TextManager getTexts() {
+	public GUITextManager getTexts() {
 		return this.textManager;
+	}
+	
+	@Override
+	public UIManager getUserInterface() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	
@@ -266,5 +270,7 @@ public class SceneGame implements Scene {
 		this.guiManager.clearAll();
 		this.textManager.clearAll();		
 	}
+
+
 
 }

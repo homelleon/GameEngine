@@ -10,7 +10,6 @@ import org.lwjgl.util.vector.Vector3f;
 
 import audio.AudioSource;
 import renderEngine.Loader;
-import scene.ES;
 import terrains.Terrain;
 import toolbox.ObjectUtils;
 

@@ -2,8 +2,6 @@ package guis;
 
 import java.util.Collection;
 
-import lights.Light;
-
 /**
  * Interface to store and control graphic interfaces.
  * 

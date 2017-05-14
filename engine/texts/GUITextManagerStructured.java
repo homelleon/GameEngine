@@ -7,7 +7,7 @@ import java.util.Map;
 import fontMeshCreator.GuiText;
 import fontRendering.TextMaster;
 
-public class TextManagerStructured implements TextManager {
+public class GUITextManagerStructured implements GUITextManager {
 	
 	private TextMaster master = new TextMaster();
 	private Map<String, GuiText> texts = new HashMap<String, GuiText>();
@@ -41,6 +41,8 @@ public class TextManagerStructured implements TextManager {
 	public Collection<GuiText> getAll() {
 		return this.texts.values();
 	}
+	
+	
 
 	@Override
 	public void clearAll() {
@@ -51,6 +53,12 @@ public class TextManagerStructured implements TextManager {
 	@Override
 	public TextMaster getMaster() {
 		return master;
+	}
+
+	@Override
+	public void readFile(String fileName) {
+		GUITextLoader txtLoader = new GUITextTXTLoader();
+		txtLoader.loadFile(fileName, master);
 	}
 
 }

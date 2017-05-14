@@ -15,7 +15,7 @@ import entities.EntityManagerStructured;
 import entities.Player;
 import entities.PlayerTextured;
 import fontMeshCreator.GuiText;
-import guis.GuiManagerStructured;
+import guis.GUIManagerStructured;
 import lights.Light;
 import models.TexturedModel;
 import particles.ParticleManagerStructured;
@@ -111,7 +111,7 @@ public class SceneManagerDefault implements SceneManager {
 		scene.getLights().add(new Light("Light2", new Vector3f(20,2,20),new Vector3f(0,5,0), new Vector3f(1, 0.01f, 0.002f)));
 
 		scene.getAudioSources().add(ambientSource);
-		scene.getGuis().addAll(GuiManagerStructured.createGui(loader));
+		scene.getGuis().addAll(GUIManagerStructured.createGui(loader));
 		scene.getWaters().addAll(waterList);
 		scene.getParticles().addAll(ParticleManagerStructured.createParticleSystem(loader));
 		

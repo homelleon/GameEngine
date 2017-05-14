@@ -110,6 +110,7 @@ public class ES {
 	public final static String AUDIO_PATH = "audio/";
 	public final static String OBJECT_PATH = RES_PATH + "objFiles/";
 	public final static String TEXT_PATH = RES_PATH + "texts/";
+	public final static String INTERFACE_PATH = RES_PATH + "interfaces/";
 	
 	public final static String SHADER_PATH = SOURCE_PATH + "shaders/";
 	public final static String ENTITY_SHADER_PATH = SOURCE_PATH + "entities/";

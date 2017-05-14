@@ -5,6 +5,7 @@ import org.lwjgl.util.vector.Vector2f;
 public class GuiTexture {
 	
 	private String name;
+	private boolean isShown = false;
 	
 	private int texture;
 	private Vector2f position;
@@ -22,17 +23,28 @@ public class GuiTexture {
 		return name;
 	}
 
-
 	public int getTexture() {
-		return texture;
+		return this.texture;
+	}
+	
+	public void setPosition(Vector2f position) {
+		this.position = position;
 	}
 	
 	public Vector2f getPosition() {
-		return position;
+		return this.position;
 	}
 	
 	public Vector2f getScale() {
-		return scale;
+		return this.scale;
+	}
+	
+	public boolean getIsShown() {
+		return this.isShown;
+	}
+	
+	public void setIsShown(boolean value) {
+		this.isShown = value;
 	}
 	
 	

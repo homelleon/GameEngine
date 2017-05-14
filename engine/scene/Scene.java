@@ -14,9 +14,10 @@ import particles.ParticleManager;
 import particles.ParticleMaster;
 import particles.ParticleSystem;
 import terrains.TerrainManager;
-import texts.TextManager;
+import texts.GUITextManager;
 import textures.Texture;
 import toolbox.MousePicker;
+import userInterfaces.UIManager;
 import viewCulling.Frustum;
 import voxels.ChunkManager;
 import water.WaterManager;
@@ -139,12 +140,20 @@ public interface Scene {
 	GuiManager getGuis();
 
 	/**
-	 * Returns manager of graphic interface texta.
+	 * Returns manager of graphic interface text.
 	 * 
-	 * @return {@link TextManager}> value of graphic
+	 * @return {@link GUITextManager} value of graphic
 	 * 		   interfaces texts manager
 	 */
-	TextManager getTexts();
+	GUITextManager getTexts();
+	
+	/**
+	 * Rerturns manager to control user interface.
+	 * 
+	 * @return {@link UIManager} value of user interface
+	 * manager 
+	 */
+	UIManager getUserInterface();
 	
 	/**
 	 * Returns visual frustum object.
