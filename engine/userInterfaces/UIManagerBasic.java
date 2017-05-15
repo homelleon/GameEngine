@@ -21,14 +21,6 @@ public class UIManagerBasic implements UIManager {
 	public void init(Loader loader) {
 		System.out.println("Prepare User Interface...");
 		this.componentManager = new UIComponentManagerBasic(TEXTURE_FILE_NAME, TXT_FILE_NAME, loader);
-		
-		GUIText txt1 = componentManager.getTexts().getByName("firstText");
-		GUIText txt2 = componentManager.getTexts().getByName("secondText");
-		List<GuiTexture> textures = new ArrayList<GuiTexture>();
-		List<GUIText> texts = new ArrayList<GUIText>();	
-		texts.add(txt1);
-		texts.add(txt2);
-		UI ui1 = new UISimple("UI1", textures, texts);	
 		System.out.println("Succed!");
 	}
 
