@@ -27,6 +27,7 @@ import water.WaterManager;
  * 
  * @author homelleon
  * @version 1.0
+ * @see SceneGame
  *
  */
 public interface Scene {

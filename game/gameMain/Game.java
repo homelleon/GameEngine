@@ -4,6 +4,7 @@ package gameMain;
  * Main game interface to control events in engine system.
  * 
  * @author homelleon
+ * @see MyGame
  * 
  */
 public interface Game {

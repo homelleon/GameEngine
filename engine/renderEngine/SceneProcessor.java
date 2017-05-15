@@ -9,6 +9,11 @@ import models.TexturedModel;
 import terrains.Terrain;
 import viewCulling.Frustum;
 
+/**
+ * 
+ * @author homelleon
+ * @see SceneProcessorSimple
+ */
 public interface SceneProcessor {
 	
 	public void processTerrain(Terrain terrain, Collection<Terrain> terrains);

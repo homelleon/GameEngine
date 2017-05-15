@@ -6,6 +6,7 @@ import java.util.Collection;
  * Group of user interface objects to solve the same task.
  * 
  * @author homelleon
+ * @see UIGroupSimple
  *
  */
 public interface UIGroup {

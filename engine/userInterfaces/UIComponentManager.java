@@ -9,7 +9,7 @@ import texts.GUITextManager;
  * and texts.
  * 
  * @author homelleon
- *
+ * @see UIComponentManagerBasic
  */
 public interface UIComponentManager {
 	

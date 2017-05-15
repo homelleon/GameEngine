@@ -7,6 +7,7 @@ import org.lwjgl.util.vector.Vector2f;
  *
  * 
  * @author homelleon
+ * @see UISimple
  *
  */
 public interface UI {

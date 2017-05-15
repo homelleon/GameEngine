@@ -4,6 +4,11 @@ import org.lwjgl.util.vector.Vector3f;
 
 import models.TexturedModel;
 
+/**
+ * 
+ * @author homelleon
+ * @see EntityTextured
+ */
 public interface Entity {
 	
 	//управление видимостью

@@ -21,6 +21,7 @@ import viewCulling.Frustum;
  * 
  * @author homelleon
  * @version 1.0
+ * @see MasterRendererSimple
  *
  */
 public interface MasterRenderer {

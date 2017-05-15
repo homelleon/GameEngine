@@ -7,8 +7,14 @@ import org.lwjgl.util.vector.Vector3f;
  * Class that allows to set a world camera.
  * 
  * @author homelleon
+ * 
+ * @see CameraFree
+ * @see CameraPlayer
+ * @see CameraCubeMap
  *
  */
+
+//TODO: need two interfaces for camera and cube camera
 
 public interface Camera {
 	
