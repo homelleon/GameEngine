@@ -9,7 +9,7 @@ import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 
 import fontMeshCreator.FontType;
-import fontMeshCreator.GuiText;
+import fontMeshCreator.GUIText;
 import toolbox.OGLUtils;
 
 public class FontRenderer {
@@ -24,14 +24,14 @@ public class FontRenderer {
 		shader.cleanUp();
 	}
 	
-	public void render(Map<FontType, List<GuiText>> texts) {
+	public void render(Map<FontType, List<GUIText>> texts) {
 		prepare();
 		
 		for(FontType font: texts.keySet()) {
 			GL13.glActiveTexture(GL13.GL_TEXTURE0);
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, font.getTextureAtlas());
 			
-			for(GuiText text : texts.get(font)) {
+			for(GUIText text : texts.get(font)) {
 				if(text.getIsShown()) {
 					renderText(text);
 				}
@@ -47,7 +47,7 @@ public class FontRenderer {
 		shader.start();
 	}
 	
-	private void renderText(GuiText text) {
+	private void renderText(GUIText text) {
 		GL30.glBindVertexArray(text.getMesh());
 		GL20.glEnableVertexAttribArray(0);
 		GL20.glEnableVertexAttribArray(1);

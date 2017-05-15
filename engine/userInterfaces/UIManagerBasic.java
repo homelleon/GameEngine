@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import fontMeshCreator.GuiText;
+import fontMeshCreator.GUIText;
 import guis.GuiTexture;
 
 public class UIManagerBasic implements UIManager {
@@ -15,28 +15,16 @@ public class UIManagerBasic implements UIManager {
 	private static final String TEXTURE_FILE_NAME = "GUITextures";
 	
 	UIComponentManager componentManager;
-	Map<String, UIGroup> groups = new HashMap<String, UIGroup>();
+	Map<String, UIGroup> groups = new HashMap<String, UIGroup>();	
 	
-	public UIManagerBasic(UIComponentManager componentManager, 
-			List<UIGroup> groupList) {
-		this.componentManager = componentManager;
-		for(UIGroup group : groupList) {
-			this.groups.put(group.getName(), group);
-		}
-	}
-	
-	public UIManagerBasic(UIComponentManager componentManager) {
-		this.componentManager = componentManager;
-	}
-	
-	public UIManagerBasic() {
+	public void init() {
 		System.out.println("Prepare User Interface...");
 		this.componentManager = new UIComponentManagerBasic(TEXTURE_FILE_NAME, TXT_FILE_NAME);
 		
-		GuiText txt1 = componentManager.getTexts().getByName("firstText");
-		GuiText txt2 = componentManager.getTexts().getByName("secondText");
+		GUIText txt1 = componentManager.getTexts().getByName("firstText");
+		GUIText txt2 = componentManager.getTexts().getByName("secondText");
 		List<GuiTexture> textures = new ArrayList<GuiTexture>();
-		List<GuiText> texts = new ArrayList<GuiText>();	
+		List<GUIText> texts = new ArrayList<GUIText>();	
 		texts.add(txt1);
 		texts.add(txt2);
 		UI ui1 = new UISimple("UI1", textures, texts);	

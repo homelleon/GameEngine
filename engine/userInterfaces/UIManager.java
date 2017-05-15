@@ -2,7 +2,18 @@ package userInterfaces;
 
 import java.util.Collection;
 
+/**
+ * UI Manager Interface.
+ * 
+ * @author homelleon
+ * @see UIManagerBasic
+ */
 public interface UIManager {
+	
+	/**
+	 * Initialize ui manager.
+	 */
+	void init();
 	
 	/**
 	 * Returns UIGroup by name.

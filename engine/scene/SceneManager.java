@@ -6,6 +6,7 @@ import renderEngine.Loader;
  * Temporal interface to initialize test objects. 
  * 
  * @author homelleon
+ * @see SceneManagerDefault
  *
  */
 public interface SceneManager {

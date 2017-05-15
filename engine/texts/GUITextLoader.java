@@ -2,11 +2,11 @@ package texts;
 
 import java.util.List;
 
-import fontMeshCreator.GuiText;
+import fontMeshCreator.GUIText;
 import fontRendering.TextMaster;
 
 public interface GUITextLoader {
 	
-	List<GuiText> loadFile(String fileName, TextMaster master); 
+	List<GUIText> loadFile(String fileName, TextMaster master); 
 		
 }

@@ -6,13 +6,13 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.List;
 
-import fontMeshCreator.GuiText;
+import fontMeshCreator.GUIText;
 import fontRendering.TextMaster;
 import scene.ES;
 
 public class GUITextTXTLoader implements GUITextLoader {
 	
-	public List<GuiText> loadFile(String fileName, TextMaster master) {
+	public List<GUIText> loadFile(String fileName, TextMaster master) {
 		FileReader isr = null;
 		File textFile = new File(ES.INTERFACE_PATH + fileName + ".txt");
 		

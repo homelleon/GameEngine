@@ -1,6 +1,5 @@
 package userInterfaces;
 
-import fontMeshCreator.GuiText;
 import guis.GUIManager;
 import guis.GuiTexture;
 import texts.GUITextManager;

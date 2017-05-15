@@ -59,8 +59,9 @@ public class SceneGame implements Scene {
 	private LightManager lightManager = new LightManagerStructured();
 	private AudioManager audioManager = new AudioManagerStructured(audioMaster);
 	private GUIManager guiManager = new GUIManagerStructured();
-	private GUITextManager textManager = new GUITextManagerStructured();
 	private UIManager uiManager = new UIManagerBasic();
+	private GUITextManager textManager = new GUITextManagerStructured();
+
 	
 	public SceneGame() {}
 	
@@ -206,9 +207,8 @@ public class SceneGame implements Scene {
 	}
 	
 	@Override
-	public UIManager getUserInterface() {
-		// TODO Auto-generated method stub
-		return null;
+	public UIManager getUserInterface() {		
+		return this.uiManager;
 	}
 
 	

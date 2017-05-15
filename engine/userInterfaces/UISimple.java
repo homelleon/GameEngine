@@ -4,11 +4,11 @@ import java.util.List;
 
 import org.lwjgl.util.vector.Vector2f;
 
-import fontMeshCreator.GuiText;
+import fontMeshCreator.GUIText;
 import guis.GuiTexture;
 
 /**
- * Stores {@link GuiTexture} and {@link GuiText} objects to control them
+ * Stores {@link GuiTexture} and {@link GUIText} objects to control them
  * together.
  * 
  * @author homelleon
@@ -19,9 +19,9 @@ public class UISimple implements UI {
 	
 	private String name;
 	private List<GuiTexture> guis;
-	private List<GuiText> texts;
+	private List<GUIText> texts;
 	
-	public UISimple(String name, List<GuiTexture> guis, List<GuiText> texts) {
+	public UISimple(String name, List<GuiTexture> guis, List<GUIText> texts) {
 		this.name = name;
 		this.guis = guis;
 		this.texts = texts;
@@ -57,7 +57,7 @@ public class UISimple implements UI {
 			gui.setPosition(newPosition);
 		}	
 		
-		for(GuiText text : this.texts) {
+		for(GUIText text : this.texts) {
 			Vector2f newPosition = Vector2f.add(text.getPosition(), position, null);
 			text.setPosition(newPosition);
 		}

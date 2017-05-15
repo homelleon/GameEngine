@@ -45,7 +45,7 @@ public class FontType {
 	 *            - the unloaded text.
 	 * @return Information about the vertices of all the quads.
 	 */
-	public TextMeshData loadText(GuiText text) {
+	public TextMeshData loadText(GUIText text) {
 		return loader.createTextMesh(text);
 	}
 

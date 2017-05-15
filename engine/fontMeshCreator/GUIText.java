@@ -12,7 +12,7 @@ import fontRendering.TextMaster;
  * @author homelleon
  *
  */
-public class GuiText {
+public class GUIText {
 	
 	private String name;
 
@@ -66,7 +66,7 @@ public class GuiText {
 	 * @param centered
 	 *            - whether the text should be centered or not. 
 	 */
-	public GuiText(String name, String text, float fontSize, FontType font, Vector2f position, float maxLineLength,
+	public GUIText(String name, String text, float fontSize, FontType font, Vector2f position, float maxLineLength,
 			boolean centered, TextMaster master) {
 		this.name = name;
 		this.textString = text;

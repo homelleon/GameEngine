@@ -17,6 +17,8 @@ import scene.Scene;
 import scene.SceneGame;
 import scene.SceneManager;
 import scene.SceneManagerDefault;
+import userInterfaces.UIManager;
+import userInterfaces.UIManagerBasic;
 
 /**
  * Game looping system that initialize preloaded game variables and objects and
@@ -67,6 +69,7 @@ public class LoopGame implements Loop {
 		this.sceneRenderer = new SceneRenderer();
 		this.sceneManager = new SceneManagerDefault();
 		scene.getTexts().getMaster().init(loader);
+		scene.getUserInterface().init();		
 		sceneManager.init(scene, loader);
 	}
 	

@@ -4,33 +4,34 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import fontMeshCreator.GuiText;
+import fontMeshCreator.GUIText;
 import fontRendering.TextMaster;
 
 public class GUITextManagerStructured implements GUITextManager {
 	
+	//TODO: get textMaster object from scene
 	private TextMaster master = new TextMaster();
-	private Map<String, GuiText> texts = new HashMap<String, GuiText>();
+	private Map<String, GUIText> texts = new HashMap<String, GUIText>();
 	
 	@Override
-	public void addAll(Collection<GuiText> textList) {
+	public void addAll(Collection<GUIText> textList) {
 		if((textList != null) && (!textList.isEmpty())) {
-			for(GuiText text : textList) {
+			for(GUIText text : textList) {
 				this.texts.put(text.getName(), text);
 			}
 		}	
 	}
 
 	@Override
-	public void add(GuiText text) {
+	public void add(GUIText text) {
 		if(text != null) {
 			this.texts.put(text.getName(), text); 		
 		}
 	}
 
 	@Override
-	public GuiText getByName(String name) {
-		GuiText text = null;
+	public GUIText getByName(String name) {
+		GUIText text = null;
 		if(this.texts.containsKey(name)) {
 			text = this.texts.get(name);
 		}
@@ -38,7 +39,7 @@ public class GUITextManagerStructured implements GUITextManager {
 	}
 
 	@Override
-	public Collection<GuiText> getAll() {
+	public Collection<GUIText> getAll() {
 		return this.texts.values();
 	}
 	

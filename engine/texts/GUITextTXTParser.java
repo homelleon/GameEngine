@@ -7,15 +7,15 @@ import java.util.List;
 
 import org.lwjgl.util.vector.Vector2f;
 
-import fontMeshCreator.GuiText;
+import fontMeshCreator.GUIText;
 import fontRendering.TextMaster;
 
 public class GUITextTXTParser implements GUITextParser {
 
 	@Override
-	public List<GuiText> parse(BufferedReader reader, TextMaster master) {
+	public List<GUIText> parse(BufferedReader reader, TextMaster master) {
 		String line;
-		List<GuiText> textList = new ArrayList<GuiText>();
+		List<GUIText> textList = new ArrayList<GUIText>();
 		
 		/* preaparing lists of interface texts parameters */
 		List<String> nameList = new ArrayList<String>();
@@ -54,7 +54,8 @@ public class GUITextTXTParser implements GUITextParser {
 			String text = txtLoader.loadFile(pathList.get(i));
 			System.out.println("text " + i);
 			//TODO: Problem is here (early initialization before master. Can't load font)
-			GuiText guiText = new GuiText(nameList.get(i), text, 4, 
+			System.out.println(master.getFont());
+			GUIText guiText = new GUIText(nameList.get(i), text, 4, 
 					master.getFont(), positionList.get(i), 
 					maxLengthList.get(i), centeredList.get(i), master);
 			textList.add(guiText);			

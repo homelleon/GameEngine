@@ -9,7 +9,7 @@ import org.lwjgl.util.vector.Vector4f;
 import engineMain.DisplayManager;
 import engineMain.EngineMain;
 import fontMeshCreator.FontType;
-import fontMeshCreator.GuiText;
+import fontMeshCreator.GUIText;
 import guis.GuiRenderer;
 import inputs.Controls;
 import inputs.ControlsInGame;
@@ -154,23 +154,23 @@ public class SceneRenderer {
 	}
 
 	protected void renderText() {
-		GuiText fpsText = createFPSText(Math.round(1 / DisplayManager.getFrameTimeSeconds()), scene.getTexts().getMaster().getFont());
+		GUIText fpsText = createFPSText(Math.round(1 / DisplayManager.getFrameTimeSeconds()), scene.getTexts().getMaster().getFont());
 		fpsText.setColour(1, 0, 0);
-		GuiText coordsText = createPickerCoordsText(picker, scene.getTexts().getMaster().getFont());
+		GUIText coordsText = createPickerCoordsText(picker, scene.getTexts().getMaster().getFont());
 		coordsText.setColour(1, 0, 0);
 		scene.getTexts().getMaster().render();
 		fpsText.remove();
 		coordsText.remove();
 	}
 
-	protected GuiText createFPSText(float FPS, FontType font) {
-		return new GuiText("FPS", "FPS: " + String.valueOf((int) FPS), 2, font, new Vector2f(0.65f, 0), 0.5f, true, scene.getTexts().getMaster());
+	protected GUIText createFPSText(float FPS, FontType font) {
+		return new GUIText("FPS", "FPS: " + String.valueOf((int) FPS), 2, font, new Vector2f(0.65f, 0), 0.5f, true, scene.getTexts().getMaster());
 	}
 
-	protected GuiText createPickerCoordsText(MousePicker picker, FontType font) {
+	protected GUIText createPickerCoordsText(MousePicker picker, FontType font) {
 		picker.update();
 		String text = (String) String.valueOf(picker.getCurrentRay());
-		return new GuiText("Coords", text, 1, font, new Vector2f(0.3f, 0.2f), 1f, true, scene.getTexts().getMaster());
+		return new GUIText("Coords", text, 1, font, new Vector2f(0.3f, 0.2f), 1f, true, scene.getTexts().getMaster());
 	}
 
 	private void move() {

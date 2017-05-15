@@ -2,7 +2,7 @@ package texts;
 
 import java.util.Collection;
 
-import fontMeshCreator.GuiText;
+import fontMeshCreator.GUIText;
 import fontRendering.TextMaster;
 import lights.Light;
 
@@ -10,6 +10,7 @@ import lights.Light;
  * Interface to store and control graphic interface texts.
  * 
  * @author homelleon
+ * @see GUITextManagerStructured
  *
  */
 
@@ -19,10 +20,10 @@ public interface GUITextManager {
 	 * Adds list of text into texts map array.
 	 * 
 	 * @param textList
-	 * 					  {@link Collection}<{@link GuiText}> value of texts
+	 * 					  {@link Collection}<{@link GUIText}> value of texts
 	 * 					  list
 	 */
-	void addAll(Collection<GuiText> textList);
+	void addAll(Collection<GUIText> textList);
 	
 	/**
 	 * Adds one text into texts map array.
@@ -30,7 +31,7 @@ public interface GUITextManager {
 	 * @param text
 	 * 				  {@link Light} value
 	 */
-	void add(GuiText text);
+	void add(GUIText text);
 	
 	/**
 	 * Returns text by name.
@@ -38,17 +39,17 @@ public interface GUITextManager {
 	 * @param name
 	 * 				{@link String} value
 	 * 
-	 * @return {@link GuiText} value of chosen text
+	 * @return {@link GUIText} value of chosen text
 	 */
-	GuiText getByName(String name);
+	GUIText getByName(String name);
 	
 	/**
 	 * Returns list of texts groupped by name.
 	 * 
-	 * @return {@link Collection}<{@link GuiText}> value of texts
+	 * @return {@link Collection}<{@link GUIText}> value of texts
 	 * 		   list
 	 */
-	Collection<GuiText> getAll();	
+	Collection<GUIText> getAll();	
 	
 	/**
 	 * Returns text master.
