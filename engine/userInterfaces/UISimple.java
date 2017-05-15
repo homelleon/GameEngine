@@ -34,14 +34,23 @@ public class UISimple implements UI {
 
 	@Override
 	public void show() {
-		guis.forEach(gui -> gui.setIsShown(true));
-		texts.forEach(tui -> tui.setIsShown(true));
+		if(!guis.isEmpty()) {
+			guis.forEach(gui -> gui.setIsShown(true));
+		}
+		
+		if(!texts.isEmpty()) {
+			texts.forEach(tui -> tui.setIsShown(true));
+		}
 	}
 
 	@Override
 	public void hide() {
-		guis.forEach(gui -> gui.setIsShown(false));
-		texts.forEach(tui -> tui.setIsShown(false));
+		if(!guis.isEmpty()) {
+			guis.forEach(gui -> gui.setIsShown(false));
+		}
+		if(!texts.isEmpty()) {
+			texts.forEach(tui -> tui.setIsShown(false));
+		}
 	}
 
 	@Override

@@ -13,7 +13,9 @@ import audio.AudioSourceSimple;
 import cameras.CameraPlayer;
 import entities.Player;
 import entities.PlayerTextured;
+import fontMeshCreator.FontType;
 import fontMeshCreator.GUIText;
+import fontRendering.TextMaster;
 import guis.GUIManagerStructured;
 import lights.Light;
 import models.TexturedModel;
@@ -43,11 +45,16 @@ public class SceneManagerDefault implements SceneManager {
 		player1.getModel().getTexture().setRefractiveIndex(1.33f);
 		player1.getModel().getTexture().setShineDamper(5.0f);
 		
+		/*--------------UI-------------------*/
+		scene.getUserInterface().init(loader);
 		/*--------------TEXT----------------*/
 		
+		FontType font = scene.getUserInterface().getComponentManager().getTexts().getMaster().getFont();
+		List<GUIText> guiTextList = new ArrayList<GUIText>();
 		//Version
 		GUIText text1 = new GUIText("version","This is an Alfa-version of the game engine", 
-				1, scene.getTexts().getMaster().getFont(), new Vector2f(0.25f, 0), 0.5f, true, scene.getTexts().getMaster());
+				1, font, new Vector2f(0.25f, 0), 0.5f, true);
+		guiTextList.add(text1);
 		
 		text1.setColour(1, 0, 0);
 		
@@ -56,29 +63,41 @@ public class SceneManagerDefault implements SceneManager {
 		float hintTextSize = 1;
 		
 		GUIText textHint1 = new GUIText("hint1","- Press 'Esc' button exit the game", 
-				hintTextSize, scene.getTexts().getMaster().getFont(), new Vector2f(hintTextX, hintTextY), 0.5f, false, scene.getTexts().getMaster());
+				hintTextSize, font, new Vector2f(hintTextX, hintTextY), 0.5f, false);
+		
+		guiTextList.add(textHint1);
 		
 		textHint1.setColour(1, 1, 1);
 		
 		GUIText textHint2 = new GUIText("hint2","- Press 'Pause' button to pause the game", 
-				hintTextSize, scene.getTexts().getMaster().getFont(), new Vector2f(hintTextX, hintTextY + 0.05f), 0.5f, false, scene.getTexts().getMaster());
+				hintTextSize, font, new Vector2f(hintTextX, hintTextY + 0.05f), 0.5f, false);
 		
 		textHint2.setColour(1, 1, 1);
 		
+		guiTextList.add(textHint2);
+		
 		GUIText textHint3 = new GUIText("hint3","- Press mouse 'Left button' to choose objects", 
-				hintTextSize, scene.getTexts().getMaster().getFont(), new Vector2f(hintTextX, hintTextY + 0.1f), 0.5f, false, scene.getTexts().getMaster());
+				hintTextSize, font, new Vector2f(hintTextX, hintTextY + 0.1f), 0.5f, false);
 		
 		textHint3.setColour(1, 1, 1);
 		
+		guiTextList.add(textHint3);
+		
 		GUIText textHint4 = new GUIText("hint4","- Press mouse 'Right button' to cancel selection", 
-				hintTextSize, scene.getTexts().getMaster().getFont(), new Vector2f(hintTextX, hintTextY + 0.15f), 0.5f, false, scene.getTexts().getMaster());
+				hintTextSize, font, new Vector2f(hintTextX, hintTextY + 0.15f), 0.5f, false);
 		
 		textHint4.setColour(1, 1, 1);
 		
+		guiTextList.add(textHint4);
+		
 		GUIText textHint5 = new GUIText("hint5","- Press 'P' to spread chosen objects on the terrain surface", 
-				hintTextSize, scene.getTexts().getMaster().getFont(), new Vector2f(hintTextX, hintTextY + 0.2f), 0.5f, false, scene.getTexts().getMaster());
+				hintTextSize, font, new Vector2f(hintTextX, hintTextY + 0.2f), 0.5f, false);
 		
 		textHint5.setColour(1, 1, 1);
+		
+		guiTextList.add(textHint5);
+		
+		scene.getUserInterface().getComponentManager().getTexts().addAll(guiTextList);
 		
 		/*--------------AUDIO----------------*/
 		AL10.alDistanceModel(AL11.AL_LINEAR_DISTANCE_CLAMPED);

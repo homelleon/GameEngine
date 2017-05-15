@@ -19,14 +19,12 @@ public class TextMaster {
 	private FontRenderer renderer;
 	private FontType font;
 	
-	
-	public void init(Loader theLoader) {
+	public TextMaster(Loader loader) {
+		this.loader = loader;
 		renderer = new FontRenderer();
-		loader = theLoader;
 		this.font = 
 				new FontType(loader.loadTexture(ES.FONT_PATH, "candara"),
 						new File(ES.FONT_PATH + "candara.fnt"));
-		
 	}
 	
 	public void render() {

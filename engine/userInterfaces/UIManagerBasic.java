@@ -8,6 +8,7 @@ import java.util.Map;
 
 import fontMeshCreator.GUIText;
 import guis.GuiTexture;
+import renderEngine.Loader;
 
 public class UIManagerBasic implements UIManager {
 	
@@ -17,9 +18,9 @@ public class UIManagerBasic implements UIManager {
 	UIComponentManager componentManager;
 	Map<String, UIGroup> groups = new HashMap<String, UIGroup>();	
 	
-	public void init() {
+	public void init(Loader loader) {
 		System.out.println("Prepare User Interface...");
-		this.componentManager = new UIComponentManagerBasic(TEXTURE_FILE_NAME, TXT_FILE_NAME);
+		this.componentManager = new UIComponentManagerBasic(TEXTURE_FILE_NAME, TXT_FILE_NAME, loader);
 		
 		GUIText txt1 = componentManager.getTexts().getByName("firstText");
 		GUIText txt2 = componentManager.getTexts().getByName("secondText");

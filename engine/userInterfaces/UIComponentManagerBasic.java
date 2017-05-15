@@ -1,7 +1,8 @@
 package userInterfaces;
 
-import guis.GUIManagerStructured;
 import guis.GUIManager;
+import guis.GUIManagerStructured;
+import renderEngine.Loader;
 import texts.GUITextManager;
 import texts.GUITextManagerStructured;
 
@@ -15,9 +16,9 @@ public class UIComponentManagerBasic implements UIComponentManager {
 		this.guiManager = guiManager;
 	}
 	
-	public UIComponentManagerBasic(String guiFileName, String textFileName) {
+	public UIComponentManagerBasic(String guiFileName, String textFileName, Loader loader) {
 		this.guiManager = new GUIManagerStructured();
-		this.textManager = new GUITextManagerStructured();		
+		this.textManager = new GUITextManagerStructured(loader);		
 		textManager.readFile(textFileName);
 	}
 	

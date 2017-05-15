@@ -154,23 +154,27 @@ public class SceneRenderer {
 	}
 
 	protected void renderText() {
-		GUIText fpsText = createFPSText(Math.round(1 / DisplayManager.getFrameTimeSeconds()), scene.getTexts().getMaster().getFont());
+		GUIText fpsText = createFPSText(Math.round(1 / DisplayManager.getFrameTimeSeconds()), scene.getUserInterface().getComponentManager().getTexts().getMaster().getFont());
 		fpsText.setColour(1, 0, 0);
-		GUIText coordsText = createPickerCoordsText(picker, scene.getTexts().getMaster().getFont());
+		GUIText coordsText = createPickerCoordsText(picker, scene.getUserInterface().getComponentManager().getTexts().getMaster().getFont());
 		coordsText.setColour(1, 0, 0);
-		scene.getTexts().getMaster().render();
+		scene.getUserInterface().getComponentManager().getTexts().getMaster().render();
 		fpsText.remove();
 		coordsText.remove();
 	}
 
 	protected GUIText createFPSText(float FPS, FontType font) {
-		return new GUIText("FPS", "FPS: " + String.valueOf((int) FPS), 2, font, new Vector2f(0.65f, 0), 0.5f, true, scene.getTexts().getMaster());
+		GUIText guiText = new GUIText("FPS", "FPS: " + String.valueOf((int) FPS), 2, font, new Vector2f(0.65f, 0), 0.5f, true);
+		scene.getUserInterface().getComponentManager().getTexts().add(guiText);
+		return guiText;
 	}
 
 	protected GUIText createPickerCoordsText(MousePicker picker, FontType font) {
 		picker.update();
 		String text = (String) String.valueOf(picker.getCurrentRay());
-		return new GUIText("Coords", text, 1, font, new Vector2f(0.3f, 0.2f), 1f, true, scene.getTexts().getMaster());
+		GUIText guiText = new GUIText("Coords", text, 1, font, new Vector2f(0.3f, 0.2f), 1f, true);
+		scene.getUserInterface().getComponentManager().getTexts().add(guiText);
+		return guiText; 
 	}
 
 	private void move() {

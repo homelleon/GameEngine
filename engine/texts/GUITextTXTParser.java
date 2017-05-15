@@ -57,7 +57,7 @@ public class GUITextTXTParser implements GUITextParser {
 			System.out.println(master.getFont());
 			GUIText guiText = new GUIText(nameList.get(i), text, 4, 
 					master.getFont(), positionList.get(i), 
-					maxLengthList.get(i), centeredList.get(i), master);
+					maxLengthList.get(i), centeredList.get(i));
 			textList.add(guiText);			
 		}
 		

@@ -2,6 +2,8 @@ package userInterfaces;
 
 import java.util.Collection;
 
+import renderEngine.Loader;
+
 /**
  * UI Manager Interface.
  * 
@@ -13,7 +15,7 @@ public interface UIManager {
 	/**
 	 * Initialize ui manager.
 	 */
-	void init();
+	void init(Loader loader);
 	
 	/**
 	 * Returns UIGroup by name.

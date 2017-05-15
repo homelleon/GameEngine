@@ -1,14 +1,20 @@
 package gameMain;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.lwjgl.opengl.GL11;
 
-import engineMain.EngineMain;
 import entities.Entity;
+import fontMeshCreator.GUIText;
+import guis.GuiTexture;
 import scene.Scene;
+import userInterfaces.UI;
+import userInterfaces.UISimple;
 
 public class MyGame implements Game {
 	
-
+	private GameManager gameManager;
 	private int world1;
 	private Scene scene;
 	Entity cube7;
@@ -22,14 +28,30 @@ public class MyGame implements Game {
 		@Override
 		public void onStart() {
 			//PE10.initialize();
-			scene = EngineMain.getScene();
+			this.gameManager = new GameManagerBasic();
+			
 			System.out.println(GL11.glGetString(GL11.GL_VENDOR));
 			System.out.println(GL11.glGetString(GL11.GL_RENDERER));
 			System.out.println(GL11.glGetString(GL11.GL_VERSION));
 			//scene.setTerrainWiredFrame(true);
 			//world1 = PE10.peCreateWorld(new Vector3f(0,0,0), new Vector3f(0,0,0));
-			cube7 = scene.getEntities().getByName("Cuby4");
-			cube7.increasePosition(0, 10, 0);
+			cube7 = gameManager.getScene().getEntities().getByName("Cuby4");
+			cube7.increasePosition(0, 5, 0);
+			List<GuiTexture> hintTextureList = new ArrayList<GuiTexture>();
+			List<GUIText> hintTextList = new ArrayList<GUIText>();			
+			hintTextList.add(gameManager.getScene().getUserInterface()
+					.getComponentManager().getTexts().getByName("hint1"));
+			hintTextList.add(gameManager.getScene().getUserInterface()
+					.getComponentManager().getTexts().getByName("hint2"));
+			hintTextList.add(gameManager.getScene().getUserInterface()
+					.getComponentManager().getTexts().getByName("hint3"));
+			hintTextList.add(gameManager.getScene().getUserInterface()
+					.getComponentManager().getTexts().getByName("hint4"));
+			hintTextList.add(gameManager.getScene().getUserInterface()
+					.getComponentManager().getTexts().getByName("hint5"));
+			UI hints = new UISimple("hint", hintTextureList, hintTextList);
+			hints.show();
+			
 			//PE10.peAttachBody(tree1, PE10.BODY_3D_SPHERE, world1);
 			//PE10.peAttachBody(tree2, PE10.BODY_3D_SPHERE, world1);
 			//PE10.peAttachBody(tree3, PE10.BODY_3D_SPHERE, world1);			

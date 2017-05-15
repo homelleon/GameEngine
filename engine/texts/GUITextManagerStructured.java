@@ -6,18 +6,23 @@ import java.util.Map;
 
 import fontMeshCreator.GUIText;
 import fontRendering.TextMaster;
+import renderEngine.Loader;
 
 public class GUITextManagerStructured implements GUITextManager {
 	
-	//TODO: get textMaster object from scene
-	private TextMaster master = new TextMaster();
+	private TextMaster master; 
 	private Map<String, GUIText> texts = new HashMap<String, GUIText>();
+	
+	public GUITextManagerStructured(Loader loader) {
+		this.master = new TextMaster(loader);
+	}
 	
 	@Override
 	public void addAll(Collection<GUIText> textList) {
 		if((textList != null) && (!textList.isEmpty())) {
 			for(GUIText text : textList) {
 				this.texts.put(text.getName(), text);
+				this.master.loadText(text);
 			}
 		}	
 	}
@@ -25,7 +30,8 @@ public class GUITextManagerStructured implements GUITextManager {
 	@Override
 	public void add(GUIText text) {
 		if(text != null) {
-			this.texts.put(text.getName(), text); 		
+			this.texts.put(text.getName(), text); 
+			this.master.loadText(text);
 		}
 	}
 
@@ -59,7 +65,8 @@ public class GUITextManagerStructured implements GUITextManager {
 	@Override
 	public void readFile(String fileName) {
 		GUITextLoader txtLoader = new GUITextTXTLoader();
-		txtLoader.loadFile(fileName, master);
+		this.addAll(txtLoader.loadFile(fileName, master));
+		
 	}
 
 }

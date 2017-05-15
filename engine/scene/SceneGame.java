@@ -26,7 +26,6 @@ import terrains.Terrain;
 import terrains.TerrainManager;
 import terrains.TerrainManagerStructured;
 import texts.GUITextManager;
-import texts.GUITextManagerStructured;
 import textures.Texture;
 import toolbox.MousePicker;
 import userInterfaces.UIManager;
@@ -60,7 +59,6 @@ public class SceneGame implements Scene {
 	private AudioManager audioManager = new AudioManagerStructured(audioMaster);
 	private GUIManager guiManager = new GUIManagerStructured();
 	private UIManager uiManager = new UIManagerBasic();
-	private GUITextManager textManager = new GUITextManagerStructured();
 
 	
 	public SceneGame() {}
@@ -196,15 +194,8 @@ public class SceneGame implements Scene {
 	public GUIManager getGuis() {
 		return this.guiManager;
 	}
-	
-	/* 
-	 * @GuiText
-	 */
 
-	@Override
-	public GUITextManager getTexts() {
-		return this.textManager;
-	}
+	
 	
 	@Override
 	public UIManager getUserInterface() {		
@@ -268,7 +259,7 @@ public class SceneGame implements Scene {
 		this.lightManager.clearAll();
 		this.audioManager.clearAll();
 		this.guiManager.clearAll();
-		this.textManager.clearAll();		
+		this.uiManager.cleanAll();		
 	}
 
 

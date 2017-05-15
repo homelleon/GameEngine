@@ -138,14 +138,6 @@ public interface Scene {
 	 * 		   interfaces manager
 	 */
 	GUIManager getGuis();
-
-	/**
-	 * Returns manager of graphic interface text.
-	 * 
-	 * @return {@link GUITextManager} value of graphic
-	 * 		   interfaces texts manager
-	 */
-	GUITextManager getTexts();
 	
 	/**
 	 * Rerturns manager to control user interface.
