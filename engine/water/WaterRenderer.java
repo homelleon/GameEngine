@@ -9,7 +9,7 @@ import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 
-import cameras.Camera;
+import cameras.CameraInterface;
 import engineMain.DisplayManager;
 import lights.Light;
 import models.RawModel;
@@ -46,7 +46,7 @@ public class WaterRenderer {
         setUpVAO(loader);
     }
  
-    public void render(Collection<WaterTile> water, Camera camera, Light sun) {
+    public void render(Collection<WaterTile> water, CameraInterface camera, Light sun) {
         prepareRender(camera, sun);  
         for (WaterTile tile : water) {
             Matrix4f modelMatrix = Maths.createTransformationMatrix(
@@ -60,7 +60,7 @@ public class WaterRenderer {
         unbind();
     }
      
-    private void prepareRender(Camera camera, Light sun) {
+    private void prepareRender(CameraInterface camera, Light sun) {
         shader.start();
         shader.loadViewMatrix(camera);
         moveFactor += WAVE_SPEED * DisplayManager.getFrameTimeSeconds();

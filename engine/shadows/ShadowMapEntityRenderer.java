@@ -9,8 +9,8 @@ import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Matrix4f;
 
-import cameras.Camera;
-import entities.Entity;
+import cameras.CameraInterface;
+import entities.EntityInterface;
 import models.RawModel;
 import models.TexturedModel;
 import toolbox.Maths;
@@ -41,7 +41,7 @@ public class ShadowMapEntityRenderer {
 	 * @param entities
 	 *            - the entities to be rendered to the shadow map.
 	 */
-	protected void render(Map<TexturedModel, List<Entity>> entities, Camera camera) {
+	protected void render(Map<TexturedModel, List<EntityInterface>> entities, CameraInterface camera) {
 		for (TexturedModel model : entities.keySet()) {
 			RawModel rawModel = model.getRawModel();
 			bindModel(rawModel);
@@ -50,7 +50,7 @@ public class ShadowMapEntityRenderer {
 			if(model.getTexture().isHasTransparency()) {
 				OGLUtils.cullBackFaces(false);
 			}
-			for (Entity entity : entities.get(model)) {
+			for (EntityInterface entity : entities.get(model)) {
 				prepareInstance(entity);
 				GL11.glDrawElements(GL11.GL_TRIANGLES, rawModel.getVertexCount(),
 						GL11.GL_UNSIGNED_INT, 0);			
@@ -87,7 +87,7 @@ public class ShadowMapEntityRenderer {
 	 * @param entity
 	 *            - the entity to be prepared for rendering.
 	 */
-	private void prepareInstance(Entity entity) {
+	private void prepareInstance(EntityInterface entity) {
 		Matrix4f modelMatrix = Maths.createTransformationMatrix(entity.getPosition(),
 				entity.getRotX(), entity.getRotY(), entity.getRotZ(), entity.getScale());
 		Matrix4f mvpMatrix = Matrix4f.mul(projectionViewMatrix, modelMatrix, null);

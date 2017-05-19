@@ -5,8 +5,8 @@ import java.util.Map;
 
 import org.lwjgl.util.vector.Vector3f;
 
-import entities.Entity;
-import worlds.World;
+import entities.EntityInterface;
+import worlds.WorldInterface;
 import worlds.WorldG;
 
 /* 
@@ -41,7 +41,7 @@ public class PE10 {
 	 */
 	
 	private static boolean isInitialized = false;
-	private static Map<Integer, World> worlds;
+	private static Map<Integer, WorldInterface> worlds;
 	private static int worldIDcount = 0;
 	
 	public static final int BODY_2D_PLANE = 0;
@@ -65,14 +65,14 @@ public class PE10 {
 	
 	public static void initialize() {
 		if(!peErrRecurInit()) {
-			worlds = new HashMap<Integer, World>();
+			worlds = new HashMap<Integer, WorldInterface>();
 			isInitialized = true;
 		}	
 	}
 	 
 	public static int peCreateWorld(Vector3f position1, Vector3f position2) {
 		worldIDcount += 1;
-		World world = new WorldG(worldIDcount, position1, position2);
+		WorldInterface world = new WorldG(worldIDcount, position1, position2);
 		worlds.put(worldIDcount, world);
 		return worldIDcount;		
 	}
@@ -101,7 +101,7 @@ public class PE10 {
 	}
 	
 	//TODO Implement worlds.add method and attaching with body of certain type
-	public static int peAttachBody(Entity entity, int type, int worldID) {
+	public static int peAttachBody(EntityInterface entity, int type, int worldID) {
 		int id = -1;
 		if(!peErrNoInit()) {
 			if(!peErrNoIDWorld(worldID)) {

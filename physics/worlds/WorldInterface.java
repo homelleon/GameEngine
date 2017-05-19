@@ -1,14 +1,14 @@
 package worlds;
 
-import entities.Entity;
+import entities.EntityInterface;
 
-public interface World {
+public interface WorldInterface {
 	
 	int getID();
 	boolean removeBody(int bodyID);
 	boolean hasGravity();
 	void setGravity(float value);
-	int attachToEntity(Entity entity, int bodyType);
+	int attachToEntity(EntityInterface entity, int bodyType);
 	float getGravity();
 	void update();
 	void delete();

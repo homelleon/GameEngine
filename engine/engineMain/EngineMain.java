@@ -1,6 +1,6 @@
 package engineMain;
 
-import scene.Scene;
+import scene.SceneInterface;
 
 /**
  * Main engine crass. Contains main method to create {@link Loop) and start
@@ -13,7 +13,7 @@ import scene.Scene;
 
 public class EngineMain {
 		
-	private static Loop loopGame;
+	private static LoopInterface loopGame;
 	
 	/**
 	 * Main method to create Loop object and run it.
@@ -21,17 +21,17 @@ public class EngineMain {
 	 * @param args
 	 */
 	public static void main(String[] args) { 
-		loopGame = new LoopGame();
+		loopGame = new Loop();
 		loopGame.run();  
 	}
 	
 	/**
-	 * Method to return {@link Scene} scene parameter to manipulate it out the
+	 * Method to return {@link SceneInterface} scene parameter to manipulate it out the
 	 * engine.
 	 *  	
 	 * @return Scene object 
 	 */
-	public static Scene getScene() {
+	public static SceneInterface getScene() {
 		return loopGame.getScene();
 	}
 	

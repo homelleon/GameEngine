@@ -4,7 +4,7 @@ import java.util.WeakHashMap;
 
 import org.lwjgl.util.vector.Vector3f;
 
-import bodies.Body;
+import bodies.BodyInterface;
 import bodies.Body2DCircle;
 import bodies.Body2DPlane;
 import bodies.Body2DQuad;
@@ -13,14 +13,14 @@ import bodies.Body3DCube;
 import bodies.Body3DMesh;
 import bodies.Body3DPyramid;
 import bodies.Body3DSphere;
-import entities.Entity;
+import entities.EntityInterface;
 import physicMain.PE10;
 
 /*
  *  world with gravity
  */
 
-public class WorldG extends WorldBasic implements World {
+public class WorldG extends WorldB implements WorldInterface {
 	
 	private float gravity = 9.8f;
 	
@@ -28,7 +28,7 @@ public class WorldG extends WorldBasic implements World {
 	public WorldG(int id, Vector3f position1, Vector3f position2) {
 		super(id, position1, position2);
 		super.hasGravity = true;
-		super.bodies = new WeakHashMap<Integer, Body>();
+		super.bodies = new WeakHashMap<Integer, BodyInterface>();
 	}
 
 	@Override
@@ -52,8 +52,8 @@ public class WorldG extends WorldBasic implements World {
 	}
 	
 	@Override
-	public int attachToEntity(Entity entity, int bodyType) {
-		Body body = null;
+	public int attachToEntity(EntityInterface entity, int bodyType) {
+		BodyInterface body = null;
 		switch(bodyType) {
 			case PE10.BODY_2D_CIRCLE: 
 				body = new Body2DCircle();

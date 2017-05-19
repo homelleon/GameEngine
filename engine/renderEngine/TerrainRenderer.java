@@ -10,11 +10,11 @@ import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 
-import cameras.Camera;
+import cameras.CameraInterface;
 import lights.Light;
 import models.RawModel;
 import scene.ES;
-import terrains.Terrain;
+import terrains.TerrainInterface;
 import terrains.TerrainShader;
 import textures.TerrainTexturePack;
 import toolbox.Maths;
@@ -31,7 +31,7 @@ public class TerrainRenderer {
 		shader.stop();
 	}
 	
-	public void render(Collection <Terrain> terrains,  Vector4f clipPlane, Collection<Light> lights, Camera camera, Matrix4f toShadowMapSpace) {
+	public void render(Collection <TerrainInterface> terrains,  Vector4f clipPlane, Collection<Light> lights, CameraInterface camera, Matrix4f toShadowMapSpace) {
 		shader.start();
 		shader.loadClipPlane(clipPlane);
 		shader.loadSkyColour(ES.DISPLAY_RED, ES.DISPLAY_GREEN, ES.DISPLAY_BLUE);
@@ -41,7 +41,7 @@ public class TerrainRenderer {
 		shader.loadToShadowSpaceMatrix(toShadowMapSpace);
 		shader.loadShadowVariables(ES.SHADOW_DISTANCE, ES.SHADOW_MAP_SIZE, ES.SHADOW_TRANSITION_DISTANCE, ES.SHADOW_PCF);
 		
-		for(Terrain terrain : terrains) {
+		for(TerrainInterface terrain : terrains) {
 			prepareTerrain(terrain);
 			loadModelMatrix(terrain);
 			GL11.glDrawElements(GL11.GL_TRIANGLES, terrain.getModel().getVertexCount(), 
@@ -53,7 +53,7 @@ public class TerrainRenderer {
 		shader.stop();
 	}
 	
-	public void renderLow(Collection <Terrain> terrains,  Collection<Light> lights, Camera camera) {
+	public void renderLow(Collection <TerrainInterface> terrains,  Collection<Light> lights, CameraInterface camera) {
 		shader.start();
 		shader.loadClipPlane(ES.NO_CLIP);
 		shader.loadSkyColour(ES.DISPLAY_RED, ES.DISPLAY_GREEN, ES.DISPLAY_BLUE);
@@ -62,7 +62,7 @@ public class TerrainRenderer {
 		shader.loadViewMatrix(camera);
 		shader.loadShadowVariables(ES.SHADOW_DISTANCE, ES.SHADOW_MAP_SIZE, ES.SHADOW_TRANSITION_DISTANCE, ES.SHADOW_PCF);
 		
-		for(Terrain terrain : terrains) {
+		for(TerrainInterface terrain : terrains) {
 			prepareTerrain(terrain);
 			loadModelMatrix(terrain);
 			GL11.glDrawElements(GL11.GL_TRIANGLES, terrain.getModel().getVertexCount(), 
@@ -78,7 +78,7 @@ public class TerrainRenderer {
 		shader.cleanUp();
 	}
 	
-	private void prepareTerrain(Terrain terrain) {
+	private void prepareTerrain(TerrainInterface terrain) {
 		RawModel rawModel = terrain.getModel();
 		GL30.glBindVertexArray(rawModel.getVaoID());
 		GL20.glEnableVertexAttribArray(0);
@@ -90,7 +90,7 @@ public class TerrainRenderer {
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
 	}
 	
-	private void bindTexture(Terrain terrain) {
+	private void bindTexture(TerrainInterface terrain) {
 		TerrainTexturePack texturePack = terrain.getTexturePack();
 		GL13.glActiveTexture(GL13.GL_TEXTURE0);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, texturePack.getBackgroundTexture().getTextureID());
@@ -111,7 +111,7 @@ public class TerrainRenderer {
 		GL30.glBindVertexArray(0);
 	}
 	
-	private void loadModelMatrix(Terrain terrain) {
+	private void loadModelMatrix(TerrainInterface terrain) {
 		Matrix4f transformationMatrix = Maths.createTransformationMatrix(new Vector3f(terrain.getX(),0,terrain.getZ()),0, 0, 0, 1);
 		shader.loadTranformationMatrix(transformationMatrix);
 	}

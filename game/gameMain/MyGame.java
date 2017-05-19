@@ -6,22 +6,21 @@ import java.util.List;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
-import entities.Entity;
+import entities.EntityInterface;
 import fontMeshCreator.GUIText;
 import gui.GUI;
 import gui.GUIInterface;
 import guiTextures.GUITexture;
 import inputs.KeyboardGame;
-import inputs.MouseGame;
-import scene.Scene;
+import scene.SceneInterface;
 
-public class MyGame implements Game {
+public class MyGame implements GameInterface {
 	
-	private GameManager gameManager;
+	private GameManagerInterface gameManager;
 	private int world1;
-	private Scene scene;
+	private SceneInterface scene;
 	GUIInterface hints;
-	Entity cube7;
+	EntityInterface cube7;
 	int time = 0;
 	
 		/* 
@@ -32,7 +31,7 @@ public class MyGame implements Game {
 		@Override
 		public void onStart() {
 			//PE10.initialize();
-			this.gameManager = new GameManagerBasic();
+			this.gameManager = new GameManager();
 			
 			System.out.println(GL11.glGetString(GL11.GL_VENDOR));
 			System.out.println(GL11.glGetString(GL11.GL_RENDERER));

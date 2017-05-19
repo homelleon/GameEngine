@@ -7,7 +7,7 @@ package gameMain;
  * @see MyGame
  * 
  */
-public interface Game {
+public interface GameInterface {
 	
 	/**
 	 * Realize game events on engine start.

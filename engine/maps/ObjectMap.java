@@ -2,7 +2,7 @@ package maps;
 
 import java.util.List;
 
-import entities.Entity;
+import entities.EntityInterface;
 
 /**
  * Map-interface of in-game default objects.
@@ -14,7 +14,7 @@ import entities.Entity;
  */
 public interface ObjectMap {
 	
-	List<Entity> getALLEntities();
-	Entity getEntity(int index);
+	List<EntityInterface> getALLEntities();
+	EntityInterface getEntity(int index);
 	void loadEntity(String name, String model, String texName);
 }

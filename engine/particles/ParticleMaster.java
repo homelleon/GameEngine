@@ -9,7 +9,7 @@ import java.util.Map.Entry;
 
 import org.lwjgl.util.vector.Matrix4f;
 
-import cameras.Camera;
+import cameras.CameraInterface;
 import renderEngine.Loader;
  
 public class ParticleMaster {
@@ -21,7 +21,7 @@ public class ParticleMaster {
         renderer = new ParticleRenderer(loader, projectionMatrix);
     }
      
-    public static void update(Camera camera) {
+    public static void update(CameraInterface camera) {
         Iterator<Entry<ParticleTexture, List<Particle>>> mapIterator = particles.entrySet().iterator();
         while(mapIterator.hasNext()) {
             List<Particle> list = mapIterator.next().getValue();
@@ -40,7 +40,7 @@ public class ParticleMaster {
         }
     }
      
-    public static void renderParticles(Camera camera) {
+    public static void renderParticles(CameraInterface camera) {
         renderer.render(particles, camera);
     }
      

@@ -2,187 +2,265 @@ package scene;
 
 import java.util.Collection;
 
+import org.lwjgl.util.vector.Vector3f;
+
+import audio.AudioManagerInterface;
 import audio.AudioManager;
-import cameras.Camera;
-import entities.Entity;
+import audio.AudioMasterInterface;
+import audio.AudioMaster;
+import cameras.CameraInterface;
+import entities.EntityInterface;
+import entities.EntityManagerInterface;
 import entities.EntityManager;
-import entities.Player;
+import entities.PlayerInterface;
+import gui.GUIManager;
 import gui.GUIManagerInterface;
-import guiTexts.GUITextManagerInterface;
+import guiTextures.GUITextureManager;
 import guiTextures.GUITextureManagerInterface;
 import lights.Light;
 import lights.LightManager;
+import lights.LightManagerStructured;
+import maps.GameMap;
+import particles.ParticleManagerInterface;
 import particles.ParticleManager;
-import particles.ParticleMaster;
 import particles.ParticleSystem;
+import terrains.TerrainInterface;
+import terrains.TerrainManagerInterface;
 import terrains.TerrainManager;
 import textures.Texture;
 import toolbox.MousePicker;
 import viewCulling.Frustum;
+import voxels.ChunkManagerInterface;
 import voxels.ChunkManager;
 import water.WaterManager;
+import water.WaterManagerStructured;
 
-/**
- * Scene interface to control all objects to use in the game.
- * 
- * @author homelleon
- * @version 1.0
- * @see SceneGame
- *
- */
-public interface Scene {
+public class Scene implements SceneInterface {
 	
-	/**
-	 * Returns texture of current environment map.
-	 * <p>NOTE: for using only one environment map in the game.
-	 *  
-	 * @return {@link Texture} value of environment map
-	 */
-	public Texture getEnvironmentMap();
+	private final static int CHUNK_WORLD_SIZE = 2;
+	private PlayerInterface player;
+	private CameraInterface camera;
+	private Light sun;
 	
-	/**
-	 * Returns object current player.
-	 * 
-	 * @return {@link Player} value
-	 */
-	Player getPlayer();
+	private Texture environmentMap = Texture.newEmptyCubeMap(128);
 	
-	/**
-	 * Sets current player object in the scene.
-	 * 
-	 * @param player
-	 * 				{@link Player} value to set
-	 */
-	void setPlayer(Player player);
+	private Frustum frustum = new Frustum();
+	private MousePicker picker;
+	private AudioMasterInterface audioMaster = new AudioMaster();
 	
-	/**
-	 * Returns current camera object.
-	 * 
-	 * @return {@link Camera} value
-	 */
-	Camera getCamera();
-	
-	/**
-	 * Sets current camera object in the scene.
-	 * 
-	 * @param camera
-	 * 				{@link Camera} value ot set
-	 */
-	void setCamera(Camera camera);
-	
-	/**
-	 * Returns light object used for the Sun.  
-	 * 
-	 * @return {@link Light} value of current Sun object
-	 */
-	Light getSun();
-	
-	/**
-	 * Sets light as Sun object for global illumination.
-	 * @param sun
-	 */
-	void setSun(Light sun);
-	
-	/**
-	 * Returns entity manager object to control scene entities.
-	 *  
-	 * @return EntityManager value
-	 */
-	EntityManager getEntities();
-	
-	/**
-	 * Returns terrain manager object to control terrains.
-	 * 
-	 * @return {@link TerrainManager} value
-	 */
-	TerrainManager getTerrains();
+	private EntityManagerInterface entityManager = new EntityManager();
+	private TerrainManagerInterface terrainManager = new TerrainManager();
+	private WaterManager waterManager = new WaterManagerStructured();
+	private ChunkManagerInterface chunkManager = 
+			new ChunkManager(CHUNK_WORLD_SIZE, new Vector3f(0,0,0));
+	private ParticleManagerInterface particleManager = new ParticleManager();
+	private LightManager lightManager = new LightManagerStructured();
+	private AudioManagerInterface audioManager = new AudioManager(audioMaster);
+	private GUITextureManagerInterface guiManager = new GUITextureManager();
+	private GUIManagerInterface uiManager = new GUIManager();
 
-	/**
-	 * Returns water manager object to control water tiles.
-	 * 
-	 * @return {@link WaterManager} value
-	 */
-	WaterManager getWaters();
 	
-	/**
-	 * Returns chunk manager.
-	 * 
-	 * @return {@link ChunkManager} value 
-	 */
-	ChunkManager getChunks();
+	public Scene() {}
 	
-	/**
-	 * Returns partilce manager object to control particle systems.
-	 * 
-	 * @return {@link ParticleMaster} value
-	 */
-	ParticleManager getParticles();
+	public Scene(GameMap map) {
+		this.getEntities().addAll(map.getEntities().values());
+		this.getTerrains().addAll(map.getTerrains().values());
+		this.getWaters().addAll(map.getWaters().values());
+		this.getParticles().addAll(map.getParticles().values());
+		this.getLights().addAll(map.getLights().values());		
+		this.getAudioSources().getMaster().init();
+		this.getAudioSources().addAll(map.getAudioSources().values());		
+		this.getGuis().addAll(map.getGuis().values());
+		for(int i = 0; i < CHUNK_WORLD_SIZE * CHUNK_WORLD_SIZE *
+				CHUNK_WORLD_SIZE; i++) {
+			for(int x = 0; x <= ES.VOXEL_CHUNK_SIZE; x++) {
+				for(int y = 0; y <= ES.VOXEL_CHUNK_SIZE; y++) {
+					for(int z = 0; z <= ES.VOXEL_CHUNK_SIZE; z++) {
+						chunkManager.getChunk(i).getBlock(x, y, z)
+						.setIsActive(true);
+					}
+				}
+			}			
+		}
+		//chunkManager.getChunk(2).setIsActive(false);
+	}
 	
-	/**
-	 * Returns light manager object to control lights.
-	 * 
-	 * @return {@link LightManager} value
-	 */
-	LightManager getLights();
+	@Override
+	public Texture getEnvironmentMap() {
+		return this.environmentMap;
+	}
 	
-	/**
-	 * Returns audio manager.
-	 *  
-	 * @return {@link AudioManager} value
-	 */
-	AudioManager getAudioSources();
+	@Override
+	public PlayerInterface getPlayer() {
+		return this.player;
+	}
 	
-	/**
-	 * Returns graphic interfaces manager.
-	 * 
-	 * @return {@link GUITextureManagerInterface} value of graphic
-	 * 		   interfaces manager
-	 */
-	GUITextureManagerInterface getGuis();
+	@Override
+	public void setPlayer(PlayerInterface player) {
+		this.player = player;
+	}
 	
-	/**
-	 * Rerturns manager to control user interface.
-	 * 
-	 * @return {@link GUIManagerInterface} value of user interface
-	 * manager 
-	 */
-	GUIManagerInterface getUserInterface();
+	@Override
+	public CameraInterface getCamera() {
+		return this.camera;
+	}
 	
-	/**
-	 * Returns visual frustum object.
-	 * 
-	 * @return {@link Frustum} value of visual frustum
-	 */
-	Frustum getFrustum();
+	@Override
+	public void setCamera(CameraInterface camera) {
+		this.camera = camera;
+	}
 	
-	/**
-	 * Returns mouse coordinates picker object.
-	 * 	
-	 * @return {@link MousePicker} value
-	 */
-	MousePicker getPicker();
+	@Override
+	public Light getSun() {
+		return this.sun;
+	}
 	
-	/**
-	 * Sets mouse coordinates picker object.
-	 * 
-	 * @param picker
-	 * 				{@link MousePicker} value
-	 */
-	void setPicker(MousePicker picker);
+	@Override
+	public void setSun(Light sun) {
+		this.sun = sun;
+	}
 	
-	/**
-	 * Spreads all entities on the surface of terrain's height.
+	/* 
+	 * @Enitites
 	 */
-	void spreadEntitiesOnHeights(Collection<Entity> entityList);
+	@Override
+	public EntityManagerInterface getEntities() {
+		return this.entityManager;
+	}
+
+	/* 
+	 * @Terrains
+	 */
+
+	@Override
+	public TerrainManagerInterface getTerrains() {
+		return this.terrainManager;
+	}
 	
-	/**
-	 * Spreads all particles on the surface of terrain's height.
+	/* 
+	 * @Waters
 	 */
-	void spreadParitclesOnHeights(Collection<ParticleSystem> systems);
 	
-	/**
-	 * Clear all variables and arrays of scene objects.
+	@Override
+	public WaterManager getWaters() {
+		return this.waterManager;
+	}
+
+	
+	/* 
+	 * @VoxelGrids
 	 */
-	void cleanUp();
+	
+	@Override
+	public ChunkManagerInterface getChunks() {
+		return this.chunkManager;
+	}
+
+	
+	/* 
+	 * @Particles
+	 */
+
+	@Override
+	public ParticleManagerInterface getParticles() {
+		return this.particleManager;
+	}
+
+	/* 
+	 * @Lights
+	 */
+	
+
+	@Override
+	public LightManager getLights() {
+		return this.lightManager;
+	}
+
+	/* 
+	 * @AudioSources
+	 */
+	
+	@Override
+	public AudioManagerInterface getAudioSources() {
+		return this.audioManager;
+	}
+	
+	/* 
+	 * @GuiTexture
+	 */
+
+	@Override
+	public GUITextureManagerInterface getGuis() {
+		return this.guiManager;
+	}
+
+	
+	
+	@Override
+	public GUIManagerInterface getUserInterface() {		
+		return this.uiManager;
+	}
+
+	
+	@Override
+	public Frustum getFrustum() {
+		return this.frustum;
+	}
+	
+
+	@Override
+	public MousePicker getPicker() {
+		return this.picker;
+	}
+
+	@Override
+	public void setPicker(MousePicker picker) {
+		this.picker = picker;
+	}
+	
+	
+	@Override
+	public void spreadEntitiesOnHeights(Collection<EntityInterface> entityList) {
+		if (!entityList.isEmpty()) {
+			for(EntityInterface entity : entityList) {
+				float terrainHeight = 0;
+				
+				for(TerrainInterface terrain : this.terrainManager.getAll()) {
+					terrainHeight += terrain.getHeightOfTerrain(entity.getPosition().x, entity.getPosition().z);
+				}
+				entity.setPosition(new Vector3f(entity.getPosition().x, terrainHeight, entity.getPosition().z));
+			}
+		}
+	}
+    
+	@Override
+	public void spreadParitclesOnHeights(Collection<ParticleSystem> systems) {
+		if (!systems.isEmpty()) {
+			for(ParticleSystem system : systems) {
+				float terrainHeight = 0;
+				
+				for(TerrainInterface terrain : this.terrainManager.getAll()) {
+					terrainHeight += terrain.getHeightOfTerrain(system.getPosition().x, system.getPosition().z);
+				}
+				system.setPosition(new Vector3f(system.getPosition().x, terrainHeight, system.getPosition().z));
+			}
+		}
+	}
+	
+	@Override
+	public void cleanUp() {
+		this.environmentMap.delete();
+		this.entityManager.clearAll();
+		this.terrainManager.clearAll();
+		this.waterManager.clearAll();
+		this.chunkManager.clearAll();
+		this.particleManager.clearAll();
+		this.lightManager.clearAll();
+		this.audioManager.clearAll();
+		this.guiManager.clearAll();
+		this.uiManager.cleanAll();		
+	}
+
+
 
 }

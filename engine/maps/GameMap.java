@@ -7,11 +7,11 @@ import java.util.WeakHashMap;
 
 import org.lwjgl.util.vector.Vector3f;
 
-import audio.AudioSource;
-import cameras.Camera;
+import audio.AudioSourceInterface;
+import cameras.CameraInterface;
+import entities.EntityInterface;
 import entities.Entity;
-import entities.EntityTextured;
-import entities.Player;
+import entities.PlayerInterface;
 import guiTextures.GUITexture;
 import lights.Light;
 import models.TexturedModel;
@@ -19,7 +19,7 @@ import particles.ParticleSystem;
 import particles.ParticleTexture;
 import renderEngine.Loader;
 import scene.ES;
-import terrains.Terrain;
+import terrains.TerrainInterface;
 import toolbox.ObjectUtils;
 import triggers.Trigger;
 import water.WaterTile;
@@ -27,14 +27,14 @@ import water.WaterTile;
 public class GameMap {
 	
 	private String name;
-	private Map<String, Entity> entities = new WeakHashMap<String, Entity>();
-	private Map<String, Terrain> terrains = new WeakHashMap<String, Terrain>();
-	private Map<String, AudioSource> audioSorces = new WeakHashMap<String, AudioSource>();
+	private Map<String, EntityInterface> entities = new WeakHashMap<String, EntityInterface>();
+	private Map<String, TerrainInterface> terrains = new WeakHashMap<String, TerrainInterface>();
+	private Map<String, AudioSourceInterface> audioSorces = new WeakHashMap<String, AudioSourceInterface>();
 	private Map<String, Trigger> triggers = new WeakHashMap<String, Trigger>();
 	private Map<String, ParticleSystem> particleSystems = new WeakHashMap<String, ParticleSystem>();
 	private Map<String, GUITexture> guis = new WeakHashMap<String, GUITexture>();
-	private Map<String, Camera> cameras = new WeakHashMap<String, Camera>();
-	private Map<String, Player> players = new WeakHashMap<String, Player>();
+	private Map<String, CameraInterface> cameras = new WeakHashMap<String, CameraInterface>();
+	private Map<String, PlayerInterface> players = new WeakHashMap<String, PlayerInterface>();
 	private Map<String, WaterTile> waters = new WeakHashMap<String, WaterTile>();
 	private Map<String, Light> lights = new WeakHashMap<String, Light>();
 	
@@ -54,17 +54,17 @@ public class GameMap {
 	 * 
 	 */
 
-	public Map<String, Entity> getEntities() {
+	public Map<String, EntityInterface> getEntities() {
 		return entities;
 	}
 
-	public void setEntities(Collection<Entity> entities) {
-		for(Entity entity : entities) {
+	public void setEntities(Collection<EntityInterface> entities) {
+		for(EntityInterface entity : entities) {
 			this.entities.put(entity.getName(), entity);
 		}
 	}
 	
-	public void addEntity(Entity entity) {
+	public void addEntity(EntityInterface entity) {
 		this.entities.put(entity.getName(), entity);
 	}
 	
@@ -73,17 +73,17 @@ public class GameMap {
 	 * 
 	 */
 
-	public Map<String, Terrain> getTerrains() {
+	public Map<String, TerrainInterface> getTerrains() {
 		return terrains;
 	}
 
-	public void setTerrains(Collection<Terrain> terrainList) {
-		for(Terrain terrain : terrainList){
+	public void setTerrains(Collection<TerrainInterface> terrainList) {
+		for(TerrainInterface terrain : terrainList){
 			this.terrains.put(terrain.getName(), terrain);
 		}
 	}
 	
-	public void addTerrian(Terrain terrain) {
+	public void addTerrian(TerrainInterface terrain) {
 		this.terrains.put(terrain.getName(), terrain);
 	}
 	
@@ -92,17 +92,17 @@ public class GameMap {
 	 * 
 	 */
 
-	public Map<String, AudioSource> getAudioSources() {
+	public Map<String, AudioSourceInterface> getAudioSources() {
 		return audioSorces;
 	}
 
-	public void setAudioSources(List<AudioSource> audioList) {
-		for(AudioSource audio : audioList) {
+	public void setAudioSources(List<AudioSourceInterface> audioList) {
+		for(AudioSourceInterface audio : audioList) {
 			this.audioSorces.put(audio.getName(), audio);
 		}
 	}
 	
-	public void addAudio(AudioSource auido) {
+	public void addAudio(AudioSourceInterface auido) {
 		this.audioSorces.put(auido.getName(), auido);
 	}
 	
@@ -168,17 +168,17 @@ public class GameMap {
 	 * 
 	 */
 
-	public Map<String, Camera> getCameras() {
+	public Map<String, CameraInterface> getCameras() {
 		return cameras;
 	}
 
-	public void setCameras(List<Camera> cameraList) {
-		for(Camera camera : cameraList) {
+	public void setCameras(List<CameraInterface> cameraList) {
+		for(CameraInterface camera : cameraList) {
 			this.cameras.put(camera.getName(), camera);
 		}
 	}
 	
-	public void addCamera(Camera camera) {
+	public void addCamera(CameraInterface camera) {
 		this.cameras.put(camera.getName(), camera);
 	}
 	
@@ -187,17 +187,17 @@ public class GameMap {
 	 * 
 	 */
 
-	public Map<String, Player> getPlayers() {
+	public Map<String, PlayerInterface> getPlayers() {
 		return players;
 	}
 
-	public void setPlayers(List<Player> playerList) {
-		for(Player player : playerList) {
+	public void setPlayers(List<PlayerInterface> playerList) {
+		for(PlayerInterface player : playerList) {
 			this.players.put(player.getName(), player);
 		}
 	}
 	
-	public void addPlayer(Player player) {
+	public void addPlayer(PlayerInterface player) {
 		this.players.put(player.getName(), player);
 	}
 	
@@ -243,7 +243,7 @@ public class GameMap {
 	
 	public void createEntity(String name, String model, String texName, Vector3f position, float rotX, float rotY, float rotZ, float scale) {
 		TexturedModel staticModel = ObjectUtils.loadStaticModel(model, texName, loader);
-		EntityTextured entity = new EntityTextured(name, staticModel, position, rotX, rotY, rotZ, scale);
+		Entity entity = new Entity(name, staticModel, position, rotX, rotY, rotZ, scale);
 		this.entities.put(name, entity);
 	}
 	
@@ -251,7 +251,7 @@ public class GameMap {
 		TexturedModel staticModel = ObjectUtils.loadNormalModel(name, texName, normal, specular, loader);
 		staticModel.getTexture().setShineDamper(shine);
 		staticModel.getTexture().setReflectivity(reflectivity);
-		EntityTextured entity = new EntityTextured(name, ES.ENTITY_TYPE_NORMAL, staticModel, position, rotX, rotY, rotZ, scale);
+		Entity entity = new Entity(name, ES.ENTITY_TYPE_NORMAL, staticModel, position, rotX, rotY, rotZ, scale);
 		this.entities.put(name, entity);
 	}
 	

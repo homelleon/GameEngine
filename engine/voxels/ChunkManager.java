@@ -1,128 +1,135 @@
 package voxels;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.lwjgl.util.vector.Vector3f;
 
+import scene.ES;
+import toolbox.Maths;
 import toolbox.Vector3i;
 
 /**
- * Chunk Manager Interface for external chunks, blocks and voxel control.
+ * Structured manage system is expected to implement chunks, blocks and voxels
+ * contol sorting it in spacial arrays and provide access to it using friendly
+ * interface.
+ * <p>No matter that chunks are structured as one dimentional array for low
+ * memory storage, user can get access to it using 3-dimentional 
+ * {@link Vector3i} variable.   
  * 
  * @author homelleon
+ * @version 1.0
  *
  */
-public interface ChunkManager {
+public class ChunkManager implements ChunkManagerInterface {
 	
-	/**
-	 * Adds one chunk ito the chunks array.
-	 * <p>TODO: need to send values of including blocks. 
-	 */
-	public void addChunk();
+	private List<Chunk> chunks = new ArrayList<Chunk>();
+	private int size;
+	private Vector3f position;
 	
-	/**
-	 * Delete one chunk from chunks array.
-	 * <p>TODO: need to choose chunk number.
-	 */
-	public void deleteChunk();
+	public ChunkManager(int size, Vector3f position) {
+		this.size = size;
+		this.position = position;
+		for(int x = 0; x <= size; x++) {
+			for(int y = 0; y <= size; y++) {				
+				for(int z = 0; z <= size; z++) {					
+					this.chunks.add(new Chunk());
+				}
+			}
+		}
+	}
 	
-	/**
-	 * Returns world coordinate position of chunk by its strucutred xyz index 
-	 * world position.
-	 * 
-	 * @param xyzIndex
-	 * 					{@link Vector3i} value of structured xyz index chunk
-	 * 					world position
-	 * @return			{@link Vector3f} value of chunk world coordinate 
-	 * 					position
-	 */
-	public Vector3f getChunkPosition(Vector3i xyzIndex);
+	@Override
+	public void addChunk() {
+		chunks.add(new Chunk());
+	}
 	
-	/**
-	 * Returns chunk world position by its index position in array. 
-	 * 
-	 * @param index
-	 * 				{@link Integer} value of index position in array
-	 * @return 		{@link Vector3f} value of chunk position in world 
-	 * 				coordinate space
-	 */
-	public Vector3f getChunkPosition(int index);
+	@Override
+	public void deleteChunk() {
+		chunks.remove(chunks.size() - 1);
+	}
 	
-	/**
-	 * Returns block world position accroding chunk position it depended on and 
-	 * using structured xyz index world position of block.
-	 *  
-	 * @param index
-	 * 					{@link Integer} value of chunk array index position
-	 * @param xzyIndex	
-	 * 					{@link Vector3i} value of block structured xyz position
-	 * 					in chunk
-	 * @return			{@link Vector3f} value of block position in world
-	 * 					coordinate space
-	 */
-	public Vector3f getBlockPosition(int index, Vector3i xzyIndex);
+	@Override
+	public Vector3f getChunkPosition(Vector3i xyzIndex) {
+		float step = ES.VOXEL_CHUNK_SIZE * ES.VOXEL_BLOCK_SIZE;
+		return new Vector3f(position.x + xyzIndex.x * step, 
+				position.y + xyzIndex.y * step, position.z + 
+				xyzIndex.z * step);
+	}
 	
-	/**
-	 * Returns xyz index of chunk in structured chunk system by its index 
-	 * position in array.
-	 * 
-	 * @param index
-	 * 				{@link Integer} value of index position in array
-	 * @return
-	 * 				{@link Vector3i} value of strucured xyz index world 
-	 * 				position of chunk
-	 */
-	public Vector3i getChunkXYZIndex(int index);
+	@Override
+	public Vector3f getChunkPosition(int index) {
+		float step = ES.VOXEL_CHUNK_SIZE * ES.VOXEL_BLOCK_SIZE;
+		int x = (int) Math.floor(index / Maths.sqr(size));
+		int y = (int) Math.floor(index / size);
+		int z = index;
+		return new Vector3f(position.x + 
+				Maths.tailOfDivisionNoReminder(x, size) * step, 
+				position.y +  
+				Maths.tailOfDivisionNoReminder(y, size)* step, 
+				position.z +  
+				Maths.tailOfDivisionNoReminder(z, size) * step);
+	}
 	
-	/**
-	 * Checks if the chunk chosen by index position in array is existed. 
-	 * 
-	 * @param index
-	 * 				{@link Integer} value of index position in array
-	 * @return		true if chunk is existed<br>
-	 * 				false if chunks is not existed
-	 */
-	public boolean isChunkExist(int index);
+	@Override
+	public Vector3f getBlockPosition(int index, Vector3i xyzIndex) {
+		float step = ES.VOXEL_BLOCK_SIZE;
+		Vector3f chunkPosition = getChunkPosition(index);
+		return new Vector3f(chunkPosition.x + xyzIndex.x * step, 
+				chunkPosition.y + xyzIndex.y * step, chunkPosition.z + 
+				xyzIndex.z * step);
+	}
 	
-	/**
-	 * Checks if the chunk chosen by structured xyz index world position is
-	 * existed. 
-	 * 
-	 * @param xyzIndex
-	 * 					{@link Vector3i} value of structured xyz index 
-	 * 					world position 
-	 * @return			true if chunk is existed<br>
-	 * 					false if chunks is not existed
-	 */
-	public boolean isChunkExist(Vector3i xyzIndex);
+	@Override
+	public Vector3i getChunkXYZIndex(int index) {
+		int x = (int) Math.floor(index / Maths.sqr(size));
+		int y = (int) Math.floor(index / size);
+		int z = index;
+		return new Vector3i(Maths.tailOfDivisionNoReminder(x, size),
+				Maths.tailOfDivisionNoReminder(y, size), 
+				Maths.tailOfDivisionNoReminder(z, size));
+	}
 	
-	/**
-	 * Returns chunk by structured xyz index world position.
-	 * 
-	 * @param xyzIndex
-	 * 					{@link Vector3i} value of structured xyz index 
-	 * 					world position 
-	 * @return			{@link Chunk} value
-	 */
-	public Chunk getChunk(Vector3i xyzIndex);
+	@Override
+	public boolean isChunkExist(int index) {
+		boolean isExist = false;
+		if(index >= 0 && index <this.chunks.size()) {
+			isExist = true;
+		}
+		return isExist;
+	}
 	
-	/**
-	 * Returns chunk by index position in chunks array.
-	 * 
-	 * @param index
-	 * 					{@link Integer} value chunk position in array
-	 * @return			{@link Chunk} value
-	 */
-	public Chunk getChunk(int index);
 	
-	/**
-	 * Returns size of chunks array.
-	 * 
-	 * @return {@link Integer} value of array size
-	 */
-	public int getSize();
+	@Override
+	public boolean isChunkExist(Vector3i xyzIndex) {
+		boolean isExist = false;
+		int index = xyzIndex.x * size * size + 
+				xyzIndex.y * size + xyzIndex.z;
+		if(index >= 0 && index < this.chunks.size()) {
+			isExist = true;
+		}
+		return isExist;
+	}
 	
-	/**
-	 * Clear all chunks and voxels arrays. 
-	 */
-	public void clearAll();
+	@Override
+	public Chunk getChunk(Vector3i position) {
+		return chunks.get(position.x * size * size + 
+				position.y * size + position.z); 
+	} 
+	
+	@Override
+	public Chunk getChunk(int index) {
+		return chunks.get(index);
+	}
+	
+	@Override
+	public int getSize() {
+		return chunks.size();
+	}
 
+	@Override
+	public void clearAll() {
+		chunks.clear();
+	}
+	
 }

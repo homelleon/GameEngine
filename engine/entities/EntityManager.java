@@ -1,166 +1,182 @@
 package entities;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.lwjgl.util.vector.Vector3f;
-
-import terrains.Terrain;
+import scene.ES;
 import viewCulling.Frustum;
 
 /**
- * Entity control manager interface.
+ * Manages entities in the game engine.
+ * <p>Can differ entities that are situated in the frustum. Also can store
+ * entities chosen by player and entities for editor menu.
+ * <p>rus:<br> 
+ * Менеджер игровых сущностей.
+ * <p>Может разделять сущности, которые попадают в пирамиду проекции. Также
+ * может хранить сущности, выбранные игроком, и сущности для интерфейса
+ * редактора.
  * 
  * @author homelleon
  * @version 1.0
- *
+ *  
  */
-public interface EntityManager {
+public class EntityManager implements EntityManagerInterface {
 	
-	/**
-	 * Add entity list into entity array.
-	 * 
-	 * @param entityList
-	 * 					 {@link Collection}<{@link Entity}> value of 
-	 * 					 {@link Entity} list 
-	 * @see #add(Entity)
-	 * @see #getAll()
-	 * @see #getByName(String)
-	 */
-	void addAll(Collection<Entity> entityList);
 	
-	/**
-	 * Add list of entities chosen by player.
-	 * 
-	 * @param pointedList
-	 * 					  {@link Collection}<{@link Entity}> value of
-	 * 					  {@link Entity} list
-	 * 
-	 * @see #addAll(Collection)
-	 * @see #add(Entity)
-	 * @see #getAll()
-	 * @see #getByName(String)
-	 */
-	void addPointedList(Collection<Entity> pointedList);
 	
-	/**
-	 * Set default entities for editor list. 
-	 * 
-	 * @param editorList
-	 * 					 {@link Collection}<{@link Entity}> value of 
-	 * 					 {@link Entity} list
-	 * @see #addForEditor(Entity)
-	 * 
-	 */
-	void setEditorList(List<Entity> editorList);
+	public Map<String, EntityInterface> allEntities = new HashMap<String, EntityInterface>();
+	public Map<Float, List<EntityInterface>> frustumEntities = new HashMap<Float, List<EntityInterface>>();
+	public List<EntityInterface> pointedEntities = new ArrayList<EntityInterface>();
+	public List<EntityInterface> editorEntities = new ArrayList<EntityInterface>();
+
+	@Override
+	public void addAll(Collection<EntityInterface> entityList) {
+		if((entityList != null) && (!entityList.isEmpty())) {
+			for(EntityInterface entity : entityList) {
+				this.allEntities.put(entity.getName(), entity);
+			}
+		}
+	}
 	
-	/**
-	 * Add map of entitiese into the array of entities chosen by frustum 
-	 * culling. 
-	 * 
-	 * @param frustumMap {@link Map}<{@link Float}, {@link List}<{@link Entity}>>
-	 * 					 value of frustum culled entities 
-	 * @see #addForEditor(Entity)
-	 * @see #getForEditor()
-	 */
-	void addFrustumMap(Map<Float, List<Entity>> frustumMap);
+	@Override
+	public void addPointedList(Collection<EntityInterface> pointedList) {
+		if((pointedList != null) && (!pointedList.isEmpty())) {
+			for(EntityInterface entity : pointedList) {
+				entity.setIsChosen(true);
+				this.pointedEntities.add(entity);
+			}
+		}
+	}	
 	
-	/**
-	 * Add one entity in entity array.
-	 * 
-	 * @param entity
-	 * 				 {@link Entity} value
-	 */
-	void add(Entity entity); 
+
+	@Override
+	public void setEditorList(List<EntityInterface> editorList) {
+		if(editorList != null) {
+			this.editorEntities = editorList;
+		}
+
+		
+	}
+
+	@Override
+	public void addFrustumMap(Map<Float, List<EntityInterface>> frustumMap) {
+		if((frustumMap != null) && (!frustumMap.isEmpty())) {
+			for(Float key : frustumMap.keySet()) {
+				List<EntityInterface> batch = new ArrayList<EntityInterface>();
+				for(EntityInterface entity : frustumMap.get(key)) {
+					batch.add(entity);
+				}
+				this.frustumEntities.put(key, batch);
+			}
+		}
+	}
+
+
+	@Override
+	public void add(EntityInterface entity) {
+		if(entity != null) {
+			this.allEntities.put(entity.getName(), entity); 		
+		}
+	}
 	
-	/**
-	 * Add one entity chosen by player into the pointed entity array.
-	 * 
-	 * @param entity
-	 * 				 {@link Entity} value
-	 */
-	void addPointed(Entity entity);
+	@Override
+	public void addPointed(EntityInterface entity) {
+		if(entity != null) {
+			entity.setIsChosen(true);
+			this.pointedEntities.add(entity); 		
+		}
+	}
 	
-	/**
-	 * Add one entity in array of default entities for editor menu.
-	 * 
-	 * @param entity
-	 * 				 {@link Entity} value
-	 */
-	void addForEditor(Entity entity);
+	@Override
+	public void addForEditor(EntityInterface entity) {
+		this.editorEntities.add(entity);		
+	}
 	
-	/**
-	 * Add one entity into the entity array chosen by frustum culling.
-	 * 
-	 * @param distance
-	 * 				   {@link Float} value of distance from camera to entity
-	 * @param entity
-	 * 				   {@link Entity} value
-	 */
-	void addInFrustum(float distance, Entity entity);
+	@Override
+	public void addInFrustum(float distance, EntityInterface entity) {
+		if(entity != null) {
+			if(this.frustumEntities.containsKey(distance)) {
+				this.frustumEntities.get(distance).add(entity);
+			} else {
+				List<EntityInterface> batch = new ArrayList<EntityInterface>();
+				batch.add(entity);
+				this.frustumEntities.put(distance, batch);
+			}			 		
+		}
+	}
 	
-	/**
-	 * Update entity array using frustum culling technic. 
-	 *  
-	 * @param frustum
-	 * 				  {@link Frustum} value of frustum pyramid
-	 */
-	void updateWithFrustum(Frustum frustum);
+	@Override
+	public void updateWithFrustum(Frustum frustum) {
+		this.frustumEntities.clear();
+		for(EntityInterface entity : this.allEntities.values()) {
+			float distance = 
+					frustum.distanceSphereInFrustum(
+							entity.getPosition(), 
+							entity.getSphereRadius());
+			if (distance >=0 && distance < ES.RENDERING_VIEW_DISTANCE) {
+				List<EntityInterface> batch;
+				if(this.frustumEntities.containsKey(distance)) {
+					batch = frustumEntities.get(distance);
+				} else {
+					batch = new ArrayList<EntityInterface>();
+				}
+				batch.add(entity);
+				this.frustumEntities.put(distance, batch);
+			}
+		}
+	}
+
+	@Override
+	public EntityInterface getByName(String name) {
+		EntityInterface entity = null;
+		if(this.allEntities.containsKey(name)) {
+			entity = this.allEntities.get(name);
+		}
+		return entity;
+	}
+
+	@Override
+	public Collection<EntityInterface> getAll() {
+		return this.allEntities.values();
+	}
+
+	@Override
+	public Map<Float, List<EntityInterface>> getFromFrustum() {
+		return this.frustumEntities;
+	}
+
+	@Override
+	public List<EntityInterface> getPointed() {
+		return this.pointedEntities;
+	}
 	
-	/**
-	 * Returns entity from entity array by name.
-	 * 
-	 * @param name
-	 * 			   String value of entity's name
-	 * @return     {@link Entity} value of chosen entity
-	 */
-	Entity getByName(String name);
+	@Override
+	public List<EntityInterface> getForEditor() {
+		return this.editorEntities;
+	}
 	
-	/**
-	 * Returns all entities in array list.
-	 *  
-	 * @return {@link Collection}<{@link Entity}> value of entity list 
-	 */
-	Collection<Entity> getAll();
+	@Override
+	public EntityInterface getForEditorByIndex(int index) {
+		return this.editorEntities.get(index);
+	}
+		
+
+	@Override
+	public void clearPointed() {
+		for(EntityInterface entity : this.pointedEntities) {
+			entity.setIsChosen(false);
+		}
+		this.pointedEntities.clear();		
+	}
 	
-	/**
-	 * Returns map of entities chosen by frustum culling.  
-	 * 
-	 * @return {@link Map}<{@link Float},{@link List}<{@link Entity}>> value of
-	 * 		   entities chosen by frustum culling.
-	 */
-	Map<Float, List<Entity>> getFromFrustum();
+	@Override
+	public void clearAll() {
+		this.allEntities.clear();
+		this.pointedEntities.clear();
+		this.frustumEntities.clear();
+	}
 	
-	/**
-	 * Returns list of entities chosen by player.
-	 * 
-	 * @return {@link List}<{@link Entity}> value of entities chosen by player
-	 */
-	List<Entity> getPointed();
-	
-	/**
-	 * Returns list of default entities for editor menu.
-	 *  
-	 * @return {@link List}<{@link Entity}> value of entities for editor menu
-	 */
-	List<Entity> getForEditor();
-	
-	/**
-	 * Returns entity of defalut entity from entity array for editor menu
-	 * chosen by its index.
-	 * 
-	 * @return {@link Entity} value
-	 */
-	Entity getForEditorByIndex(int index);
-	
-	/**
-	 * Clear array of entities chosen by player.
-	 */
-	void clearPointed();
-	
-	/**
-	 * Clear all arrays of entities.
-	 */
-	void clearAll();
 }

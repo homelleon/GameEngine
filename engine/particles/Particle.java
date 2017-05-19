@@ -3,7 +3,7 @@ package particles;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
-import cameras.Camera;
+import cameras.CameraInterface;
 import engineMain.DisplayManager;
 import scene.ES;
  
@@ -70,7 +70,7 @@ public class Particle {
         return scale;
     }
      
-    protected boolean update(Camera camera) {
+    protected boolean update(CameraInterface camera) {
         velocity.y += ES.GRAVITY * gravityEffect * DisplayManager.getFrameTimeSeconds();
         Vector3f change = new Vector3f(velocity);
         change.scale(DisplayManager.getFrameTimeSeconds());

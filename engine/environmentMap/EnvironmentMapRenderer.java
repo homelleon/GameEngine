@@ -11,19 +11,19 @@ import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL14;
 import org.lwjgl.opengl.GL30;
 
-import cameras.Camera;
+import cameras.CameraInterface;
 import cameras.CameraCubeMap;
-import entities.Entity;
+import entities.EntityInterface;
 import models.TexturedModel;
-import renderEngine.MasterRendererSimple;
-import scene.Scene;
+import renderEngine.MasterRenderer;
+import scene.SceneInterface;
 
 public class EnvironmentMapRenderer {
 	
-	Map<TexturedModel, List<Entity>> entities = new HashMap<TexturedModel, List<Entity>>();
+	Map<TexturedModel, List<EntityInterface>> entities = new HashMap<TexturedModel, List<EntityInterface>>();
 
-	public void render(Scene scene, MasterRendererSimple renderer, Entity shinyEntity) {
-		Camera cubeCamera = new CameraCubeMap(shinyEntity.getPosition());
+	public void render(SceneInterface scene, MasterRenderer renderer, EntityInterface shinyEntity) {
+		CameraInterface cubeCamera = new CameraCubeMap(shinyEntity.getPosition());
 		int fbo = GL30.glGenFramebuffers();
 		GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, fbo);
 		GL11.glDrawBuffer(GL30.GL_COLOR_ATTACHMENT0);
@@ -34,7 +34,7 @@ public class EnvironmentMapRenderer {
 		GL30.glFramebufferRenderbuffer(GL30.GL_FRAMEBUFFER, GL30.GL_DEPTH_ATTACHMENT, GL30.GL_RENDERBUFFER, depthBuffer);
 		
 		GL11.glViewport(0, 0, scene.getEnvironmentMap().size, scene.getEnvironmentMap().size);
-		for(Entity entity : scene.getEntities().getAll()) {
+		for(EntityInterface entity : scene.getEntities().getAll()) {
 			if(entity != shinyEntity) {
 				processEntity(entity);
 			}
@@ -54,13 +54,13 @@ public class EnvironmentMapRenderer {
 		entities.clear();
 	}
 	
-	public void processEntity(Entity entity) {
+	public void processEntity(EntityInterface entity) {
 		TexturedModel entityModel = entity.getModel();
-		List<Entity> batch = entities.get(entityModel);
+		List<EntityInterface> batch = entities.get(entityModel);
 		if(batch!=null) {
 			batch.add(entity);	
 		}else{
-			List<Entity> newBatch = new ArrayList<Entity>();
+			List<EntityInterface> newBatch = new ArrayList<EntityInterface>();
 			newBatch.add(entity);
 			entities.put(entityModel, newBatch);		
 		}

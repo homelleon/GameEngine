@@ -6,7 +6,7 @@ import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Matrix4f;
 
-import cameras.Camera;
+import cameras.CameraInterface;
 import engineMain.DisplayManager;
 import engineMain.EngineMain;
 import models.RawModel;
@@ -81,7 +81,7 @@ public class SkyboxRenderer {
 		shader.stop();
 	}
 	
-	public void render(Camera camera) {
+	public void render(CameraInterface camera) {
 		shader.start();
 		shader.loadViewMatrix(camera);
 		shader.loadFogColour(ES.DISPLAY_RED, ES.DISPLAY_GREEN, ES.DISPLAY_BLUE);

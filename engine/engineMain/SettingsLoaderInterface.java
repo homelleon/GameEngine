@@ -1,6 +1,6 @@
 package engineMain;
 
-public interface SettingsLoader {
+public interface SettingsLoaderInterface {
 	
 	GameSettings loadSettings(String fileName);
 	//загрузка настроек игры

@@ -1,8 +1,8 @@
 package creatures;
 
-import entities.Entity;
+import entities.EntityInterface;
 
-public interface EntityDamagable extends Entity {
+public interface EntityDamagable extends EntityInterface {
 	
 	int getHelth();
 	void setHelth(int value);

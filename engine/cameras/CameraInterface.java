@@ -16,7 +16,7 @@ import org.lwjgl.util.vector.Vector3f;
 
 //TODO: need two interfaces for camera and cube camera
 
-public interface Camera {
+public interface CameraInterface {
 	
 	/**
 	 * 

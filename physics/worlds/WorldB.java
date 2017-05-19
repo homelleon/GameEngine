@@ -6,21 +6,21 @@ import java.util.Map;
 
 import org.lwjgl.util.vector.Vector3f;
 
-import bodies.Body;
-import entities.Entity;
+import bodies.BodyInterface;
+import entities.EntityInterface;
 import intersects.IntersectData;
 
-public abstract class WorldBasic {
+public abstract class WorldB {
 	
 	protected int worldID;
 	protected Vector3f position1;
 	protected Vector3f position2;
 	protected boolean hasGravity;
 	
-	protected Map<Integer, Body> bodies;
+	protected Map<Integer, BodyInterface> bodies;
 	protected int bodyIDCount = 0; 
 	
-	protected WorldBasic(int id, Vector3f position1, Vector3f position2) {
+	protected WorldB(int id, Vector3f position1, Vector3f position2) {
 		worldID = id;
 		this.position1 = position1;
 		this.position2 = position2;
@@ -42,7 +42,7 @@ public abstract class WorldBasic {
 		return isSucced;
 	}
 	
-	protected int attachToEntity(Entity entity, int bodyType) {
+	protected int attachToEntity(EntityInterface entity, int bodyType) {
 		return 0;
 	}
 	
@@ -56,11 +56,11 @@ public abstract class WorldBasic {
 	}
 	
 	protected void update() {
-		for(Body body1 : bodies.values()) {			
-				List<Body> bodyList = new ArrayList<Body>();
+		for(BodyInterface body1 : bodies.values()) {			
+				List<BodyInterface> bodyList = new ArrayList<BodyInterface>();
 				bodyList.addAll(bodies.values());
 				
-				for(Body body2 : bodyList) {
+				for(BodyInterface body2 : bodyList) {
 					if (!(body2 == body1)) {
 						IntersectData data = body1.checkIntersection(body2);
 						if(data.getDistance() < 200) {

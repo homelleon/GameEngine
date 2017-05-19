@@ -8,9 +8,9 @@ import java.util.List;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
-import audio.AudioSource;
+import audio.AudioSourceInterface;
 import renderEngine.Loader;
-import terrains.Terrain;
+import terrains.TerrainInterface;
 import toolbox.ObjectUtils;
 
 public class MapsTXTParser implements MapsParser {
@@ -157,18 +157,18 @@ public class MapsTXTParser implements MapsParser {
                 
         //*Create terrains*//
         System.out.println("Loading terrains...");
-        List<Terrain> terrains = new ArrayList<Terrain>();        
+        List<TerrainInterface> terrains = new ArrayList<TerrainInterface>();        
         for(int i=0;i<tNames.size();i++) {
         	System.out.println(tNames.get(i));
         	if (tProcGens.get(i)) {
-        		Terrain terrain = ObjectUtils.createMultiTexTerrain(tNames.get(i), (int) tCoords.get(i).x, 
+        		TerrainInterface terrain = ObjectUtils.createMultiTexTerrain(tNames.get(i), (int) tCoords.get(i).x, 
 	        			(int) tCoords.get(i).y, tBaseTexs.get(i), trTexs.get(i), tgTexs.get(i), 
 	        			tbTexs.get(i), tBlends.get(i), tAmplitudes.get(i), tOctaves.get(i), 
 	        			tRoughnesses.get(i), loader);
 	        	terrains.add(terrain);
 
         	} else {
-        		Terrain terrain = ObjectUtils.createMultiTexTerrain(tNames.get(i),  (int) tCoords.get(i).x, 
+        		TerrainInterface terrain = ObjectUtils.createMultiTexTerrain(tNames.get(i),  (int) tCoords.get(i).x, 
 	        			(int) tCoords.get(i).y, tBaseTexs.get(i), trTexs.get(i), tgTexs.get(i), 
 	        			tbTexs.get(i), tBlends.get(i),tHeights.get(i), loader);
         		terrains.add(terrain);
@@ -177,7 +177,7 @@ public class MapsTXTParser implements MapsParser {
         System.out.println("Succed!");
         
         //*Create audios*//
-        List<AudioSource> audios = new ArrayList<AudioSource>();    
+        List<AudioSourceInterface> audios = new ArrayList<AudioSourceInterface>();    
         
         for(int i=0;i<audios.size();i++) {
         	//AudioSource source = new AudioSource(aNames.get(i), aPaths.get(i), aMaxDistances.get(i), aCoords.get(i));

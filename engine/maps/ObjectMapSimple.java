@@ -5,8 +5,8 @@ import java.util.List;
 
 import org.lwjgl.util.vector.Vector3f;
 
+import entities.EntityInterface;
 import entities.Entity;
-import entities.EntityTextured;
 import models.TexturedModel;
 import renderEngine.Loader;
 import toolbox.ObjectUtils;
@@ -19,7 +19,7 @@ import toolbox.ObjectUtils;
  */
 public class ObjectMapSimple implements ObjectMap {
 	
-	private List<Entity> entities = new ArrayList<Entity>();
+	private List<EntityInterface> entities = new ArrayList<EntityInterface>();
 	
 	private Loader loader;
 	
@@ -28,19 +28,19 @@ public class ObjectMapSimple implements ObjectMap {
 	}
 
 	@Override
-	public List<Entity> getALLEntities() {
+	public List<EntityInterface> getALLEntities() {
 		return entities;
 	}
 
 	@Override
-	public Entity getEntity(int index) {
+	public EntityInterface getEntity(int index) {
 		return entities.get(index);
 	}
 	
 	@Override
 	public void loadEntity(String name, String model, String texName) {
 		TexturedModel staticModel = ObjectUtils.loadStaticModel(model, texName, loader);
-		EntityTextured entity = new EntityTextured(name, staticModel, new Vector3f(0,0,0), 0, 0, 0, 1);
+		Entity entity = new Entity(name, staticModel, new Vector3f(0,0,0), 0, 0, 0, 1);
 		this.entities.add(entity);
 	}
 

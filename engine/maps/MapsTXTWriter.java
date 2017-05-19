@@ -7,10 +7,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import entities.Entity;
+import entities.EntityInterface;
 import renderEngine.Loader;
 import scene.ES;
-import terrains.Terrain;
+import terrains.TerrainInterface;
 
 public class MapsTXTWriter implements MapsWriter {
 	
@@ -27,7 +27,7 @@ public class MapsTXTWriter implements MapsWriter {
 			
 			System.out.println("Saving terrains...");
 			if (!map.getTerrains().isEmpty()){
-				for(Terrain terrain: map.getTerrains().values()) {
+				for(TerrainInterface terrain: map.getTerrains().values()) {
 					String line = "<t> ";
 					line += String.valueOf(terrain.getName());
 					line += " ";
@@ -66,7 +66,7 @@ public class MapsTXTWriter implements MapsWriter {
 			
 			System.out.println("Saving entities...");
 			if (!map.getEntities().isEmpty()) {
-				for(Entity entity : map.getEntities().values()) {
+				for(EntityInterface entity : map.getEntities().values()) {
 					String line = "<e> ";
 					line += String.valueOf(entity.getName());
 					line += " ";

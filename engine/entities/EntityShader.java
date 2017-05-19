@@ -8,7 +8,7 @@ import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 
-import cameras.Camera;
+import cameras.CameraInterface;
 import lights.Light;
 import scene.ES;
 import shaders.ShaderProgram;
@@ -173,7 +173,7 @@ public class EntityShader extends ShaderProgram {
 		super.loadFloat(location_fogDensity, density);
 	}
 	
-	public void loadCamera(Camera camera) {
+	public void loadCamera(CameraInterface camera) {
 		Matrix4f viewMatrix = Maths.createViewMatrix(camera);
 		super.loadMatrix(location_viewMatrix, viewMatrix);
 		super.loadVector(location_cameraPosition, camera.getPosition());
@@ -201,7 +201,7 @@ public class EntityShader extends ShaderProgram {
 		
 	}
 	
-	public void loadViewMatrix(Camera camera) {
+	public void loadViewMatrix(CameraInterface camera) {
 		Matrix4f viewMatrix = Maths.createViewMatrix(camera);
 		super.loadMatrix(location_viewMatrix, viewMatrix);
 	}

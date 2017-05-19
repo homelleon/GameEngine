@@ -18,11 +18,11 @@ import org.lwjgl.util.vector.Vector3f;
 public class Test {
 
 	public static void main(String[] args) throws IOException, InterruptedException {
-		AudioMaster master = new AudioMasterBuffered();
+		AudioMasterInterface master = new AudioMaster();
 		master.init();
 		master.setListenerData(new Vector3f(0,0,0));
 		AL10.alDistanceModel(AL11.AL_LINEAR_DISTANCE_CLAMPED);
-		AudioSource source = new AudioSourceSimple("audio1", "forest.wav", 20, master);
+		AudioSourceInterface source = new AudioSource("audio1", "forest.wav", 20, master);
 		source.setLooping(true);
 		source.play();
 		

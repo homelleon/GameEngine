@@ -11,8 +11,8 @@ import engineMain.EngineMain;
 import fontMeshCreator.FontType;
 import fontMeshCreator.GUIText;
 import guiTextures.GUITextureRenderer;
+import inputs.ControlsInterface;
 import inputs.Controls;
-import inputs.ControlsInGame;
 import inputs.KeyboardGame;
 import maps.GameMap;
 import maps.MapsTXTWriter;
@@ -21,7 +21,7 @@ import particles.ParticleMaster;
 import postProcessing.Fbo;
 import postProcessing.PostProcessing;
 import scene.ES;
-import scene.Scene;
+import scene.SceneInterface;
 import toolbox.MousePicker;
 import toolbox.OGLUtils;
 import water.WaterFrameBuffers;
@@ -38,7 +38,7 @@ import water.WaterShader;
  */
 public class SceneRenderer {
 
-	private MasterRendererSimple masterRenderer;
+	private MasterRenderer masterRenderer;
 	private WaterRenderer waterRenderer;
 	private GUITextureRenderer guiRenderer;
 	private WaterFrameBuffers waterFBOs;
@@ -46,12 +46,12 @@ public class SceneRenderer {
 	private Fbo outputFbo;
 	private Fbo outputFbo2;
 	private MousePicker picker;
-	private Scene scene;
-	private Controls controls;
+	private SceneInterface scene;
+	private ControlsInterface controls;
 
-	public void init(Scene scene, Loader loader) {
+	public void init(SceneInterface scene, Loader loader) {
 		this.scene = scene;
-		this.masterRenderer = new MasterRendererSimple(loader, scene.getCamera());
+		this.masterRenderer = new MasterRenderer(loader, scene.getCamera());
 		this.guiRenderer = new GUITextureRenderer(loader);
 		ParticleMaster.init(loader, masterRenderer.getProjectionMatrix());
 		this.multisampleFbo = new Fbo(Display.getWidth(), Display.getHeight());
@@ -67,7 +67,7 @@ public class SceneRenderer {
 
 		this.picker = new MousePicker(scene.getCamera(), masterRenderer.getProjectionMatrix());
 		scene.setPicker(picker);
-		this.controls = new ControlsInGame();
+		this.controls = new Controls();
 	}
 
 	public void render(Loader loader, boolean isPaused) {
@@ -184,7 +184,7 @@ public class SceneRenderer {
 		scene.getAudioSources().getMaster().setListenerData(scene.getCamera().getPosition());
 	}
 	
-	public MasterRendererSimple getMasterRenderer() {
+	public MasterRenderer getMasterRenderer() {
 		return this.masterRenderer;
 	}
 

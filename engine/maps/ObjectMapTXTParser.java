@@ -5,8 +5,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import entities.EntityInterface;
 import entities.Entity;
-import entities.EntityTextured;
 import renderEngine.Loader;
 import scene.ES;
 

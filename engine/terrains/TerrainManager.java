@@ -1,53 +1,53 @@
 package terrains;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
- * Interface to store and control terrains.
+ * Terrain manager for controling and storing structured map and arrays of 
+ * terrains.
  * 
  * @author homelleon
- *
+ * @version 1.0
  */
-public interface TerrainManager {
+public class TerrainManager implements TerrainManagerInterface {
 	
-	/**
-	 * Adds list of terrains into terrains map array.
-	 * 
-	 * @param terrainList
-	 * 					  {@link Collection}<{@link Terrain}> value of terrain
-	 * 					  list
-	 */
-	void addAll(Collection<Terrain> terrainList);
+	Map<String, TerrainInterface> terrains = new HashMap<String, TerrainInterface>();
+
+	@Override
+	public void addAll(Collection<TerrainInterface> terrainList) {
+		if((terrainList != null) && (!terrainList.isEmpty())) {
+			for(TerrainInterface terrain : terrainList) {
+				this.terrains.put(terrain.getName(), terrain);
+			}
+		}		
+	}
+
+	@Override
+	public void add(TerrainInterface terrain) {
+		if(terrain != null) {
+			this.terrains.put(terrain.getName(), terrain); 		
+		}
+	}
+
+	@Override
+	public TerrainInterface getByName(String name) {
+		TerrainInterface terrain = null;
+		if(this.terrains.containsKey(name)) {
+			terrain = this.terrains.get(name);
+		}
+		return terrain;
+	}
+
+	@Override
+	public Collection<TerrainInterface> getAll() {
+		return this.terrains.values();
+	}
 	
-	/**
-	 * Adds one terrain into terrains map array.
-	 * 
-	 * @param terrain
-	 * 				  {@link Terrain} value
-	 */
-	void add(Terrain terrain);
-	
-	/**
-	 * Returns terrain by name.
-	 * 
-	 * @param name
-	 * 				{@link String} value
-	 * 
-	 * @return {@link Terrain} value of chosen terrain
-	 */
-	Terrain getByName(String name);
-	
-	/**
-	 * Returns list of terrains groupped by name.
-	 * 
-	 * @return {@link Collection}<{@link Terrain}> value of terrains
-	 * 		   list
-	 */
-	Collection<Terrain> getAll();	
-	
-	/**
-	 * Clear all terrains map and arrays.
-	 */
-	void clearAll();
+	@Override
+	public void clearAll() {
+		this.terrains.clear();
+	}
 
 }

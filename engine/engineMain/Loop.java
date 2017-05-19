@@ -1,74 +1,187 @@
 package engineMain;
 
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.Display;
+
+import gameMain.GameInterface;
+import gameMain.MyGame;
+import gui.GUIManager;
+import gui.GUIManagerInterface;
+import inputs.MouseGame;
+import maps.GameMap;
+import maps.MapsLoader;
+import maps.MapsTXTLoader;
+import maps.ObjectMap;
+import renderEngine.Loader;
+import renderEngine.MasterRenderer;
+import renderEngine.SceneRenderer;
+import scene.SceneInterface;
 import scene.Scene;
+import scene.SceneManagerInterface;
+import scene.SceneManager;
 
 /**
- * Runnable looping interaface for main game initialization and 
- * external control.
- *  
- * @author homelleon
+ * Game looping system that initialize preloaded game variables and objects and
+ * updates main game systems. 
  * 
- * @see Runnable
- * @see LoopGame
- *
+ * @author homelleon
+ * @version 1.0
+ * @see LoopInterface
  */
-public interface Loop extends Runnable { 
+public class Loop implements LoopInterface {
 	
-	/**
-	 * Method to start main looping process.
-	 * <p>Firstly prepare all variables and start object updates on looping
-	 * until escape button is pressed. After that it clean all objects
-	 * variables.
+	/*
+	 * LoopGame - главный игровой цикл
+	 * 03.02.17
+	 * --------------------
 	 */
-	void run(); //запуск
+	private static final String SETTINGS_NAME = "settings";
+		
+	private Loader loader;
+	private MasterRenderer renderer;
+    private SceneRenderer sceneRenderer;
+    
+    private SceneManagerInterface sceneManager;
+	
+    private SceneInterface scene;
+    private GameMap map;
+    
+    private GameInterface game = new MyGame();
+    
+    private boolean mapIsLoaded = false;
+    private boolean isPaused = false;
+    
+    /**
+     * Initilize display, load game settings and setup scene objects.
+     * @see #prepare() 
+     */
+	private void init() {
+		DisplayManager.createDisplay();
+		/*--------------PRE LOAD TOOLS-------------*/
+		this.loader = Loader.getInstance();
+		
+		loadGameSettings();		
+		if (!this.mapIsLoaded) {
+			loadMap("map");
+		}
+		
+		this.scene = new Scene(map);		
+		this.sceneRenderer = new SceneRenderer();
+		this.sceneManager = new SceneManager();	
+		sceneManager.init(scene, loader);
+	}
+	
+	@Override
+	public void run() {	
+		prepare();
+		while(!Display.isCloseRequested()) {
+			if(Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
+				break;
+			}
+			update();
+		}		
+		cleanUp();		
+	}
 	
 	/**
-	 * Returns scene for external scene objects control. 
+	 * Initialize scene, rendering system, mouse settings, and game events on
+	 * start. 
+	 */
+	private void prepare() {
+		init();
+		sceneRenderer.init(scene, loader);
+		MouseGame.initilize(10);
+		game.onStart();
+	}
+	
+	/**
+	 * Updates game events, mouse settings, display and render scene. 
+	 */
+	private void update() {		
+		if(!this.isPaused) {
+			game.onUpdate();
+		}
+		sceneRenderer.render(loader, isPaused);
+		MouseGame.update();
+		DisplayManager.updateDisplay();
+	}
+	
+	/**
+	 * Starts cleaning process for game looping objects and close display to
+	 * exit the application. 
+	 */
+	private void cleanUp() {
+		scene.cleanUp();
+		loader.cleanUp();
+		sceneRenderer.cleanUp();
+		DisplayManager.closeDisplay();
+    }
+	
+	/**
+	 * Loads map for game objects that have to be in the scene.
 	 * 
-	 * @return Scene value
+	 * @param name
+	 * 			   String value of the file name
+	 * 
+	 * @see #loadGameSettings()
 	 */
-	Scene getScene(); //вернуть игровую сцену
+	private void loadMap(String name) {
+		MapsLoader mapLoader = new MapsTXTLoader();
+		this.map = mapLoader.loadMap(name, loader);	
+		this.mapIsLoaded = true;
+	}
 	
 	/**
-	 * Switch visualization of rendering terrain between normal and wired frame
-	 * mode.
-	 *  
-	 * @param value {@link Boolean} variable to change visualization mode<br>
-	 * if true - sets wrired frame mode<br>
-	 * if flase - sets normal mode
+	 * Loads object map for default editor object menu.
 	 * 
-	 * @see #setEntityWiredFrame(boolean)
+	 * @param name
+	 * 			   String value of the file name
+	 * 
+	 * @see #loadGameSettings()
 	 */
-	void setTerrainWiredFrame(boolean value); //показать сетку ландшафта
+	private void loadObjectMap(String name) {
+		MapsLoader mapLoader = new MapsTXTLoader();
+		ObjectMap objectMap = mapLoader.loadObjectMap(name, loader);
+	}
 	
 	/**
-	 * Switch visualization of rendering entities between normal and wired frame
-	 * mode.
-	 *  
-	 * @param value 
-	 * 				{@link Boolean} variable to change visualization mode<br>
-	 *				if true - sets wrired frame mode<br>
-	 * 				if flase - sets normal mode
+	 * Loads game settings and sets name to map and object map. After that it
+	 * loads map and object map using name written in the game settings file.
 	 * 
-	 * @see #setTerrainWiredFrame(boolean)
+	 * @see #loadMap(String)
+	 * @see #loadObjectMap(String)
 	 */
-	void setEntityWiredFrame(boolean value); //показать сетку объектов
+	private void loadGameSettings() {
+		SettingsLoaderInterface setLoader = new SettingsTXTLoader();  
+		GameSettings settings = setLoader.loadSettings(SETTINGS_NAME);
+		loadMap(settings.getMapName());		
+		loadObjectMap(settings.getObjectMapName());
+	}	
+
 	
-	/**
-	 * Turns scene pause mode on or off
-	 * 
-	 * @param value
-	 * 				{@link Boolean} variable to change pause mode<br>
-	 * 				if true - sets pause mode on<br>
-	 * 				if false - sets pause mode off<br>
-	 */
-	void setScenePaused(boolean value); //установка паузы для сцены
+	@Override
+	public SceneInterface getScene() {
+		return this.scene;
+	}    	    
+   
+    @Override
+    public void setTerrainWiredFrame(boolean value) {
+		renderer.setTerrainWiredFrame(value);
+	}
+    
+    @Override
+	public void setEntityWiredFrame(boolean value) {
+		renderer.setEntityWiredFrame(value);
+	}
 	
-	/**
-	 * Returns boolean varialbe to check if scene object was paused.
-	 * 
-	 * @return true if scene is paused<br>
-	 * 		   false if scene is not paused
-	 */
-	boolean getIsScenePaused();
+    @Override
+	public void setScenePaused(boolean value) {
+		isPaused = value;
+	}
+
+	@Override
+	public boolean getIsScenePaused() {
+		return isPaused;
+	}	
+    
 }

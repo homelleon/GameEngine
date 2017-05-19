@@ -4,11 +4,11 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 
-import entities.Player;
+import entities.PlayerInterface;
 import inputs.MouseGame;
 import scene.ES;
 
-public class CameraPlayer implements Camera { 
+public class CameraPlayer implements CameraInterface { 
 	
 	/*
 	 * CameraPlayer - камера для игрока
@@ -31,7 +31,7 @@ public class CameraPlayer implements Camera {
 	
 	private String name;
 	
-	private Player player;
+	private PlayerInterface player;
 	
 	public boolean perspectiveMode = false;
 	public boolean isUnderWater = false;
@@ -40,12 +40,12 @@ public class CameraPlayer implements Camera {
 		return name;
 	}
 	
-	public CameraPlayer(Player player) {
+	public CameraPlayer(PlayerInterface player) {
 		this.player = player;
 		this.name = "NoName";
 	}
 	
-	public CameraPlayer(Player player, String name) {
+	public CameraPlayer(PlayerInterface player, String name) {
 		this.player = player;
 		this.name = name;	
 	}

@@ -1,142 +1,157 @@
 package audio;
 
+import org.lwjgl.openal.AL10;
 import org.lwjgl.util.vector.Vector3f;
 
 /**
- * Interface of sound or music source in 3 dimentional space.
- * <p> Can be used to set sounds in the game engine depending on position of 
- * the source.
+ * Simple type of Audio Source using name, sourceId, fileName to represent the
+ * source of sound or music in 3 dimentions.
  * 
- * @author 	homelleon  
- * @version 1.0
- * 
- * @see AudioSourceBuffered
+ * @author homelleon
+ * @version 1.0 
  *
  */
 
-public interface AudioSource {
-		
-		/**
-		 * Method to return name of audio source stored in audio buffer of
-		 * {@link AuidoMaster}.
-		 * 
-		 * @return String name
-		 * @see AuidoMaster
-		 * @see AudioMasterBuffered		
-		 */
-		public String getName();
-		
-		/**
-		 * Method to start sound source to play.
-		 * <p>Whatever sound was paused by method {@link #pause()} it is still
-		 * start playing from begining because method play() uses two other
-		 * methods: {@link #stop()} and {@link #continuePlaying()}.  
-		 * 
-		 * @see #pause()
-		 * @see #stop()
-		 * @see #continuePlaying()
-		 */
-		public void play(); //начать проигрывание адуио
-		
-		/**
-		 * Method to delete audio source from audio buffer of
-		 * {@link AudioMaster}.
-		 * 
-		 * @see AudioMaster
-		 * @see AudioMasterBuffered
-		 */
-		public void delete();//удалить аудио
-		
-		/**
-		 * Method to stop sound to play. 
-		 * <p>By this method Auidio Source remember the moment before stop and 
-		 * it can be continued after using method {@link #continuePlaying()}. 
-		 * 
-		 * @see #stop()
-		 * @see #continuePlaying()
-		 * @see #play()
-		 */
-		public void pause(); //приостановить проигрывание аудио
-		
-		/** 
-		 * Method to start sound to play from moment it was paused using method
-		 * {@link #pause()}.
-		 */
-		public void continuePlaying(); //продолжить проигрывание
-		
-		/**
-		 * Method to stop sound to play.</br>
-		 * Unlike {@link #pause()} method <b>stop()</b> don't make Audio Source
-		 * to remember moment the sound stopped playing. That's why use of method
-		 * {@link #continuePlaying()} make sound play from begining. 
-		 * 
-		 * @see #pause()
-		 * @see #play()
-		 * @see #continuePlaying()
-		 */
-		public void stop(); //остановить проигрывание аудио
-		
-		/**
-		 * Represents 3 dimentional speed of sound and sets how fast the sound
-		 * will change in all 3 directions. 
-		 *   
-		 * @param speed
-		 * 				Vector3f - 3 dimentional speed value
-		 * @see #setPosition(Vector3f)
-		 */
-		public void setVelocity(Vector3f speed); //установить скорость аудио
-		
-		/**
-		 * Method that defines if sound will be repeating after it was
-		 * played till the end. 
-		 *  
-		 * @param loop
-		 * 				boolean - defines if it repeats
-		 */
-		public void setLooping(boolean loop); //установить зацикливание
-		
-		/**
-		 * Method that check AudioSource if it is playing at that moment.
-		 *  
-		 * @return 
-		 *         true if it is playing</br>
-		 *         false if it is stopped
-		 * @see #play()
-		 * @see #continuePlaying()
-		 * @see #stop()
-		 * @see #pause()
-		 */
-		public boolean isPlaying(); //вернуть, если проигрывается
-		
-		/**
-		 * Change volume of the audio source.
-		 * 
-		 * @param volume float value represents loudness of sound
-		 * @see #setPitch(float)
-		 */
-		public void setVolume(float volume); 		//установить громкость
-		
-		/**
-		 * Change pitch of audio source.
-		 * 
-		 * @param pitch float value represents height of sound
-		 * @see #setVolume(float) 
-		 */
-		public void setPitch(float pitch); 	//установить высоту звука
-		
-		/**
-		 * Change position of audio source in 3 dimentional space.
-		 * 
-		 * @param position Vector3f representation of value to set
-		 * @see #setVelocity(Vector3f)
-		 */
-		public void setPosition(Vector3f position); //установить позицию звука
-		
-		/**
-		 * Returns position of sound source in 3 dimentional space.
-		 * 
-		 * @return 3 dimentional value of sound source position
-		 */
-		public Vector3f getPosition();
+public class AudioSource implements AudioSourceInterface {
+	
+	private String name; //имя аудио
+	private int sourceId; //ID аудио
+	private String fileName;  //расположение файла
+	private AudioMasterInterface master; //аудио-мастер
+	private Vector3f position; //позиция аудио-источника
+	
+	/** Constructor of AudioSource object without changing position value. 
+	 *   
+	 * @param name 
+	 * 						String value of audio source
+	 * @param file
+	 * 						String value of audio file name 
+	 * @param maxDistance
+	 * 						int value of maximum distance that audio source
+	 * 						has effect
+	 * @param master
+	 * 						AudioMaster object needed to check same audio
+	 * 						files and store audio source with same audio
+	 * 						track in the same list of auido buffer map
+	 * @see AudioSourceInterface
+	 * @see #AudioSourceSimple(String, String, int, Vector3f, AudioMasterInterface)
+	 */
+	public AudioSource(String name, String file, int maxDistance, AudioMasterInterface master) {
+		sourceId = AL10.alGenSources();
+		AL10.alSourcef(sourceId, AL10.AL_ROLLOFF_FACTOR, 1);
+		AL10.alSourcef(sourceId, AL10.AL_REFERENCE_DISTANCE, 6);
+		AL10.alSourcef(sourceId, AL10.AL_MAX_DISTANCE, maxDistance);
+		this.name = name;		
+		this.master = master;
+		if (!master.getBuffers().containsKey(file)){
+			master.loadSound(file);
+		}
+		this.fileName = file;
+	}
+	
+	/** Constuctor of AudioSource object with assigning a position value.
+	 * @param name 
+	 * 						String value of audio source
+	 * @param file
+	 * 						String value of audio file name
+	 * @param maxDistance
+	 * 						int value of maximum distance that audio source
+	 * 						has effect
+	 * @param position
+	 * 						Vector3f value of audio source position in 3
+	 * 						dimentional space
+	 * @param master
+	 * 						AudioMaster object needed to check same audio
+	 * 						files and store audio source with same audio
+	 * 						track in the same list of auido buffer map
+	 * @see AudioSourceInterface
+	 * @see #AudioSourceSimple(String, String, int, AudioMasterInterface)
+	 */
+	public AudioSource(String name, String file, int maxDistance, Vector3f position, 
+			AudioMasterInterface master) {
+		sourceId = AL10.alGenSources();
+		AL10.alSourcef(sourceId, AL10.AL_ROLLOFF_FACTOR, 1);
+		AL10.alSourcef(sourceId, AL10.AL_REFERENCE_DISTANCE, 6);
+		AL10.alSourcef(sourceId, AL10.AL_MAX_DISTANCE, maxDistance);
+		this.name = name;
+		this.master = master;
+		if (!master.getBuffers().containsKey(file)){
+			master.loadSound(file);
+		}
+		this.fileName = file;
+		this.position = position;
+		this.setPosition(position);
+	}	
+	
+	@Override
+	public String getName() {
+		return name;
+	}
+	
+	@Override
+	public void play() {
+		stop();
+		AL10.alSourcei(sourceId, AL10.AL_BUFFER, master.getBuffer(fileName));
+		continuePlaying();
+	}
+	
+	@Override
+	public void delete() {
+		stop();
+		AL10.alDeleteSources(sourceId);
+	}
+	
+	@Override
+	public void pause() {
+		AL10.alSourcePause(sourceId);
+	}
+	
+	@Override
+	public void continuePlaying() {
+		AL10.alSourcePlay(sourceId);
+	}
+	
+	@Override
+	public void stop() {
+		AL10.alSourceStop(sourceId);
+	}
+	
+	@Override
+	public void setVelocity(Vector3f speed) {
+		AL10.alSource3f(sourceId, AL10.AL_VELOCITY, speed.x, speed.y, speed.z);
+	}
+	
+	@Override
+	public void setLooping(boolean loop) {
+		AL10.alSourcei(sourceId, AL10.AL_LOOPING, loop ? AL10.AL_TRUE : AL10.AL_FALSE);
+	}
+	
+	@Override
+	public boolean isPlaying() {
+		return AL10.alGetSourcei(sourceId, AL10.AL_SOURCE_STATE) == AL10.AL_PLAYING;
+	}
+	
+	@Override
+	public void setVolume(float volume) {
+		AL10.alSourcef(sourceId, AL10.AL_GAIN, volume);
+	}
+	
+	@Override
+	public void setPitch(float pitch) {
+		AL10.alSourcef(sourceId, AL10.AL_PITCH, pitch);
+	}
+	
+	@Override
+	public void setPosition(Vector3f position) {
+		this.position = position;
+		AL10.alSource3f(sourceId, AL10.AL_POSITION, 
+				position.x, position.y, position.z);
+	}
 
+	@Override
+	public Vector3f getPosition() {
+		return this.position;
+	}
+	
+	
 }

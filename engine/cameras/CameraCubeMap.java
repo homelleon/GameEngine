@@ -3,7 +3,7 @@ package cameras;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 
-public class CameraCubeMap implements Camera {
+public class CameraCubeMap implements CameraInterface {
 	
 	/*
 	 * CameraCubeMap - камера для записи кубической текстуры окружения

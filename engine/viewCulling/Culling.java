@@ -1,11 +1,11 @@
 package viewCulling;
 
-import cameras.Camera;
-import entities.Entity;
+import cameras.CameraInterface;
+import entities.EntityInterface;
 
 public interface Culling {
 	
-	Boolean getVisibility(Entity entity);
-	void update(Camera camera);
+	Boolean getVisibility(EntityInterface entity);
+	void update(CameraInterface camera);
 	
 }

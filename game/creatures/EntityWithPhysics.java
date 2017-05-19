@@ -1,11 +1,11 @@
 package creatures;
 
-import bodies.Body;
-import entities.Entity;
+import bodies.BodyInterface;
+import entities.EntityInterface;
 
-public interface EntityWithPhysics extends Entity {
+public interface EntityWithPhysics extends EntityInterface {
 	
 	void createBody();
-	Body getBody();
+	BodyInterface getBody();
 
 }

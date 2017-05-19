@@ -3,7 +3,7 @@ package engineMain;
 import java.io.BufferedReader;
 import java.io.IOException;
 
-public class SettingsTXTParser implements SettingsParser {
+public class SettingsTXTParser implements SettingsParserInterface {
  
 	@Override
 	public GameSettings readSettings(String fileName, BufferedReader reader) {

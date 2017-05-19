@@ -2,11 +2,11 @@ package bodies;
 
 import org.lwjgl.util.vector.Vector3f;
 
-import entities.Entity;
+import entities.EntityInterface;
 import intersects.IntersectData;
 import physicMain.PE10;
 
-public class Body2DCircle extends BodyBasic implements Body {
+public class Body2DCircle extends BodyBasic implements BodyInterface {
 
 	public Body2DCircle(Vector3f position, float size) {
 		super(position, size);
@@ -30,11 +30,11 @@ public class Body2DCircle extends BodyBasic implements Body {
 		return super.getMass();
 	}
 	
-	public void attachEntity(Entity entity) {
+	public void attachEntity(EntityInterface entity) {
 		super.attachEntity(entity);
 	}
 	
-	public Entity getEntity() {
+	public EntityInterface getEntity() {
 		return super.getEntity();
 	}
 	
@@ -46,7 +46,7 @@ public class Body2DCircle extends BodyBasic implements Body {
 		super.update();
 	}
 	
-	public IntersectData checkIntersection(Body body) {
+	public IntersectData checkIntersection(BodyInterface body) {
 		IntersectData data = null;
 		return data;		
 	}

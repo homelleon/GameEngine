@@ -7,7 +7,7 @@ import java.io.FileReader;
 
 import scene.ES;
 
-public class SettingsTXTLoader implements SettingsLoader {
+public class SettingsTXTLoader implements SettingsLoaderInterface {
  
 	@Override
 	public GameSettings loadSettings(String fileName) {
@@ -19,7 +19,7 @@ public class SettingsTXTLoader implements SettingsLoader {
 	            System.err.println("File not found in res; don't use any extention");
 	        }
 		BufferedReader reader = new BufferedReader(isr);
-		SettingsParser parser = new SettingsTXTParser();
+		SettingsParserInterface parser = new SettingsTXTParser();
 		return parser.readSettings(fileName, reader);   
 	}
 

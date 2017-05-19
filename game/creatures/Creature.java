@@ -2,14 +2,14 @@ package creatures;
 
 import org.lwjgl.util.vector.Vector3f;
 
-import bodies.Body;
-import entities.EntityTextured;
+import bodies.BodyInterface;
+import entities.Entity;
 import models.TexturedModel;
 
-public abstract class Creature extends EntityTextured implements EntityDamagable, EntityWithPhysics {
+public abstract class Creature extends Entity implements EntityDamagable, EntityWithPhysics {
 	
 	protected int helth;
-	protected Body body;
+	protected BodyInterface body;
 
 	public Creature(String name, TexturedModel model, Vector3f position, float rotX, float rotY, float rotZ,
 			float scale) {
@@ -29,7 +29,7 @@ public abstract class Creature extends EntityTextured implements EntityDamagable
 	
 	public void createBody() {};
 	
-	public Body getBody() {
+	public BodyInterface getBody() {
 		return body;
 	}
 	

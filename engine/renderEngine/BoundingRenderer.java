@@ -9,8 +9,8 @@ import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Matrix4f;
 
 import boundings.BoundingShader;
-import cameras.Camera;
-import entities.Entity;
+import cameras.CameraInterface;
+import entities.EntityInterface;
 import models.RawModel;
 import models.TexturedModel;
 import toolbox.Maths;
@@ -28,14 +28,14 @@ public class BoundingRenderer {
 		shader.stop();		
 	}
 	
-	public void render(Map<TexturedModel, List<Entity>> entities, Map<TexturedModel, List<Entity>> normalEntities, Camera camera) {		
+	public void render(Map<TexturedModel, List<EntityInterface>> entities, Map<TexturedModel, List<EntityInterface>> normalEntities, CameraInterface camera) {		
 		checkWiredFrameOn(boundingWiredFrame);
 		shader.start();
 		shader.loadViewMatrix(camera);
 		for(TexturedModel model : entities.keySet()) {
 			RawModel bModel = model.getRawModel().getBBox().getModel();
 			prepareModel(bModel);
-			for(Entity entity : entities.get(model)) {
+			for(EntityInterface entity : entities.get(model)) {
 				prepareInstance(entity);
 				GL11.glDrawElements(GL11.GL_TRIANGLES, model.getRawModel().getBBox().getModel().getVertexCount(), 
 						GL11.GL_UNSIGNED_INT, 0);
@@ -45,7 +45,7 @@ public class BoundingRenderer {
 		for(TexturedModel model : normalEntities.keySet()) {
 			RawModel bModel = model.getRawModel().getBBox().getModel();
 			prepareModel(bModel);
-			for(Entity entity : normalEntities.get(model)) {
+			for(EntityInterface entity : normalEntities.get(model)) {
 				prepareInstance(entity);
 				GL11.glDrawElements(GL11.GL_TRIANGLES, model.getRawModel().getBBox().getModel().getVertexCount(), 
 						GL11.GL_UNSIGNED_INT, 0);
@@ -70,7 +70,7 @@ public class BoundingRenderer {
 		GL30.glBindVertexArray(0);
 	}
 	
-	public void prepareInstance(Entity entity) {
+	public void prepareInstance(EntityInterface entity) {
 		Matrix4f transformationMatrix = Maths.createTransformationMatrix(entity.getPosition(),
 				entity.getRotX(), entity.getRotY(), entity.getRotZ(), entity.getScale());
 		shader.loadTranformationMatrix(transformationMatrix);

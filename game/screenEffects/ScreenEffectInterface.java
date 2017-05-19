@@ -1,6 +1,6 @@
 package screenEffects;
 
-public interface ScreenEffect {
+public interface ScreenEffectInterface {
 	
 	void active();
 	void deactive();

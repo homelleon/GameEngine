@@ -1,15 +1,25 @@
 package gameMain;
 
-import scene.Scene;
 
-/**
- * 
- * @author homelleon
- * @see GameManagerBasic
- */
-public interface GameManager {
+import java.util.ArrayList;
+import java.util.List;
+
+import engineMain.EngineMain;
+import gui.GUIInterface;
+import scene.SceneInterface;
+
+public class GameManager implements GameManagerInterface {
 	
-	Scene getScene();
+	SceneInterface scene;
 	
+	public GameManager() {
+		this.scene = EngineMain.getScene();
+		List<GUIInterface> uis = new ArrayList<GUIInterface>();
+	}
+
+	@Override
+	public SceneInterface getScene() {
+		return this.scene;
+	}
 
 }

@@ -1,61 +1,69 @@
 package audio;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
- * Interface to store and control audio sources.
+ * Audio manager for controling and storing structured map and arrays of 
+ * audio sources.
  * 
  * @author homelleon
- *
+ * @version 1.0
  */
 
-public interface AudioManager {
+public class AudioManager implements AudioManagerInterface {
 	
-	/**
-	 * Adds list of audio sources into audio sources map array.
-	 * 
-	 * @param audioList
-	 * 					  {@link Collection}<{@link AudioSource}> value of 
-	 * 					  audio sources list
-	 */
-	void addAll(Collection<AudioSource> audioList);
+	private Map<String, AudioSourceInterface> audioSources = new HashMap<String, AudioSourceInterface>();
+	private AudioMasterInterface audioMaster;
 	
-	/**
-	 * Adds one audio source into audio sources map array.
-	 * 
-	 * @param audio
-	 * 				  {@link AudioSource} value
-	 */
-	void add(AudioSource audio);
+	public AudioManager(AudioMasterInterface audioMaster) {
+		this.audioMaster = audioMaster;
+	}
+
+
+	@Override
+	public void addAll(Collection<AudioSourceInterface> audioList) {
+		if((audioList != null) && (!audioList.isEmpty())) {
+			for(AudioSourceInterface audio : audioList) {
+				this.audioSources.put(audio.getName(), audio);
+			}
+		}	
+	}
+
+	@Override
+	public void add(AudioSourceInterface audio) {
+		if(audio != null) {
+			this.audioSources.put(audio.getName(), audio); 		
+		}
+	}
+
+	@Override
+	public AudioSourceInterface getByName(String name) {
+		AudioSourceInterface audio = null;
+		if(this.audioSources.containsKey(name)) {
+			audio = this.audioSources.get(name);
+		}
+		return audio;
+	}
+
+	@Override
+	public Collection<AudioSourceInterface> getAll() {
+		return this.audioSources.values();
+	}
 	
-	/**
-	 * Returns audio source by name.
-	 * 
-	 * @param name
-	 * 				{@link String} value
-	 * 
-	 * @return {@link AudioSource} value of chosen audio source
-	 */
-	AudioSource getByName(String name);
 	
-	/**
-	 * Returns list of lights groupped by name.
-	 * 
-	 * @return {@link Collection}<{@link AudioSource}> value of audio sources
-	 * 		   list
-	 */
-	Collection<AudioSource> getAll();	
-	
-	/**
-	 * Returns audio master.
-	 * 
-	 * @return {@link AudioMaster} value
-	 */
-	AudioMaster getMaster();
-	
-	/**
-	 * Clear all audio sources map and arrays.
-	 */
-	void clearAll();
+	@Override
+	public AudioMasterInterface getMaster() {
+		return audioMaster;
+	}
+
+	@Override
+	public void clearAll() {
+		this.audioMaster.cleanUp();
+		this.audioSources.clear();
+	}
+
+
 
 }

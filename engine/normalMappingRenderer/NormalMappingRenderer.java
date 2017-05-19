@@ -11,8 +11,8 @@ import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector4f;
 
-import cameras.Camera;
-import entities.Entity;
+import cameras.CameraInterface;
+import entities.EntityInterface;
 import lights.Light;
 import models.RawModel;
 import models.TexturedModel;
@@ -33,7 +33,7 @@ public class NormalMappingRenderer {
 		shader.stop();
 	}
 
-	public void render(Map<TexturedModel, List<Entity>> entities, Vector4f clipPlane, Collection<Light> lights, Camera camera, Matrix4f toShadowMapSpace) {
+	public void render(Map<TexturedModel, List<EntityInterface>> entities, Vector4f clipPlane, Collection<Light> lights, CameraInterface camera, Matrix4f toShadowMapSpace) {
 		shader.start();
 		shader.loadFogDensity(ES.FOG_DENSITY);
 		shader.loadToShadowSpaceMatrix(toShadowMapSpace);
@@ -41,8 +41,8 @@ public class NormalMappingRenderer {
 		prepare(clipPlane, lights, camera);
 		for (TexturedModel model : entities.keySet()) {
 			prepareTexturedModel(model);
-			List<Entity> batch = entities.get(model);
-			for (Entity entity : batch) {
+			List<EntityInterface> batch = entities.get(model);
+			for (EntityInterface entity : batch) {
 					prepareInstance(entity);
 					GL11.glDrawElements(GL11.GL_TRIANGLES, model.getRawModel().getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
 			}
@@ -88,7 +88,7 @@ public class NormalMappingRenderer {
 		GL30.glBindVertexArray(0);
 	}
 
-	private void prepareInstance(Entity entity) {
+	private void prepareInstance(EntityInterface entity) {
 		Matrix4f transformationMatrix = Maths.createTransformationMatrix(entity.getPosition(), entity.getRotX(),
 				entity.getRotY(), entity.getRotZ(), entity.getScale());
 		shader.loadTransformationMatrix(transformationMatrix);
@@ -96,7 +96,7 @@ public class NormalMappingRenderer {
 		shader.loadManipulationVariables(entity.getIsChosen());
 	}
 
-	private void prepare(Vector4f clipPlane, Collection<Light> lights, Camera camera) {
+	private void prepare(Vector4f clipPlane, Collection<Light> lights, CameraInterface camera) {
 		shader.loadClipPlane(clipPlane);
 		//need to be public variables in MasterRenderer
 		shader.loadSkyColour(ES.DISPLAY_RED, ES.DISPLAY_GREEN, ES.DISPLAY_BLUE);

@@ -2,7 +2,7 @@ package octree;
 
 import org.lwjgl.util.vector.Vector3f;
 
-import entities.Entity;
+import entities.EntityInterface;
 
 public class Node {
 	
@@ -11,7 +11,7 @@ public class Node {
 	private boolean hasChildren = false;
 	private Node[] childrens;
 	private float scale;
-	private Entity entity;
+	private EntityInterface entity;
 	
 	public Node(float scale, Node parent, boolean hasChildren) {
 		this.scale = scale;
@@ -65,7 +65,7 @@ public class Node {
 		return isCanBeScaled;
 	}
 	
-	public void setEntity(Entity entity) {
+	public void setEntity(EntityInterface entity) {
 		this.entity = entity;
 	}
 
