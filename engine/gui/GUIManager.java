@@ -33,7 +33,7 @@ public class GUIManager implements GUIManagerInterface {
 	}
 	
 	@Override
-	public GUIComponentManagerInterface getComponentManager() {
+	public GUIComponentManagerInterface getComponent() {
 		return this.componentManager;
 	}
 

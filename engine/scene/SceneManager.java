@@ -48,7 +48,7 @@ public class SceneManager implements SceneManagerInterface {
 		scene.getUserInterface().init(loader);
 		/*--------------TEXT----------------*/
 		
-		FontType font = scene.getUserInterface().getComponentManager().getTexts().getMaster().getFont();
+		FontType font = scene.getUserInterface().getComponent().getTexts().getMaster().getFont();
 		List<GUIText> guiTextList = new ArrayList<GUIText>();
 		//Version
 		GUIText text1 = new GUIText("version","This is an Alfa-version of the game engine", 
@@ -96,7 +96,7 @@ public class SceneManager implements SceneManagerInterface {
 		
 		guiTextList.add(textHint5);
 		
-		scene.getUserInterface().getComponentManager().getTexts().addAll(guiTextList);
+		scene.getUserInterface().getComponent().getTexts().addAll(guiTextList);
 		
 		/*--------------AUDIO----------------*/
 		AL10.alDistanceModel(AL11.AL_LINEAR_DISTANCE_CLAMPED);

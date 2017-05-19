@@ -43,15 +43,15 @@ public class MyGame implements GameInterface {
 			List<GUITexture> hintTextureList = new ArrayList<GUITexture>();
 			List<GUIText> hintTextList = new ArrayList<GUIText>();			
 			hintTextList.add(gameManager.getScene().getUserInterface()
-					.getComponentManager().getTexts().getByName("hint1"));
+					.getComponent().getTexts().getByName("hint1"));
 			hintTextList.add(gameManager.getScene().getUserInterface()
-					.getComponentManager().getTexts().getByName("hint2"));
+					.getComponent().getTexts().getByName("hint2"));
 			hintTextList.add(gameManager.getScene().getUserInterface()
-					.getComponentManager().getTexts().getByName("hint3"));
+					.getComponent().getTexts().getByName("hint3"));
 			hintTextList.add(gameManager.getScene().getUserInterface()
-					.getComponentManager().getTexts().getByName("hint4"));
+					.getComponent().getTexts().getByName("hint4"));
 			hintTextList.add(gameManager.getScene().getUserInterface()
-					.getComponentManager().getTexts().getByName("hint5"));
+					.getComponent().getTexts().getByName("hint5"));
 			this.hints = new GUI("hint", hintTextureList, hintTextList);
 			
 			//PE10.peAttachBody(tree1, PE10.BODY_3D_SPHERE, world1);

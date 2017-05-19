@@ -39,7 +39,7 @@ public interface GUIManagerInterface {
 	 *  
 	 * @return {@link GUIComponentManagerInterface} value
 	 */
-	GUIComponentManagerInterface getComponentManager();
+	GUIComponentManagerInterface getComponent();
 	
 	/**
 	 * Clean all ui groups.

@@ -52,6 +52,7 @@ public class GUITextTXTParser implements GUITextParserInterface {
 		TextLoaderInterface txtLoader = new TextTXTLoader();
 		for(int i = 0; i < nameList.size(); i++) {			
 			String text = txtLoader.loadFile(pathList.get(i));
+			//TODO: check loading text!
 			System.out.println("text " + i);
 			GUIText guiText = new GUIText(nameList.get(i), text, 4, 
 					master.getFont(), positionList.get(i), 
