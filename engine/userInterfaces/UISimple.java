@@ -18,6 +18,7 @@ import guis.GuiTexture;
 public class UISimple implements UI {
 	
 	private String name;
+	private boolean isShown;
 	private List<GuiTexture> guis;
 	private List<GUIText> texts;
 	
@@ -25,6 +26,7 @@ public class UISimple implements UI {
 		this.name = name;
 		this.guis = guis;
 		this.texts = texts;
+		this.isShown = false;
 	}
 	
 	@Override
@@ -41,6 +43,7 @@ public class UISimple implements UI {
 		if(!texts.isEmpty()) {
 			texts.forEach(tui -> tui.setIsShown(true));
 		}
+		this.isShown = true;
 	}
 
 	@Override
@@ -51,7 +54,14 @@ public class UISimple implements UI {
 		if(!texts.isEmpty()) {
 			texts.forEach(tui -> tui.setIsShown(false));
 		}
+		this.isShown = false;
 	}
+	
+
+	@Override
+	public boolean getIsShown() {
+		return this.isShown;
+	}	
 
 	@Override
 	public void setTransparency(float value) {
@@ -76,6 +86,7 @@ public class UISimple implements UI {
 	public void delete() {
 		guis.clear();
 		texts.clear();
-	}	
+	}
+
 
 }

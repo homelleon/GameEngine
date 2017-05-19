@@ -30,6 +30,13 @@ public interface UI {
 	void hide();
 	
 	/**
+	 * Check if user interface is shown.
+	 * @return true if user interface is shown<br>
+	 * 		   false if user interaface is hidden
+	 */
+	boolean getIsShown();
+	
+	/**
 	 * 
 	 * Sets transparency value for user interface object.
 	 *

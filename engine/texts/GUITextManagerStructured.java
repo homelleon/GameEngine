@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import fontMeshCreator.FontType;
 import fontMeshCreator.GUIText;
 import fontRendering.TextMaster;
 import renderEngine.Loader;
@@ -12,6 +13,8 @@ public class GUITextManagerStructured implements GUITextManager {
 	
 	private TextMaster master; 
 	private Map<String, GUIText> texts = new HashMap<String, GUIText>();
+	//TODO: change fonts repositoring from TextMaster to GUITextManager
+	private Map<String, FontType> fonts = new HashMap<String, FontType>();
 	
 	public GUITextManagerStructured(Loader loader) {
 		this.master = new TextMaster(loader);
@@ -21,7 +24,7 @@ public class GUITextManagerStructured implements GUITextManager {
 	public void addAll(Collection<GUIText> textList) {
 		if((textList != null) && (!textList.isEmpty())) {
 			for(GUIText text : textList) {
-				this.texts.put(text.getName(), text);
+				this.texts.put(text.getName(), text);				
 				this.master.loadText(text);
 			}
 		}	

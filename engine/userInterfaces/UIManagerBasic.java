@@ -1,13 +1,9 @@
 package userInterfaces;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import fontMeshCreator.GUIText;
-import guis.GuiTexture;
 import renderEngine.Loader;
 
 public class UIManagerBasic implements UIManager {
