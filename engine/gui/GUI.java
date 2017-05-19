@@ -1,28 +1,28 @@
-package userInterfaces;
+package gui;
 
 import java.util.List;
 
 import org.lwjgl.util.vector.Vector2f;
 
 import fontMeshCreator.GUIText;
-import guis.GuiTexture;
+import guiTextures.GUITexture;
 
 /**
- * Stores {@link GuiTexture} and {@link GUIText} objects to control them
+ * Stores {@link GUITexture} and {@link GUIText} objects to control them
  * together.
  * 
  * @author homelleon
- * @see UI
+ * @see GUIInterface
  *
  */
-public class UISimple implements UI {
+public class GUI implements GUIInterface {
 	
 	private String name;
 	private boolean isShown;
-	private List<GuiTexture> guis;
+	private List<GUITexture> guis;
 	private List<GUIText> texts;
 	
-	public UISimple(String name, List<GuiTexture> guis, List<GUIText> texts) {
+	public GUI(String name, List<GUITexture> guis, List<GUIText> texts) {
 		this.name = name;
 		this.guis = guis;
 		this.texts = texts;
@@ -71,7 +71,7 @@ public class UISimple implements UI {
 
 	@Override
 	public void move(Vector2f position) {
-		for(GuiTexture gui : this.guis) {			
+		for(GUITexture gui : this.guis) {			
 			Vector2f newPosition = Vector2f.add(gui.getPosition(), position, null);
 			gui.setPosition(newPosition);
 		}	

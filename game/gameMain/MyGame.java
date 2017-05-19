@@ -8,19 +8,19 @@ import org.lwjgl.opengl.GL11;
 
 import entities.Entity;
 import fontMeshCreator.GUIText;
-import guis.GuiTexture;
+import gui.GUI;
+import gui.GUIInterface;
+import guiTextures.GUITexture;
 import inputs.KeyboardGame;
 import inputs.MouseGame;
 import scene.Scene;
-import userInterfaces.UI;
-import userInterfaces.UISimple;
 
 public class MyGame implements Game {
 	
 	private GameManager gameManager;
 	private int world1;
 	private Scene scene;
-	UI hints;
+	GUIInterface hints;
 	Entity cube7;
 	int time = 0;
 	
@@ -41,7 +41,7 @@ public class MyGame implements Game {
 			//world1 = PE10.peCreateWorld(new Vector3f(0,0,0), new Vector3f(0,0,0));
 			cube7 = gameManager.getScene().getEntities().getByName("Cuby4");
 			cube7.increasePosition(0, 5, 0);
-			List<GuiTexture> hintTextureList = new ArrayList<GuiTexture>();
+			List<GUITexture> hintTextureList = new ArrayList<GUITexture>();
 			List<GUIText> hintTextList = new ArrayList<GUIText>();			
 			hintTextList.add(gameManager.getScene().getUserInterface()
 					.getComponentManager().getTexts().getByName("hint1"));
@@ -53,7 +53,7 @@ public class MyGame implements Game {
 					.getComponentManager().getTexts().getByName("hint4"));
 			hintTextList.add(gameManager.getScene().getUserInterface()
 					.getComponentManager().getTexts().getByName("hint5"));
-			this.hints = new UISimple("hint", hintTextureList, hintTextList);
+			this.hints = new GUI("hint", hintTextureList, hintTextList);
 			
 			//PE10.peAttachBody(tree1, PE10.BODY_3D_SPHERE, world1);
 			//PE10.peAttachBody(tree2, PE10.BODY_3D_SPHERE, world1);

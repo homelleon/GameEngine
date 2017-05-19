@@ -1,4 +1,4 @@
-package userInterfaces;
+package gui;
 
 import org.lwjgl.util.vector.Vector2f;
 
@@ -7,10 +7,10 @@ import org.lwjgl.util.vector.Vector2f;
  *
  * 
  * @author homelleon
- * @see UISimple
+ * @see GUI
  *
  */
-public interface UI {
+public interface GUIInterface {
 	
 	/**
 	 * Returns name of user interface object.

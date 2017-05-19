@@ -1,4 +1,4 @@
-package userInterfaces;
+package gui;
 
 import java.util.Collection;
 
@@ -6,10 +6,10 @@ import java.util.Collection;
  * Group of user interface objects to solve the same task.
  * 
  * @author homelleon
- * @see UIGroupSimple
+ * @see GUIGroup
  *
  */
-public interface UIGroup {
+public interface GUIGroupInterface {
 	
 	/**
 	 * Returns name of the user interface group.
@@ -23,9 +23,9 @@ public interface UIGroup {
 	 * 
 	 * @param name
 	 * 				{@link String} value
-	 * @return {@link UI} value of user interface object
+	 * @return {@link GUIInterface} value of user interface object
 	 */
-	UI get(String name);
+	GUIInterface get(String name);
 	
 	/**
 	 * Set all user interface in the group visible.
@@ -40,9 +40,9 @@ public interface UIGroup {
 	/**
 	 * Returns collection of user interface objects.
 	 * 
-	 * @return {@link Collection}<{@link UI}> value of user interfaces
+	 * @return {@link Collection}<{@link GUIInterface}> value of user interfaces
 	 */
-	Collection<UI> getAll();
+	Collection<GUIInterface> getAll();
 	
 	/**
 	 * Make user group empty destroing all user interfaces.

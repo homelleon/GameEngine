@@ -1,4 +1,4 @@
-package texts;
+package guiTexts;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -10,7 +10,7 @@ import org.lwjgl.util.vector.Vector2f;
 import fontMeshCreator.GUIText;
 import fontRendering.TextMaster;
 
-public class GUITextTXTParser implements GUITextParser {
+public class GUITextTXTParser implements GUITextParserInterface {
 
 	@Override
 	public List<GUIText> parse(BufferedReader reader, TextMaster master) {
@@ -49,7 +49,7 @@ public class GUITextTXTParser implements GUITextParser {
 			e.printStackTrace();
 		}
 		
-		TextLoader txtLoader = new TextTXTLoader();
+		TextLoaderInterface txtLoader = new TextTXTLoader();
 		for(int i = 0; i < nameList.size(); i++) {			
 			String text = txtLoader.loadFile(pathList.get(i));
 			System.out.println("text " + i);

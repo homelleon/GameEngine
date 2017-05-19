@@ -1,4 +1,4 @@
-package texts;
+package guiTexts;
 
 import java.util.Collection;
 
@@ -10,11 +10,11 @@ import lights.Light;
  * Interface to store and control graphic interface texts.
  * 
  * @author homelleon
- * @see GUITextManagerStructured
+ * @see GUITextManager
  *
  */
 
-public interface GUITextManager {
+public interface GUITextManagerInterface {
 	
 	/**
 	 * Adds list of text into texts map array.

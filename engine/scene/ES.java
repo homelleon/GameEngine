@@ -117,7 +117,7 @@ public class ES {
 	public final static String BOUNDING_SHADER_PATH = SOURCE_PATH + "boundings/";
 	public final static String TERRAIN_SHADER_PATH = SOURCE_PATH + "terrains/";
 	public final static String VOXEL_SHADER_PATH = SOURCE_PATH + "voxels/";
-	public final static String GUI_SHADER_PATH = SOURCE_PATH + "guis/";
+	public final static String GUI_SHADER_PATH = SOURCE_PATH + "guiTextures/";
 	public final static String SKYBOX_SHADER_PATH = SOURCE_PATH + "skybox/";
 	public final static String NORMAL_MAP_SHADER_PATH = SOURCE_PATH + "normalMappingRenderer/";
 	public final static String WATER_SHADER_PATH = SOURCE_PATH + "water/";

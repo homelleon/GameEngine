@@ -1,4 +1,4 @@
-package texts;
+package guiTexts;
 
 import java.io.BufferedReader;
 import java.util.List;
@@ -11,7 +11,7 @@ import fontRendering.TextMaster;
  * @author homelleon
  * @see GUITextTXTParser
  */
-public interface GUITextParser {
+public interface GUITextParserInterface {
 	
 	List<GUIText> parse(BufferedReader reader, TextMaster master);
 

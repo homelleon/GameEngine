@@ -1,4 +1,4 @@
-package texts;
+package guiTexts;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -8,7 +8,7 @@ import java.io.IOException;
 
 import scene.ES;
 
-public class TextTXTLoader implements TextLoader {
+public class TextTXTLoader implements TextLoaderInterface {
 
 	@Override
 	public String loadFile(String fileName) {

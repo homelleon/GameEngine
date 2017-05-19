@@ -5,12 +5,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import engineMain.EngineMain;
+import gui.GUIGroup;
+import gui.GUIGroupInterface;
+import gui.GUIInterface;
+import gui.GUIManager;
+import gui.GUIManagerInterface;
 import scene.Scene;
-import userInterfaces.UI;
-import userInterfaces.UIGroup;
-import userInterfaces.UIGroupSimple;
-import userInterfaces.UIManager;
-import userInterfaces.UIManagerBasic;
 
 public class GameManagerBasic implements GameManager {
 	
@@ -18,7 +18,7 @@ public class GameManagerBasic implements GameManager {
 	
 	public GameManagerBasic() {
 		this.scene = EngineMain.getScene();
-		List<UI> uis = new ArrayList<UI>();
+		List<GUIInterface> uis = new ArrayList<GUIInterface>();
 	}
 
 	@Override

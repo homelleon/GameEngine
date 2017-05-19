@@ -13,8 +13,10 @@ import entities.Entity;
 import entities.EntityManager;
 import entities.EntityManagerStructured;
 import entities.Player;
-import guis.GUIManager;
-import guis.GUIManagerStructured;
+import gui.GUIManager;
+import gui.GUIManagerInterface;
+import guiTextures.GUITextureManager;
+import guiTextures.GUITextureManagerInterface;
 import lights.Light;
 import lights.LightManager;
 import lights.LightManagerStructured;
@@ -25,11 +27,8 @@ import particles.ParticleSystem;
 import terrains.Terrain;
 import terrains.TerrainManager;
 import terrains.TerrainManagerStructured;
-import texts.GUITextManager;
 import textures.Texture;
 import toolbox.MousePicker;
-import userInterfaces.UIManager;
-import userInterfaces.UIManagerBasic;
 import viewCulling.Frustum;
 import voxels.ChunkManager;
 import voxels.ChunkManagerStructured;
@@ -57,8 +56,8 @@ public class SceneGame implements Scene {
 	private ParticleManager particleManager = new ParticleManagerStructured();
 	private LightManager lightManager = new LightManagerStructured();
 	private AudioManager audioManager = new AudioManagerStructured(audioMaster);
-	private GUIManager guiManager = new GUIManagerStructured();
-	private UIManager uiManager = new UIManagerBasic();
+	private GUITextureManagerInterface guiManager = new GUITextureManager();
+	private GUIManagerInterface uiManager = new GUIManager();
 
 	
 	public SceneGame() {}
@@ -191,14 +190,14 @@ public class SceneGame implements Scene {
 	 */
 
 	@Override
-	public GUIManager getGuis() {
+	public GUITextureManagerInterface getGuis() {
 		return this.guiManager;
 	}
 
 	
 	
 	@Override
-	public UIManager getUserInterface() {		
+	public GUIManagerInterface getUserInterface() {		
 		return this.uiManager;
 	}
 

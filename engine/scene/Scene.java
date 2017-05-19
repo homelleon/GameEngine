@@ -7,17 +7,17 @@ import cameras.Camera;
 import entities.Entity;
 import entities.EntityManager;
 import entities.Player;
-import guis.GUIManager;
+import gui.GUIManagerInterface;
+import guiTexts.GUITextManagerInterface;
+import guiTextures.GUITextureManagerInterface;
 import lights.Light;
 import lights.LightManager;
 import particles.ParticleManager;
 import particles.ParticleMaster;
 import particles.ParticleSystem;
 import terrains.TerrainManager;
-import texts.GUITextManager;
 import textures.Texture;
 import toolbox.MousePicker;
-import userInterfaces.UIManager;
 import viewCulling.Frustum;
 import voxels.ChunkManager;
 import water.WaterManager;
@@ -135,18 +135,18 @@ public interface Scene {
 	/**
 	 * Returns graphic interfaces manager.
 	 * 
-	 * @return {@link GUIManager} value of graphic
+	 * @return {@link GUITextureManagerInterface} value of graphic
 	 * 		   interfaces manager
 	 */
-	GUIManager getGuis();
+	GUITextureManagerInterface getGuis();
 	
 	/**
 	 * Rerturns manager to control user interface.
 	 * 
-	 * @return {@link UIManager} value of user interface
+	 * @return {@link GUIManagerInterface} value of user interface
 	 * manager 
 	 */
-	UIManager getUserInterface();
+	GUIManagerInterface getUserInterface();
 	
 	/**
 	 * Returns visual frustum object.

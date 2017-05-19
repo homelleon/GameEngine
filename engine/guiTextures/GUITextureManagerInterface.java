@@ -1,4 +1,4 @@
-package guis;
+package guiTextures;
 
 import java.util.Collection;
 
@@ -9,24 +9,24 @@ import java.util.Collection;
  *
  */
 
-public interface GUIManager {
+public interface GUITextureManagerInterface {
 
 	/**
 	 * Adds list of graphic interfaces into graphic interfaces map array.
 	 * 
 	 * @param guiList
-	 * 					  {@link Collection}<{@link GuiTexture}> value of 
+	 * 					  {@link Collection}<{@link GUITexture}> value of 
 	 * 					  graphic interfaces list
 	 */
-	void addAll(Collection<GuiTexture> guiList);
+	void addAll(Collection<GUITexture> guiList);
 	
 	/**
 	 * Adds one light into graphic interfaces map array.
 	 * 
-	 * @param gui
-	 * 				  {@link GuiTexture} value
+	 * @param guiTexture
+	 * 				  {@link GUITexture} value
 	 */
-	void add(GuiTexture gui);
+	void add(GUITexture guiTexture);
 	
 	/**
 	 * Returns graphic interface by name.
@@ -34,17 +34,17 @@ public interface GUIManager {
 	 * @param name
 	 * 				{@link String} value
 	 * 
-	 * @return {@link GuiTexture} value of chosen graphic interface
+	 * @return {@link GUITexture} value of chosen graphic interface
 	 */
-	GuiTexture getByName(String name);
+	GUITexture getByName(String name);
 	
 	/**
 	 * Returns list of graphic interfaces groupped by name.
 	 * 
-	 * @return {@link Collection}<{@link GuiTexture}> value of graphic 
+	 * @return {@link Collection}<{@link GUITexture}> value of graphic 
 	 * 		   interfaces list
 	 */
-	Collection<GuiTexture> getAll();	
+	Collection<GUITexture> getAll();	
 	
 	/**
 	 * Clear all graphic interfaces map and arrays.

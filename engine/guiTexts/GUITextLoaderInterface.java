@@ -1,4 +1,4 @@
-package texts;
+package guiTexts;
 
 import java.util.List;
 
@@ -10,7 +10,7 @@ import fontRendering.TextMaster;
  * @author homelleon
  * @see GUITextTXTLoader
  */
-public interface GUITextLoader {
+public interface GUITextLoaderInterface {
 	
 	List<GUIText> loadFile(String fileName, TextMaster master); 
 		

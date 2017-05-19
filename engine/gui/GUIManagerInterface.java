@@ -1,4 +1,4 @@
-package userInterfaces;
+package gui;
 
 import java.util.Collection;
 
@@ -8,9 +8,9 @@ import renderEngine.Loader;
  * UI Manager Interface.
  * 
  * @author homelleon
- * @see UIManagerBasic
+ * @see GUIManager
  */
-public interface UIManager {
+public interface GUIManagerInterface {
 	
 	/**
 	 * Initialize ui manager.
@@ -22,24 +22,24 @@ public interface UIManager {
 	 * 
 	 * @param name {@link String} value
 	 * 
-	 * @return {@link UIGroup} value of user interfaces
+	 * @return {@link GUIGroupInterface} value of user interfaces
 	 */
-	UIGroup getUIGroup(String name);
+	GUIGroupInterface getUIGroup(String name);
 	
 	/**
 	 * Adds list of user interface groups.
 	 * 
 	 * @param groupList
 	 */
-	void addUIGroup(Collection<UIGroup> groupList);
+	void addUIGroup(Collection<GUIGroupInterface> groupList);
 	
 	/**
 	 * Returns component manager that controls engine default interface
 	 * entities.
 	 *  
-	 * @return {@link UIComponentManager} value
+	 * @return {@link GUIComponentManagerInterface} value
 	 */
-	UIComponentManager getComponentManager();
+	GUIComponentManagerInterface getComponentManager();
 	
 	/**
 	 * Clean all ui groups.

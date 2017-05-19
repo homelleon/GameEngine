@@ -1,4 +1,4 @@
-package texts;
+package guiTexts;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -9,14 +9,14 @@ import fontMeshCreator.GUIText;
 import fontRendering.TextMaster;
 import renderEngine.Loader;
 
-public class GUITextManagerStructured implements GUITextManager {
+public class GUITextManager implements GUITextManagerInterface {
 	
 	private TextMaster master; 
 	private Map<String, GUIText> texts = new HashMap<String, GUIText>();
 	//TODO: change fonts repositoring from TextMaster to GUITextManager
 	private Map<String, FontType> fonts = new HashMap<String, FontType>();
 	
-	public GUITextManagerStructured(Loader loader) {
+	public GUITextManager(Loader loader) {
 		this.master = new TextMaster(loader);
 	}
 	
@@ -67,7 +67,7 @@ public class GUITextManagerStructured implements GUITextManager {
 
 	@Override
 	public void readFile(String fileName) {
-		GUITextLoader txtLoader = new GUITextTXTLoader();
+		GUITextLoaderInterface txtLoader = new GUITextTXTLoader();
 		this.addAll(txtLoader.loadFile(fileName, master));
 		
 	}

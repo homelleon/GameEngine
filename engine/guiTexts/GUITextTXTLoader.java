@@ -1,4 +1,4 @@
-package texts;
+package guiTexts;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -10,7 +10,7 @@ import fontMeshCreator.GUIText;
 import fontRendering.TextMaster;
 import scene.ES;
 
-public class GUITextTXTLoader implements GUITextLoader {
+public class GUITextTXTLoader implements GUITextLoaderInterface {
 	
 	public List<GUIText> loadFile(String fileName, TextMaster master) {
 		FileReader isr = null;
@@ -23,7 +23,7 @@ public class GUITextTXTLoader implements GUITextLoader {
 					".txt");
 		}
 		BufferedReader reader = new BufferedReader(isr);
-        GUITextParser txtParser = new GUITextTXTParser();
+        GUITextParserInterface txtParser = new GUITextTXTParser();
         
 		return txtParser.parse(reader, master);
 	}

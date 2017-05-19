@@ -5,6 +5,8 @@ import org.lwjgl.opengl.Display;
 
 import gameMain.Game;
 import gameMain.MyGame;
+import gui.GUIManager;
+import gui.GUIManagerInterface;
 import inputs.MouseGame;
 import maps.GameMap;
 import maps.MapsLoader;
@@ -17,8 +19,6 @@ import scene.Scene;
 import scene.SceneGame;
 import scene.SceneManager;
 import scene.SceneManagerDefault;
-import userInterfaces.UIManager;
-import userInterfaces.UIManagerBasic;
 
 /**
  * Game looping system that initialize preloaded game variables and objects and

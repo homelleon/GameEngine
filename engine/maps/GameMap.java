@@ -12,7 +12,7 @@ import cameras.Camera;
 import entities.Entity;
 import entities.EntityTextured;
 import entities.Player;
-import guis.GuiTexture;
+import guiTextures.GUITexture;
 import lights.Light;
 import models.TexturedModel;
 import particles.ParticleSystem;
@@ -32,7 +32,7 @@ public class GameMap {
 	private Map<String, AudioSource> audioSorces = new WeakHashMap<String, AudioSource>();
 	private Map<String, Trigger> triggers = new WeakHashMap<String, Trigger>();
 	private Map<String, ParticleSystem> particleSystems = new WeakHashMap<String, ParticleSystem>();
-	private Map<String, GuiTexture> guis = new WeakHashMap<String, GuiTexture>();
+	private Map<String, GUITexture> guis = new WeakHashMap<String, GUITexture>();
 	private Map<String, Camera> cameras = new WeakHashMap<String, Camera>();
 	private Map<String, Player> players = new WeakHashMap<String, Player>();
 	private Map<String, WaterTile> waters = new WeakHashMap<String, WaterTile>();
@@ -149,17 +149,17 @@ public class GameMap {
 	 * 
 	 */
 	
-	public Map<String, GuiTexture> getGuis() {
+	public Map<String, GUITexture> getGuis() {
 		return guis;
 	}
 
-	public void setGuis(List<GuiTexture> guiList) {
-		for(GuiTexture gui : guiList) {
+	public void setGuis(List<GUITexture> guiList) {
+		for(GUITexture gui : guiList) {
 			this.guis.put(gui.getName(), gui);
 		}
 	}
 	
-	public void addGui(GuiTexture gui) {
+	public void addGui(GUITexture gui) {
 		this.guis.put(gui.getName(), gui);
 	}
 	

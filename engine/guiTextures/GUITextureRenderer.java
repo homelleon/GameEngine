@@ -1,4 +1,4 @@
-package guis;
+package guiTextures;
 
 import java.util.Collection;
 
@@ -13,18 +13,18 @@ import renderEngine.Loader;
 import toolbox.Maths;
 import toolbox.OGLUtils;
 
-public class GuiRenderer {
+public class GUITextureRenderer {
 	
 	private final RawModel quad;
-	private GuiShader shader;
+	private GUITextureShader shader;
 	
-	public GuiRenderer(Loader loader) {
+	public GUITextureRenderer(Loader loader) {
 		float[] positions = { -1, 1, -1, -1, 1, 1, 1, -1};
 		quad = loader.loadToVAO(positions, 2);
-		shader = new GuiShader();
+		shader = new GUITextureShader();
 	}
 	
-	public void render(Collection <GuiTexture> guis) {
+	public void render(Collection <GUITexture> guiTextureList) {
 		shader.start();
 		GL30.glBindVertexArray(quad.getVaoID());
 		GL20.glEnableVertexAttribArray(0);
@@ -32,11 +32,11 @@ public class GuiRenderer {
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		OGLUtils.depthTest(false);
 		
-		for(GuiTexture gui: guis){
-			if(gui.getIsShown()) {
+		for(GUITexture guiTexture: guiTextureList){
+			if(guiTexture.getIsShown()) {
 				GL13.glActiveTexture(GL13.GL_TEXTURE0);
-				GL11.glBindTexture(GL11.GL_TEXTURE_2D, gui.getTexture());
-				Matrix4f matrix = Maths.createTransformationMatrix(gui.getPosition(), gui.getScale());
+				GL11.glBindTexture(GL11.GL_TEXTURE_2D, guiTexture.getTexture());
+				Matrix4f matrix = Maths.createTransformationMatrix(guiTexture.getPosition(), guiTexture.getScale());
 				shader.loadTransformation(matrix);
 				GL11.glDrawArrays(GL11.GL_TRIANGLE_STRIP, 0, quad.getVertexCount());
 			}

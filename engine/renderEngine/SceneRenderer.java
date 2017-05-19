@@ -10,7 +10,7 @@ import engineMain.DisplayManager;
 import engineMain.EngineMain;
 import fontMeshCreator.FontType;
 import fontMeshCreator.GUIText;
-import guis.GuiRenderer;
+import guiTextures.GUITextureRenderer;
 import inputs.Controls;
 import inputs.ControlsInGame;
 import inputs.KeyboardGame;
@@ -40,7 +40,7 @@ public class SceneRenderer {
 
 	private MasterRendererSimple masterRenderer;
 	private WaterRenderer waterRenderer;
-	private GuiRenderer guiRenderer;
+	private GUITextureRenderer guiRenderer;
 	private WaterFrameBuffers waterFBOs;
 	private Fbo multisampleFbo;
 	private Fbo outputFbo;
@@ -52,7 +52,7 @@ public class SceneRenderer {
 	public void init(Scene scene, Loader loader) {
 		this.scene = scene;
 		this.masterRenderer = new MasterRendererSimple(loader, scene.getCamera());
-		this.guiRenderer = new GuiRenderer(loader);
+		this.guiRenderer = new GUITextureRenderer(loader);
 		ParticleMaster.init(loader, masterRenderer.getProjectionMatrix());
 		this.multisampleFbo = new Fbo(Display.getWidth(), Display.getHeight());
 		this.outputFbo = new Fbo(Display.getWidth(), Display.getHeight(), Fbo.DEPTH_TEXTURE);

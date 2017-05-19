@@ -1,8 +1,8 @@
-package guis;
+package guiTextures;
 
 import org.lwjgl.util.vector.Vector2f;
 
-public class GuiTexture {
+public class GUITexture {
 	
 	private String name;
 	private boolean isShown = false;
@@ -11,7 +11,7 @@ public class GuiTexture {
 	private Vector2f position;
 	private Vector2f scale;
 	
-	public GuiTexture(String name, int texture, Vector2f position, Vector2f scale) {
+	public GUITexture(String name, int texture, Vector2f position, Vector2f scale) {
 		this.name = name;
 		this.texture = texture;
 		this.position = position;

@@ -1,11 +1,11 @@
-package texts;
+package guiTexts;
 
 /**
  * 
  * @author homelleon
  * @see TextTXTLoader
  */
-public interface TextLoader {
+public interface TextLoaderInterface {
 	
 	String loadFile(String fileName);
 }
