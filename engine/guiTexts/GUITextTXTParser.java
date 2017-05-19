@@ -29,7 +29,7 @@ public class GUITextTXTParser implements GUITextParserInterface {
 		/* parser data */		
 		try {
 			while(reader.readLine() != null) {
-				line = reader.readLine();
+				line = reader.readLine();				
 				
 				if(line.startsWith("<txt> ")) {
 					String[] currentLine = line.split(" ");
@@ -45,12 +45,15 @@ public class GUITextTXTParser implements GUITextParserInterface {
 					centeredList.add(Boolean.valueOf(currentLine[8]));
 				}
 			}
+			reader.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
+		
 		TextLoaderInterface txtLoader = new TextTXTLoader();
 		for(int i = 0; i < nameList.size(); i++) {			
+			System.out.println(pathList.get(i));
 			String text = txtLoader.loadFile(pathList.get(i));
 			//TODO: check loading text!
 			System.out.println("text " + i);

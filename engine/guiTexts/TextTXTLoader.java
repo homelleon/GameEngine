@@ -12,7 +12,7 @@ public class TextTXTLoader implements TextLoaderInterface {
 
 	@Override
 	public String loadFile(String fileName) {
-		String text = null;
+		String text ="";
 		FileReader isr = null;
 		File textFile = new File(ES.TEXT_PATH + fileName + ".txt");
 		
@@ -26,7 +26,9 @@ public class TextTXTLoader implements TextLoaderInterface {
 		try {			
 			while(reader.readLine() != null) {		
 				text += reader.readLine();
+				System.out.println(text);
 			}
+			reader.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
