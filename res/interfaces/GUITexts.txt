@@ -1,2 +1,7 @@
-<txt> firstText menu Arial 0 0 1 1 false
-<txt> secondText menu Arial 0.4 0.4 1 1 false
+<txt> firstText menu candara 0 0 1 1 false
+<txt> secondText menu candara 0.4 0.4 1 1 false
+<txt> hint1 hint1 candara 1 0.55f 0.25f 0.5f false
+<txt> hint2 hint2 candara 1 0.55f 0.3f 0.5f false
+<txt> hint3 hint3 candara 1 0.55f 0.35f 0.5f false
+<txt> hint4 hint4 candara 1 0.55f 0.40f 0.5f false
+<txt> hint5 hint5 candara 1 0.55f 0.45f 0.5f false

@@ -24,7 +24,7 @@ public class GUITextManager implements GUITextManagerInterface {
 	public void addAll(Collection<GUIText> textList) {
 		if((textList != null) && (!textList.isEmpty())) {
 			for(GUIText text : textList) {
-				this.texts.put(text.getName(), text);				
+				this.texts.put(text.getName(), text);			
 				this.master.loadText(text);
 			}
 		}	

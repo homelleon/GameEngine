@@ -39,8 +39,8 @@ public class TextMeshCreator {
 				}
 				currentWord = new Word(text.getFontSize());
 				continue;
-			}
-			Character character = metaData.getCharacter(ascii);
+			}			
+			Character character = metaData.getCharacter(ascii);			
 			currentWord.addCharacter(character);
 		}
 		completeStructure(lines, currentLine, currentWord, text);

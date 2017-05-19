@@ -12,10 +12,10 @@ public class TextTXTLoader implements TextLoaderInterface {
 
 	@Override
 	public String loadFile(String fileName) {
-		String text ="";
+		String text = null;
 		FileReader isr = null;
 		File textFile = new File(ES.TEXT_PATH + fileName + ".txt");
-		
+		System.out.println(textFile.getPath());
 		try {
 			isr = new FileReader(textFile); 
 		} catch (FileNotFoundException e) {
@@ -23,16 +23,15 @@ public class TextTXTLoader implements TextLoaderInterface {
 					".txt");
 		}
 		BufferedReader reader = new BufferedReader(isr);
+		String line;
 		try {			
-			while(reader.readLine() != null) {		
-				text += reader.readLine();
-				System.out.println(text);
+			while((line = reader.readLine()) != null) {
+				text += line; 
 			}
 			reader.close();
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
-        
+		}  
 		return text;
 	}
 

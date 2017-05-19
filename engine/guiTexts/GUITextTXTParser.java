@@ -28,8 +28,7 @@ public class GUITextTXTParser implements GUITextParserInterface {
 		
 		/* parser data */		
 		try {
-			while(reader.readLine() != null) {
-				line = reader.readLine();				
+			while((line = reader.readLine()) != null) {			
 				
 				if(line.startsWith("<txt> ")) {
 					String[] currentLine = line.split(" ");
@@ -52,12 +51,9 @@ public class GUITextTXTParser implements GUITextParserInterface {
 		
 		
 		TextLoaderInterface txtLoader = new TextTXTLoader();
-		for(int i = 0; i < nameList.size(); i++) {			
-			System.out.println(pathList.get(i));
+		for(int i = 0; i < nameList.size(); i++) {
 			String text = txtLoader.loadFile(pathList.get(i));
-			//TODO: check loading text!
-			System.out.println("text " + i);
-			GUIText guiText = new GUIText(nameList.get(i), text, 4, 
+			GUIText guiText = new GUIText(nameList.get(i), text, 0.1f, 
 					master.getFont(), positionList.get(i), 
 					maxLengthList.get(i), centeredList.get(i));
 			textList.add(guiText);			
