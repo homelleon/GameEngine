@@ -1,0 +1,49 @@
+<!-- This map is createrd by MapFileWriter -->
+<!-- This map is createrd by MapFileWriter -->
+<?xml version=&#34;1.0&#34; encoding=&#34;utf-8&#34;?>
+<terrains>
+ <terrain>Terrain2 1 0 grass ground floweredGrass road blendMap true 100.0 5 0.5</terrain>
+ <terrain>Terrain1 0 0 grass ground floweredGrass road blendMap true 50.0 6 0.5</terrain>
+ </terrains>
+<entities>
+ <entity>Grass2/3 grassObject grassObjAtlas 520.0 0.0 530.0 1.8699629 false </entity>
+ <entity>Grass2/4 grassObject grassObjAtlas 520.0 0.0 540.0 2.332347 false </entity>
+ <entity>Grass3/0 grassObject grassObjAtlas 530.0 0.0 500.0 1.6261973 false </entity>
+ <entity>Grass3/1 grassObject grassObjAtlas 530.0 0.0 510.0 2.28952 false </entity>
+ <entity>barrel barrel null 200.0 -2.846105 200.0 1.0 true barrelNormal null 10.0 0.5 </entity>
+ <entity>Bo cube null 70.0 5.066931 70.0 8.0 false </entity>
+ <entity>cube cube null 100.0 1.9837711 10.0 1.0 false </entity>
+ <entity>player1 cube cube1 100.0 1.9837711 10.0 1.0 false </entity>
+ <entity>Grass1/0 grassObject grassObjAtlas 510.0 0.0 500.0 2.0371373 false </entity>
+ <entity>Grass1/1 grassObject grassObjAtlas 510.0 0.0 510.0 1.6575167 false </entity>
+ <entity>Grass1/2 grassObject grassObjAtlas 510.0 0.0 520.0 2.8185287 false </entity>
+ <entity>Grass0/0 grassObject grassObjAtlas 500.0 0.0 500.0 1.2875705 false </entity>
+ <entity>Grass1/3 grassObject grassObjAtlas 510.0 0.0 530.0 1.6459377 false </entity>
+ <entity>Grass0/2 grassObject grassObjAtlas 500.0 0.0 520.0 1.3521018 false </entity>
+ <entity>Grass3/2 grassObject grassObjAtlas 530.0 0.0 520.0 1.3525386 false </entity>
+ <entity>Grass0/1 grassObject grassObjAtlas 500.0 0.0 510.0 2.0479095 false </entity>
+ <entity>Grass3/3 grassObject grassObjAtlas 530.0 0.0 530.0 2.2990947 false </entity>
+ <entity>Grass0/4 grassObject grassObjAtlas 500.0 0.0 540.0 1.3655076 false </entity>
+ <entity>cherry cherry cherry 150.0 3.3507164 150.0 4.0 false </entity>
+ <entity>Grass3/4 grassObject grassObjAtlas 530.0 0.0 540.0 1.8697004 false </entity>
+ <entity>Grass0/3 grassObject grassObjAtlas 500.0 0.0 530.0 2.957682 false </entity>
+ <entity>Grass4/0 grassObject grassObjAtlas 540.0 0.0 500.0 2.7746313 false </entity>
+ <entity>Spartan spartan spartan 0.0 -34.361057 0.0 1.0 false </entity>
+ <entity>Grass4/4 grassObject grassObjAtlas 540.0 0.0 540.0 1.1091019 false </entity>
+ <entity>boulder boulder barrel 250.0 -1.8277466 250.0 1.0 true boulderNormal barrelS 10.0 0.5 </entity>
+ <entity>Grass4/3 grassObject grassObjAtlas 540.0 0.0 530.0 1.2699496 false </entity>
+ <entity>Grass4/2 grassObject grassObjAtlas 540.0 0.0 520.0 2.6377301 false </entity>
+ <entity>Grass4/1 grassObject grassObjAtlas 540.0 0.0 510.0 1.3479686 false </entity>
+ <entity>Grass2/2 grassObject grassObjAtlas 520.0 0.0 520.0 1.7233034 false </entity>
+ <entity>Cuby3 cube null 30.0 -12.975575 25.0 4.0 false </entity>
+ <entity>Grass2/1 grassObject grassObjAtlas 520.0 0.0 510.0 1.7430403 false </entity>
+ <entity>Cuby4 cube null 100.0 17.019413 100.0 25.0 false </entity>
+ <entity>Grass2/0 grassObject grassObjAtlas 520.0 0.0 500.0 1.4283501 false </entity>
+ <entity>Grass1/4 grassObject grassObjAtlas 510.0 0.0 540.0 2.8479247 false </entity>
+ <entity>Cuby1 cube null 50.0 -7.237031 25.0 4.0 false </entity>
+ <entity>Cuby2 cube null 20.0 -17.913754 25.0 4.0 false </entity>
+ <entity>stall stall stallTexture 50.0 -2.778123 50.0 4.0 false </entity>
+ <entity>Cuby7 cube null 48.0 -8.09111 25.0 4.0 false </entity>
+ <entity>Cuby5 cube null 44.0 -9.322007 25.0 4.0 false </entity>
+ <entity>Cuby6 cube Cube1 46.0 -8.747694 25.0 4.0 false </entity>
+</entities>

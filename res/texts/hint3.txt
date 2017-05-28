@@ -1,1 +1,0 @@
-- Press mouse 'Left button' to choose objects

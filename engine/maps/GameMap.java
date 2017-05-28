@@ -20,7 +20,7 @@ import particles.ParticleTexture;
 import renderEngine.Loader;
 import scene.ES;
 import terrains.TerrainInterface;
-import toolbox.ObjectUtils;
+import toolbox.EngineUtils;
 import triggers.Trigger;
 import water.WaterTile;
 
@@ -242,13 +242,13 @@ public class GameMap {
 
 	
 	public void createEntity(String name, String model, String texName, Vector3f position, float rotX, float rotY, float rotZ, float scale) {
-		TexturedModel staticModel = ObjectUtils.loadStaticModel(model, texName, loader);
+		TexturedModel staticModel = EngineUtils.loadStaticModel(model, texName, loader);
 		Entity entity = new Entity(name, staticModel, position, rotX, rotY, rotZ, scale);
 		this.entities.put(name, entity);
 	}
 	
 	public void createEntity(String name, String model, String texName, String normal, String specular, Vector3f position, float rotX, float rotY, float rotZ, float scale, float shine, float reflectivity) {
-		TexturedModel staticModel = ObjectUtils.loadNormalModel(name, texName, normal, specular, loader);
+		TexturedModel staticModel = EngineUtils.loadNormalModel(name, texName, normal, specular, loader);
 		staticModel.getTexture().setShineDamper(shine);
 		staticModel.getTexture().setReflectivity(reflectivity);
 		Entity entity = new Entity(name, ES.ENTITY_TYPE_NORMAL, staticModel, position, rotX, rotY, rotZ, scale);

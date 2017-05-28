@@ -10,10 +10,11 @@ import org.lwjgl.util.vector.Vector3f;
 
 import audio.AudioSourceInterface;
 import renderEngine.Loader;
+import scene.ES;
 import terrains.TerrainInterface;
-import toolbox.ObjectUtils;
+import toolbox.EngineUtils;
 
-public class MapsTXTParser implements MapsParser {
+public class MapsXMLParser implements MapsParser {
 
 	@Override
 	public GameMap readMap(String fileName, BufferedReader reader, Loader loader) {
@@ -63,91 +64,88 @@ public class MapsTXTParser implements MapsParser {
         List<Float> pLifes = new ArrayList<Float>();
         List<Float> pScales = new ArrayList<Float>();
         
+
+		List<String> entitiesXML = new ArrayList<String>();
+		List<String> terrainsXML = new ArrayList<String>();
         try {        	
-	        while (true) {	      
-				line = reader.readLine(); 
-				
-				/*Read entities*/	       
-	        	if (line.startsWith("<e> ")) {
-                    String[] currentLine = line.split(" ");
-            
-                    eNames.add(String.valueOf(currentLine[1]));
-                    eModels.add(String.valueOf(currentLine[2]));
-                    eTextures.add(String.valueOf(currentLine[3]));
-                    eCoords.add(new Vector3f((float) Float.valueOf(currentLine[4]),
-                            (float) Float.valueOf(currentLine[5]),
-                            (float) Float.valueOf(currentLine[6])));
-                    eScales.add(Float.valueOf(currentLine[7]));
-                    eTypes.add(Boolean.valueOf(currentLine[8]));
-                    if(Boolean.valueOf(currentLine[8])) {
-                    	eNormTexts.add(String.valueOf(currentLine[9]));
-                    	eSpecMaps.add(String.valueOf(currentLine[10]));
-                    	eShineDumpers.add(Float.valueOf(currentLine[11]));
-                    	eReflectivities.add(Float.valueOf(currentLine[12]));
-                    } else {
-                    	eNormTexts.add("");
-                    	eSpecMaps.add("");
-                    	eShineDumpers.add(0.0f);
-                    	eReflectivities.add(0.0f);
-                    }
+	        while ((line = reader.readLine()) != null) {        	
+	        	if(line.startsWith(ES.XML_ENTITIES_BEGIN)) {  //Read entities      			        		
+	        		while(!((line = reader.readLine())
+	        				.startsWith(ES.XML_ENTITIES_END))) {
+	        			if (line.startsWith(ES.XML_ENTITY_BEGIN) &&
+			        			line.endsWith(ES.XML_ENTITY_END)) {
+	        				entitiesXML.add(EngineUtils.pullLineFromWords(
+			        					line, ES.XML_ENTITY_BEGIN, ES.XML_ENTITY_END
+	    		    				));
+	        			}
+	        		}
+	        	} else if (line.startsWith(ES.XML_TERRAINS_BEGIN)) { //Read terrains	        		        			        		
+	        		while(!((line = reader.readLine())
+	        				.startsWith(ES.XML_TERRAINS_END))) {
+	        			if (line.startsWith(ES.XML_TERRAIN_BEGIN) &&
+			        			line.endsWith(ES.XML_TERRAIN_END)) {
+	        				terrainsXML.add(EngineUtils.pullLineFromWords(
+			        				line, ES.XML_TERRAIN_BEGIN, ES.XML_TERRAIN_END
+			    				));
+	        			}
+	        		}
+	        	} else if (line.startsWith(ES.XML_AUDIOS_BEGIN)) {
+	        		
+	        	} else if(line.startsWith(ES.XML_PARTICLES_BEGIN)) {
+	        		
 	        	}
 	        	
-	        	/*Read normal mapped entities*/
-	        	//TODO:Implement reader
+	        	if(!entitiesXML.isEmpty()) { //read entities values
+		        	for(String entity : entitiesXML) {
+		                String[] value = entity.split(ES.XML_SEPARATOR);
+		        
+		                eNames.add(String.valueOf(value[0]));
+		                eModels.add(String.valueOf(value[1]));
+		                eTextures.add(String.valueOf(value[2]));
+		                eCoords.add(new Vector3f((float) Float.valueOf(value[3]),
+		                        (float) Float.valueOf(value[4]),
+		                        (float) Float.valueOf(value[5])));
+		                eScales.add(Float.valueOf(value[6]));
+		                eTypes.add(Boolean.valueOf(value[7]));
+		                if(Boolean.valueOf(value[7])) {
+		                	eNormTexts.add(String.valueOf(value[8]));
+		                	eSpecMaps.add(String.valueOf(value[9]));
+		                	eShineDumpers.add(Float.valueOf(value[10]));
+		                	eReflectivities.add(Float.valueOf(value[11]));
+		                } else {
+		                	eNormTexts.add("");
+		                	eSpecMaps.add("");
+		                	eShineDumpers.add(0.0f);
+		                	eReflectivities.add(0.0f);
+		                }
+		        	}
+		        	entitiesXML.clear();
+	        	}        	
 	        	
-	        	/*Read terrains*/
-	        	if (line.startsWith("<t> ")) {
-                    String[] currentLine = line.split(" ");
-            
-                    tNames.add(String.valueOf(currentLine[1]));
-                    tCoords.add(new Vector2f((int) Integer.valueOf(currentLine[2]),
-                    		(int) Integer.valueOf(currentLine[3])));
-                    tBaseTexs.add(String.valueOf(currentLine[4]));
-                    trTexs.add(String.valueOf(currentLine[5]));
-                    tgTexs.add(String.valueOf(currentLine[6]));
-                    tbTexs.add(String.valueOf(currentLine[7])); 
-                    tBlends.add(String.valueOf(currentLine[8]));
-                    tProcGens.add(Boolean.valueOf(currentLine[9]));
-                    if(Boolean.valueOf(currentLine[9])){
-                    	tAmplitudes.add(Float.valueOf(currentLine[10]));
-                    	tOctaves.add(Integer.valueOf(currentLine[11]));
-                    	tRoughnesses.add(Float.valueOf(currentLine[12]));
-                    } else {
-                    	tHeights.add(String.valueOf(currentLine[10]));
-                    } 
+	        	if(!terrainsXML.isEmpty()) { //read terrains values
+		        	for(String terrain : terrainsXML) {
+		        		String[] value = terrain.split(ES.XML_SEPARATOR);
+			            
+	                    tNames.add(String.valueOf(value[0]));
+	                    tCoords.add(new Vector2f((int) Integer.valueOf(value[1]),
+	                    		(int) Integer.valueOf(value[2])));
+	                    tBaseTexs.add(String.valueOf(value[3]));
+	                    trTexs.add(String.valueOf(value[4]));
+	                    tgTexs.add(String.valueOf(value[5]));
+	                    tbTexs.add(String.valueOf(value[6])); 
+	                    tBlends.add(String.valueOf(value[7]));
+	                    tProcGens.add(Boolean.valueOf(value[8]));
+	                    if(Boolean.valueOf(value[8])){
+	                    	tAmplitudes.add(Float.valueOf(value[9]));
+	                    	tOctaves.add(Integer.valueOf(value[10]));
+	                    	tRoughnesses.add(Float.valueOf(value[11]));
+	                    } else {
+	                    	tHeights.add(String.valueOf(value[9]));
+	                    }
+		        	}
 	        	}
-	        	
-	        	/*Read audio loops*/
-	        	if (line.startsWith("<a> ")) {
-	        		String[] currentLine = line.split(" ");
-	        		aNames.add(String.valueOf(currentLine[1]));
-	        		aPaths.add(String.valueOf(currentLine[2]));
-	        		aCoords.add(new Vector3f((Float) Float.valueOf(currentLine[3]),
-	        				 (Float) Float.valueOf(currentLine[4]),
-	        				 (Float) Float.valueOf(currentLine[5])));
-	        		aMaxDistances.add((int)Integer.valueOf(currentLine[6]));	 
-	        	}
-	        	
-	        	/*Read water planes*/
-	        	//TODO:Implement reader
-	        	
-	        	/*Read particle systems*/
-	        	if (line.startsWith("<p> ")) {
-	        		String[] currentLine = line.split(" ");
-	        		pNames.add(String.valueOf(currentLine[1]));
-	        		pTexs.add(String.valueOf(currentLine[2]));	                  
-	                pAdds.add((boolean) Boolean.valueOf(currentLine[3]));
-	                pPpss.add((float) Float.valueOf(currentLine[4]));
-	                pSpeeds.add((float) Float.valueOf(currentLine[5]));
-	                pGravities.add((float) Float.valueOf(currentLine[6]));
-	                pLifes.add((float) Float.valueOf(currentLine[7]));
-	                pScales.add((float) Float.valueOf(currentLine[8]));	 
-	        	}
-	        	
-	        	if (line.startsWith("<end>")) {
-	        		break;
-	        	}	
-	        }	      
+	        	terrainsXML.clear();
+	        }
 	        
 	        reader.close();	  
 	        
@@ -161,14 +159,14 @@ public class MapsTXTParser implements MapsParser {
         for(int i=0;i<tNames.size();i++) {
         	System.out.println(tNames.get(i));
         	if (tProcGens.get(i)) {
-        		TerrainInterface terrain = ObjectUtils.createMultiTexTerrain(tNames.get(i), (int) tCoords.get(i).x, 
+        		TerrainInterface terrain = EngineUtils.createMultiTexTerrain(tNames.get(i), (int) tCoords.get(i).x, 
 	        			(int) tCoords.get(i).y, tBaseTexs.get(i), trTexs.get(i), tgTexs.get(i), 
 	        			tbTexs.get(i), tBlends.get(i), tAmplitudes.get(i), tOctaves.get(i), 
 	        			tRoughnesses.get(i), loader);
 	        	terrains.add(terrain);
 
         	} else {
-        		TerrainInterface terrain = ObjectUtils.createMultiTexTerrain(tNames.get(i),  (int) tCoords.get(i).x, 
+        		TerrainInterface terrain = EngineUtils.createMultiTexTerrain(tNames.get(i),  (int) tCoords.get(i).x, 
 	        			(int) tCoords.get(i).y, tBaseTexs.get(i), trTexs.get(i), tgTexs.get(i), 
 	        			tbTexs.get(i), tBlends.get(i),tHeights.get(i), loader);
         		terrains.add(terrain);

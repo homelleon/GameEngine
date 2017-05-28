@@ -11,8 +11,8 @@ import scene.ES;
 public class TextTXTLoader implements TextLoaderInterface {
 
 	@Override
-	public String loadFile(String fileName) {
-		String text = null;
+	public String loadFile(String fileName, Integer lineNumber) {
+		String text = "";
 		FileReader isr = null;
 		File textFile = new File(ES.TEXT_PATH + fileName + ".txt");
 		System.out.println(textFile.getPath());
@@ -24,9 +24,9 @@ public class TextTXTLoader implements TextLoaderInterface {
 		}
 		BufferedReader reader = new BufferedReader(isr);
 		String line;
-		try {			
-			while((line = reader.readLine()) != null) {
-				text += line; 
+		try {
+			while((line = reader.readLine()) != null) {				
+				text += line;
 			}
 			reader.close();
 		} catch (IOException e) {

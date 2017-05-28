@@ -6,6 +6,6 @@ import renderEngine.Loader;
 
 public interface ObjectMapParser {
 	
-	public ObjectMap readMap(String fileName, BufferedReader reader, Loader loader);
+	public ObjectMapInterface readMap(String fileName, BufferedReader reader, Loader loader);
 
 }

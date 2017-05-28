@@ -9,7 +9,7 @@ import fontRendering.TextMaster;
 /**
  * 
  * @author homelleon
- * @see GUITextTXTParser
+ * @see GUITextXMLParser
  */
 public interface GUITextParserInterface {
 	

@@ -1,1 +1,0 @@
-- Press 'P' to spread chosen objects on the terrain surface

@@ -15,7 +15,21 @@ public interface GUIManagerInterface {
 	/**
 	 * Initialize ui manager.
 	 */
-	void init(Loader loader);
+	void init(Loader loader);	
+	
+	/**
+	 * Adds list of user interface groups.
+	 * 
+	 * @param groupList
+	 */
+	void addAllGUIGroups(Collection<GUIGroupInterface> groupList);
+	
+	/**
+	 * Adds user interface group.
+	 * 
+	 * @param groupList
+	 */
+	void addGUIGroup(GUIGroupInterface group);
 	
 	/**
 	 * Returns UIGroup by name.
@@ -24,14 +38,15 @@ public interface GUIManagerInterface {
 	 * 
 	 * @return {@link GUIGroupInterface} value of user interfaces
 	 */
-	GUIGroupInterface getUIGroup(String name);
+	GUIGroupInterface getGUIGroup(String name);
 	
 	/**
-	 * Adds list of user interface groups.
+	 * Returns list of all UIGroups.
 	 * 
-	 * @param groupList
+	 * @return {@link Collection}<{@link GUIGroupInterface}> value of all user
+	 * interface groups
 	 */
-	void addUIGroup(Collection<GUIGroupInterface> groupList);
+	Collection<GUIGroupInterface> getAllGUIGroups();
 	
 	/**
 	 * Returns component manager that controls engine default interface

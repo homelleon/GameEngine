@@ -1,0 +1,8 @@
+<1>
+- Press 'Esc' button exit the game
+- Press 'Pause' button to pause the game
+- Press mouse 'Left button' to choose objects
+- Press mouse 'Right button' to cancel selection
+- Press 'P' to spread chosen objects on the terrain surface
+<2>
+<3>

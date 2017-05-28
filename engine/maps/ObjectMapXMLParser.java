@@ -5,15 +5,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import entities.EntityInterface;
-import entities.Entity;
 import renderEngine.Loader;
 import scene.ES;
+import toolbox.EngineUtils;
 
-public class ObjectMapTXTParser implements ObjectMapParser {
+public class ObjectMapXMLParser implements ObjectMapParser {
 
 	@Override
-	public ObjectMap readMap(String fileName, BufferedReader reader, Loader loader) {
+	public ObjectMapInterface readMap(String fileName, BufferedReader reader, Loader loader) {
 		String line;
 		 /* entities */
 		List<String> eNames = new ArrayList<String>();
@@ -21,24 +20,23 @@ public class ObjectMapTXTParser implements ObjectMapParser {
         List<String> eTextures = new ArrayList<String>();
         List<String> eTypesString = new ArrayList<String>();
         List<Integer> eTypesInteger = new ArrayList<Integer>();
-        
-        try {        	
-	        while (true) {	      
-				line = reader.readLine(); 
+
+        try {
+	        while ((line = reader.readLine()) != null) {
+				/*Read entities*/
 				
-				/*Read entities*/	       
-	        	if (line.startsWith("<e> ")) {
-                    String[] currentLine = line.split(" ");
-            
-                    eNames.add(String.valueOf(currentLine[1]));
-                    eModels.add(String.valueOf(currentLine[2]));
-                    eTextures.add(String.valueOf(currentLine[3]));
-                    eTypesString.add(String.valueOf(currentLine[4]));
-	        	}	
-	        	
-	        	if (line.startsWith("<end>")) {
-	        		break;
-	        	}	
+				if (line.startsWith(ES.XML_ENTITY_BEGIN) &&
+	        			line.endsWith(ES.XML_ENTITY_END)) {
+	        		line = EngineUtils.pullLineFromWords(
+        				line, ES.XML_ENTITY_BEGIN, ES.XML_ENTITY_END
+    				);
+                    String[] currentLine = line.split(ES.XML_SEPARATOR);
+
+                    eNames.add(String.valueOf(currentLine[0]));
+                    eModels.add(String.valueOf(currentLine[1]));
+                    eTextures.add(String.valueOf(currentLine[2]));
+                    eTypesString.add(String.valueOf(currentLine[3]));
+	        	}	        		
 	        }	      	        
 	        reader.close();	 
 	        
@@ -46,7 +44,7 @@ public class ObjectMapTXTParser implements ObjectMapParser {
         	System.err.println("Error reading the file");
         }     
         
-        ObjectMap map = new ObjectMapSimple(loader);
+        ObjectMapInterface map = new ObjectMap(loader);
 	        
         for(int i = 0; i < eNames.size(); i++) {
         	switch(eTypesString.get(i)) {

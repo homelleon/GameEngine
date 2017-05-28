@@ -1,20 +1,47 @@
 package maps;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.lwjgl.util.vector.Vector3f;
+
 import entities.EntityInterface;
+import entities.Entity;
+import models.TexturedModel;
+import renderEngine.Loader;
+import toolbox.EngineUtils;
 
 /**
- * Map-interface of in-game default objects.
- * <p>Loads object map of entities to show in the game redactor.
+ * Map that controls entity objects to load in the editor menu. 
  * 
  * @author homelleon
- * @version 1.0
- * 
+ *
  */
-public interface ObjectMap {
+public class ObjectMap implements ObjectMapInterface {
 	
-	List<EntityInterface> getALLEntities();
-	EntityInterface getEntity(int index);
-	void loadEntity(String name, String model, String texName);
+	private List<EntityInterface> entities = new ArrayList<EntityInterface>();
+	
+	private Loader loader;
+	
+	public ObjectMap(Loader loader) {
+		this.loader = loader;		
+	}
+
+	@Override
+	public List<EntityInterface> getALLEntities() {
+		return entities;
+	}
+
+	@Override
+	public EntityInterface getEntity(int index) {
+		return entities.get(index);
+	}
+	
+	@Override
+	public void loadEntity(String name, String model, String texName) {
+		TexturedModel staticModel = EngineUtils.loadStaticModel(model, texName, loader);
+		Entity entity = new Entity(name, staticModel, new Vector3f(0,0,0), 0, 0, 0, 1);
+		this.entities.add(entity);
+	}
+
 }

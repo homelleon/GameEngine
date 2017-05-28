@@ -11,12 +11,12 @@ import engineMain.EngineMain;
 import fontMeshCreator.FontType;
 import fontMeshCreator.GUIText;
 import guiTextures.GUITextureRenderer;
-import inputs.ControlsInterface;
 import inputs.Controls;
+import inputs.ControlsInterface;
 import inputs.KeyboardGame;
 import maps.GameMap;
-import maps.MapsTXTWriter;
-import maps.MapsWriter;
+import maps.MapsWriterInterface;
+import maps.MapsXMLWriter;
 import particles.ParticleMaster;
 import postProcessing.Fbo;
 import postProcessing.PostProcessing;
@@ -85,7 +85,7 @@ public class SceneRenderer {
 	
 	private void saveMap(Loader loader) {
 		if (KeyboardGame.isKeyPressed(Keyboard.KEY_T)) {
-			MapsWriter mapWriter = new MapsTXTWriter();
+			MapsWriterInterface mapWriter = new MapsXMLWriter();
 			GameMap map = new GameMap("newMap", loader);
 			map.setEntities(scene.getEntities().getAll());
 			map.setTerrains(scene.getTerrains().getAll());

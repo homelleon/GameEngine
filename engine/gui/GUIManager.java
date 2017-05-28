@@ -21,16 +21,24 @@ public class GUIManager implements GUIManagerInterface {
 	}
 
 	@Override
-	public GUIGroupInterface getUIGroup(String name) {
+	public GUIGroupInterface getGUIGroup(String name) {
 		return groups.get(name);
 	}
 	
 	@Override
-	public void addUIGroup(Collection<GUIGroupInterface> groupList) {
-		for(GUIGroupInterface group : groupList) {
-			this.groups.put(group.getName(), group);
-		}		
+	public void addAllGUIGroups(Collection<GUIGroupInterface> groupList) {
+		groupList.forEach(group -> this.groups.put(group.getName(), group));
 	}
+	
+	@Override
+	public void addGUIGroup(GUIGroupInterface group) {
+		this.groups.put(group.getName(), group);
+	}
+	
+	@Override
+	public Collection<GUIGroupInterface> getAllGUIGroups() {
+		return this.groups.values();
+	}	
 	
 	@Override
 	public GUIComponentManagerInterface getComponent() {
@@ -44,6 +52,6 @@ public class GUIManager implements GUIManagerInterface {
 			group.cleanAll();
 		}
 		this.groups.clear();
-	}		
+	}	
 
 }

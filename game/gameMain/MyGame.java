@@ -9,6 +9,7 @@ import org.lwjgl.opengl.GL11;
 import entities.EntityInterface;
 import fontMeshCreator.GUIText;
 import gui.GUI;
+import gui.GUIGroup;
 import gui.GUIInterface;
 import guiTextures.GUITexture;
 import inputs.KeyboardGame;
@@ -19,7 +20,8 @@ public class MyGame implements GameInterface {
 	private GameManagerInterface gameManager;
 	private int world1;
 	private SceneInterface scene;
-	GUIInterface hints;
+	private String guiGroupName = "help";
+	private GUIInterface hintsUI;
 	EntityInterface cube7;
 	int time = 0;
 	
@@ -39,21 +41,16 @@ public class MyGame implements GameInterface {
 			//scene.setTerrainWiredFrame(true);
 			//world1 = PE10.peCreateWorld(new Vector3f(0,0,0), new Vector3f(0,0,0));
 			cube7 = gameManager.getScene().getEntities().getByName("Cuby4");
-			cube7.increasePosition(0, 5, 0);
+			cube7.increasePosition(0, 10, 0);
+			List<GUIInterface> helpGUIList = new ArrayList<GUIInterface>();
 			List<GUITexture> hintTextureList = new ArrayList<GUITexture>();
 			List<GUIText> hintTextList = new ArrayList<GUIText>();			
 			hintTextList.add(gameManager.getScene().getUserInterface()
-					.getComponent().getTexts().getByName("hint1"));
-			hintTextList.add(gameManager.getScene().getUserInterface()
-					.getComponent().getTexts().getByName("hint2"));
-			hintTextList.add(gameManager.getScene().getUserInterface()
-					.getComponent().getTexts().getByName("hint3"));
-			hintTextList.add(gameManager.getScene().getUserInterface()
-					.getComponent().getTexts().getByName("hint4"));
-			hintTextList.add(gameManager.getScene().getUserInterface()
-					.getComponent().getTexts().getByName("hint5"));
-			this.hints = new GUI("hint", hintTextureList, hintTextList);
-			
+					.getComponent().getTexts().getByName("inputHints"));			
+			GUIInterface hintsGUI = new GUI("hints", hintTextureList, hintTextList);
+			helpGUIList.add(hintsGUI);
+			gameManager.getScene().getUserInterface().addGUIGroup(new GUIGroup(guiGroupName, helpGUIList));
+			this.hintsUI = gameManager.getScene().getUserInterface().getGUIGroup(guiGroupName).get("hints");
 			//PE10.peAttachBody(tree1, PE10.BODY_3D_SPHERE, world1);
 			//PE10.peAttachBody(tree2, PE10.BODY_3D_SPHERE, world1);
 			//PE10.peAttachBody(tree3, PE10.BODY_3D_SPHERE, world1);			
@@ -71,10 +68,10 @@ public class MyGame implements GameInterface {
 		@Override
 		public void onUpdate() {
 			if(KeyboardGame.isKeyPressed(Keyboard.KEY_N)) {
-				if(hints.getIsShown()) {
-					hints.hide();
+				if(hintsUI.getIsShown()) {
+					hintsUI.hide();
 				} else {
-					hints.show();
+					hintsUI.show();
 				}
 			}
 			time += 1;

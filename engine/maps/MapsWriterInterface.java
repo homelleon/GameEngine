@@ -2,7 +2,7 @@ package maps;
 
 import renderEngine.Loader;
 
-public interface MapsWriter {
+public interface MapsWriterInterface {
 	
 	public void write(GameMap map, Loader loader);
 

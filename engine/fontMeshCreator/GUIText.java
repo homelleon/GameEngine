@@ -195,6 +195,15 @@ public class GUIText {
 	public void setColour(float r, float g, float b) {
 		colour.set(r, g, b);
 	}
+	
+	/**
+	 * Set the colour of the text.
+	 * 
+	 * @param color {@link Vecotr3f} value
+	 */
+	public void setColour(Vector3f color) {
+		colour.set(color);
+	}
 
 	/**
 	 * @return the colour of the text.

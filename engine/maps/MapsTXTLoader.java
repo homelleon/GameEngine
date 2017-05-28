@@ -20,12 +20,12 @@ public class MapsTXTLoader implements MapsLoader {
             System.err.println("File not found in res; don't use any extention");
         }
         BufferedReader reader = new BufferedReader(isr);
-        MapsParser mapParser = new MapsTXTParser();
+        MapsParser mapParser = new MapsXMLParser();
         
 		return  mapParser.readMap(fileName, reader, loader);
 	}
 	
-	public ObjectMap loadObjectMap(String fileName, Loader loader) {
+	public ObjectMapInterface loadObjectMap(String fileName, Loader loader) {
 		return null;
 		
 	}

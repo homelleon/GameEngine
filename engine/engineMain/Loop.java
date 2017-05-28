@@ -11,7 +11,7 @@ import inputs.MouseGame;
 import maps.GameMap;
 import maps.MapsLoader;
 import maps.MapsTXTLoader;
-import maps.ObjectMap;
+import maps.ObjectMapInterface;
 import renderEngine.Loader;
 import renderEngine.MasterRenderer;
 import renderEngine.SceneRenderer;
@@ -141,7 +141,7 @@ public class Loop implements LoopInterface {
 	 */
 	private void loadObjectMap(String name) {
 		MapsLoader mapLoader = new MapsTXTLoader();
-		ObjectMap objectMap = mapLoader.loadObjectMap(name, loader);
+		ObjectMapInterface objectMap = mapLoader.loadObjectMap(name, loader);
 	}
 	
 	/**

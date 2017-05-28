@@ -19,13 +19,13 @@ public class GUI implements GUIInterface {
 	
 	private String name;
 	private boolean isShown;
-	private List<GUITexture> guis;
-	private List<GUIText> texts;
+	private List<GUITexture> guiTextures;
+	private List<GUIText> guiTexts;
 	
-	public GUI(String name, List<GUITexture> guis, List<GUIText> texts) {
+	public GUI(String name, List<GUITexture> guiTextureList, List<GUIText> guiTextList) {
 		this.name = name;
-		this.guis = guis;
-		this.texts = texts;
+		this.guiTextures = guiTextureList;
+		this.guiTexts = guiTextList;
 		this.isShown = false;
 	}
 	
@@ -36,25 +36,22 @@ public class GUI implements GUIInterface {
 
 	@Override
 	public void show() {
-		if(!guis.isEmpty()) {
-			guis.forEach(gui -> gui.setIsShown(true));
-		}
-		
-		if(!texts.isEmpty()) {
-			texts.forEach(tui -> tui.setIsShown(true));
-		}
-		this.isShown = true;
+		this.doSwitch(true);
 	}
 
 	@Override
 	public void hide() {
-		if(!guis.isEmpty()) {
-			guis.forEach(gui -> gui.setIsShown(false));
+		this.doSwitch(false);
+	}
+	
+	private void doSwitch(boolean value) {
+		if(!guiTextures.isEmpty()) {
+			guiTextures.forEach(gui -> gui.setIsShown(value));
 		}
-		if(!texts.isEmpty()) {
-			texts.forEach(tui -> tui.setIsShown(false));
+		if(!guiTexts.isEmpty()) {
+			guiTexts.forEach(tui -> tui.setIsShown(value));
 		}
-		this.isShown = false;
+		this.isShown = value;
 	}
 	
 
@@ -71,12 +68,12 @@ public class GUI implements GUIInterface {
 
 	@Override
 	public void move(Vector2f position) {
-		for(GUITexture gui : this.guis) {			
+		for(GUITexture gui : this.guiTextures) {			
 			Vector2f newPosition = Vector2f.add(gui.getPosition(), position, null);
 			gui.setPosition(newPosition);
 		}	
 		
-		for(GUIText text : this.texts) {
+		for(GUIText text : this.guiTexts) {
 			Vector2f newPosition = Vector2f.add(text.getPosition(), position, null);
 			text.setPosition(newPosition);
 		}
@@ -84,8 +81,8 @@ public class GUI implements GUIInterface {
 
 	@Override
 	public void delete() {
-		guis.clear();
-		texts.clear();
+		guiTextures.clear();
+		guiTexts.clear();
 	}
 
 

@@ -10,7 +10,7 @@ import fontMeshCreator.GUIText;
 import fontRendering.TextMaster;
 import scene.ES;
 
-public class GUITextTXTLoader implements GUITextLoaderInterface {
+public class GUITextXMLLoader implements GUITextLoaderInterface {
 	
 	public List<GUIText> loadFile(String fileName, TextMaster master) {
 		FileReader isr = null;
@@ -20,7 +20,7 @@ public class GUITextTXTLoader implements GUITextLoaderInterface {
 			isr = new FileReader(textFile); 
 		} catch (FileNotFoundException e) {
 			System.err.println("Can't find text file with name " + fileName + 
-					".txt");
+					".xml");
 		}
 		BufferedReader reader = new BufferedReader(isr);
         GUITextParserInterface txtParser = new GUITextXMLParser();

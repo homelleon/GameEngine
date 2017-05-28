@@ -12,25 +12,24 @@ public class GUIGroup implements GUIGroupInterface {
 	
 	
 	public GUIGroup(String name, List<GUIInterface> guiList) {
-		for(GUIInterface gui : guiList) {
-			this.guis.put(gui.getName(), gui);
-		}
+		this.name = name;
+		guiList.forEach(gui -> this.guis.put(gui.getName(), gui));		
 	}
 	
 	@Override
 	public String getName() {
-		return name;
+		return this.name;
 	}
 	
 
 	@Override
 	public void showAll() {
-		guis.values().forEach(gui -> gui.show());
+		this.guis.values().forEach(gui -> gui.show());
 	}
 
 	@Override
 	public void hideAll() {
-		guis.values().forEach(gui -> gui.hide());		
+		this.guis.values().forEach(gui -> gui.hide());		
 	}	
 	
 	@Override

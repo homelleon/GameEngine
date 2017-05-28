@@ -12,23 +12,26 @@ import renderEngine.Loader;
 import scene.ES;
 import terrains.TerrainInterface;
 
-public class MapsTXTWriter implements MapsWriterInterface {
+public class MapsXMLWriter implements MapsWriterInterface {
 	
 	@Override
 	public void write(GameMap map, Loader loader) {
 		try {
-			File mapFile = new File(ES.MAP_PATH + map.getName() + ".txt");
+			File mapFile = new File(ES.MAP_PATH + map.getName() + ".xml");
 			BufferedWriter writer = new BufferedWriter(new FileWriter(mapFile));
 			
 			System.out.println("Start saving map '" + map.getName() + "'...");
 			List<String> lines = new ArrayList<String>();
 			
-			lines.add("#This map is createrd by MapFileWriter");
+			lines.add("<!-- This map is createrd by MapFileWriter -->");
+			lines.add("<!-- This map is createrd by MapFileWriter -->");
+			lines.add("<?xml version=&#34;1.0&#34; encoding=&#34;utf-8&#34;?>");
 			
 			System.out.println("Saving terrains...");
 			if (!map.getTerrains().isEmpty()){
+				lines.add(ES.XML_TERRAINS_BEGIN);
 				for(TerrainInterface terrain: map.getTerrains().values()) {
-					String line = "<t> ";
+					String line = " " + ES.XML_TERRAIN_BEGIN;
 					line += String.valueOf(terrain.getName());
 					line += " ";
 					line += String.valueOf((int) (terrain.getX()/terrain.getSize()));
@@ -58,16 +61,19 @@ public class MapsTXTWriter implements MapsWriterInterface {
 						line += " ";
 						line += String.valueOf(terrain.getHeightMapName());
 					}
+					line += " " + ES.XML_TERRAIN_END;
 					lines.add(line);
 				}
+				lines.add(ES.XML_TERRAINS_END);
 			}
 			
 			System.out.println("Succed!");
 			
 			System.out.println("Saving entities...");
 			if (!map.getEntities().isEmpty()) {
+				lines.add(ES.XML_ENTITIES_BEGIN);
 				for(EntityInterface entity : map.getEntities().values()) {
-					String line = "<e> ";
+					String line = " " + ES.XML_ENTITY_BEGIN;
 					line += String.valueOf(entity.getName());
 					line += " ";
 					line += String.valueOf(entity.getModel().getName());
@@ -100,9 +106,12 @@ public class MapsTXTWriter implements MapsWriterInterface {
 						line +=" ";
 						line += entity.getModel().getTexture().getReflectivity();
 					}
+					line += " " + ES.XML_ENTITY_END;
 					lines.add(line);
 				}
+				lines.add(ES.XML_ENTITIES_END);
 			}
+			
 			System.out.println("Succed!");			
 			
 			for(String line : lines) {
@@ -111,8 +120,6 @@ public class MapsTXTWriter implements MapsWriterInterface {
 				writer.newLine();
 			}
 			
-			
-			writer.write("<end>");
 			writer.flush();
 			writer.close();			
 				

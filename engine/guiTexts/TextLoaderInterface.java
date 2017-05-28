@@ -7,5 +7,5 @@ package guiTexts;
  */
 public interface TextLoaderInterface {
 	
-	String loadFile(String fileName);
+	String loadFile(String fileName, Integer lineNumber);
 }

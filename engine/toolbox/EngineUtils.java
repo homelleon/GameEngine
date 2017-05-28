@@ -21,7 +21,7 @@ import textures.TerrainTexture;
 import textures.TerrainTexturePack;
 import water.WaterTile;
 
-public class ObjectUtils {
+public class EngineUtils {
 	
 	public static TexturedModel loadStaticModel(String objFile, 
 			String texName, Loader loader) {
@@ -146,6 +146,10 @@ public class ObjectUtils {
 	
 	public static void createForest(List<Entity> forest, float x, float y, float r, float noise){
 		
+	}
+	
+	public static String pullLineFromWords(String line, String beginWord, String endWord) {				
+		return line.substring(beginWord.length(), line.length() - endWord.length());
 	}
 	
 
