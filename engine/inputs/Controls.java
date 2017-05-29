@@ -2,7 +2,7 @@ package inputs;
 
 import org.lwjgl.input.Keyboard;
 
-import debug.DebugUI;
+import debug.EngineDebug;
 import entities.EntityInterface;
 import scene.ES;
 import scene.SceneInterface;
@@ -24,10 +24,10 @@ public class Controls implements ControlsInterface {
 	
 	private void sceneControls() {
 		if(KeyboardGame.isKeyPressed(ES.KEY_DEBUG_BOUNDING_BOX)) {
-			DebugUI.switchBounding();
+			EngineDebug.switchBounding();
 		}
 		if(KeyboardGame.isKeyPressed(ES.KEY_DEBUG_INFORMATION)) {
-			DebugUI.swithDebugInformation();
+			EngineDebug.switchDebugInformation();
 		}
 	}
 	

@@ -8,7 +8,7 @@ import fontRendering.TextMaster;
 /**
  * 
  * @author homelleon
- * @see GUITextTXTLoader
+ * @see GUITextXMLLoader
  */
 public interface GUITextLoaderInterface {
 	

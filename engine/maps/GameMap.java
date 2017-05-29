@@ -5,12 +5,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.WeakHashMap;
 
+import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
 import audio.AudioSourceInterface;
 import cameras.CameraInterface;
-import entities.EntityInterface;
 import entities.Entity;
+import entities.EntityInterface;
 import entities.PlayerInterface;
 import guiTextures.GUITexture;
 import lights.Light;
@@ -84,6 +85,30 @@ public class GameMap {
 	}
 	
 	public void addTerrian(TerrainInterface terrain) {
+		this.terrains.put(terrain.getName(), terrain);
+	}
+	
+	public void createTerrain(String terrainName, Vector2f position, 
+			String baseTexture, String redTexture, String greenTexture,
+			String blueTexture, String blendTexture, float amplitude,
+			int octave, float roughness) {
+		int x = (int) position.x;
+		int y = (int) position.y;
+		TerrainInterface terrain = EngineUtils.createMultiTexTerrain(terrainName, x,
+    			y, baseTexture, redTexture, greenTexture, 
+    			blueTexture, blendTexture, amplitude, octave, 
+    			roughness, loader);
+		this.terrains.put(terrain.getName(), terrain);
+	}
+	
+	public void createTerrain(String terrainName, Vector2f position, 
+			String baseTexture, String redTexture, String greenTexture,
+			String blueTexture, String blendTexture, String heightMap) {
+		int x = (int) position.x;
+		int y = (int) position.y;
+		TerrainInterface terrain = EngineUtils.createMultiTexTerrain(terrainName, x, 
+    			y, baseTexture, redTexture, greenTexture, 
+    			blueTexture, blendTexture, heightMap, loader);
 		this.terrains.put(terrain.getName(), terrain);
 	}
 	

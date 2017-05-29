@@ -15,7 +15,6 @@ public class TextTXTLoader implements TextLoaderInterface {
 		String text = "";
 		FileReader isr = null;
 		File textFile = new File(ES.TEXT_PATH + fileName + ".txt");
-		System.out.println(textFile.getPath());
 		try {
 			isr = new FileReader(textFile); 
 		} catch (FileNotFoundException e) {

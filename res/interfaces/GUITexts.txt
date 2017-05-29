@@ -1,1 +1,0 @@
-<txt>inputHints hints 1 1 candara 0.55f 0.25f 1 false 1 0 0</txt>

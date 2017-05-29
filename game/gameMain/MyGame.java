@@ -6,6 +6,7 @@ import java.util.List;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
+import debug.EngineDebug;
 import entities.EntityInterface;
 import fontMeshCreator.GUIText;
 import gui.GUI;
@@ -34,10 +35,11 @@ public class MyGame implements GameInterface {
 		public void onStart() {
 			//PE10.initialize();
 			this.gameManager = new GameManager();
-			
-			System.out.println(GL11.glGetString(GL11.GL_VENDOR));
-			System.out.println(GL11.glGetString(GL11.GL_RENDERER));
-			System.out.println(GL11.glGetString(GL11.GL_VERSION));
+			if(EngineDebug.hasDebugPermission()) {
+				System.out.println(GL11.glGetString(GL11.GL_VENDOR));
+				System.out.println(GL11.glGetString(GL11.GL_RENDERER));
+				System.out.println(GL11.glGetString(GL11.GL_VERSION));
+		   	}			
 			//scene.setTerrainWiredFrame(true);
 			//world1 = PE10.peCreateWorld(new Vector3f(0,0,0), new Vector3f(0,0,0));
 			cube7 = gameManager.getScene().getEntities().getByName("Cuby4");

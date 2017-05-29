@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import debug.EngineDebug;
 import renderEngine.Loader;
 
 public class GUIManager implements GUIManagerInterface {
@@ -15,9 +16,10 @@ public class GUIManager implements GUIManagerInterface {
 	Map<String, GUIGroupInterface> groups = new HashMap<String, GUIGroupInterface>();	
 	
 	public void init(Loader loader) {
-		System.out.println("Prepare User Interface...");
-		this.componentManager = new GUIComponentManager(TEXTURE_FILE_NAME, TXT_FILE_NAME, loader);
-		System.out.println("Succed!");
+		if(EngineDebug.hasDebugPermission()) {
+			System.out.println("Prepare User Interface...");
+		}
+		this.componentManager = new GUIComponentManager(TEXTURE_FILE_NAME, TXT_FILE_NAME, loader);		
 	}
 
 	@Override

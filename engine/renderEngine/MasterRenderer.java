@@ -13,7 +13,7 @@ import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector4f;
 
 import cameras.CameraInterface;
-import debug.DebugUI;
+import debug.EngineDebug;
 import entities.EntityInterface;
 import environmentMap.EnvironmentMapRenderer;
 import lights.Light;
@@ -108,7 +108,7 @@ public class MasterRenderer implements MasterRendererInterface{
 		prepare();	
 		checkWiredFrameOn(entitiyWiredFrame);
 		entityRenderer.render(entities, clipPlane, lights, camera, shadowMapRenderer.getToShadowMapSpaceMatrix(), environmentMap);
-		if(DebugUI.boundingMode != DebugUI.BOUNDING_NONE) {
+		if(EngineDebug.boundingMode != EngineDebug.BOUNDING_NONE) {
 			boundingRenderer.render(entities, normalMapEntities, camera);	
 		}
 		normalMapRenderer.render(normalMapEntities, clipPlane, lights, camera, shadowMapRenderer.getToShadowMapSpaceMatrix());

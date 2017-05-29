@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Random;
 
 import org.lwjgl.util.vector.Vector3f;
+import org.w3c.dom.Node;
 
 import entities.EntityInterface;
 import entities.Entity;
@@ -146,11 +147,6 @@ public class EngineUtils {
 	
 	public static void createForest(List<Entity> forest, float x, float y, float r, float noise){
 		
-	}
-	
-	public static String pullLineFromWords(String line, String beginWord, String endWord) {				
-		return line.substring(beginWord.length(), line.length() - endWord.length());
-	}
-	
+	}	
 
 }

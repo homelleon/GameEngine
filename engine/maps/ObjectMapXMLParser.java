@@ -7,7 +7,7 @@ import java.util.List;
 
 import renderEngine.Loader;
 import scene.ES;
-import toolbox.EngineUtils;
+import toolbox.XMLUtils;
 
 public class ObjectMapXMLParser implements ObjectMapParser {
 
@@ -27,7 +27,7 @@ public class ObjectMapXMLParser implements ObjectMapParser {
 				
 				if (line.startsWith(ES.XML_ENTITY_BEGIN) &&
 	        			line.endsWith(ES.XML_ENTITY_END)) {
-	        		line = EngineUtils.pullLineFromWords(
+	        		line = XMLUtils.pullLineFromWords(
         				line, ES.XML_ENTITY_BEGIN, ES.XML_ENTITY_END
     				);
                     String[] currentLine = line.split(ES.XML_SEPARATOR);

@@ -1,10 +1,8 @@
 package maps;
 
-import java.io.BufferedReader;
-
-import renderEngine.Loader;
+import org.w3c.dom.Document;
 
 public interface MapsParser {
 	
-	public GameMap readMap(String fileName, BufferedReader reader, Loader loader);
+	public GameMap readMap(Document document, GameMap map);
 }

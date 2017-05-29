@@ -6,9 +6,9 @@ package debug;
  * @author homelleon
  * @version 1.0
  */
-public class DebugUI {
+public class EngineDebug {
 	
-	public static boolean debugPermission = true;
+	private static boolean debugPermission = true;
 	
 	/*bounding variables*/
 	public static final int BOUNDING_NONE = 0;
@@ -51,18 +51,24 @@ public class DebugUI {
 		}
 	}
 	
-	public static void swithDebugInformation() {
+	public static void switchDebugInformation() {
 		if(hasDebugPermission()) {
 			debugInformation = !debugInformation;
 		}
 	}
 	
-	private static boolean hasDebugPermission() {
+	public static void switchDebugPermission() {
+		debugPermission = !debugPermission;
+	}
+	
+	public static boolean hasDebugPermission() {
 		boolean isPermitted = false;
 		if(debugPermission) {
 			isPermitted = true;
 		} else {
-			System.out.println("Debug mode is not permitted");
+			if(debugInformation) {
+				System.out.println("Debug mode is not permitted");
+			}
 		}
 		return isPermitted;
 	}

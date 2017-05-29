@@ -5,20 +5,18 @@ import org.lwjgl.opengl.Display;
 
 import gameMain.GameInterface;
 import gameMain.MyGame;
-import gui.GUIManager;
-import gui.GUIManagerInterface;
 import inputs.MouseGame;
 import maps.GameMap;
 import maps.MapsLoader;
-import maps.MapsTXTLoader;
+import maps.MapsXMLLoader;
 import maps.ObjectMapInterface;
 import renderEngine.Loader;
 import renderEngine.MasterRenderer;
 import renderEngine.SceneRenderer;
-import scene.SceneInterface;
 import scene.Scene;
-import scene.SceneManagerInterface;
+import scene.SceneInterface;
 import scene.SceneManager;
+import scene.SceneManagerInterface;
 
 /**
  * Game looping system that initialize preloaded game variables and objects and
@@ -126,7 +124,7 @@ public class Loop implements LoopInterface {
 	 * @see #loadGameSettings()
 	 */
 	private void loadMap(String name) {
-		MapsLoader mapLoader = new MapsTXTLoader();
+		MapsLoader mapLoader = new MapsXMLLoader();
 		this.map = mapLoader.loadMap(name, loader);	
 		this.mapIsLoaded = true;
 	}
@@ -140,7 +138,7 @@ public class Loop implements LoopInterface {
 	 * @see #loadGameSettings()
 	 */
 	private void loadObjectMap(String name) {
-		MapsLoader mapLoader = new MapsTXTLoader();
+		MapsLoader mapLoader = new MapsXMLLoader();
 		ObjectMapInterface objectMap = mapLoader.loadObjectMap(name, loader);
 	}
 	

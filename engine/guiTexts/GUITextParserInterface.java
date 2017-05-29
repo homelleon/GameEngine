@@ -1,7 +1,8 @@
 package guiTexts;
 
-import java.io.BufferedReader;
 import java.util.List;
+
+import org.w3c.dom.Document;
 
 import fontMeshCreator.GUIText;
 import fontRendering.TextMaster;
@@ -13,6 +14,6 @@ import fontRendering.TextMaster;
  */
 public interface GUITextParserInterface {
 	
-	List<GUIText> parse(BufferedReader reader, TextMaster master);
+	List<GUIText> parse(Document document, TextMaster master);
 
 }

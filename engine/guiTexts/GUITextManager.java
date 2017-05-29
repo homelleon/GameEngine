@@ -67,7 +67,7 @@ public class GUITextManager implements GUITextManagerInterface {
 
 	@Override
 	public void readFile(String fileName) {
-		GUITextLoaderInterface txtLoader = new GUITextTXTLoader();
+		GUITextLoaderInterface txtLoader = new GUITextXMLLoader();
 		this.addAll(txtLoader.loadFile(fileName, master));
 		
 	}
