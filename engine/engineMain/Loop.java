@@ -150,12 +150,11 @@ public class Loop implements LoopInterface {
 	 * @see #loadObjectMap(String)
 	 */
 	private void loadGameSettings() {
-		SettingsLoaderInterface setLoader = new SettingsTXTLoader();  
+		SettingsLoaderInterface setLoader = new SettingsXMLLoader();  
 		GameSettings settings = setLoader.loadSettings(SETTINGS_NAME);
-		loadMap(settings.getMapName());		
+		loadMap(settings.getMapName());
 		loadObjectMap(settings.getObjectMapName());
-	}	
-
+	}
 	
 	@Override
 	public SceneInterface getScene() {

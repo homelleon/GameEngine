@@ -1,39 +1,49 @@
 package engineMain;
 
-import java.io.BufferedReader;
-import java.io.IOException;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
+import toolbox.XMLUtils;
 
 public class SettingsTXTParser implements SettingsParserInterface {
  
 	@Override
-	public GameSettings readSettings(String fileName, BufferedReader reader) {
-		GameSettings settings = GameSettings.getInstance();
-		String line;
+	public GameSettings readSettings(Document document) {
+		GameSettings settings = GameSettings.getInstance();		
+		NodeList nodeList = document.getDocumentElement().getChildNodes();
 		
-		try {
-			while(true) {
-				line = reader.readLine();
-				if (line.startsWith("mapName= ")) {
-	                    String[] currentLine = line.split(" ");	            
-	                    settings.setMapName(currentLine[1]);
-				}
-				
-				if (line.startsWith("objectMapName= ")) {
-                    String[] currentLine = line.split(" ");	            
-                    settings.setObjectMapName(currentLine[1]);
-				}
-				
-				if (line.startsWith("end")) {
-					break;
-				}
-			}
-			
-		} catch (IOException e) {
-			System.err.println("Error in reading Settings file!");
-			e.printStackTrace();
-		} 
-
+		for (int i = 0; i < nodeList.getLength(); i++) {
+	           Node node = nodeList.item(i);
+	           if (XMLUtils.ifNodeIsElement(node, XMLUtils.MAP)) {
+	        	   readMapSettings(node, settings);
+	           } else if (XMLUtils.ifNodeIsElement(node, XMLUtils.OBJECT_MAP)) {
+	        	   readObjectMapSettings(node, settings);
+	           }
+		}
 		return settings;
+	}
+	
+	private void readMapSettings(Node node, GameSettings settings) {
+		NodeList mapList = node.getChildNodes();
+		for(int j = 0; j < mapList.getLength(); j ++) {
+			Node map = mapList.item(j);
+			if (XMLUtils.ifNodeIsElement(map, XMLUtils.NAME)) {
+				String name = map.getChildNodes().item(0).getNodeValue();
+				settings.setMapName(name);
+			}
+		}
+	}
+	
+	private void readObjectMapSettings(Node node, GameSettings settings) {
+		NodeList objectMapList = node.getChildNodes();
+		for(int j = 0; j < objectMapList.getLength(); j ++) {
+			Node objectMap = objectMapList.item(j);
+			if (XMLUtils.ifNodeIsElement(objectMap, XMLUtils.NAME)) {
+				String name = objectMap.getChildNodes().item(0).getNodeValue();
+				settings.setObjectMapName(name);
+			}
+		}
 	}
 	
 	

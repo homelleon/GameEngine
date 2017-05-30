@@ -1,9 +1,9 @@
 package engineMain;
 
-import java.io.BufferedReader;
+import org.w3c.dom.Document;
 
 public interface SettingsParserInterface {
 	 
-	GameSettings readSettings(String fileName, BufferedReader reader);
+	GameSettings readSettings(Document document);
 	//чтение настроек игры
 }

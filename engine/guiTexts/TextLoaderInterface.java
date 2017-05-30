@@ -3,7 +3,7 @@ package guiTexts;
 /**
  * 
  * @author homelleon
- * @see TextTXTLoader
+ * @see TextXMLLoader
  */
 public interface TextLoaderInterface {
 	

@@ -1,7 +1,23 @@
 <GUI>
 	<GUITexts>
 		<GUIText id="1">
-			<name>inputHints</name>
+			<name>version</name>
+			<path>version</path>
+			<line>1</line>
+			<size>2</size>
+			<font>candara</font>
+			<x>0.0f</x>
+			<y>0.0f</y>
+			<max_length>1</max_length>
+			<centered>true</centered>
+			<color>
+				<r>1</r>
+				<g>0</g>
+				<b>0</b>
+			</color>
+		</GUIText>
+		<GUIText id="2">
+			<name>inputHints1</name>
 			<path>hints</path>
 			<line>1</line>
 			<size>1</size>
@@ -16,5 +32,25 @@
 				<b>0</b>
 			</color>
 		</GUIText>
+		<GUIText id="3">
+			<name>inputHints2</name>
+			<path>hints</path>
+			<line>1</line>
+			<size>1</size>
+			<font>candara</font>
+			<x>0.55f</x>
+			<y>0.50f</y>
+			<max_length>1</max_length>
+			<centered>false</centered>
+			<color>
+				<r>1</r>
+				<g>0</g>
+				<b>0</b>
+			</color>
+		</GUIText>		
 	</GUITexts>
+	<GUITextures>
+		<GUITexture>
+		</GUITexture>
+	</GUITextures>
 </GUI>

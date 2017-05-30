@@ -151,28 +151,6 @@ public class ES {
 	public final static int BOUNDING_BOX_MIN_MAX = 0;
 	public final static int BOUNDING_BOX_DIAM = 1;
 	public final static int BOUNDING_BOX_RADIUS = 2;
-	
-	/* XML parser constants */
-	public static final String XML_SEPARATOR = " ";
-	public static final String XML_ENTITIES_BEGIN = "<entities>";
-	public static final String XML_ENTITIES_END = "</entities>";
-	public static final String XML_ENTITY_BEGIN = "<entity>";
-	public static final String XML_ENTITY_END = "</entity>";
-	public static final String XML_TERRAINS_BEGIN = "<terrains>";
-	public static final String XML_TERRAINS_END = "</terrains>";
-	public static final String XML_TERRAIN_BEGIN = "<terrain>";
-	public static final String XML_TERRAIN_END = "</terrain>";
-	public static final String XML_AUDIOS_BEGIN = "<audios>";
-	public static final String XML_AUDIOS_END = "</audios>";
-	public static final String XML_AUDIO_BEGIN = "<audio>";
-	public static final String XML_AUDIO_END = "</audio>";
-	public static final String XML_PARTICLES_BEGIN = "<particles>";
-	public static final String XML_PARTICLES_END = "</particles>";
-	public static final String XML_PARTICLE_BEGIN = "<particle>";
-	public static final String XML_PARTICLE_END = "</particle>";
-	public final static String XML_TEXTS_BEGIN = "<txts>";
-	public final static String XML_TEXTS_END = "</txts>";
-	public final static String XML_TEXT_BEGIN = "<txt>";
-	public final static String XML_TEXT_END = "</txt>";	
+
 
 }

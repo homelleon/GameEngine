@@ -21,16 +21,17 @@ public class ObjectMapXMLParser implements ObjectMapParser {
         List<String> eTypesString = new ArrayList<String>();
         List<Integer> eTypesInteger = new ArrayList<Integer>();
 
+        //TODO: change parsering due to new code
         try {
 	        while ((line = reader.readLine()) != null) {
 				/*Read entities*/
 				
-				if (line.startsWith(ES.XML_ENTITY_BEGIN) &&
-	        			line.endsWith(ES.XML_ENTITY_END)) {
+				if (line.startsWith(XMLUtils.ENTITY) &&
+	        			line.endsWith(XMLUtils.ENTITY)) {
 	        		line = XMLUtils.pullLineFromWords(
-        				line, ES.XML_ENTITY_BEGIN, ES.XML_ENTITY_END
+        				line, XMLUtils.ENTITY, XMLUtils.ENTITY
     				);
-                    String[] currentLine = line.split(ES.XML_SEPARATOR);
+                    String[] currentLine = line.split(XMLUtils.SEPARATOR);
 
                     eNames.add(String.valueOf(currentLine[0]));
                     eModels.add(String.valueOf(currentLine[1]));

@@ -21,11 +21,11 @@ public class GUITextXMLParser implements GUITextParserInterface {
 	public List<GUIText> parse(Document document, TextMaster master) {
 		
 		NodeList nodeList = document.getDocumentElement().getChildNodes(); 
-		List<GUIText> textList = new ArrayList<GUIText>();;
+		List<GUIText> textList = new ArrayList<GUIText>();
         
         for (int i = 0; i < nodeList.getLength(); i++) {
            Node node = nodeList.item(i);
-           if (XMLUtils.ifNodeIsElement(node, "GUITexts")) {
+           if (XMLUtils.ifNodeIsElement(node, XMLUtils.GUI_TEXTS)) {
         	   textList = createText(node, master);
            }	        	
         }
@@ -75,7 +75,7 @@ public class GUITextXMLParser implements GUITextParserInterface {
 	            	   }	            	   
 	               	}
 	               	Vector3f color = new Vector3f(r,g,b);
-	               	TextLoaderInterface txtLoader = new TextTXTLoader();
+	               	TextLoaderInterface txtLoader = new TextXMLLoader();
 	               	String text = txtLoader.loadFile(path, line);
 	               	GUIText guiText = new GUIText(name, text, size,
 	            		   master.getFont(), position, maxLength, isCentered);
