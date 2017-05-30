@@ -1,6 +1,7 @@
 package engineMain;
 
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -25,25 +26,15 @@ public class SettingsTXTParser implements SettingsParserInterface {
 	}
 	
 	private void readMapSettings(Node node, GameSettings settings) {
-		NodeList mapList = node.getChildNodes();
-		for(int j = 0; j < mapList.getLength(); j ++) {
-			Node map = mapList.item(j);
-			if (XMLUtils.ifNodeIsElement(map, XMLUtils.NAME)) {
-				String name = map.getChildNodes().item(0).getNodeValue();
-				settings.setMapName(name);
-			}
-		}
+		Element map = (Element) node;
+		String name = XMLUtils.getTagValue(map, XMLUtils.NAME);
+		settings.setMapName(name);
 	}
 	
 	private void readObjectMapSettings(Node node, GameSettings settings) {
-		NodeList objectMapList = node.getChildNodes();
-		for(int j = 0; j < objectMapList.getLength(); j ++) {
-			Node objectMap = objectMapList.item(j);
-			if (XMLUtils.ifNodeIsElement(objectMap, XMLUtils.NAME)) {
-				String name = objectMap.getChildNodes().item(0).getNodeValue();
-				settings.setObjectMapName(name);
-			}
-		}
+		Element objectMap = (Element) node;
+		String name = XMLUtils.getTagValue(objectMap, XMLUtils.NAME);
+		settings.setObjectMapName(name);
 	}
 	
 	

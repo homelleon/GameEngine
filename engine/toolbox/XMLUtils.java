@@ -1,5 +1,6 @@
 package toolbox;
 
+import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 /**
@@ -179,6 +180,18 @@ public class XMLUtils {
 		tag += OPEN_BRACET + CLOSE_TAG_SIGN + tagName + CLOSE_BRACET;
 		countId();
 		return tag;
+	}
+	
+	public static String getTagValue(Element element, String tagName) {
+		String value = "";
+		value = element.getElementsByTagName(tagName).item(0).getChildNodes().item(0).getNodeValue();		
+		return value;
+	}
+	
+	public static String getAttributeValue(Node node, String attributeName) {
+		String attribute = "";
+		attribute = node.getAttributes().getNamedItem(attributeName).getNodeValue();
+		return attribute;
 	}
 	
 	public static String addTagValue(String tagName, String value, int level) {

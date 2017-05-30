@@ -42,21 +42,21 @@ public class MapsXMLParser implements MapsParser {
 			   Node entity = entityList.item(j);	        		   
 			   if (XMLUtils.ifNodeIsElement(entity, XMLUtils.ENTITY)) {
 					   Element entityEl = (Element) entity;
-		               String ID = entity.getAttributes().getNamedItem(XMLUtils.ID).getNodeValue();
-		               String name = entityEl.getElementsByTagName(XMLUtils.NAME).item(0).getChildNodes().item(0).getNodeValue();
-		               String model = entityEl.getElementsByTagName(XMLUtils.MODEL).item(0).getChildNodes().item(0).getNodeValue();
-		               String texture = entityEl.getElementsByTagName(XMLUtils.TEXTURE).item(0).getChildNodes().item(0).getNodeValue();
-		               float x = Float.valueOf(entityEl.getElementsByTagName(XMLUtils.X).item(0).getChildNodes().item(0).getNodeValue());
-		               float y = Float.valueOf(entityEl.getElementsByTagName(XMLUtils.Y).item(0).getChildNodes().item(0).getNodeValue());
-		               float z = Float.valueOf(entityEl.getElementsByTagName(XMLUtils.Z).item(0).getChildNodes().item(0).getNodeValue());
+		               String ID = XMLUtils.getAttributeValue(entity, XMLUtils.ID);
+		               String name = XMLUtils.getTagValue(entityEl, XMLUtils.NAME);		            		   
+		               String model = XMLUtils.getTagValue(entityEl, XMLUtils.MODEL);
+		               String texture = XMLUtils.getTagValue(entityEl, XMLUtils.TEXTURE);
+		               float x = Float.valueOf(XMLUtils.getTagValue(entityEl, XMLUtils.X));
+		               float y = Float.valueOf(XMLUtils.getTagValue(entityEl, XMLUtils.Y));
+		               float z = Float.valueOf(XMLUtils.getTagValue(entityEl, XMLUtils.Z));
 		               Vector3f position = new Vector3f(x, y, z);
-		               float scale = Float.valueOf(entityEl.getElementsByTagName(XMLUtils.SCALE).item(0).getChildNodes().item(0).getNodeValue());
-		               boolean isNormal = Boolean.valueOf(entityEl.getElementsByTagName(XMLUtils.NORMAL).item(0).getChildNodes().item(0).getNodeValue());
+		               float scale = Float.valueOf(XMLUtils.getTagValue(entityEl, XMLUtils.SCALE));
+		               boolean isNormal = Boolean.valueOf(XMLUtils.getTagValue(entityEl, XMLUtils.NORMAL));
 		               if (isNormal) {
-		            	   String normalMap = entityEl.getElementsByTagName(XMLUtils.NORMAL_TEXTURE).item(0).getChildNodes().item(0).getNodeValue();
-		            	   String specularMap = entityEl.getElementsByTagName(XMLUtils.SPECULAR_TEXTURE).item(0).getChildNodes().item(0).getNodeValue();
-		            	   float shine = Float.valueOf(entityEl.getElementsByTagName(XMLUtils.SHINE_DUMPER).item(0).getChildNodes().item(0).getNodeValue());
-		            	   float reflectivity = Float.valueOf(entityEl.getElementsByTagName(XMLUtils.REFLECTIVITY).item(0).getChildNodes().item(0).getNodeValue());
+		            	   String normalMap = XMLUtils.getTagValue(entityEl, XMLUtils.NORMAL_TEXTURE);
+		            	   String specularMap = XMLUtils.getTagValue(entityEl, XMLUtils.SPECULAR_TEXTURE);
+		            	   float shine = Float.valueOf(XMLUtils.getTagValue(entityEl, XMLUtils.SHINE_DUMPER));
+		            	   float reflectivity = Float.valueOf(XMLUtils.getTagValue(entityEl, XMLUtils.REFLECTIVITY));
 		            	   map.createEntity(name, model, 
 		   						texture, normalMap, specularMap,
 		   						position, 0, 0, 0, scale, 
@@ -85,24 +85,24 @@ public class MapsXMLParser implements MapsParser {
 		   Node terrain = terrainList.item(j);	        		   
 		   if (XMLUtils.ifNodeIsElement(terrain, XMLUtils.TERRAIN)) {
 			   Element terrainEl = (Element) terrain;
-               String ID = terrain.getAttributes().getNamedItem(XMLUtils.ID).getNodeValue();
-               String name = terrainEl.getElementsByTagName(XMLUtils.NAME).item(0).getChildNodes().item(0).getNodeValue();			               
-               float x = Float.valueOf(terrainEl.getElementsByTagName(XMLUtils.X).item(0).getChildNodes().item(0).getNodeValue());
-               float y = Float.valueOf(terrainEl.getElementsByTagName(XMLUtils.Y).item(0).getChildNodes().item(0).getNodeValue());
+               String ID = XMLUtils.getAttributeValue(terrain, XMLUtils.ID);
+               String name = XMLUtils.getTagValue(terrainEl, XMLUtils.NAME);			               
+               float x = Float.valueOf(XMLUtils.getTagValue(terrainEl, XMLUtils.X));
+               float y = Float.valueOf(XMLUtils.getTagValue(terrainEl, XMLUtils.Y));
                Vector2f position = new Vector2f(x,y);
-               String baseTexture = terrainEl.getElementsByTagName(XMLUtils.BASE_TEXTURE).item(0).getChildNodes().item(0).getNodeValue();
-               String redTexture = terrainEl.getElementsByTagName(XMLUtils.RED_TEXTURE).item(0).getChildNodes().item(0).getNodeValue();
-               String greenTexture = terrainEl.getElementsByTagName(XMLUtils.GREEN_TEXTURE).item(0).getChildNodes().item(0).getNodeValue();
-               String blueTexture = terrainEl.getElementsByTagName(XMLUtils.BLUE_TEXTURE).item(0).getChildNodes().item(0).getNodeValue();
-               String blendTexture = terrainEl.getElementsByTagName(XMLUtils.BLEND_TEXTURE).item(0).getChildNodes().item(0).getNodeValue();
-               Boolean isProcedured = Boolean.valueOf(terrainEl.getElementsByTagName(XMLUtils.PROCEDURE_GENERATED).item(0).getChildNodes().item(0).getNodeValue());
+               String baseTexture = XMLUtils.getTagValue(terrainEl, XMLUtils.BASE_TEXTURE);
+               String redTexture = XMLUtils.getTagValue(terrainEl, XMLUtils.RED_TEXTURE);
+               String greenTexture = XMLUtils.getTagValue(terrainEl, XMLUtils.GREEN_TEXTURE);
+               String blueTexture = XMLUtils.getTagValue(terrainEl, XMLUtils.BLUE_TEXTURE);
+               String blendTexture = XMLUtils.getTagValue(terrainEl, XMLUtils.BLEND_TEXTURE);
+               Boolean isProcedured = Boolean.valueOf(XMLUtils.getTagValue(terrainEl, XMLUtils.PROCEDURE_GENERATED));
                if(isProcedured) {
-	               Float amplitude = Float.valueOf(terrainEl.getElementsByTagName(XMLUtils.AMPLITUDE).item(0).getChildNodes().item(0).getNodeValue());
-	               Integer octave = Integer.valueOf(terrainEl.getElementsByTagName(XMLUtils.OCTAVE).item(0).getChildNodes().item(0).getNodeValue());
-	               Float roughness = Float.valueOf(terrainEl.getElementsByTagName(XMLUtils.ROUGHTNESS).item(0).getChildNodes().item(0).getNodeValue());
+	               Float amplitude = Float.valueOf(XMLUtils.getTagValue(terrainEl, XMLUtils.AMPLITUDE));
+	               Integer octave = Integer.valueOf(XMLUtils.getTagValue(terrainEl, XMLUtils.OCTAVE));
+	               Float roughness = Float.valueOf(XMLUtils.getTagValue(terrainEl, XMLUtils.ROUGHTNESS));
 	               map.createTerrain(name, position, baseTexture, redTexture, greenTexture, blueTexture, blendTexture, amplitude, octave, roughness);
                } else {
-            	   String heightMap = terrainEl.getElementsByTagName(XMLUtils.HEIGHT_TEXTURE).item(0).getChildNodes().item(0).getNodeValue();
+            	   String heightMap = XMLUtils.getTagValue(terrainEl, XMLUtils.HEIGHT_TEXTURE);
             	   map.createTerrain(name, position, baseTexture, redTexture, greenTexture, blueTexture, blendTexture, heightMap);
                }
                if(EngineDebug.hasDebugPermission()) {

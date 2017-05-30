@@ -1,7 +1,5 @@
 package octree;
 
-import org.lwjgl.util.vector.Vector3f;
-
 import entities.EntityInterface;
 
 public class Node {
