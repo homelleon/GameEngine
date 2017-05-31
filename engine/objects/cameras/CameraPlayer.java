@@ -4,9 +4,9 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 
+import core.settings.ES;
 import inputs.MouseGame;
 import objects.entities.PlayerInterface;
-import scene.ES;
 
 public class CameraPlayer implements CameraInterface { 
 	

@@ -8,19 +8,19 @@ import org.lwjgl.openal.AL11;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
-import font.fontMeshCreator.FontType;
-import font.fontMeshCreator.GUIText;
+import font.FontType;
+import font.GUIText;
+import guis.guiTextures.GUITextureManager;
 import objects.audio.AudioSource;
 import objects.audio.AudioSourceInterface;
 import objects.cameras.CameraPlayer;
 import objects.entities.Player;
 import objects.entities.PlayerInterface;
-import objects.gui.guiTextures.GUITextureManager;
 import objects.lights.Light;
 import objects.models.TexturedModel;
 import objects.particles.ParticleManager;
 import objects.water.WaterTile;
-import renderEngine.Loader;
+import renderers.Loader;
 import toolbox.EngineUtils;
 
 /**

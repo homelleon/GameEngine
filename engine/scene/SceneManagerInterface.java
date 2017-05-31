@@ -1,6 +1,6 @@
 package scene;
 
-import renderEngine.Loader;
+import renderers.Loader;
 
 /**
  * Temporal interface to initialize test objects. 

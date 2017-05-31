@@ -2,8 +2,8 @@ package objects.entities;
 
 import org.lwjgl.util.vector.Vector3f;
 
+import core.settings.ES;
 import objects.models.TexturedModel;
-import scene.ES;
 
 /*
  * EntityTextured - объект с текстурой

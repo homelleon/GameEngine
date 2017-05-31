@@ -1,6 +1,6 @@
 package objects.voxels;
 
-import scene.ES;
+import core.settings.ES;
 import toolbox.Vector3i;
 
 public class Chunk {

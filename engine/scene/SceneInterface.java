@@ -2,13 +2,13 @@ package scene;
 
 import java.util.Collection;
 
+import guis.gui.GUIManagerInterface;
+import guis.guiTextures.GUITextureManagerInterface;
 import objects.audio.AudioManagerInterface;
 import objects.cameras.CameraInterface;
 import objects.entities.EntityInterface;
 import objects.entities.EntityManagerInterface;
 import objects.entities.PlayerInterface;
-import objects.gui.GUIManagerInterface;
-import objects.gui.guiTextures.GUITextureManagerInterface;
 import objects.lights.Light;
 import objects.lights.LightManager;
 import objects.particles.ParticleManagerInterface;
@@ -18,8 +18,8 @@ import objects.terrains.TerrainManagerInterface;
 import objects.textures.Texture;
 import objects.voxels.ChunkManagerInterface;
 import objects.water.WaterManager;
+import renderers.viewCulling.Frustum;
 import toolbox.MousePicker;
-import viewCulling.Frustum;
 
 /**
  * Scene interface to control all objects to use in the game.

@@ -5,8 +5,8 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 
-import engineMain.DisplayManager;
-import scene.ES;
+import core.display.DisplayManager;
+import core.settings.ES;
 
 public class CameraFree implements CameraInterface {
 	

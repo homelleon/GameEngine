@@ -10,9 +10,9 @@ import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 
+import core.settings.ES;
 import objects.cameras.CameraInterface;
 import objects.entities.EntityInterface;
-import scene.ES;
 import scene.SceneInterface;
 
 /**

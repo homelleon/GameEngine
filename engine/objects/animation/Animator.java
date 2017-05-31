@@ -5,7 +5,7 @@ import java.util.Map;
 
 import org.lwjgl.util.vector.Matrix4f;
 
-import engineMain.DisplayManager;
+import core.display.DisplayManager;
 import objects.animatedModel.AnimatedModel;
 import objects.animatedModel.Joint;
 

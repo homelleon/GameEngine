@@ -3,7 +3,7 @@ package objects.boundings;
 import org.lwjgl.util.vector.Vector3f;
 
 import objects.models.RawModel;
-import renderEngine.Loader;
+import renderers.Loader;
 
 public class BoundingBox {
 	

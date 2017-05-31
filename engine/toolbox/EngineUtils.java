@@ -7,6 +7,7 @@ import java.util.Random;
 import org.lwjgl.util.vector.Vector3f;
 import org.w3c.dom.Node;
 
+import core.settings.ES;
 import objects.entities.Entity;
 import objects.entities.EntityInterface;
 import objects.models.RawModel;
@@ -16,8 +17,7 @@ import objects.textures.ModelTexture;
 import objects.textures.TerrainTexture;
 import objects.textures.TerrainTexturePack;
 import objects.water.WaterTile;
-import renderEngine.Loader;
-import scene.ES;
+import renderers.Loader;
 import toolbox.normalMappingObjConverter.NormalMappedObjLoader;
 import toolbox.objConverter.ModelData;
 import toolbox.objConverter.OBJFileLoader;

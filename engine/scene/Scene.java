@@ -4,7 +4,12 @@ import java.util.Collection;
 
 import org.lwjgl.util.vector.Vector3f;
 
-import maps.GameMap;
+import core.settings.ES;
+import guis.gui.GUIManager;
+import guis.gui.GUIManagerInterface;
+import guis.guiTextures.GUITextureManager;
+import guis.guiTextures.GUITextureManagerInterface;
+import maps.gameMap.GameMap;
 import objects.audio.AudioManager;
 import objects.audio.AudioManagerInterface;
 import objects.audio.AudioMaster;
@@ -14,10 +19,6 @@ import objects.entities.EntityInterface;
 import objects.entities.EntityManager;
 import objects.entities.EntityManagerInterface;
 import objects.entities.PlayerInterface;
-import objects.gui.GUIManager;
-import objects.gui.GUIManagerInterface;
-import objects.gui.guiTextures.GUITextureManager;
-import objects.gui.guiTextures.GUITextureManagerInterface;
 import objects.lights.Light;
 import objects.lights.LightManager;
 import objects.lights.LightManagerStructured;
@@ -32,8 +33,8 @@ import objects.voxels.ChunkManager;
 import objects.voxels.ChunkManagerInterface;
 import objects.water.WaterManager;
 import objects.water.WaterManagerStructured;
+import renderers.viewCulling.Frustum;
 import toolbox.MousePicker;
-import viewCulling.Frustum;
 
 public class Scene implements SceneInterface {
 	

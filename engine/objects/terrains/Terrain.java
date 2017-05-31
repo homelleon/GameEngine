@@ -9,11 +9,11 @@ import javax.imageio.ImageIO;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
+import core.settings.ES;
 import objects.models.RawModel;
 import objects.textures.TerrainTexture;
 import objects.textures.TerrainTexturePack;
-import renderEngine.Loader;
-import scene.ES;
+import renderers.Loader;
 import toolbox.Maths;
 
 public class Terrain implements TerrainInterface {

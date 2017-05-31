@@ -11,6 +11,7 @@ import org.lwjgl.util.vector.Vector3f;
 import objects.cameras.CameraInterface;
 import objects.models.RawModel;
 import objects.terrains.TerrainInterface;
+import shaders.shadows.ShadowShader;
 import toolbox.Maths;
 
 public class ShadowMapTerrainRenderer {

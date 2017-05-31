@@ -9,7 +9,7 @@ import org.lwjgl.openal.AL10;
 import org.lwjgl.util.WaveData;
 import org.lwjgl.util.vector.Vector3f;
 
-import scene.ES;
+import core.settings.ES;
 
 /**
  * Class of 3 dimentional sound engine storeing audio buffers in the map.

@@ -13,6 +13,7 @@ import objects.cameras.CameraInterface;
 import objects.entities.EntityInterface;
 import objects.models.RawModel;
 import objects.models.TexturedModel;
+import shaders.shadows.ShadowShader;
 import toolbox.Maths;
 import toolbox.OGLUtils;
 

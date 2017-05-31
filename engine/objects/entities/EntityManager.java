@@ -6,8 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import scene.ES;
-import viewCulling.Frustum;
+import core.settings.ES;
+import renderers.viewCulling.Frustum;
 
 /**
  * Manages entities in the game engine.

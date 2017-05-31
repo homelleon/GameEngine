@@ -6,12 +6,12 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.util.vector.Vector3f;
 
-import engineMain.DisplayManager;
+import core.display.DisplayManager;
+import core.settings.ES;
 import inputs.KeyboardGame;
 import inputs.MouseGame;
 import objects.models.TexturedModel;
 import objects.terrains.TerrainInterface;
-import scene.ES;
 
 public class Player extends Entity implements PlayerInterface {
 	

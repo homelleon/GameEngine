@@ -1,4 +1,4 @@
-#OutworldMind Engine
+# OutworldMind Engine
 ==================
 This is a Game Engine for implementing game or graphic editor that is written in Java 8 language. 
 Uses LWJGL to control OpenGL and OpenAL libraries. 

@@ -8,8 +8,8 @@ import java.util.Map;
 
 import org.lwjgl.util.vector.Vector3f;
 
-import renderEngine.Loader;
-import scene.ES;
+import core.settings.ES;
+import renderers.Loader;
 
 public class ParticleManager implements ParticleManagerInterface {
 	

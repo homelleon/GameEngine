@@ -11,7 +11,7 @@ import java.util.List;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
-import scene.ES;
+import core.settings.ES;
 
 public class OBJFileLoader {
  

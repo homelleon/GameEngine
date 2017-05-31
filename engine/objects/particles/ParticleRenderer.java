@@ -15,7 +15,8 @@ import org.lwjgl.util.vector.Vector3f;
 
 import objects.cameras.CameraInterface;
 import objects.models.RawModel;
-import renderEngine.Loader;
+import renderers.Loader;
+import shaders.particles.ParticleShader;
 import toolbox.Maths;
  
 public class ParticleRenderer {

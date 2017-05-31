@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.lwjgl.util.vector.Vector3f;
 
-import scene.ES;
+import core.settings.ES;
 import toolbox.Maths;
 import toolbox.Vector3i;
 

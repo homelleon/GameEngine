@@ -3,9 +3,9 @@ package objects.particles;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
-import engineMain.DisplayManager;
+import core.display.DisplayManager;
+import core.settings.ES;
 import objects.cameras.CameraInterface;
-import scene.ES;
  
 public class Particle {
  

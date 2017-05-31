@@ -2,9 +2,9 @@ package inputs;
 
 import org.lwjgl.input.Keyboard;
 
-import engineMain.debug.EngineDebug;
+import core.debug.EngineDebug;
+import core.settings.ES;
 import objects.entities.EntityInterface;
-import scene.ES;
 import scene.SceneInterface;
 
 public class Controls implements ControlsInterface {

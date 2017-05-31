@@ -8,7 +8,7 @@ import org.lwjgl.opengl.GL14;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.opengl.GL32;
 
-import scene.ES;
+import core.settings.ES;
  
 public class WaterFrameBuffers {
  
