@@ -7,10 +7,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import entities.EntityInterface;
+import objects.entities.EntityInterface;
+import objects.terrains.TerrainInterface;
 import renderEngine.Loader;
 import scene.ES;
-import terrains.TerrainInterface;
 
 public class MapsTXTWriter implements MapsWriterInterface {
 	

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import engineMain.EngineMain;
-import gui.GUIInterface;
+import objects.gui.GUIInterface;
 import scene.SceneInterface;
 
 public class GameManager implements GameManagerInterface {

@@ -4,9 +4,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import entities.EntityInterface;
-import models.TexturedModel;
-import terrains.TerrainInterface;
+import objects.entities.EntityInterface;
+import objects.models.TexturedModel;
+import objects.terrains.TerrainInterface;
 import viewCulling.Frustum;
 
 /**

@@ -1,7 +1,7 @@
 package viewCulling;
 
-import cameras.CameraInterface;
-import entities.EntityInterface;
+import objects.cameras.CameraInterface;
+import objects.entities.EntityInterface;
 
 public class CullingFrustum implements Culling {
 	

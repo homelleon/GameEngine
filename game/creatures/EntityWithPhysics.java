@@ -1,7 +1,7 @@
 package creatures;
 
 import bodies.BodyInterface;
-import entities.EntityInterface;
+import objects.entities.EntityInterface;
 
 public interface EntityWithPhysics extends EntityInterface {
 	

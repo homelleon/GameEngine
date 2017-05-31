@@ -2,8 +2,8 @@ package inputs;
 
 import org.lwjgl.input.Keyboard;
 
-import debug.EngineDebug;
-import entities.EntityInterface;
+import engineMain.debug.EngineDebug;
+import objects.entities.EntityInterface;
 import scene.ES;
 import scene.SceneInterface;
 

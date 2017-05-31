@@ -6,12 +6,12 @@ import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Matrix4f;
 
-import cameras.CameraInterface;
 import engineMain.DisplayManager;
 import engineMain.EngineMain;
-import models.RawModel;
+import objects.cameras.CameraInterface;
+import objects.models.RawModel;
+import objects.skybox.SkyboxShader;
 import scene.ES;
-import skybox.SkyboxShader;
 
 public class SkyboxRenderer {
 	

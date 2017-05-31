@@ -8,20 +8,20 @@ import org.lwjgl.openal.AL11;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
-import audio.AudioSource;
-import audio.AudioSourceInterface;
-import cameras.CameraPlayer;
-import entities.Player;
-import entities.PlayerInterface;
-import fontMeshCreator.FontType;
-import fontMeshCreator.GUIText;
-import guiTextures.GUITextureManager;
-import lights.Light;
-import models.TexturedModel;
-import particles.ParticleManager;
+import font.fontMeshCreator.FontType;
+import font.fontMeshCreator.GUIText;
+import objects.audio.AudioSource;
+import objects.audio.AudioSourceInterface;
+import objects.cameras.CameraPlayer;
+import objects.entities.Player;
+import objects.entities.PlayerInterface;
+import objects.gui.guiTextures.GUITextureManager;
+import objects.lights.Light;
+import objects.models.TexturedModel;
+import objects.particles.ParticleManager;
+import objects.water.WaterTile;
 import renderEngine.Loader;
 import toolbox.EngineUtils;
-import water.WaterTile;
 
 /**
  * Manager of default test objects of the scene.

@@ -7,8 +7,8 @@ import java.util.List;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 
-import cameras.CameraInterface;
-import entities.EntityInterface;
+import objects.cameras.CameraInterface;
+import objects.entities.EntityInterface;
 import scene.ES;
 import toolbox.Maths;
 

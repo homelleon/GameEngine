@@ -7,7 +7,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import debug.EngineDebug;
+import engineMain.debug.EngineDebug;
 import toolbox.XMLUtils;
 
 public class MapsXMLParser implements MapsParser {

@@ -25,13 +25,13 @@ import org.lwjgl.util.vector.Vector3f;
 import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
 
-import boundings.BoundingBox;
-import boundings.BoundingSphere;
 import de.matthiasmann.twl.utils.PNGDecoder;
 import de.matthiasmann.twl.utils.PNGDecoder.Format;
-import models.RawModel;
+import objects.boundings.BoundingBox;
+import objects.boundings.BoundingSphere;
+import objects.models.RawModel;
+import objects.textures.TextureData;
 import scene.ES;
-import textures.TextureData;
 import toolbox.Maths;
 
 public class Loader {
@@ -141,7 +141,7 @@ public class Loader {
 		Texture texture = null;
 		try {
 			float bias;
-			if (path == ES.FONT_PATH) {
+			if (path == ES.FONT_FILE_PATH) {
 				bias = 0; 
 			}else{
 				bias = -2.4f;

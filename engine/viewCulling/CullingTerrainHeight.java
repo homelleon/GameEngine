@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import cameras.CameraInterface;
-import entities.EntityInterface;
-import terrains.TerrainInterface;
+import objects.cameras.CameraInterface;
+import objects.entities.EntityInterface;
+import objects.terrains.TerrainInterface;
 
 public class CullingTerrainHeight implements Culling {
 	

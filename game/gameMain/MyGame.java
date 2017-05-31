@@ -6,14 +6,14 @@ import java.util.List;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
-import debug.EngineDebug;
 import engineMain.EngineMain;
-import fontMeshCreator.GUIText;
-import gui.GUI;
-import gui.GUIGroup;
-import gui.GUIInterface;
-import guiTextures.GUITexture;
+import engineMain.debug.EngineDebug;
+import font.fontMeshCreator.GUIText;
 import inputs.KeyboardGame;
+import objects.gui.GUI;
+import objects.gui.GUIGroup;
+import objects.gui.GUIInterface;
+import objects.gui.guiTextures.GUITexture;
 import scene.SceneInterface;
 
 public class MyGame extends Thread implements GameInterface {

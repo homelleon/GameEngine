@@ -7,8 +7,8 @@ import java.util.Map;
 import org.lwjgl.util.vector.Vector3f;
 
 import bodies.BodyInterface;
-import entities.EntityInterface;
 import intersects.IntersectData;
+import objects.entities.EntityInterface;
 
 public abstract class WorldB {
 	

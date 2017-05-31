@@ -8,11 +8,11 @@ import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Matrix4f;
 
-import boundings.BoundingShader;
-import cameras.CameraInterface;
-import entities.EntityInterface;
-import models.RawModel;
-import models.TexturedModel;
+import objects.boundings.BoundingShader;
+import objects.cameras.CameraInterface;
+import objects.entities.EntityInterface;
+import objects.models.RawModel;
+import objects.models.TexturedModel;
 import toolbox.Maths;
 import toolbox.OGLUtils;
 

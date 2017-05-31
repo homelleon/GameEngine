@@ -11,10 +11,10 @@ import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL14;
 import org.lwjgl.opengl.GL30;
 
-import cameras.CameraInterface;
-import cameras.CameraCubeMap;
-import entities.EntityInterface;
-import models.TexturedModel;
+import objects.cameras.CameraCubeMap;
+import objects.cameras.CameraInterface;
+import objects.entities.EntityInterface;
+import objects.models.TexturedModel;
 import renderEngine.MasterRenderer;
 import scene.SceneInterface;
 

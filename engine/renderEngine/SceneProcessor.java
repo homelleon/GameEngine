@@ -7,10 +7,10 @@ import java.util.Map;
 
 import org.lwjgl.util.vector.Vector3f;
 
-import entities.EntityInterface;
-import models.TexturedModel;
+import objects.entities.EntityInterface;
+import objects.models.TexturedModel;
+import objects.terrains.TerrainInterface;
 import scene.ES;
-import terrains.TerrainInterface;
 import viewCulling.Frustum;
 
 public class SceneProcessor implements SceneProcessorInterface {

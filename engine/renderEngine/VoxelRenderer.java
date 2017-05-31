@@ -11,21 +11,21 @@ import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 
-import cameras.CameraInterface;
-import lights.Light;
-import models.RawModel;
-import models.TexturedModel;
+import objects.cameras.CameraInterface;
+import objects.lights.Light;
+import objects.models.RawModel;
+import objects.models.TexturedModel;
+import objects.textures.ModelTexture;
+import objects.voxels.Chunk;
+import objects.voxels.ChunkManager;
+import objects.voxels.ChunkManagerInterface;
+import objects.voxels.FaceCullingData;
+import objects.voxels.VoxelShader;
 import scene.ES;
-import textures.ModelTexture;
 import toolbox.Maths;
 import toolbox.OGLUtils;
 import toolbox.Vector3i;
 import viewCulling.Frustum;
-import voxels.Chunk;
-import voxels.ChunkManagerInterface;
-import voxels.ChunkManager;
-import voxels.FaceCullingData;
-import voxels.VoxelShader;
 
 public class VoxelRenderer {
 	

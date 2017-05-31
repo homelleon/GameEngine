@@ -5,11 +5,11 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 
-import bloom.BrightFilter;
-import bloom.CombineFilter;
-import gaussianBlur.HorizontalBlur;
-import gaussianBlur.VerticalBlur;
-import models.RawModel;
+import objects.models.RawModel;
+import postProcessing.bloom.BrightFilter;
+import postProcessing.bloom.CombineFilter;
+import postProcessing.gaussianBlur.HorizontalBlur;
+import postProcessing.gaussianBlur.VerticalBlur;
 import renderEngine.Loader;
 
 public class PostProcessing {

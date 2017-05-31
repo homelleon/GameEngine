@@ -93,7 +93,10 @@ public class ES {
 	/* path settings */
 	public final static String RES_PATH = "res/";
 	public final static String GAME_PATH = "game/";
-	public final static String SOURCE_PATH = "/";
+	public final static String SOURCE_PATH = "/";	
+	public final static String FONT_PATH = SOURCE_PATH + "font/";
+	public final static String OBJECT_PATH = SOURCE_PATH + "objects/";
+	public final static String GUI_PATH = OBJECT_PATH + "gui/";
 	public final static String MODEL_TEXTURE_PATH = RES_PATH + "textures/modelTextures/";
 	public final static String TERRAIN_TEXTURE_PATH = RES_PATH + "textures/terrainTextures/";
 	public final static String INTERFACE_TEXTURE_PATH = RES_PATH + "textures/interface/";
@@ -102,31 +105,31 @@ public class ES {
 	public final static String HEIGHT_MAP_PATH = RES_PATH + "textures/heightMaps/";
 	public final static String DUDV_MAP_PATH = RES_PATH + "textures/DUDVs/";
 	public final static String NORMAL_MAP_PATH = RES_PATH + "textures/normalMaps/";
-	public final static String FONT_PATH = RES_PATH + "textures/fonts/";
+	public final static String FONT_FILE_PATH = RES_PATH + "textures/fonts/";
 	public final static String SKYBOX_TEXTURE_PATH = RES_PATH + "textures/skybox/";
 	public final static String SPECULAR_MAP_PATH = RES_PATH + "textures/specularMaps/";
 	public final static String MAP_PATH = RES_PATH + "maps/"; 
 	
-	public final static String AUDIO_PATH = "audio/";
-	public final static String OBJECT_PATH = RES_PATH + "objFiles/";
+	public final static String AUDIO_PATH = "objects/audio/";
+	public final static String MODEL_PATH = RES_PATH + "objFiles/";
 	public final static String TEXT_PATH = RES_PATH + "texts/";
 	public final static String INTERFACE_PATH = RES_PATH + "interfaces/";
 	
 	public final static String SHADER_PATH = SOURCE_PATH + "shaders/";
-	public final static String ENTITY_SHADER_PATH = SOURCE_PATH + "entities/";
-	public final static String BOUNDING_SHADER_PATH = SOURCE_PATH + "boundings/";
-	public final static String TERRAIN_SHADER_PATH = SOURCE_PATH + "terrains/";
-	public final static String VOXEL_SHADER_PATH = SOURCE_PATH + "voxels/";
-	public final static String GUI_SHADER_PATH = SOURCE_PATH + "guiTextures/";
-	public final static String SKYBOX_SHADER_PATH = SOURCE_PATH + "skybox/";
-	public final static String NORMAL_MAP_SHADER_PATH = SOURCE_PATH + "normalMappingRenderer/";
-	public final static String WATER_SHADER_PATH = SOURCE_PATH + "water/";
-	public final static String PARTICLE_SHADER_PATH = SOURCE_PATH + "particles/";
-	public final static String SHADOW_SHADER_PATH = SOURCE_PATH + "shadows/";
-	public final static String FONT_SHADER_PATH = SOURCE_PATH + "fontRendering/";
-	public final static String POST_PROCESSING_SHADER_PATH = SOURCE_PATH + "postProcessing/";
-	public final static String BLUR_SHADER_PATH = SOURCE_PATH + "gaussianBlur/";
-	public final static String BLOOM_SHADER_PATH = SOURCE_PATH + "bloom/";
+	public final static String ENTITY_SHADER_PATH = OBJECT_PATH + "entities/";
+	public final static String BOUNDING_SHADER_PATH = OBJECT_PATH + "boundings/";
+	public final static String TERRAIN_SHADER_PATH = OBJECT_PATH + "terrains/";
+	public final static String VOXEL_SHADER_PATH = OBJECT_PATH + "voxels/";
+	public final static String GUI_SHADER_PATH = GUI_PATH + "guiTextures/";
+	public final static String SKYBOX_SHADER_PATH = OBJECT_PATH + "skybox/";
+	public final static String NORMAL_MAP_SHADER_PATH = SOURCE_PATH + "renderEngine/normalEntity/";
+	public final static String WATER_SHADER_PATH = OBJECT_PATH + "water/";
+	public final static String PARTICLE_SHADER_PATH = OBJECT_PATH + "particles/";
+	public final static String SHADOW_SHADER_PATH = OBJECT_PATH + "shadows/";
+	public final static String FONT_SHADER_PATH = FONT_PATH + "fontRendering/";
+	public final static String POST_PROCESSING_PATH = SOURCE_PATH + "postProcessing/";
+	public final static String BLUR_SHADER_PATH = POST_PROCESSING_PATH +  "gaussianBlur/";
+	public final static String BLOOM_SHADER_PATH = POST_PROCESSING_PATH + "bloom/";
 	
 	public final static String GAME_SETTINGS_PATH = GAME_PATH + "gameMain/";
 	

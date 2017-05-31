@@ -8,25 +8,25 @@ import org.lwjgl.util.vector.Vector4f;
 
 import engineMain.DisplayManager;
 import engineMain.EngineMain;
-import fontMeshCreator.FontType;
-import fontMeshCreator.GUIText;
-import guiTextures.GUITextureRenderer;
+import font.fontMeshCreator.FontType;
+import font.fontMeshCreator.GUIText;
 import inputs.Controls;
 import inputs.ControlsInterface;
 import inputs.KeyboardGame;
 import maps.GameMap;
 import maps.MapsWriterInterface;
 import maps.MapsXMLWriter;
-import particles.ParticleMaster;
+import objects.gui.guiTextures.GUITextureRenderer;
+import objects.particles.ParticleMaster;
+import objects.water.WaterFrameBuffers;
+import objects.water.WaterRenderer;
+import objects.water.WaterShader;
 import postProcessing.Fbo;
 import postProcessing.PostProcessing;
 import scene.ES;
 import scene.SceneInterface;
 import toolbox.MousePicker;
 import toolbox.OGLUtils;
-import water.WaterFrameBuffers;
-import water.WaterRenderer;
-import water.WaterShader;
 
 /**
  * Class that render scene objects and check controls. 

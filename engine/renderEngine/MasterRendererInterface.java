@@ -7,12 +7,12 @@ import java.util.Map;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector4f;
 
-import cameras.CameraInterface;
-import entities.EntityInterface;
-import lights.Light;
-import models.TexturedModel;
+import objects.cameras.CameraInterface;
+import objects.entities.EntityInterface;
+import objects.lights.Light;
+import objects.models.TexturedModel;
+import objects.terrains.TerrainInterface;
 import scene.SceneInterface;
-import terrains.TerrainInterface;
 import viewCulling.Frustum;
 
 /**

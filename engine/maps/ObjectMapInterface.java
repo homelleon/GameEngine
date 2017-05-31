@@ -2,7 +2,7 @@ package maps;
 
 import java.util.List;
 
-import entities.EntityInterface;
+import objects.entities.EntityInterface;
 
 /**
  * Map-interface of in-game default objects.

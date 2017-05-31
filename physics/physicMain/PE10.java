@@ -5,7 +5,7 @@ import java.util.Map;
 
 import org.lwjgl.util.vector.Vector3f;
 
-import entities.EntityInterface;
+import objects.entities.EntityInterface;
 import worlds.WorldInterface;
 import worlds.WorldG;
 

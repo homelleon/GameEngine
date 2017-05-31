@@ -3,8 +3,8 @@ package creatures;
 import org.lwjgl.util.vector.Vector3f;
 
 import bodies.BodyInterface;
-import entities.Entity;
-import models.TexturedModel;
+import objects.entities.Entity;
+import objects.models.TexturedModel;
 
 public abstract class Creature extends Entity implements EntityDamagable, EntityWithPhysics {
 	

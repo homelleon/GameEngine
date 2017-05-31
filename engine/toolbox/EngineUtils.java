@@ -7,20 +7,20 @@ import java.util.Random;
 import org.lwjgl.util.vector.Vector3f;
 import org.w3c.dom.Node;
 
-import entities.EntityInterface;
-import entities.Entity;
-import models.RawModel;
-import models.TexturedModel;
-import normalMappingObjConverter.NormalMappedObjLoader;
-import objConverter.ModelData;
-import objConverter.OBJFileLoader;
+import objects.entities.Entity;
+import objects.entities.EntityInterface;
+import objects.models.RawModel;
+import objects.models.TexturedModel;
+import objects.terrains.Terrain;
+import objects.textures.ModelTexture;
+import objects.textures.TerrainTexture;
+import objects.textures.TerrainTexturePack;
+import objects.water.WaterTile;
 import renderEngine.Loader;
 import scene.ES;
-import terrains.Terrain;
-import textures.ModelTexture;
-import textures.TerrainTexture;
-import textures.TerrainTexturePack;
-import water.WaterTile;
+import toolbox.normalMappingObjConverter.NormalMappedObjLoader;
+import toolbox.objConverter.ModelData;
+import toolbox.objConverter.OBJFileLoader;
 
 public class EngineUtils {
 	

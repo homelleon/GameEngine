@@ -1,6 +1,6 @@
 package creatures;
 
-import entities.EntityInterface;
+import objects.entities.EntityInterface;
 
 public interface EntityDamagable extends EntityInterface {
 	

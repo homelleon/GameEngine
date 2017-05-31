@@ -10,13 +10,13 @@ import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 
-import cameras.CameraInterface;
-import lights.Light;
-import models.RawModel;
+import objects.cameras.CameraInterface;
+import objects.lights.Light;
+import objects.models.RawModel;
+import objects.terrains.TerrainInterface;
+import objects.terrains.TerrainShader;
+import objects.textures.TerrainTexturePack;
 import scene.ES;
-import terrains.TerrainInterface;
-import terrains.TerrainShader;
-import textures.TerrainTexturePack;
 import toolbox.Maths;
 
 public class TerrainRenderer {

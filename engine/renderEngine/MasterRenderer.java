@@ -12,21 +12,21 @@ import org.lwjgl.opengl.GL13;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector4f;
 
-import cameras.CameraInterface;
-import debug.EngineDebug;
-import entities.EntityInterface;
+import engineMain.debug.EngineDebug;
 import environmentMap.EnvironmentMapRenderer;
-import lights.Light;
-import models.TexturedModel;
-import normalMappingRenderer.NormalMappingRenderer;
+import objects.cameras.CameraInterface;
+import objects.entities.EntityInterface;
+import objects.lights.Light;
+import objects.models.TexturedModel;
+import objects.shadows.ShadowMapMasterRenderer;
+import objects.terrains.TerrainInterface;
+import objects.textures.Texture;
+import objects.voxels.ChunkManagerInterface;
+import renderEngine.normalEntity.NormalMappingRenderer;
 import scene.ES;
 import scene.SceneInterface;
-import shadows.ShadowMapMasterRenderer;
-import terrains.TerrainInterface;
-import textures.Texture;
 import toolbox.OGLUtils;
 import viewCulling.Frustum;
-import voxels.ChunkManagerInterface;
 
 public class MasterRenderer implements MasterRendererInterface{
 		

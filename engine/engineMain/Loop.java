@@ -3,6 +3,9 @@ package engineMain;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 
+import engineMain.settings.GameSettings;
+import engineMain.settings.SettingsLoaderInterface;
+import engineMain.settings.SettingsXMLLoader;
 import gameMain.GameInterface;
 import gameMain.MyGame;
 import inputs.MouseGame;

@@ -2,8 +2,8 @@ package bodies;
 
 import org.lwjgl.util.vector.Vector3f;
 
-import entities.EntityInterface;
 import intersects.IntersectData;
+import objects.entities.EntityInterface;
 import physicMain.PE10;
 
 public class Body3DCube extends BodyBasic implements BodyInterface {

@@ -8,22 +8,22 @@ import java.util.WeakHashMap;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
-import audio.AudioSourceInterface;
-import cameras.CameraInterface;
-import entities.Entity;
-import entities.EntityInterface;
-import entities.PlayerInterface;
-import guiTextures.GUITexture;
-import lights.Light;
-import models.TexturedModel;
-import particles.ParticleSystem;
-import particles.ParticleTexture;
+import objects.audio.AudioSourceInterface;
+import objects.cameras.CameraInterface;
+import objects.entities.Entity;
+import objects.entities.EntityInterface;
+import objects.entities.PlayerInterface;
+import objects.gui.guiTextures.GUITexture;
+import objects.lights.Light;
+import objects.models.TexturedModel;
+import objects.particles.ParticleSystem;
+import objects.particles.ParticleTexture;
+import objects.terrains.TerrainInterface;
+import objects.triggers.Trigger;
+import objects.water.WaterTile;
 import renderEngine.Loader;
 import scene.ES;
-import terrains.TerrainInterface;
 import toolbox.EngineUtils;
-import triggers.Trigger;
-import water.WaterTile;
 
 public class GameMap {
 	

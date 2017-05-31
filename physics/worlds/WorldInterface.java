@@ -1,6 +1,6 @@
 package worlds;
 
-import entities.EntityInterface;
+import objects.entities.EntityInterface;
 
 public interface WorldInterface {
 	

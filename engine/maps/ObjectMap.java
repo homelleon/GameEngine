@@ -5,9 +5,9 @@ import java.util.List;
 
 import org.lwjgl.util.vector.Vector3f;
 
-import entities.EntityInterface;
-import entities.Entity;
-import models.TexturedModel;
+import objects.entities.Entity;
+import objects.entities.EntityInterface;
+import objects.models.TexturedModel;
 import renderEngine.Loader;
 import toolbox.EngineUtils;
 

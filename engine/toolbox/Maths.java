@@ -4,9 +4,9 @@ import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
-import cameras.CameraInterface;
-import entities.EntityInterface;
-import terrains.TerrainInterface;
+import objects.cameras.CameraInterface;
+import objects.entities.EntityInterface;
+import objects.terrains.TerrainInterface;
 
 public class Maths {
 	

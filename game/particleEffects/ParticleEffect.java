@@ -2,8 +2,8 @@ package particleEffects;
 
 import org.lwjgl.util.vector.Vector3f;
 
-import particles.ParticleSystem;
-import particles.ParticleTexture;
+import objects.particles.ParticleSystem;
+import objects.particles.ParticleTexture;
 
 public class ParticleEffect extends ParticleSystem {
 	
