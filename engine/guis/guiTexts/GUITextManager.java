@@ -4,10 +4,14 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import core.settings.ES;
 import font.FontType;
 import font.GUIText;
 import font.TextMaster;
 import renderers.Loader;
+import toolbox.XMLUtils;
+import toolbox.xmlLoader.XMLFileLoader;
+import toolbox.xmlLoader.XMLLoaderInterface;
 
 public class GUITextManager implements GUITextManagerInterface {
 	
@@ -67,8 +71,9 @@ public class GUITextManager implements GUITextManagerInterface {
 
 	@Override
 	public void readFile(String fileName) {
-		GUITextLoaderInterface txtLoader = new GUITextXMLLoader();
-		this.addAll(txtLoader.loadFile(fileName, master));
+		XMLLoaderInterface xmlLoader = new XMLFileLoader(ES.INTERFACE_PATH + fileName + XMLUtils.EXTENTION);
+		GUITextParserInterface guiTextParser = new GUITextXMLParser(xmlLoader.load(), master);
+		this.addAll(guiTextParser.parse());
 		
 	}
 

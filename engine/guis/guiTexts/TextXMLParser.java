@@ -7,9 +7,15 @@ import org.w3c.dom.NodeList;
 import toolbox.XMLUtils;
 
 public class TextXMLParser implements TextParserInterface {
+	
+	private Document document;
+	
+	TextXMLParser(Document document) {
+		this.document = document;
+	}
 
 	@Override
-	public String readText(Document document) {
+	public String parse() {
 		
 		NodeList nodeList = document.getDocumentElement().getChildNodes(); 
 		String text = "";

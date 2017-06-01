@@ -1,4 +1,4 @@
-package maps.gameMap;
+package maps.modelMap;
 
 import java.util.Collection;
 import java.util.List;
@@ -25,7 +25,7 @@ import objects.water.WaterTile;
 import renderers.Loader;
 import toolbox.EngineUtils;
 
-public class GameMap {
+public class ModelMap {
 	
 	private String name;
 	private Map<String, EntityInterface> entities = new WeakHashMap<String, EntityInterface>();
@@ -41,7 +41,7 @@ public class GameMap {
 	
 	private Loader loader;
 	
-	public GameMap(String name, Loader loader) {
+	public ModelMap(String name, Loader loader) {
 		this.name = name;
 		this.loader = loader;
 	}	

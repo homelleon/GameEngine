@@ -11,14 +11,25 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import core.debug.EngineDebug;
+import core.settings.ES;
 import font.GUIText;
 import font.TextMaster;
 import toolbox.XMLUtils;
+import toolbox.xmlLoader.XMLFileLoader;
+import toolbox.xmlLoader.XMLLoaderInterface;
 
 public class GUITextXMLParser implements GUITextParserInterface {
+	
+	private Document document;
+	private TextMaster master;
+	
+	public GUITextXMLParser(Document document, TextMaster master) {
+		this.document = document;
+		this.master = master;
+	}
 
 	@Override
-	public List<GUIText> parse(Document document, TextMaster master) {
+	public List<GUIText> parse() {
 		
 		NodeList nodeList = document.getDocumentElement().getChildNodes(); 
 		List<GUIText> textList = new ArrayList<GUIText>();
@@ -75,8 +86,9 @@ public class GUITextXMLParser implements GUITextParserInterface {
 	            	   }	            	   
 	               	}
 	               	Vector3f color = new Vector3f(r,g,b);
-	               	TextLoaderInterface txtLoader = new TextXMLLoader();
-	               	String text = txtLoader.loadFile(path, line);
+	               	XMLLoaderInterface xmlLoader = new XMLFileLoader(ES.TEXT_PATH + path + XMLUtils.EXTENTION);	               	
+	               	TextParserInterface textParser = new TextXMLParser(xmlLoader.load());
+	               	String text = textParser.parse();
 	               	GUIText guiText = new GUIText(name, text, size,
 	            		   master.getFont(), position, maxLength, isCentered);
 	   			   	guiText.setColour(color);

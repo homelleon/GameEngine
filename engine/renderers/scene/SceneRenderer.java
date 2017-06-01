@@ -14,9 +14,9 @@ import font.GUIText;
 import inputs.Controls;
 import inputs.ControlsInterface;
 import inputs.KeyboardGame;
-import maps.gameMap.GameMap;
-import maps.gameMap.MapsWriterInterface;
-import maps.gameMap.MapsXMLWriter;
+import maps.modelMap.ModelMap;
+import maps.modelMap.ModelMapWriterInterface;
+import maps.modelMap.ModelMapXMLWriter;
 import objects.particles.ParticleMaster;
 import objects.water.WaterFrameBuffers;
 import objects.water.WaterRenderer;
@@ -87,8 +87,8 @@ public class SceneRenderer {
 	
 	private void saveMap(Loader loader) {
 		if (KeyboardGame.isKeyPressed(Keyboard.KEY_T)) {
-			MapsWriterInterface mapWriter = new MapsXMLWriter();
-			GameMap map = new GameMap("newMap", loader);
+			ModelMapWriterInterface mapWriter = new ModelMapXMLWriter();
+			ModelMap map = new ModelMap("newMap", loader);
 			map.setEntities(scene.getEntities().getAll());
 			map.setTerrains(scene.getTerrains().getAll());
 			mapWriter.write(map, loader);

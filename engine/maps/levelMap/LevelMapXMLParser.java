@@ -1,4 +1,4 @@
-package maps.objectMap;
+package maps.levelMap;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -9,10 +9,10 @@ import core.settings.ES;
 import renderers.Loader;
 import toolbox.XMLUtils;
 
-public class ObjectMapXMLParser implements ObjectMapParser {
+public class LevelMapXMLParser implements LevelMapParserInterface {
 
 	@Override
-	public ObjectMapInterface readMap(String fileName, BufferedReader reader, Loader loader) {
+	public LevelMapInterface readMap(String fileName, BufferedReader reader, Loader loader) {
 		String line;
 		 /* entities */
 		List<String> eNames = new ArrayList<String>();
@@ -45,7 +45,7 @@ public class ObjectMapXMLParser implements ObjectMapParser {
         	System.err.println("Error reading the file");
         }     
         
-        ObjectMapInterface map = new ObjectMap(loader);
+        LevelMapInterface map = new LevelMap(loader);
 	        
         for(int i = 0; i < eNames.size(); i++) {
         	switch(eTypesString.get(i)) {

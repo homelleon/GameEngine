@@ -1,4 +1,4 @@
-package guis.guiTexts;
+package toolbox.xmlLoader;
 
 import java.io.File;
 import java.io.IOException;
@@ -10,28 +10,33 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
-import core.settings.ES;
-
-public class TextXMLLoader implements TextLoaderInterface {
-
+/**
+ * 
+ * @author homelleon
+ * @see XMLLoaderInterface
+ */
+public class XMLFileLoader implements XMLLoaderInterface {
+	
+	private File file;
+	
+	public XMLFileLoader(String fullFileName) {
+		this.file = new File(fullFileName);
+	}
+	
 	@Override
-	public String loadFile(String fileName, Integer lineNumber) {
+	public Document load() {		
 		
-		File textFile = new File(ES.TEXT_PATH + fileName + ".xml");
-		
-		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         Document document = null;       
 		
 		try {
 			DocumentBuilder builder = factory.newDocumentBuilder();
-			document = builder.parse(textFile);
+			document = builder.parse(file);
 		} catch (SAXException | IOException | ParserConfigurationException e) {
 			e.printStackTrace();
-		}	
+		}
 		
-        TextParserInterface txtParser = new TextXMLParser();
-		
-		return txtParser.readText(document);
+		return document;
 	}
 
 }

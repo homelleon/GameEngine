@@ -1,4 +1,4 @@
-package maps.objectMap;
+package maps.levelMap;
 
 import java.util.List;
 
@@ -12,7 +12,7 @@ import objects.entities.EntityInterface;
  * @version 1.0
  * 
  */
-public interface ObjectMapInterface {
+public interface LevelMapInterface {
 	
 	List<EntityInterface> getALLEntities();
 	EntityInterface getEntity(int index);

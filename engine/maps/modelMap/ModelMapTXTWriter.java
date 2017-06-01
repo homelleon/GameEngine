@@ -1,4 +1,4 @@
-package maps.gameMap;
+package maps.modelMap;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -12,10 +12,10 @@ import objects.entities.EntityInterface;
 import objects.terrains.TerrainInterface;
 import renderers.Loader;
 
-public class MapsTXTWriter implements MapsWriterInterface {
+public class ModelMapTXTWriter implements ModelMapWriterInterface {
 	
 	@Override
-	public void write(GameMap map, Loader loader) {
+	public void write(ModelMap map, Loader loader) {
 		try {
 			File mapFile = new File(ES.MAP_PATH + map.getName() + ".txt");
 			BufferedWriter writer = new BufferedWriter(new FileWriter(mapFile));

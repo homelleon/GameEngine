@@ -1,4 +1,4 @@
-package maps.gameMap;
+package maps.modelMap;
 
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
@@ -8,12 +8,21 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import core.debug.EngineDebug;
+import renderers.Loader;
 import toolbox.XMLUtils;
 
-public class MapsXMLParser implements MapsParser {
+public class ModelMapXMLParser implements ModelMapParserInterface {
+	
+	private Document document;
+	private ModelMap map;
+	
+	public ModelMapXMLParser(Document document, String fileName, Loader loader) {
+		this.document = document;
+		this.map = new ModelMap(fileName, loader);
+	}
 
 	@Override
-	public GameMap readMap (Document document, GameMap map) {        
+	public ModelMap parseMap() {        
         
         NodeList nodeList = document.getDocumentElement().getChildNodes();        
         
@@ -32,7 +41,7 @@ public class MapsXMLParser implements MapsParser {
 		return map;
 	}
 	
-	private void createEntities(Node node, GameMap map) {
+	private void createEntities(Node node, ModelMap map) {
 		if(EngineDebug.hasDebugPermission()) {
 		   System.out.println("Loading entities...");
 	   	}
@@ -75,7 +84,7 @@ public class MapsXMLParser implements MapsParser {
 		   }
 	}
 	
-	private void createTerrains(Node node, GameMap map) {
+	private void createTerrains(Node node, ModelMap map) {
 		if(EngineDebug.hasDebugPermission()) {
     		System.out.println("Loading terrains...");
     	}

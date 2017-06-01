@@ -24,6 +24,7 @@ public class XMLUtils {
 	/* ================================================== */
 	/* XML parser constants */
 	public static final String SEPARATOR = " ";
+	public static final String EXTENTION = ".xml";
 	/* ================================================== */
 	/* object names */
 	public static final String MAP = "map";

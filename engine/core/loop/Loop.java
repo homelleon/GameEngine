@@ -4,16 +4,18 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 
 import core.display.DisplayManager;
+import core.settings.ES;
 import core.settings.gameSettings.GameSettings;
-import core.settings.gameSettings.SettingsLoaderInterface;
-import core.settings.gameSettings.SettingsXMLLoader;
+import core.settings.gameSettings.SettingsParserInterface;
+import core.settings.gameSettings.SettingsXMLParser;
 import inputs.MouseGame;
 import main.GameInterface;
 import main.MyGame;
-import maps.gameMap.GameMap;
-import maps.gameMap.MapsLoader;
-import maps.gameMap.MapsXMLLoader;
-import maps.objectMap.ObjectMapInterface;
+import maps.levelMap.LevelMapParserInterface;
+import maps.levelMap.LevelMapXMLParser;
+import maps.modelMap.ModelMap;
+import maps.modelMap.ModelMapParserInterface;
+import maps.modelMap.ModelMapXMLParser;
 import renderers.Loader;
 import renderers.MasterRenderer;
 import renderers.scene.SceneRenderer;
@@ -21,6 +23,9 @@ import scene.Scene;
 import scene.SceneInterface;
 import scene.SceneManager;
 import scene.SceneManagerInterface;
+import toolbox.XMLUtils;
+import toolbox.xmlLoader.XMLFileLoader;
+import toolbox.xmlLoader.XMLLoaderInterface;
 
 /**
  * Game looping system that initialize preloaded game variables and objects and
@@ -46,7 +51,7 @@ public class Loop implements LoopInterface {
     private SceneManagerInterface sceneManager;
 	
     private SceneInterface scene;
-    private GameMap map;
+    private ModelMap map;
     
     private GameInterface game = new MyGame();
     
@@ -128,8 +133,10 @@ public class Loop implements LoopInterface {
 	 * @see #loadGameSettings()
 	 */
 	private void loadMap(String name) {
-		MapsLoader mapLoader = new MapsXMLLoader();
-		this.map = mapLoader.loadMap(name, loader);	
+		XMLLoaderInterface xmlLoader = new XMLFileLoader(ES.MAP_PATH + name + XMLUtils.EXTENTION);
+		ModelMapParserInterface mapParser = new ModelMapXMLParser(
+				xmlLoader.load(), name, loader);
+		this.map = mapParser.parseMap();	
 		this.mapIsLoaded = true;
 	}
 	
@@ -142,8 +149,10 @@ public class Loop implements LoopInterface {
 	 * @see #loadGameSettings()
 	 */
 	private void loadObjectMap(String name) {
-		MapsLoader mapLoader = new MapsXMLLoader();
-		ObjectMapInterface objectMap = mapLoader.loadObjectMap(name, loader);
+		XMLLoaderInterface xmlLoader = new XMLFileLoader(ES.MAP_PATH + name + XMLUtils.EXTENTION);
+		LevelMapParserInterface mapParser = new LevelMapXMLParser();
+//		MapsLoaderInterface mapLoader = new MapsXMLLoader();
+//		ObjectMapInterface objectMap = mapLoader.loadObjectMap(name, loader);
 	}
 	
 	/**
@@ -154,8 +163,11 @@ public class Loop implements LoopInterface {
 	 * @see #loadObjectMap(String)
 	 */
 	private void loadGameSettings() {
-		SettingsLoaderInterface setLoader = new SettingsXMLLoader();  
-		GameSettings settings = setLoader.loadSettings(SETTINGS_NAME);
+		XMLLoaderInterface xmlLoader = new XMLFileLoader(
+				ES.GAME_SETTINGS_PATH + SETTINGS_NAME + XMLUtils.EXTENTION);
+		SettingsParserInterface settingsParser = new SettingsXMLParser(
+				xmlLoader.load());
+		GameSettings settings = settingsParser.parse();
 		loadMap(settings.getMapName());
 		loadObjectMap(settings.getObjectMapName());
 	}

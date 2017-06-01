@@ -9,7 +9,7 @@ import guis.gui.GUIManager;
 import guis.gui.GUIManagerInterface;
 import guis.guiTextures.GUITextureManager;
 import guis.guiTextures.GUITextureManagerInterface;
-import maps.gameMap.GameMap;
+import maps.modelMap.ModelMap;
 import objects.audio.AudioManager;
 import objects.audio.AudioManagerInterface;
 import objects.audio.AudioMaster;
@@ -63,7 +63,7 @@ public class Scene implements SceneInterface {
 	
 	public Scene() {}
 	
-	public Scene(GameMap map) {
+	public Scene(ModelMap map) {
 		this.getEntities().addAll(map.getEntities().values());
 		this.getTerrains().addAll(map.getTerrains().values());
 		this.getWaters().addAll(map.getWaters().values());

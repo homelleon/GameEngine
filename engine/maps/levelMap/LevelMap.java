@@ -1,4 +1,4 @@
-package maps.objectMap;
+package maps.levelMap;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,13 +17,13 @@ import toolbox.EngineUtils;
  * @author homelleon
  *
  */
-public class ObjectMap implements ObjectMapInterface {
+public class LevelMap implements LevelMapInterface {
 	
 	private List<EntityInterface> entities = new ArrayList<EntityInterface>();
 	
 	private Loader loader;
 	
-	public ObjectMap(Loader loader) {
+	public LevelMap(Loader loader) {
 		this.loader = loader;		
 	}
 
