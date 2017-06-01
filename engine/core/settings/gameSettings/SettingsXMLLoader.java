@@ -33,8 +33,8 @@ public class SettingsXMLLoader implements SettingsLoaderInterface {
 			e.printStackTrace();
 		}	
 		
-		SettingsParserInterface parser = new SettingsTXTParser();
-		return parser.readSettings(document);   
+		SettingsParserInterface parser = new SettingsXMLParser(document);
+		return parser.parse();   
 	}
 
 }

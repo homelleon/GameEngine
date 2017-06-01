@@ -7,10 +7,16 @@ import org.w3c.dom.NodeList;
 
 import toolbox.XMLUtils;
 
-public class SettingsTXTParser implements SettingsParserInterface {
+public class SettingsXMLParser implements SettingsParserInterface {
+	
+	private Document document;
+	
+	public SettingsXMLParser(Document document) {
+		this.document = document;
+	}
  
 	@Override
-	public GameSettings readSettings(Document document) {
+	public GameSettings parse() {
 		GameSettings settings = GameSettings.getInstance();		
 		NodeList nodeList = document.getDocumentElement().getChildNodes();
 		

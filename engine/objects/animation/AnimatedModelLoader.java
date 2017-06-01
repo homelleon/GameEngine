@@ -1,6 +1,5 @@
 package objects.animation;
 
-import main.GeneralSettings;
 import objects.animatedModel.AnimatedModel;
 import objects.animatedModel.Joint;
 import objects.openglObjects.Vao;
@@ -24,7 +23,7 @@ public class AnimatedModelLoader {
 	 * @return The animated entity (no animation applied though)
 	 */
 	public static AnimatedModel loadEntity(MyFile modelFile, MyFile textureFile) {
-		AnimatedModelData entityData = ColladaLoader.loadColladaModel(modelFile, GeneralSettings.MAX_WEIGHTS);
+		AnimatedModelData entityData = ColladaLoader.loadColladaModel(modelFile, 50);
 		Vao model = createVao(entityData.getMeshData());
 		Texture texture = loadTexture(textureFile);
 		SkeletonData skeletonData = entityData.getJointsData();

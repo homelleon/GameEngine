@@ -4,8 +4,9 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector3f;
 
 import objects.animatedModel.AnimatedModel;
-import scene.ICamera;
-import utils.OpenGlUtils;
+import objects.cameras.CameraInterface;
+import shaders.animation.AnimatedModelShader;
+import toolbox.OGLUtils;
 
 /**
  * 
@@ -40,11 +41,11 @@ public class AnimatedModelRenderer {
 	 * @param lightDir
 	 *            - the direction of the light in the scene.
 	 */
-	public void render(AnimatedModel entity, ICamera camera, Vector3f lightDir) {
+	public void render(AnimatedModel entity, CameraInterface camera, Vector3f lightDir) {
 		prepare(camera, lightDir);
 		entity.getTexture().bindToUnit(0);
 		entity.getModel().bind(0, 1, 2, 3, 4);
-		shader.jointTransforms.loadMatrixArray(entity.getJointTransforms());
+		shader.loadJointTransforms(entity.getJointTransforms());
 		GL11.glDrawElements(GL11.GL_TRIANGLES, entity.getModel().getIndexCount(), GL11.GL_UNSIGNED_INT, 0);
 		entity.getModel().unbind(0, 1, 2, 3, 4);
 		finish();
@@ -67,13 +68,13 @@ public class AnimatedModelRenderer {
 	 * @param lightDir
 	 *            - the direction of the light in the scene.
 	 */
-	private void prepare(ICamera camera, Vector3f lightDir) {
+	private void prepare(CameraInterface camera, Vector3f lightDir) {
 		shader.start();
-		shader.projectionViewMatrix.loadMatrix(camera.getProjectionViewMatrix());
-		shader.lightDirection.loadVec3(lightDir);
-		OpenGlUtils.antialias(true);
-		OpenGlUtils.disableBlending();
-		OpenGlUtils.enableDepthTesting(true);
+		shader.loadprojectionViewMatrix(camera.getProjectionViewMatrix());
+		shader.loadLightDirection(lightDir);
+		OGLUtils.antialiasing(true);		
+		OGLUtils.disableBlending();
+		OGLUtils.depthTest(true);		
 	}
 
 	/**

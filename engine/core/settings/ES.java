@@ -129,8 +129,9 @@ public class ES {
 	public final static String POST_PROCESSING_PATH = SHADERS_PATH + "postProcessing/";
 	public final static String BLUR_SHADER_PATH = POST_PROCESSING_PATH +  "gaussianBlur/";
 	public final static String BLOOM_SHADER_PATH = POST_PROCESSING_PATH + "bloom/";
+	public final static String ANIMATION_SHADER_PATH = SHADERS_PATH + "animation/";
 	
-	public final static String GAME_SETTINGS_PATH = GAME_PATH + "gameMain/";
+	public final static String GAME_SETTINGS_PATH = GAME_PATH + "main/";
 	
 	/* render settings */
 	public final static Vector4f NO_CLIP = new Vector4f(0, 0, 0, 1);

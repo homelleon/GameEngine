@@ -47,5 +47,9 @@ public class OGLUtils {
 		}
 	}
 	
+	public static void disableBlending() {
+		GL11.glDisable(GL11.GL_BLEND);
+	}
+	
 
 }
