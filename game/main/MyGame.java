@@ -51,7 +51,7 @@ public class MyGame extends Thread implements GameInterface {
 			List<GUITexture> hintTextureList = new ArrayList<GUITexture>();
 			List<GUIText> hintTextList = new ArrayList<GUIText>();			
 			hintTextList.add(gameManager.getScene().getUserInterface()
-					.getComponent().getTexts().getByName("inputHints1"));			
+					.getComponent().getTexts().getByName("inputHints"));			
 			GUIInterface hintsGUI = new GUI("hints", hintTextureList, hintTextList);
 			helpGUIList.add(hintsGUI);
 			gameManager.getScene().getUserInterface().addGUIGroup(new GUIGroup(guiGroupName, helpGUIList));

@@ -1,5 +1,13 @@
 package core.settings.gameSettings;
 
+/**
+ * Uses for initialization game variables and objects.
+ * <p>Singletone is used to initialize object of that class.<br>
+ *  Can't create more the one instance.
+ *  
+ * @author homelleon
+ *
+ */
 public class GameSettings { 
 	
 	private static GameSettings instance; 
@@ -17,6 +25,8 @@ public class GameSettings {
 	static GameSettings getInstance() {
 		if (instance == null) {
 		     instance = new GameSettings();
+		   } else {
+			   throw new SecurityException("Can't use more than one instance!");
 		   }
 		return instance;
 	}
