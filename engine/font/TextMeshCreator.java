@@ -8,8 +8,11 @@ public class TextMeshCreator {
 
 	protected static final double LINE_HEIGHT = 0.03f;
 	protected static final int SPACE_ASCII = 32;
+	protected static final int NEW_LINE_ASCII = 10;
+	protected static final int TABULATION_ASCII = 9;
 
 	private MetaFile metaData;
+	
 
 	protected TextMeshCreator(File metaFile) {
 		metaData = new MetaFile(metaFile); 
@@ -25,12 +28,12 @@ public class TextMeshCreator {
 		char[] chars = text.getTextString().toCharArray();
 		List<Line> lines = new ArrayList<Line>();
 		Line currentLine = new Line(metaData.getSpaceWidth(), text.getFontSize(), text.getMaxLineSize());
-		Word currentWord = new Word(text.getFontSize());
+		Word currentWord = new Word(text.getFontSize());		
 		
 		for (char c : chars) {
 			int ascii = (int) c;
 			
-			if (ascii == SPACE_ASCII) {
+			if(ascii == SPACE_ASCII) {		
 				boolean added = currentLine.attemptToAddWord(currentWord);
 				if (!added) {
 					lines.add(currentLine);
@@ -39,9 +42,28 @@ public class TextMeshCreator {
 				}
 				currentWord = new Word(text.getFontSize());
 				continue;
-			}			
+			}
+			
+			if(ascii == NEW_LINE_ASCII) {
+				System.out.print("space");
+				boolean added = currentLine.attemptToAddWord(currentWord);
+				if (!added) {
+					lines.add(currentLine);
+					currentLine = new Line(metaData.getSpaceWidth(), text.getFontSize(), text.getMaxLineSize());
+					currentLine.attemptToAddWord(currentWord);
+				}
+				lines.add(currentLine);
+				currentLine = new Line(metaData.getSpaceWidth(), text.getFontSize(), text.getMaxLineSize());
+				currentWord = new Word(text.getFontSize());
+				continue;
+			}
+			
+			if(ascii == TABULATION_ASCII) {
+				continue;
+			}
+			
 			Character character = metaData.getCharacter(ascii);			
-			currentWord.addCharacter(character);
+			currentWord.addCharacter(character);			
 		}
 		completeStructure(lines, currentLine, currentWord, text);
 		return lines;

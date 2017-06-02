@@ -17,37 +17,21 @@
 			</color>
 		</GUIText>
 		<GUIText id="2">
-			<name>inputHints1</name>
+			<name>inputHints</name>
 			<path>hints</path>
 			<line>1</line>
 			<size>1</size>
 			<font>candara</font>
 			<x>0.55f</x>
 			<y>0.25f</y>
-			<max_length>1</max_length>
+			<max_length>0.44f</max_length>
 			<centered>false</centered>
 			<color>
 				<r>1</r>
 				<g>0</g>
 				<b>0</b>
 			</color>
-		</GUIText>
-		<GUIText id="3">
-			<name>inputHints2</name>
-			<path>hints</path>
-			<line>1</line>
-			<size>1</size>
-			<font>candara</font>
-			<x>0.55f</x>
-			<y>0.50f</y>
-			<max_length>1</max_length>
-			<centered>false</centered>
-			<color>
-				<r>1</r>
-				<g>0</g>
-				<b>0</b>
-			</color>
-		</GUIText>		
+		</GUIText>			
 	</GUITexts>
 	<GUITextures>
 		<GUITexture>
