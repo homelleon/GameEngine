@@ -87,7 +87,6 @@ public class SceneManager implements SceneManagerInterface {
 		scene.getLights().add(new Light("Light2", new Vector3f(20,2,20),new Vector3f(0,5,0), new Vector3f(1, 0.01f, 0.002f)));
 
 		scene.getAudioSources().add(ambientSource);
-		scene.getGuis().addAll(GUITextureManager.createGui(loader));
 		scene.getWaters().addAll(waterList);
 		scene.getParticles().addAll(ParticleManager.createParticleSystem(loader));
 		

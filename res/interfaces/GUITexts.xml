@@ -6,8 +6,10 @@
 			<line>1</line>
 			<size>2</size>
 			<font>candara</font>
-			<x>0.0f</x>
-			<y>0.0f</y>
+			<position>
+				<x>0.0f</x>
+				<y>0.0f</y>
+			</position>
 			<max_length>1</max_length>
 			<centered>true</centered>
 			<color>
@@ -34,7 +36,17 @@
 		</GUIText>			
 	</GUITexts>
 	<GUITextures>
-		<GUITexture>
+		<GUITexture id="1">
+			<name>Helth</name>
+			<texture>helthBar</texture>
+			<position>
+				<x>-0.7f</x>
+				<y>-0.7f</y>
+			</position>
+			<scale>
+				<x>0.25f</x>
+				<y>0.25f</y>
+			</scale>
 		</GUITexture>
 	</GUITextures>
 </GUI>
