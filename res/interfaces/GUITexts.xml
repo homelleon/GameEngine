@@ -3,7 +3,6 @@
 		<GUIText id="1">
 			<name>version</name>
 			<path>version</path>
-			<line>1</line>
 			<size>2</size>
 			<font>candara</font>
 			<position>
@@ -21,11 +20,12 @@
 		<GUIText id="2">
 			<name>inputHints</name>
 			<path>hints</path>
-			<line>1</line>
 			<size>1</size>
 			<font>candara</font>
-			<x>0.55f</x>
-			<y>0.25f</y>
+			<position>
+				<x>0.55f</x>
+				<y>0.25f</y>
+			</position>
 			<max_length>0.44f</max_length>
 			<centered>false</centered>
 			<color>

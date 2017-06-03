@@ -58,16 +58,16 @@ public class GUITextXMLParser implements GUITextParserInterface {
 	    
 	    for(int j = 0; j < guiTextList.getLength(); j++) {
 			   Node guiTextNode = guiTextList.item(j);	        		   
-			   if (XMLUtils.ifNodeIsElement(guiTextNode, "GUIText")) {
+			   if(XMLUtils.ifNodeIsElement(guiTextNode, "GUIText")) {
 				   Element guiTextEl = (Element) guiTextNode;
 	               String ID = guiTextNode.getAttributes().getNamedItem("id").getNodeValue();
 	               String name = guiTextEl.getElementsByTagName("name").item(0).getChildNodes().item(0).getNodeValue();
 	               String path = guiTextEl.getElementsByTagName("path").item(0).getChildNodes().item(0).getNodeValue();
-	               int line = Integer.valueOf(guiTextEl.getElementsByTagName("line").item(0).getChildNodes().item(0).getNodeValue());
 	               float size = Float.valueOf(guiTextEl.getElementsByTagName("size").item(0).getChildNodes().item(0).getNodeValue());
 	               String font = guiTextEl.getElementsByTagName("font").item(0).getChildNodes().item(0).getNodeValue();
-	               float x = Float.valueOf(guiTextEl.getElementsByTagName("x").item(0).getChildNodes().item(0).getNodeValue());
-	               float y = Float.valueOf(guiTextEl.getElementsByTagName("y").item(0).getChildNodes().item(0).getNodeValue());
+	               Element positionEl = (Element) guiTextEl.getElementsByTagName("position").item(0);
+	               float x = Float.valueOf(positionEl.getElementsByTagName("x").item(0).getChildNodes().item(0).getNodeValue());
+	               float y = Float.valueOf(positionEl.getElementsByTagName("y").item(0).getChildNodes().item(0).getNodeValue());
 	               Vector2f position = new Vector2f(x, y);
 	               float maxLength = Float.valueOf(guiTextEl.getElementsByTagName("max_length").item(0).getChildNodes().item(0).getNodeValue());
 	               boolean isCentered = Boolean.valueOf(guiTextEl.getElementsByTagName("centered").item(0).getChildNodes().item(0).getNodeValue());
@@ -83,7 +83,7 @@ public class GUITextXMLParser implements GUITextParserInterface {
 	            		   g = Float.valueOf(colorNode.getChildNodes().item(0).getNodeValue());
 	            	   } else if (XMLUtils.ifNodeIsElement(colorNode, "b")) {
 	            		   b = Float.valueOf(colorNode.getChildNodes().item(0).getNodeValue());
-	            	   }	            	   
+	            	   }
 	               	}
 	               	Vector3f color = new Vector3f(r,g,b);
 	               	XMLLoaderInterface xmlLoader = new XMLFileLoader(ES.TEXT_PATH + path + XMLUtils.EXTENTION);	               	
