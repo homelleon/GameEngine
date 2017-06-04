@@ -133,7 +133,7 @@ public class Loop implements LoopInterface {
 	 * @see #loadGameSettings()
 	 */
 	private void loadMap(String name) {
-		XMLLoaderInterface xmlLoader = new XMLFileLoader(ES.MAP_PATH + name + XMLUtils.EXTENTION);
+		XMLLoaderInterface xmlLoader = new XMLFileLoader(ES.MAP_PATH + name + ES.EXTENSION_XML);
 		ModelMapParserInterface mapParser = new ModelMapXMLParser(
 				xmlLoader.load(), name, loader);
 		this.map = mapParser.parseMap();	
@@ -149,7 +149,7 @@ public class Loop implements LoopInterface {
 	 * @see #loadGameSettings()
 	 */
 	private void loadObjectMap(String name) {
-		XMLLoaderInterface xmlLoader = new XMLFileLoader(ES.MAP_PATH + name + XMLUtils.EXTENTION);
+		XMLLoaderInterface xmlLoader = new XMLFileLoader(ES.MAP_PATH + name + ES.EXTENSION_XML);
 		LevelMapParserInterface mapParser = new LevelMapXMLParser();
 //		MapsLoaderInterface mapLoader = new MapsXMLLoader();
 //		ObjectMapInterface objectMap = mapLoader.loadObjectMap(name, loader);
@@ -164,7 +164,7 @@ public class Loop implements LoopInterface {
 	 */
 	private void loadGameSettings() {
 		XMLLoaderInterface xmlLoader = new XMLFileLoader(
-				ES.GAME_SETTINGS_PATH + SETTINGS_NAME + XMLUtils.EXTENTION);
+				ES.GAME_SETTINGS_PATH + SETTINGS_NAME + ES.EXTENSION_XML);
 		SettingsParserInterface settingsParser = new SettingsXMLParser(
 				xmlLoader.load());
 		GameSettings settings = settingsParser.parse();

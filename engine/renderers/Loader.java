@@ -43,7 +43,7 @@ public class Loader {
 	public static Loader getInstance() {
 		if (instance == null) {
 		     instance = new Loader();
-		   }
+	    }
 		return instance;
 	}
 	
@@ -138,6 +138,10 @@ public class Loader {
 	}
 	
 	public int loadTexture(String path, String fileName) {
+		return loadTexture(path, fileName, "PNG");
+	}
+	
+	public int loadTexture(String path, String fileName, String format) {
 		Texture texture = null;
 		try {
 			float bias;
@@ -146,7 +150,24 @@ public class Loader {
 			}else{
 				bias = -2.4f;
 			}
-			texture = TextureLoader.getTexture("PNG", new FileInputStream(path+fileName+".png"));
+			
+			String extension = ES.EXTENSION_PNG;
+			
+			switch(format) {
+				case "PNG":
+					extension = ES.EXTENSION_PNG;
+					break;
+				case "TGA":
+					extension = ES.EXTENSION_TGA;
+					break;
+				case "JPG":
+					extension = ES.EXTENSION_JPG;
+					throw new TypeNotPresentException("JPG file is not supported!", null);
+				default:
+					throw new TypeNotPresentException("Uknown file extention!", null); 
+			}
+			
+			texture = TextureLoader.getTexture(format, new FileInputStream(path+fileName + extension));
 			GL30.glGenerateMipmap(GL11.GL_TEXTURE_2D);
 			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR_MIPMAP_LINEAR);
 			GL11.glTexParameterf(GL11.GL_TEXTURE_2D, GL14.GL_TEXTURE_LOD_BIAS, bias);

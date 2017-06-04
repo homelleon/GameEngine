@@ -71,7 +71,7 @@ public class GUITextManager implements GUITextManagerInterface {
 
 	@Override
 	public void readFile(String fileName) {
-		XMLLoaderInterface xmlLoader = new XMLFileLoader(ES.INTERFACE_PATH + fileName + XMLUtils.EXTENTION);
+		XMLLoaderInterface xmlLoader = new XMLFileLoader(ES.INTERFACE_PATH + fileName + ES.EXTENSION_XML);
 		GUITextParserInterface guiTextParser = new GUITextXMLParser(xmlLoader.load(), master);
 		this.addAll(guiTextParser.parse());
 		

@@ -133,6 +133,12 @@ public class ES {
 	
 	public final static String GAME_SETTINGS_PATH = GAME_PATH + "main/";
 	
+	public final static String EXTENSION_PNG = ".png";
+	public final static String EXTENSION_TGA = ".tga";
+	public final static String EXTENSION_JPG = ".jpg";
+	public final static String EXTENSION_OBJ = ".obj";
+	public final static String EXTENSION_XML = ".xml";
+	
 	/* render settings */
 	public final static Vector4f NO_CLIP = new Vector4f(0, 0, 0, 1);
 	

@@ -58,35 +58,35 @@ public class GUITextXMLParser implements GUITextParserInterface {
 	    
 	    for(int j = 0; j < guiTextList.getLength(); j++) {
 			   Node guiTextNode = guiTextList.item(j);	        		   
-			   if(XMLUtils.ifNodeIsElement(guiTextNode, "GUIText")) {
+			   if(XMLUtils.ifNodeIsElement(guiTextNode, XMLUtils.GUI_TEXT)) {
 				   Element guiTextEl = (Element) guiTextNode;
-	               String ID = guiTextNode.getAttributes().getNamedItem("id").getNodeValue();
-	               String name = guiTextEl.getElementsByTagName("name").item(0).getChildNodes().item(0).getNodeValue();
-	               String path = guiTextEl.getElementsByTagName("path").item(0).getChildNodes().item(0).getNodeValue();
-	               float size = Float.valueOf(guiTextEl.getElementsByTagName("size").item(0).getChildNodes().item(0).getNodeValue());
-	               String font = guiTextEl.getElementsByTagName("font").item(0).getChildNodes().item(0).getNodeValue();
-	               Element positionEl = (Element) guiTextEl.getElementsByTagName("position").item(0);
-	               float x = Float.valueOf(positionEl.getElementsByTagName("x").item(0).getChildNodes().item(0).getNodeValue());
-	               float y = Float.valueOf(positionEl.getElementsByTagName("y").item(0).getChildNodes().item(0).getNodeValue());
+	               String ID = guiTextNode.getAttributes().getNamedItem(XMLUtils.ID).getNodeValue();
+	               String name = guiTextEl.getElementsByTagName(XMLUtils.NAME).item(0).getChildNodes().item(0).getNodeValue();
+	               String path = guiTextEl.getElementsByTagName(XMLUtils.PATH).item(0).getChildNodes().item(0).getNodeValue();
+	               float size = Float.valueOf(guiTextEl.getElementsByTagName(XMLUtils.SIZE).item(0).getChildNodes().item(0).getNodeValue());
+	               String font = guiTextEl.getElementsByTagName(XMLUtils.FONT).item(0).getChildNodes().item(0).getNodeValue();
+	               Element positionEl = (Element) guiTextEl.getElementsByTagName(XMLUtils.POSITION).item(0);
+	               float x = Float.valueOf(positionEl.getElementsByTagName(XMLUtils.X).item(0).getChildNodes().item(0).getNodeValue());
+	               float y = Float.valueOf(positionEl.getElementsByTagName(XMLUtils.Y).item(0).getChildNodes().item(0).getNodeValue());
 	               Vector2f position = new Vector2f(x, y);
-	               float maxLength = Float.valueOf(guiTextEl.getElementsByTagName("max_length").item(0).getChildNodes().item(0).getNodeValue());
-	               boolean isCentered = Boolean.valueOf(guiTextEl.getElementsByTagName("centered").item(0).getChildNodes().item(0).getNodeValue());
+	               float maxLength = Float.valueOf(guiTextEl.getElementsByTagName(XMLUtils.MAX_LENGTH).item(0).getChildNodes().item(0).getNodeValue());
+	               boolean isCentered = Boolean.valueOf(guiTextEl.getElementsByTagName(XMLUtils.CENTERED).item(0).getChildNodes().item(0).getNodeValue());
 	               float r = 0;
 	               float g = 0;
 	               float b = 0;
-	               NodeList colorList = guiTextEl.getElementsByTagName("color").item(0).getChildNodes();
+	               NodeList colorList = guiTextEl.getElementsByTagName(XMLUtils.COLOR).item(0).getChildNodes();
 	               for(int k = 0; k < colorList.getLength(); k++) {
 	            	   Node colorNode = colorList.item(k);
-	            	   if (XMLUtils.ifNodeIsElement(colorNode, "r")) {
+	            	   if (XMLUtils.ifNodeIsElement(colorNode, XMLUtils.RED)) {
 	            		   r = Float.valueOf(colorNode.getChildNodes().item(0).getNodeValue());
-	            	   } else if (XMLUtils.ifNodeIsElement(colorNode, "g")) {
+	            	   } else if (XMLUtils.ifNodeIsElement(colorNode, XMLUtils.GREEN)) {
 	            		   g = Float.valueOf(colorNode.getChildNodes().item(0).getNodeValue());
-	            	   } else if (XMLUtils.ifNodeIsElement(colorNode, "b")) {
+	            	   } else if (XMLUtils.ifNodeIsElement(colorNode, XMLUtils.BLUE)) {
 	            		   b = Float.valueOf(colorNode.getChildNodes().item(0).getNodeValue());
 	            	   }
 	               	}
 	               	Vector3f color = new Vector3f(r,g,b);
-	               	XMLLoaderInterface xmlLoader = new XMLFileLoader(ES.TEXT_PATH + path + XMLUtils.EXTENTION);	               	
+	               	XMLLoaderInterface xmlLoader = new XMLFileLoader(ES.TEXT_PATH + path + ES.EXTENSION_XML);	               	
 	               	TextParserInterface textParser = new TextXMLParser(xmlLoader.load());
 	               	String text = textParser.parse();
 	               	GUIText guiText = new GUIText(name, text, size,
