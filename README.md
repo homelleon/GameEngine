@@ -1,5 +1,4 @@
 # OutworldMind Engine
-==================
 This is a Game Engine for implementing game or graphic editor that is written in Java 8 language. 
 Uses LWJGL to control OpenGL and OpenAL libraries. 
 
@@ -34,3 +33,12 @@ sound:
 ```
 - uses 3 dimentional audio buffer sound engine based on OpenAL library
 ```
+
+USAGE
+----------
+- create your own class in "game/main" folder.
+- make it extend "Game" class from "game" package of "engine" source folder (see default MyGame class).
+- create public methods "__onStart()" and "__onUpdate()".
+- put "super.__onStart()" and "super.__onUpdate" methods into created by you methods before your code.
+- write youre code using public methods of "scene" and "gameManager" objects.
+- run the game.
