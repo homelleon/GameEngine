@@ -36,9 +36,12 @@ sound:
 
 USAGE
 ----------
+game logic:
+```
 - create your own class in "game/main" folder.
 - make it extend "Game" class from "game" package of "engine" source folder (see default MyGame class).
 - create public methods "__onStart()" and "__onUpdate()".
 - put "super.__onStart()" and "super.__onUpdate" methods into created by you methods before your code.
 - write youre code using public methods of "scene" and "gameManager" objects.
 - run the game.
+```
