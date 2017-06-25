@@ -1,10 +1,10 @@
-package main;
+package game;
 
 /**
  * Main game interface to control events in engine system.
  * 
  * @author homelleon
- * @see MyGame
+ * @see Game
  * 
  */
 public interface GameInterface {
@@ -12,11 +12,11 @@ public interface GameInterface {
 	/**
 	 * Realize game events on engine start.
 	 */
-	public void onStart();
+	public void __onStart();
 	
 	/**
 	 * Realize game events on engine update.
 	 */
-	public void onUpdate();
+	public void __onUpdate();
 
 }

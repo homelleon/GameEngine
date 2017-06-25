@@ -24,7 +24,7 @@ public class EngineMain {
 	 */
 	public static void main(String[] args) { 
 		loopGame = new Loop();
-		loopGame.run();  
+		loopGame.run(); 
 	}
 	
 	/**
