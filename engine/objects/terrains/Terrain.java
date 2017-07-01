@@ -16,6 +16,12 @@ import objects.textures.TerrainTexturePack;
 import renderers.Loader;
 import toolbox.Maths;
 
+/**
+ * Terrain class representing landscape plane.
+ *  
+ * @author homelleon
+ * @see TerrainInterface
+ */
 public class Terrain implements TerrainInterface {
 	
 	private static final float SIZE = 500;
@@ -37,6 +43,20 @@ public class Terrain implements TerrainInterface {
 	
 	private float[][] heights;
 	
+	/**
+	 * Constructs terrain plane from height map.
+	 * 
+	 * @param name {@link String} value of terrain name
+	 * @param gridX {@link integer} value of x-roordinate with step = SIZE
+	 * @param gridZ {@link integer} value of z-roordinate with step = SIZE
+	 * @param loader {@link Loader} object used to load textures and verticies
+	 * @param texturePack {@link TerrainTexturePack} pack of 4 textures
+	 * @param blendMap {@link TerrainTexture} texture to define intensity of 
+	 * 				   blending affect on surface
+	 * @param heightMap {@link String} value of height map name
+	 * 
+	 * @see #Terrain(String, int, int, Loader, TerrainTexturePack, TerrainTexture, float, int, float)
+	 */
 	public Terrain(String name, int gridX, int gridZ, Loader loader, TerrainTexturePack texturePack,
 			TerrainTexture blendMap, String heightMap) {
 		this.texturePack = texturePack;
@@ -47,6 +67,24 @@ public class Terrain implements TerrainInterface {
         this.name = name;
 	}
 	
+	/**
+	 * Constructs random terrain plane from input parameters by terrain procedure generator.
+	 * 
+	 * @param name {@link String} value of terrain name
+	 * @param gridX {@link integer} value of x-roordinate with step = SIZE
+	 * @param gridZ {@link integer} value of z-roordinate with step = SIZE
+	 * @param loader {@link Loader} object used to load textures and verticies
+	 * @param texturePack {@link TerrainTexturePack} pack of 4 textures
+	 * @param blendMap {@link TerrainTexture} texture to define intensity of 
+	 * 				   blending affect on surface
+	 * @param amplitude {@link Float} value of maximum and minimum height for terrain
+	 * 					generation 
+	 * @param octaves {@link Integer} value of point to point changes intensity for
+	 * 					terrain generator
+	 * @param roughness {@link Float} value of terrain edges roughness for terrain
+	 * 					generator
+	 * @see #Terrain(String, int, int, Loader, TerrainTexturePack, TerrainTexture, String)
+	 */
 	public Terrain(String name, int gridX, int gridZ, Loader loader, TerrainTexturePack texturePack,
 			TerrainTexture blendMap, float amplitude, int octaves, float roughness) {
 		this.texturePack = texturePack;
@@ -60,62 +98,77 @@ public class Terrain implements TerrainInterface {
 		this.name = name;
 	}
 	
+	@Override
 	public float getSize() {
 		return SIZE;
 	}
 	
+	@Override
 	public float getX() {
 		return x;
 	}
-
+	
+	@Override
 	public float getZ() {
 		return z;
 	}
 
+	@Override
 	public RawModel getModel() {
 		return model;
 	}
 	
+	@Override
 	public String getName() {
 		return name;
 	}
 	
+	@Override
 	public boolean isVisible() {
 		return isVisible;
 	}
 
+	@Override
 	public void setVisible(boolean isVisible) {
 		this.isVisible = isVisible;
 	}
 
+	@Override
 	public TerrainTexturePack getTexturePack() {
 		return texturePack;
 	}
 
+	@Override
 	public TerrainTexture getBlendMap() {
 		return blendMap;
 	}
 	
+	@Override
 	public String getHeightMapName() {
 		return heightMapName;
 	}
 	
+	@Override
 	public boolean isProcedureGenerated() {
 		return isProcedureGenerated;
 	}
 	
+	@Override
 	public float getAmplitude() {
 		return amplitude;
 	}
 
+	@Override
 	public int getOctaves() {
 		return octaves;
 	}
 
+	@Override
 	public float getRoughness() {
 		return roughness;
 	}
 
+	@Override
 	public float getHeightOfTerrain(float worldX, float worldZ) {
 		float terrainX = worldX - this.x;
 		float terrainZ = worldZ - this.z;

@@ -59,7 +59,6 @@ public class Scene implements SceneInterface {
 	private AudioManagerInterface audioManager = new AudioManager(audioMaster);
 	private GUITextureManagerInterface guiManager = new GUITextureManager();
 	private GUIManagerInterface uiManager = new GUIManager();
-
 	
 	public Scene() {}
 	
@@ -261,7 +260,5 @@ public class Scene implements SceneInterface {
 		this.guiManager.clearAll();
 		this.uiManager.cleanAll();		
 	}
-
-
 
 }

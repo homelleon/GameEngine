@@ -20,12 +20,12 @@ public class MouseGame {
 	private static boolean isDebugged = false;
 	
 
-	public MouseGame(int echo) {
+	public MouseGame(int echoValue) {
 		for(int type = 0; type < 8; type++) {
-			this.isUsed[type] = false;
-			this.timer[type] = 0;
+			isUsed[type] = false;
+			timer[type] = 0;
 		}
-		this.echo = echo;
+		echo = echoValue;
 	}
 	
 	public static void initilize(int echoLength) {
