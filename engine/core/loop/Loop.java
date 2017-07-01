@@ -11,7 +11,6 @@ import core.settings.gameSettings.SettingsParserInterface;
 import core.settings.gameSettings.SettingsXMLParser;
 import game.GameInterface;
 import inputs.MouseGame;
-import main.MyGame;
 import maps.levelMap.LevelMapParserInterface;
 import maps.levelMap.LevelMapXMLParser;
 import maps.modelMap.ModelMap;
@@ -38,11 +37,7 @@ import toolbox.xmlLoader.XMLLoaderInterface;
  */
 public class Loop implements LoopInterface {
 	
-	/*
-	 * LoopGame - главный игровой цикл
-	 * 03.02.17
-	 * --------------------
-	 */
+	private static Loop instance;
 	private static final String SETTINGS_NAME = "settings";
 		
 	private Loader loader;
@@ -58,6 +53,15 @@ public class Loop implements LoopInterface {
     
     private boolean mapIsLoaded = false;
     private boolean isPaused = false;
+    
+    private Loop() {}
+    
+    public static Loop getInstance() {
+		if (instance == null) {
+		     instance = new Loop();
+		}
+		return instance;
+	}
     
     /**
      * Initilize display, load game settings and setup scene objects.
