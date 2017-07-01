@@ -7,7 +7,7 @@ DIRECTORY STRUCTURE
 ```
 engine/     engine core library tools
 game/       game core library tools
-phisics/    phisics core library tools
+physics/    phisics core library tools
 editor/     game edit core library tools
 doc/        documentation
 libs/       libraries used in engine core
@@ -39,9 +39,12 @@ USAGE
 game logic:
 ```
 - create your own class in "game/main" folder.
-- make it extend "Game" class from "game" package of "engine" source folder (see default MyGame class).
+- make it extends "Game" class from "game" package of "engine" source folder (see default MyGame class).
 - create public methods "__onStart()" and "__onUpdate()".
-- put "super.__onStart()" and "super.__onUpdate" methods into created by you methods before your code.
-- write youre code using public methods of "scene" and "gameManager" objects.
+- put "super.__onStart()" and "super.__onUpdate" methods into created your methods before your code.
+```
+![MyGame](https://github.com/homelleon/GameEngine/blob/develop/res/other/myGame.jpg "MyGame example")
+```
+- write your code using public methods of "scene" and "gameManager" objects.
 - run the game.
 ```

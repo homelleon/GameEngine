@@ -1,0 +1,13 @@
+dist: trusty
+language: java
+java
+  - '7.0'
+  - '8.0'
+
+install:
+
+date
+
+before_script:
+  
+script:
