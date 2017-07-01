@@ -23,8 +23,8 @@ public class EngineMain {
 	 * @param args
 	 */
 	public static void main(String[] args) { 
-		loopGame = new Loop();
-		loopGame.run();  
+		loopGame = Loop.getInstance();
+		loopGame.run();
 	}
 	
 	/**

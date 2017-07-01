@@ -3,14 +3,14 @@ package core.loop;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 
+import core.GameCore;
 import core.display.DisplayManager;
 import core.settings.ES;
 import core.settings.gameSettings.GameSettings;
 import core.settings.gameSettings.SettingsParserInterface;
 import core.settings.gameSettings.SettingsXMLParser;
+import game.GameInterface;
 import inputs.MouseGame;
-import main.GameInterface;
-import main.MyGame;
 import maps.levelMap.LevelMapParserInterface;
 import maps.levelMap.LevelMapXMLParser;
 import maps.modelMap.ModelMap;
@@ -37,11 +37,7 @@ import toolbox.xmlLoader.XMLLoaderInterface;
  */
 public class Loop implements LoopInterface {
 	
-	/*
-	 * LoopGame - главный игровой цикл
-	 * 03.02.17
-	 * --------------------
-	 */
+	private static Loop instance;
 	private static final String SETTINGS_NAME = "settings";
 		
 	private Loader loader;
@@ -53,10 +49,19 @@ public class Loop implements LoopInterface {
     private SceneInterface scene;
     private ModelMap map;
     
-    private GameInterface game = new MyGame();
+    private GameInterface game;
     
     private boolean mapIsLoaded = false;
     private boolean isPaused = false;
+    
+    private Loop() {}
+    
+    public static Loop getInstance() {
+		if (instance == null) {
+		     instance = new Loop();
+		}
+		return instance;
+	}
     
     /**
      * Initilize display, load game settings and setup scene objects.
@@ -95,10 +100,11 @@ public class Loop implements LoopInterface {
 	 * start. 
 	 */
 	private void prepare() {
-		init();
+		init();		
 		sceneRenderer.init(scene, loader);
 		MouseGame.initilize(10);
-		game.onStart();
+		this.game = GameCore.loadGame();
+		game.__onStart();
 	}
 	
 	/**
@@ -106,7 +112,7 @@ public class Loop implements LoopInterface {
 	 */
 	private void update() {		
 		if(!this.isPaused) {
-			game.onUpdate();
+			game.__onUpdate();
 		}
 		sceneRenderer.render(loader, isPaused);
 		MouseGame.update();
