@@ -5,13 +5,13 @@ import java.util.List;
 
 import org.lwjgl.input.Keyboard;
 
-import font.GUIText;
-import game.Game;
-import guis.gui.GUI;
-import guis.gui.GUIGroup;
-import guis.gui.GUIInterface;
-import guis.guiTextures.GUITexture;
-import inputs.KeyboardGame;
+import game.game.Game;
+import object.gui.font.GUIText;
+import object.gui.group.GUIGroup;
+import object.gui.gui.GUI;
+import object.gui.gui.GUIInterface;
+import object.gui.texture.GUITexture;
+import object.input.KeyboardGame;
 
 public class MyGame extends Game {
 	

@@ -12,10 +12,10 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.PixelFormat;
 
-import core.settings.ES;
-import frames.Frame;
-import frames.FrameEditor;
-import inputs.KeyboardGame;
+import core.settings.EngineSettings;
+import frame.Frame;
+import frame.FrameEditor;
+import object.input.KeyboardGame;
 
 /*
  *  Display Manager - Менеджер дисплея приложения
@@ -31,13 +31,13 @@ public class DisplayManager {
 	private static int width;  //ширина окна
 	
 	public static void createDisplay() {	
-		createDisplay(ES.DISPLAY_GAME_MODE);	
+		createDisplay(EngineSettings.DISPLAY_GAME_MODE);	
 	}
 	
 	//конструктор с указанием режима приложения
 	public static void createDisplay(int mode) {
 
-		if (mode == ES.DISPLAY_EDIT_MODE) {				
+		if (mode == EngineSettings.DISPLAY_EDIT_MODE) {				
 			// режим редактирования
 			Frame frame = new FrameEditor("Editor");
 			width = frame.getWidth() / 2;
@@ -64,10 +64,10 @@ public class DisplayManager {
 				e.printStackTrace();
 			}
 			
-		} else if (mode == ES.DISPLAY_GAME_MODE) { 
+		} else if (mode == EngineSettings.DISPLAY_GAME_MODE) { 
 			//режим игры
-			width = ES.DISPLAY_WIDTH;
-			height = ES.DISPLAY_HEIGHT;
+			width = EngineSettings.DISPLAY_WIDTH;
+			height = EngineSettings.DISPLAY_HEIGHT;
 			ContextAttribs attribs = new ContextAttribs(3,3)
 			.withForwardCompatible(true)
 			.withProfileCore(true);
@@ -90,7 +90,7 @@ public class DisplayManager {
 	}
 	
 	public static void updateDisplay() {
-		Display.sync(ES.FPS_CAP);
+		Display.sync(EngineSettings.FPS_CAP);
 		KeyboardGame.update();
 		Display.update();
 		long currentFrameTime = getCurrentTime();
