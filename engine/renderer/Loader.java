@@ -34,24 +34,45 @@ import object.model.RawModel;
 import object.texture.TextureData;
 import tool.math.Maths;
 
+/**
+ * Class used for loading verticies and textures into video buffer.
+ * 
+ * @author homelleon
+ *
+ */
 public class Loader {
 	
 	private static Loader instance;
 	
 	private Loader() {};
 	
+	/**
+	 * Gets instance of loader class object.
+	 * 
+	 * @return {@link Loader} class object
+	 */
 	public static Loader getInstance() {
 		if (instance == null) {
-		     instance = new Loader();
+			instance = new Loader();
 	    }
 		return instance;
 	}
 	
 	
-	private List<Integer> vaos = new ArrayList<Integer>();
-	private List<Integer> vbos = new ArrayList<Integer>();
-	private Map<String, Integer> textures = new HashMap<String, Integer>();
+	private List<Integer> vaos = new ArrayList<Integer>(); //array list of verticies array objects
+	private List<Integer> vbos = new ArrayList<Integer>(); //array list of verticies buffer objects
+	private Map<String, Integer> textures = new HashMap<String, Integer>(); //map of texture (name => id)
 	
+	/**
+	 * Loads vao arrays into video buffer using position, normals and indicies
+	 * arrays variables.
+	 * 
+	 * @param positions {@link Float} array of model points position verticies
+	 * @param normals {@link Float} array of model points normal vectors
+	 * @param indices {@link Integer} array of model points order
+	 * 
+	 * @return {@link RawModel} value
+	 */
 	public RawModel loadToVao(float[] positions, float[] normals, int[] indices) {
 		int vaoID = createVAO();
 		bindIndicesBuffer(indices);
@@ -61,14 +82,34 @@ public class Loader {
 		return new RawModel(vaoID, indices.length);
 	}
 	
+	/**
+	 * Loads vao arrays into video buffer using position and texture
+	 * coordinates array variables.
+	 *   
+	 * @param positions {@link Float} array of model position verticies
+	 * @param textureCoords {@link Float} array of model texture 2d coordinates
+	 * 
+	 * @return {@link Integer} value of vao identification number
+	 */
 	public int loadToVAO(float[] positions,float[] textureCoords) {
 		int vaoID = createVAO();
 		storeDataInAttributeList(0, 2, positions);
 		storeDataInAttributeList(1, 2, textureCoords);
 		unbindVAO();
-		return vaoID;	
+		return vaoID;
 	}
 	
+	/**
+	 * Loads verticies arrays into video buffer using position, texture coordinates 
+	 * normals and indicies arrays variables.
+	 *  
+	 * @param positions {@link Float} array of model position verticies
+	 * @param textureCoords {@link Float} array of model texture 2d coordinates
+	 * @param normals {@link Float} array of model points normal vectors
+	 * @param indices {@link Integer} array of model points order
+	 * 
+	 * @return {@link RawModel} value
+	 */
 	public RawModel loadToVAO(float[] positions, float[] textureCoords, float[] normals, int[] indices) {
 		int vaoID = createVAO();
 		bindIndicesBuffer(indices);
@@ -81,6 +122,14 @@ public class Loader {
 		return new RawModel(vaoID, indices.length, sphere, box);
 	}
 	
+	/**
+	 * Updates verticies buffer object to use with verticies array object.
+	 * 
+	 * @param vbo {@link Integer} value of verticies buffer object number in
+	 * 		  video buffer 
+	 * @param data {@link Float} array value of data to update in video buffer
+	 * @param buffer
+	 */
 	public void updateVbo(int vbo, float[] data, FloatBuffer buffer) {
 		buffer.clear();
 		buffer.put(data);
@@ -91,6 +140,16 @@ public class Loader {
 		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
 	}
 	
+	/**
+	 * Loads verticies buffer object to use with verticies array object.
+	 *  
+	 * @param positions {@link Float} array of model position verticies
+	 * @param textureCoords {@link Float} array of model texture 2d coordinates
+	 * @param normals {@link Float} array of model points normal vectors
+	 * @param tangents
+	 * @param indices {@link Integer} array of model points order
+	 * @return
+	 */
 	public RawModel loadToVAO(float[] positions,float[] textureCoords,float[] normals, float[] tangents, int[] indices) {
 		int vaoID = createVAO();
 		bindIndicesBuffer(indices);
@@ -105,7 +164,14 @@ public class Loader {
 		return new RawModel(vaoID,indices.length, sphere, box);
 		
 	}
-		
+	
+	/**
+	 * Creates empty verticies buffer object.
+	 * 
+	 * @param floatCount {@link Float} size of empty verticies buffer
+	 * 
+	 * @return {@link Integer} ordinal number of vbo in video buffer
+	 */
 	public int createEmptyVbo(int floatCount) {
 		int vbo = GL15.glGenBuffers();
 		vbos.add(vbo);
@@ -126,6 +192,14 @@ public class Loader {
 		GL30.glBindVertexArray(0);			
 	}
 	
+	/**
+	 * Loads verticies array object into video buffer using verticies position
+	 * array and object dimension.
+	 * 
+	 * @param positions {@link Float} array of model position verticies
+	 * @param dimensions {@link Integer} value of object dimensions
+	 * @return
+	 */
 	public RawModel loadToVAO(float[] positions, int dimensions) {
 		int vaoID = createVAO();
 		this.storeDataInAttributeList(0,dimensions,positions);
@@ -137,6 +211,15 @@ public class Loader {
 		
 	}
 	
+	/**
+	 * Loads texture into video buffer using texture path and texture name
+	 * parameters.
+	 *  
+	 * @param path {@link String} value of texture location name
+	 * @param fileName {@link String} value of texture file name
+	 * 
+	 * @return {@link Integer} value of texture ordered number in video buffer
+	 */
 	public int loadTexture(String path, String fileName) {
 		return loadTexture(path, fileName, "PNG");
 	}
@@ -190,6 +273,13 @@ public class Loader {
 		return textureID;		
 	}
 	
+	/**
+	 * Gets texture name by its identification number (ordered number) in
+	 * video buffer.
+	 * 
+	 * @param id {@link Integer} value of texture ordered number in video buffer
+	 * @return {@link String} value of texture name
+	 */
 	public String getTextureByID(int id) {
 		String name = null;
 		for(String key : textures.keySet()) {
@@ -201,7 +291,9 @@ public class Loader {
 		return name;
 	}
 	
-	
+	/**
+	 * Cleans all verticies array and buffer objects video buffer.
+	 */
 	public void cleanUp() {
 		
 		for(int vao:vaos){
@@ -216,6 +308,14 @@ public class Loader {
 		}
 	}
 	
+	/**
+	 * Loads cubic texture of cube map into video buffer.
+	 * 
+	 * @param path {@link String} value of texture location name
+	 * @param textureFiles {@link String} array of 6 flat textures name
+	 *  
+	 * @return {@link Integer} ordered number of texture in video buffer
+	 */
 	public int loadCubeMap(String path, String[] textureFiles) {
 		int texID = GL11.glGenTextures();
 		GL13.glActiveTexture(GL13.GL_TEXTURE0);
@@ -233,6 +333,13 @@ public class Loader {
 		return texID;
 	}
 	
+	/**
+	 * Loads voxel cubic texture of cube map into video buffer.
+	 * 
+	 * @param path {@link String} value of texture location name
+	 * @param textureFiles {@link String} array of 6 flat textures name
+	 * @return
+	 */
 	public int loadCubeVoxelMap(String path, String[] textureFiles) {
 		int texID = GL11.glGenTextures();
 		GL13.glActiveTexture(GL13.GL_TEXTURE0);
@@ -271,16 +378,22 @@ public class Loader {
 		return new TextureData(buffer, width, height);
 	}
 	
-	private int createVAO() {
-		
+	/**
+	 * Creates verticies array object for video buffer.
+	 * <p>After created need to add verticies buffer objects and
+	 * unbind verticies array object.
+	 * 
+	 * @return {@link Integer} ordered number of verticies array object
+	 * from video buffer
+	 */
+	private int createVAO() {		
 		int vaoID = GL30.glGenVertexArrays();
 		vaos.add(vaoID);
 		GL30.glBindVertexArray(vaoID);
 		return vaoID;
 	}
 	
-	private void storeDataInAttributeList(int attributeNumber, int coordinateSize, float[] data) {
-		
+	private void storeDataInAttributeList(int attributeNumber, int coordinateSize, float[] data) {		
 		int vboID = GL15.glGenBuffers();
 		vbos.add(vboID);
 		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboID);
@@ -290,14 +403,20 @@ public class Loader {
 		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);		
 	}
 	
-	private void unbindVAO() {
-		
-		GL30.glBindVertexArray(0);
-		
+	/**
+	 * Unbinds verticies array object to stop writing verticies buffer object
+	 * in it.
+	 */
+	private void unbindVAO() {		
+		GL30.glBindVertexArray(0);		
 	}
 	
-	private void bindIndicesBuffer(int[] indices) {
-		
+	/**
+	 * Binds indicies buffer object to prepare indicies for video buffer.
+	 * 
+	 * @param indices {@link Integer} array of ordered number of model points
+	 */
+	private void bindIndicesBuffer(int[] indices) {		
 		int vboID = GL15.glGenBuffers();
 		vbos.add(vboID);
 		GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, vboID);
@@ -305,8 +424,7 @@ public class Loader {
 		GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, buffer, GL15.GL_STATIC_DRAW);
 	}
 	
-	private IntBuffer storeDataInIntBuffer(int[] data) {
-		
+	private IntBuffer storeDataInIntBuffer(int[] data) {		
 		IntBuffer buffer = BufferUtils.createIntBuffer(data.length);
 		buffer.put(data);
 		buffer.flip();
@@ -314,8 +432,7 @@ public class Loader {
 		
 	}
 	
-	private FloatBuffer storeDataInFloatBuffer(float[] data) {
-		
+	private FloatBuffer storeDataInFloatBuffer(float[] data) {		
 		FloatBuffer buffer = BufferUtils.createFloatBuffer(data.length);
 		buffer.put(data);
 		buffer.flip();

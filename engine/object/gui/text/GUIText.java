@@ -1,7 +1,11 @@
-package object.gui.font;
+package object.gui.text;
 
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
+
+import object.gui.font.FontType;
+import object.gui.font.TextMeshData;
+import renderer.processor.TextProcessor;
 
 /**
  * Represents a piece of text in the game.
@@ -73,7 +77,7 @@ public class GUIText {
 		this.position = position;
 		this.lineMaxSize = maxLineLength;
 		this.centerText = centered;
-		makeFontSmooth();		
+		makeFontSmooth();
 	}
 
 	/**
@@ -164,14 +168,6 @@ public class GUIText {
 		return this.name;
 	}
 
-
-
-	/**
-	 * Remove the text from the screen.
-	 */
-	public void remove() {
-		TextMaster.removeText(this);
-	}
 
 	/**
 	 * @return The font used by this text.
@@ -278,7 +274,7 @@ public class GUIText {
 	/**
 	 * @return the font size of the text (a font size of 1 is normal).
 	 */
-	protected float getFontSize() {
+	public float getFontSize() {
 		return fontSize;
 	}
 
@@ -288,28 +284,28 @@ public class GUIText {
 	 * 
 	 * @param number
 	 */
-	protected void setNumberOfLines(int number) {
+	public void setNumberOfLines(int number) {
 		this.numberOfLines = number;
 	}
 
 	/**
 	 * @return {@code true} if the text should be centered.
 	 */
-	protected boolean isCentered() {
+	public boolean isCentered() {
 		return centerText;
 	}
 
 	/**
 	 * @return The maximum length of a line of this text.
 	 */
-	protected float getMaxLineSize() {
+	public float getMaxLineSize() {
 		return lineMaxSize;
 	}
 
 	/**
 	 * @return The string of text.
 	 */
-	protected String getTextString() {
+	public String getTextString() {
 		return textString;
 	}
 	

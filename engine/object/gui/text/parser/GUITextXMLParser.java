@@ -1,5 +1,6 @@
-package object.gui.text;
+package object.gui.text.parser;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,20 +13,36 @@ import org.w3c.dom.NodeList;
 
 import core.debug.EngineDebug;
 import core.settings.EngineSettings;
-import object.gui.font.GUIText;
-import object.gui.font.TextMaster;
+import object.gui.font.FontType;
+import object.gui.font.TextMeshData;
+import object.gui.font.manager.FontManagerInterface;
+import object.gui.text.GUIText;
+import renderer.Loader;
+import renderer.processor.TextProcessor;
 import tool.xml.XMLUtils;
 import tool.xml.loader.XMLFileLoader;
 import tool.xml.loader.XMLLoaderInterface;
 
+/**
+ * Parser to read xml-file and parse text used for graphic user interface.
+ * 
+ * @author homelleon
+ * @see GUITextParserInterface
+ */
 public class GUITextXMLParser implements GUITextParserInterface {
 	
 	private Document document;
-	private TextMaster master;
+	private FontManagerInterface fontManager;
 	
-	public GUITextXMLParser(Document document, TextMaster master) {
+	/**
+	 * Constracts parser with document and textMaster.
+	 * 
+	 * @param document {@link Document} value
+	 * @param master {@link TextProcessor}
+	 */
+	public GUITextXMLParser(Document document, FontManagerInterface fontManager) {
 		this.document = document;
-		this.master = master;
+		this.fontManager = fontManager;
 	}
 
 	@Override
@@ -37,7 +54,7 @@ public class GUITextXMLParser implements GUITextParserInterface {
         for (int i = 0; i < nodeList.getLength(); i++) {
            Node node = nodeList.item(i);
            if (XMLUtils.ifNodeIsElement(node, XMLUtils.GUI_TEXTS)) {
-        	   textList = createText(node, master);
+        	   textList = createText(node);
            }	        	
         }
         if(EngineDebug.hasDebugPermission()) {
@@ -47,7 +64,12 @@ public class GUITextXMLParser implements GUITextParserInterface {
 		return textList;
 	}
 	
-	private List<GUIText> createText(Node node, TextMaster master) {
+	/** 
+	 * @param node
+	 * @param master
+	 * @return
+	 */
+	private List<GUIText> createText(Node node) {
 		if(EngineDebug.hasDebugPermission()) {
 			System.out.println("Loading texts...");
 	   	}
@@ -64,7 +86,7 @@ public class GUITextXMLParser implements GUITextParserInterface {
 	               String name = guiTextEl.getElementsByTagName(XMLUtils.NAME).item(0).getChildNodes().item(0).getNodeValue();
 	               String path = guiTextEl.getElementsByTagName(XMLUtils.PATH).item(0).getChildNodes().item(0).getNodeValue();
 	               float size = Float.valueOf(guiTextEl.getElementsByTagName(XMLUtils.SIZE).item(0).getChildNodes().item(0).getNodeValue());
-	               String font = guiTextEl.getElementsByTagName(XMLUtils.FONT).item(0).getChildNodes().item(0).getNodeValue();
+	               String fontName = guiTextEl.getElementsByTagName(XMLUtils.FONT).item(0).getChildNodes().item(0).getNodeValue();
 	               Element positionEl = (Element) guiTextEl.getElementsByTagName(XMLUtils.POSITION).item(0);
 	               float x = Float.valueOf(positionEl.getElementsByTagName(XMLUtils.X).item(0).getChildNodes().item(0).getNodeValue());
 	               float y = Float.valueOf(positionEl.getElementsByTagName(XMLUtils.Y).item(0).getChildNodes().item(0).getNodeValue());
@@ -89,8 +111,10 @@ public class GUITextXMLParser implements GUITextParserInterface {
 	               	XMLLoaderInterface xmlLoader = new XMLFileLoader(EngineSettings.TEXT_PATH + path + EngineSettings.EXTENSION_XML);	               	
 	               	TextParserInterface textParser = new TextXMLParser(xmlLoader.load());
 	               	String text = textParser.parse();
+	               	this.fontManager.create(fontName);
+	               	FontType font = fontManager.get(fontName);
 	               	GUIText guiText = new GUIText(name, text, size,
-	            		   master.getFont(), position, maxLength, isCentered);
+	            		   font, position, maxLength, isCentered);
 	   			   	guiText.setColour(color);
 	   			   	textList.add(guiText);
 		   			if(EngineDebug.hasDebugPermission()) {

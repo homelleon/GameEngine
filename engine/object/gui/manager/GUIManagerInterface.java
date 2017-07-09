@@ -59,6 +59,11 @@ public interface GUIManagerInterface {
 	GUIComponentManagerInterface getComponent();
 	
 	/**
+	 * Renders graphic user interface.
+	 */
+	void render();
+	
+	/**
 	 * Clean all ui groups.
 	 */
 	void cleanAll();

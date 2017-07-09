@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.lwjgl.util.vector.Vector2f;
 
-import object.gui.font.GUIText;
+import object.gui.text.GUIText;
 import object.gui.texture.GUITexture;
 
 /**

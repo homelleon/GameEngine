@@ -5,8 +5,8 @@ package object.gui.font;
  * @author Karl
  *
  */
-public class TextMeshData {
-	
+public class TextMeshData {	
+
 	private float[] vertexPositions;
 	private float[] textureCoords;
 	

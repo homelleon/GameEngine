@@ -1,8 +1,8 @@
-package object.gui.text;
+package object.gui.text.parser;
 
 import java.util.List;
 
-import object.gui.font.GUIText;
+import object.gui.text.GUIText;
 
 /**
  * 

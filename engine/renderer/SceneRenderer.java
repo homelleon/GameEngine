@@ -1,5 +1,8 @@
 package renderer;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL30;
@@ -10,7 +13,12 @@ import core.EngineMain;
 import core.display.DisplayManager;
 import core.settings.EngineSettings;
 import object.gui.font.FontType;
-import object.gui.font.GUIText;
+import object.gui.group.GUIGroup;
+import object.gui.group.GUIGroupInterface;
+import object.gui.gui.GUI;
+import object.gui.gui.GUIInterface;
+import object.gui.text.GUIText;
+import object.gui.texture.GUITexture;
 import object.input.Controls;
 import object.input.ControlsInterface;
 import object.input.KeyboardGame;
@@ -48,6 +56,7 @@ public class SceneRenderer {
 	private MousePicker picker;
 	private SceneInterface scene;
 	private ControlsInterface controls;
+	private FontType defaultFont;
 
 	public void init(SceneInterface scene, Loader loader) {
 		this.scene = scene;
@@ -154,17 +163,28 @@ public class SceneRenderer {
 	}
 
 	protected void renderText() {
-		GUIText fpsText = createFPSText(Math.round(1 / DisplayManager.getFrameTimeSeconds()), scene.getUserInterface().getComponent().getTexts().getMaster().getFont());
-		fpsText.setColour(1, 0, 0);
-		GUIText coordsText = createPickerCoordsText(picker, scene.getUserInterface().getComponent().getTexts().getMaster().getFont());
+		FontType font = scene.getUserInterface().getComponent().getTexts().getFonts().get("candara");
+		GUIText fpsText = createFPSText(Math.round(1 / DisplayManager.getFrameTimeSeconds()), font);
+		fpsText.setColour(1, 0, 0);		
+		GUIText coordsText = createPickerCoordsText(picker, font);
 		coordsText.setColour(1, 0, 0);
-		scene.getUserInterface().getComponent().getTexts().getMaster().render();
-		fpsText.remove();
-		coordsText.remove();
+		List<GUIInterface> statusGUIList = new ArrayList<GUIInterface>();
+		List<GUITexture> textureList = new ArrayList<GUITexture>();
+		List<GUIText> textList = new ArrayList<GUIText>();
+		textList.add(fpsText);
+		textList.add(coordsText);
+		GUIInterface statusInterface = new GUI("status", textureList, textList);
+		statusGUIList.add(statusInterface);
+		GUIGroupInterface statusGUIGroup = new GUIGroup("statusGroup", statusGUIList);
+		statusGUIList.add(statusInterface);
+		scene.getUserInterface().addGUIGroup(statusGUIGroup);
+		scene.getUserInterface().getGUIGroup("statusGroup").showAll();
+		scene.getUserInterface().render();
 	}
 
 	protected GUIText createFPSText(float FPS, FontType font) {
-		GUIText guiText = new GUIText("FPS", "FPS: " + String.valueOf((int) FPS), 2, font, new Vector2f(0.65f, 0), 0.5f, true);
+		
+		GUIText guiText = new GUIText("FPS", "FPS: " + String.valueOf((int) FPS), 2f, font , new Vector2f(0.65f, 0), 0.5f, true);
 		scene.getUserInterface().getComponent().getTexts().add(guiText);
 		return guiText;
 	}

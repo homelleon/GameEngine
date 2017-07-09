@@ -1,7 +1,7 @@
 package core.debug;
 
 /**
- * Class that realize all variables used for debug.
+ * Class that helps to debug game engine.
  * 
  * @author homelleon
  * @version 1.0
@@ -51,16 +51,28 @@ public class EngineDebug {
 		}
 	}
 	
+	/**
+	 * Switches display of debug information. 
+	 */
 	public static void switchDebugInformation() {
 		if(hasDebugPermission()) {
 			debugInformation = !debugInformation;
 		}
 	}
 	
+	/**
+	 * Swithces permission to use debug tools.
+	 */
 	public static void switchDebugPermission() {
 		debugPermission = !debugPermission;
 	}
 	
+	/**
+	 * Returns if user has permission for debug.
+	 * 
+	 * @return true if permission is granted<br>
+	 * 		   false if permission is denied
+	 */
 	public static boolean hasDebugPermission() {
 		boolean isPermitted = false;
 		if(debugPermission) {

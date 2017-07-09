@@ -1,7 +1,7 @@
 package object.gui.component;
 
-import object.gui.text.GUITextManager;
-import object.gui.text.GUITextManagerInterface;
+import object.gui.text.manager.GUITextManager;
+import object.gui.text.manager.GUITextManagerInterface;
 import object.gui.texture.GUITextureManager;
 import object.gui.texture.GUITextureManagerInterface;
 import renderer.Loader;
@@ -31,7 +31,11 @@ public class GUIComponentManager implements GUIComponentManagerInterface {
 	public GUITextManagerInterface getTexts() {
 		return textManager;
 	}
-	
+
+	@Override
+	public void render() {
+		this.textManager.render();
+	}	
 	
 	@Override
 	public void cleanAll() {

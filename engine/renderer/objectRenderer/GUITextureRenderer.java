@@ -11,6 +11,8 @@ import org.lwjgl.util.vector.Matrix4f;
 import object.gui.texture.GUITexture;
 import object.model.RawModel;
 import renderer.Loader;
+import renderer.processor.TextProcessor;
+import renderer.processor.TextProcessorInterface;
 import shader.guiTexture.GUITextureShader;
 import tool.math.Maths;
 import tool.openGL.OGLUtils;
@@ -19,11 +21,12 @@ public class GUITextureRenderer {
 	
 	private final RawModel quad;
 	private GUITextureShader shader;
+	private TextProcessorInterface textProcessor;
 	
 	public GUITextureRenderer(Loader loader) {
 		float[] positions = { -1, 1, -1, -1, 1, 1, 1, -1};
-		quad = loader.loadToVAO(positions, 2);
-		shader = new GUITextureShader();
+		this.quad = loader.loadToVAO(positions, 2);
+		this.shader = new GUITextureShader();
 	}
 	
 	public void render(Collection <GUITexture> guiTextureList) {

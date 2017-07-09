@@ -1,6 +1,6 @@
 package object.gui.component;
 
-import object.gui.text.GUITextManagerInterface;
+import object.gui.text.manager.GUITextManagerInterface;
 import object.gui.texture.GUITexture;
 import object.gui.texture.GUITextureManagerInterface;
 
@@ -28,6 +28,11 @@ public interface GUIComponentManagerInterface {
 	 * @return {@link GUITextManagerInterface} value
 	 */
 	GUITextManagerInterface getTexts();
+	
+	/**
+	 * Renders graphic user interface.
+	 */
+	void render();
 	
 	/**
 	 * Clean all textures and texts from {@link GUITextureManagerInterface} and {@link GUITextManagerInterface}.  

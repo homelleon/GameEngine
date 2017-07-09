@@ -9,9 +9,9 @@ import core.EngineMain;
 import core.debug.EngineDebug;
 import game.manager.GameManager;
 import game.manager.GameManagerInterface;
-import object.gui.font.GUIText;
 import object.gui.gui.GUI;
 import object.gui.gui.GUIInterface;
+import object.gui.text.GUIText;
 import object.gui.texture.GUITexture;
 import object.scene.scene.SceneInterface;
 
@@ -33,7 +33,7 @@ public class Game extends Thread implements GameInterface {
 			
 			List<GUIText> versionTextList = new ArrayList<GUIText>();
 			List<GUITexture> versionTextureList = new ArrayList<GUITexture>();
-			versionTextList.add(this.gameManager.getScene().getUserInterface().getComponent().getTexts().getByName("version"));
+			versionTextList.add(this.gameManager.getScene().getUserInterface().getComponent().getTexts().get("version"));
 			GUIInterface versionGUI = new GUI("version", versionTextureList, versionTextList);
 			
 			if(EngineDebug.hasDebugPermission()) {

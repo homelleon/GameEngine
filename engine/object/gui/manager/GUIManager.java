@@ -9,6 +9,7 @@ import object.gui.component.GUIComponentManager;
 import object.gui.component.GUIComponentManagerInterface;
 import object.gui.group.GUIGroupInterface;
 import renderer.Loader;
+import renderer.objectRenderer.GUITextRenderer;
 
 public class GUIManager implements GUIManagerInterface {
 	
@@ -22,7 +23,8 @@ public class GUIManager implements GUIManagerInterface {
 		if(EngineDebug.hasDebugPermission()) {
 			System.out.println("Prepare User Interface...");
 		}
-		this.componentManager = new GUIComponentManager(TEXTURE_FILE_NAME, TXT_FILE_NAME, loader);		
+		this.componentManager = new GUIComponentManager(TEXTURE_FILE_NAME, TXT_FILE_NAME, loader);
+		
 	}
 
 	@Override
@@ -48,6 +50,11 @@ public class GUIManager implements GUIManagerInterface {
 	@Override
 	public GUIComponentManagerInterface getComponent() {
 		return this.componentManager;
+	}	
+
+	@Override
+	public void render() {
+		this.componentManager.render();		
 	}
 
 	@Override

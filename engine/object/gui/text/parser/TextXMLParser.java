@@ -1,4 +1,4 @@
-package object.gui.text;
+package object.gui.text.parser;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -10,7 +10,7 @@ public class TextXMLParser implements TextParserInterface {
 	
 	private Document document;
 	
-	TextXMLParser(Document document) {
+	public TextXMLParser(Document document) {
 		this.document = document;
 	}
 

@@ -1,4 +1,4 @@
-package object.gui.text;
+package object.gui.text.loader;
 
 /**
  * 

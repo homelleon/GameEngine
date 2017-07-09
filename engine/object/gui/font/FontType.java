@@ -2,6 +2,10 @@ package object.gui.font;
 
 import java.io.File;
 
+import core.settings.EngineSettings;
+import object.gui.text.GUIText;
+import renderer.Loader;
+
 /**
  * Represents a font. It holds the font's texture atlas as well as having the
  * ability to create the quad vertices for any text using this font.
@@ -11,8 +15,9 @@ import java.io.File;
  */
 public class FontType { 
 
+	private String name;
 	private int textureAtlas;
-	private TextMeshCreator loader;
+	private TextMeshCreator meshCreator;
 
 	/**
 	 * Creates a new font and loads up the data about each character from the
@@ -24,9 +29,23 @@ public class FontType {
 	 *            - the font file containing information about each character in
 	 *            the texture atlas.
 	 */
-	public FontType(int textureAtlas, File fontFile) {
+	public FontType(String name, int textureAtlas, File fontFile) {
+		this.name = name;
 		this.textureAtlas = textureAtlas;
-		this.loader = new TextMeshCreator(fontFile);
+		this.meshCreator = new TextMeshCreator(fontFile);
+	}
+	
+	/**
+	 * Creates a new font and loads up the data about each character from the
+	 * font file.
+	 *  
+	 * @param name {@link String} value of font name
+	 * @param loader {@link Loader} value
+	 */
+	public FontType(String name, Loader loader) {
+		this.name = name;
+		new FontType(name, loader.loadTexture(EngineSettings.FONT_FILE_PATH, name),
+				new File(EngineSettings.FONT_FILE_PATH + name + ".fnt"));
 	}
 
 	/**
@@ -46,7 +65,16 @@ public class FontType {
 	 * @return Information about the vertices of all the quads.
 	 */
 	public TextMeshData loadText(GUIText text) {
-		return loader.createTextMesh(text);
+		return meshCreator.createTextMesh(text);
+	}
+	
+	/**
+	 * Gets font name.
+	 * 
+	 * @return {@link String} value of font name
+	 */
+	public String getName() {
+		return this.name;
 	}
 
 }

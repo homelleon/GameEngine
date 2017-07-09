@@ -23,7 +23,6 @@ import object.scene.scene.SceneInterface;
 import renderer.Loader;
 import renderer.MasterRenderer;
 import renderer.SceneRenderer;
-import tool.xml.XMLUtils;
 import tool.xml.loader.XMLFileLoader;
 import tool.xml.loader.XMLLoaderInterface;
 

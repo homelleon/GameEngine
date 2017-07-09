@@ -1,32 +1,28 @@
-package object.gui.font;
+package renderer.processor;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import core.settings.EngineSettings;
+import object.gui.font.FontType;
+import object.gui.font.TextMeshData;
+import object.gui.text.GUIText;
 import renderer.Loader;
-import renderer.objectRenderer.FontRenderer;
+import renderer.objectRenderer.GUITextRenderer;
 
-public class TextMaster {
+public class TextProcessor implements TextProcessorInterface {
 	
 	private Loader loader;
 	private static Map<FontType, List<GUIText>> texts = new HashMap<FontType, List<GUIText>>();
-	private FontRenderer renderer;
-	private FontType font;
+	private GUITextRenderer renderer;
 	
-	public TextMaster(Loader loader) {
+	public TextProcessor(Loader loader) {
 		this.loader = loader;
-		renderer = new FontRenderer();
-		this.font = 
-				new FontType(loader.loadTexture(EngineSettings.FONT_FILE_PATH, "candara"),
-						new File(EngineSettings.FONT_FILE_PATH + "candara.fnt"));
 	}
 	
 	public void render() {
-		renderer.render(texts); 
+		renderer.render(); 
 	}
 	
 	public void loadText(GUIText text) {
@@ -42,17 +38,13 @@ public class TextMaster {
 		textBatch.add(text);
 	}
 	
-	public static void removeText(GUIText text) {
+	public void removeText(GUIText text) {
 		List<GUIText> textBatch = texts.get(text.getFont());
 		textBatch.remove(text);
 		if(textBatch.isEmpty()) {
 			texts.remove(text.getFont());
 		}
 		
-	}
-	
-	public FontType getFont() {
-		return this.font;
 	}
 	
 	public void cleanUp() {

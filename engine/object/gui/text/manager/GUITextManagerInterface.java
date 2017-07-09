@@ -1,9 +1,9 @@
-package object.gui.text;
+package object.gui.text.manager;
 
 import java.util.Collection;
 
-import object.gui.font.GUIText;
-import object.gui.font.TextMaster;
+import object.gui.font.manager.FontManagerInterface;
+import object.gui.text.GUIText;
 import object.light.Light;
 
 /**
@@ -34,14 +34,14 @@ public interface GUITextManagerInterface {
 	void add(GUIText text);
 	
 	/**
-	 * Returns text by name.
+	 * Gets text by name.
 	 * 
 	 * @param name
 	 * 				{@link String} value
 	 * 
 	 * @return {@link GUIText} value of chosen text
 	 */
-	GUIText getByName(String name);
+	GUIText get(String name);
 	
 	/**
 	 * Returns list of texts groupped by name.
@@ -49,14 +49,26 @@ public interface GUITextManagerInterface {
 	 * @return {@link Collection}<{@link GUIText}> value of texts
 	 * 		   list
 	 */
-	Collection<GUIText> getAll();	
+	Collection<GUIText> getAll();
 	
 	/**
-	 * Returns text master.
+	 * Removes text by name.
 	 * 
-	 * @return {@link TextMaster} value
+	 * @param name {@link String name}
 	 */
-	TextMaster getMaster();
+	public void remove(String name);
+	
+	/**
+	 * Renders graphic user interafce text.
+	 */
+	void render();
+	
+	/**
+	 * Returns font manager.
+	 * 
+	 * @return {@link FontManagerInterface} value
+	 */
+	FontManagerInterface getFonts();
 	
 	/**
 	 * Clear all texts map and arrays.

@@ -14,7 +14,7 @@ import object.camera.CameraPlayer;
 import object.entity.player.Player;
 import object.entity.player.PlayerInterface;
 import object.gui.font.FontType;
-import object.gui.font.GUIText;
+import object.gui.text.GUIText;
 import object.gui.texture.GUITextureManager;
 import object.light.Light;
 import object.model.TexturedModel;
@@ -34,6 +34,7 @@ public class SceneManager implements SceneManagerInterface {
 	
 	private String playerName = "player1";
 	private String cameraName = "cameraMain";
+	private String defaultFont = "candara";
 
 	@Override
 	public void init(SceneInterface scene, Loader loader) {	
@@ -49,7 +50,7 @@ public class SceneManager implements SceneManagerInterface {
 		scene.getUserInterface().init(loader);
 		/*--------------TEXT----------------*/
 		
-		FontType font = scene.getUserInterface().getComponent().getTexts().getMaster().getFont();
+		FontType font = scene.getUserInterface().getComponent().getTexts().getFonts().get(defaultFont);
 		List<GUIText> guiTextList = new ArrayList<GUIText>();
 		//Version
 		GUIText text1 = new GUIText("version","This is an Alfa-version of the game engine", 
