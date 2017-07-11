@@ -17,7 +17,7 @@ import object.texture.model.ModelTexture;
 import object.texture.terrain.TerrainTexture;
 import object.texture.terrain.TerrainTexturePack;
 import object.water.WaterTile;
-import renderer.Loader;
+import renderer.loader.Loader;
 import tool.converter.normalMapObject.NormalMappedObjLoader;
 import tool.converter.object.ModelData;
 import tool.converter.object.OBJFileLoader;

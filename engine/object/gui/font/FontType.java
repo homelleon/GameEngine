@@ -4,7 +4,7 @@ import java.io.File;
 
 import core.settings.EngineSettings;
 import object.gui.text.GUIText;
-import renderer.Loader;
+import renderer.loader.Loader;
 
 /**
  * Represents a font. It holds the font's texture atlas as well as having the
@@ -43,7 +43,6 @@ public class FontType {
 	 * @param loader {@link Loader} value
 	 */
 	public FontType(String name, Loader loader) {
-		this.name = name;
 		new FontType(name, loader.loadTexture(EngineSettings.FONT_FILE_PATH, name),
 				new File(EngineSettings.FONT_FILE_PATH + name + ".fnt"));
 	}

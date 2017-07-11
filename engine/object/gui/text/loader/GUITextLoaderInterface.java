@@ -3,7 +3,6 @@ package object.gui.text.loader;
 import java.util.List;
 
 import object.gui.text.GUIText;
-import renderer.processor.TextProcessor;
 
 /**
  * 
@@ -12,6 +11,6 @@ import renderer.processor.TextProcessor;
  */
 public interface GUITextLoaderInterface {
 	
-	List<GUIText> loadFile(String fileName, TextProcessor master); 
+	List<GUIText> loadFile(String fileName); 
 		
 }

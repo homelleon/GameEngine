@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import object.entity.entity.EntityInterface;
-import renderer.viewCulling.Frustum;
+import renderer.viewCulling.frustum.Frustum;
 
 /**
  * Entity control manager interface.

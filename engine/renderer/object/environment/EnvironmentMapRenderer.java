@@ -1,4 +1,4 @@
-package renderer.objectRenderer;
+package renderer.object.environment;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,13 +16,13 @@ import object.camera.CameraInterface;
 import object.entity.entity.EntityInterface;
 import object.model.TexturedModel;
 import object.scene.scene.SceneInterface;
-import renderer.MasterRenderer;
+import renderer.object.main.MainRenderer;
 
 public class EnvironmentMapRenderer {
 	
 	Map<TexturedModel, List<EntityInterface>> entities = new HashMap<TexturedModel, List<EntityInterface>>();
 
-	public void render(SceneInterface scene, MasterRenderer renderer, EntityInterface shinyEntity) {
+	public void render(SceneInterface scene, MainRenderer renderer, EntityInterface shinyEntity) {
 		CameraInterface cubeCamera = new CameraCubeMap(shinyEntity.getPosition());
 		int fbo = GL30.glGenFramebuffers();
 		GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, fbo);

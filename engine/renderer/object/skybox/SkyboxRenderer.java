@@ -1,4 +1,4 @@
-package renderer.objectRenderer;
+package renderer.object.skybox;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
@@ -11,7 +11,7 @@ import core.display.DisplayManager;
 import core.settings.EngineSettings;
 import object.camera.CameraInterface;
 import object.model.RawModel;
-import renderer.Loader;
+import renderer.loader.Loader;
 import shader.skybox.SkyboxShader;
 
 public class SkyboxRenderer {

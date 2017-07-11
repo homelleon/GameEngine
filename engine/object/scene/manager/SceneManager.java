@@ -21,7 +21,7 @@ import object.model.TexturedModel;
 import object.particle.manager.ParticleManager;
 import object.scene.scene.SceneInterface;
 import object.water.WaterTile;
-import renderer.Loader;
+import renderer.loader.Loader;
 import tool.EngineUtils;
 
 /**
@@ -50,11 +50,10 @@ public class SceneManager implements SceneManagerInterface {
 		scene.getUserInterface().init(loader);
 		/*--------------TEXT----------------*/
 		
-		FontType font = scene.getUserInterface().getComponent().getTexts().getFonts().get(defaultFont);
 		List<GUIText> guiTextList = new ArrayList<GUIText>();
 		//Version
 		GUIText text1 = new GUIText("version","This is an Alfa-version of the game engine", 
-				1, font, new Vector2f(0.25f, 0), 0.5f, true);
+				1, defaultFont, new Vector2f(0.25f, 0), 0.5f, true);
 		guiTextList.add(text1);
 		
 		text1.setColour(1, 0, 0);

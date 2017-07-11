@@ -7,7 +7,7 @@ import java.util.Map;
 import object.entity.entity.EntityInterface;
 import object.model.TexturedModel;
 import object.terrain.terrain.TerrainInterface;
-import renderer.viewCulling.Frustum;
+import renderer.viewCulling.frustum.Frustum;
 
 /**
  * 

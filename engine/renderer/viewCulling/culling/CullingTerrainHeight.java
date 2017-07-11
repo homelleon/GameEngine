@@ -1,4 +1,4 @@
-package renderer.viewCulling;
+package renderer.viewCulling.culling;
 
 import java.util.ArrayList;
 import java.util.Collection;

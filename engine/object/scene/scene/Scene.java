@@ -32,8 +32,8 @@ import object.texture.Texture;
 import object.voxel.manager.ChunkManager;
 import object.voxel.manager.ChunkManagerInterface;
 import object.water.manager.WaterManagerInterface;
+import renderer.viewCulling.frustum.Frustum;
 import object.water.manager.WaterManager;
-import renderer.viewCulling.Frustum;
 import tool.MousePicker;
 
 public class Scene implements SceneInterface {

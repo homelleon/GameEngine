@@ -11,7 +11,7 @@ import org.lwjgl.util.vector.Vector3f;
 import core.settings.EngineSettings;
 import object.particle.ParticleSystem;
 import object.texture.particle.ParticleTexture;
-import renderer.Loader;
+import renderer.loader.Loader;
 
 public class ParticleManager implements ParticleManagerInterface {
 	

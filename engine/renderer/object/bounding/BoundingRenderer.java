@@ -1,4 +1,4 @@
-package renderer.objectRenderer;
+package renderer.object.bounding;
 
 import java.util.List;
 import java.util.Map;

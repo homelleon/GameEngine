@@ -1,4 +1,4 @@
-package renderer.objectRenderer;
+package renderer.object.terrain;
 
 import java.util.Collection;
 

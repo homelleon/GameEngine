@@ -3,10 +3,6 @@ package object.gui.text;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
-import object.gui.font.FontType;
-import object.gui.font.TextMeshData;
-import renderer.processor.TextProcessor;
-
 /**
  * Represents a piece of text in the game.
  * 
@@ -29,7 +25,7 @@ public class GUIText {
 	private float lineMaxSize;
 	private int numberOfLines;
 
-	private FontType font;
+	private String fontName;
 
 	private boolean centerText = false;
 	
@@ -68,12 +64,12 @@ public class GUIText {
 	 * @param centered
 	 *            - whether the text should be centered or not. 
 	 */
-	public GUIText(String name, String text, float fontSize, FontType font, Vector2f position, float maxLineLength,
+	public GUIText(String name, String text, float fontSize, String fontName, Vector2f position, float maxLineLength,
 			boolean centered) {
 		this.name = name;
 		this.textString = text;
 		this.fontSize = fontSize;
-		this.font = font;
+		this.fontName = fontName;
 		this.position = position;
 		this.lineMaxSize = maxLineLength;
 		this.centerText = centered;
@@ -172,8 +168,8 @@ public class GUIText {
 	/**
 	 * @return The font used by this text.
 	 */
-	public FontType getFont() {
-		return font;
+	public String getFont() {
+		return fontName;
 	}
 
 	/**

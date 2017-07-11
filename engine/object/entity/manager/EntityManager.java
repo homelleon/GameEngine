@@ -8,7 +8,7 @@ import java.util.Map;
 
 import core.settings.EngineSettings;
 import object.entity.entity.EntityInterface;
-import renderer.viewCulling.Frustum;
+import renderer.viewCulling.frustum.Frustum;
 
 /**
  * Manages entities in the game engine.

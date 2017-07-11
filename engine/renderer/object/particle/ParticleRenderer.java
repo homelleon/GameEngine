@@ -1,4 +1,4 @@
-package renderer.objectRenderer;
+package renderer.object.particle;
  
 import java.nio.FloatBuffer;
 import java.util.List;
@@ -17,7 +17,7 @@ import object.camera.CameraInterface;
 import object.model.RawModel;
 import object.particle.particle.Particle;
 import object.texture.particle.ParticleTexture;
-import renderer.Loader;
+import renderer.loader.Loader;
 import shader.particle.ParticleShader;
 import tool.math.Maths;
  

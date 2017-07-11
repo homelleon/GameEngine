@@ -5,7 +5,7 @@ import org.lwjgl.util.vector.Vector3f;
 
 import core.settings.EngineSettings;
 import object.light.Light;
-import renderer.objectRenderer.AnimatedModelRenderer;
+import renderer.object.animation.AnimatedModelRenderer;
 import shader.ShaderProgram;
 
 public class AnimatedModelShader extends ShaderProgram {

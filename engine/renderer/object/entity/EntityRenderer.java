@@ -1,4 +1,4 @@
-package renderer.objectRenderer;
+package renderer.object.entity;
 
 import java.util.Collection;
 import java.util.List;
@@ -19,7 +19,7 @@ import object.model.RawModel;
 import object.model.TexturedModel;
 import object.texture.Texture;
 import object.texture.model.ModelTexture;
-import renderer.MasterRendererInterface;
+import renderer.object.main.MainRendererInterface;
 import shader.entity.EntityShader;
 import tool.math.Maths;
 import tool.openGL.OGLUtils;
@@ -34,7 +34,7 @@ import tool.openGL.OGLUtils;
  * @version 1.0
  * 
  * @see EntityInterface
- * @see MasterRendererInterface
+ * @see MainRendererInterface
  */
 public class EntityRenderer {
 

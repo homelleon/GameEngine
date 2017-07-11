@@ -3,7 +3,7 @@ package object.gui.font.manager;
 import object.gui.font.FontType;
 
 /**
- * Manages and strores text font by name.
+ * Implement access into fonts array.
  * 
  * @author homelleon
  * @see FontManager
@@ -11,35 +11,37 @@ import object.gui.font.FontType;
 public interface FontManagerInterface {
 	
 	/**
-	 * Creates new font by its name.
+	 * Creates font with name and returns it as FontType object.
+	 * <br>Search font only in fonts folder that is chosen in engine settings.
+	 * <br>Doesn't create new one if the font with that name is extist.
+	 * Returns old one with the same name in that case.
 	 * 
-	 * @param fontName {@link String} value of font name
+	 * @param name {@link String} value of font name
+	 * @return {@link FontType} value of created font object
 	 */
-	public void create(String fontName);
-	
+	public FontType create(String name);
+
 	/**
-	 * Adds font into font map.
+	 * Returns font with name if extist;
+	 * <br>If not extist returns null.
 	 * 
-	 * @param font {@link FontType} font object
-	 */
-	public void add(FontType font);
-	
-	/**
-	 * Gets font by its name.
-	 * 
-	 * @param name {@link String} valuf of font name
+	 * @param name {@link String} value of font name
+	 * @return {@link FontType} value of font object
 	 */
 	public FontType get(String name);
 	
 	/**
-	 * Removes font by its name.
+	 * Deletes font object with chosen name.
+	 * <br>Returns true or false depending on if that font was extisted.
 	 * 
 	 * @param name {@link String} value of font name
+	 * @return true if font was extisted
+	 * 		   <br>false if font wasn't extisted
 	 */
-	public void remove(String name);
+	public boolean delete(String name);
 	
 	/**
-	 * Cleans fonts array from all fonts.
+	 * Clean fonts array deleting all fonts.
 	 */
 	public void cleanUp();
 

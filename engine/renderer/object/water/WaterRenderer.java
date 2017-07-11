@@ -1,4 +1,4 @@
-package renderer.objectRenderer;
+package renderer.object.water;
  
 import java.util.Collection;
 
@@ -16,7 +16,7 @@ import object.light.Light;
 import object.model.RawModel;
 import object.water.WaterFrameBuffers;
 import object.water.WaterTile;
-import renderer.Loader;
+import renderer.loader.Loader;
 import shader.water.WaterShader;
 import tool.math.Maths;
  

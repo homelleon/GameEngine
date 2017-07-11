@@ -8,8 +8,8 @@ import core.debug.EngineDebug;
 import object.gui.component.GUIComponentManager;
 import object.gui.component.GUIComponentManagerInterface;
 import object.gui.group.GUIGroupInterface;
-import renderer.Loader;
-import renderer.objectRenderer.GUITextRenderer;
+import renderer.loader.Loader;
+import renderer.object.gui.GUITextRenderer;
 
 public class GUIManager implements GUIManagerInterface {
 	

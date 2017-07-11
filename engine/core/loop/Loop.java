@@ -20,9 +20,9 @@ import object.scene.manager.SceneManager;
 import object.scene.manager.SceneManagerInterface;
 import object.scene.scene.Scene;
 import object.scene.scene.SceneInterface;
-import renderer.Loader;
-import renderer.MasterRenderer;
-import renderer.SceneRenderer;
+import renderer.loader.Loader;
+import renderer.object.main.MainRenderer;
+import renderer.scene.SceneRenderer;
 import tool.xml.loader.XMLFileLoader;
 import tool.xml.loader.XMLLoaderInterface;
 
@@ -40,7 +40,7 @@ public class Loop implements LoopInterface {
 	private static final String SETTINGS_NAME = "settings";
 		
 	private Loader loader;
-	private MasterRenderer renderer;
+	private MainRenderer renderer;
     private SceneRenderer sceneRenderer;
     
     private SceneManagerInterface sceneManager;

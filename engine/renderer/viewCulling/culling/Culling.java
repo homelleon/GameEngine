@@ -1,4 +1,4 @@
-package renderer.viewCulling;
+package renderer.viewCulling.culling;
 
 import object.camera.CameraInterface;
 import object.entity.entity.EntityInterface;

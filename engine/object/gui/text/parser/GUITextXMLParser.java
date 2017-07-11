@@ -1,6 +1,5 @@
 package object.gui.text.parser;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,12 +12,7 @@ import org.w3c.dom.NodeList;
 
 import core.debug.EngineDebug;
 import core.settings.EngineSettings;
-import object.gui.font.FontType;
-import object.gui.font.TextMeshData;
-import object.gui.font.manager.FontManagerInterface;
 import object.gui.text.GUIText;
-import renderer.Loader;
-import renderer.processor.TextProcessor;
 import tool.xml.XMLUtils;
 import tool.xml.loader.XMLFileLoader;
 import tool.xml.loader.XMLLoaderInterface;
@@ -32,7 +26,6 @@ import tool.xml.loader.XMLLoaderInterface;
 public class GUITextXMLParser implements GUITextParserInterface {
 	
 	private Document document;
-	private FontManagerInterface fontManager;
 	
 	/**
 	 * Constracts parser with document and textMaster.
@@ -40,9 +33,8 @@ public class GUITextXMLParser implements GUITextParserInterface {
 	 * @param document {@link Document} value
 	 * @param master {@link TextProcessor}
 	 */
-	public GUITextXMLParser(Document document, FontManagerInterface fontManager) {
+	public GUITextXMLParser(Document document) {
 		this.document = document;
-		this.fontManager = fontManager;
 	}
 
 	@Override
@@ -111,10 +103,8 @@ public class GUITextXMLParser implements GUITextParserInterface {
 	               	XMLLoaderInterface xmlLoader = new XMLFileLoader(EngineSettings.TEXT_PATH + path + EngineSettings.EXTENSION_XML);	               	
 	               	TextParserInterface textParser = new TextXMLParser(xmlLoader.load());
 	               	String text = textParser.parse();
-	               	this.fontManager.create(fontName);
-	               	FontType font = fontManager.get(fontName);
 	               	GUIText guiText = new GUIText(name, text, size,
-	            		   font, position, maxLength, isCentered);
+	               			fontName, position, maxLength, isCentered);
 	   			   	guiText.setColour(color);
 	   			   	textList.add(guiText);
 		   			if(EngineDebug.hasDebugPermission()) {

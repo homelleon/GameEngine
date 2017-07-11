@@ -1,4 +1,4 @@
-package renderer.objectRenderer;
+package renderer.object.gui;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -13,9 +13,10 @@ import org.lwjgl.opengl.GL30;
 
 import object.gui.font.FontType;
 import object.gui.font.TextMeshData;
+import object.gui.font.manager.FontManagerInterface;
 import object.gui.text.GUIText;
 import object.gui.text.manager.GUITextManagerInterface;
-import renderer.Loader;
+import renderer.loader.Loader;
 import shader.font.FontShader;
 import tool.openGL.OGLUtils;
 
@@ -24,11 +25,13 @@ public class GUITextRenderer {
 	private FontShader shader;
 	private Loader loader;
 	private GUITextManagerInterface textManager;
+	private FontManagerInterface fontManager;
 	private Map<FontType, List<GUIText>> texts = new HashMap<FontType, List<GUIText>>();
 
-	public GUITextRenderer(GUITextManagerInterface textManager, Loader loader) {
+	public GUITextRenderer(GUITextManagerInterface textManager, FontManagerInterface fontManager, Loader loader) {
 		this.loader = loader;
 		this.textManager = textManager;
+		this.fontManager = fontManager;
 		this.shader = new FontShader();
 	}
 
@@ -65,24 +68,14 @@ public class GUITextRenderer {
 	}
 	
 	private void loadText(GUIText text) {
-		FontType font = text.getFont();
-		TextMeshData data = font.loadText(text);
-		int vao = loader.loadToVAO(data.getVertexPositions(), data.getTextureCoords());
-		text.setMeshInfo(vao, data.getVertexCount());
+		String fontName = text.getFont();
+		FontType font = fontManager.get(fontName);
 		List<GUIText> textBatch = texts.get(font);
 		if(textBatch == null) {
 			textBatch = new ArrayList<GUIText>();
 			this.texts.put(font, textBatch);
 		}
 		textBatch.add(text);
-	}
-	
-	private void removeText(GUIText text) {
-		List<GUIText> textBatch = texts.get(text.getFont());
-		textBatch.remove(text);
-		if(textBatch.isEmpty()) {
-			texts.remove(text.getFont());
-		}		
 	}
 	
 	private void renderText(GUIText text) {

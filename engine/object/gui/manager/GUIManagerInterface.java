@@ -4,7 +4,7 @@ import java.util.Collection;
 
 import object.gui.component.GUIComponentManagerInterface;
 import object.gui.group.GUIGroupInterface;
-import renderer.Loader;
+import renderer.loader.Loader;
 
 /**
  * UI Manager Interface.

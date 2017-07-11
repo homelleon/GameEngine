@@ -1,4 +1,4 @@
-package renderer.viewCulling;
+package renderer.viewCulling.data;
 
 public interface VisibilityData {
 	

@@ -2,7 +2,7 @@ package object.map.levelMap;
 
 import java.io.BufferedReader;
 
-import renderer.Loader;
+import renderer.loader.Loader;
 
 public interface LevelMapParserInterface {
 	

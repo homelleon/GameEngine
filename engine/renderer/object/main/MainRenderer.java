@@ -1,4 +1,4 @@
-package renderer;
+package renderer.object.main;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -23,19 +23,20 @@ import object.shadow.renderer.ShadowMapMasterRenderer;
 import object.terrain.terrain.TerrainInterface;
 import object.texture.Texture;
 import object.voxel.manager.ChunkManagerInterface;
-import renderer.objectRenderer.BoundingRenderer;
-import renderer.objectRenderer.EntityRenderer;
-import renderer.objectRenderer.EnvironmentMapRenderer;
-import renderer.objectRenderer.NormalMappingRenderer;
-import renderer.objectRenderer.SkyboxRenderer;
-import renderer.objectRenderer.TerrainRenderer;
-import renderer.objectRenderer.VoxelRenderer;
+import renderer.loader.Loader;
+import renderer.object.bounding.BoundingRenderer;
+import renderer.object.entity.EntityRenderer;
+import renderer.object.entity.NormalMappingRenderer;
+import renderer.object.environment.EnvironmentMapRenderer;
+import renderer.object.skybox.SkyboxRenderer;
+import renderer.object.terrain.TerrainRenderer;
+import renderer.object.voxel.VoxelRenderer;
 import renderer.processor.SceneProcessor;
 import renderer.processor.SceneProcessorInterface;
-import renderer.viewCulling.Frustum;
+import renderer.viewCulling.frustum.Frustum;
 import tool.openGL.OGLUtils;
 
-public class MasterRenderer implements MasterRendererInterface{
+public class MainRenderer implements MainRendererInterface{
 		
 	private Matrix4f projectionMatrix;
 	private Matrix4f normalDistProjectionMatrix;
@@ -64,7 +65,7 @@ public class MasterRenderer implements MasterRendererInterface{
 	private Map<TexturedModel, List<EntityInterface>> normalMapEntities = new HashMap<TexturedModel, List<EntityInterface>>();
 	private Collection<TerrainInterface> terrains = new ArrayList<TerrainInterface>(); 
 		
-	public MasterRenderer(Loader loader, CameraInterface camera) {
+	public MainRenderer(Loader loader, CameraInterface camera) {
 		OGLUtils.cullBackFaces(true);
 		createProjectionMatrix();
 		createLowDistProjectionMatrix();

@@ -8,7 +8,7 @@ import org.lwjgl.util.vector.Vector3f;
 import object.entity.entity.Entity;
 import object.entity.entity.EntityInterface;
 import object.model.TexturedModel;
-import renderer.Loader;
+import renderer.loader.Loader;
 import tool.EngineUtils;
 
 /**

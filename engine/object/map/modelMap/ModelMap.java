@@ -22,7 +22,7 @@ import object.terrain.terrain.TerrainInterface;
 import object.texture.particle.ParticleTexture;
 import object.trigger.Trigger;
 import object.water.WaterTile;
-import renderer.Loader;
+import renderer.loader.Loader;
 import tool.EngineUtils;
 
 public class ModelMap {

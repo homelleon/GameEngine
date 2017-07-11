@@ -1,6 +1,6 @@
 package object.map.modelMap;
 
-import renderer.Loader;
+import renderer.loader.Loader;
 
 public interface ModelMapWriterInterface {
 	

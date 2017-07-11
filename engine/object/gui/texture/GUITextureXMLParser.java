@@ -6,7 +6,7 @@ import java.util.List;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
-import renderer.Loader;
+import renderer.loader.Loader;
 
 public class GUITextureXMLParser implements GUITextureParserInteface {
 	

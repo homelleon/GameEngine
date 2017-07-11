@@ -1,4 +1,4 @@
-package renderer;
+package renderer.object.main;
 
 import java.util.Collection;
 import java.util.List;
@@ -13,8 +13,8 @@ import object.light.Light;
 import object.model.TexturedModel;
 import object.scene.scene.SceneInterface;
 import object.terrain.terrain.TerrainInterface;
-import renderer.objectRenderer.EntityRenderer;
-import renderer.viewCulling.Frustum;
+import renderer.object.entity.EntityRenderer;
+import renderer.viewCulling.frustum.Frustum;
 
 /**
  * Main interface of render Engine that contatins scene, environment and shadow
@@ -22,10 +22,10 @@ import renderer.viewCulling.Frustum;
  * 
  * @author homelleon
  * @version 1.0
- * @see MasterRenderer
+ * @see MainRenderer
  *
  */
-public interface MasterRendererInterface {
+public interface MainRendererInterface {
 	
 	/** Rendering  all objects of scene.
 	 * <p>Can define if scene is rendering using low or hight quality objects

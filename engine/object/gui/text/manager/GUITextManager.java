@@ -5,15 +5,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import core.settings.EngineSettings;
-import object.gui.font.FontType;
 import object.gui.font.TextMeshData;
 import object.gui.font.manager.FontManager;
 import object.gui.font.manager.FontManagerInterface;
 import object.gui.text.GUIText;
 import object.gui.text.parser.GUITextParserInterface;
 import object.gui.text.parser.GUITextXMLParser;
-import renderer.Loader;
-import renderer.objectRenderer.GUITextRenderer;
+import renderer.loader.Loader;
+import renderer.object.gui.GUITextRenderer;
 import tool.xml.loader.XMLFileLoader;
 import tool.xml.loader.XMLLoaderInterface;
 
@@ -38,7 +37,7 @@ public class GUITextManager implements GUITextManagerInterface {
 	public GUITextManager(Loader loader) {
 		this.loader = loader;
 		this.fontManager = new FontManager(loader);
-		this.textRenderer = new GUITextRenderer(this, loader);
+		this.textRenderer = new GUITextRenderer(this, fontManager, loader);
 	}
 	
 	@Override
@@ -54,9 +53,9 @@ public class GUITextManager implements GUITextManagerInterface {
 	public void add(GUIText text) {
 		if(text != null) {
 			this.texts.put(text.getName(), text);
-			FontType font = text.getFont();
-			this.fontManager.add(font);
-			TextMeshData data = font.loadText(text);
+			String font = text.getFont();
+			this.fontManager.create(font);
+			TextMeshData data = fontManager.get(font).loadText(text);
            	int vao = this.loader.loadToVAO(data.getVertexPositions(), data.getTextureCoords());
     		text.setMeshInfo(vao, data.getVertexCount());
 		}
@@ -100,9 +99,8 @@ public class GUITextManager implements GUITextManagerInterface {
 	@Override
 	public void readFile(String fileName) {
 		XMLLoaderInterface xmlLoader = new XMLFileLoader(EngineSettings.INTERFACE_PATH + fileName + EngineSettings.EXTENSION_XML);
-		GUITextParserInterface guiTextParser = new GUITextXMLParser(xmlLoader.load(), fontManager);
-		this.addAll(guiTextParser.parse());
-		
+		GUITextParserInterface guiTextParser = new GUITextXMLParser(xmlLoader.load());
+		this.addAll(guiTextParser.parse());		
 	}
 
 

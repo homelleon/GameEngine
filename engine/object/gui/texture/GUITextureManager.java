@@ -9,7 +9,7 @@ import java.util.Map;
 import org.lwjgl.util.vector.Vector2f;
 
 import core.settings.EngineSettings;
-import renderer.Loader;
+import renderer.loader.Loader;
 
 /**
  * Graphic interface manager for controling and storing structured map and

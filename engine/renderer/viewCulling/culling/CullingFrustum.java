@@ -1,7 +1,8 @@
-package renderer.viewCulling;
+package renderer.viewCulling.culling;
 
 import object.camera.CameraInterface;
 import object.entity.entity.EntityInterface;
+import renderer.viewCulling.frustum.Frustum;
 
 public class CullingFrustum implements Culling {
 	

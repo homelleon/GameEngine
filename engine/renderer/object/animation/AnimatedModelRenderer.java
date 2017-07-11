@@ -1,4 +1,4 @@
-package renderer.objectRenderer;
+package renderer.object.animation;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector3f;

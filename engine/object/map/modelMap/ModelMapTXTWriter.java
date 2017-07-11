@@ -10,7 +10,7 @@ import java.util.List;
 import core.settings.EngineSettings;
 import object.entity.entity.EntityInterface;
 import object.terrain.terrain.TerrainInterface;
-import renderer.Loader;
+import renderer.loader.Loader;
 
 public class ModelMapTXTWriter implements ModelMapWriterInterface {
 	

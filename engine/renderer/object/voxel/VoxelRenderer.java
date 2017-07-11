@@ -1,4 +1,4 @@
-package renderer.objectRenderer;
+package renderer.object.voxel;
 
 import java.util.Collection;
 
@@ -21,8 +21,8 @@ import object.voxel.Chunk;
 import object.voxel.data.FaceCullingData;
 import object.voxel.manager.ChunkManager;
 import object.voxel.manager.ChunkManagerInterface;
-import renderer.Loader;
-import renderer.viewCulling.Frustum;
+import renderer.loader.Loader;
+import renderer.viewCulling.frustum.Frustum;
 import shader.voxel.VoxelShader;
 import tool.Vector3i;
 import tool.math.Maths;

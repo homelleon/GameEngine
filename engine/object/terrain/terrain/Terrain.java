@@ -14,7 +14,7 @@ import object.model.RawModel;
 import object.terrain.generator.HeightsGenerator;
 import object.texture.terrain.TerrainTexture;
 import object.texture.terrain.TerrainTexturePack;
-import renderer.Loader;
+import renderer.loader.Loader;
 import tool.math.Maths;
 
 /**

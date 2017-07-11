@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import core.settings.EngineSettings;
-import renderer.Loader;
+import renderer.loader.Loader;
 import tool.xml.XMLUtils;
 
 public class LevelMapXMLParser implements LevelMapParserInterface {

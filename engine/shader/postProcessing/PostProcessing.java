@@ -6,7 +6,7 @@ import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 
 import object.model.RawModel;
-import renderer.Loader;
+import renderer.loader.Loader;
 import shader.postProcessing.bloom.BrightFilter;
 import shader.postProcessing.bloom.CombineFilter;
 import shader.postProcessing.gaussianBlur.HorizontalBlur;

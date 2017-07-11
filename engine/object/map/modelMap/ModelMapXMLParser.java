@@ -8,7 +8,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import core.debug.EngineDebug;
-import renderer.Loader;
+import renderer.loader.Loader;
 import tool.xml.XMLUtils;
 
 public class ModelMapXMLParser implements ModelMapParserInterface {

@@ -18,7 +18,7 @@ import object.terrain.manager.TerrainManagerInterface;
 import object.texture.Texture;
 import object.voxel.manager.ChunkManagerInterface;
 import object.water.manager.WaterManagerInterface;
-import renderer.viewCulling.Frustum;
+import renderer.viewCulling.frustum.Frustum;
 import tool.MousePicker;
 
 /**
