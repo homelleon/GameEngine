@@ -17,7 +17,16 @@ public interface GUIManagerInterface {
 	/**
 	 * Initialize ui manager.
 	 */
-	void init(Loader loader);	
+	void init(Loader loader);
+	
+	/**
+	 * Creates empty GUI Group and add it to guiManager.
+	 * 
+	 * @param name string value of group name
+	 * 
+	 * @return {@link GUIGroupInterface} value of group
+	 */
+	GUIGroupInterface createEmptyGUIGroup(String name);
 	
 	/**
 	 * Adds list of user interface groups.

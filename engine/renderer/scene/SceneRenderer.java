@@ -169,16 +169,13 @@ public class SceneRenderer {
 		fpsText.setColour(1, 0, 0);		
 		GUIText coordsText = createPickerCoordsText(picker, fontName);
 		coordsText.setColour(1, 0, 0);
-		List<GUIInterface> statusGUIList = new ArrayList<GUIInterface>();
 		List<GUITexture> textureList = new ArrayList<GUITexture>();
 		List<GUIText> textList = new ArrayList<GUIText>();
 		textList.add(fpsText);
 		textList.add(coordsText);
 		GUIInterface statusInterface = new GUI("status", textureList, textList);
-		statusGUIList.add(statusInterface);
-		GUIGroupInterface statusGUIGroup = new GUIGroup("statusGroup", statusGUIList);
-		statusGUIList.add(statusInterface);
-		scene.getUserInterface().addGUIGroup(statusGUIGroup);
+		scene.getUserInterface().createEmptyGUIGroup("statusGroup");
+		scene.getUserInterface().getGUIGroup("statusGroup").add(statusInterface);
 		scene.getUserInterface().getGUIGroup("statusGroup").showAll();
 		scene.getUserInterface().render();
 	}

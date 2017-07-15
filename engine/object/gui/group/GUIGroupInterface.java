@@ -1,6 +1,7 @@
 package object.gui.group;
 
 import java.util.Collection;
+import java.util.List;
 
 import object.gui.gui.GUIInterface;
 
@@ -21,13 +22,28 @@ public interface GUIGroupInterface {
 	String getName();
 	
 	/**
+	 * Adds new graphic user interface into guis array.
+	 * 
+	 * @param gui {@link GUIInterface} value of graphic user interface 
+	 */
+	void add(GUIInterface gui);
+	
+	/**
+	 * Adds new list of graphic user interface into guis array.
+	 *  
+	 * @param guiList {@link List}<{@link GUIInterface}> list of graphic user
+	 * 		  interfaces
+	 */
+	void addAll(List<GUIInterface> guiList);
+	
+	/**
 	 * Returns user interface object by name.
 	 * 
 	 * @param name
 	 * 				{@link String} value
 	 * @return {@link GUIInterface} value of user interface object
 	 */
-	GUIInterface get(String name);
+	GUIInterface get(String name);	
 	
 	/**
 	 * Set all user interface in the group visible.

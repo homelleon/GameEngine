@@ -15,7 +15,13 @@ public class GUIGroup implements GUIGroupInterface {
 	
 	public GUIGroup(String name, List<GUIInterface> guiList) {
 		this.name = name;
-		guiList.forEach(gui -> this.guis.put(gui.getName(), gui));		
+		if(!guiList.isEmpty()) {
+			guiList.forEach(gui -> this.guis.put(gui.getName(), gui));
+		}
+	}
+	
+	public GUIGroup(String name) {
+		this.name = name;
 	}
 	
 	@Override
@@ -26,17 +32,36 @@ public class GUIGroup implements GUIGroupInterface {
 
 	@Override
 	public void showAll() {
-		this.guis.values().forEach(gui -> gui.show());
+		if(!guis.isEmpty()) {
+			this.guis.values().forEach(gui -> gui.show());
+		}
 	}
 
 	@Override
 	public void hideAll() {
-		this.guis.values().forEach(gui -> gui.hide());		
-	}	
+		if(!guis.isEmpty()) {
+			this.guis.values().forEach(gui -> gui.hide());
+		}
+	}
+
+	@Override
+	public void add(GUIInterface gui) {
+		this.guis.put(gui.getName(), gui);		
+	}
+	
+
+	@Override
+	public void addAll(List<GUIInterface> guiList) {
+		guiList.forEach(gui -> this.guis.put(gui.getName(), gui));
+	}
 	
 	@Override
-	public GUIInterface get(String name) {		
-		return this.guis.get(name);
+	public GUIInterface get(String name) {
+		GUIInterface gui = null;
+		if(!guis.isEmpty()) {
+			gui = this.guis.get(name);
+		}
+		return gui;
 	}
 
 	@Override
@@ -46,10 +71,13 @@ public class GUIGroup implements GUIGroupInterface {
 
 	@Override
 	public void cleanAll() {
-		for(GUIInterface gui : guis.values()) {
-			gui.delete();
+		if(!guis.isEmpty()) {
+			for(GUIInterface gui : guis.values()) {
+				gui.delete();
+			}
 		}
 		guis.clear();
 	}
+
 
 }

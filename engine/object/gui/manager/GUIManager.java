@@ -7,9 +7,9 @@ import java.util.Map;
 import core.debug.EngineDebug;
 import object.gui.component.GUIComponentManager;
 import object.gui.component.GUIComponentManagerInterface;
+import object.gui.group.GUIGroup;
 import object.gui.group.GUIGroupInterface;
 import renderer.loader.Loader;
-import renderer.object.gui.GUITextRenderer;
 
 public class GUIManager implements GUIManagerInterface {
 	
@@ -26,6 +26,14 @@ public class GUIManager implements GUIManagerInterface {
 		this.componentManager = new GUIComponentManager(TEXTURE_FILE_NAME, TXT_FILE_NAME, loader);
 		
 	}
+	
+
+	@Override
+	public GUIGroupInterface createEmptyGUIGroup(String name) {
+		GUIGroupInterface group = new GUIGroup(name);
+		this.groups.put(group.getName(), group);
+		return group;
+	}	
 
 	@Override
 	public GUIGroupInterface getGUIGroup(String name) {
@@ -64,6 +72,6 @@ public class GUIManager implements GUIManagerInterface {
 			group.cleanAll();
 		}
 		this.groups.clear();
-	}	
+	}
 
 }
