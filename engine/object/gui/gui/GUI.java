@@ -58,7 +58,17 @@ public class GUI implements GUIInterface {
 	@Override
 	public boolean getIsShown() {
 		return this.isShown;
-	}	
+	}
+
+	@Override
+	public List<GUIText> getTexts() {
+		return this.guiTexts;
+	}
+
+	@Override
+	public List<GUITexture> getTextures() {
+		return this.guiTextures;
+	}
 
 	@Override
 	public void setTransparency(float value) {

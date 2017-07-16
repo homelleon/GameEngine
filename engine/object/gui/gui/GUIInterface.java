@@ -1,6 +1,11 @@
 package object.gui.gui;
 
+import java.util.List;
+
 import org.lwjgl.util.vector.Vector2f;
+
+import object.gui.text.GUIText;
+import object.gui.texture.GUITexture;
 
 /**
  * User interafce to represent connection between enigine and user.
@@ -35,6 +40,20 @@ public interface GUIInterface {
 	 * 		   false if user interaface is hidden
 	 */
 	boolean getIsShown();
+	
+	/**
+	 * Gets list of all user interface texts.
+	 * 
+	 * @return {@link List}<{@link GUIText>> array of GUI text.
+	 */
+	List<GUIText> getTexts();
+	
+	/**
+	 * Gets list of all user interface textures.
+	 * 
+	 * @return {@link List}<{@link GUITexture>> array of GUI text.
+	 */
+	List<GUITexture> getTextures();
 	
 	/**
 	 * 

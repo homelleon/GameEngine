@@ -12,24 +12,20 @@ import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 
 import object.gui.font.FontType;
-import object.gui.font.TextMeshData;
 import object.gui.font.manager.FontManagerInterface;
 import object.gui.text.GUIText;
 import object.gui.text.manager.GUITextManagerInterface;
-import renderer.loader.Loader;
 import shader.font.FontShader;
 import tool.openGL.OGLUtils;
 
 public class GUITextRenderer {
 
 	private FontShader shader;
-	private Loader loader;
 	private GUITextManagerInterface textManager;
 	private FontManagerInterface fontManager;
 	private Map<FontType, List<GUIText>> texts = new HashMap<FontType, List<GUIText>>();
 
-	public GUITextRenderer(GUITextManagerInterface textManager, FontManagerInterface fontManager, Loader loader) {
-		this.loader = loader;
+	public GUITextRenderer(GUITextManagerInterface textManager, FontManagerInterface fontManager) {
 		this.textManager = textManager;
 		this.fontManager = fontManager;
 		this.shader = new FontShader();

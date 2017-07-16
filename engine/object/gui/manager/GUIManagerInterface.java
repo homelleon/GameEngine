@@ -60,6 +60,15 @@ public interface GUIManagerInterface {
 	Collection<GUIGroupInterface> getAllGUIGroups();
 	
 	/**
+	 * Deletes GUI group and its all content from memory.
+	 * 
+	 * @param name string value of GUI group name
+	 * @return true if group is exist<br>
+	 * 		   false if group isn't exist
+	 */
+	boolean deleteGUIGroup(String name);
+	
+	/**
 	 * Returns component manager that controls engine default interface
 	 * entities.
 	 *  

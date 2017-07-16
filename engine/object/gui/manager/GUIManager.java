@@ -2,6 +2,7 @@ package object.gui.manager;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import core.debug.EngineDebug;
@@ -9,6 +10,8 @@ import object.gui.component.GUIComponentManager;
 import object.gui.component.GUIComponentManagerInterface;
 import object.gui.group.GUIGroup;
 import object.gui.group.GUIGroupInterface;
+import object.gui.gui.GUIInterface;
+import object.gui.text.GUIText;
 import renderer.loader.Loader;
 
 public class GUIManager implements GUIManagerInterface {
@@ -53,7 +56,23 @@ public class GUIManager implements GUIManagerInterface {
 	@Override
 	public Collection<GUIGroupInterface> getAllGUIGroups() {
 		return this.groups.values();
-	}	
+	}
+
+	@Override
+	public boolean deleteGUIGroup(String name) {
+		boolean isExist = false;
+		if(this.groups.containsKey(name)) {
+			isExist = true;
+			for(GUIInterface gui : this.groups.get(name).getAll()) {
+				for(GUIText text : gui.getTexts()) {
+					this.componentManager.getTexts().remove(text.getName());
+				}
+			}
+			this.groups.get(name).cleanAll();
+			this.groups.remove(name);
+		}
+		return isExist;
+	}
 	
 	@Override
 	public GUIComponentManagerInterface getComponent() {
