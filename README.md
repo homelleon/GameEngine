@@ -43,7 +43,7 @@ game logic:
 - create public methods "__onStart()" and "__onUpdate()".
 - put "super.__onStart()" and "super.__onUpdate" methods into created your methods before your code.
 ```
-![MyGame](https://github.com/homelleon/GameEngine/blob/develop/res/other/myGame.jpg "MyGame example")
+![MyGame](https://github.com/homelleon/GameEngine/blob/master/resource/other/myGame.jpg "MyGame example")
 ```
 - write your code using public methods of "scene" and "gameManager" objects.
 - run the game.
