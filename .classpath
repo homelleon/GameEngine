@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="engine"/>
+	<classpathentry kind="src" path="resource"/>
 	<classpathentry kind="src" path="game"/>
 	<classpathentry kind="src" path="physic"/>
 	<classpathentry kind="src" path="editor"/>
@@ -9,9 +10,9 @@
 			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="GameEngine/library/natives"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="D:/projects/Java Projects/GameEngine/library/jar/lwjgl_util.jar"/>
-	<classpathentry kind="lib" path="D:/projects/Java Projects/GameEngine/library/jar/lwjgl.jar" sourcepath="libs/jar/lwjgl.jar"/>
-	<classpathentry kind="lib" path="D:/projects/Java Projects/GameEngine/library/jar/slick-util.jar"/>
-	<classpathentry kind="lib" path="D:/projects/Java Projects/GameEngine/library/jar/PNGDecoder.jar"/>
+	<classpathentry kind="lib" path="library/jar/lwjgl_util.jar"/>
+	<classpathentry kind="lib" path="library/jar/lwjgl.jar"/>
+	<classpathentry kind="lib" path="library/jar/PNGDecoder.jar"/>
+	<classpathentry kind="lib" path="library/jar/slick-util.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
