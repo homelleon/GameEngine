@@ -5,14 +5,14 @@ Uses LWJGL to control OpenGL and OpenAL libraries.
 DIRECTORY STRUCTURE
 ----------
 ```
-engine/     engine core library tools
-game/       game core library tools
-physics/    phisics core library tools
-editor/     game edit core library tools
-doc/        documentation
-libs/       libraries used in engine core
-res/        resources for engine core
-tools/      tools
+engine/    engine core library tools
+game/      game core library tools (here you can create your project)
+physic/    phisics core library tools (NOT implemented yet)
+editor/    game edit core library tools (NOT implemented yet)
+document/  documentation
+library/   libraries used in engine core
+resource/  resources for engine core
+tool/      tools is used for develop or design (will be deleted in future)
 ```
 
 FUNCTIONS
@@ -23,11 +23,11 @@ base
 ```
 graphics:
 ```
-- all objects are stored in buffers
+- all objects are stored in video buffers
 - uses shader program uniforms to change position and visual effects
 - water reflection and refraction
-- frustum culling technic to increase graphic performance
-- ray casting technic to choose entities by selecting it with mouse coursor
+- frustum culling technic to increase graphic performance (set as default for alfa-version)
+- ray casting technic to choose entities by selecting it with mouse coursor (set as default for alfa-version)
 ```
 sound:
 ```
@@ -46,5 +46,5 @@ game logic:
 ![MyGame](https://github.com/homelleon/GameEngine/blob/master/resource/other/myGame.jpg "MyGame example")
 ```
 - write your code using public methods of "scene" and "gameManager" objects.
-- run the game.
+- run the engine/core/EngineMain.java file.
 ```
