@@ -5,13 +5,13 @@ import java.util.List;
 
 import org.lwjgl.input.Keyboard;
 
-import font.GUIText;
-import game.Game;
-import guis.gui.GUI;
-import guis.gui.GUIGroup;
-import guis.gui.GUIInterface;
-import guis.guiTextures.GUITexture;
-import inputs.KeyboardGame;
+import game.game.Game;
+import object.gui.group.GUIGroup;
+import object.gui.gui.GUI;
+import object.gui.gui.GUIInterface;
+import object.gui.text.GUIText;
+import object.gui.texture.GUITexture;
+import object.input.KeyboardGame;
 
 public class MyGame extends Game {
 	
@@ -31,7 +31,7 @@ public class MyGame extends Game {
 		List<GUITexture> hintTextureList = new ArrayList<GUITexture>();
 		List<GUIText> hintTextList = new ArrayList<GUIText>();			
 		hintTextList.add(gameManager.getScene().getUserInterface()
-				.getComponent().getTexts().getByName("inputHints"));			
+				.getComponent().getTexts().get("inputHints"));			
 		GUIInterface hintsGUI = new GUI("hints", hintTextureList, hintTextList);
 		helpGUIList.add(hintsGUI);
 		this.gameManager.getScene().getUserInterface().addGUIGroup(new GUIGroup(guiGroupName, helpGUIList));

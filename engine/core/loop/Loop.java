@@ -5,27 +5,26 @@ import org.lwjgl.opengl.Display;
 
 import core.GameCore;
 import core.display.DisplayManager;
-import core.settings.ES;
-import core.settings.gameSettings.GameSettings;
-import core.settings.gameSettings.SettingsParserInterface;
-import core.settings.gameSettings.SettingsXMLParser;
-import game.GameInterface;
-import inputs.MouseGame;
-import maps.levelMap.LevelMapParserInterface;
-import maps.levelMap.LevelMapXMLParser;
-import maps.modelMap.ModelMap;
-import maps.modelMap.ModelMapParserInterface;
-import maps.modelMap.ModelMapXMLParser;
-import renderers.Loader;
-import renderers.MasterRenderer;
-import renderers.scene.SceneRenderer;
-import scene.Scene;
-import scene.SceneInterface;
-import scene.SceneManager;
-import scene.SceneManagerInterface;
-import toolbox.XMLUtils;
-import toolbox.xmlLoader.XMLFileLoader;
-import toolbox.xmlLoader.XMLLoaderInterface;
+import core.settings.EngineSettings;
+import core.settings.GameSettings;
+import core.settings.parser.SettingsParserInterface;
+import core.settings.parser.SettingsXMLParser;
+import game.game.GameInterface;
+import object.input.MouseGame;
+import object.map.levelMap.LevelMapParserInterface;
+import object.map.levelMap.LevelMapXMLParser;
+import object.map.modelMap.ModelMap;
+import object.map.modelMap.ModelMapParserInterface;
+import object.map.modelMap.ModelMapXMLParser;
+import object.scene.manager.SceneManager;
+import object.scene.manager.SceneManagerInterface;
+import object.scene.scene.Scene;
+import object.scene.scene.SceneInterface;
+import renderer.loader.Loader;
+import renderer.object.main.MainRenderer;
+import renderer.scene.SceneRenderer;
+import tool.xml.loader.XMLFileLoader;
+import tool.xml.loader.XMLLoaderInterface;
 
 /**
  * Game looping system that initialize preloaded game variables and objects and
@@ -41,7 +40,7 @@ public class Loop implements LoopInterface {
 	private static final String SETTINGS_NAME = "settings";
 		
 	private Loader loader;
-	private MasterRenderer renderer;
+	private MainRenderer renderer;
     private SceneRenderer sceneRenderer;
     
     private SceneManagerInterface sceneManager;
@@ -139,7 +138,7 @@ public class Loop implements LoopInterface {
 	 * @see #loadGameSettings()
 	 */
 	private void loadMap(String name) {
-		XMLLoaderInterface xmlLoader = new XMLFileLoader(ES.MAP_PATH + name + XMLUtils.EXTENTION);
+		XMLLoaderInterface xmlLoader = new XMLFileLoader(EngineSettings.MAP_PATH + name + EngineSettings.EXTENSION_XML);
 		ModelMapParserInterface mapParser = new ModelMapXMLParser(
 				xmlLoader.load(), name, loader);
 		this.map = mapParser.parseMap();	
@@ -155,7 +154,7 @@ public class Loop implements LoopInterface {
 	 * @see #loadGameSettings()
 	 */
 	private void loadObjectMap(String name) {
-		XMLLoaderInterface xmlLoader = new XMLFileLoader(ES.MAP_PATH + name + XMLUtils.EXTENTION);
+		XMLLoaderInterface xmlLoader = new XMLFileLoader(EngineSettings.MAP_PATH + name + EngineSettings.EXTENSION_XML);
 		LevelMapParserInterface mapParser = new LevelMapXMLParser();
 //		MapsLoaderInterface mapLoader = new MapsXMLLoader();
 //		ObjectMapInterface objectMap = mapLoader.loadObjectMap(name, loader);
@@ -170,7 +169,7 @@ public class Loop implements LoopInterface {
 	 */
 	private void loadGameSettings() {
 		XMLLoaderInterface xmlLoader = new XMLFileLoader(
-				ES.GAME_SETTINGS_PATH + SETTINGS_NAME + XMLUtils.EXTENTION);
+				EngineSettings.SETTINGS_GAME_PATH + SETTINGS_NAME + EngineSettings.EXTENSION_XML);
 		SettingsParserInterface settingsParser = new SettingsXMLParser(
 				xmlLoader.load());
 		GameSettings settings = settingsParser.parse();

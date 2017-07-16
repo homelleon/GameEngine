@@ -2,10 +2,10 @@ package core;
 
 import core.loop.Loop;
 import core.loop.LoopInterface;
-import scene.SceneInterface;
+import object.scene.scene.SceneInterface;
 
 /**
- * Main engine crass. Contains main method to create {@link Loop) and start
+ * Main engine crass. Contains main method to create {@link Loop} and start
  * looping the engine events.
  *  
  * @author homelleon

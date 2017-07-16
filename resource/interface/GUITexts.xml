@@ -1,0 +1,52 @@
+<GUI>
+	<GUITexts>
+		<GUIText id="1">
+			<name>version</name>
+			<path>version</path>
+			<size>2</size>
+			<font>candara</font>
+			<position>
+				<x>0.0f</x>
+				<y>0.0f</y>
+			</position>
+			<max_length>1</max_length>
+			<centered>true</centered>
+			<color>
+				<r>1</r>
+				<g>0</g>
+				<b>0</b>
+			</color>
+		</GUIText>
+		<GUIText id="2">
+			<name>inputHints</name>
+			<path>hints</path>
+			<size>1</size>
+			<font>candara</font>
+			<position>
+				<x>0.55f</x>
+				<y>0.25f</y>
+			</position>
+			<max_length>0.44f</max_length>
+			<centered>false</centered>
+			<color>
+				<r>1</r>
+				<g>0</g>
+				<b>0</b>
+			</color>
+		</GUIText>			
+	</GUITexts>
+	<GUITextures>
+		<GUITexture id="1">
+			<name>Helth</name>
+			<texture>helthBar</texture>
+			<position>
+				<x>-0.7f</x>
+				<y>-0.7f</y>
+			</position>
+			<scale>
+				<x>0.25f</x>
+				<y>0.25f</y>
+			</scale>
+		</GUITexture>
+	</GUITextures>
+</GUI>

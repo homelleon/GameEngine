@@ -1,0 +1,22 @@
+package game.game;
+
+/**
+ * Main game interface to control events in engine system.
+ * 
+ * @author homelleon
+ * @see Game
+ * 
+ */
+public interface GameInterface {
+	
+	/**
+	 * Realize game events on engine start.
+	 */
+	public void __onStart();
+	
+	/**
+	 * Realize game events on engine update.
+	 */
+	public void __onUpdate();
+
+}
