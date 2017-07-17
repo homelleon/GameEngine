@@ -35,7 +35,7 @@ import object.texture.TextureData;
 import tool.math.Maths;
 
 /**
- * Class used for loading verticies and textures into video buffer.
+ * Class to load vertices information and textures into video buffer.
  * 
  * @author homelleon
  *
@@ -58,18 +58,31 @@ public class Loader {
 		return instance;
 	}
 	
-	
-	private List<Integer> vaos = new ArrayList<Integer>(); //array list of verticies array objects
-	private List<Integer> vbos = new ArrayList<Integer>(); //array list of verticies buffer objects
-	private Map<String, Integer> textures = new HashMap<String, Integer>(); //map of texture (name => id)
+	/**
+	 * List of vertex arrays objects indices.
+	 */
+	private List<Integer> vaos = new ArrayList<Integer>();
 	
 	/**
-	 * Loads vao arrays into video buffer using position, normals and indicies
-	 * arrays variables.
+	 * List of vertex buffer objects indices.
+	 */
+	private List<Integer> vbos = new ArrayList<Integer>();
+	
+	/**
+	 * Map of named textures indicies.
+	 */
+	private Map<String, Integer> textures = new HashMap<String, Integer>(); 
+	
+	/**
+	 * Loads vertex positions, normals and indices attributes into the new
+	 * vertex array object and creates new RawModel. 
 	 * 
-	 * @param positions {@link Float} array of model points position verticies
-	 * @param normals {@link Float} array of model points normal vectors
-	 * @param indices {@link Integer} array of model points order
+	 * @param positions 
+	 * 					- float array of vertices positions
+	 * @param normals 
+	 * 					- float array of vertices normals
+	 * @param indices 
+	 * 					- integer array of vertices order indices
 	 * 
 	 * @return {@link RawModel} value
 	 */
@@ -83,15 +96,17 @@ public class Loader {
 	}
 	
 	/**
-	 * Loads vao arrays into video buffer using position and texture
-	 * coordinates array variables.
+	 * Loads vertex positions and texture coordinates into new vertex array
+	 * object and returns index of vertex array object.
 	 *   
-	 * @param positions {@link Float} array of model position verticies
-	 * @param textureCoords {@link Float} array of model texture 2d coordinates
+	 * @param positions 
+	 * 					- float array of vertices positions
+	 * @param textureCoords 
+	 * 					- float array of 2d texture coordinates
 	 * 
-	 * @return {@link Integer} value of vao identification number
+	 * @return integer value of vao identification number
 	 */
-	public int loadToVAO(float[] positions,float[] textureCoords) {
+	public int loadToVAO(float[] positions, float[] textureCoords) {
 		int vaoID = createVAO();
 		storeDataInAttributeList(0, 2, positions);
 		storeDataInAttributeList(1, 2, textureCoords);
@@ -100,13 +115,17 @@ public class Loader {
 	}
 	
 	/**
-	 * Loads verticies arrays into video buffer using position, texture coordinates 
-	 * normals and indicies arrays variables.
+	 * Loads vertex positions, texture coordinates, normals and indices
+	 * attributes into new vertex array object and creates new RawModel. 
 	 *  
-	 * @param positions {@link Float} array of model position verticies
-	 * @param textureCoords {@link Float} array of model texture 2d coordinates
-	 * @param normals {@link Float} array of model points normal vectors
-	 * @param indices {@link Integer} array of model points order
+	 * @param positions 
+	 * 					- float array of vertices positions
+	 * @param textureCoords
+	 * 					- float array of 2d texture coordinates
+	 * @param normals 
+	 * 					- flaot array normal vectors coordinates
+	 * @param indices 
+	 * 					- integer array of vertices order indices
 	 * 
 	 * @return {@link RawModel} value
 	 */
@@ -166,7 +185,7 @@ public class Loader {
 	}
 	
 	/**
-	 * Creates empty verticies buffer object.
+	 * Creates empty vertex buffer object.
 	 * 
 	 * @param floatCount {@link Float} size of empty verticies buffer
 	 * 
@@ -193,7 +212,7 @@ public class Loader {
 	}
 	
 	/**
-	 * Loads verticies array object into video buffer using verticies position
+	 * Loads vertex array object into video buffer using verticies position
 	 * array and object dimension.
 	 * 
 	 * @param positions {@link Float} array of model position verticies
@@ -379,7 +398,7 @@ public class Loader {
 	}
 	
 	/**
-	 * Creates verticies array object for video buffer.
+	 * Creates vertex array object for video buffer.
 	 * <p>After created need to add verticies buffer objects and
 	 * unbind verticies array object.
 	 * 
@@ -393,6 +412,17 @@ public class Loader {
 		return vaoID;
 	}
 	
+	/**
+	 * Stores data into attribute list to prepare rendering.
+	 *  
+	 * @param attributeNumber
+	 * 						  	- integer 
+	 * @param coordinateSize
+	 * 							- integer size of coordinates
+	 * @param data
+	 * 							- float array of data to store into video
+	 * 							  buffer
+	 */
 	private void storeDataInAttributeList(int attributeNumber, int coordinateSize, float[] data) {		
 		int vboID = GL15.glGenBuffers();
 		vbos.add(vboID);
@@ -404,7 +434,7 @@ public class Loader {
 	}
 	
 	/**
-	 * Unbinds verticies array object to stop writing verticies buffer object
+	 * Unbinds vertex array object to stop storing vertex buffer objects
 	 * in it.
 	 */
 	private void unbindVAO() {		
@@ -424,6 +454,13 @@ public class Loader {
 		GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, buffer, GL15.GL_STATIC_DRAW);
 	}
 	
+	/**
+	 * Stores integer data into buffer.
+	 * 
+	 * @param data
+	 * 				- integer array of data
+	 * @return	{@link IntBuffer} object
+	 */
 	private IntBuffer storeDataInIntBuffer(int[] data) {		
 		IntBuffer buffer = BufferUtils.createIntBuffer(data.length);
 		buffer.put(data);
@@ -432,6 +469,13 @@ public class Loader {
 		
 	}
 	
+	/**
+	 * Stores float data into buffer.
+	 * 
+	 * @param data
+	 * 				- float array of data
+	 * @return	{@link FloatBuffer} object
+	 */
 	private FloatBuffer storeDataInFloatBuffer(float[] data) {		
 		FloatBuffer buffer = BufferUtils.createFloatBuffer(data.length);
 		buffer.put(data);
@@ -439,6 +483,12 @@ public class Loader {
 		return buffer;
 	}
 	
+	/**
+	 * Gets distance from coordinate axis center to farthest point.
+	 *  
+	 * @param positions
+	 * @return
+	 */
 	private float getDistFarVertToCenter(float[] positions) {
 		float distance = 0;
 		Vector3f center = new Vector3f(0,0,0);
