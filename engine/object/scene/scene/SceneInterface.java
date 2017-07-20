@@ -4,7 +4,7 @@ import java.util.Collection;
 
 import object.audio.manager.AudioManagerInterface;
 import object.camera.CameraInterface;
-import object.entity.entity.EntityInterface;
+import object.entity.entity.Entity;
 import object.entity.manager.EntityManagerInterface;
 import object.entity.player.PlayerInterface;
 import object.gui.manager.GUIManagerInterface;
@@ -172,7 +172,7 @@ public interface SceneInterface {
 	/**
 	 * Spreads all entities on the surface of terrain's height.
 	 */
-	void spreadEntitiesOnHeights(Collection<EntityInterface> entityList);
+	void spreadEntitiesOnHeights(Collection<Entity> entityList);
 	
 	/**
 	 * Spreads all particles on the surface of terrain's height.

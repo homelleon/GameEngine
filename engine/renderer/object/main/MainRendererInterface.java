@@ -8,7 +8,7 @@ import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector4f;
 
 import object.camera.CameraInterface;
-import object.entity.entity.EntityInterface;
+import object.entity.entity.Entity;
 import object.light.Light;
 import object.model.TexturedModel;
 import object.scene.scene.SceneInterface;
@@ -90,7 +90,7 @@ public interface MainRendererInterface {
 	 * @param lights
 	 * @param camera
 	 */
-	void renderLowQualityScene(Map<TexturedModel, List<EntityInterface>> entities, Collection<TerrainInterface> terrains,
+	void renderLowQualityScene(Map<TexturedModel, List<Entity>> entities, Collection<TerrainInterface> terrains,
 			Collection<Light> lights, CameraInterface camera);
 	
 	/**
@@ -104,7 +104,7 @@ public interface MainRendererInterface {
 	 * @param scene
 	 * @return
 	 */
-	Collection<EntityInterface> createFrustumEntities(SceneInterface scene);
+	Collection<Entity> createFrustumEntities(SceneInterface scene);
 	
 	/**
 	 * 

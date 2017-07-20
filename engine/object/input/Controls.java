@@ -4,7 +4,7 @@ import org.lwjgl.input.Keyboard;
 
 import core.debug.EngineDebug;
 import core.settings.EngineSettings;
-import object.entity.entity.EntityInterface;
+import object.entity.entity.Entity;
 import object.scene.scene.SceneInterface;
 
 public class Controls implements ControlsInterface {
@@ -35,7 +35,7 @@ public class Controls implements ControlsInterface {
 		/* intersection of entities with mouse ray */
 		//TODO: make class for control
 		if (MouseGame.isOncePressed(MouseGame.LEFT_CLICK)) {	
-			EntityInterface pointedEntity = scene.getPicker().chooseObjectByRay(scene);
+			Entity pointedEntity = scene.getPicker().chooseObjectByRay(scene);
 			if(pointedEntity != null) {
 				scene.getEntities().addPointed(pointedEntity);
 			}		

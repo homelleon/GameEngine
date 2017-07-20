@@ -3,7 +3,7 @@ package bodies;
 import org.lwjgl.util.vector.Vector3f;
 
 import intersects.IntersectData;
-import object.entity.entity.EntityInterface;
+import object.entity.entity.Entity;
 
 public abstract class BodyBasic {
 	
@@ -13,7 +13,7 @@ public abstract class BodyBasic {
 	protected float vertex [][][];
 	protected Vector3f position;
 	protected Vector3f speed;
-	protected EntityInterface entity;
+	protected Entity entity;
 	protected boolean entityAttached = false;
 	
 	protected BodyBasic(Vector3f position, float size) {
@@ -57,13 +57,13 @@ public abstract class BodyBasic {
 		return this.entityAttached;
 	}
 	
-	protected void attachEntity(EntityInterface entity) {
+	protected void attachEntity(Entity entity) {
 		this.entity = entity;
 		this.entityAttached = true;
 		this.position = entity.getPosition();
 	}
 	
-	protected EntityInterface getEntity() {
+	protected Entity getEntity() {
 		return entity;
 	}
 	

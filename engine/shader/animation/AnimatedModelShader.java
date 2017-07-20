@@ -4,7 +4,6 @@ import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 
 import core.settings.EngineSettings;
-import object.light.Light;
 import renderer.object.animation.AnimatedModelRenderer;
 import shader.ShaderProgram;
 

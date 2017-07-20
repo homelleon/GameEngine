@@ -12,7 +12,9 @@ import core.settings.EngineSettings;
 import object.audio.source.AudioSourceInterface;
 import object.camera.CameraInterface;
 import object.entity.entity.Entity;
-import object.entity.entity.EntityInterface;
+import object.entity.entity.EntityBuilder;
+import object.entity.entity.TexturedEntity;
+import object.entity.entity.TexturedEntityBuilder;
 import object.entity.player.PlayerInterface;
 import object.gui.texture.GUITexture;
 import object.light.Light;
@@ -28,7 +30,7 @@ import tool.EngineUtils;
 public class ModelMap {
 	
 	private String name;
-	private Map<String, EntityInterface> entities = new WeakHashMap<String, EntityInterface>();
+	private Map<String, Entity> entities = new WeakHashMap<String, Entity>();
 	private Map<String, TerrainInterface> terrains = new WeakHashMap<String, TerrainInterface>();
 	private Map<String, AudioSourceInterface> audioSorces = new WeakHashMap<String, AudioSourceInterface>();
 	private Map<String, Trigger> triggers = new WeakHashMap<String, Trigger>();
@@ -55,17 +57,17 @@ public class ModelMap {
 	 * 
 	 */
 
-	public Map<String, EntityInterface> getEntities() {
+	public Map<String, Entity> getEntities() {
 		return entities;
 	}
 
-	public void setEntities(Collection<EntityInterface> entities) {
-		for(EntityInterface entity : entities) {
+	public void setEntities(Collection<Entity> entities) {
+		for(Entity entity : entities) {
 			this.entities.put(entity.getName(), entity);
 		}
 	}
 	
-	public void addEntity(EntityInterface entity) {
+	public void addEntity(Entity entity) {
 		this.entities.put(entity.getName(), entity);
 	}
 	
@@ -266,9 +268,10 @@ public class ModelMap {
 
 
 	
-	public void createEntity(String name, String model, String texName, Vector3f position, float rotX, float rotY, float rotZ, float scale) {
-		TexturedModel staticModel = EngineUtils.loadStaticModel(model, texName, loader);
-		Entity entity = new Entity(name, staticModel, position, rotX, rotY, rotZ, scale);
+	public void createEntity(String name, String model, String texName, Vector3f position, Vector3f rotation, float scale) {
+		EntityBuilder builder = new TexturedEntityBuilder();
+		builder.setModel(model).setTexture(texName).setPosition(position).setRotation(rotation).setScale(scale);
+		Entity entity = builder.createEntity(name);
 		this.entities.put(name, entity);
 	}
 	
@@ -276,7 +279,7 @@ public class ModelMap {
 		TexturedModel staticModel = EngineUtils.loadNormalModel(name, texName, normal, specular, loader);
 		staticModel.getTexture().setShineDamper(shine);
 		staticModel.getTexture().setReflectivity(reflectivity);
-		Entity entity = new Entity(name, EngineSettings.ENTITY_TYPE_NORMAL, staticModel, position, rotX, rotY, rotZ, scale);
+		TexturedEntity entity = new TexturedEntity(name, EngineSettings.ENTITY_TYPE_NORMAL, staticModel, position, rotX, rotY, rotZ, scale);
 		this.entities.put(name, entity);
 	}
 	

@@ -8,7 +8,7 @@ import java.util.Map;
 import org.lwjgl.util.vector.Vector3f;
 
 import core.settings.EngineSettings;
-import object.entity.entity.EntityInterface;
+import object.entity.entity.Entity;
 import object.model.TexturedModel;
 import object.terrain.terrain.TerrainInterface;
 import renderer.viewCulling.frustum.Frustum;
@@ -21,15 +21,15 @@ public class SceneProcessor implements SceneProcessorInterface {
 	}
 	
 	@Override
-	public void processEntity(EntityInterface entity, 
-			Map<TexturedModel, List<EntityInterface>> entities, Frustum frustum) {
+	public void processEntity(Entity entity, 
+			Map<TexturedModel, List<Entity>> entities, Frustum frustum) {
 		if(checkVisibility(entity, frustum)) {
 			TexturedModel entityModel = entity.getModel();
-			List<EntityInterface> batch = entities.get(entityModel);
+			List<Entity> batch = entities.get(entityModel);
 			if(batch!=null) {
 				batch.add(entity);	
 			}else{
-				List<EntityInterface> newBatch = new ArrayList<EntityInterface>();
+				List<Entity> newBatch = new ArrayList<Entity>();
 				newBatch.add(entity);
 				entities.put(entityModel, newBatch);		
 			}
@@ -37,16 +37,16 @@ public class SceneProcessor implements SceneProcessorInterface {
 	}
 	
 	@Override
-	public void processNormalMapEntity(EntityInterface entity, 
-			Map<TexturedModel, List<EntityInterface>> normalMapEntities, 
+	public void processNormalMapEntity(Entity entity, 
+			Map<TexturedModel, List<Entity>> normalMapEntities, 
 			Frustum frustum) {
 		if(checkVisibility(entity, frustum)) {
 			TexturedModel entityModel = entity.getModel();
-			List<EntityInterface> batch = normalMapEntities.get(entityModel);
+			List<Entity> batch = normalMapEntities.get(entityModel);
 			if(batch!=null) {
 				batch.add(entity);	
 			}else{
-				List<EntityInterface> newBatch = new ArrayList<EntityInterface>();
+				List<Entity> newBatch = new ArrayList<Entity>();
 				newBatch.add(entity);
 				normalMapEntities.put(entityModel, newBatch);	
 			}
@@ -54,15 +54,15 @@ public class SceneProcessor implements SceneProcessorInterface {
 	}
 	
 	@Override	
-	public void processShadowEntity(EntityInterface entity,
-			Map<TexturedModel, List<EntityInterface>> entities, Frustum frustum) {
+	public void processShadowEntity(Entity entity,
+			Map<TexturedModel, List<Entity>> entities, Frustum frustum) {
 		if(checkShadowVisibility(entity, frustum)) {
 			TexturedModel entityModel = entity.getModel();
-			List<EntityInterface> batch = entities.get(entityModel);
+			List<Entity> batch = entities.get(entityModel);
 			if(batch!=null) {
 				batch.add(entity);	
 			}else{
-				List<EntityInterface> newBatch = new ArrayList<EntityInterface>();
+				List<Entity> newBatch = new ArrayList<Entity>();
 				newBatch.add(entity);
 				entities.put(entityModel, newBatch);		
 			}
@@ -70,22 +70,22 @@ public class SceneProcessor implements SceneProcessorInterface {
 	}
 
 	@Override
-	public void processShadowNormalMapEntity(EntityInterface entity, 
-			Map<TexturedModel, List<EntityInterface>> normalMapEntities, Frustum frustum) {
+	public void processShadowNormalMapEntity(Entity entity, 
+			Map<TexturedModel, List<Entity>> normalMapEntities, Frustum frustum) {
 		if(checkShadowVisibility(entity, frustum)) {
 			TexturedModel entityModel = entity.getModel();
-			List<EntityInterface> batch = normalMapEntities.get(entityModel);
+			List<Entity> batch = normalMapEntities.get(entityModel);
 			if(batch!=null) {
 				batch.add(entity);	
 			}else{
-				List<EntityInterface> newBatch = new ArrayList<EntityInterface>();
+				List<Entity> newBatch = new ArrayList<Entity>();
 				newBatch.add(entity);
 				normalMapEntities.put(entityModel, newBatch);	
 			}
 		}
 	}
 	
-	private boolean checkVisibility(EntityInterface entity, Frustum frustum) {
+	private boolean checkVisibility(Entity entity, Frustum frustum) {
 		boolean isVisible = false;
 		float distance = frustum.distanceSphereInFrustum(entity.getPosition(), entity.getSphereRadius());
 		if (distance > 0 && distance <= EngineSettings.RENDERING_VIEW_DISTANCE) {
@@ -94,7 +94,7 @@ public class SceneProcessor implements SceneProcessorInterface {
 		return isVisible;
 	}
 
-	private boolean checkShadowVisibility(EntityInterface entity, Frustum frustum) {
+	private boolean checkShadowVisibility(Entity entity, Frustum frustum) {
 		boolean isVisible = false;
 		Vector3f position = new Vector3f(entity.getPosition().x, 0, entity.getPosition().z);
 		float distance = frustum.distanceSphereInFrustum(position, entity.getSphereRadius());

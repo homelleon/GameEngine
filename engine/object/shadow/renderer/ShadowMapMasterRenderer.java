@@ -11,7 +11,7 @@ import org.lwjgl.util.vector.Vector3f;
 
 import core.settings.EngineSettings;
 import object.camera.CameraInterface;
-import object.entity.entity.EntityInterface;
+import object.entity.entity.Entity;
 import object.light.Light;
 import object.model.TexturedModel;
 import object.shadow.ShadowBox;
@@ -76,7 +76,7 @@ public class ShadowMapMasterRenderer {
 	 * @param sun
 	 *            - the light acting as the sun in the scene.
 	 */
-	public void render(Map<TexturedModel, List<EntityInterface>> entities, Collection <TerrainInterface> terrains, Map<TexturedModel, List<EntityInterface>> normalMapEntities, Light sun, CameraInterface camera) {
+	public void render(Map<TexturedModel, List<Entity>> entities, Collection <TerrainInterface> terrains, Map<TexturedModel, List<Entity>> normalMapEntities, Light sun, CameraInterface camera) {
 		shadowBox.update();
 		Vector3f sunPosition = sun.getPosition();
 		Vector3f lightDirection = new Vector3f(-sunPosition.x, -sunPosition.y, -sunPosition.z);

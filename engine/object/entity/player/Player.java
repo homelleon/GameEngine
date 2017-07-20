@@ -8,13 +8,13 @@ import org.lwjgl.util.vector.Vector3f;
 
 import core.display.DisplayManager;
 import core.settings.EngineSettings;
-import object.entity.entity.Entity;
+import object.entity.entity.TexturedEntity;
 import object.input.KeyboardGame;
 import object.input.MouseGame;
 import object.model.TexturedModel;
 import object.terrain.terrain.TerrainInterface;
 
-public class Player extends Entity implements PlayerInterface {
+public class Player extends TexturedEntity implements PlayerInterface {
 	
 	private static final float MOVE_SPEED = 20;
 	private static final float RUN_SPEED = 100;
@@ -29,8 +29,8 @@ public class Player extends Entity implements PlayerInterface {
 	public boolean isInAir = false;
 	
 	
-	public Player(String name, TexturedModel model, Vector3f position, float rotX, float rotY, float rotZ, float scale) {
-		super(name, model, position, rotX, rotY, rotZ, scale);
+	public Player(String name, TexturedModel model, Vector3f position, Vector3f rotation, float scale) {
+		super(name, model, position, rotation, scale);
 	}
 	
 	public void move(Collection<TerrainInterface> terrains) {

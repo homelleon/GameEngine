@@ -5,7 +5,7 @@ import java.util.Collection;
 import java.util.List;
 
 import object.camera.CameraInterface;
-import object.entity.entity.EntityInterface;
+import object.entity.entity.Entity;
 import object.terrain.terrain.TerrainInterface;
 
 public class CullingTerrainHeight implements Culling {
@@ -19,7 +19,7 @@ public class CullingTerrainHeight implements Culling {
 	}
 
 	@Override
-	public Boolean getVisibility(EntityInterface entity) {
+	public Boolean getVisibility(Entity entity) {
 		Boolean isVisible = false;
 		
 		return isVisible;

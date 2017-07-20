@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import core.settings.EngineSettings;
-import object.entity.entity.EntityInterface;
+import object.entity.entity.Entity;
 import object.terrain.terrain.TerrainInterface;
 import renderer.loader.Loader;
 import tool.xml.XMLUtils;
@@ -78,7 +78,7 @@ public class ModelMapXMLWriter implements ModelMapWriterInterface {
 			System.out.println("Saving entities...");
 			if (!map.getEntities().isEmpty()) {
 				lines.add(XMLUtils.getBeginTag(XMLUtils.ENTITIES, 1));
-				for(EntityInterface entity : map.getEntities().values()) {
+				for(Entity entity : map.getEntities().values()) {
 					lines.add(XMLUtils.getBeginTag(XMLUtils.ENTITY, 2));
 					String name = String.valueOf(entity.getName());
 					String model = String.valueOf(entity.getModel().getName());					

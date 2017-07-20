@@ -15,7 +15,7 @@ import org.lwjgl.util.vector.Vector4f;
 import core.debug.EngineDebug;
 import core.settings.EngineSettings;
 import object.camera.CameraInterface;
-import object.entity.entity.EntityInterface;
+import object.entity.entity.Entity;
 import object.light.Light;
 import object.model.TexturedModel;
 import object.scene.scene.SceneInterface;
@@ -61,8 +61,8 @@ public class MainRenderer implements MainRendererInterface{
 	private boolean environmentRendered = false;
 	
 	
-	private Map<TexturedModel, List<EntityInterface>> entities = new HashMap<TexturedModel, List<EntityInterface>>();
-	private Map<TexturedModel, List<EntityInterface>> normalMapEntities = new HashMap<TexturedModel, List<EntityInterface>>();
+	private Map<TexturedModel, List<Entity>> entities = new HashMap<TexturedModel, List<Entity>>();
+	private Map<TexturedModel, List<Entity>> normalMapEntities = new HashMap<TexturedModel, List<Entity>>();
 	private Collection<TerrainInterface> terrains = new ArrayList<TerrainInterface>(); 
 		
 	public MainRenderer(Loader loader, CameraInterface camera) {
@@ -94,7 +94,7 @@ public class MainRenderer implements MainRendererInterface{
 			processor.processTerrain(terrain, terrains);
 		}		
 			
-		for (EntityInterface entity : scene.getEntities().getAll()) {
+		for (Entity entity : scene.getEntities().getAll()) {
 			if(entity.getType() == EngineSettings.ENTITY_TYPE_SIMPLE) {
 				processor.processEntity(entity, entities, frustum);
 			} else if(entity.getType() == EngineSettings.ENTITY_TYPE_NORMAL) {
@@ -137,7 +137,7 @@ public class MainRenderer implements MainRendererInterface{
 	}
 	
 	@Override
-	public void renderLowQualityScene(Map<TexturedModel, List<EntityInterface>> entities, Collection<TerrainInterface> terrains, Collection<Light> lights, CameraInterface camera) {
+	public void renderLowQualityScene(Map<TexturedModel, List<Entity>> entities, Collection<TerrainInterface> terrains, Collection<Light> lights, CameraInterface camera) {
 		entityRenderer.renderLow(entities, lights, camera);
 		terrainRenderer.renderLow(terrains, lights, camera);
 		skyboxRenderer.render(camera);
@@ -145,7 +145,7 @@ public class MainRenderer implements MainRendererInterface{
 	
 	@Override
 	public void renderShadowMap(SceneInterface scene) {
-		for(EntityInterface entity : scene.getEntities().getAll()) {
+		for(Entity entity : scene.getEntities().getAll()) {
 			if(entity.getType() == EngineSettings.ENTITY_TYPE_SIMPLE) {
 				processor.processShadowEntity(entity, entities, frustum);
 			} else if(entity.getType() == EngineSettings.ENTITY_TYPE_NORMAL) {
@@ -216,10 +216,10 @@ public class MainRenderer implements MainRendererInterface{
 	}
 	
 	@Override
-	public Collection<EntityInterface> createFrustumEntities(SceneInterface scene) {
+	public Collection<Entity> createFrustumEntities(SceneInterface scene) {
 		frustum.extractFrustum(scene.getCamera(), projectionMatrix);
-		List<EntityInterface> frustumEntities = new ArrayList<EntityInterface>();
-		for (EntityInterface entity : scene.getEntities().getAll()) {
+		List<Entity> frustumEntities = new ArrayList<Entity>();
+		for (Entity entity : scene.getEntities().getAll()) {
 			if (frustum.sphereInFrustum(entity.getPosition(), entity.getSphereRadius())) {
 				frustumEntities.add(entity);
 			}

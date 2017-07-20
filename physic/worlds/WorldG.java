@@ -5,7 +5,7 @@ import java.util.WeakHashMap;
 import org.lwjgl.util.vector.Vector3f;
 
 import bodies.BodyInterface;
-import object.entity.entity.EntityInterface;
+import object.entity.entity.Entity;
 import bodies.Body2DCircle;
 import bodies.Body2DPlane;
 import bodies.Body2DQuad;
@@ -52,7 +52,7 @@ public class WorldG extends WorldB implements WorldInterface {
 	}
 	
 	@Override
-	public int attachToEntity(EntityInterface entity, int bodyType) {
+	public int attachToEntity(Entity entity, int bodyType) {
 		BodyInterface body = null;
 		switch(bodyType) {
 			case PE10.BODY_2D_CIRCLE: 

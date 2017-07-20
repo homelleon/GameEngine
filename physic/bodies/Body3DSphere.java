@@ -6,7 +6,7 @@ import java.util.List;
 import org.lwjgl.util.vector.Vector3f;
 
 import intersects.IntersectData;
-import object.entity.entity.EntityInterface;
+import object.entity.entity.Entity;
 import physicMain.PE10;
 import tool.math.Maths;
 
@@ -42,11 +42,11 @@ public class Body3DSphere extends BodyBasic implements BodyInterface {
 		super.update();
 	}
 	
-	public void attachEntity(EntityInterface entity) {
+	public void attachEntity(Entity entity) {
 		super.attachEntity(entity);
 	}
 	
-	public EntityInterface getEntity() {
+	public Entity getEntity() {
 		return super.getEntity();
 	}
 	

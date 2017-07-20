@@ -12,7 +12,7 @@ import org.lwjgl.util.vector.Vector4f;
 
 import core.settings.EngineSettings;
 import object.camera.CameraInterface;
-import object.entity.entity.EntityInterface;
+import object.entity.entity.Entity;
 import object.scene.scene.SceneInterface;
 import tool.math.Maths;
 
@@ -237,11 +237,11 @@ public class MousePicker {
 		return new Vector2f(x, y);
 	}
 	
-	public EntityInterface chooseObjectByRay(SceneInterface scene) {
-		EntityInterface pickedEntity = null;
-		List<EntityInterface> pointedEntities = new ArrayList<EntityInterface>();
-		for(List<EntityInterface> frustumList : scene.getEntities().getFromFrustum().values()) {
-			for (EntityInterface entity : frustumList) {
+	public Entity chooseObjectByRay(SceneInterface scene) {
+		Entity pickedEntity = null;
+		List<Entity> pointedEntities = new ArrayList<Entity>();
+		for(List<Entity> frustumList : scene.getEntities().getFromFrustum().values()) {
+			for (Entity entity : frustumList) {
 				if (intersects(entity.getPosition(), entity.getSphereRadius())) {
 					Vector3f min = entity.getModel().getRawModel().getBBox().getMin();
 					Vector3f max = entity.getModel().getRawModel().getBBox().getMax();

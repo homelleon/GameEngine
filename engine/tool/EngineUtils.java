@@ -5,11 +5,10 @@ import java.util.List;
 import java.util.Random;
 
 import org.lwjgl.util.vector.Vector3f;
-import org.w3c.dom.Node;
 
 import core.settings.EngineSettings;
 import object.entity.entity.Entity;
-import object.entity.entity.EntityInterface;
+import object.entity.entity.TexturedEntity;
 import object.model.RawModel;
 import object.model.TexturedModel;
 import object.terrain.terrain.Terrain;
@@ -25,7 +24,8 @@ import tool.converter.object.OBJFileLoader;
 public class EngineUtils {
 	
 	public static TexturedModel loadStaticModel(String objFile, 
-			String texName, Loader loader) {
+			String texName) {
+		Loader loader = Loader.getInstance();
 		ModelData data = OBJFileLoader.loadOBJ(objFile);
 		RawModel rawModel = loader.loadToVAO(data.getVertices(), 
 				data.getTextureCoords(), data.getNormals(), 
@@ -35,7 +35,8 @@ public class EngineUtils {
 	    return staticModel;
 	}
 	
-	public static TexturedModel loadNormalModel(String objFile, String texName, String normalTexture, String specularTexture, Loader loader) {
+	public static TexturedModel loadNormalModel(String objFile, String texName, String normalTexture, String specularTexture) {
+		Loader loader = Loader.getInstance();
 		RawModel rawModel = NormalMappedObjLoader.loadOBJ(objFile, loader);
 		ModelTexture texture = new ModelTexture(loader.loadTexture(EngineSettings.TEXTURE_MODEL_PATH,"barrel"));
 		TexturedModel model = new TexturedModel(objFile, rawModel, texture);
@@ -43,7 +44,6 @@ public class EngineUtils {
 		model.getTexture().setNormalMap(normaMap);
 		model.getTexture().setShineDamper(10);
 		model.getTexture().setReflectivity(0.5f);
-		System.out.println(specularTexture);
 		//TODO: настроить проверку на нуль
 		if(specularTexture != null) {
 			int specularMap = loader.loadTexture(EngineSettings.TEXTURE_SPECULAR_MAP_PATH, specularTexture);
@@ -53,11 +53,11 @@ public class EngineUtils {
 	}
 	
 	
-	public static List<EntityInterface> createGrassField(float x, float z, float r, float sizeNoise, 
+	public static List<Entity> createGrassField(float x, float z, float r, float sizeNoise, 
 			float density, Loader loader) {
 		//TODO: Noise - better using
 		
-		TexturedModel grass = loadStaticModel("grassObject","grassObjAtlas", loader);
+		TexturedModel grass = loadStaticModel("grassObject","grassObjAtlas");
 		int texIndex = 4;
 		grass.getTexture().setNumberOfRows(2);
 		grass.getTexture().setShineDamper(1);
@@ -70,16 +70,16 @@ public class EngineUtils {
 		r = r*density;
 		density = 1/density;
 		Random random = new Random();
-		List<EntityInterface>grasses = new ArrayList<EntityInterface>();
+		List<Entity>grasses = new ArrayList<Entity>();
 		for(Integer j = 0; j < r; j++) {
 			for(Integer i = 0; i < r; i++) {
 				sizeNoise = 1 + 2*(float) random.nextDouble();
-				EntityInterface grassEntity = new Entity("Grass" + 
+				Entity grassEntity = new TexturedEntity("Grass" + 
 				String.valueOf(i) + "/" + String.valueOf(j), 
 				EngineSettings.ENTITY_TYPE_DETAIL, grass, texIndex, 
 						new Vector3f(x + density*i, 0, z + density*j), 0, 0, 0, sizeNoise);
 				grasses.add(grassEntity);
-				EntityInterface grassEntity1 = new Entity("Grass" + 
+				Entity grassEntity1 = new TexturedEntity("Grass" + 
 				String.valueOf(i) + "/" + String.valueOf(j), 
 				EngineSettings.ENTITY_TYPE_DETAIL, grass, texIndex, 
 						new Vector3f((float) (x + density*i), 0, 
@@ -145,7 +145,7 @@ public class EngineUtils {
 		return terrain;
 	}
 	
-	public static void createForest(List<Entity> forest, float x, float y, float r, float noise){
+	public static void createForest(List<TexturedEntity> forest, float x, float y, float r, float noise){
 		
 	}	
 

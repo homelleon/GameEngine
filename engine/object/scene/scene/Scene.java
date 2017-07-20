@@ -10,7 +10,7 @@ import object.audio.manager.AudioManagerInterface;
 import object.audio.master.AudioMaster;
 import object.audio.master.AudioMasterInterface;
 import object.camera.CameraInterface;
-import object.entity.entity.EntityInterface;
+import object.entity.entity.Entity;
 import object.entity.manager.EntityManager;
 import object.entity.manager.EntityManagerInterface;
 import object.entity.player.PlayerInterface;
@@ -220,9 +220,9 @@ public class Scene implements SceneInterface {
 	
 	
 	@Override
-	public void spreadEntitiesOnHeights(Collection<EntityInterface> entityList) {
+	public void spreadEntitiesOnHeights(Collection<Entity> entityList) {
 		if (!entityList.isEmpty()) {
-			for(EntityInterface entity : entityList) {
+			for(Entity entity : entityList) {
 				float terrainHeight = 0;
 				
 				for(TerrainInterface terrain : this.terrainManager.getAll()) {

@@ -5,7 +5,7 @@ import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
 import object.camera.CameraInterface;
-import object.entity.entity.EntityInterface;
+import object.entity.entity.Entity;
 import object.terrain.terrain.TerrainInterface;
 
 public class Maths {
@@ -107,7 +107,7 @@ public class Maths {
 	}
 	
 	/* distance from camera to entity  */
-	public static float distanceFromCamera(EntityInterface entity, CameraInterface camera) {
+	public static float distanceFromCamera(Entity entity, CameraInterface camera) {
 	    return distance2Points(entity.getPosition(), camera.getPosition());
 	}	
 	

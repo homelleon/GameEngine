@@ -3,7 +3,7 @@ package bodies;
 import org.lwjgl.util.vector.Vector3f;
 
 import intersects.IntersectData;
-import object.entity.entity.EntityInterface;
+import object.entity.entity.Entity;
 import physicMain.PE10;
 
 public class Body3DCube extends BodyBasic implements BodyInterface {
@@ -30,11 +30,11 @@ public class Body3DCube extends BodyBasic implements BodyInterface {
 		return super.getMass();
 	}
 	
-	public void attachEntity(EntityInterface entity) {
+	public void attachEntity(Entity entity) {
 		super.attachEntity(entity);
 	}
 	
-	public EntityInterface getEntity() {
+	public Entity getEntity() {
 		return super.getEntity();
 	}
 	

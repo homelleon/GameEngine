@@ -39,8 +39,8 @@ public class SceneManager implements SceneManagerInterface {
 	@Override
 	public void init(SceneInterface scene, Loader loader) {	
 		/*------------------PLAYER-----------------*/
-		TexturedModel cubeModel = EngineUtils.loadStaticModel("cube", "cube1", loader);
-		PlayerInterface player1 = new Player(playerName,cubeModel, new Vector3f(100, 0, 10), 0, 0, 0, 1);
+		TexturedModel cubeModel = EngineUtils.loadStaticModel("cube", "cube1");
+		PlayerInterface player1 = new Player(playerName, cubeModel, new Vector3f(100, 0, 10), new Vector3f(0,0,0), 1);
 		player1.getModel().getTexture().setReflectiveFactor(1.0f);
 		player1.getModel().getTexture().setRefractiveFactor(1.0f);
 		player1.getModel().getTexture().setRefractiveIndex(1.33f);

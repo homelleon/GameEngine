@@ -1,6 +1,6 @@
 package object.voxel.octree;
 
-import object.entity.entity.EntityInterface;
+import object.entity.entity.Entity;
 
 public class Node {
 	
@@ -9,7 +9,7 @@ public class Node {
 	private boolean hasChildren = false;
 	private Node[] childrens;
 	private float scale;
-	private EntityInterface entity;
+	private Entity entity;
 	
 	public Node(float scale, Node parent, boolean hasChildren) {
 		this.scale = scale;
@@ -63,7 +63,7 @@ public class Node {
 		return isCanBeScaled;
 	}
 	
-	public void setEntity(EntityInterface entity) {
+	public void setEntity(Entity entity) {
 		this.entity = entity;
 	}
 

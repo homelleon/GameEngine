@@ -4,7 +4,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import object.entity.entity.EntityInterface;
+import object.entity.entity.Entity;
 import renderer.viewCulling.frustum.Frustum;
 
 /**
@@ -20,73 +20,73 @@ public interface EntityManagerInterface {
 	 * Add entity list into entity array.
 	 * 
 	 * @param entityList
-	 * 					 {@link Collection}<{@link EntityInterface}> value of 
-	 * 					 {@link EntityInterface} list 
-	 * @see #add(EntityInterface)
+	 * 					 {@link Collection}<{@link Entity}> value of 
+	 * 					 {@link Entity} list 
+	 * @see #add(Entity)
 	 * @see #getAll()
 	 * @see #getByName(String)
 	 */
-	void addAll(Collection<EntityInterface> entityList);
+	void addAll(Collection<Entity> entityList);
 	
 	/**
 	 * Add list of entities chosen by player.
 	 * 
 	 * @param pointedList
-	 * 					  {@link Collection}<{@link EntityInterface}> value of
-	 * 					  {@link EntityInterface} list
+	 * 					  {@link Collection}<{@link Entity}> value of
+	 * 					  {@link Entity} list
 	 * 
 	 * @see #addAll(Collection)
-	 * @see #add(EntityInterface)
+	 * @see #add(Entity)
 	 * @see #getAll()
 	 * @see #getByName(String)
 	 */
-	void addPointedList(Collection<EntityInterface> pointedList);
+	void addPointedList(Collection<Entity> pointedList);
 	
 	/**
 	 * Set default entities for editor list. 
 	 * 
 	 * @param editorList
-	 * 					 {@link Collection}<{@link EntityInterface}> value of 
-	 * 					 {@link EntityInterface} list
-	 * @see #addForEditor(EntityInterface)
+	 * 					 {@link Collection}<{@link Entity}> value of 
+	 * 					 {@link Entity} list
+	 * @see #addForEditor(Entity)
 	 * 
 	 */
-	void setEditorList(List<EntityInterface> editorList);
+	void setEditorList(List<Entity> editorList);
 	
 	/**
 	 * Add map of entitiese into the array of entities chosen by frustum 
 	 * culling. 
 	 * 
-	 * @param frustumMap {@link Map}<{@link Float}, {@link List}<{@link EntityInterface}>>
+	 * @param frustumMap {@link Map}<{@link Float}, {@link List}<{@link Entity}>>
 	 * 					 value of frustum culled entities 
-	 * @see #addForEditor(EntityInterface)
+	 * @see #addForEditor(Entity)
 	 * @see #getForEditor()
 	 */
-	void addFrustumMap(Map<Float, List<EntityInterface>> frustumMap);
+	void addFrustumMap(Map<Float, List<Entity>> frustumMap);
 	
 	/**
 	 * Add one entity in entity array.
 	 * 
 	 * @param entity
-	 * 				 {@link EntityInterface} value
+	 * 				 {@link Entity} value
 	 */
-	void add(EntityInterface entity); 
+	void add(Entity entity); 
 	
 	/**
 	 * Add one entity chosen by player into the pointed entity array.
 	 * 
 	 * @param entity
-	 * 				 {@link EntityInterface} value
+	 * 				 {@link Entity} value
 	 */
-	void addPointed(EntityInterface entity);
+	void addPointed(Entity entity);
 	
 	/**
 	 * Add one entity in array of default entities for editor menu.
 	 * 
 	 * @param entity
-	 * 				 {@link EntityInterface} value
+	 * 				 {@link Entity} value
 	 */
-	void addForEditor(EntityInterface entity);
+	void addForEditor(Entity entity);
 	
 	/**
 	 * Add one entity into the entity array chosen by frustum culling.
@@ -94,9 +94,9 @@ public interface EntityManagerInterface {
 	 * @param distance
 	 * 				   {@link Float} value of distance from camera to entity
 	 * @param entity
-	 * 				   {@link EntityInterface} value
+	 * 				   {@link Entity} value
 	 */
-	void addInFrustum(float distance, EntityInterface entity);
+	void addInFrustum(float distance, Entity entity);
 	
 	/**
 	 * Update entity array using frustum culling technic. 
@@ -111,46 +111,46 @@ public interface EntityManagerInterface {
 	 * 
 	 * @param name
 	 * 			   String value of entity's name
-	 * @return     {@link EntityInterface} value of chosen entity
+	 * @return     {@link Entity} value of chosen entity
 	 */
-	EntityInterface getByName(String name);
+	Entity getByName(String name);
 	
 	/**
 	 * Returns all entities in array list.
 	 *  
-	 * @return {@link Collection}<{@link EntityInterface}> value of entity list 
+	 * @return {@link Collection}<{@link Entity}> value of entity list 
 	 */
-	Collection<EntityInterface> getAll();
+	Collection<Entity> getAll();
 	
 	/**
 	 * Returns map of entities chosen by frustum culling.  
 	 * 
-	 * @return {@link Map}<{@link Float},{@link List}<{@link EntityInterface}>> value of
+	 * @return {@link Map}<{@link Float},{@link List}<{@link Entity}>> value of
 	 * 		   entities chosen by frustum culling.
 	 */
-	Map<Float, List<EntityInterface>> getFromFrustum();
+	Map<Float, List<Entity>> getFromFrustum();
 	
 	/**
 	 * Returns list of entities chosen by player.
 	 * 
-	 * @return {@link List}<{@link EntityInterface}> value of entities chosen by player
+	 * @return {@link List}<{@link Entity}> value of entities chosen by player
 	 */
-	List<EntityInterface> getPointed();
+	List<Entity> getPointed();
 	
 	/**
 	 * Returns list of default entities for editor menu.
 	 *  
-	 * @return {@link List}<{@link EntityInterface}> value of entities for editor menu
+	 * @return {@link List}<{@link Entity}> value of entities for editor menu
 	 */
-	List<EntityInterface> getForEditor();
+	List<Entity> getForEditor();
 	
 	/**
 	 * Returns entity of defalut entity from entity array for editor menu
 	 * chosen by its index.
 	 * 
-	 * @return {@link EntityInterface} value
+	 * @return {@link Entity} value
 	 */
-	EntityInterface getForEditorByIndex(int index);
+	Entity getForEditorByIndex(int index);
 	
 	/**
 	 * Clear array of entities chosen by player.

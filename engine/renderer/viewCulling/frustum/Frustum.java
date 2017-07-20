@@ -9,12 +9,12 @@ import org.lwjgl.util.vector.Vector3f;
 
 import core.settings.EngineSettings;
 import object.camera.CameraInterface;
-import object.entity.entity.EntityInterface;
+import object.entity.entity.Entity;
 import tool.math.Maths;
 
 public class Frustum {
 	
-	private Collection<EntityInterface> entities = new ArrayList<EntityInterface>(); 
+	private Collection<Entity> entities = new ArrayList<Entity>(); 
 	private float[][] plane = new float[6][4];
 		
 	public void extractFrustum(CameraInterface camera, Matrix4f projectionMatrix) {
@@ -163,9 +163,9 @@ public class Frustum {
 		return distance;
 	} 	
 
-	public List<EntityInterface> updateFrustumEntities(Collection<EntityInterface> entities) {
-		List<EntityInterface> frustumEntities = new ArrayList<EntityInterface>(); 
-		for(EntityInterface entity : entities) {
+	public List<Entity> updateFrustumEntities(Collection<Entity> entities) {
+		List<Entity> frustumEntities = new ArrayList<Entity>(); 
+		for(Entity entity : entities) {
 			float distance;
 			distance = distanceSphereInFrustum(entity.getPosition(), entity.getSphereRadius());
 			if(distance > 0 && distance <= EngineSettings.RENDERING_VIEW_DISTANCE) {
@@ -175,7 +175,7 @@ public class Frustum {
 		return frustumEntities;
 	}
 	
-	public Collection<EntityInterface> getEntities() {
+	public Collection<Entity> getEntities() {
 		return this.entities;
 	}
 

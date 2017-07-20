@@ -12,7 +12,7 @@ import tool.xml.XMLUtils;
 public class LevelMapXMLParser implements LevelMapParserInterface {
 
 	@Override
-	public LevelMapInterface readMap(String fileName, BufferedReader reader, Loader loader) {
+	public LevelMapInterface readMap(String fileName, BufferedReader reader) {
 		String line;
 		 /* entities */
 		List<String> eNames = new ArrayList<String>();
@@ -45,7 +45,7 @@ public class LevelMapXMLParser implements LevelMapParserInterface {
         	System.err.println("Error reading the file");
         }     
         
-        LevelMapInterface map = new LevelMap(loader);
+        LevelMapInterface map = new LevelMap();
 	        
         for(int i = 0; i < eNames.size(); i++) {
         	switch(eTypesString.get(i)) {

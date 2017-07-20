@@ -13,7 +13,7 @@ import org.lwjgl.util.vector.Vector4f;
 
 import core.settings.EngineSettings;
 import object.camera.CameraInterface;
-import object.entity.entity.EntityInterface;
+import object.entity.entity.Entity;
 import object.light.Light;
 import object.model.RawModel;
 import object.model.TexturedModel;
@@ -33,7 +33,7 @@ import tool.openGL.OGLUtils;
  * @author homelleon
  * @version 1.0
  * 
- * @see EntityInterface
+ * @see Entity
  * @see MainRendererInterface
  */
 public class EntityRenderer {
@@ -65,7 +65,7 @@ public class EntityRenderer {
 	 * per indicies rendering engine.
 	 * 
 	 * @param entities
-	 * 							- map of {@link EntityInterface} list with {@link TexturedModel}
+	 * 							- map of {@link Entity} list with {@link TexturedModel}
 	 * 							key that have to be rendered
 	 * @param clipPlane
 	 * 							- {@link Vector4f} plane that clipps scene
@@ -81,12 +81,12 @@ public class EntityRenderer {
 	 * 							- {@link Texture} value of reflection map to render
 	 * 							at reflecting objects
 	 * 
-	 * @see EntityInterface
+	 * @see Entity
 	 * @see Light
 	 * @see CameraInterface
 	 * @see Texture
 	 */
-	public void render(Map<TexturedModel, List<EntityInterface>> entities, 
+	public void render(Map<TexturedModel, List<Entity>> entities, 
 			Vector4f clipPlane, Collection<Light> lights, CameraInterface camera, 
 			Matrix4f toShadowMapSpace, Texture environmentMap) {
 		this.environmentMap = environmentMap;
@@ -100,8 +100,8 @@ public class EntityRenderer {
 		shader.loadShadowVariables(EngineSettings.SHADOW_DISTANCE, EngineSettings.SHADOW_MAP_SIZE, EngineSettings.SHADOW_TRANSITION_DISTANCE, EngineSettings.SHADOW_PCF);
 		for(TexturedModel model : entities.keySet()) {
 			prepareTexturedModel(model);
-			List<EntityInterface> batch = entities.get(model);
-			for(EntityInterface entity : batch) {
+			List<Entity> batch = entities.get(model);
+			for(Entity entity : batch) {
 					prepareInstance(entity);
 					GL11.glDrawElements(GL11.GL_TRIANGLES, model.getRawModel().getVertexCount(), 
 							GL11.GL_UNSIGNED_INT, 0);
@@ -117,7 +117,7 @@ public class EntityRenderer {
 	 * shader uniforms and OpenGL per indicies rendering engine 
 	 * 	 
 	 * @param entities
-	 * 					- map of {@link EntityInterface} list with {@link TexturedModel}
+	 * 					- map of {@link Entity} list with {@link TexturedModel}
 	 * 					key that have to be rendered
 	 * @param lights	- collection of {@link Light} that effects on 
 	 * 					scene
@@ -125,11 +125,11 @@ public class EntityRenderer {
 	 * @param camera
 	 * 					- {@link CameraInterface} that represents point of view
 	 * 
-	 * @see EntityInterface
+	 * @see Entity
 	 * @see Light
 	 * @see CameraInterface
 	 */
-	public void renderLow(Map<TexturedModel, List<EntityInterface>> entities, 
+	public void renderLow(Map<TexturedModel, List<Entity>> entities, 
 			Collection<Light> lights, CameraInterface camera) {
 		GL11.glClearColor(1, 1, 1, 1);
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
@@ -142,8 +142,8 @@ public class EntityRenderer {
 		shader.loadShadowVariables(EngineSettings.SHADOW_DISTANCE, EngineSettings.SHADOW_MAP_SIZE, EngineSettings.SHADOW_TRANSITION_DISTANCE, EngineSettings.SHADOW_PCF);
 		for(TexturedModel model : entities.keySet()) {
 			prepareLowTexturedModel(model);
-			List<EntityInterface> batch = entities.get(model);
-			for(EntityInterface entity : batch) {
+			List<Entity> batch = entities.get(model);
+			for(Entity entity : batch) {
 				prepareInstance(entity);
 				GL11.glDrawElements(GL11.GL_TRIANGLES, model.getRawModel().getVertexCount(), 
 						GL11.GL_UNSIGNED_INT, 0);
@@ -228,10 +228,10 @@ public class EntityRenderer {
 	 * Prepare entity shader for each entity used as value.
 	 * 
 	 * @param entity
-	 * 					-{@link EntityInterface} used to prepare entity shader
+	 * 					-{@link Entity} used to prepare entity shader
 	 */
 	
-	private void prepareInstance(EntityInterface entity) {
+	private void prepareInstance(Entity entity) {
 		Matrix4f transformationMatrix = Maths.createTransformationMatrix(entity.getPosition(),
 				entity.getRotX(), entity.getRotY(), entity.getRotZ(), entity.getScale());
 		shader.loadTranformationMatrix(transformationMatrix);

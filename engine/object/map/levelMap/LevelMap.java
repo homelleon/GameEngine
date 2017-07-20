@@ -3,13 +3,9 @@ package object.map.levelMap;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.lwjgl.util.vector.Vector3f;
-
 import object.entity.entity.Entity;
-import object.entity.entity.EntityInterface;
-import object.model.TexturedModel;
-import renderer.loader.Loader;
-import tool.EngineUtils;
+import object.entity.entity.EntityBuilder;
+import object.entity.entity.TexturedEntityBuilder;
 
 /**
  * Map that controls entity objects to load in the editor menu. 
@@ -19,28 +15,23 @@ import tool.EngineUtils;
  */
 public class LevelMap implements LevelMapInterface {
 	
-	private List<EntityInterface> entities = new ArrayList<EntityInterface>();
-	
-	private Loader loader;
-	
-	public LevelMap(Loader loader) {
-		this.loader = loader;		
-	}
+	private List<Entity> entities = new ArrayList<Entity>();
 
 	@Override
-	public List<EntityInterface> getALLEntities() {
+	public List<Entity> getALLEntities() {
 		return entities;
 	}
 
 	@Override
-	public EntityInterface getEntity(int index) {
+	public Entity getEntity(int index) {
 		return entities.get(index);
 	}
 	
 	@Override
 	public void loadEntity(String name, String model, String texName) {
-		TexturedModel staticModel = EngineUtils.loadStaticModel(model, texName, loader);
-		Entity entity = new Entity(name, staticModel, new Vector3f(0,0,0), 0, 0, 0, 1);
+		EntityBuilder builder = new TexturedEntityBuilder();
+		builder.setModel(model).setTexture(texName);
+		Entity entity = builder.createEntity(name);
 		this.entities.add(entity);
 	}
 

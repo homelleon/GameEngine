@@ -72,7 +72,7 @@ public class ModelMapXMLParser implements ModelMapParserInterface {
 		   						shine, reflectivity);
 		               } else {
 		            	   map.createEntity(name, model, 
-		            			   texture, position, 0, 0, 0, scale);		            	   
+		            			   texture, position, new Vector3f(0,0,0), scale);		            	   
 		               }
 		               if(EngineDebug.hasDebugPermission()) {
 		            	   System.out.println(map.getEntities().get(name).getName());

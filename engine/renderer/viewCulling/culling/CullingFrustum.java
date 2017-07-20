@@ -1,7 +1,7 @@
 package renderer.viewCulling.culling;
 
 import object.camera.CameraInterface;
-import object.entity.entity.EntityInterface;
+import object.entity.entity.Entity;
 import renderer.viewCulling.frustum.Frustum;
 
 public class CullingFrustum implements Culling {
@@ -13,7 +13,7 @@ public class CullingFrustum implements Culling {
 	}
 
 	@Override
-	public Boolean getVisibility(EntityInterface entity) {
+	public Boolean getVisibility(Entity entity) {
 		Boolean isVisible = false;
 		isVisible = this.frustum.sphereInFrustum(entity.getPosition(), 
 				entity.getSphereRadius());		
