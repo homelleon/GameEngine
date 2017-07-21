@@ -15,7 +15,7 @@ import object.entity.player.Player;
 import object.entity.player.PlayerInterface;
 import object.gui.font.FontType;
 import object.gui.text.GUIText;
-import object.gui.texture.GUITextureManager;
+import object.gui.texture.manager.GUITextureManager;
 import object.light.Light;
 import object.model.TexturedModel;
 import object.particle.manager.ParticleManager;
@@ -80,7 +80,7 @@ public class SceneManager implements SceneManagerInterface {
 		scene.setPlayer(player1);
 		scene.getAudioSources().getMaster().setListenerData(scene.getPlayer().getPosition());
 		scene.getEntities().add(player1);
-		scene.getEntities().addAll(EngineUtils.createGrassField(500, 500, 50, 1, 0.1f, loader));
+		scene.getEntities().addAll(EngineUtils.createGrassField(500, 500, 50, 1, 0.1f));
 		scene.setCamera(new CameraPlayer(player1, cameraName));
 		scene.setSun(new Light("Sun", new Vector3f(-100000,150000,-100000), new Vector3f(1.3f,1.3f,1.3f)));
 		scene.getLights().add(scene.getSun());

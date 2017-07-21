@@ -47,7 +47,6 @@ public class SceneRenderer {
 
 	private MainRenderer masterRenderer;
 	private WaterRenderer waterRenderer;
-	private GUITextureRenderer guiRenderer;
 	private WaterFrameBuffers waterFBOs;
 	private Fbo multisampleFbo;
 	private Fbo outputFbo;
@@ -59,7 +58,6 @@ public class SceneRenderer {
 	public void init(SceneInterface scene, Loader loader) {
 		this.scene = scene;
 		this.masterRenderer = new MainRenderer(loader, scene.getCamera());
-		this.guiRenderer = new GUITextureRenderer(loader);
 		ParticleMaster.init(loader, masterRenderer.getProjectionMatrix());
 		this.multisampleFbo = new Fbo(Display.getWidth(), Display.getHeight());
 		this.outputFbo = new Fbo(Display.getWidth(), Display.getHeight(), Fbo.DEPTH_TEXTURE);
@@ -127,8 +125,7 @@ public class SceneRenderer {
 		multisampleFbo.resolveToFbo(GL30.GL_COLOR_ATTACHMENT0, outputFbo);
 		multisampleFbo.resolveToFbo(GL30.GL_COLOR_ATTACHMENT1, outputFbo2);
 		PostProcessing.doPostProcessing(outputFbo.getColourTexture(), outputFbo2.getColourTexture());
-		guiRenderer.render(scene.getGuis().getAll());
-		renderText();		
+		renderGUI();		
 	}
 
 	private void renderWaterSurface() {
@@ -160,7 +157,7 @@ public class SceneRenderer {
 		ParticleMaster.update(scene.getCamera());
 	}
 
-	protected void renderText() {
+	protected void renderGUI() {
 //		String fontName = "candara";
 //		GUIText fpsText = createFPSText(Math.round(1 / DisplayManager.getFrameTimeSeconds()), fontName);
 //		fpsText.setColour(1, 0, 0);		
@@ -210,7 +207,6 @@ public class SceneRenderer {
 		outputFbo2.cleanUp();
 		multisampleFbo.cleanUp();
 		waterFBOs.cleanUp();
-		guiRenderer.cleanUp();
 		masterRenderer.cleanUp();
 	}
 

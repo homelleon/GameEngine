@@ -1,0 +1,28 @@
+<GUI>
+	<GUITextures>
+		<GUITexture id="1">
+			<name>helthBar</name>
+			<texture>helthBar</texture>
+			<position>
+				<x>-0.5f</x>
+				<y>-0.7f</y>
+			</position>
+			<scale>
+				<x>0.5f</x>
+				<y>0.5f</y>
+			</scale>
+		</GUITexture>
+		<GUITexture id="1">
+			<name>Sign</name>
+			<texture>Sign</texture>
+			<position>
+				<x>0.5f</x>
+				<y>0.7f</y>
+			</position>
+			<scale>
+				<x>0.2f</x>
+				<y>0.2f</y>
+			</scale>
+		</GUITexture>
+	</GUITextures>
+</GUI>

@@ -2,7 +2,7 @@ package object.gui.component;
 
 import object.gui.text.manager.GUITextManagerInterface;
 import object.gui.texture.GUITexture;
-import object.gui.texture.GUITextureManagerInterface;
+import object.gui.texture.manager.GUITextureManagerInterface;
 
 /**
  * Manages component of user interface such as Graphic user interface textures

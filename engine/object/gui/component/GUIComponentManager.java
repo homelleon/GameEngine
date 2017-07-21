@@ -2,9 +2,8 @@ package object.gui.component;
 
 import object.gui.text.manager.GUITextManager;
 import object.gui.text.manager.GUITextManagerInterface;
-import object.gui.texture.GUITextureManager;
-import object.gui.texture.GUITextureManagerInterface;
-import renderer.loader.Loader;
+import object.gui.texture.manager.GUITextureManager;
+import object.gui.texture.manager.GUITextureManagerInterface;
 
 public class GUIComponentManager implements GUIComponentManagerInterface {
 	
@@ -16,10 +15,11 @@ public class GUIComponentManager implements GUIComponentManagerInterface {
 		this.textureManager = textureManager;
 	}
 	
-	public GUIComponentManager(String textureFileName, String textFileName, Loader loader) {
+	public GUIComponentManager(String textureFileName, String textFileName) {
 		this.textureManager = new GUITextureManager();
-		this.textManager = new GUITextManager(loader);		
+		this.textManager = new GUITextManager();		
 		textManager.readFile(textFileName);
+		textureManager.readFile(textureFileName);
 	}
 	
 	@Override
@@ -35,6 +35,7 @@ public class GUIComponentManager implements GUIComponentManagerInterface {
 	@Override
 	public void render() {
 		this.textManager.render();
+		this.textureManager.render();
 	}	
 	
 	@Override

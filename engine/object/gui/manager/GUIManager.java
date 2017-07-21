@@ -2,7 +2,6 @@ package object.gui.manager;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import core.debug.EngineDebug;
@@ -26,7 +25,7 @@ public class GUIManager implements GUIManagerInterface {
 		if(EngineDebug.hasDebugPermission()) {
 			System.out.println("Prepare User Interface...");
 		}
-		this.componentManager = new GUIComponentManager(TEXTURE_FILE_NAME, TXT_FILE_NAME, loader);
+		this.componentManager = new GUIComponentManager(TEXTURE_FILE_NAME, TXT_FILE_NAME);
 		
 	}
 	

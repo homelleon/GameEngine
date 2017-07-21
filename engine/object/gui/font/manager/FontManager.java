@@ -10,12 +10,7 @@ import renderer.loader.Loader;
 
 public class FontManager implements FontManagerInterface {
 	
-	private Loader loader;
 	private Map<String, FontType> fonts = new HashMap<String, FontType>();
-	
-	public FontManager(Loader loader) {
-		this.loader = loader;
-	}
 	
 	@Override
 	public FontType create(String name) {
@@ -23,6 +18,7 @@ public class FontManager implements FontManagerInterface {
 		if(fonts.containsKey(name)) {
 			font = fonts.get(name);
 		} else {
+			Loader loader = Loader.getInstance();
 			font = new FontType(name, loader.loadTexture(EngineSettings.FONT_FILE_PATH, name),
 					new File(EngineSettings.FONT_FILE_PATH + name + ".fnt"));
 			fonts.put(font.getName(), font);

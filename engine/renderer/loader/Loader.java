@@ -234,13 +234,13 @@ public class Loader {
 	 * Loads texture into video buffer using texture path and texture name
 	 * parameters.
 	 *  
-	 * @param path {@link String} value of texture location name
+	 * @param folder {@link String} value of texture location name
 	 * @param fileName {@link String} value of texture file name
 	 * 
 	 * @return {@link Integer} value of texture ordered number in video buffer
 	 */
-	public int loadTexture(String path, String fileName) {
-		return loadTexture(path, fileName, "PNG");
+	public int loadTexture(String folder, String fileName) {
+		return loadTexture(folder, fileName, "PNG");
 	}
 	
 	public int loadTexture(String path, String fileName, String format) {

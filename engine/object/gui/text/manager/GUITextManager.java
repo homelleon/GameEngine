@@ -26,7 +26,6 @@ public class GUITextManager implements GUITextManagerInterface {
 	
 	private FontManagerInterface fontManager;
 	private GUITextRenderer textRenderer;
-	private Loader loader;
 	private Map<String, GUIText> texts = new HashMap<String, GUIText>();
 	
 	/**
@@ -34,9 +33,8 @@ public class GUITextManager implements GUITextManagerInterface {
 	 *  
 	 * @param loader {@link Loader}
 	 */
-	public GUITextManager(Loader loader) {
-		this.loader = loader;
-		this.fontManager = new FontManager(loader);
+	public GUITextManager() {
+		this.fontManager = new FontManager();
 		this.textRenderer = new GUITextRenderer(this, fontManager);
 	}
 	
@@ -56,7 +54,8 @@ public class GUITextManager implements GUITextManagerInterface {
 			String font = text.getFont();
 			this.fontManager.create(font);
 			TextMeshData data = fontManager.get(font).loadText(text);
-           	int vao = this.loader.loadToVAO(data.getVertexPositions(), data.getTextureCoords());
+			Loader loader = Loader.getInstance();
+           	int vao = loader.loadToVAO(data.getVertexPositions(), data.getTextureCoords());
     		text.setMeshInfo(vao, data.getVertexCount());
 		}
 	}
@@ -99,8 +98,8 @@ public class GUITextManager implements GUITextManagerInterface {
 	@Override
 	public void readFile(String fileName) {
 		XMLLoaderInterface xmlLoader = new XMLFileLoader(EngineSettings.INTERFACE_PATH + fileName + EngineSettings.EXTENSION_XML);
-		GUITextParserInterface guiTextParser = new GUITextXMLParser(xmlLoader.load());
-		this.addAll(guiTextParser.parse());		
+		GUITextParserInterface parser = new GUITextXMLParser(xmlLoader.load());
+		this.addAll(parser.parse());		
 	}
 
 

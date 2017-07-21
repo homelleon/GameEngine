@@ -32,16 +32,16 @@ public class GUITextRenderer {
 	}
 
 	public void cleanUp() {
-		shader.cleanUp();
+		this.shader.cleanUp();
 	}
 	
 	public void render() {
 		processText(this.textManager.getAll());
 		prepare();
-		for(FontType font: texts.keySet()) {
+		for(FontType font: this.texts.keySet()) {
 			GL13.glActiveTexture(GL13.GL_TEXTURE0);
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, font.getTextureAtlas());			
-			for(GUIText text : texts.get(font)) {
+			for(GUIText text : this.texts.get(font)) {
 				renderText(text);
 			}
 		}
@@ -52,7 +52,7 @@ public class GUITextRenderer {
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		OGLUtils.depthTest(false);
-		shader.start();
+		this.shader.start();
 	}
 	
 	private void processText(Collection<GUIText> textList) {
@@ -65,8 +65,8 @@ public class GUITextRenderer {
 	
 	private void loadText(GUIText text) {
 		String fontName = text.getFont();
-		FontType font = fontManager.get(fontName);
-		List<GUIText> textBatch = texts.get(font);
+		FontType font = this.fontManager.get(fontName);
+		List<GUIText> textBatch = this.texts.get(font);
 		if(textBatch == null) {
 			textBatch = new ArrayList<GUIText>();
 			this.texts.put(font, textBatch);
@@ -78,12 +78,12 @@ public class GUITextRenderer {
 		GL30.glBindVertexArray(text.getMesh());
 		GL20.glEnableVertexAttribArray(0);
 		GL20.glEnableVertexAttribArray(1);
-		shader.loadColour(text.getColour());
-		shader.loadTranslation(text.getPosition());
-		shader.loadWidthAndEdge(text.getWidth(), text.getEdge());
-		shader.loadBorderWidthAndEdge(text.getBorderWidth(), text.getBorderEdge());
-		shader.loadOffset(text.getOffset());
-		shader.loadOutLineColour(text.getOutlineColour());
+		this.shader.loadColour(text.getColour());
+		this.shader.loadTranslation(text.getPosition());
+		this.shader.loadWidthAndEdge(text.getWidth(), text.getEdge());
+		this.shader.loadBorderWidthAndEdge(text.getBorderWidth(), text.getBorderEdge());
+		this.shader.loadOffset(text.getOffset());
+		this.shader.loadOutLineColour(text.getOutlineColour());
 		GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, text.getVertexCount());
 		GL20.glDisableVertexAttribArray(0);
 		GL20.glDisableVertexAttribArray(1);
@@ -91,7 +91,7 @@ public class GUITextRenderer {
 	}
 	
 	private void endRendering() {
-		shader.stop();
+		this.shader.stop();
 		GL11.glDisable(GL11.GL_BLEND);
 		OGLUtils.depthTest(true);
 		this.texts.clear();

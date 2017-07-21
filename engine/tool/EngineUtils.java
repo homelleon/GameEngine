@@ -54,9 +54,10 @@ public class EngineUtils {
 	
 	
 	public static List<Entity> createGrassField(float x, float z, float r, float sizeNoise, 
-			float density, Loader loader) {
+			float density) {
 		//TODO: Noise - better using
 		
+		Loader loader = Loader.getInstance();
 		TexturedModel grass = loadStaticModel("grassObject","grassObjAtlas");
 		int texIndex = 4;
 		grass.getTexture().setNumberOfRows(2);
@@ -91,12 +92,12 @@ public class EngineUtils {
 		return grasses;	
 	}
 	
-	public static List<WaterTile> createWaterSurfce(float x, float y, float z, int size) {
+	public static List<WaterTile> createWaterSurfce(Vector3f position, int size) {
 		List<WaterTile> waters = new ArrayList<WaterTile>();
 		for(int i=0;i<size;i++){
 			for(int j=0;j<size;j++){
-				WaterTile water = new WaterTile(x + WaterTile.TILE_SIZE * i, 
-						y + WaterTile.TILE_SIZE * j, z, size);
+				WaterTile water = new WaterTile(position.x + WaterTile.TILE_SIZE * i, 
+						position.y + WaterTile.TILE_SIZE * j, position.z, size);
 				waters.add(water);
 			}
 		}
@@ -145,7 +146,7 @@ public class EngineUtils {
 		return terrain;
 	}
 	
-	public static void createForest(List<TexturedEntity> forest, float x, float y, float r, float noise){
+	public static void createForest(List<TexturedEntity> forest, Vector3f position, float noise){
 		
 	}	
 

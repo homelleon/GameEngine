@@ -8,7 +8,7 @@ import object.entity.entity.Entity;
 import object.entity.manager.EntityManagerInterface;
 import object.entity.player.PlayerInterface;
 import object.gui.manager.GUIManagerInterface;
-import object.gui.texture.GUITextureManagerInterface;
+import object.gui.texture.manager.GUITextureManagerInterface;
 import object.light.Light;
 import object.light.LightManager;
 import object.particle.ParticleSystem;
@@ -130,14 +130,6 @@ public interface SceneInterface {
 	 * @return {@link AudioManagerInterface} value
 	 */
 	AudioManagerInterface getAudioSources();
-	
-	/**
-	 * Returns graphic interfaces manager.
-	 * 
-	 * @return {@link GUITextureManagerInterface} value of graphic
-	 * 		   interfaces manager
-	 */
-	GUITextureManagerInterface getGuis();
 	
 	/**
 	 * Rerturns manager to control user interface.

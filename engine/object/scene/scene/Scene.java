@@ -16,8 +16,8 @@ import object.entity.manager.EntityManagerInterface;
 import object.entity.player.PlayerInterface;
 import object.gui.manager.GUIManager;
 import object.gui.manager.GUIManagerInterface;
-import object.gui.texture.GUITextureManager;
-import object.gui.texture.GUITextureManagerInterface;
+import object.gui.texture.manager.GUITextureManager;
+import object.gui.texture.manager.GUITextureManagerInterface;
 import object.light.Light;
 import object.light.LightManager;
 import object.light.LightManagerStructured;
@@ -57,7 +57,6 @@ public class Scene implements SceneInterface {
 	private ParticleManagerInterface particleManager = new ParticleManager();
 	private LightManager lightManager = new LightManagerStructured();
 	private AudioManagerInterface audioManager = new AudioManager(audioMaster);
-	private GUITextureManagerInterface guiManager = new GUITextureManager();
 	private GUIManagerInterface uiManager = new GUIManager();
 	
 	public Scene() {}
@@ -70,7 +69,6 @@ public class Scene implements SceneInterface {
 		this.getLights().addAll(map.getLights().values());		
 		this.getAudioSources().getMaster().init();
 		this.getAudioSources().addAll(map.getAudioSources().values());		
-		this.getGuis().addAll(map.getGuis().values());
 		for(int i = 0; i < CHUNK_WORLD_SIZE * CHUNK_WORLD_SIZE *
 				CHUNK_WORLD_SIZE; i++) {
 			for(int x = 0; x <= EngineSettings.VOXEL_CHUNK_SIZE; x++) {
@@ -183,18 +181,7 @@ public class Scene implements SceneInterface {
 	@Override
 	public AudioManagerInterface getAudioSources() {
 		return this.audioManager;
-	}
-	
-	/* 
-	 * @GuiTexture
-	 */
-
-	@Override
-	public GUITextureManagerInterface getGuis() {
-		return this.guiManager;
-	}
-
-	
+	}	
 	
 	@Override
 	public GUIManagerInterface getUserInterface() {		
@@ -257,7 +244,6 @@ public class Scene implements SceneInterface {
 		this.particleManager.clearAll();
 		this.lightManager.clearAll();
 		this.audioManager.clearAll();
-		this.guiManager.clearAll();
 		this.uiManager.cleanAll();		
 	}
 

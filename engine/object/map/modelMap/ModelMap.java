@@ -276,7 +276,7 @@ public class ModelMap {
 	}
 	
 	public void createEntity(String name, String model, String texName, String normal, String specular, Vector3f position, float rotX, float rotY, float rotZ, float scale, float shine, float reflectivity) {
-		TexturedModel staticModel = EngineUtils.loadNormalModel(name, texName, normal, specular, loader);
+		TexturedModel staticModel = EngineUtils.loadNormalModel(name, texName, normal, specular);
 		staticModel.getTexture().setShineDamper(shine);
 		staticModel.getTexture().setReflectivity(reflectivity);
 		TexturedEntity entity = new TexturedEntity(name, EngineSettings.ENTITY_TYPE_NORMAL, staticModel, position, rotX, rotY, rotZ, scale);
