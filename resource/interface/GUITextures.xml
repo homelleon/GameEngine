@@ -1,4 +1,8 @@
-<GUI>
+<?xml version="1.0"?>
+<GUI
+xmlns="https://www.w3schools.com"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="https://www.w3schools.com GUITextures.xsd">
 	<GUITextures>
 		<GUITexture id="1">
 			<name>helthBar</name>
@@ -12,16 +16,28 @@
 				<y>0.5f</y>
 			</scale>
 		</GUITexture>
-		<GUITexture id="1">
+		<GUITexture id="2">
 			<name>Sign</name>
 			<texture>Sign</texture>
 			<position>
-				<x>0.5f</x>
+				<x>0.0f</x>
 				<y>0.7f</y>
 			</position>
 			<scale>
-				<x>0.2f</x>
-				<y>0.2f</y>
+				<x>0.5f</x>
+				<y>0.5f</y>
+			</scale>
+		</GUITexture>
+		<GUITexture id="3">
+			<name>SignR</name>
+			<texture>Sign</texture>
+			<position>
+				<x>0.0f</x>
+				<y>0.0f</y>
+			</position>
+			<scale>
+				<x>0.5f</x>
+				<y>0.5f</y>
 			</scale>
 		</GUITexture>
 	</GUITextures>

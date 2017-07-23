@@ -35,7 +35,7 @@ public class GUITextManager implements GUITextManagerInterface {
 	 */
 	public GUITextManager() {
 		this.fontManager = new FontManager();
-		this.textRenderer = new GUITextRenderer(this, fontManager);
+		this.textRenderer = new GUITextRenderer(this);
 	}
 	
 	@Override

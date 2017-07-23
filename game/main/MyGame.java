@@ -29,6 +29,8 @@ public class MyGame extends Game {
 		
 		List<GUIInterface> helpGUIList = new ArrayList<GUIInterface>();
 		List<GUITexture> hintTextureList = new ArrayList<GUITexture>();
+		hintTextureList.add(gameManager.getScene().getUserInterface()
+				.getComponent().getTextures().get("Sign"));
 		List<GUIText> hintTextList = new ArrayList<GUIText>();			
 		hintTextList.add(gameManager.getScene().getUserInterface()
 				.getComponent().getTexts().get("inputHints"));			

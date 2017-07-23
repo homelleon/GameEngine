@@ -10,9 +10,9 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import core.debug.EngineDebug;
-import core.settings.EngineSettings;
 import object.gui.texture.GUITexture;
-import renderer.loader.Loader;
+import object.gui.texture.GUITextureBuilder;
+import object.gui.texture.GUITextureBuilderInterface;
 import tool.xml.XMLUtils;
 
 public class GUITextureXMLParser implements GUITextureParserInterface {
@@ -46,30 +46,34 @@ public class GUITextureXMLParser implements GUITextureParserInterface {
 			System.out.println("Loading GUI textures...");
 	   	}
 		List<GUITexture> textureList = new ArrayList<GUITexture>();
-		
-        Loader loader = Loader.getInstance();
 		Node guiTextures = node;
 	    NodeList guiTextureList = guiTextures.getChildNodes();
-	    
+	    int count = 0;
 	    for(int j = 0; j < guiTextureList.getLength(); j++) {
 			   Node guiTextureNode = guiTextureList.item(j);	        		   
 			   if(XMLUtils.ifNodeIsElement(guiTextureNode, XMLUtils.GUI_TEXTURE)) {
 				   Element guiTextEl = (Element) guiTextureNode;
-	               String ID = guiTextureNode.getAttributes().getNamedItem(XMLUtils.ID).getNodeValue();
-	               String name = guiTextEl.getElementsByTagName(XMLUtils.NAME).item(0).getChildNodes().item(0).getNodeValue();
-	               String textureName = guiTextEl.getElementsByTagName(XMLUtils.TEXTURE).item(0).getChildNodes().item(0).getNodeValue();
-	               Element positionEl = (Element) guiTextEl.getElementsByTagName(XMLUtils.POSITION).item(0);
-	               float x = Float.valueOf(positionEl.getElementsByTagName(XMLUtils.X).item(0).getChildNodes().item(0).getNodeValue());
-	               float y = Float.valueOf(positionEl.getElementsByTagName(XMLUtils.Y).item(0).getChildNodes().item(0).getNodeValue());
+	               String id = XMLUtils.getAttributeValue(guiTextureNode, XMLUtils.ID);
+	               String name = XMLUtils.getTagValue(guiTextEl, XMLUtils.NAME);
+	               String textureName = XMLUtils.getTagValue(guiTextEl, XMLUtils.TEXTURE);
+	               Element positionEl = XMLUtils.getChildElementByTag(guiTextEl, XMLUtils.POSITION);
+	               float x = Float.valueOf(XMLUtils.getTagValue(positionEl, XMLUtils.X));
+	               float y = Float.valueOf(XMLUtils.getTagValue(positionEl, XMLUtils.Y));
 	               Vector2f position = new Vector2f(x, y);
-	               Element scaleEl = (Element) guiTextEl.getElementsByTagName(XMLUtils.SCALE).item(0);
-	               float scaleX = Float.valueOf(scaleEl.getElementsByTagName(XMLUtils.X).item(0).getChildNodes().item(0).getNodeValue());
-	               float scaleY = Float.valueOf(scaleEl.getElementsByTagName(XMLUtils.Y).item(0).getChildNodes().item(0).getNodeValue());
+	               Element scaleEl = XMLUtils.getChildElementByTag(guiTextEl, XMLUtils.SCALE);
+	               float scaleX = Float.valueOf(XMLUtils.getTagValue(scaleEl, XMLUtils.X));
+	               float scaleY = Float.valueOf(XMLUtils.getTagValue(scaleEl, XMLUtils.Y));
 	               Vector2f scale = new Vector2f(scaleX, scaleY);
-
-	               int texture = loader.loadTexture(EngineSettings.TEXTURE_INTERFACE_PATH, textureName);
-	               GUITexture guiTexture = new GUITexture(name, texture, position, scale);
-	               guiTexture.setIsShown(true);
+	               count++;
+	               if(EngineDebug.hasDebugPermission()) {
+		               if(count!= Integer.valueOf(id)) {
+		            	   System.err.println("error id order!");
+		               }
+	               }
+	               GUITextureBuilderInterface builder = new GUITextureBuilder();
+	               builder.setName(name).setTextureName(textureName)
+   						  .setPosition(position).setScale(scale);
+	               GUITexture guiTexture = builder.getTexture();
 	   			   textureList.add(guiTexture);
 	   			   if(EngineDebug.hasDebugPermission()) {
 		   				System.out.println(guiTexture.getName());

@@ -6,6 +6,7 @@ import java.io.IOException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.validation.Schema;
 
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
@@ -24,10 +25,9 @@ public class XMLFileLoader implements XMLLoaderInterface {
 	}
 	
 	@Override
-	public Document load() {		
-		
+	public Document load() {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        Document document = null;       
+        Document document = null;     
 		
 		try {
 			DocumentBuilder builder = factory.newDocumentBuilder();

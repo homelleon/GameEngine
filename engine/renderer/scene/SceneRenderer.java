@@ -1,8 +1,5 @@
 package renderer.scene;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL30;
@@ -10,12 +7,8 @@ import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector4f;
 
 import core.EngineMain;
-import core.display.DisplayManager;
 import core.settings.EngineSettings;
-import object.gui.gui.GUI;
-import object.gui.gui.GUIInterface;
 import object.gui.text.GUIText;
-import object.gui.texture.GUITexture;
 import object.input.Controls;
 import object.input.ControlsInterface;
 import object.input.KeyboardGame;
@@ -26,7 +19,6 @@ import object.particle.master.ParticleMaster;
 import object.scene.scene.SceneInterface;
 import object.water.WaterFrameBuffers;
 import renderer.loader.Loader;
-import renderer.object.gui.GUITextureRenderer;
 import renderer.object.main.MainRenderer;
 import renderer.object.water.WaterRenderer;
 import shader.postProcessing.Fbo;

@@ -16,8 +16,6 @@ import object.entity.manager.EntityManagerInterface;
 import object.entity.player.PlayerInterface;
 import object.gui.manager.GUIManager;
 import object.gui.manager.GUIManagerInterface;
-import object.gui.texture.manager.GUITextureManager;
-import object.gui.texture.manager.GUITextureManagerInterface;
 import object.light.Light;
 import object.light.LightManager;
 import object.light.LightManagerStructured;
@@ -31,9 +29,9 @@ import object.terrain.terrain.TerrainInterface;
 import object.texture.Texture;
 import object.voxel.manager.ChunkManager;
 import object.voxel.manager.ChunkManagerInterface;
+import object.water.manager.WaterManager;
 import object.water.manager.WaterManagerInterface;
 import renderer.viewCulling.frustum.Frustum;
-import object.water.manager.WaterManager;
 import tool.MousePicker;
 
 public class Scene implements SceneInterface {

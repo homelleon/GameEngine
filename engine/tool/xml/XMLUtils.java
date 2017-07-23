@@ -2,6 +2,7 @@ package tool.xml;
 
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 /**
  * Main helpfull utilite to use XML parser and writer faster.
@@ -186,6 +187,15 @@ public class XMLUtils {
 		String value = "";
 		value = element.getElementsByTagName(tagName).item(0).getChildNodes().item(0).getNodeValue();		
 		return value;
+	}
+	
+	public static Element getChildElementByTag(Element parentElement, String tagName) {
+		Element childElement = (Element) parentElement.getElementsByTagName(tagName).item(0);
+		return childElement;
+	}
+	
+	public static NodeList getChildrenListByTag(Element parentElement, String tagName) {
+		return getChildElementByTag(parentElement, tagName).getChildNodes();
 	}
 	
 	public static String getAttributeValue(Node node, String attributeName) {
