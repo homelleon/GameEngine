@@ -49,14 +49,9 @@ public interface GUITextureManagerInterface {
 	Collection<GUITexture> getAll();
 	
 	/**
-	 * Renders textures for graphic user interface.
-	 */
-	void render();
-	
-	/**
 	 * Clear all graphic interfaces map and arrays.
 	 */
-	void clearAll();
+	void cleanUp();
 	
 	/**
 	 * Reads interface texture entities from file.

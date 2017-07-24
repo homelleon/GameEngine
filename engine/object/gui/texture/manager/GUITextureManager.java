@@ -22,12 +22,8 @@ import tool.xml.loader.XMLLoaderInterface;
 
 public class GUITextureManager implements GUITextureManagerInterface {
 	
-	private GUITextureRenderer renderer;
 	private Map<String, GUITexture> textures = new HashMap<String, GUITexture>();
-	
-	public GUITextureManager() {
-		this.renderer = new GUITextureRenderer(this);
-	}
+
 	
 //	public static List<GUITexture> createGui(Loader loader) {
 //		List<GUITexture> guiTextureList = new ArrayList<GUITexture>();
@@ -69,14 +65,9 @@ public class GUITextureManager implements GUITextureManagerInterface {
 	public Collection<GUITexture> getAll() {
 		return this.textures.values();
 	}
-	
-	@Override
-	public void render() {
-		this.renderer.render();		
-	}
 
 	@Override
-	public void clearAll() {
+	public void cleanUp() {
 		this.textures.clear();
 	}
 	

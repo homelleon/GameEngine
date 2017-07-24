@@ -45,7 +45,7 @@ public class SceneManager implements SceneManagerInterface {
 		player1.getModel().getTexture().setShineDamper(5.0f);
 		
 		/*--------------UI-------------------*/
-		scene.getUserInterface().init(loader);
+		scene.getUserInterface().initialize();
 		/*--------------TEXT----------------*/
 		
 		List<GUIText> guiTextList = new ArrayList<GUIText>();

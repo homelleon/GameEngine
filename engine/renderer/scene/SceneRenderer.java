@@ -82,12 +82,14 @@ public class SceneRenderer {
 	
 	private void saveMap(Loader loader) {
 		if (KeyboardGame.isKeyPressed(Keyboard.KEY_T)) {
+			EngineMain.pauseEngine(true);
 			ModelMapWriterInterface mapWriter = new ModelMapXMLWriter();
 			ModelMap map = new ModelMap("newMap", loader);
 			map.setEntities(scene.getEntities().getAll());
 			map.setTerrains(scene.getTerrains().getAll());
 			mapWriter.write(map, loader);
 			System.out.println("save");
+			EngineMain.pauseEngine(false);
 		}
 	}
 	
@@ -97,11 +99,9 @@ public class SceneRenderer {
 		}
 		
 		if (KeyboardGame.isKeyReleased(Keyboard.KEY_H)) {
-
 			System.out.println("Key H released");
 		}
 		if (KeyboardGame.isKeyPressed(Keyboard.KEY_H)) {
-			System.out.println("H");
 			System.out.println("Key H pressed");
 		} 		
 		
@@ -117,7 +117,8 @@ public class SceneRenderer {
 		multisampleFbo.resolveToFbo(GL30.GL_COLOR_ATTACHMENT0, outputFbo);
 		multisampleFbo.resolveToFbo(GL30.GL_COLOR_ATTACHMENT1, outputFbo2);
 		PostProcessing.doPostProcessing(outputFbo.getColourTexture(), outputFbo2.getColourTexture());
-		renderGUI();		
+		renderGUI();
+		picker.update();
 	}
 
 	private void renderWaterSurface() {
@@ -174,7 +175,6 @@ public class SceneRenderer {
 	}
 
 	protected GUIText createPickerCoordsText(MousePicker picker, String fontName) {
-		picker.update();
 		String text = (String) String.valueOf(picker.getCurrentRay());
 		GUIText guiText = new GUIText("Coords", text, 1, fontName, new Vector2f(0.3f, 0.2f), 1f, true);
 		scene.getUserInterface().getComponent().getTexts().add(guiText);

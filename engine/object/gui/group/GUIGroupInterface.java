@@ -43,7 +43,7 @@ public interface GUIGroupInterface {
 	 * 				{@link String} value
 	 * @return {@link GUIInterface} value of user interface object
 	 */
-	GUIInterface get(String name);	
+	GUIInterface get(String name);
 	
 	/**
 	 * Set all user interface in the group visible.
@@ -61,6 +61,21 @@ public interface GUIGroupInterface {
 	 * @return {@link Collection}<{@link GUIInterface}> value of user interfaces
 	 */
 	Collection<GUIInterface> getAll();
+	
+	
+	/**
+	 * Returns render priority number of current group.
+	 * 
+	 * @return int value of priority number
+	 */
+	int getPriorityNumber();
+	
+	/**
+	 * Sets render priority value of current group.
+	 * 
+	 * @param number int value of priority number
+	 */
+	void setPriorityNumber(int number);
 	
 	/**
 	 * Make user group empty destroing all user interfaces.

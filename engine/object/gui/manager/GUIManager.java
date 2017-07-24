@@ -21,12 +21,11 @@ public class GUIManager implements GUIManagerInterface {
 	GUIComponentManagerInterface componentManager;
 	Map<String, GUIGroupInterface> groups = new HashMap<String, GUIGroupInterface>();	
 	
-	public void init(Loader loader) {
+	public void initialize() {
 		if(EngineDebug.hasDebugPermission()) {
 			System.out.println("Prepare User Interface...");
 		}
 		this.componentManager = new GUIComponentManager(TEXTURE_FILE_NAME, TXT_FILE_NAME);
-		
 	}
 	
 
@@ -80,7 +79,7 @@ public class GUIManager implements GUIManagerInterface {
 
 	@Override
 	public void render() {
-		this.componentManager.render();		
+		this.componentManager.render(this.getAllGUIGroups());	
 	}
 
 	@Override

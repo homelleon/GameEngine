@@ -6,7 +6,10 @@ import java.util.List;
 import org.lwjgl.input.Keyboard;
 
 import game.game.Game;
+import object.gui.control.GUIButton;
+import object.gui.control.GUIButtonInterface;
 import object.gui.group.GUIGroup;
+import object.gui.group.GUIGroupInterface;
 import object.gui.gui.GUI;
 import object.gui.gui.GUIInterface;
 import object.gui.text.GUIText;
@@ -19,6 +22,8 @@ public class MyGame extends Game {
 	private GUIInterface hintsUI;
 	int time = 0;
 	
+	GUIButtonInterface button;
+	
 	/**
 	 * Action when game is just started. 
 	 */
@@ -27,10 +32,9 @@ public class MyGame extends Game {
 		//PE10.initialize();
 		//world1 = PE10.peCreateWorld(new Vector3f(0,0,0), new Vector3f(0,0,0));
 		
+		//--------help hints GUI-------------//
 		List<GUIInterface> helpGUIList = new ArrayList<GUIInterface>();
 		List<GUITexture> hintTextureList = new ArrayList<GUITexture>();
-		hintTextureList.add(gameManager.getScene().getUserInterface()
-				.getComponent().getTextures().get("Sign"));
 		List<GUIText> hintTextList = new ArrayList<GUIText>();			
 		hintTextList.add(gameManager.getScene().getUserInterface()
 				.getComponent().getTexts().get("inputHints"));			
@@ -38,6 +42,18 @@ public class MyGame extends Game {
 		helpGUIList.add(hintsGUI);
 		this.gameManager.getScene().getUserInterface().addGUIGroup(new GUIGroup(guiGroupName, helpGUIList));
 		this.hintsUI = gameManager.getScene().getUserInterface().getGUIGroup(guiGroupName).get("hints");
+		
+		//-------sign button GUI-------------//
+		GUITexture sign = gameManager.getScene().getUserInterface()
+				.getComponent().getTextures().get("Sign");
+		List<GUITexture> signTextureList = new ArrayList<GUITexture>();
+		signTextureList.add(sign);
+		GUIInterface signGUI = new GUI("sign",signTextureList, new ArrayList<GUIText>());
+		GUIGroupInterface signGroup = this.gameManager.getScene().getUserInterface().createEmptyGUIGroup("sign");
+		signGroup.add(signGUI);
+		signGroup.showAll();
+		
+		this.button = new GUIButton(signGUI);
 		//PE10.peAttachBody(tree1, PE10.BODY_3D_SPHERE, world1);
 		//PE10.peAttachBody(tree2, PE10.BODY_3D_SPHERE, world1);
 		//PE10.peAttachBody(tree3, PE10.BODY_3D_SPHERE, world1);
@@ -49,6 +65,16 @@ public class MyGame extends Game {
 	public void __onUpdate() {
 		super.__onUpdate();
 		//PE10.peUpdateWorld(world1);
+		if(KeyboardGame.isKeyPressed(Keyboard.KEY_U)) {
+			if(!button.getIsSelected()) {
+				button.select();
+				System.out.println("selected: " + button.getIsSelected());
+			} else {
+				button.deselect();
+				System.out.println("selected: " + button.getIsSelected());
+			}				
+		}
+		
 		if(KeyboardGame.isKeyPressed(Keyboard.KEY_N)) {
 			if(hintsUI.getIsShown()) {
 				hintsUI.hide();

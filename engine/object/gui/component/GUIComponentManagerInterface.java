@@ -1,5 +1,8 @@
 package object.gui.component;
 
+import java.util.Collection;
+
+import object.gui.group.GUIGroupInterface;
 import object.gui.text.manager.GUITextManagerInterface;
 import object.gui.texture.GUITexture;
 import object.gui.texture.manager.GUITextureManagerInterface;
@@ -32,7 +35,7 @@ public interface GUIComponentManagerInterface {
 	/**
 	 * Renders graphic user interface.
 	 */
-	void render();
+	void render(Collection<GUIGroupInterface> groups);
 	
 	/**
 	 * Clean all textures and texts from {@link GUITextureManagerInterface} and {@link GUITextManagerInterface}.  

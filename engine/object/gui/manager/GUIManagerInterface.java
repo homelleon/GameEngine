@@ -17,7 +17,7 @@ public interface GUIManagerInterface {
 	/**
 	 * Initialize ui manager.
 	 */
-	void init(Loader loader);
+	void initialize();
 	
 	/**
 	 * Creates empty GUI Group and add it to guiManager.

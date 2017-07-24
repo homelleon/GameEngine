@@ -12,19 +12,19 @@ import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 
 import object.gui.font.FontType;
+import object.gui.font.manager.FontManagerInterface;
 import object.gui.text.GUIText;
-import object.gui.text.manager.GUITextManagerInterface;
 import shader.font.FontShader;
 import tool.openGL.OGLUtils;
 
 public class GUITextRenderer {
 
+	private FontManagerInterface fontManager;
 	private FontShader shader;
-	private GUITextManagerInterface textManager;
 	private Map<FontType, List<GUIText>> texts = new HashMap<FontType, List<GUIText>>();
 
-	public GUITextRenderer(GUITextManagerInterface textManager) {
-		this.textManager = textManager;
+	public GUITextRenderer(FontManagerInterface fontManager) {
+		this.fontManager = fontManager;
 		this.shader = new FontShader();
 	}
 
@@ -32,8 +32,8 @@ public class GUITextRenderer {
 		this.shader.cleanUp();
 	}
 	
-	public void render() {
-		processText(this.textManager.getAll());
+	public void render(Collection<GUIText> textList) {
+		processText(textList);
 		prepare();
 		for(FontType font: this.texts.keySet()) {
 			GL13.glActiveTexture(GL13.GL_TEXTURE0);
@@ -62,7 +62,7 @@ public class GUITextRenderer {
 	
 	private void loadText(GUIText text) {
 		String fontName = text.getFont();
-		FontType font = this.textManager.getFonts().get(fontName);
+		FontType font = this.fontManager.get(fontName);
 		List<GUIText> textBatch = this.texts.get(font);
 		if(textBatch == null) {
 			textBatch = new ArrayList<GUIText>();

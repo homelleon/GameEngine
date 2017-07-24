@@ -24,7 +24,7 @@ import tool.math.Maths;
  */
 public class MousePicker {
 	
-	private Vector3f currentRay;
+	private Vector3f currentRay = new Vector3f(0,0,0);
 	
 	private Matrix4f projectionMatrix;
 	private Matrix4f viewMatrix;
@@ -94,7 +94,7 @@ public class MousePicker {
 		Vector3f l = new Vector3f(position.x - camera.getPosition().x, 
 				position.y - camera.getPosition().y, 
 				position.z - camera.getPosition().z);
-		Vector3f currRay = getCurrentRay(); 
+		Vector3f currRay = getCurrentRay();
 		float d = Vector3f.dot(l, currRay);
 		float lSq = Vector3f.dot(l, l);
 	    if ( d < 0 && lSq > radius ) {

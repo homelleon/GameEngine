@@ -25,7 +25,6 @@ import tool.xml.loader.XMLLoaderInterface;
 public class GUITextManager implements GUITextManagerInterface {
 	
 	private FontManagerInterface fontManager;
-	private GUITextRenderer textRenderer;
 	private Map<String, GUIText> texts = new HashMap<String, GUIText>();
 	
 	/**
@@ -35,7 +34,6 @@ public class GUITextManager implements GUITextManagerInterface {
 	 */
 	public GUITextManager() {
 		this.fontManager = new FontManager();
-		this.textRenderer = new GUITextRenderer(this);
 	}
 	
 	@Override
@@ -77,15 +75,10 @@ public class GUITextManager implements GUITextManagerInterface {
 	@Override
 	public void remove(String name) {
 		this.texts.remove(name);		
-	}	
-
-	@Override
-	public void render() {
-		this.textRenderer.render();		
 	}
 
 	@Override
-	public void clearAll() {
+	public void cleanUp() {
 		this.fontManager.cleanUp();
 		this.texts.clear();
 	}

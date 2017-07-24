@@ -59,11 +59,6 @@ public interface GUITextManagerInterface {
 	public void remove(String name);
 	
 	/**
-	 * Renders graphic user interafce text.
-	 */
-	void render();
-	
-	/**
 	 * Returns font manager.
 	 * 
 	 * @return {@link FontManagerInterface} value
@@ -73,7 +68,7 @@ public interface GUITextManagerInterface {
 	/**
 	 * Clear all texts map and arrays.
 	 */
-	void clearAll();
+	void cleanUp();
 	
 	/**
 	 * Reads interface texture entities from file.

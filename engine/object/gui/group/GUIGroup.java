@@ -9,8 +9,9 @@ import object.gui.gui.GUIInterface;
 
 public class GUIGroup implements GUIGroupInterface {
 	
-	String name;
-	Map<String, GUIInterface> guis = new HashMap<String, GUIInterface>();
+	private String name;
+	private int priorityNumber = 0;
+	private Map<String, GUIInterface> guis = new HashMap<String, GUIInterface>();
 	
 	
 	public GUIGroup(String name, List<GUIInterface> guiList) {
@@ -67,6 +68,16 @@ public class GUIGroup implements GUIGroupInterface {
 	@Override
 	public Collection<GUIInterface> getAll() {
 		return guis.values();
+	}	
+
+	@Override
+	public int getPriorityNumber() {
+		return this.priorityNumber;
+	}
+	
+	@Override
+	public void setPriorityNumber(int number) {
+		this.priorityNumber = number;
 	}
 
 	@Override
