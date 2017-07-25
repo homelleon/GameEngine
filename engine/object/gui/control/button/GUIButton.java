@@ -1,4 +1,4 @@
-package object.gui.control;
+package object.gui.control.button;
 
 import org.lwjgl.util.vector.Vector2f;
 

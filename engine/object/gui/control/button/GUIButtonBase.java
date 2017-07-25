@@ -1,4 +1,4 @@
-package object.gui.control;
+package object.gui.control.button;
 
 import org.lwjgl.util.vector.Vector2f;
 
@@ -75,6 +75,15 @@ public abstract class GUIButtonBase {
 	 */
 	public boolean getIsSelected() {
 		return this.isSelected;
+	}
+	
+	/**
+	 * Gets graphic user interface name.
+	 * 
+	 * @return {@link String} value of gui button name
+	 */
+	public String getName() {
+		return this.name;
 	}
 
 }

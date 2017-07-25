@@ -1,4 +1,4 @@
-package object.gui.control;
+package object.gui.control.button;
 
 import org.lwjgl.util.vector.Vector2f;
 
@@ -50,5 +50,12 @@ public interface GUIButtonInterface {
 	 * 		   false if the current button is not selected 
 	 */
 	boolean getIsSelected();
+	
+	/**
+	 * Gets graphic user interface name.
+	 * 
+	 * @return {@link String} value of gui button name
+	 */
+	String getName();
 
 }

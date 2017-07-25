@@ -8,8 +8,8 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.util.vector.Vector2f;
 
 import game.game.Game;
-import object.gui.control.GUIButton;
-import object.gui.control.GUIButtonInterface;
+import object.gui.control.button.GUIButton;
+import object.gui.control.button.GUIButtonInterface;
 import object.gui.group.GUIGroup;
 import object.gui.group.GUIGroupInterface;
 import object.gui.gui.GUI;
