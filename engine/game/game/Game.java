@@ -15,16 +15,17 @@ import object.gui.text.GUIText;
 import object.gui.texture.GUITexture;
 import object.scene.scene.SceneInterface;
 
-public class Game extends Thread implements GameInterface {
+public abstract class Game extends Thread implements GameInterface {
 	
 	public GameManagerInterface gameManager;
 	public int world1;
 	public SceneInterface scene;
 	
-		/* 
-		 * use "Main.getMap()" to get methods of Map
-		 * and all objects on Map  
+		/**
+		 * Realize game events on engine start.<br>
 		 * 
+		 * Use "Main.getMap()" to get methods of Map
+		 * and all objects on Map.
 		 */
 		@Override
 		public void __onStart() {			
@@ -45,17 +46,21 @@ public class Game extends Thread implements GameInterface {
 						
 		}
 		
-		/* 
-		 * on screen update - here you can
+		/**
+		 * Realize game events on engine update.<br>
+		 * 
+		 * On screen update - here you can
 		 * change objects on map in dynamic 
 		 * use "EngineMain.getScene().getEntities().getByName("Tree1")"
-		 * to manipulate Entity named "Tree1"
+		 * to manipulate Entity named "Tree1".
 		 * 
-		 * Don't use while loop and etc
+		 * Don't use while loop and etc.
 		 */
+		public abstract void __onUpdate();
 		
-		@Override
-		public void __onUpdate() {
-			
-		}
+		/**
+		 * Relize game events on engine update event on pause.
+		 */
+		public abstract void __onUpdateWithPause();
+		
 }

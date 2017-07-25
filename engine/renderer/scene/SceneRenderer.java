@@ -1,5 +1,8 @@
 package renderer.scene;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL30;
@@ -7,8 +10,12 @@ import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector4f;
 
 import core.EngineMain;
+import core.display.DisplayManager;
 import core.settings.EngineSettings;
+import object.gui.gui.GUI;
+import object.gui.gui.GUIInterface;
 import object.gui.text.GUIText;
+import object.gui.texture.GUITexture;
 import object.input.Controls;
 import object.input.ControlsInterface;
 import object.input.KeyboardGame;
@@ -151,19 +158,19 @@ public class SceneRenderer {
 	}
 
 	protected void renderGUI() {
-//		String fontName = "candara";
-//		GUIText fpsText = createFPSText(Math.round(1 / DisplayManager.getFrameTimeSeconds()), fontName);
-//		fpsText.setColour(1, 0, 0);		
-//		GUIText coordsText = createPickerCoordsText(picker, fontName);
-//		coordsText.setColour(1, 0, 0);
-//		List<GUITexture> textureList = new ArrayList<GUITexture>();
-//		List<GUIText> textList = new ArrayList<GUIText>();
-//		textList.add(fpsText);
-//		textList.add(coordsText);
-//		GUIInterface statusInterface = new GUI("status", textureList, textList);
-//		scene.getUserInterface().createEmptyGUIGroup("statusGroup");
-//		scene.getUserInterface().getGUIGroup("statusGroup").add(statusInterface);
-//		scene.getUserInterface().getGUIGroup("statusGroup").showAll();		
+		String fontName = "candara";
+		GUIText fpsText = createFPSText(Math.round(1 / DisplayManager.getFrameTimeSeconds()), fontName);
+		fpsText.setColour(1, 0, 0);		
+		GUIText coordsText = createPickerCoordsText(picker, fontName);
+		coordsText.setColour(1, 0, 0);
+		List<GUITexture> textureList = new ArrayList<GUITexture>();
+		List<GUIText> textList = new ArrayList<GUIText>();
+		textList.add(fpsText);
+		textList.add(coordsText);
+		GUIInterface statusInterface = new GUI("status", textureList, textList);
+		scene.getUserInterface().createEmptyGUIGroup("statusGroup");
+		scene.getUserInterface().getGUIGroup("statusGroup").add(statusInterface);
+		scene.getUserInterface().getGUIGroup("statusGroup").showAll();		
 		scene.getUserInterface().render();
 //		scene.getUserInterface().deleteGUIGroup("statusGroup");
 	}

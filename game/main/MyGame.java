@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
+import org.lwjgl.util.vector.Vector2f;
 
 import game.game.Game;
 import object.gui.control.GUIButton;
@@ -48,12 +50,12 @@ public class MyGame extends Game {
 				.getComponent().getTextures().get("Sign");
 		List<GUITexture> signTextureList = new ArrayList<GUITexture>();
 		signTextureList.add(sign);
-		GUIInterface signGUI = new GUI("sign",signTextureList, new ArrayList<GUIText>());
+		GUIInterface signGUI = new GUI("sign", signTextureList, new ArrayList<GUIText>());
 		GUIGroupInterface signGroup = this.gameManager.getScene().getUserInterface().createEmptyGUIGroup("sign");
 		signGroup.add(signGUI);
 		signGroup.showAll();
 		
-		this.button = new GUIButton(signGUI);
+		this.button = new GUIButton("signButton", signGUI, new Vector2f(400,300), new Vector2f(600,500));
 		//PE10.peAttachBody(tree1, PE10.BODY_3D_SPHERE, world1);
 		//PE10.peAttachBody(tree2, PE10.BODY_3D_SPHERE, world1);
 		//PE10.peAttachBody(tree3, PE10.BODY_3D_SPHERE, world1);
@@ -63,7 +65,6 @@ public class MyGame extends Game {
 	 * Actions during the game. 
 	 */
 	public void __onUpdate() {
-		super.__onUpdate();
 		//PE10.peUpdateWorld(world1);
 		if(KeyboardGame.isKeyPressed(Keyboard.KEY_U)) {
 			if(!button.getIsSelected()) {
@@ -82,11 +83,17 @@ public class MyGame extends Game {
 				hintsUI.show();
 			}
 		}
-		time += 1;
-		
-		//tree1.increasePosition(0, 0.1f, 0);
-		if(time == 500) {
-			//EngineMain.pauseEngine(true);
+	}
+
+	@Override
+	public void __onUpdateWithPause() {
+		Vector2f mouseFlatPoint = new Vector2f(Mouse.getX(), Mouse.getY());
+		if(button.getIsMouseOver(mouseFlatPoint)) {
+			
+		} else {
+			
 		}
+
+		time += 1;
 	}
 }

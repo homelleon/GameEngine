@@ -109,7 +109,8 @@ public class Loop implements LoopInterface {
 	/**
 	 * Updates game events, mouse settings, display and render scene. 
 	 */
-	private void update() {		
+	private void update() {
+		game.__onUpdateWithPause();
 		if(!this.isPaused) {
 			game.__onUpdate();
 		}

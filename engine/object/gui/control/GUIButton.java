@@ -3,48 +3,16 @@ package object.gui.control;
 import org.lwjgl.util.vector.Vector2f;
 
 import object.gui.gui.GUIInterface;
-import object.gui.texture.GUITexture;
 
-public class GUIButton implements GUIButtonInterface {
-	
-	private GUIInterface gui;	
-	private boolean isSelected = false;
-	
-	public GUIButton(GUIInterface gui) {
-		this.gui = gui;
-	}
+public class GUIButton extends GUIButtonBase implements GUIButtonInterface {
 
-	@Override
-	public void select() {
-		this.isSelected = true;
-	}
-
-	@Override
-	public void deselect() {
-		this.isSelected = false;		
+	public GUIButton(String name, GUIInterface gui, Vector2f point1, Vector2f point2) {
+		super(name, gui, point1, point2);
 	}
 
 	@Override
 	public void use() {
-		for(GUITexture texture : gui.getTextures()) {
-			texture.setPosition(new Vector2f(0,0));
-		}
+		//implement
 	}
-
-	@Override
-	public void show() {
-		this.gui.show();		
-	}
-
-	@Override
-	public void hide() {
-		this.gui.hide();
-	}
-
-	@Override
-	public boolean getIsSelected() {
-		return this.isSelected;
-	}
-
 
 }

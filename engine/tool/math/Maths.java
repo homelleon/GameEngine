@@ -207,4 +207,15 @@ public class Maths {
 		return isOnRay;		
 	}
 	
+	public static boolean pointIsInQuad(Vector2f point, Vector2f quadPoint1, Vector2f quadPoint2) {
+		boolean isInQuad = false;
+		if((point.x >= quadPoint1.x) &&
+				(point.x <= quadPoint2.x) &&
+				(point.y >= quadPoint1.y) &&
+				(point.y <= quadPoint2.y)) {
+			isInQuad = true;
+		}
+		return isInQuad;
+	}
+	
 }
