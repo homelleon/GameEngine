@@ -13,7 +13,7 @@ import object.gui.control.button.GUIButtonInterface;
  * @author homelleon
  *
  */
-public interface ButtonManagerInterface {
+public interface GUIButtonManagerInterface {
 	
 	/**
 	 * Gets GUI button by name.

@@ -2,13 +2,15 @@ package object.gui.control.button;
 
 import org.lwjgl.util.vector.Vector2f;
 
+import object.gui.control.object.GUIObject;
+
 /**
  * Represent Interface of graphic user interface button unit.
  * 
  * @author homelleon
  *
  */
-public interface GUIButtonInterface {
+public interface GUIButtonInterface extends GUIObject {
 	
 	/**
 	 * Does selecetion action for current button.
@@ -24,16 +26,6 @@ public interface GUIButtonInterface {
 	 * Uses button command that was pre-implemented.
 	 */
 	void use();
-	
-	/**
-	 * Sets to show current button for rendering engine.
-	 */
-	void show();
-	
-	/**
-	 * Sets to hide current button for rendering engine.
-	 */
-	void hide();
 	
 	/**
 	 * Checks if mouse is pointing current button.

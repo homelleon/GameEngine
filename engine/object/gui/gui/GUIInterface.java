@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.lwjgl.util.vector.Vector2f;
 
+import object.gui.Hideable;
 import object.gui.text.GUIText;
 import object.gui.texture.GUITexture;
 
@@ -15,7 +16,7 @@ import object.gui.texture.GUITexture;
  * @see GUI
  *
  */
-public interface GUIInterface {
+public interface GUIInterface extends Hideable {
 	
 	/**
 	 * Returns name of user interface object.
@@ -23,16 +24,6 @@ public interface GUIInterface {
 	 * @return {@link String} value
 	 */
 	String getName();
-	
-	/**
-	 * Sets user interface object visible.
-	 */
-	void show();
-	
-	/**
-	 * Sets user interface object invisible.
-	 */
-	void hide();
 	
 	/**
 	 * Check if user interface is shown.

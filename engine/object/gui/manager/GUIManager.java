@@ -11,7 +11,6 @@ import object.gui.group.GUIGroup;
 import object.gui.group.GUIGroupInterface;
 import object.gui.gui.GUIInterface;
 import object.gui.text.GUIText;
-import renderer.loader.Loader;
 
 public class GUIManager implements GUIManagerInterface {
 	

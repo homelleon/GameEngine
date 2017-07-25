@@ -10,7 +10,7 @@ import org.lwjgl.util.vector.Vector2f;
 
 import object.gui.control.button.GUIButtonInterface;
 
-public class ButtonManager implements ButtonManagerInterface {
+public class GUIButtonManager implements GUIButtonManagerInterface {
 	
 	private Map<String, GUIButtonInterface> buttons = new HashMap<String, GUIButtonInterface>();
 
