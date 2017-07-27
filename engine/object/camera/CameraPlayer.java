@@ -8,98 +8,108 @@ import core.settings.EngineSettings;
 import object.entity.player.PlayerInterface;
 import object.input.MouseGame;
 
-public class CameraPlayer implements CameraInterface { 
-	
+public class CameraPlayer implements CameraInterface {
+
 	/*
 	 * CameraPlayer - камера для игрока
 	 * 
 	 */
-	
+
 	private static final float maxDistanceFromPlayer = 100;
 	private static final float minDistanceFromPlayer = 0;
 	private static final float maxPitch = 90;
 	private static final float minPitch = -90;
-	
+
 	private float distanceFromPlayer = 50;
 	private float angleAroundPlayer = 0;
-	
-	private Vector3f position = new Vector3f(0,0,0);
-	
-	private float pitch = 20; 
+
+	private Vector3f position = new Vector3f(0, 0, 0);
+
+	private float pitch = 20;
 	private float yaw = 0;
 	private float roll;
-	
+
 	private String name;
-	
+
 	private PlayerInterface player;
-	
+
 	public boolean perspectiveMode = false;
 	public boolean isUnderWater = false;
-	
+
+	@Override
 	public String getName() {
 		return name;
 	}
-	
+
 	public CameraPlayer(PlayerInterface player) {
 		this.player = player;
 		this.name = "NoName";
 	}
-	
+
 	public CameraPlayer(PlayerInterface player, String name) {
 		this.player = player;
-		this.name = name;	
+		this.name = name;
 	}
-	
+
+	@Override
 	public void setPosition(float posX, float posY, float posZ) {
 		this.position.x = posX;
 		this.position.y = posY;
 		this.position.z = posZ;
 	}
-	
-	//установить тангаж
+
+	// установить тангаж
+	@Override
 	public void setPitch(float anglePitch) {
 		this.pitch = anglePitch;
 	}
-	
-	//установить рысканье
+
+	// установить рысканье
+	@Override
 	public void setYaw(float angleYaw) {
 		this.yaw = angleYaw;
 	}
-	
+
+	@Override
 	public void move() {
-			calculateZoom();
-			calculatePitchAndAngle();
-			float horizontalDistance = calculateHorizontalDistance();
-			float verticalDistance = calculateVerticalDistance();
-			calculateCameraPosition(horizontalDistance,verticalDistance);
-			this.yaw = 180 - ((player).getRotY() + angleAroundPlayer);		
+		calculateZoom();
+		calculatePitchAndAngle();
+		float horizontalDistance = calculateHorizontalDistance();
+		float verticalDistance = calculateVerticalDistance();
+		calculateCameraPosition(horizontalDistance, verticalDistance);
+		this.yaw = 180 - ((player).getRotY() + angleAroundPlayer);
 	}
-	
+
+	@Override
 	public Vector3f getPosition() {
 		return position;
 	}
-	
-	//вернуть тангаж
+
+	// вернуть тангаж
+	@Override
 	public float getPitch() {
 		return pitch;
 	}
-	
-	//инвертировать тангаж
+
+	// инвертировать тангаж
+	@Override
 	public void invertPitch() {
 		this.pitch = -pitch;
 	}
-	
-	//вернуть рысканье
+
+	// вернуть рысканье
+	@Override
 	public float getYaw() {
 		return yaw;
 	}
-	
-	//вернуть крен
+
+	// вернуть крен
+	@Override
 	public float getRoll() {
 		return roll;
 	}
-	
-	//вычислить позицию камеры относительно игрока
+
+	// вычислить позицию камеры относительно игрока
 	private void calculateCameraPosition(float horizDistance, float verticDistance) {
 		float theta = player.getRotY() + angleAroundPlayer;
 		float offsetX = (float) (horizDistance * Math.sin(Math.toRadians(theta)));
@@ -108,79 +118,79 @@ public class CameraPlayer implements CameraInterface {
 		position.z = player.getPosition().z - offsetZ;
 		position.y = player.getPosition().y + 5 + verticDistance;
 	}
-	
+
 	private float calculateHorizontalDistance() {
 		return (float) (distanceFromPlayer * Math.cos(Math.toRadians(pitch)));
 	}
-	
+
 	private float calculateVerticalDistance() {
 		return (float) (distanceFromPlayer * Math.sin(Math.toRadians(pitch)));
 	}
-	
-	//вычислить масштаб приближения камеры относительно игрока
+
+	// вычислить масштаб приближения камеры относительно игрока
 	private void calculateZoom() {
 		float zoomLevel = Mouse.getDWheel() * EngineSettings.MOUSE_ZOOM_SPEED;
-		if(((distanceFromPlayer<maxDistanceFromPlayer)&&(zoomLevel<0))
-				||((distanceFromPlayer>minDistanceFromPlayer)&&(zoomLevel>0))) {
+		if (((distanceFromPlayer < maxDistanceFromPlayer) && (zoomLevel < 0))
+				|| ((distanceFromPlayer > minDistanceFromPlayer) && (zoomLevel > 0))) {
 			distanceFromPlayer -= zoomLevel;
 		}
 	}
-	
+
 	private void calculatePitchAndAngle() {
-		if(!Mouse.isButtonDown(2)) {
-			float pitchChange = (Mouse.getY() - EngineSettings.DISPLAY_HEIGHT/2) * EngineSettings.MOUSE_Y_SPEED;
-			
-			if((pitch<maxPitch)||(pitch>minPitch)) {
+		if (!Mouse.isButtonDown(2)) {
+			float pitchChange = (Mouse.getY() - EngineSettings.DISPLAY_HEIGHT / 2) * EngineSettings.MOUSE_Y_SPEED;
+
+			if ((pitch < maxPitch) || (pitch > minPitch)) {
 				pitch -= pitchChange;
 			}
 		}
-		
-		if(MouseGame.isPressed(MouseGame.MIDDLE_CLICK)) {	
-			float angleChange = (Mouse.getX() - EngineSettings.DISPLAY_WIDTH/2) * EngineSettings.MOUSE_X_SPEED;
-			angleAroundPlayer = -angleChange;		
-		}else{
+
+		if (MouseGame.isPressed(MouseGame.MIDDLE_CLICK)) {
+			float angleChange = (Mouse.getX() - EngineSettings.DISPLAY_WIDTH / 2) * EngineSettings.MOUSE_X_SPEED;
+			angleAroundPlayer = -angleChange;
+		} else {
 			angleAroundPlayer = 0;
 		}
 	}
-	
+
 	@SuppressWarnings("unused")
 	private void underWaterCalculate() {
-		if(this.position.y <=0) {
+		if (this.position.y <= 0) {
 			isUnderWater = true;
 		} else {
 			isUnderWater = false;
 		}
 	}
-	
-	//переключить повороты камеры
+
+	// переключить повороты камеры
 	@Override
 	public void switchToFace(int faceIndex) {
 		switch (faceIndex) {
-        case 0:
-            pitch = 0;
-            yaw = 90;
-            break;
-        case 1:
-            pitch = 0;
-            yaw = -90;
-            break;
-        case 2:
-            pitch = -90;
-            yaw = 180;
-            break;
-        case 3:
-            pitch = 90;
-            yaw = 180;
-            break;
-        case 4:
-            pitch = 0;
-            yaw = 180;
-            break;
-        case 5:
-            pitch = 0;
-            yaw = 0;
-            break;
-        }
+		case 0:
+			pitch = 0;
+			yaw = 90;
+			break;
+		case 1:
+			pitch = 0;
+			yaw = -90;
+			break;
+		case 2:
+			pitch = -90;
+			yaw = 180;
+			break;
+		case 3:
+			pitch = 90;
+			yaw = 180;
+			break;
+		case 4:
+			pitch = 0;
+			yaw = 180;
+			break;
+		case 5:
+			pitch = 0;
+			yaw = 0;
+			break;
+		}
 	}
 
 	@Override
@@ -197,5 +207,5 @@ public class CameraPlayer implements CameraInterface {
 	public Matrix4f getProjectionViewMatrix() {
 		return null;
 	}
-	
+
 }

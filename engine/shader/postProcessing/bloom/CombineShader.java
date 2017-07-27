@@ -3,26 +3,25 @@ package shader.postProcessing.bloom;
 import core.settings.EngineSettings;
 import shader.ShaderProgram;
 
-public class CombineShader extends ShaderProgram { 
-	
+public class CombineShader extends ShaderProgram {
+
 	/*
-	 *  CombineShader - шейдер для объединения других фильтров постобработки
-	 *  03.02.17
-	 * ------------------------------
-	*/
+	 * CombineShader - шейдер для объединения других фильтров постобработки
+	 * 03.02.17 ------------------------------
+	 */
 
 	private static final String VERTEX_FILE = EngineSettings.SHADERS_BLOOM_PATH + "simpleVertex.txt";
 	private static final String FRAGMENT_FILE = EngineSettings.SHADERS_BLOOM_PATH + "combineFragment.txt";
-	
+
 	private int location_colourTexture;
 	private int location_highlightTexture2;
 	private int location_highlightTexture4;
 	private int location_highlightTexture8;
-	
+
 	protected CombineShader() {
 		super(VERTEX_FILE, FRAGMENT_FILE);
 	}
-	
+
 	@Override
 	protected void getAllUniformLocations() {
 		location_colourTexture = super.getUniformLocation("colourTexture");
@@ -30,7 +29,7 @@ public class CombineShader extends ShaderProgram {
 		location_highlightTexture4 = super.getUniformLocation("highlightTexture4");
 		location_highlightTexture8 = super.getUniformLocation("highlightTexture8");
 	}
-	
+
 	protected void connectTextureUnits() {
 		super.loadInt(location_colourTexture, 0);
 		super.loadInt(location_highlightTexture2, 1);
@@ -42,5 +41,5 @@ public class CombineShader extends ShaderProgram {
 	protected void bindAttributes() {
 		super.bindAttribute(0, "position");
 	}
-	
+
 }

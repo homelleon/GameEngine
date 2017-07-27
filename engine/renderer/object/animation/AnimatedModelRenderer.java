@@ -72,9 +72,9 @@ public class AnimatedModelRenderer {
 		shader.start();
 		shader.loadprojectionViewMatrix(camera.getProjectionViewMatrix());
 		shader.loadLightDirection(lightDir);
-		OGLUtils.antialiasing(true);		
+		OGLUtils.antialiasing(true);
 		OGLUtils.disableBlending();
-		OGLUtils.depthTest(true);		
+		OGLUtils.depthTest(true);
 	}
 
 	/**

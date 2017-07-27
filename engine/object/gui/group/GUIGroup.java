@@ -8,58 +8,55 @@ import java.util.Map;
 import object.gui.gui.GUIInterface;
 
 public class GUIGroup implements GUIGroupInterface {
-	
+
 	private String name;
 	private int priorityNumber = 0;
 	private Map<String, GUIInterface> guis = new HashMap<String, GUIInterface>();
-	
-	
+
 	public GUIGroup(String name, List<GUIInterface> guiList) {
 		this.name = name;
-		if(!guiList.isEmpty()) {
+		if (!guiList.isEmpty()) {
 			guiList.forEach(gui -> this.guis.put(gui.getName(), gui));
 		}
 	}
-	
+
 	public GUIGroup(String name) {
 		this.name = name;
 	}
-	
+
 	@Override
 	public String getName() {
 		return this.name;
 	}
-	
 
 	@Override
 	public void showAll() {
-		if(!guis.isEmpty()) {
+		if (!guis.isEmpty()) {
 			this.guis.values().forEach(gui -> gui.show());
 		}
 	}
 
 	@Override
 	public void hideAll() {
-		if(!guis.isEmpty()) {
+		if (!guis.isEmpty()) {
 			this.guis.values().forEach(gui -> gui.hide());
 		}
 	}
 
 	@Override
 	public void add(GUIInterface gui) {
-		this.guis.put(gui.getName(), gui);		
+		this.guis.put(gui.getName(), gui);
 	}
-	
 
 	@Override
 	public void addAll(List<GUIInterface> guiList) {
 		guiList.forEach(gui -> this.guis.put(gui.getName(), gui));
 	}
-	
+
 	@Override
 	public GUIInterface get(String name) {
 		GUIInterface gui = null;
-		if(!guis.isEmpty()) {
+		if (!guis.isEmpty()) {
 			gui = this.guis.get(name);
 		}
 		return gui;
@@ -68,13 +65,13 @@ public class GUIGroup implements GUIGroupInterface {
 	@Override
 	public Collection<GUIInterface> getAll() {
 		return guis.values();
-	}	
+	}
 
 	@Override
 	public int getPriorityNumber() {
 		return this.priorityNumber;
 	}
-	
+
 	@Override
 	public void setPriorityNumber(int number) {
 		this.priorityNumber = number;
@@ -82,13 +79,12 @@ public class GUIGroup implements GUIGroupInterface {
 
 	@Override
 	public void cleanAll() {
-		if(!guis.isEmpty()) {
-			for(GUIInterface gui : guis.values()) {
+		if (!guis.isEmpty()) {
+			for (GUIInterface gui : guis.values()) {
 				gui.delete();
 			}
 		}
 		guis.clear();
 	}
-
 
 }

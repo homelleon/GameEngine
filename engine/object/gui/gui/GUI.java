@@ -16,19 +16,19 @@ import object.gui.texture.GUITexture;
  *
  */
 public class GUI implements GUIInterface {
-	
+
 	private String name;
 	private boolean isShown;
 	private List<GUITexture> guiTextures;
 	private List<GUIText> guiTexts;
-	
+
 	public GUI(String name, List<GUITexture> guiTextureList, List<GUIText> guiTextList) {
 		this.name = name;
 		this.guiTextures = guiTextureList;
 		this.guiTexts = guiTextList;
 		this.isShown = false;
 	}
-	
+
 	@Override
 	public String getName() {
 		return this.name;
@@ -43,17 +43,16 @@ public class GUI implements GUIInterface {
 	public void hide() {
 		this.doSwitch(false);
 	}
-	
+
 	private void doSwitch(boolean value) {
-		if(!guiTextures.isEmpty()) {
+		if (!guiTextures.isEmpty()) {
 			guiTextures.forEach(gui -> gui.setIsShown(value));
 		}
-		if(!guiTexts.isEmpty()) {
+		if (!guiTexts.isEmpty()) {
 			guiTexts.forEach(tui -> tui.setIsShown(value));
 		}
 		this.isShown = value;
 	}
-	
 
 	@Override
 	public boolean getIsShown() {
@@ -78,12 +77,12 @@ public class GUI implements GUIInterface {
 
 	@Override
 	public void move(Vector2f position) {
-		for(GUITexture gui : this.guiTextures) {			
+		for (GUITexture gui : this.guiTextures) {
 			Vector2f newPosition = Vector2f.add(gui.getPosition(), position, null);
 			gui.setPosition(newPosition);
-		}	
-		
-		for(GUIText text : this.guiTexts) {
+		}
+
+		for (GUIText text : this.guiTexts) {
 			Vector2f newPosition = Vector2f.add(text.getPosition(), position, null);
 			text.setPosition(newPosition);
 		}
@@ -94,6 +93,5 @@ public class GUI implements GUIInterface {
 		guiTextures.clear();
 		guiTexts.clear();
 	}
-
 
 }

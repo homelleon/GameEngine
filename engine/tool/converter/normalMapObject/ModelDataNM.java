@@ -26,7 +26,7 @@ public class ModelDataNM {
 	public float[] getTextureCoords() {
 		return textureCoords;
 	}
-	
+
 	public float[] getTangents() {
 		return tangents;
 	}

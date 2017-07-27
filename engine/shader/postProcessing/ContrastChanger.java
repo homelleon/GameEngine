@@ -6,15 +6,15 @@ import org.lwjgl.opengl.GL13;
 import core.settings.EngineSettings;
 
 public class ContrastChanger {
-	
+
 	private ImageRenderer renderer;
 	private ContrastShader shader;
-	
-	public ContrastChanger(){
+
+	public ContrastChanger() {
 		shader = new ContrastShader();
 		renderer = new ImageRenderer();
 	}
-	
+
 	public void render(int texture) {
 		shader.start();
 		shader.loadDisplayContrast(EngineSettings.DISPLAY_CONTRAST);
@@ -23,7 +23,7 @@ public class ContrastChanger {
 		renderer.renderQuad();
 		shader.stop();
 	}
-	
+
 	public void cleanUp() {
 		renderer.cleanUp();
 		shader.cleanUp();

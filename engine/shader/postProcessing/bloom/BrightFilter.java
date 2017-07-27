@@ -6,21 +6,21 @@ import org.lwjgl.opengl.GL13;
 import shader.postProcessing.ImageRenderer;
 
 /**
- * Postprocessing filter that change brightness of the scene. 
+ * Postprocessing filter that change brightness of the scene.
  * 
  * @author homelleon
  * @version 1.0
  */
-public class BrightFilter { 
+public class BrightFilter {
 
 	private ImageRenderer renderer;
 	private BrightFilterShader shader;
-	
+
 	public BrightFilter(int width, int height) {
 		shader = new BrightFilterShader();
 		renderer = new ImageRenderer(width, height);
 	}
-	
+
 	public void render(int texture) {
 		shader.start();
 		GL13.glActiveTexture(GL13.GL_TEXTURE0);
@@ -28,7 +28,7 @@ public class BrightFilter {
 		renderer.renderQuad();
 		shader.stop();
 	}
-	
+
 	public int getOutputTexture() {
 		return renderer.getOutputTexture();
 	}
@@ -37,5 +37,5 @@ public class BrightFilter {
 		renderer.cleanUp();
 		shader.cleanUp();
 	}
-	
+
 }

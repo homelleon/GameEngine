@@ -6,25 +6,25 @@ import object.gui.gui.GUIInterface;
 import tool.math.Maths;
 
 public abstract class GUIButtonBase {
-	
+
 	protected String name;
 	protected GUIInterface gui;
 	protected boolean isSelected = false;
 	protected Vector2f point1;
 	protected Vector2f point2;
-	
+
 	protected GUIButtonBase(String name, GUIInterface gui, Vector2f point1, Vector2f point2) {
 		this.name = name;
 		this.gui = gui;
 		this.point1 = point1;
 		this.point2 = point2;
 	}
-	
+
 	/**
 	 * Does selecetion action for current button.
 	 */
 	public void select() {
-		if(!this.isSelected) {
+		if (!this.isSelected) {
 			this.isSelected = true;
 		}
 	}
@@ -33,7 +33,7 @@ public abstract class GUIButtonBase {
 	 * Does desecelection action for current button.
 	 */
 	public void deselect() {
-		if(this.isSelected) {
+		if (this.isSelected) {
 			this.isSelected = false;
 		}
 	}
@@ -47,7 +47,7 @@ public abstract class GUIButtonBase {
 	 * Sets to show current button for rendering engine.
 	 */
 	public void show() {
-		this.gui.show();		
+		this.gui.show();
 	}
 
 	/**
@@ -61,9 +61,9 @@ public abstract class GUIButtonBase {
 	 * Checks if mouse is pointing current button.
 	 * 
 	 * @return true if mouse is over the current button<br>
-	 * 		   false if button is out of the current button
+	 *         false if button is out of the current button
 	 */
-	public boolean getIsMouseOver(Vector2f cursorPosition) {		
+	public boolean getIsMouseOver(Vector2f cursorPosition) {
 		return Maths.pointIsInQuad(cursorPosition, point1, point2);
 	}
 
@@ -71,12 +71,12 @@ public abstract class GUIButtonBase {
 	 * Checks if the current button is selected or not.
 	 * 
 	 * @return true if the current button is selected<br>
-	 * 		   false if the current button is not selected 
+	 *         false if the current button is not selected
 	 */
 	public boolean getIsSelected() {
 		return this.isSelected;
 	}
-	
+
 	/**
 	 * Gets graphic user interface name.
 	 * 

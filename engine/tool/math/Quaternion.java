@@ -1,12 +1,11 @@
 package tool.math;
 
-import org.lwjgl.util.vector.Matrix;
 import org.lwjgl.util.vector.Matrix4f;
 
 public class Quaternion {
-	
+
 	private float x, y, z, w;
-	
+
 	public Quaternion(float x, float y, float z, float w) {
 		this.x = x;
 		this.y = y;
@@ -14,7 +13,7 @@ public class Quaternion {
 		this.w = w;
 		normalize();
 	}
-	
+
 	public void normalize() {
 		float mag = (float) Math.sqrt(w * w + x * x + y * y + z * z);
 		w /= mag;
@@ -22,7 +21,7 @@ public class Quaternion {
 		y /= mag;
 		z /= mag;
 	}
-	
+
 	public Matrix4f toRotationMatrix() {
 		Matrix4f matrix = new Matrix4f();
 		final float xy = x * y;
@@ -50,25 +49,25 @@ public class Quaternion {
 		matrix.m31 = 0;
 		matrix.m32 = 0;
 		matrix.m33 = 1;
-		return matrix;		
+		return matrix;
 	}
-	
+
 	public static Quaternion fromMatrix(Matrix4f matrix) {
 		float w, x, y, z;
 		float diagonal = matrix.m00 + matrix.m11 + matrix.m22;
-		if(diagonal > 0) {
+		if (diagonal > 0) {
 			float w4 = (float) (Math.sqrt(diagonal + 1f) * 2f);
 			w = w4 / 4f;
 			x = (matrix.m21 - matrix.m12) / w4;
 			y = (matrix.m02 - matrix.m20) / w4;
 			z = (matrix.m10 - matrix.m01) / w4;
-		} else if((matrix.m00 > matrix.m11) && (matrix.m00 > matrix.m22)) {
+		} else if ((matrix.m00 > matrix.m11) && (matrix.m00 > matrix.m22)) {
 			float x4 = (float) (Math.sqrt(1f + matrix.m00 - matrix.m11 - matrix.m22) * 2f);
 			w = (matrix.m21 - matrix.m12) / x4;
 			x = x4 / 4f;
 			y = (matrix.m01 + matrix.m10) / x4;
 			z = (matrix.m02 + matrix.m20) / x4;
-		} else if(matrix.m11 > matrix.m22) {
+		} else if (matrix.m11 > matrix.m22) {
 			float y4 = (float) (Math.sqrt(1f + matrix.m11 - matrix.m00 - matrix.m22) * 2f);
 			w = (matrix.m02 - matrix.m20) / y4;
 			x = (matrix.m01 + matrix.m10) / y4;
@@ -83,12 +82,12 @@ public class Quaternion {
 		}
 		return new Quaternion(x, y, z, w);
 	}
-	
+
 	public static Quaternion interpolate(Quaternion a, Quaternion b, float blend) {
-		Quaternion result = new Quaternion(0, 0, 0 ,1);
+		Quaternion result = new Quaternion(0, 0, 0, 1);
 		float dot = a.w * b.w + a.x * b.x + a.y * b.y + a.z * b.z;
 		float blendI = 1f - blend;
-		if(dot < 0) {
+		if (dot < 0) {
 			result.w = blendI * a.w + blend * -b.w;
 			result.x = blendI * a.x + blend * -b.x;
 			result.y = blendI * a.y + blend * -b.y;
@@ -100,7 +99,7 @@ public class Quaternion {
 			result.z = blendI * a.z + blend * b.z;
 		}
 		result.normalize();
-		return result;		
+		return result;
 	}
 
 }

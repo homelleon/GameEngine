@@ -10,8 +10,9 @@ import object.gui.group.GUIGroupInterface;
  * @see GUIRenderer
  */
 public interface GUIRendererInterface {
-	
+
 	void render(Collection<GUIGroupInterface> groupCollection);
+
 	void cleanUp();
 
 }

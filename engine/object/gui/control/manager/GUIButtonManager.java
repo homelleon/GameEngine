@@ -11,7 +11,7 @@ import org.lwjgl.util.vector.Vector2f;
 import object.gui.control.button.GUIButtonInterface;
 
 public class GUIButtonManager implements GUIButtonManagerInterface {
-	
+
 	private Map<String, GUIButtonInterface> buttons = new HashMap<String, GUIButtonInterface>();
 
 	@Override
@@ -37,8 +37,8 @@ public class GUIButtonManager implements GUIButtonManagerInterface {
 	@Override
 	public List<GUIButtonInterface> getMouseOverButton(Vector2f mouseCoord) {
 		List<GUIButtonInterface> buttonList = new ArrayList<GUIButtonInterface>();
-		for(GUIButtonInterface button : this.buttons.values()) {
-			if(button.getIsMouseOver(mouseCoord)) {
+		for (GUIButtonInterface button : this.buttons.values()) {
+			if (button.getIsMouseOver(mouseCoord)) {
 				buttonList.add(button);
 			}
 		}

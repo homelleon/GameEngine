@@ -31,46 +31,46 @@ public class GUITextRenderer {
 	public void cleanUp() {
 		this.shader.cleanUp();
 	}
-	
+
 	public void render(Collection<GUIText> textList) {
 		processText(textList);
 		prepare();
-		for(FontType font: this.texts.keySet()) {
+		for (FontType font : this.texts.keySet()) {
 			GL13.glActiveTexture(GL13.GL_TEXTURE0);
-			GL11.glBindTexture(GL11.GL_TEXTURE_2D, font.getTextureAtlas());			
-			for(GUIText text : this.texts.get(font)) {
+			GL11.glBindTexture(GL11.GL_TEXTURE_2D, font.getTextureAtlas());
+			for (GUIText text : this.texts.get(font)) {
 				renderText(text);
 			}
 		}
 		endRendering();
 	}
-	
+
 	private void prepare() {
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		OGLUtils.depthTest(false);
 		this.shader.start();
 	}
-	
+
 	private void processText(Collection<GUIText> textList) {
-		for(GUIText text : textList) {			
-			if(text.getIsShown()) {
+		for (GUIText text : textList) {
+			if (text.getIsShown()) {
 				this.loadText(text);
 			}
 		}
 	}
-	
+
 	private void loadText(GUIText text) {
 		String fontName = text.getFont();
 		FontType font = this.fontManager.get(fontName);
 		List<GUIText> textBatch = this.texts.get(font);
-		if(textBatch == null) {
+		if (textBatch == null) {
 			textBatch = new ArrayList<GUIText>();
 			this.texts.put(font, textBatch);
 		}
 		textBatch.add(text);
 	}
-	
+
 	private void renderText(GUIText text) {
 		GL30.glBindVertexArray(text.getMesh());
 		GL20.glEnableVertexAttribArray(0);
@@ -86,7 +86,7 @@ public class GUITextRenderer {
 		GL20.glDisableVertexAttribArray(1);
 		GL30.glBindVertexArray(0);
 	}
-	
+
 	private void endRendering() {
 		this.shader.stop();
 		GL11.glDisable(GL11.GL_BLEND);

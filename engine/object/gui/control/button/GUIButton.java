@@ -12,7 +12,7 @@ public class GUIButton extends GUIButtonBase implements GUIButtonInterface {
 
 	@Override
 	public void use() {
-		//implement
+		// implement
 	}
 
 }

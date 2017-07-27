@@ -29,6 +29,7 @@ public class MyGame extends Game {
 	/**
 	 * Action when game is just started. 
 	 */
+	@Override
 	public void __onStart() {
 		super.__onStart();
 		//PE10.initialize();
@@ -64,6 +65,7 @@ public class MyGame extends Game {
 	/**
 	 * Actions during the game. 
 	 */
+	@Override
 	public void __onUpdate() {
 		//PE10.peUpdateWorld(world1);
 		if(KeyboardGame.isKeyPressed(Keyboard.KEY_U)) {

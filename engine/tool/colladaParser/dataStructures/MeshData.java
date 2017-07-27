@@ -1,7 +1,8 @@
 package tool.colladaParser.dataStructures;
 
 /**
- * This object contains all the mesh data for an animated model that is to be loaded into the VAO.
+ * This object contains all the mesh data for an animated model that is to be
+ * loaded into the VAO.
  * 
  * @author Karl
  *
@@ -17,8 +18,8 @@ public class MeshData {
 	private int[] jointIds;
 	private float[] vertexWeights;
 
-	public MeshData(float[] vertices, float[] textureCoords, float[] normals, int[] indices,
-			int[] jointIds, float[] vertexWeights) {
+	public MeshData(float[] vertices, float[] textureCoords, float[] normals, int[] indices, int[] jointIds,
+			float[] vertexWeights) {
 		this.vertices = vertices;
 		this.textureCoords = textureCoords;
 		this.normals = normals;
@@ -30,8 +31,8 @@ public class MeshData {
 	public int[] getJointIds() {
 		return jointIds;
 	}
-	
-	public float[] getVertexWeights(){
+
+	public float[] getVertexWeights() {
 		return vertexWeights;
 	}
 

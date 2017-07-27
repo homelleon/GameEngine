@@ -13,7 +13,7 @@ import renderer.loader.Loader;
  * @author Karl
  *
  */
-public class FontType { 
+public class FontType {
 
 	private String name;
 	private int textureAtlas;
@@ -34,13 +34,15 @@ public class FontType {
 		this.textureAtlas = textureAtlas;
 		this.meshCreator = new TextMeshCreator(fontFile);
 	}
-	
+
 	/**
 	 * Creates a new font and loads up the data about each character from the
 	 * font file.
-	 *  
-	 * @param name {@link String} value of font name
-	 * @param loader {@link Loader} value
+	 * 
+	 * @param name
+	 *            {@link String} value of font name
+	 * @param loader
+	 *            {@link Loader} value
 	 */
 	public FontType(String name, Loader loader) {
 		new FontType(name, loader.loadTexture(EngineSettings.FONT_FILE_PATH, name),
@@ -66,7 +68,7 @@ public class FontType {
 	public TextMeshData loadText(GUIText text) {
 		return meshCreator.createTextMesh(text);
 	}
-	
+
 	/**
 	 * Gets font name.
 	 * 

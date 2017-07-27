@@ -9,17 +9,17 @@ import shader.ShaderProgram;
  * ------------------------------
 */
 
-public class BrightFilterShader extends ShaderProgram { 
-	
+public class BrightFilterShader extends ShaderProgram {
+
 	private static final String VERTEX_FILE = EngineSettings.SHADERS_BLOOM_PATH + "simpleVertex.txt";
 	private static final String FRAGMENT_FILE = EngineSettings.SHADERS_BLOOM_PATH + "brightFilterFragment.txt";
-	
+
 	public BrightFilterShader() {
 		super(VERTEX_FILE, FRAGMENT_FILE);
 	}
 
 	@Override
-	protected void getAllUniformLocations() {	
+	protected void getAllUniformLocations() {
 	}
 
 	@Override

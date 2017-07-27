@@ -35,8 +35,7 @@ import tool.MousePicker;
 import tool.openGL.OGLUtils;
 
 /**
- * Class that render scene objects and check controls. 
- * TODO: need to refactor
+ * Class that render scene objects and check controls. TODO: need to refactor
  * 
  * @author homelleon
  * @version 1.0
@@ -77,7 +76,7 @@ public class SceneRenderer {
 	public void render(Loader loader, boolean isPaused) {
 		checkInputs();
 		saveMap(loader);
-		if(!isPaused) {
+		if (!isPaused) {
 			move();
 		}
 		scene.getEntities().updateWithFrustum(scene.getFrustum());
@@ -86,7 +85,7 @@ public class SceneRenderer {
 		renderWaterSurface();
 		renderToScreen();
 	}
-	
+
 	private void saveMap(Loader loader) {
 		if (KeyboardGame.isKeyPressed(Keyboard.KEY_T)) {
 			EngineMain.pauseEngine(true);
@@ -99,19 +98,19 @@ public class SceneRenderer {
 			EngineMain.pauseEngine(false);
 		}
 	}
-	
+
 	private void checkInputs() {
-		if(KeyboardGame.isKeyPressed(EngineSettings.KEY_PAUSE)) {
+		if (KeyboardGame.isKeyPressed(EngineSettings.KEY_PAUSE)) {
 			EngineMain.pauseEngine(!EngineMain.getIsEnginePaused());
 		}
-		
+
 		if (KeyboardGame.isKeyReleased(Keyboard.KEY_H)) {
 			System.out.println("Key H released");
 		}
 		if (KeyboardGame.isKeyPressed(Keyboard.KEY_H)) {
 			System.out.println("Key H pressed");
-		} 		
-		
+		}
+
 	}
 
 	private void renderToScreen() {
@@ -140,7 +139,8 @@ public class SceneRenderer {
 		float distance = 2 * (scene.getCamera().getPosition().y - scene.getWaters().getByName("Water").getHeight());
 		scene.getCamera().getPosition().y -= distance;
 		scene.getCamera().invertPitch();
-		masterRenderer.renderScene(scene, new Vector4f(0, 1, 0, -scene.getWaters().getByName("Water").getHeight()), true);
+		masterRenderer.renderScene(scene, new Vector4f(0, 1, 0, -scene.getWaters().getByName("Water").getHeight()),
+				true);
 		scene.getCamera().getPosition().y += distance;
 		scene.getCamera().invertPitch();
 	}
@@ -160,7 +160,7 @@ public class SceneRenderer {
 	protected void renderGUI() {
 		String fontName = "candara";
 		GUIText fpsText = createFPSText(Math.round(1 / DisplayManager.getFrameTimeSeconds()), fontName);
-		fpsText.setColour(1, 0, 0);		
+		fpsText.setColour(1, 0, 0);
 		GUIText coordsText = createPickerCoordsText(picker, fontName);
 		coordsText.setColour(1, 0, 0);
 		List<GUITexture> textureList = new ArrayList<GUITexture>();
@@ -170,22 +170,23 @@ public class SceneRenderer {
 		GUIInterface statusInterface = new GUI("status", textureList, textList);
 		scene.getUserInterface().createEmptyGUIGroup("statusGroup");
 		scene.getUserInterface().getGUIGroup("statusGroup").add(statusInterface);
-		scene.getUserInterface().getGUIGroup("statusGroup").showAll();		
+		scene.getUserInterface().getGUIGroup("statusGroup").showAll();
 		scene.getUserInterface().render();
-//		scene.getUserInterface().deleteGUIGroup("statusGroup");
+		// scene.getUserInterface().deleteGUIGroup("statusGroup");
 	}
 
-	protected GUIText createFPSText(float FPS, String fontName) {		
-		GUIText guiText = new GUIText("FPS", "FPS: " + String.valueOf((int) FPS), 2f, fontName , new Vector2f(0.65f, 0), 0.5f, true);
+	protected GUIText createFPSText(float FPS, String fontName) {
+		GUIText guiText = new GUIText("FPS", "FPS: " + String.valueOf((int) FPS), 2f, fontName, new Vector2f(0.65f, 0),
+				0.5f, true);
 		scene.getUserInterface().getComponent().getTexts().add(guiText);
 		return guiText;
 	}
 
 	protected GUIText createPickerCoordsText(MousePicker picker, String fontName) {
-		String text = (String) String.valueOf(picker.getCurrentRay());
+		String text = String.valueOf(picker.getCurrentRay());
 		GUIText guiText = new GUIText("Coords", text, 1, fontName, new Vector2f(0.3f, 0.2f), 1f, true);
 		scene.getUserInterface().getComponent().getTexts().add(guiText);
-		return guiText; 
+		return guiText;
 	}
 
 	private void move() {
@@ -194,7 +195,7 @@ public class SceneRenderer {
 		scene.getPlayer().move(scene.getTerrains().getAll());
 		scene.getAudioSources().getMaster().setListenerData(scene.getCamera().getPosition());
 	}
-	
+
 	public MainRenderer getMasterRenderer() {
 		return this.masterRenderer;
 	}

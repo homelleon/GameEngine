@@ -1,13 +1,13 @@
 package object.texture.terrain;
 
 public class TerrainTexturePack {
-	
+
 	private TerrainTexture backgroundTexture;
 	private TerrainTexture rTexture;
 	private TerrainTexture gTexture;
 	private TerrainTexture bTexture;
 	private String name;
-	
+
 	public TerrainTexturePack(TerrainTexture backgroundTexture, TerrainTexture rTexture, TerrainTexture gTexture,
 			TerrainTexture bTexture) {
 		this.backgroundTexture = backgroundTexture;
@@ -16,9 +16,9 @@ public class TerrainTexturePack {
 		this.bTexture = bTexture;
 		this.name = "NoName";
 	}
-	
-	public TerrainTexturePack(String name, TerrainTexture backgroundTexture, TerrainTexture rTexture, TerrainTexture gTexture,
-			TerrainTexture bTexture) {
+
+	public TerrainTexturePack(String name, TerrainTexture backgroundTexture, TerrainTexture rTexture,
+			TerrainTexture gTexture, TerrainTexture bTexture) {
 		this.backgroundTexture = backgroundTexture;
 		this.rTexture = rTexture;
 		this.gTexture = gTexture;
@@ -45,5 +45,5 @@ public class TerrainTexturePack {
 	public TerrainTexture getbTexture() {
 		return bTexture;
 	}
-	
+
 }

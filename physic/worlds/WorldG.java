@@ -4,8 +4,6 @@ import java.util.WeakHashMap;
 
 import org.lwjgl.util.vector.Vector3f;
 
-import bodies.BodyInterface;
-import object.entity.entity.Entity;
 import bodies.Body2DCircle;
 import bodies.Body2DPlane;
 import bodies.Body2DQuad;
@@ -14,6 +12,8 @@ import bodies.Body3DCube;
 import bodies.Body3DMesh;
 import bodies.Body3DPyramid;
 import bodies.Body3DSphere;
+import bodies.BodyInterface;
+import object.entity.entity.Entity;
 import physicMain.PE10;
 
 /*

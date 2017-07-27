@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.lwjgl.util.vector.Matrix4f;
 
+import object.animation.Animator;
+
 /**
  * 
  * Represents a joint in a "skeleton". It contains the index of the joint which
@@ -38,7 +40,7 @@ public class Joint {
 	public final List<Joint> children = new ArrayList<Joint>();
 
 	private Matrix4f animatedTransform = new Matrix4f();
-	
+
 	private final Matrix4f localBindTransform;
 	private Matrix4f inverseBindTransform = new Matrix4f();
 
@@ -92,7 +94,8 @@ public class Joint {
 	 * to them in the tutorial) to be set by the animator. This is used to put
 	 * the joints of the animated model in a certain pose.
 	 * 
-	 * @param animationTransform - the new joint transform.
+	 * @param animationTransform
+	 *            - the new joint transform.
 	 */
 	public void setAnimationTransform(Matrix4f animationTransform) {
 		this.animatedTransform = animationTransform;

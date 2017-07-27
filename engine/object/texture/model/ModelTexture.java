@@ -6,67 +6,60 @@ public class ModelTexture {
 	private int normalMap;
 	private int specularMap;
 	private String name;
-	
+
 	private float shineDamper = 1;
 	private float reflectivity = 0;
 	private float reflectiveFactor = 0;
 	private float refractiveFactor = 0;
 	private float refractiveIndex = 0;
-	
+
 	private boolean hasTransparency = false;
 	private boolean useFakeLighting = false;
 	private boolean hasSpecularMap = false;
-	
+
 	private int numberOfRows = 1;
-	
 
 	public ModelTexture(int id) {
-		this.textureID = id;		
+		this.textureID = id;
 	}
-	
+
 	public ModelTexture(String name, int id) {
 		this.textureID = id;
 		this.name = name;
 	}
-	
+
 	public String getName() {
 		return name;
 	}
-
 
 	public void setSpecularMap(int specMap) {
 		this.specularMap = specMap;
 		this.hasSpecularMap = true;
 	}
-	
+
 	public boolean hasSpecularMap() {
 		return hasSpecularMap;
 	}
-	
-	public int getSpecularMap(){
+
+	public int getSpecularMap() {
 		return specularMap;
 	}
-	
-	
+
 	public int getNumberOfRows() {
 		return numberOfRows;
 	}
-
 
 	public void setNumberOfRows(int numberOfRows) {
 		this.numberOfRows = numberOfRows;
 	}
 
-    
 	public int getNormalMap() {
 		return normalMap;
 	}
 
-
 	public void setNormalMap(int normalMap) {
 		this.normalMap = normalMap;
 	}
-
 
 	public boolean isUseFakeLighting() {
 		return useFakeLighting;
@@ -83,14 +76,14 @@ public class ModelTexture {
 	public void setHasTransparency(boolean hasTransparency) {
 		this.hasTransparency = hasTransparency;
 	}
-	
+
 	public float getRefractiveFactor() {
 		return refractiveFactor;
 	}
 
 	public void setRefractiveFactor(float refractiveFactor) {
 		this.refractiveFactor = refractiveFactor;
-	}	
+	}
 
 	public float getRefractiveIndex() {
 		return refractiveIndex;
@@ -108,7 +101,7 @@ public class ModelTexture {
 		this.reflectiveFactor = reflectiveFactor;
 	}
 
-	public int getID(){
+	public int getID() {
 		return this.textureID;
 	}
 
@@ -127,5 +120,5 @@ public class ModelTexture {
 	public void setReflectivity(float reflectivity) {
 		this.reflectivity = reflectivity;
 	}
-	
+
 }

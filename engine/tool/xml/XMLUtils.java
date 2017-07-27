@@ -12,16 +12,16 @@ import org.w3c.dom.NodeList;
  */
 
 public class XMLUtils {
-	
+
 	/* XML utils constants */
 	private static final String OPEN_BRACET = "<";
 	private static final String CLOSE_BRACET = ">";
 	private static final String CLOSE_TAG_SIGN = "/";
-	
+
 	/* XML utils vars */
 	private static int id = 0;
 	private static boolean countId = false;
-	
+
 	/* ================================================== */
 	/* XML parser constants */
 	public static final String SEPARATOR = " ";
@@ -83,82 +83,83 @@ public class XMLUtils {
 	public final static String AMPLITUDE = "amplitude";
 	public final static String OCTAVE = "octave";
 	public final static String ROUGHTNESS = "roughness";
-	
+
 	/* boolean values */
 	public final static String NORMAL = "normal";
 	public final static String CENTERED = "centered";
 	public final static String PROCEDURE_GENERATED = "procedure_generated";
-	
+
 	/* html text tags */
 	public final static String PARAGRAPH = "p";
-	
-	/** 
+
+	/**
 	 * @return true if id counting<br>
-	 * 		   false if id is not counting
+	 *         false if id is not counting
 	 */
 	public static boolean isCountingId() {
 		return XMLUtils.countId;
 	}
-	
+
 	/**
 	 * Turns id counting on.
-	 * <p>XMLUtils start counting id every time any of getTag or addValue
-	 * method is used. 
+	 * <p>
+	 * XMLUtils start counting id every time any of getTag or addValue method is
+	 * used.
 	 */
 	public static void turnCountingIdOn() {
 		XMLUtils.countId = true;
 	}
-	
+
 	/**
 	 * Turns id counting off.
 	 */
 	public static void turnCountingIdOff() {
 		XMLUtils.countId = false;
 	}
-	
+
 	/**
 	 * @return {@link Integer} value of current tag id
 	 */
 	public static int getId() {
 		return XMLUtils.id;
 	}
-	
+
 	/**
 	 * Make tag id = 0.
 	 */
 	public static void clearId() {
 		XMLUtils.id = 0;
 	}
-	
+
 	private static void countId() {
-		if(XMLUtils.countId) {
+		if (XMLUtils.countId) {
 			id += 1;
 		}
 	}
-	
-	public static String pullLineFromWords(String line, String beginWord, String endWord) {				
+
+	public static String pullLineFromWords(String line, String beginWord, String endWord) {
 		return line.substring(beginWord.length(), line.length() - endWord.length());
 	}
-	
+
 	public static boolean ifNodeIsElement(Node node, String name) {
 		boolean value = false;
-		if(node.getNodeType() == Node.ELEMENT_NODE) {
-			if(node.getNodeName() == name) {
+		if (node.getNodeType() == Node.ELEMENT_NODE) {
+			if (node.getNodeName() == name) {
 				value = true;
 			}
 		}
 		return value;
 	}
-	
+
 	public static String getBeginTag(String tagName) {
-		String tag = "";		
+		String tag = "";
 		tag = OPEN_BRACET + tagName + CLOSE_BRACET;
 		countId();
 		return tag;
 	}
-	
+
 	public static String getBeginTag(String tagName, int level) {
-		String tag = "";		
+		String tag = "";
 		for (int i = 0; i < level; i++) {
 			tag += " ";
 		}
@@ -166,13 +167,13 @@ public class XMLUtils {
 		countId();
 		return tag;
 	}
-	
+
 	public static String getEndTag(String tagName) {
 		String tag = "";
-		tag = OPEN_BRACET + CLOSE_TAG_SIGN + tagName + CLOSE_BRACET;  
+		tag = OPEN_BRACET + CLOSE_TAG_SIGN + tagName + CLOSE_BRACET;
 		return tag;
 	}
-	
+
 	public static String getEndTag(String tagName, int level) {
 		String tag = "";
 		for (int i = 0; i < level; i++) {
@@ -182,34 +183,34 @@ public class XMLUtils {
 		countId();
 		return tag;
 	}
-	
+
 	public static String getTagValue(Element element, String tagName) {
 		String value = "";
-		value = element.getElementsByTagName(tagName).item(0).getChildNodes().item(0).getNodeValue();		
+		value = element.getElementsByTagName(tagName).item(0).getChildNodes().item(0).getNodeValue();
 		return value;
 	}
-	
+
 	public static Element getChildElementByTag(Element parentElement, String tagName) {
 		Element childElement = (Element) parentElement.getElementsByTagName(tagName).item(0);
 		return childElement;
 	}
-	
+
 	public static NodeList getChildrenListByTag(Element parentElement, String tagName) {
 		return getChildElementByTag(parentElement, tagName).getChildNodes();
 	}
-	
+
 	public static String getAttributeValue(Node node, String attributeName) {
 		String attribute = "";
 		attribute = node.getAttributes().getNamedItem(attributeName).getNodeValue();
 		return attribute;
 	}
-	
+
 	public static String addTagValue(String tagName, String value, int level) {
-		String line = "";		
+		String line = "";
 		line = getBeginTag(tagName, level) + value + getEndTag(tagName);
 		countId();
 		return line;
-		
+
 	}
 
 }

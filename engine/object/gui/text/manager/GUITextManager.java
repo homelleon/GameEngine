@@ -12,7 +12,6 @@ import object.gui.text.GUIText;
 import object.gui.text.parser.GUITextParserInterface;
 import object.gui.text.parser.GUITextXMLParser;
 import renderer.loader.Loader;
-import renderer.object.gui.GUITextRenderer;
 import tool.xml.loader.XMLFileLoader;
 import tool.xml.loader.XMLLoaderInterface;
 
@@ -23,45 +22,46 @@ import tool.xml.loader.XMLLoaderInterface;
  * @see GUITextManagerInterface
  */
 public class GUITextManager implements GUITextManagerInterface {
-	
+
 	private FontManagerInterface fontManager;
 	private Map<String, GUIText> texts = new HashMap<String, GUIText>();
-	
+
 	/**
 	 * Constracts GUITextManager manager.
-	 *  
-	 * @param loader {@link Loader}
+	 * 
+	 * @param loader
+	 *            {@link Loader}
 	 */
 	public GUITextManager() {
 		this.fontManager = new FontManager();
 	}
-	
+
 	@Override
 	public void addAll(Collection<GUIText> textList) {
-		if((textList != null) && (!textList.isEmpty())) {
-			for(GUIText text : textList) {
+		if ((textList != null) && (!textList.isEmpty())) {
+			for (GUIText text : textList) {
 				this.add(text);
 			}
-		}	
+		}
 	}
 
 	@Override
 	public void add(GUIText text) {
-		if(text != null) {
+		if (text != null) {
 			this.texts.put(text.getName(), text);
 			String font = text.getFont();
 			this.fontManager.create(font);
 			TextMeshData data = fontManager.get(font).loadText(text);
 			Loader loader = Loader.getInstance();
-           	int vao = loader.loadToVAO(data.getVertexPositions(), data.getTextureCoords());
-    		text.setMeshInfo(vao, data.getVertexCount());
+			int vao = loader.loadToVAO(data.getVertexPositions(), data.getTextureCoords());
+			text.setMeshInfo(vao, data.getVertexCount());
 		}
 	}
 
 	@Override
 	public GUIText get(String name) {
 		GUIText text = null;
-		if(this.texts.containsKey(name)) {
+		if (this.texts.containsKey(name)) {
 			text = this.texts.get(name);
 		}
 		return text;
@@ -71,10 +71,10 @@ public class GUITextManager implements GUITextManagerInterface {
 	public Collection<GUIText> getAll() {
 		return this.texts.values();
 	}
-	
+
 	@Override
 	public void remove(String name) {
-		this.texts.remove(name);		
+		this.texts.remove(name);
 	}
 
 	@Override
@@ -90,10 +90,10 @@ public class GUITextManager implements GUITextManagerInterface {
 
 	@Override
 	public void readFile(String fileName) {
-		XMLLoaderInterface xmlLoader = new XMLFileLoader(EngineSettings.INTERFACE_PATH + fileName + EngineSettings.EXTENSION_XML);
+		XMLLoaderInterface xmlLoader = new XMLFileLoader(
+				EngineSettings.INTERFACE_PATH + fileName + EngineSettings.EXTENSION_XML);
 		GUITextParserInterface parser = new GUITextXMLParser(xmlLoader.load());
-		this.addAll(parser.parse());		
+		this.addAll(parser.parse());
 	}
-
 
 }

@@ -28,139 +28,140 @@ import tool.xml.loader.XMLLoaderInterface;
 
 /**
  * Game looping system that initialize preloaded game variables and objects and
- * updates main game systems. 
+ * updates main game systems.
  * 
  * @author homelleon
  * @version 1.0
  * @see LoopInterface
  */
 public class Loop implements LoopInterface {
-	
+
 	private static Loop instance;
 	private static final String SETTINGS_NAME = "settings";
-		
+
 	private Loader loader;
 	private MainRenderer renderer;
-    private SceneRenderer sceneRenderer;
-    
-    private SceneManagerInterface sceneManager;
-	
-    private SceneInterface scene;
-    private ModelMap map;
-    
-    private GameInterface game;
-    
-    private boolean mapIsLoaded = false;
-    private boolean isPaused = false;
-    
-    private Loop() {}
-    
-    public static Loop getInstance() {
+	private SceneRenderer sceneRenderer;
+
+	private SceneManagerInterface sceneManager;
+
+	private SceneInterface scene;
+	private ModelMap map;
+
+	private GameInterface game;
+
+	private boolean mapIsLoaded = false;
+	private boolean isPaused = false;
+
+	private Loop() {
+	}
+
+	public static Loop getInstance() {
 		if (instance == null) {
-		     instance = new Loop();
+			instance = new Loop();
 		}
 		return instance;
 	}
-    
-    /**
-     * Initilize display, load game settings and setup scene objects.
-     * @see #prepare() 
-     */
+
+	/**
+	 * Initilize display, load game settings and setup scene objects.
+	 * 
+	 * @see #prepare()
+	 */
 	private void init() {
 		DisplayManager.createDisplay();
 		/*--------------PRE LOAD TOOLS-------------*/
 		this.loader = Loader.getInstance();
-		
-		loadGameSettings();		
+
+		loadGameSettings();
 		if (!this.mapIsLoaded) {
 			loadMap("map");
 		}
-		
-		this.scene = new Scene(map);		
+
+		this.scene = new Scene(map);
 		this.sceneRenderer = new SceneRenderer();
-		this.sceneManager = new SceneManager();	
+		this.sceneManager = new SceneManager();
 		sceneManager.init(scene, loader);
 	}
-	
+
 	@Override
-	public void run() {	
+	public void run() {
 		prepare();
-		while(!Display.isCloseRequested()) {
-			if(Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
+		while (!Display.isCloseRequested()) {
+			if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
 				break;
 			}
 			update();
-		}		
-		cleanUp();		
+		}
+		cleanUp();
 	}
-	
+
 	/**
 	 * Initialize scene, rendering system, mouse settings, and game events on
-	 * start. 
+	 * start.
 	 */
 	private void prepare() {
-		init();		
+		init();
 		sceneRenderer.init(scene, loader);
 		MouseGame.initilize(10);
 		this.game = GameCore.loadGame();
 		game.__onStart();
 	}
-	
+
 	/**
-	 * Updates game events, mouse settings, display and render scene. 
+	 * Updates game events, mouse settings, display and render scene.
 	 */
 	private void update() {
 		game.__onUpdateWithPause();
-		if(!this.isPaused) {
+		if (!this.isPaused) {
 			game.__onUpdate();
 		}
 		sceneRenderer.render(loader, isPaused);
 		MouseGame.update();
 		DisplayManager.updateDisplay();
 	}
-	
+
 	/**
 	 * Starts cleaning process for game looping objects and close display to
-	 * exit the application. 
+	 * exit the application.
 	 */
 	private void cleanUp() {
 		scene.cleanUp();
 		loader.cleanUp();
 		sceneRenderer.cleanUp();
 		DisplayManager.closeDisplay();
-    }
-	
+	}
+
 	/**
 	 * Loads map for game objects that have to be in the scene.
 	 * 
 	 * @param name
-	 * 			   String value of the file name
+	 *            String value of the file name
 	 * 
 	 * @see #loadGameSettings()
 	 */
 	private void loadMap(String name) {
 		XMLLoaderInterface xmlLoader = new XMLFileLoader(EngineSettings.MAP_PATH + name + EngineSettings.EXTENSION_XML);
-		ModelMapParserInterface mapParser = new ModelMapXMLParser(
-				xmlLoader.load(), name, loader);
-		this.map = mapParser.parseMap();	
+		ModelMapParserInterface mapParser = new ModelMapXMLParser(xmlLoader.load(), name, loader);
+		this.map = mapParser.parseMap();
 		this.mapIsLoaded = true;
 	}
-	
+
 	/**
 	 * Loads object map for default editor object menu.
 	 * 
 	 * @param name
-	 * 			   String value of the file name
+	 *            String value of the file name
 	 * 
 	 * @see #loadGameSettings()
 	 */
 	private void loadObjectMap(String name) {
 		XMLLoaderInterface xmlLoader = new XMLFileLoader(EngineSettings.MAP_PATH + name + EngineSettings.EXTENSION_XML);
 		LevelMapParserInterface mapParser = new LevelMapXMLParser();
-//		MapsLoaderInterface mapLoader = new MapsXMLLoader();
-//		ObjectMapInterface objectMap = mapLoader.loadObjectMap(name, loader);
+		// MapsLoaderInterface mapLoader = new MapsXMLLoader();
+		// ObjectMapInterface objectMap = mapLoader.loadObjectMap(name, loader);
 	}
-	
+
 	/**
 	 * Loads game settings and sets name to map and object map. After that it
 	 * loads map and object map using name written in the game settings file.
@@ -171,29 +172,28 @@ public class Loop implements LoopInterface {
 	private void loadGameSettings() {
 		XMLLoaderInterface xmlLoader = new XMLFileLoader(
 				EngineSettings.SETTINGS_GAME_PATH + SETTINGS_NAME + EngineSettings.EXTENSION_XML);
-		SettingsParserInterface settingsParser = new SettingsXMLParser(
-				xmlLoader.load());
+		SettingsParserInterface settingsParser = new SettingsXMLParser(xmlLoader.load());
 		GameSettings settings = settingsParser.parse();
 		loadMap(settings.getMapName());
 		loadObjectMap(settings.getObjectMapName());
 	}
-	
+
 	@Override
 	public SceneInterface getScene() {
 		return this.scene;
-	}    	    
-   
-    @Override
-    public void setTerrainWiredFrame(boolean value) {
+	}
+
+	@Override
+	public void setTerrainWiredFrame(boolean value) {
 		renderer.setTerrainWiredFrame(value);
 	}
-    
-    @Override
+
+	@Override
 	public void setEntityWiredFrame(boolean value) {
 		renderer.setEntityWiredFrame(value);
 	}
-	
-    @Override
+
+	@Override
 	public void setScenePaused(boolean value) {
 		isPaused = value;
 	}
@@ -201,6 +201,6 @@ public class Loop implements LoopInterface {
 	@Override
 	public boolean getIsScenePaused() {
 		return isPaused;
-	}	
-    
+	}
+
 }

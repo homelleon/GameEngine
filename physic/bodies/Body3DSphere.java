@@ -22,22 +22,27 @@ public class Body3DSphere extends BodyBasic implements BodyInterface {
 		typeID = PE10.BODY_3D_SPHERE;
 	}
 
+	@Override
 	public Vector3f getPosition() {
 		return super.getPosition();
 	}
 	
+	@Override
 	public void setPosition(Vector3f position) {
 		super.setPosition(position);
 	}
 	
+	@Override
 	public float getMass() {
 		return super.getMass();
 	}
 	
+	@Override
 	public void doAcceleration(float value, Vector3f direction) {
 		
 	}
 	
+	@Override
 	public void update() {
 		super.update();
 	}
@@ -46,10 +51,12 @@ public class Body3DSphere extends BodyBasic implements BodyInterface {
 		super.attachEntity(entity);
 	}
 	
+	@Override
 	public Entity getEntity() {
 		return super.getEntity();
 	}
 	
+	@Override
 	public IntersectData checkIntersection(BodyInterface body) {
 		IntersectData data = null;
 		if (body.getTypeID() == PE10.BODY_3D_SPHERE) {
@@ -80,10 +87,12 @@ public class Body3DSphere extends BodyBasic implements BodyInterface {
 		return new IntersectData(type, distance, points);
 	}
 	
+	@Override
 	public int getTypeID() {
 		return super.getTypeID();
 	}
 	
+	@Override
 	public float getSize() {
 		return super.getSize();
 	}

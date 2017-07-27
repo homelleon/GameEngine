@@ -15,30 +15,31 @@ import object.gui.texture.manager.GUITextureManagerInterface;
  * @see GUIComponentManager
  */
 public interface GUIComponentManagerInterface {
-	
+
 	/**
-	 * Returns {@link GUITextureManagerInterface} that controlls user interface textures 
-	 * ({@link GUITexture}).
+	 * Returns {@link GUITextureManagerInterface} that controlls user interface
+	 * textures ({@link GUITexture}).
 	 * 
 	 * @return {@link GUITextureManagerInterface} value
 	 */
 	GUITextureManagerInterface getTextures();
-	
+
 	/**
-	 * Returns {@link GUITextManagerInterface} that controlls user interface texts 
-	 * ({@link GuiText})
+	 * Returns {@link GUITextManagerInterface} that controlls user interface
+	 * texts ({@link GuiText})
 	 * 
 	 * @return {@link GUITextManagerInterface} value
 	 */
 	GUITextManagerInterface getTexts();
-	
+
 	/**
 	 * Renders graphic user interface.
 	 */
 	void render(Collection<GUIGroupInterface> groups);
-	
+
 	/**
-	 * Clean all textures and texts from {@link GUITextureManagerInterface} and {@link GUITextManagerInterface}.  
+	 * Clean all textures and texts from {@link GUITextureManagerInterface} and
+	 * {@link GUITextManagerInterface}.
 	 */
-	void cleanAll();	
+	void cleanAll();
 }

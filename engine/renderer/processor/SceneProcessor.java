@@ -14,77 +14,74 @@ import object.terrain.terrain.TerrainInterface;
 import renderer.viewCulling.frustum.Frustum;
 
 public class SceneProcessor implements SceneProcessorInterface {
-	
+
 	@Override
 	public void processTerrain(TerrainInterface terrain, Collection<TerrainInterface> terrains) {
 		terrains.add(terrain);
 	}
-	
+
 	@Override
-	public void processEntity(Entity entity, 
-			Map<TexturedModel, List<Entity>> entities, Frustum frustum) {
-		if(checkVisibility(entity, frustum)) {
+	public void processEntity(Entity entity, Map<TexturedModel, List<Entity>> entities, Frustum frustum) {
+		if (checkVisibility(entity, frustum)) {
 			TexturedModel entityModel = entity.getModel();
 			List<Entity> batch = entities.get(entityModel);
-			if(batch!=null) {
-				batch.add(entity);	
-			}else{
+			if (batch != null) {
+				batch.add(entity);
+			} else {
 				List<Entity> newBatch = new ArrayList<Entity>();
 				newBatch.add(entity);
-				entities.put(entityModel, newBatch);		
-			}
-		}
-	}
-	
-	@Override
-	public void processNormalMapEntity(Entity entity, 
-			Map<TexturedModel, List<Entity>> normalMapEntities, 
-			Frustum frustum) {
-		if(checkVisibility(entity, frustum)) {
-			TexturedModel entityModel = entity.getModel();
-			List<Entity> batch = normalMapEntities.get(entityModel);
-			if(batch!=null) {
-				batch.add(entity);	
-			}else{
-				List<Entity> newBatch = new ArrayList<Entity>();
-				newBatch.add(entity);
-				normalMapEntities.put(entityModel, newBatch);	
-			}
-		}
-	}
-	
-	@Override	
-	public void processShadowEntity(Entity entity,
-			Map<TexturedModel, List<Entity>> entities, Frustum frustum) {
-		if(checkShadowVisibility(entity, frustum)) {
-			TexturedModel entityModel = entity.getModel();
-			List<Entity> batch = entities.get(entityModel);
-			if(batch!=null) {
-				batch.add(entity);	
-			}else{
-				List<Entity> newBatch = new ArrayList<Entity>();
-				newBatch.add(entity);
-				entities.put(entityModel, newBatch);		
+				entities.put(entityModel, newBatch);
 			}
 		}
 	}
 
 	@Override
-	public void processShadowNormalMapEntity(Entity entity, 
-			Map<TexturedModel, List<Entity>> normalMapEntities, Frustum frustum) {
-		if(checkShadowVisibility(entity, frustum)) {
+	public void processNormalMapEntity(Entity entity, Map<TexturedModel, List<Entity>> normalMapEntities,
+			Frustum frustum) {
+		if (checkVisibility(entity, frustum)) {
 			TexturedModel entityModel = entity.getModel();
 			List<Entity> batch = normalMapEntities.get(entityModel);
-			if(batch!=null) {
-				batch.add(entity);	
-			}else{
+			if (batch != null) {
+				batch.add(entity);
+			} else {
 				List<Entity> newBatch = new ArrayList<Entity>();
 				newBatch.add(entity);
-				normalMapEntities.put(entityModel, newBatch);	
+				normalMapEntities.put(entityModel, newBatch);
 			}
 		}
 	}
-	
+
+	@Override
+	public void processShadowEntity(Entity entity, Map<TexturedModel, List<Entity>> entities, Frustum frustum) {
+		if (checkShadowVisibility(entity, frustum)) {
+			TexturedModel entityModel = entity.getModel();
+			List<Entity> batch = entities.get(entityModel);
+			if (batch != null) {
+				batch.add(entity);
+			} else {
+				List<Entity> newBatch = new ArrayList<Entity>();
+				newBatch.add(entity);
+				entities.put(entityModel, newBatch);
+			}
+		}
+	}
+
+	@Override
+	public void processShadowNormalMapEntity(Entity entity, Map<TexturedModel, List<Entity>> normalMapEntities,
+			Frustum frustum) {
+		if (checkShadowVisibility(entity, frustum)) {
+			TexturedModel entityModel = entity.getModel();
+			List<Entity> batch = normalMapEntities.get(entityModel);
+			if (batch != null) {
+				batch.add(entity);
+			} else {
+				List<Entity> newBatch = new ArrayList<Entity>();
+				newBatch.add(entity);
+				normalMapEntities.put(entityModel, newBatch);
+			}
+		}
+	}
+
 	private boolean checkVisibility(Entity entity, Frustum frustum) {
 		boolean isVisible = false;
 		float distance = frustum.distanceSphereInFrustum(entity.getPosition(), entity.getSphereRadius());

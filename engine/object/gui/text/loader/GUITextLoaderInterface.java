@@ -10,7 +10,7 @@ import object.gui.text.GUIText;
  * @see GUITextXMLLoader
  */
 public interface GUITextLoaderInterface {
-	
-	List<GUIText> loadFile(String fileName); 
-		
+
+	List<GUIText> loadFile(String fileName);
+
 }

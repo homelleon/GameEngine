@@ -7,13 +7,13 @@ import java.util.Map;
 import object.water.WaterTile;
 
 public class WaterManager implements WaterManagerInterface {
-	
+
 	Map<String, WaterTile> waters = new HashMap<String, WaterTile>();
 
 	@Override
 	public void addAll(Collection<WaterTile> waterList) {
-		if((waterList != null) && (!waterList.isEmpty())) {
-			for(WaterTile water : waterList) {
+		if ((waterList != null) && (!waterList.isEmpty())) {
+			for (WaterTile water : waterList) {
 				this.waters.put(water.getName(), water);
 			}
 		}
@@ -21,15 +21,15 @@ public class WaterManager implements WaterManagerInterface {
 
 	@Override
 	public void add(WaterTile water) {
-		if(water != null) {
-			this.waters.put(water.getName(), water); 		
+		if (water != null) {
+			this.waters.put(water.getName(), water);
 		}
 	}
 
 	@Override
 	public WaterTile getByName(String name) {
 		WaterTile water = null;
-		if(this.waters.containsKey(name)) {
+		if (this.waters.containsKey(name)) {
 			water = this.waters.get(name);
 		}
 		return water;

@@ -10,7 +10,7 @@ import object.gui.texture.GUITexture;
  * @see GUITextureXMLParser
  */
 public interface GUITextureParserInterface {
-	
+
 	List<GUITexture> parse();
 
 }

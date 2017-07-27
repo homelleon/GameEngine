@@ -8,13 +8,13 @@ import object.entity.entity.EntityBuilder;
 import object.entity.entity.TexturedEntityBuilder;
 
 /**
- * Map that controls entity objects to load in the editor menu. 
+ * Map that controls entity objects to load in the editor menu.
  * 
  * @author homelleon
  *
  */
 public class LevelMap implements LevelMapInterface {
-	
+
 	private List<Entity> entities = new ArrayList<Entity>();
 
 	@Override
@@ -26,7 +26,7 @@ public class LevelMap implements LevelMapInterface {
 	public Entity getEntity(int index) {
 		return entities.get(index);
 	}
-	
+
 	@Override
 	public void loadEntity(String name, String model, String texName) {
 		EntityBuilder builder = new TexturedEntityBuilder();

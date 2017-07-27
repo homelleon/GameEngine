@@ -15,7 +15,6 @@ import shader.shadow.ShadowShader;
 import tool.math.Maths;
 
 public class ShadowMapTerrainRenderer {
-	
 
 	private Matrix4f projectionViewMatrix;
 	private ShadowShader shader;
@@ -34,22 +33,22 @@ public class ShadowMapTerrainRenderer {
 	}
 
 	/**
-	 * Renders terrains to the shadow map. Each model is first bound and then all
-	 * of the terrains using that model are rendered to the shadow map.
+	 * Renders terrains to the shadow map. Each model is first bound and then
+	 * all of the terrains using that model are rendered to the shadow map.
 	 * 
 	 * @param terrains
 	 *            - the terrains to be rendered to the shadow map.
 	 */
-	public void render(Collection <TerrainInterface> terrains, CameraInterface camera) {
-		for(TerrainInterface terrain : terrains) {
+	public void render(Collection<TerrainInterface> terrains, CameraInterface camera) {
+		for (TerrainInterface terrain : terrains) {
 			RawModel rawModel = terrain.getModel();
 			bindModel(rawModel);
-			//GL13.glActiveTexture(GL13.GL_TEXTURE0);
-			//GL11.glBindTexture(GL11.GL_TEXTURE_2D, terrain.getTexturePack().getBackgroundTexture().getTextureID());
-				prepareInstance(terrain);
-				GL11.glDrawElements(GL11.GL_TRIANGLES, terrain.getModel().getVertexCount(), 
-						GL11.GL_UNSIGNED_INT, 0);
-			//unbindTexturedModel();
+			// GL13.glActiveTexture(GL13.GL_TEXTURE0);
+			// GL11.glBindTexture(GL11.GL_TEXTURE_2D,
+			// terrain.getTexturePack().getBackgroundTexture().getTextureID());
+			prepareInstance(terrain);
+			GL11.glDrawElements(GL11.GL_TRIANGLES, terrain.getModel().getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
+			// unbindTexturedModel();
 		}
 	}
 
@@ -78,19 +77,18 @@ public class ShadowMapTerrainRenderer {
 	 *            - the entity to be prepared for rendering.
 	 */
 
-	
 	private void unbindTexturedModel() {
 		GL20.glDisableVertexAttribArray(0);
 		GL20.glDisableVertexAttribArray(1);
 		GL20.glDisableVertexAttribArray(2);
 		GL30.glBindVertexArray(0);
 	}
-	
+
 	private void prepareInstance(TerrainInterface terrain) {
-		Matrix4f modelMatrix = Maths.createTransformationMatrix(new Vector3f(terrain.getX(),0,terrain.getZ()),0, 0, 0, 1);
+		Matrix4f modelMatrix = Maths.createTransformationMatrix(new Vector3f(terrain.getX(), 0, terrain.getZ()), 0, 0,
+				0, 1);
 		Matrix4f mvpMatrix = Matrix4f.mul(projectionViewMatrix, modelMatrix, null);
 		shader.loadMvpMatrix(mvpMatrix);
 	}
-
 
 }

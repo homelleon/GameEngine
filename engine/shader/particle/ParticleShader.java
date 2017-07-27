@@ -12,7 +12,6 @@ public class ParticleShader extends ShaderProgram {
 
 	private int location_numberOfRows;
 	private int location_projectionMatrix;
-	
 
 	public ParticleShader() {
 		super(VERTEX_FILE, FRAGMENT_FILE);
@@ -31,11 +30,10 @@ public class ParticleShader extends ShaderProgram {
 		super.bindAttribute(5, "texOffsets");
 		super.bindAttribute(6, "blendFactor");
 	}
-	
+
 	public void loadNumberOfRows(float numberOfRows) {
 		super.loadFloat(location_numberOfRows, numberOfRows);
 	}
-
 
 	public void loadProjectionMatrix(Matrix4f projectionMatrix) {
 		super.loadMatrix(location_projectionMatrix, projectionMatrix);

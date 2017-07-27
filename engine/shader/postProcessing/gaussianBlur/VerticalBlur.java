@@ -6,10 +6,10 @@ import org.lwjgl.opengl.GL13;
 import shader.postProcessing.ImageRenderer;
 
 public class VerticalBlur {
-	
+
 	private ImageRenderer renderer;
-	private VerticalBlurShader shader; 
-	
+	private VerticalBlurShader shader;
+
 	public VerticalBlur(int targetFboWidth, int targetFboHeight) {
 		shader = new VerticalBlurShader();
 		renderer = new ImageRenderer(targetFboWidth, targetFboHeight);
@@ -18,7 +18,6 @@ public class VerticalBlur {
 		shader.stop();
 	}
 
-	
 	public void render(int texture) {
 		shader.start();
 		GL13.glActiveTexture(GL13.GL_TEXTURE0);
@@ -26,11 +25,11 @@ public class VerticalBlur {
 		renderer.renderQuad();
 		shader.stop();
 	}
-	
+
 	public int getOutputTexture() {
 		return renderer.getOutputTexture();
 	}
-	
+
 	public void cleanUp() {
 		renderer.cleanUp();
 		shader.cleanUp();

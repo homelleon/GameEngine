@@ -34,24 +34,26 @@ public class NormalMappingRenderer {
 		shader.stop();
 	}
 
-	public void render(Map<TexturedModel, List<Entity>> entities, Vector4f clipPlane, Collection<Light> lights, CameraInterface camera, Matrix4f toShadowMapSpace) {
+	public void render(Map<TexturedModel, List<Entity>> entities, Vector4f clipPlane, Collection<Light> lights,
+			CameraInterface camera, Matrix4f toShadowMapSpace) {
 		shader.start();
 		shader.loadFogDensity(EngineSettings.FOG_DENSITY);
 		shader.loadToShadowSpaceMatrix(toShadowMapSpace);
-		shader.loadShadowVariables(EngineSettings.SHADOW_DISTANCE, EngineSettings.SHADOW_MAP_SIZE, EngineSettings.SHADOW_TRANSITION_DISTANCE, EngineSettings.SHADOW_PCF);
+		shader.loadShadowVariables(EngineSettings.SHADOW_DISTANCE, EngineSettings.SHADOW_MAP_SIZE,
+				EngineSettings.SHADOW_TRANSITION_DISTANCE, EngineSettings.SHADOW_PCF);
 		prepare(clipPlane, lights, camera);
 		for (TexturedModel model : entities.keySet()) {
 			prepareTexturedModel(model);
 			List<Entity> batch = entities.get(model);
 			for (Entity entity : batch) {
-					prepareInstance(entity);
-					GL11.glDrawElements(GL11.GL_TRIANGLES, model.getRawModel().getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
+				prepareInstance(entity);
+				GL11.glDrawElements(GL11.GL_TRIANGLES, model.getRawModel().getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
 			}
 			unbindTexturedModel();
 		}
 		shader.stop();
 	}
-	
+
 	public void cleanUp() {
 		shader.cleanUp();
 	}
@@ -74,7 +76,7 @@ public class NormalMappingRenderer {
 		GL13.glActiveTexture(GL13.GL_TEXTURE2);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, model.getTexture().getNormalMap());
 		shader.loadUseSpecularMap(texture.hasSpecularMap());
-		if(texture.hasSpecularMap()) {
+		if (texture.hasSpecularMap()) {
 			GL13.glActiveTexture(GL13.GL_TEXTURE1);
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture.getSpecularMap());
 		}
@@ -99,10 +101,10 @@ public class NormalMappingRenderer {
 
 	private void prepare(Vector4f clipPlane, Collection<Light> lights, CameraInterface camera) {
 		shader.loadClipPlane(clipPlane);
-		//need to be public variables in MasterRenderer
+		// need to be public variables in MasterRenderer
 		shader.loadSkyColour(EngineSettings.DISPLAY_RED, EngineSettings.DISPLAY_GREEN, EngineSettings.DISPLAY_BLUE);
 		Matrix4f viewMatrix = Maths.createViewMatrix(camera);
-		
+
 		shader.loadLights(lights, viewMatrix);
 		shader.loadViewMatrix(viewMatrix);
 	}

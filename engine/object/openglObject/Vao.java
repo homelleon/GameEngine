@@ -9,7 +9,7 @@ import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 
 public class Vao {
-	
+
 	private static final int BYTES_PER_FLOAT = 4;
 	private static final int BYTES_PER_INT = 4;
 	public final int id;
@@ -25,33 +25,33 @@ public class Vao {
 	private Vao(int id) {
 		this.id = id;
 	}
-	
-	public int getIndexCount(){
+
+	public int getIndexCount() {
 		return indexCount;
 	}
 
-	public void bind(int... attributes){
+	public void bind(int... attributes) {
 		bind();
 		for (int i : attributes) {
 			GL20.glEnableVertexAttribArray(i);
 		}
 	}
 
-	public void unbind(int... attributes){
+	public void unbind(int... attributes) {
 		for (int i : attributes) {
 			GL20.glDisableVertexAttribArray(i);
 		}
 		unbind();
 	}
-	
-	public void createIndexBuffer(int[] indices){
+
+	public void createIndexBuffer(int[] indices) {
 		this.indexVbo = Vbo.create(GL15.GL_ELEMENT_ARRAY_BUFFER);
 		indexVbo.bind();
 		indexVbo.storeData(indices);
 		this.indexCount = indices.length;
 	}
 
-	public void createAttribute(int attribute, float[] data, int attrSize){
+	public void createAttribute(int attribute, float[] data, int attrSize) {
 		Vbo dataVbo = Vbo.create(GL15.GL_ARRAY_BUFFER);
 		dataVbo.bind();
 		dataVbo.storeData(data);
@@ -59,8 +59,8 @@ public class Vao {
 		dataVbo.unbind();
 		dataVbos.add(dataVbo);
 	}
-	
-	public void createIntAttribute(int attribute, int[] data, int attrSize){
+
+	public void createIntAttribute(int attribute, int[] data, int attrSize) {
 		Vbo dataVbo = Vbo.create(GL15.GL_ARRAY_BUFFER);
 		dataVbo.bind();
 		dataVbo.storeData(data);
@@ -68,10 +68,10 @@ public class Vao {
 		dataVbo.unbind();
 		dataVbos.add(dataVbo);
 	}
-	
+
 	public void delete() {
 		GL30.glDeleteVertexArrays(id);
-		for(Vbo vbo : dataVbos){
+		for (Vbo vbo : dataVbos) {
 			vbo.delete();
 		}
 		indexVbo.delete();

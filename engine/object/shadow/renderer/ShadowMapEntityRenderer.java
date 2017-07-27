@@ -36,8 +36,8 @@ public class ShadowMapEntityRenderer {
 	}
 
 	/**
-	 * Renders entities to the shadow map. Each model is first bound and then all
-	 * of the entities using that model are rendered to the shadow map.
+	 * Renders entities to the shadow map. Each model is first bound and then
+	 * all of the entities using that model are rendered to the shadow map.
 	 * 
 	 * @param entities
 	 *            - the entities to be rendered to the shadow map.
@@ -48,15 +48,14 @@ public class ShadowMapEntityRenderer {
 			bindModel(rawModel);
 			GL13.glActiveTexture(GL13.GL_TEXTURE0);
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, model.getTexture().getID());
-			if(model.getTexture().isHasTransparency()) {
+			if (model.getTexture().isHasTransparency()) {
 				OGLUtils.cullBackFaces(false);
 			}
 			for (Entity entity : entities.get(model)) {
 				prepareInstance(entity);
-				GL11.glDrawElements(GL11.GL_TRIANGLES, rawModel.getVertexCount(),
-						GL11.GL_UNSIGNED_INT, 0);			
+				GL11.glDrawElements(GL11.GL_TRIANGLES, rawModel.getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
 			}
-			if(model.getTexture().isHasTransparency()){
+			if (model.getTexture().isHasTransparency()) {
 				OGLUtils.cullBackFaces(true);
 			}
 		}
@@ -89,11 +88,11 @@ public class ShadowMapEntityRenderer {
 	 *            - the entity to be prepared for rendering.
 	 */
 	private void prepareInstance(Entity entity) {
-		Matrix4f modelMatrix = Maths.createTransformationMatrix(entity.getPosition(),
-				entity.getRotX(), entity.getRotY(), entity.getRotZ(), entity.getScale());
+		Matrix4f modelMatrix = Maths.createTransformationMatrix(entity.getPosition(), entity.getRotX(),
+				entity.getRotY(), entity.getRotZ(), entity.getScale());
 		Matrix4f mvpMatrix = Matrix4f.mul(projectionViewMatrix, modelMatrix, null);
 		shader.loadMvpMatrix(mvpMatrix);
-		shader.loadOffset(entity.getTextureXOffset(),entity.getTextureYOffset());
+		shader.loadOffset(entity.getTextureXOffset(), entity.getTextureYOffset());
 		shader.loadNumberOfRows(entity.getModel().getTexture().getNumberOfRows());
 	}
 

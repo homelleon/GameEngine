@@ -13,27 +13,27 @@ import object.terrain.terrain.TerrainInterface;
 import renderer.loader.Loader;
 
 public class ModelMapTXTWriter implements ModelMapWriterInterface {
-	
+
 	@Override
 	public void write(ModelMap map, Loader loader) {
 		try {
 			File mapFile = new File(EngineSettings.MAP_PATH + map.getName() + ".txt");
 			BufferedWriter writer = new BufferedWriter(new FileWriter(mapFile));
-			
+
 			System.out.println("Start saving map '" + map.getName() + "'...");
 			List<String> lines = new ArrayList<String>();
-			
+
 			lines.add("#This map is createrd by MapFileWriter");
-			
+
 			System.out.println("Saving terrains...");
-			if (!map.getTerrains().isEmpty()){
-				for(TerrainInterface terrain: map.getTerrains().values()) {
+			if (!map.getTerrains().isEmpty()) {
+				for (TerrainInterface terrain : map.getTerrains().values()) {
 					String line = "<t> ";
 					line += String.valueOf(terrain.getName());
 					line += " ";
-					line += String.valueOf((int) (terrain.getX()/terrain.getSize()));
+					line += String.valueOf((int) (terrain.getX() / terrain.getSize()));
 					line += " ";
-					line += String.valueOf((int) (terrain.getZ()/terrain.getSize()));
+					line += String.valueOf((int) (terrain.getZ() / terrain.getSize()));
 					line += " ";
 					line += String.valueOf(terrain.getTexturePack().getBackgroundTexture().getName());
 					line += " ";
@@ -45,7 +45,7 @@ public class ModelMapTXTWriter implements ModelMapWriterInterface {
 					line += " ";
 					line += String.valueOf(terrain.getBlendMap().getName());
 					line += " ";
-					if(terrain.isProcedureGenerated()) {
+					if (terrain.isProcedureGenerated()) {
 						line += "true";
 						line += " ";
 						line += String.valueOf(terrain.getAmplitude());
@@ -61,18 +61,18 @@ public class ModelMapTXTWriter implements ModelMapWriterInterface {
 					lines.add(line);
 				}
 			}
-			
+
 			System.out.println("Succed!");
-			
+
 			System.out.println("Saving entities...");
 			if (!map.getEntities().isEmpty()) {
-				for(Entity entity : map.getEntities().values()) {
+				for (Entity entity : map.getEntities().values()) {
 					String line = "<e> ";
 					line += String.valueOf(entity.getName());
 					line += " ";
 					line += String.valueOf(entity.getModel().getName());
 					line += " ";
-					//TODO: find out why it returns null texture
+					// TODO: find out why it returns null texture
 					String texture = loader.getTextureByID(entity.getModel().getTexture().getID());
 					System.out.println(texture);
 					line += String.valueOf(texture);
@@ -84,42 +84,41 @@ public class ModelMapTXTWriter implements ModelMapWriterInterface {
 					line += String.valueOf(entity.getPosition().z);
 					line += " ";
 					line += String.valueOf(entity.getScale());
-					line +=" ";
-					if(entity.getType() == EngineSettings.ENTITY_TYPE_SIMPLE) {
+					line += " ";
+					if (entity.getType() == EngineSettings.ENTITY_TYPE_SIMPLE) {
 						line += String.valueOf(false);
-					} else {						
+					} else {
 						line += String.valueOf(true);
-						line +=" ";
+						line += " ";
 						String normal = loader.getTextureByID(entity.getModel().getTexture().getNormalMap());
 						line += normal;
-						line +=" ";
+						line += " ";
 						String specular = loader.getTextureByID(entity.getModel().getTexture().getSpecularMap());
 						line += specular;
-						line +=" ";
+						line += " ";
 						line += entity.getModel().getTexture().getShineDamper();
-						line +=" ";
+						line += " ";
 						line += entity.getModel().getTexture().getReflectivity();
 					}
 					lines.add(line);
 				}
 			}
-			System.out.println("Succed!");			
-			
-			for(String line : lines) {
+			System.out.println("Succed!");
+
+			for (String line : lines) {
 				writer.write(line);
 				writer.flush();
 				writer.newLine();
 			}
-			
-			
+
 			writer.write("<end>");
 			writer.flush();
-			writer.close();			
-				
+			writer.close();
+
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.err.println("Couldn't create map file!");
-		} 
+		}
 		System.out.println("Save complete!");
 	}
 

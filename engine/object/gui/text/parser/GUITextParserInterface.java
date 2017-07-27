@@ -10,7 +10,7 @@ import object.gui.text.GUIText;
  * @see GUITextXMLParser
  */
 public interface GUITextParserInterface {
-	
+
 	List<GUIText> parse();
 
 }

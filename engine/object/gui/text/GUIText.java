@@ -11,7 +11,7 @@ import org.lwjgl.util.vector.Vector3f;
  *
  */
 public class GUIText {
-	
+
 	private String name;
 
 	private String textString;
@@ -28,15 +28,15 @@ public class GUIText {
 	private String fontName;
 
 	private boolean centerText = false;
-	
+
 	private float width = 0.5f;
 	private float edge = 0.1f;
 	private float borderWidth = 0.0f;
 	private float borderEdge = 0.4f;
-	
+
 	private Vector2f offset = new Vector2f(0f, 0f);
 	private Vector3f outlineColour = new Vector3f(0f, 0f, 0f);
-	
+
 	private boolean isShown = false;
 
 	/**
@@ -62,7 +62,7 @@ public class GUIText {
 	 *            line. When text is centered it is centered into the middle of
 	 *            the line, based on this line length value.
 	 * @param centered
-	 *            - whether the text should be centered or not. 
+	 *            - whether the text should be centered or not.
 	 */
 	public GUIText(String name, String text, float fontSize, String fontName, Vector2f position, float maxLineLength,
 			boolean centered) {
@@ -85,7 +85,6 @@ public class GUIText {
 		return width;
 	}
 
-
 	/**
 	 * Returns graphic height of interface text.
 	 * 
@@ -95,66 +94,46 @@ public class GUIText {
 		this.width = width;
 	}
 
-
-
 	public float getEdge() {
 		return edge;
 	}
-
-
 
 	public void setEdge(float edge) {
 		this.edge = edge;
 	}
 
-
-
 	public float getBorderWidth() {
 		return borderWidth;
 	}
-
-
 
 	public void setBorderWidth(float borderWidth) {
 		this.borderWidth = borderWidth;
 	}
 
-
-
 	public float getBorderEdge() {
 		return borderEdge;
 	}
-
-
 
 	public void setBorderEdge(float borderEdge) {
 		this.borderEdge = borderEdge;
 	}
 
-
-
 	public Vector2f getOffset() {
 		return offset;
 	}
-
-
 
 	public void setOffset(Vector2f offset) {
 		this.offset = offset;
 	}
 
-
-
 	public Vector3f getOutlineColour() {
 		return outlineColour;
 	}
 
-
-
 	public void setOutlineColour(Vector3f outlineColour) {
 		this.outlineColour = outlineColour;
 	}
-	
+
 	/**
 	 * Returns name of interface text.
 	 * 
@@ -163,7 +142,6 @@ public class GUIText {
 	public String getName() {
 		return this.name;
 	}
-
 
 	/**
 	 * @return The font used by this text.
@@ -185,11 +163,12 @@ public class GUIText {
 	public void setColour(float r, float g, float b) {
 		colour.set(r, g, b);
 	}
-	
+
 	/**
 	 * Set the colour of the text.
 	 * 
-	 * @param color {@link Vecotr3f} value
+	 * @param color
+	 *            {@link Vecotr3f} value
 	 */
 	public void setColour(Vector3f color) {
 		colour.set(color);
@@ -210,21 +189,23 @@ public class GUIText {
 	public int getNumberOfLines() {
 		return numberOfLines;
 	}
-	
+
 	/**
 	 * Sets position of top-left corner of the text in sceen-space.<br>
 	 * (0, 0) is the top left corner of the screen, (1, 1) is the bottom right.
 	 * 
-	 * @param position {@link Vector2f} value
+	 * @param position
+	 *            {@link Vector2f} value
 	 */
 	public void setPosition(Vector2f position) {
 		this.position = position;
 	}
 
 	/**
-	 * @return {@link Vector2f} value of the position of the top-left corner of the 
-	 * text in screen-space.<br>(0, 0) is the top left corner of the screen,
-	 * (1, 1) is the bottom right.
+	 * @return {@link Vector2f} value of the position of the top-left corner of
+	 *         the text in screen-space.<br>
+	 * 		(0, 0) is the top left corner of the screen, (1, 1) is the bottom
+	 *         right.
 	 */
 	public Vector2f getPosition() {
 		return position;
@@ -258,11 +239,11 @@ public class GUIText {
 	public int getVertexCount() {
 		return this.vertexCount;
 	}
-	
+
 	public void setIsShown(boolean value) {
 		this.isShown = value;
 	}
-	
+
 	public boolean getIsShown() {
 		return this.isShown;
 	}
@@ -304,21 +285,21 @@ public class GUIText {
 	public String getTextString() {
 		return textString;
 	}
-	
+
 	private void makeFontSmooth() {
 		if (this.fontSize < 4) {
 			this.edge = 0.2f;
 			this.width = 0.5f;
-		} else if(this.fontSize < 6) {
+		} else if (this.fontSize < 6) {
 			this.edge = 0.05f;
 			this.width = 0.6f;
-		} else if(this.fontSize < 11) {
+		} else if (this.fontSize < 11) {
 			this.edge = 0.04f;
 			this.width = 0.6f;
-		} else if(this.fontSize < 15) {
+		} else if (this.fontSize < 15) {
 			this.edge = 0.04f;
 			this.width = 0.62f;
-		} else if(this.fontSize<25) {
+		} else if (this.fontSize < 25) {
 			this.edge = 0.03f;
 			this.width = 0.62f;
 		} else {

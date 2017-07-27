@@ -16,51 +16,51 @@ import object.gui.texture.GUITexture;
 import object.scene.scene.SceneInterface;
 
 public abstract class Game extends Thread implements GameInterface {
-	
+
 	public GameManagerInterface gameManager;
 	public int world1;
 	public SceneInterface scene;
-	
-		/**
-		 * Realize game events on engine start.<br>
-		 * 
-		 * Use "Main.getMap()" to get methods of Map
-		 * and all objects on Map.
-		 */
-		@Override
-		public void __onStart() {			
-			this.gameManager = new GameManager();
-			this.scene = EngineMain.getScene();
-			
-			List<GUIText> versionTextList = new ArrayList<GUIText>();
-			List<GUITexture> versionTextureList = new ArrayList<GUITexture>();
-			versionTextList.add(this.gameManager.getScene().getUserInterface().getComponent().getTexts().get("version"));
-			GUIInterface versionGUI = new GUI("version", versionTextureList, versionTextList);
-			
-			if(EngineDebug.hasDebugPermission()) {
-				System.out.println(GL11.glGetString(GL11.GL_VENDOR));
-				System.out.println(GL11.glGetString(GL11.GL_RENDERER));
-				System.out.println(GL11.glGetString(GL11.GL_VERSION));
-				versionGUI.show();
-		   	}
-						
+
+	/**
+	 * Realize game events on engine start.<br>
+	 * 
+	 * Use "Main.getMap()" to get methods of Map and all objects on Map.
+	 */
+	@Override
+	public void __onStart() {
+		this.gameManager = new GameManager();
+		this.scene = EngineMain.getScene();
+
+		List<GUIText> versionTextList = new ArrayList<GUIText>();
+		List<GUITexture> versionTextureList = new ArrayList<GUITexture>();
+		versionTextList.add(this.gameManager.getScene().getUserInterface().getComponent().getTexts().get("version"));
+		GUIInterface versionGUI = new GUI("version", versionTextureList, versionTextList);
+
+		if (EngineDebug.hasDebugPermission()) {
+			System.out.println(GL11.glGetString(GL11.GL_VENDOR));
+			System.out.println(GL11.glGetString(GL11.GL_RENDERER));
+			System.out.println(GL11.glGetString(GL11.GL_VERSION));
+			versionGUI.show();
 		}
-		
-		/**
-		 * Realize game events on engine update.<br>
-		 * 
-		 * On screen update - here you can
-		 * change objects on map in dynamic 
-		 * use "EngineMain.getScene().getEntities().getByName("Tree1")"
-		 * to manipulate Entity named "Tree1".
-		 * 
-		 * Don't use while loop and etc.
-		 */
-		public abstract void __onUpdate();
-		
-		/**
-		 * Relize game events on engine update event on pause.
-		 */
-		public abstract void __onUpdateWithPause();
-		
+
+	}
+
+	/**
+	 * Realize game events on engine update.<br>
+	 * 
+	 * On screen update - here you can change objects on map in dynamic use
+	 * "EngineMain.getScene().getEntities().getByName("Tree1")" to manipulate
+	 * Entity named "Tree1".
+	 * 
+	 * Don't use while loop and etc.
+	 */
+	@Override
+	public abstract void __onUpdate();
+
+	/**
+	 * Relize game events on engine update event on pause.
+	 */
+	@Override
+	public abstract void __onUpdateWithPause();
+
 }

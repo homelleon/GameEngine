@@ -15,19 +15,17 @@ import renderer.viewCulling.frustum.Frustum;
  * @see SceneProcessor
  */
 public interface SceneProcessorInterface {
-	
+
 	public void processTerrain(TerrainInterface terrain, Collection<TerrainInterface> terrains);
-	
-	public void processEntity(Entity entity,
-			Map<TexturedModel, List<Entity>> entities, Frustum frustum);
 
-	public void processNormalMapEntity(Entity entity,
-			Map<TexturedModel, List<Entity>> normalMapEntities, Frustum frustum);
-		
-	public void processShadowEntity(Entity entity,
-			Map<TexturedModel, List<Entity>> entities, Frustum frustum);
+	public void processEntity(Entity entity, Map<TexturedModel, List<Entity>> entities, Frustum frustum);
 
-	public void processShadowNormalMapEntity(Entity entity,
-			Map<TexturedModel, List<Entity>> normalMapEntities, Frustum frustum);
+	public void processNormalMapEntity(Entity entity, Map<TexturedModel, List<Entity>> normalMapEntities,
+			Frustum frustum);
+
+	public void processShadowEntity(Entity entity, Map<TexturedModel, List<Entity>> entities, Frustum frustum);
+
+	public void processShadowNormalMapEntity(Entity entity, Map<TexturedModel, List<Entity>> normalMapEntities,
+			Frustum frustum);
 
 }

@@ -18,26 +18,32 @@ public class Body2DQuad extends BodyBasic implements BodyInterface {
 		typeID = PE10.BODY_2D_QUAD;
 	}
 
+	@Override
 	public Vector3f getPosition() {
 		return super.getPosition();
 	}
 	
+	@Override
 	public void setPosition(Vector3f position) {
 		super.setPosition(position);
 	}
 	
+	@Override
 	public float getMass() {
 		return super.getMass();
 	}
 	
+	@Override
 	public void doAcceleration(float value, Vector3f direction) {
 		
 	}
 	
+	@Override
 	public void update() {
 		super.update();
 	}
 	
+	@Override
 	public IntersectData checkIntersection(BodyInterface body) {
 		IntersectData data = null;
 		return data;		
@@ -47,14 +53,17 @@ public class Body2DQuad extends BodyBasic implements BodyInterface {
 		super.attachEntity(entity);
 	}
 	
+	@Override
 	public Entity getEntity() {
 		return super.getEntity();
 	}
 	
+	@Override
 	public int getTypeID() {
 		return super.getTypeID();
 	}
 	
+	@Override
 	public float getSize() {
 		return super.getSize();
 	}

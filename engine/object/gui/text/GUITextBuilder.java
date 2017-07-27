@@ -3,7 +3,7 @@ package object.gui.text;
 import org.lwjgl.util.vector.Vector2f;
 
 public class GUITextBuilder implements GUITextBuilderInterface {
-	
+
 	private String name;
 	private String text;
 	private String fontName;
@@ -56,8 +56,7 @@ public class GUITextBuilder implements GUITextBuilderInterface {
 
 	@Override
 	public GUIText getText() {
-		return new GUIText(this.name, text, fontSize, fontName, position, 
-				lineSize, isCentered);
+		return new GUIText(this.name, text, fontSize, fontName, position, lineSize, isCentered);
 	}
 
 }

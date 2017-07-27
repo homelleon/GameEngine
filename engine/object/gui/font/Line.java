@@ -15,7 +15,7 @@ public class Line {
 	private double spaceSize;
 
 	private List<Word> words = new ArrayList<Word>();
-	private double currentLineLength = 0; 
+	private double currentLineLength = 0;
 
 	/**
 	 * Creates an empty line.
@@ -44,7 +44,7 @@ public class Line {
 	protected boolean attemptToAddWord(Word word) {
 		double additionalLength = word.getWordWidth();
 		additionalLength += !words.isEmpty() ? spaceSize : 0;
-		
+
 		if (currentLineLength + additionalLength <= maxLength) {
 			words.add(word);
 			currentLineLength += additionalLength;

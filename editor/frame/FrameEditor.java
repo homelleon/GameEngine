@@ -43,6 +43,7 @@ public class FrameEditor extends JFrame implements Frame {
 		getContentPane().add(component);		
 	}
 	
+	@Override
 	public JPanel getDisplayPanel() {
 		return displayPanel;
 	}

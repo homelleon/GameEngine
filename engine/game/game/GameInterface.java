@@ -8,17 +8,17 @@ package game.game;
  * 
  */
 public interface GameInterface {
-	
+
 	/**
 	 * Realize game events on engine start.
 	 */
 	public void __onStart();
-	
+
 	/**
 	 * Realize game events on engine update.
 	 */
 	public void __onUpdate();
-	
+
 	/**
 	 * Relize game events on engine update event on pause.
 	 */

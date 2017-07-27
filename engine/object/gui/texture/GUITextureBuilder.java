@@ -6,7 +6,7 @@ import core.settings.EngineSettings;
 import renderer.loader.Loader;
 
 public class GUITextureBuilder implements GUITextureBuilderInterface {
-	
+
 	private String name;
 	private String textureName;
 	private Vector2f position;
@@ -29,19 +29,17 @@ public class GUITextureBuilder implements GUITextureBuilderInterface {
 		this.position = position;
 		return this;
 	}
-	
+
 	@Override
 	public GUITextureBuilderInterface setScale(Vector2f scale) {
 		this.scale = scale;
 		return this;
 	}
-	
+
 	@Override
 	public GUITexture getTexture() {
 		Loader loader = Loader.getInstance();
-		int texture = loader.loadTexture(
-						EngineSettings.TEXTURE_INTERFACE_PATH, 
-						this.textureName);
+		int texture = loader.loadTexture(EngineSettings.TEXTURE_INTERFACE_PATH, this.textureName);
 		return new GUITexture(this.name, texture, this.position, this.scale);
 	}
 

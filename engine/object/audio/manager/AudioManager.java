@@ -8,43 +8,42 @@ import object.audio.master.AudioMasterInterface;
 import object.audio.source.AudioSourceInterface;
 
 /**
- * Audio manager for controling and storing structured map and arrays of 
- * audio sources.
+ * Audio manager for controling and storing structured map and arrays of audio
+ * sources.
  * 
  * @author homelleon
  * @version 1.0
  */
 
 public class AudioManager implements AudioManagerInterface {
-	
+
 	private Map<String, AudioSourceInterface> audioSources = new HashMap<String, AudioSourceInterface>();
 	private AudioMasterInterface audioMaster;
-	
+
 	public AudioManager(AudioMasterInterface audioMaster) {
 		this.audioMaster = audioMaster;
 	}
 
-
 	@Override
 	public void addAll(Collection<AudioSourceInterface> audioList) {
-		if((audioList != null) && (!audioList.isEmpty())) {
-			for(AudioSourceInterface audio : audioList) {
+		if ((audioList != null) && (!audioList.isEmpty())) {
+			for (AudioSourceInterface audio : audioList) {
 				this.audioSources.put(audio.getName(), audio);
 			}
-		}	
+		}
 	}
 
 	@Override
 	public void add(AudioSourceInterface audio) {
-		if(audio != null) {
-			this.audioSources.put(audio.getName(), audio); 		
+		if (audio != null) {
+			this.audioSources.put(audio.getName(), audio);
 		}
 	}
 
 	@Override
 	public AudioSourceInterface getByName(String name) {
 		AudioSourceInterface audio = null;
-		if(this.audioSources.containsKey(name)) {
+		if (this.audioSources.containsKey(name)) {
 			audio = this.audioSources.get(name);
 		}
 		return audio;
@@ -54,8 +53,7 @@ public class AudioManager implements AudioManagerInterface {
 	public Collection<AudioSourceInterface> getAll() {
 		return this.audioSources.values();
 	}
-	
-	
+
 	@Override
 	public AudioMasterInterface getMaster() {
 		return audioMaster;
@@ -66,7 +64,5 @@ public class AudioManager implements AudioManagerInterface {
 		this.audioMaster.cleanUp();
 		this.audioSources.clear();
 	}
-
-
 
 }

@@ -7,7 +7,7 @@ package object.gui.font;
  * @author Karl
  *
  */
-public class Character { 
+public class Character {
 
 	private int id;
 	private double xTextureCoord;

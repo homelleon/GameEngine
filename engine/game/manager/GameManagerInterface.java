@@ -8,8 +8,7 @@ import object.scene.scene.SceneInterface;
  * @see GameManager
  */
 public interface GameManagerInterface {
-	
+
 	SceneInterface getScene();
-	
 
 }

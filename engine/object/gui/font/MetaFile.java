@@ -19,7 +19,7 @@ public class MetaFile {
 
 	private static final int PAD_TOP = 0;
 	private static final int PAD_LEFT = 1;
-	private static final int PAD_BOTTOM = 2; 
+	private static final int PAD_BOTTOM = 2;
 	private static final int PAD_RIGHT = 3;
 
 	private static final int DESIRED_PADDING = 8;
@@ -77,14 +77,14 @@ public class MetaFile {
 			line = reader.readLine();
 		} catch (IOException e1) {
 		}
-		
+
 		if (line == null) {
 			return false;
 		}
-		
+
 		for (String part : line.split(SPLITTER)) {
 			String[] valuePairs = part.split("=");
-			
+
 			if (valuePairs.length == 2) {
 				values.put(valuePairs[0], valuePairs[1]);
 			}
@@ -114,7 +114,7 @@ public class MetaFile {
 	private int[] getValuesOfVariable(String variable) {
 		String[] numbers = values.get(variable).split(NUMBER_SEPARATOR);
 		int[] actualValues = new int[numbers.length];
-		
+
 		for (int i = 0; i < actualValues.length; i++) {
 			actualValues[i] = Integer.parseInt(numbers[i]);
 		}
@@ -166,7 +166,7 @@ public class MetaFile {
 	private void loadLineSizes() {
 		processNextLine();
 		int lineHeightPixels = getValueOfVariable("lineHeight") - paddingHeight;
-		verticalPerPixelSize = TextMeshCreator.LINE_HEIGHT / (double) lineHeightPixels;
+		verticalPerPixelSize = TextMeshCreator.LINE_HEIGHT / lineHeightPixels;
 		horizontalPerPixelSize = verticalPerPixelSize / aspectRatio;
 	}
 
@@ -182,7 +182,7 @@ public class MetaFile {
 		processNextLine();
 		while (processNextLine()) {
 			Character c = loadCharacter(imageWidth);
-			
+
 			if (c != null) {
 				metaData.put(c.getId(), c);
 			}
@@ -200,7 +200,7 @@ public class MetaFile {
 	 */
 	private Character loadCharacter(int imageSize) {
 		int id = getValueOfVariable("id");
-		
+
 		if (id == TextMeshCreator.SPACE_ASCII) {
 			this.spaceWidth = (getValueOfVariable("xadvance") - paddingWidth) * horizontalPerPixelSize;
 			return null;
@@ -218,5 +218,5 @@ public class MetaFile {
 		double xAdvance = (getValueOfVariable("xadvance") - paddingWidth) * horizontalPerPixelSize;
 		return new Character(id, xTex, yTex, xTexSize, yTexSize, xOff, yOff, quadWidth, quadHeight, xAdvance);
 	}
-	
+
 }

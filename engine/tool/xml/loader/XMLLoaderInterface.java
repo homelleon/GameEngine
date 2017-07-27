@@ -8,7 +8,7 @@ import org.w3c.dom.Document;
  * @see XMLFileLoader
  */
 public interface XMLLoaderInterface {
-	
+
 	/**
 	 * @return {@link Document} value of structured XML text
 	 */
