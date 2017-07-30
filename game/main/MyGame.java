@@ -1,30 +1,31 @@
 package main;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
 import org.lwjgl.util.vector.Vector2f;
 
+import core.EngineMain;
 import game.game.Game;
-import object.gui.control.button.GUIButton;
-import object.gui.control.button.GUIButtonInterface;
-import object.gui.group.GUIGroup;
+import object.gui.group.GUIGroupBuilder;
+import object.gui.group.GUIGroupBuilderInterface;
 import object.gui.group.GUIGroupInterface;
-import object.gui.gui.GUI;
+import object.gui.gui.GUIBuilder;
+import object.gui.gui.GUIBuilderInterface;
 import object.gui.gui.GUIInterface;
-import object.gui.text.GUIText;
-import object.gui.texture.GUITexture;
+import object.gui.pattern.button.GUIButton;
+import object.gui.pattern.button.GUIButtonInterface;
+import object.gui.pattern.menu.GUIMenu;
+import object.gui.pattern.menu.GUIMenuInterface;
+import object.gui.pattern.object.GUIObject;
 import object.input.KeyboardGame;
 
 public class MyGame extends Game {
 	
 	private String guiGroupName = "help";
+	private GUIGroupInterface helpGroup;
 	private GUIInterface hintsUI;
 	int time = 0;
 	
-	GUIButtonInterface button;
+	GUIMenuInterface menu = new GUIMenu();
 	
 	/**
 	 * Action when game is just started. 
@@ -36,27 +37,26 @@ public class MyGame extends Game {
 		//world1 = PE10.peCreateWorld(new Vector3f(0,0,0), new Vector3f(0,0,0));
 		
 		//--------help hints GUI-------------//
-		List<GUIInterface> helpGUIList = new ArrayList<GUIInterface>();
-		List<GUITexture> hintTextureList = new ArrayList<GUITexture>();
-		List<GUIText> hintTextList = new ArrayList<GUIText>();			
-		hintTextList.add(gameManager.getScene().getUserInterface()
-				.getComponent().getTexts().get("inputHints"));			
-		GUIInterface hintsGUI = new GUI("hints", hintTextureList, hintTextList);
-		helpGUIList.add(hintsGUI);
-		this.gameManager.getScene().getUserInterface().addGUIGroup(new GUIGroup(guiGroupName, helpGUIList));
-		this.hintsUI = gameManager.getScene().getUserInterface().getGUIGroup(guiGroupName).get("hints");
+		GUIBuilderInterface helpGUIBuilder = new GUIBuilder();
+		helpGUIBuilder.setText(gameManager.getScene().getUserInterface()
+				.getComponent().getTexts().get("inputHints"));
+		this.helpGroup = this.gameManager.getScene().getUserInterface().createEmptyGUIGroup(guiGroupName);
+		this.helpGroup.add(helpGUIBuilder.getGUI("help"));
 		
 		//-------sign button GUI-------------//
-		GUITexture sign = gameManager.getScene().getUserInterface()
-				.getComponent().getTextures().get("Sign");
-		List<GUITexture> signTextureList = new ArrayList<GUITexture>();
-		signTextureList.add(sign);
-		GUIInterface signGUI = new GUI("sign", signTextureList, new ArrayList<GUIText>());
+		GUIBuilderInterface signGUIBuilder = new GUIBuilder();
+		signGUIBuilder.setTexture(gameManager.getScene().getUserInterface()
+				.getComponent().getTextures().get("Sign"));
 		GUIGroupInterface signGroup = this.gameManager.getScene().getUserInterface().createEmptyGUIGroup("sign");
-		signGroup.add(signGUI);
-		signGroup.showAll();
+		signGroup.add(signGUIBuilder.getGUI("sign"));
+		((GUIObject) signGroup).show();
 		
-		this.button = new GUIButton("signButton", signGUI, new Vector2f(400,300), new Vector2f(600,500));
+		GUIButtonInterface button1 = new GUIButton("signButton1", signGUIBuilder.getGUI("sign1"), new Vector2f(400,300), new Vector2f(600,500));
+		GUIButtonInterface button2 = new GUIButton("signButton2", signGUIBuilder.getGUI("sign2"), new Vector2f(400,300), new Vector2f(600,500));
+		GUIButtonInterface button3 = new GUIButton("signButton3", signGUIBuilder.getGUI("sign3"), new Vector2f(400,300), new Vector2f(600,500));
+		this.menu.addButton(button1);
+		this.menu.addButton(button2);
+		this.menu.addButton(button3);
 		//PE10.peAttachBody(tree1, PE10.BODY_3D_SPHERE, world1);
 		//PE10.peAttachBody(tree2, PE10.BODY_3D_SPHERE, world1);
 		//PE10.peAttachBody(tree3, PE10.BODY_3D_SPHERE, world1);
@@ -67,35 +67,26 @@ public class MyGame extends Game {
 	 */
 	@Override
 	public void __onUpdate() {
-		//PE10.peUpdateWorld(world1);
-		if(KeyboardGame.isKeyPressed(Keyboard.KEY_U)) {
-			if(!button.getIsSelected()) {
-				button.select();
-				System.out.println("selected: " + button.getIsSelected());
-			} else {
-				button.deselect();
-				System.out.println("selected: " + button.getIsSelected());
-			}				
-		}
-		
+		//PE10.peUpdateWorld(world1);		
 		if(KeyboardGame.isKeyPressed(Keyboard.KEY_N)) {
-			if(hintsUI.getIsShown()) {
-				hintsUI.hide();
+			if(((GUIObject) this.helpGroup).getIsShown()) {
+				((GUIObject) this.helpGroup).hide();
 			} else {
-				hintsUI.show();
+				((GUIObject) this.helpGroup).show();
 			}
 		}
 	}
 
 	@Override
 	public void __onUpdateWithPause() {
-		Vector2f mouseFlatPoint = new Vector2f(Mouse.getX(), Mouse.getY());
-		if(button.getIsMouseOver(mouseFlatPoint)) {
-			
-		} else {
-			
+		if(EngineMain.getIsEnginePaused()) {
+			if(KeyboardGame.isKeyPressed(Keyboard.KEY_UP)) {
+				menu.selectNextButton();				
+			} else if(KeyboardGame.isKeyPressed(Keyboard.KEY_DOWN)) {
+				menu.selectPreviousButton();
+			}
 		}
-
+		
 		time += 1;
 	}
 }

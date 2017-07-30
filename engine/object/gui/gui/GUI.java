@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.lwjgl.util.vector.Vector2f;
 
+import object.gui.pattern.object.GUIObject;
 import object.gui.text.GUIText;
 import object.gui.texture.GUITexture;
 
@@ -15,10 +16,8 @@ import object.gui.texture.GUITexture;
  * @see GUIInterface
  *
  */
-public class GUI implements GUIInterface {
+public class GUI extends GUIObject implements GUIInterface {
 
-	private String name;
-	private boolean isShown;
 	private List<GUITexture> guiTextures;
 	private List<GUIText> guiTexts;
 
@@ -26,21 +25,17 @@ public class GUI implements GUIInterface {
 		this.name = name;
 		this.guiTextures = guiTextureList;
 		this.guiTexts = guiTextList;
-		this.isShown = false;
-	}
-
-	@Override
-	public String getName() {
-		return this.name;
 	}
 
 	@Override
 	public void show() {
+		super.show();
 		this.doSwitch(true);
 	}
 
 	@Override
 	public void hide() {
+		super.hide();
 		this.doSwitch(false);
 	}
 
@@ -51,12 +46,6 @@ public class GUI implements GUIInterface {
 		if (!guiTexts.isEmpty()) {
 			guiTexts.forEach(tui -> tui.setIsShown(value));
 		}
-		this.isShown = value;
-	}
-
-	@Override
-	public boolean getIsShown() {
-		return this.isShown;
 	}
 
 	@Override
@@ -89,7 +78,7 @@ public class GUI implements GUIInterface {
 	}
 
 	@Override
-	public void delete() {
+	public void clean() {
 		guiTextures.clear();
 		guiTexts.clear();
 	}

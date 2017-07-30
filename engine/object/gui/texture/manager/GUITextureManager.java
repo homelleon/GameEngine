@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.w3c.dom.Document;
+
 import core.settings.EngineSettings;
 import object.gui.texture.GUITexture;
 import object.gui.texture.parser.GUITextureParserInterface;
@@ -17,22 +19,12 @@ import tool.xml.loader.XMLLoaderInterface;
  * 
  * @author homelleon
  * @version 1.0
+ * @see GUITextureManagerInterface
  */
 
 public class GUITextureManager implements GUITextureManagerInterface {
 
 	private Map<String, GUITexture> textures = new HashMap<String, GUITexture>();
-
-	// public static List<GUITexture> createGui(Loader loader) {
-	// List<GUITexture> guiTextureList = new ArrayList<GUITexture>();
-	//
-	// GUITexture guiTexture = new GUITexture("Helth",
-	// loader.loadTexture(ES.INTERFACE_TEXTURE_PATH,"helthBar"),
-	// new Vector2f(-0.7f, -0.7f), new Vector2f(0.25f, 0.25f));
-	// guiTextureList.add(guiTexture);
-	//
-	// return guiTextureList;
-	// }
 
 	@Override
 	public void addAll(Collection<GUITexture> guiList) {
@@ -75,6 +67,12 @@ public class GUITextureManager implements GUITextureManagerInterface {
 				EngineSettings.INTERFACE_PATH + fileName + EngineSettings.EXTENSION_XML);
 		GUITextureParserInterface parser = new GUITextureXMLParser(xmlLoader.load());
 		this.addAll(parser.parse());
+	}
+
+	@Override
+	public void readDocument(Document document) {
+		GUITextureParserInterface parser = new GUITextureXMLParser(document);
+		this.addAll(parser.parse());		
 	}
 
 }

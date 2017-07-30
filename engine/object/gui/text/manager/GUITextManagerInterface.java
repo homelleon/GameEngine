@@ -2,6 +2,8 @@ package object.gui.text.manager;
 
 import java.util.Collection;
 
+import org.w3c.dom.Document;
+
 import object.gui.font.manager.FontManagerInterface;
 import object.gui.text.GUIText;
 import object.light.Light;
@@ -76,5 +78,12 @@ public interface GUITextManagerInterface {
 	 *            {@link String} value of file name
 	 */
 	void readFile(String fileName);
+	
+	/**
+	 * Reads interface texture entities from xml structured document.
+	 * 
+	 * @param document
+	 */
+	void readDocument(Document document);
 
 }

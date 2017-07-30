@@ -1,4 +1,4 @@
-package object.gui.control.manager;
+package object.gui.pattern.manager;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -8,7 +8,7 @@ import java.util.Map;
 
 import org.lwjgl.util.vector.Vector2f;
 
-import object.gui.control.button.GUIButtonInterface;
+import object.gui.pattern.button.GUIButtonInterface;
 
 public class GUIButtonManager implements GUIButtonManagerInterface {
 
@@ -46,7 +46,7 @@ public class GUIButtonManager implements GUIButtonManagerInterface {
 	}
 
 	@Override
-	public void cleanAll() {
+	public void clean() {
 		this.buttons.clear();
 	}
 

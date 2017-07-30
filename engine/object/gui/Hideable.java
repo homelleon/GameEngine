@@ -17,5 +17,7 @@ public interface Hideable {
 	 * Sets object to be hidden for renderer;
 	 */
 	void hide();
+	
+	boolean getIsShown();
 
 }

@@ -1,16 +1,15 @@
-package object.gui.control.button;
+package object.gui.pattern.button;
 
 import org.lwjgl.util.vector.Vector2f;
-
-import object.gui.control.object.GUIObject;
 
 /**
  * Represent Interface of graphic user interface button unit.
  * 
  * @author homelleon
+ * @see GUIButton
  *
  */
-public interface GUIButtonInterface extends GUIObject {
+public interface GUIButtonInterface {
 
 	/**
 	 * Does selecetion action for current button.

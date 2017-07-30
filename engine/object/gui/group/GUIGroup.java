@@ -6,10 +6,10 @@ import java.util.List;
 import java.util.Map;
 
 import object.gui.gui.GUIInterface;
+import object.gui.pattern.object.GUIObject;
 
-public class GUIGroup implements GUIGroupInterface {
+public class GUIGroup extends GUIObject implements GUIGroupInterface {
 
-	private String name;
 	private int priorityNumber = 0;
 	private Map<String, GUIInterface> guis = new HashMap<String, GUIInterface>();
 
@@ -25,19 +25,16 @@ public class GUIGroup implements GUIGroupInterface {
 	}
 
 	@Override
-	public String getName() {
-		return this.name;
-	}
-
-	@Override
-	public void showAll() {
+	public void show() {
+		super.show();
 		if (!guis.isEmpty()) {
 			this.guis.values().forEach(gui -> gui.show());
 		}
 	}
 
 	@Override
-	public void hideAll() {
+	public void hide() {
+		super.hide();
 		if (!guis.isEmpty()) {
 			this.guis.values().forEach(gui -> gui.hide());
 		}
@@ -78,10 +75,10 @@ public class GUIGroup implements GUIGroupInterface {
 	}
 
 	@Override
-	public void cleanAll() {
+	public void clean() {
 		if (!guis.isEmpty()) {
 			for (GUIInterface gui : guis.values()) {
-				gui.delete();
+				gui.clean();
 			}
 		}
 		guis.clear();

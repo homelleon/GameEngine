@@ -48,16 +48,6 @@ public interface GUIGroupInterface {
 	GUIInterface get(String name);
 
 	/**
-	 * Set all user interface in the group visible.
-	 */
-	void showAll();
-
-	/**
-	 * Set all user interface in the group invisible.
-	 */
-	void hideAll();
-
-	/**
 	 * Returns collection of user interface objects.
 	 * 
 	 * @return {@link Collection}<{@link GUIInterface}> value of user interfaces
@@ -82,5 +72,5 @@ public interface GUIGroupInterface {
 	/**
 	 * Make user group empty destroing all user interfaces.
 	 */
-	void cleanAll();
+	void clean();
 }

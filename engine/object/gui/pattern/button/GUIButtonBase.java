@@ -1,11 +1,18 @@
-package object.gui.control.button;
+package object.gui.pattern.button;
 
 import org.lwjgl.util.vector.Vector2f;
 
+import core.debug.EngineDebug;
 import object.gui.gui.GUIInterface;
+import object.gui.pattern.object.GUIObject;
 import tool.math.Maths;
 
-public abstract class GUIButtonBase {
+/**
+ * 
+ * @author homelleon
+ * @see GUIButtonInterface
+ */
+public abstract class GUIButtonBase extends GUIObject implements GUIButtonInterface {
 
 	protected String name;
 	protected GUIInterface gui;
@@ -20,40 +27,35 @@ public abstract class GUIButtonBase {
 		this.point2 = point2;
 	}
 
-	/**
-	 * Does selecetion action for current button.
-	 */
+	@Override
 	public void select() {
 		if (!this.isSelected) {
 			this.isSelected = true;
+			if(EngineDebug.hasDebugPermission()) {
+				System.out.println("Button " + this.name + " is selected!");
+			}
 		}
 	}
 
-	/**
-	 * Does desecelection action for current button.
-	 */
+	@Override
 	public void deselect() {
 		if (this.isSelected) {
 			this.isSelected = false;
 		}
 	}
 
-	/**
-	 * Uses button command that was pre-implemented.
-	 */
+	@Override
 	public abstract void use();
 
-	/**
-	 * Sets to show current button for rendering engine.
-	 */
+	@Override
 	public void show() {
+		super.show();
 		this.gui.show();
 	}
 
-	/**
-	 * Sets to hide current button for rendering engine.
-	 */
+	@Override
 	public void hide() {
+		super.hide();
 		this.gui.hide();
 	}
 

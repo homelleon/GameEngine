@@ -14,8 +14,7 @@ import object.gui.text.GUIText;
 
 public class GUIManager implements GUIManagerInterface {
 
-	private static final String TXT_FILE_NAME = "GUITexts";
-	private static final String TEXTURE_FILE_NAME = "GUITextures";
+	private static final String GUI_FILE_NAME = "Interface";
 
 	GUIComponentManagerInterface componentManager;
 	Map<String, GUIGroupInterface> groups = new HashMap<String, GUIGroupInterface>();
@@ -25,7 +24,7 @@ public class GUIManager implements GUIManagerInterface {
 		if (EngineDebug.hasDebugPermission()) {
 			System.out.println("Prepare User Interface...");
 		}
-		this.componentManager = new GUIComponentManager(TEXTURE_FILE_NAME, TXT_FILE_NAME);
+		this.componentManager = new GUIComponentManager(GUI_FILE_NAME);
 		if (EngineDebug.hasDebugPermission()) {
 			System.out.println("done!");
 		}
@@ -68,7 +67,7 @@ public class GUIManager implements GUIManagerInterface {
 					this.componentManager.getTexts().remove(text.getName());
 				}
 			}
-			this.groups.get(name).cleanAll();
+			this.groups.get(name).clean();
 			this.groups.remove(name);
 		}
 		return isExist;
@@ -87,8 +86,7 @@ public class GUIManager implements GUIManagerInterface {
 	@Override
 	public void cleanAll() {
 		for (GUIGroupInterface group : this.groups.values()) {
-			group.hideAll();
-			group.cleanAll();
+			group.clean();
 		}
 		this.groups.clear();
 	}

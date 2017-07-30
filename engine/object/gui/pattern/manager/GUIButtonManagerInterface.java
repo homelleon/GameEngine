@@ -1,11 +1,11 @@
-package object.gui.control.manager;
+package object.gui.pattern.manager;
 
 import java.util.Collection;
 import java.util.List;
 
 import org.lwjgl.util.vector.Vector2f;
 
-import object.gui.control.button.GUIButtonInterface;
+import object.gui.pattern.button.GUIButtonInterface;
 
 /**
  * Manages graphic user interface buttons.
@@ -62,6 +62,6 @@ public interface GUIButtonManagerInterface {
 	/**
 	 * Cleans buttons array.
 	 */
-	void cleanAll();
+	void clean();
 
 }

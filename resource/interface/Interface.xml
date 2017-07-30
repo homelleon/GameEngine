@@ -37,15 +37,39 @@
 	</GUITexts>
 	<GUITextures>
 		<GUITexture id="1">
-			<name>Helth</name>
+			<name>helthBar</name>
 			<texture>helthBar</texture>
 			<position>
-				<x>-0.7f</x>
+				<x>-0.5f</x>
 				<y>-0.7f</y>
 			</position>
 			<scale>
-				<x>0.25f</x>
-				<y>0.25f</y>
+				<x>0.5f</x>
+				<y>0.5f</y>
+			</scale>
+		</GUITexture>
+		<GUITexture id="2">
+			<name>Sign</name>
+			<texture>Sign</texture>
+			<position>
+				<x>0.0f</x>
+				<y>0.7f</y>
+			</position>
+			<scale>
+				<x>0.5f</x>
+				<y>0.5f</y>
+			</scale>
+		</GUITexture>
+		<GUITexture id="3">
+			<name>SignR</name>
+			<texture>Sign</texture>
+			<position>
+				<x>0.0f</x>
+				<y>0.0f</y>
+			</position>
+			<scale>
+				<x>0.5f</x>
+				<y>0.5f</y>
 			</scale>
 		</GUITexture>
 	</GUITextures>

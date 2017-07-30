@@ -26,14 +26,6 @@ public interface GUIInterface extends Hideable {
 	String getName();
 
 	/**
-	 * Check if user interface is shown.
-	 * 
-	 * @return true if user interface is shown<br>
-	 *         false if user interaface is hidden
-	 */
-	boolean getIsShown();
-
-	/**
 	 * Gets list of all user interface texts.
 	 * 
 	 * @return {@link List}<{@link GUIText>> array of GUI text.
@@ -66,8 +58,8 @@ public interface GUIInterface extends Hideable {
 	void move(Vector2f position);
 
 	/**
-	 * Clear user interface and delete it.
+	 * Clear user interface.
 	 */
-	void delete();
+	void clean();
 
 }

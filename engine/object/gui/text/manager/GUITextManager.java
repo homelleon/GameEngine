@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.w3c.dom.Document;
+
 import core.settings.EngineSettings;
 import object.gui.font.TextMeshData;
 import object.gui.font.manager.FontManager;
@@ -94,6 +96,12 @@ public class GUITextManager implements GUITextManagerInterface {
 				EngineSettings.INTERFACE_PATH + fileName + EngineSettings.EXTENSION_XML);
 		GUITextParserInterface parser = new GUITextXMLParser(xmlLoader.load());
 		this.addAll(parser.parse());
+	}
+
+	@Override
+	public void readDocument(Document document) {
+		GUITextParserInterface parser = new GUITextXMLParser(document);
+		this.addAll(parser.parse());		
 	}
 
 }

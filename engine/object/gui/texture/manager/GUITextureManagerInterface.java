@@ -2,13 +2,15 @@ package object.gui.texture.manager;
 
 import java.util.Collection;
 
+import org.w3c.dom.Document;
+
 import object.gui.texture.GUITexture;
 
 /**
  * Interface to store and control graphic interfaces.
  * 
  * @author homelleon
- *
+ * @see GUITextureManager
  */
 
 public interface GUITextureManagerInterface {
@@ -60,4 +62,11 @@ public interface GUITextureManagerInterface {
 	 *            {@link String} value of file name
 	 */
 	void readFile(String fileName);
+	
+	/**
+	 * Reads interface texture entities from xml structured document.
+	 * 
+	 * @param document
+	 */
+	void readDocument(Document document);
 }

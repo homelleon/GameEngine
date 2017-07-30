@@ -14,6 +14,7 @@ import core.display.DisplayManager;
 import core.settings.EngineSettings;
 import object.gui.gui.GUI;
 import object.gui.gui.GUIInterface;
+import object.gui.pattern.object.GUIObject;
 import object.gui.text.GUIText;
 import object.gui.texture.GUITexture;
 import object.input.Controls;
@@ -170,7 +171,7 @@ public class SceneRenderer {
 		GUIInterface statusInterface = new GUI("status", textureList, textList);
 		scene.getUserInterface().createEmptyGUIGroup("statusGroup");
 		scene.getUserInterface().getGUIGroup("statusGroup").add(statusInterface);
-		scene.getUserInterface().getGUIGroup("statusGroup").showAll();
+		((GUIObject) scene.getUserInterface().getGUIGroup("statusGroup")).show();
 		scene.getUserInterface().render();
 		// scene.getUserInterface().deleteGUIGroup("statusGroup");
 	}
