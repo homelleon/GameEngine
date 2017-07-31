@@ -30,7 +30,7 @@ public class ImageRenderer {
 
 	public void cleanUp() {
 		if (fbo != null) {
-			fbo.cleanUp();
+			fbo.clean();
 		}
 	}
 

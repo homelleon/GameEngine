@@ -32,7 +32,7 @@ public class HorizontalBlur {
 
 	public void cleanUp() {
 		renderer.cleanUp();
-		shader.cleanUp();
+		shader.clean();
 	}
 
 }

@@ -168,11 +168,11 @@ public class MainRenderer implements MainRendererInterface {
 	}
 
 	@Override
-	public void cleanUp() {
-		entityRenderer.cleanUp();
-		normalMapRenderer.cleanUp();
-		terrainRenderer.cleanUp();
-		shadowMapRenderer.cleanUp();
+	public void clean() {
+		entityRenderer.clean();
+		normalMapRenderer.clean();
+		terrainRenderer.clean();
+		shadowMapRenderer.clean();
 	}
 
 	private void prepare() {

@@ -75,8 +75,8 @@ public class TerrainRenderer {
 		shader.stop();
 	}
 
-	public void cleanUp() {
-		shader.cleanUp();
+	public void clean() {
+		shader.clean();
 	}
 
 	private void prepareTerrain(TerrainInterface terrain) {

@@ -77,7 +77,7 @@ public class PostProcessing {
 		contrastChanger.render(colourTexture);
 	}
 
-	public static void cleanUp() {
+	public static void clean() {
 		contrastChanger.cleanUp();
 		brightFilter.cleanUp();
 		hBlur2.cleanUp();

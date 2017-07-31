@@ -31,7 +31,7 @@ public class WaterFrameBuffers {
 		initialiseRefractionFrameBuffer();
 	}
 
-	public void cleanUp() {// call when closing the game
+	public void clean() {// call when closing the game
 		GL30.glDeleteFramebuffers(reflectionFrameBuffer);
 		GL11.glDeleteTextures(reflectionTexture);
 		GL30.glDeleteRenderbuffers(reflectionDepthBuffer);

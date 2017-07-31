@@ -35,7 +35,7 @@ public class BrightFilter {
 
 	public void cleanUp() {
 		renderer.cleanUp();
-		shader.cleanUp();
+		shader.clean();
 	}
 
 }

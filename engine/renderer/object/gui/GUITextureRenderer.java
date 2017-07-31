@@ -52,7 +52,7 @@ public class GUITextureRenderer {
 	}
 
 	public void cleanUp() {
-		this.shader.cleanUp();
+		this.shader.clean();
 	}
 
 }

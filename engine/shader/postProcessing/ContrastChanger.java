@@ -26,7 +26,7 @@ public class ContrastChanger {
 
 	public void cleanUp() {
 		renderer.cleanUp();
-		shader.cleanUp();
+		shader.clean();
 	}
 
 }

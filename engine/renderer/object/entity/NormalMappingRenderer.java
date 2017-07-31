@@ -54,8 +54,8 @@ public class NormalMappingRenderer {
 		shader.stop();
 	}
 
-	public void cleanUp() {
-		shader.cleanUp();
+	public void clean() {
+		shader.clean();
 	}
 
 	private void prepareTexturedModel(TexturedModel model) {

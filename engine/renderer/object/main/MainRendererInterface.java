@@ -63,7 +63,7 @@ public interface MainRendererInterface {
 	/**
 	 * Method cleans all shaders and rendering objects.
 	 */
-	public void cleanUp();
+	public void clean();
 
 	/**
 	 * 

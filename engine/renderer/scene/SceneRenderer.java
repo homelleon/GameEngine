@@ -201,14 +201,14 @@ public class SceneRenderer {
 		return this.masterRenderer;
 	}
 
-	public void cleanUp() {
-		scene.cleanUp();
-		PostProcessing.cleanUp();
-		outputFbo.cleanUp();
-		outputFbo2.cleanUp();
-		multisampleFbo.cleanUp();
-		waterFBOs.cleanUp();
-		masterRenderer.cleanUp();
+	public void clean() {
+		scene.clean();
+		PostProcessing.clean();
+		outputFbo.clean();
+		outputFbo2.clean();
+		multisampleFbo.clean();
+		waterFBOs.clean();
+		masterRenderer.clean();
 	}
 
 }

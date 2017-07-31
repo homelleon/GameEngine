@@ -174,6 +174,6 @@ public interface SceneInterface {
 	/**
 	 * Clear all variables and arrays of scene objects.
 	 */
-	void cleanUp();
+	void clean();
 
 }

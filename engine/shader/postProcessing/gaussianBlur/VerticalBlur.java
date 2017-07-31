@@ -32,6 +32,6 @@ public class VerticalBlur {
 
 	public void cleanUp() {
 		renderer.cleanUp();
-		shader.cleanUp();
+		shader.clean();
 	}
 }

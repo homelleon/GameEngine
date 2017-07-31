@@ -126,9 +126,9 @@ public class Loop implements LoopInterface {
 	 * exit the application.
 	 */
 	private void cleanUp() {
-		scene.cleanUp();
+		scene.clean();
 		loader.clean();
-		sceneRenderer.cleanUp();
+		sceneRenderer.clean();
 		DisplayManager.closeDisplay();
 	}
 

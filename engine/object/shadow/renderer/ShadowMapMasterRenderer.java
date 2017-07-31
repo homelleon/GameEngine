@@ -103,8 +103,8 @@ public class ShadowMapMasterRenderer {
 	/**
 	 * Clean up the shader and FBO on closing.
 	 */
-	public void cleanUp() {
-		shader.cleanUp();
+	public void clean() {
+		shader.clean();
 		shadowFbo.cleanUp();
 	}
 

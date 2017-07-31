@@ -29,7 +29,7 @@ public class GUITextRenderer {
 	}
 
 	public void cleanUp() {
-		this.shader.cleanUp();
+		this.shader.clean();
 	}
 
 	public void render(Collection<GUIText> textList) {

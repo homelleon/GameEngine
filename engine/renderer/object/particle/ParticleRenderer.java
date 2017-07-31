@@ -73,7 +73,7 @@ public class ParticleRenderer {
 	}
 
 	public void cleanUp() {
-		shader.cleanUp();
+		shader.clean();
 	}
 
 	private void updateTexCoordInfo(Particle particle, float[] data) {

@@ -65,7 +65,7 @@ public class CombineFilter {
 	 */
 	public void cleanUp() {
 		renderer.cleanUp();
-		shader.cleanUp();
+		shader.clean();
 	}
 
 }

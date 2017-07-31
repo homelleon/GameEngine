@@ -55,7 +55,7 @@ public class AnimatedModelRenderer {
 	 * Deletes the shader program when the game closes.
 	 */
 	public void cleanUp() {
-		shader.cleanUp();
+		shader.clean();
 	}
 
 	/**
