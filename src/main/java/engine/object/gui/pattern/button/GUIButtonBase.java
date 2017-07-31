@@ -45,7 +45,11 @@ public abstract class GUIButtonBase extends GUIObject implements GUIButtonInterf
 	}
 
 	@Override
-	public abstract void use();
+	public void use() {
+		if(EngineDebug.hasDebugPermission()) {
+			System.out.println("Button " + this.name + " is used!");
+		}
+	}
 
 	@Override
 	public void show() {

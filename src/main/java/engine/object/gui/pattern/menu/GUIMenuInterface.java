@@ -44,6 +44,11 @@ public interface GUIMenuInterface {
 	public void selectPreviousButton();
 	
 	/**
+	 * Uses selected button.
+	 */
+	public void useButton();
+	
+	/**
 	 * Gets if the menu has any buttons.
 	 * 
 	 * @return true if menu has any buttons<br>

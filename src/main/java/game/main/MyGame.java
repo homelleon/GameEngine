@@ -55,6 +55,7 @@ public class MyGame extends Game {
 		this.menu.addButton(button1);
 		this.menu.addButton(button2);
 		this.menu.addButton(button3);
+		this.menu.selectNextButton();
 		//PE10.peAttachBody(tree1, PE10.BODY_3D_SPHERE, world1);
 		//PE10.peAttachBody(tree2, PE10.BODY_3D_SPHERE, world1);
 		//PE10.peAttachBody(tree3, PE10.BODY_3D_SPHERE, world1);
@@ -82,6 +83,8 @@ public class MyGame extends Game {
 				menu.selectNextButton();				
 			} else if(KeyboardGame.isKeyPressed(Keyboard.KEY_DOWN)) {
 				menu.selectPreviousButton();
+			} else if(KeyboardGame.isKeyPressed(Keyboard.KEY_RETURN)) {
+				menu.useButton();
 			}
 		}
 		

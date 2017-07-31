@@ -20,6 +20,8 @@ import object.gui.pattern.object.GUIObject;
 public class GUIMenu extends GUIObject implements GUIMenuInterface {
 	
 	private boolean hasButtons = false;
+	private boolean wasNext = false;
+	private boolean wasPrevious = false;
 	private Map<String, GUIObject> objects = new HashMap<String, GUIObject>();
 	private List<GUIButtonInterface> buttons = new ArrayList<GUIButtonInterface>();
 	private ListIterator<GUIButtonInterface> buttonIterator;
@@ -35,6 +37,7 @@ public class GUIMenu extends GUIObject implements GUIMenuInterface {
 		this.hasButtons = true;
 		this.updateIterator();
 		this.add((GUIObject) button);
+		this.deselectAllButtons();
 	}
 	
 	@Override
@@ -47,7 +50,16 @@ public class GUIMenu extends GUIObject implements GUIMenuInterface {
 		if(checkIfHassButtons()) {
 			this.deselectAllButtons();
 			if(this.buttonIterator.hasNext()) {
-				this.buttonIterator.next().select();
+				if(!wasNext) {
+					wasNext = true;
+				}
+				if(wasPrevious) {
+					this.buttonIterator.next();
+					wasPrevious = false;
+					selectNextButton();
+				} else {
+					this.buttonIterator.next().select();
+				}
 			} else {
 				while(this.buttonIterator.hasPrevious()) {
 					this.buttonIterator.previous();
@@ -62,12 +74,31 @@ public class GUIMenu extends GUIObject implements GUIMenuInterface {
 		if(checkIfHassButtons()) {
 			this.deselectAllButtons();
 			if(this.buttonIterator.hasPrevious()) {
-				this.buttonIterator.previous().select();
+				if(!wasPrevious) {
+					wasPrevious = true;
+				}
+				if(wasNext) {
+					this.buttonIterator.previous();
+					wasNext = false;
+					selectPreviousButton();
+				} else {
+					this.buttonIterator.previous().select();
+				}
 			} else {
 				while(this.buttonIterator.hasNext()) {
 					this.buttonIterator.next();
 				}
 				this.buttonIterator.previous().select();
+			}
+		}
+	}
+
+	@Override
+	public void useButton() {
+		for(GUIButtonInterface button : this.buttons) {
+			if(button.getIsSelected()) {
+				button.use();
+				break;
 			}
 		}
 	}
@@ -83,6 +114,8 @@ public class GUIMenu extends GUIObject implements GUIMenuInterface {
 		this.buttonIterator = null;
 		this.buttons.clear();
 		this.hasButtons = false;
+		this.wasNext = false;
+		this.wasPrevious = false;
 	}	
 	
 	@Override
