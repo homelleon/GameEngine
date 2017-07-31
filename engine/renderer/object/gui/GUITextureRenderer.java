@@ -22,8 +22,7 @@ public class GUITextureRenderer {
 
 	public GUITextureRenderer() {
 		float[] positions = { -1, 1, -1, -1, 1, 1, 1, -1 };
-		Loader loader = Loader.getInstance();
-		this.quad = loader.loadToVAO(positions, 2);
+		this.quad = Loader.getInstance().getVertexLoader().loadToVAO(positions, 2);
 		this.shader = new GUITextureShader();
 	}
 

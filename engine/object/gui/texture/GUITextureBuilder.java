@@ -39,7 +39,7 @@ public class GUITextureBuilder implements GUITextureBuilderInterface {
 	@Override
 	public GUITexture getTexture() {
 		Loader loader = Loader.getInstance();
-		int texture = loader.loadTexture(EngineSettings.TEXTURE_INTERFACE_PATH, this.textureName);
+		int texture = loader.getTextureLoader().loadTexture(EngineSettings.TEXTURE_INTERFACE_PATH, this.textureName);
 		return new GUITexture(this.name, texture, this.position, this.scale);
 	}
 

@@ -17,7 +17,7 @@ import renderer.loader.Loader;
 
 public class NormalMappedObjLoader {
 
-	public static RawModel loadOBJ(String objFileName, Loader loader) {
+	public static RawModel loadOBJ(String objFileName) {
 		FileReader isr = null;
 		File objFile = new File(EngineSettings.MODEL_PATH + objFileName + ".obj");
 
@@ -85,7 +85,7 @@ public class NormalMappedObjLoader {
 				tangentsArray);
 		int[] indicesArray = convertIndicesListToArray(indices);
 
-		return loader.loadToVAO(verticesArray, texturesArray, normalsArray, tangentsArray, indicesArray);
+		return Loader.getInstance().getVertexLoader().loadToVAO(verticesArray, texturesArray, normalsArray, tangentsArray, indicesArray);
 	}
 
 	// NEW

@@ -18,6 +18,7 @@ import object.model.RawModel;
 import object.particle.particle.Particle;
 import object.texture.particle.ParticleTexture;
 import renderer.loader.Loader;
+import renderer.loader.VertexBufferLoader;
 import shader.particle.ParticleShader;
 import tool.math.Maths;
 
@@ -36,16 +37,16 @@ public class ParticleRenderer {
 	private int vbo;
 	private int pointer = 0;
 
-	public ParticleRenderer(Loader loader, Matrix4f projectionMatrix) {
-		this.loader = loader;
-		this.vbo = loader.createEmptyVbo(INSTANCE_DATA_LENGTH * MAX_INSTANCES);
-		quad = loader.loadToVAO(VERTICES, 2);
-		loader.addInstacedAttribute(quad.getVaoID(), vbo, 1, 4, INSTANCE_DATA_LENGTH, 0);
-		loader.addInstacedAttribute(quad.getVaoID(), vbo, 2, 4, INSTANCE_DATA_LENGTH, 4);
-		loader.addInstacedAttribute(quad.getVaoID(), vbo, 3, 4, INSTANCE_DATA_LENGTH, 8);
-		loader.addInstacedAttribute(quad.getVaoID(), vbo, 4, 4, INSTANCE_DATA_LENGTH, 12);
-		loader.addInstacedAttribute(quad.getVaoID(), vbo, 5, 4, INSTANCE_DATA_LENGTH, 16);
-		loader.addInstacedAttribute(quad.getVaoID(), vbo, 6, 1, INSTANCE_DATA_LENGTH, 20);
+	public ParticleRenderer(Matrix4f projectionMatrix) {
+		VertexBufferLoader vertexLoader = Loader.getInstance().getVertexLoader();
+		this.vbo = vertexLoader.createEmptyVbo(INSTANCE_DATA_LENGTH * MAX_INSTANCES);
+		quad = vertexLoader.loadToVAO(VERTICES, 2);
+		vertexLoader.addInstacedAttribute(quad.getVaoID(), vbo, 1, 4, INSTANCE_DATA_LENGTH, 0);
+		vertexLoader.addInstacedAttribute(quad.getVaoID(), vbo, 2, 4, INSTANCE_DATA_LENGTH, 4);
+		vertexLoader.addInstacedAttribute(quad.getVaoID(), vbo, 3, 4, INSTANCE_DATA_LENGTH, 8);
+		vertexLoader.addInstacedAttribute(quad.getVaoID(), vbo, 4, 4, INSTANCE_DATA_LENGTH, 12);
+		vertexLoader.addInstacedAttribute(quad.getVaoID(), vbo, 5, 4, INSTANCE_DATA_LENGTH, 16);
+		vertexLoader.addInstacedAttribute(quad.getVaoID(), vbo, 6, 1, INSTANCE_DATA_LENGTH, 20);
 		shader = new ParticleShader();
 		shader.start();
 		shader.loadProjectionMatrix(projectionMatrix);
@@ -65,7 +66,7 @@ public class ParticleRenderer {
 						vboData);
 				updateTexCoordInfo(particle, vboData);
 			}
-			loader.updateVbo(vbo, vboData, buffer);
+			Loader.getInstance().getVertexLoader().updateVbo(vbo, vboData, buffer);
 			GL31.glDrawArraysInstanced(GL11.GL_TRIANGLE_STRIP, 0, quad.getVertexCount(), particleList.size());
 		}
 		finishRendering();

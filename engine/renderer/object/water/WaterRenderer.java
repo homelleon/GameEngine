@@ -16,6 +16,7 @@ import object.light.Light;
 import object.model.RawModel;
 import object.water.WaterFrameBuffers;
 import object.water.WaterTile;
+import renderer.loader.GameTextureLoader;
 import renderer.loader.Loader;
 import shader.water.WaterShader;
 import tool.math.Maths;
@@ -35,18 +36,19 @@ public class WaterRenderer {
 
 	private float moveFactor = 0;
 
-	public WaterRenderer(Loader loader, WaterShader shader, Matrix4f projectionMatrix, WaterFrameBuffers fbos) {
+	public WaterRenderer(WaterShader shader, Matrix4f projectionMatrix, WaterFrameBuffers fbos) {
 		this.shader = shader;
 		this.fbos = fbos;
-		dudvTexture = loader.loadTexture(EngineSettings.TEXTURE_DUDV_MAP_PATH, DUDV_MAP);
-		normalMap = loader.loadTexture(EngineSettings.TEXTURE_NORMAL_MAP_PATH, NORMAL_MAP);
+		GameTextureLoader textureLoader = Loader.getInstance().getTextureLoader();
+		dudvTexture = textureLoader.loadTexture(EngineSettings.TEXTURE_DUDV_MAP_PATH, DUDV_MAP);
+		normalMap = textureLoader.loadTexture(EngineSettings.TEXTURE_NORMAL_MAP_PATH, NORMAL_MAP);
 		shader.start();
 		shader.connectTextureUnits();
 		shader.loadFogDensity(EngineSettings.FOG_DENSITY);
 		shader.loadSkyColour(EngineSettings.DISPLAY_RED, EngineSettings.DISPLAY_GREEN, EngineSettings.DISPLAY_BLUE);
 		shader.loadProjectionMatrix(projectionMatrix);
 		shader.stop();
-		setUpVAO(loader);
+		setUpVAO();
 	}
 
 	public void render(Collection<WaterTile> water, CameraInterface camera, Light sun) {
@@ -94,11 +96,11 @@ public class WaterRenderer {
 		shader.stop();
 	}
 
-	private void setUpVAO(Loader loader) {
+	private void setUpVAO() {
 		// Just x and z vertex positions here, y is set to 0 in v.shader
 		float[] vertices = { 0, 0, 0, 1, 1, 0, 1, 0, 0, 1, 1, 1 };
 
-		quad = loader.loadToVAO(vertices, 2);
+		quad = Loader.getInstance().getVertexLoader().loadToVAO(vertices, 2);
 	}
 
 }

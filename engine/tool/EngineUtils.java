@@ -24,28 +24,28 @@ import tool.converter.object.OBJFileLoader;
 public class EngineUtils {
 
 	public static TexturedModel loadStaticModel(String objFile, String texName) {
-		Loader loader = Loader.getInstance();
 		ModelData data = OBJFileLoader.loadOBJ(objFile);
-		RawModel rawModel = loader.loadToVAO(data.getVertices(), data.getTextureCoords(), data.getNormals(),
+		Loader loader = Loader.getInstance();
+		RawModel rawModel = loader.getVertexLoader().loadToVAO(data.getVertices(), data.getTextureCoords(), data.getNormals(),
 				data.getIndices());
 		TexturedModel staticModel = new TexturedModel(objFile, rawModel,
-				new ModelTexture(texName, loader.loadTexture(EngineSettings.TEXTURE_MODEL_PATH, texName)));
+				new ModelTexture(texName, loader.getTextureLoader().loadTexture(EngineSettings.TEXTURE_MODEL_PATH, texName)));
 		return staticModel;
 	}
 
 	public static TexturedModel loadNormalModel(String objFile, String texName, String normalTexture,
 			String specularTexture) {
 		Loader loader = Loader.getInstance();
-		RawModel rawModel = NormalMappedObjLoader.loadOBJ(objFile, loader);
-		ModelTexture texture = new ModelTexture(loader.loadTexture(EngineSettings.TEXTURE_MODEL_PATH, "barrel"));
+		RawModel rawModel = NormalMappedObjLoader.loadOBJ(objFile);
+		ModelTexture texture = new ModelTexture(loader.getTextureLoader().loadTexture(EngineSettings.TEXTURE_MODEL_PATH, "barrel"));
 		TexturedModel model = new TexturedModel(objFile, rawModel, texture);
-		int normaMap = loader.loadTexture(EngineSettings.TEXTURE_NORMAL_MAP_PATH, normalTexture);
+		int normaMap = loader.getTextureLoader().loadTexture(EngineSettings.TEXTURE_NORMAL_MAP_PATH, normalTexture);
 		model.getTexture().setNormalMap(normaMap);
 		model.getTexture().setShineDamper(10);
 		model.getTexture().setReflectivity(0.5f);
 		// TODO: настроить проверку на нуль
 		if (specularTexture != null) {
-			int specularMap = loader.loadTexture(EngineSettings.TEXTURE_SPECULAR_MAP_PATH, specularTexture);
+			int specularMap = loader.getTextureLoader().loadTexture(EngineSettings.TEXTURE_SPECULAR_MAP_PATH, specularTexture);
 			model.getTexture().setSpecularMap(specularMap);
 		}
 		return model;
@@ -101,19 +101,19 @@ public class EngineUtils {
 	public static Terrain createMultiTexTerrain(String name, int x, int y, String basicTexture, String redTexture,
 			String greenTexture, String blueTexture, String blendTexture, String heightTexture, Loader loader) {
 		TerrainTexture backgroundTexture = new TerrainTexture(basicTexture,
-				loader.loadTexture(EngineSettings.TEXTURE_TERRAIN_PATH, basicTexture));
+				loader.getTextureLoader().loadTexture(EngineSettings.TEXTURE_TERRAIN_PATH, basicTexture));
 		TerrainTexture rTexture = new TerrainTexture(redTexture,
-				loader.loadTexture(EngineSettings.TEXTURE_TERRAIN_PATH, redTexture));
+				loader.getTextureLoader().loadTexture(EngineSettings.TEXTURE_TERRAIN_PATH, redTexture));
 		TerrainTexture gTexture = new TerrainTexture(greenTexture,
-				loader.loadTexture(EngineSettings.TEXTURE_TERRAIN_PATH, greenTexture));
+				loader.getTextureLoader().loadTexture(EngineSettings.TEXTURE_TERRAIN_PATH, greenTexture));
 		TerrainTexture bTexture = new TerrainTexture(blueTexture,
-				loader.loadTexture(EngineSettings.TEXTURE_TERRAIN_PATH, blueTexture));
+				loader.getTextureLoader().loadTexture(EngineSettings.TEXTURE_TERRAIN_PATH, blueTexture));
 
 		TerrainTexturePack texturePack = new TerrainTexturePack(backgroundTexture + "Pack", backgroundTexture, rTexture,
 				gTexture, bTexture);
 		TerrainTexture blendMap = new TerrainTexture(blendTexture,
-				loader.loadTexture(EngineSettings.TEXTURE_BLEND_MAP_PATH, blendTexture));
-		Terrain terrain = new Terrain(name, x, y, loader, texturePack, blendMap, heightTexture);
+				loader.getTextureLoader().loadTexture(EngineSettings.TEXTURE_BLEND_MAP_PATH, blendTexture));
+		Terrain terrain = new Terrain(name, x, y, texturePack, blendMap, heightTexture);
 		return terrain;
 	}
 
@@ -121,18 +121,18 @@ public class EngineUtils {
 			String greenTexture, String blueTexture, String blendTexture, float amplitude, int octaves, float roughness,
 			Loader loader) {
 		TerrainTexture backgroundTexture = new TerrainTexture(basicTexture,
-				loader.loadTexture(EngineSettings.TEXTURE_TERRAIN_PATH, basicTexture));
+				loader.getTextureLoader().loadTexture(EngineSettings.TEXTURE_TERRAIN_PATH, basicTexture));
 		TerrainTexture rTexture = new TerrainTexture(redTexture,
-				loader.loadTexture(EngineSettings.TEXTURE_TERRAIN_PATH, redTexture));
+				loader.getTextureLoader().loadTexture(EngineSettings.TEXTURE_TERRAIN_PATH, redTexture));
 		TerrainTexture gTexture = new TerrainTexture(greenTexture,
-				loader.loadTexture(EngineSettings.TEXTURE_TERRAIN_PATH, greenTexture));
+				loader.getTextureLoader().loadTexture(EngineSettings.TEXTURE_TERRAIN_PATH, greenTexture));
 		TerrainTexture bTexture = new TerrainTexture(blueTexture,
-				loader.loadTexture(EngineSettings.TEXTURE_TERRAIN_PATH, blueTexture));
+				loader.getTextureLoader().loadTexture(EngineSettings.TEXTURE_TERRAIN_PATH, blueTexture));
 
 		TerrainTexturePack texturePack = new TerrainTexturePack(basicTexture + "Pack", backgroundTexture, rTexture,
 				gTexture, bTexture);
 		TerrainTexture blendMap = new TerrainTexture(blendTexture,
-				loader.loadTexture(EngineSettings.TEXTURE_BLEND_MAP_PATH, blendTexture));
+				loader.getTextureLoader().loadTexture(EngineSettings.TEXTURE_BLEND_MAP_PATH, blendTexture));
 		Terrain terrain = new Terrain(name, x, y, loader, texturePack, blendMap, amplitude, octaves, roughness);
 		return terrain;
 	}

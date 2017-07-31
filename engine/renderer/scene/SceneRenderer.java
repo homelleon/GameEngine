@@ -54,20 +54,20 @@ public class SceneRenderer {
 	private SceneInterface scene;
 	private ControlsInterface controls;
 
-	public void init(SceneInterface scene, Loader loader) {
+	public void init(SceneInterface scene) {
 		this.scene = scene;
-		this.masterRenderer = new MainRenderer(loader, scene.getCamera());
-		ParticleMaster.init(loader, masterRenderer.getProjectionMatrix());
+		this.masterRenderer = new MainRenderer(scene.getCamera());
+		ParticleMaster.init(masterRenderer.getProjectionMatrix());
 		this.multisampleFbo = new Fbo(Display.getWidth(), Display.getHeight());
 		this.outputFbo = new Fbo(Display.getWidth(), Display.getHeight(), Fbo.DEPTH_TEXTURE);
 		this.outputFbo2 = new Fbo(Display.getWidth(), Display.getHeight(), Fbo.DEPTH_TEXTURE);
 		PostProcessing.isBloomed = true;
 		PostProcessing.isBlured = true;
-		PostProcessing.init(loader);
+		PostProcessing.init();
 
 		this.waterFBOs = new WaterFrameBuffers();
 		WaterShader waterShader = new WaterShader();
-		this.waterRenderer = new WaterRenderer(loader, waterShader, masterRenderer.getProjectionMatrix(), waterFBOs);
+		this.waterRenderer = new WaterRenderer(waterShader, masterRenderer.getProjectionMatrix(), waterFBOs);
 
 		this.picker = new MousePicker(scene.getCamera(), masterRenderer.getProjectionMatrix());
 		scene.setPicker(picker);

@@ -29,8 +29,8 @@ public class PostProcessing {
 	public static boolean isBlured = false;
 	public static boolean isBloomed = false;
 
-	public static void init(Loader loader) {
-		quad = loader.loadToVAO(POSITIONS, 2);
+	public static void init() {
+		quad = Loader.getInstance().getVertexLoader().loadToVAO(POSITIONS, 2);
 		contrastChanger = new ContrastChanger();
 		hBlur2 = new HorizontalBlur(Display.getWidth() / 2, Display.getHeight() / 2);
 		vBlur2 = new VerticalBlur(Display.getWidth() / 2, Display.getHeight() / 2);

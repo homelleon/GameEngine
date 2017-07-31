@@ -281,7 +281,7 @@ public class ModelMap {
 
 	public void createParticles(String name, String texName, int texDimentions, boolean additive, float pps,
 			float speed, float gravityComplient, float lifeLength, float scale) {
-		ParticleTexture texture = new ParticleTexture(loader.loadTexture(EngineSettings.TEXTURE_PARTICLE_PATH, texName),
+		ParticleTexture texture = new ParticleTexture(loader.getTextureLoader().loadTexture(EngineSettings.TEXTURE_PARTICLE_PATH, texName),
 				texDimentions, additive);
 		ParticleSystem particles = new ParticleSystem(name, texture, pps, speed, gravityComplient, lifeLength, scale);
 		this.particleSystems.put(name, particles);

@@ -45,7 +45,7 @@ public class FontType {
 	 *            {@link Loader} value
 	 */
 	public FontType(String name, Loader loader) {
-		new FontType(name, loader.loadTexture(EngineSettings.FONT_FILE_PATH, name),
+		new FontType(name, loader.getTextureLoader().loadTexture(EngineSettings.FONT_FILE_PATH, name),
 				new File(EngineSettings.FONT_FILE_PATH + name + ".fnt"));
 	}
 

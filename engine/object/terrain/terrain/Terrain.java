@@ -66,13 +66,13 @@ public class Terrain implements TerrainInterface {
 	 * @see #Terrain(String, int, int, Loader, TerrainTexturePack,
 	 *      TerrainTexture, float, int, float)
 	 */
-	public Terrain(String name, int gridX, int gridZ, Loader loader, TerrainTexturePack texturePack,
+	public Terrain(String name, int gridX, int gridZ, TerrainTexturePack texturePack,
 			TerrainTexture blendMap, String heightMap) {
 		this.texturePack = texturePack;
 		this.blendMap = blendMap;
 		this.x = gridX * SIZE;
 		this.z = gridZ * SIZE;
-		this.model = generateTerrain(loader, heightMap);
+		this.model = generateTerrain(heightMap);
 		this.name = name;
 	}
 
@@ -213,7 +213,7 @@ public class Terrain implements TerrainInterface {
 		return answer;
 	}
 
-	private RawModel generateTerrain(Loader loader, String heightMap) {
+	private RawModel generateTerrain(String heightMap) {
 
 		BufferedImage image = null;
 		try {
@@ -261,7 +261,7 @@ public class Terrain implements TerrainInterface {
 				indices[pointer++] = bottomRight;
 			}
 		}
-		return loader.loadToVAO(vertices, textureCoords, normals, indices);
+		return Loader.getInstance().getVertexLoader().loadToVAO(vertices, textureCoords, normals, indices);
 	}
 
 	private RawModel generateWithProcedure(Loader loader, float amp, int oct, float rough) {
@@ -307,7 +307,7 @@ public class Terrain implements TerrainInterface {
 				indices[pointer++] = bottomRight;
 			}
 		}
-		return loader.loadToVAO(vertices, textureCoords, normals, indices);
+		return Loader.getInstance().getVertexLoader().loadToVAO(vertices, textureCoords, normals, indices);
 	}
 
 	// private RawModel generateWithProcedure(Loader loader, float amp, int oct,

@@ -83,7 +83,7 @@ public class ModelMapXMLWriter implements ModelMapWriterInterface {
 					String name = String.valueOf(entity.getName());
 					String model = String.valueOf(entity.getModel().getName());
 					// TODO: find out why it returns null texture
-					String texture = loader.getTextureByID(entity.getModel().getTexture().getID());
+					String texture = loader.getTextureLoader().getTextureByID(entity.getModel().getTexture().getID());
 					String x = String.valueOf(entity.getPosition().x);
 					String y = String.valueOf(entity.getPosition().y);
 					String z = String.valueOf(entity.getPosition().z);
@@ -102,8 +102,8 @@ public class ModelMapXMLWriter implements ModelMapWriterInterface {
 						lines.add(XMLUtils.addTagValue(XMLUtils.NORMAL, normal, 3));
 					} else {
 						normal = String.valueOf(true);
-						String normalTexture = loader.getTextureByID(entity.getModel().getTexture().getNormalMap());
-						String specularTexture = loader.getTextureByID(entity.getModel().getTexture().getSpecularMap());
+						String normalTexture = loader.getTextureLoader().getTextureByID(entity.getModel().getTexture().getNormalMap());
+						String specularTexture = loader.getTextureLoader().getTextureByID(entity.getModel().getTexture().getSpecularMap());
 						String shineDumper = String.valueOf(entity.getModel().getTexture().getShineDamper());
 						String reflectivity = String.valueOf(entity.getModel().getTexture().getReflectivity());
 

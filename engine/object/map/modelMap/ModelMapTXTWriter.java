@@ -73,7 +73,7 @@ public class ModelMapTXTWriter implements ModelMapWriterInterface {
 					line += String.valueOf(entity.getModel().getName());
 					line += " ";
 					// TODO: find out why it returns null texture
-					String texture = loader.getTextureByID(entity.getModel().getTexture().getID());
+					String texture = loader.getTextureLoader().getTextureByID(entity.getModel().getTexture().getID());
 					System.out.println(texture);
 					line += String.valueOf(texture);
 					line += " ";
@@ -90,10 +90,10 @@ public class ModelMapTXTWriter implements ModelMapWriterInterface {
 					} else {
 						line += String.valueOf(true);
 						line += " ";
-						String normal = loader.getTextureByID(entity.getModel().getTexture().getNormalMap());
+						String normal = loader.getTextureLoader().getTextureByID(entity.getModel().getTexture().getNormalMap());
 						line += normal;
 						line += " ";
-						String specular = loader.getTextureByID(entity.getModel().getTexture().getSpecularMap());
+						String specular = loader.getTextureLoader().getTextureByID(entity.getModel().getTexture().getSpecularMap());
 						line += specular;
 						line += " ";
 						line += entity.getModel().getTexture().getShineDamper();

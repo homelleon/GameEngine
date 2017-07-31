@@ -11,7 +11,7 @@ public class BoundingBox {
 	Vector3f max;
 	RawModel model;
 
-	public BoundingBox(float[] positions, Loader loader) {
+	public BoundingBox(float[] positions) {
 		Vector3f minPoint = new Vector3f(0, 0, 0);
 		Vector3f maxPoint = new Vector3f(0, 0, 0);
 		for (int i = 0; i < positions.length / 3; i++) {
@@ -76,7 +76,7 @@ public class BoundingBox {
 				20, 23, 21, 21, 23, 22 // right
 		};
 
-		this.model = loader.loadToVao(boundPositions, boundNormals, boundIndices);
+		this.model = Loader.getInstance().getVertexLoader().loadToVao(boundPositions, boundNormals, boundIndices);
 	}
 
 	public Vector3f getMin() {

@@ -99,18 +99,17 @@ public class VoxelRenderer {
 	private int counter = 0;
 
 	Matrix4f projectionMatrix;
-	Loader loader;
 
-	public VoxelRenderer(Loader loader, Matrix4f projectionMatrix) {
+	public VoxelRenderer(Matrix4f projectionMatrix) {
+		Loader loader = Loader.getInstance();
 		this.shader = new VoxelShader();
 		this.shader.start();
 		this.shader.loadProjectionMatrix(projectionMatrix);
 		this.shader.connectTextureUnits();
 		this.shader.stop();
-		this.loader = loader;
-		RawModel rawModel = loader.loadToVAO(VERTICES, TEXTURES, NORMALS, INDICES);
+		RawModel rawModel = loader.getVertexLoader().loadToVAO(VERTICES, TEXTURES, NORMALS, INDICES);
 		this.cube = new TexturedModel("cube", rawModel,
-				new ModelTexture("bark", loader.loadTexture(EngineSettings.TEXTURE_MODEL_PATH, "crate")));
+				new ModelTexture("bark", loader.getTextureLoader().loadTexture(EngineSettings.TEXTURE_MODEL_PATH, "crate")));
 		this.texture = cube.getTexture();
 		texture.setNumberOfRows(1);
 	}

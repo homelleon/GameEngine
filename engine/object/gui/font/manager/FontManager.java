@@ -19,7 +19,7 @@ public class FontManager implements FontManagerInterface {
 			font = fonts.get(name);
 		} else {
 			Loader loader = Loader.getInstance();
-			font = new FontType(name, loader.loadTexture(EngineSettings.FONT_FILE_PATH, name),
+			font = new FontType(name, loader.getTextureLoader().loadTexture(EngineSettings.FONT_FILE_PATH, name),
 					new File(EngineSettings.FONT_FILE_PATH + name + ".fnt"));
 			fonts.put(font.getName(), font);
 		}

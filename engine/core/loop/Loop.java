@@ -102,7 +102,7 @@ public class Loop implements LoopInterface {
 	 */
 	private void prepare() {
 		init();
-		sceneRenderer.init(scene, loader);
+		sceneRenderer.init(scene);
 		MouseGame.initilize(10);
 		this.game = GameCore.loadGame();
 		game.__onStart();
@@ -127,7 +127,7 @@ public class Loop implements LoopInterface {
 	 */
 	private void cleanUp() {
 		scene.cleanUp();
-		loader.cleanUp();
+		loader.clean();
 		sceneRenderer.cleanUp();
 		DisplayManager.closeDisplay();
 	}

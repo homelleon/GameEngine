@@ -54,8 +54,7 @@ public class GUITextManager implements GUITextManagerInterface {
 			String font = text.getFont();
 			this.fontManager.create(font);
 			TextMeshData data = fontManager.get(font).loadText(text);
-			Loader loader = Loader.getInstance();
-			int vao = loader.loadToVAO(data.getVertexPositions(), data.getTextureCoords());
+			int vao = Loader.getInstance().getVertexLoader().loadToVAO(data.getVertexPositions(), data.getTextureCoords());
 			text.setMeshInfo(vao, data.getVertexCount());
 		}
 	}

@@ -5,8 +5,6 @@ import org.lwjgl.util.vector.Vector2f;
 
 import core.EngineMain;
 import game.game.Game;
-import object.gui.group.GUIGroupBuilder;
-import object.gui.group.GUIGroupBuilderInterface;
 import object.gui.group.GUIGroupInterface;
 import object.gui.gui.GUIBuilder;
 import object.gui.gui.GUIBuilderInterface;

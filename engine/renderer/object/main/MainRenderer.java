@@ -64,16 +64,16 @@ public class MainRenderer implements MainRendererInterface {
 	private Map<TexturedModel, List<Entity>> normalMapEntities = new HashMap<TexturedModel, List<Entity>>();
 	private Collection<TerrainInterface> terrains = new ArrayList<TerrainInterface>();
 
-	public MainRenderer(Loader loader, CameraInterface camera) {
+	public MainRenderer(CameraInterface camera) {
 		OGLUtils.cullBackFaces(true);
 		createProjectionMatrix();
 		createLowDistProjectionMatrix();
 		projectionMatrix = normalDistProjectionMatrix;
 		this.entityRenderer = new EntityRenderer(projectionMatrix);
 		this.terrainRenderer = new TerrainRenderer(projectionMatrix);
-		this.skyboxRenderer = new SkyboxRenderer(loader, projectionMatrix);
+		this.skyboxRenderer = new SkyboxRenderer(projectionMatrix);
 		this.normalMapRenderer = new NormalMappingRenderer(projectionMatrix);
-		this.voxelRenderer = new VoxelRenderer(loader, projectionMatrix);
+		this.voxelRenderer = new VoxelRenderer(projectionMatrix);
 		this.boundingRenderer = new BoundingRenderer(projectionMatrix);
 		this.shadowMapRenderer = new ShadowMapMasterRenderer(camera);
 		this.enviroRenderer = new EnvironmentMapRenderer();
