@@ -16,7 +16,7 @@ import object.light.Light;
 import object.model.RawModel;
 import object.water.WaterFrameBuffers;
 import object.water.WaterTile;
-import renderer.loader.GameTextureLoader;
+import renderer.loader.TextureBufferLoader;
 import renderer.loader.Loader;
 import shader.water.WaterShader;
 import tool.math.Maths;
@@ -39,7 +39,7 @@ public class WaterRenderer {
 	public WaterRenderer(WaterShader shader, Matrix4f projectionMatrix, WaterFrameBuffers fbos) {
 		this.shader = shader;
 		this.fbos = fbos;
-		GameTextureLoader textureLoader = Loader.getInstance().getTextureLoader();
+		TextureBufferLoader textureLoader = Loader.getInstance().getTextureLoader();
 		dudvTexture = textureLoader.loadTexture(EngineSettings.TEXTURE_DUDV_MAP_PATH, DUDV_MAP);
 		normalMap = textureLoader.loadTexture(EngineSettings.TEXTURE_NORMAL_MAP_PATH, NORMAL_MAP);
 		shader.start();

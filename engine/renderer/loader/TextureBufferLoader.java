@@ -21,7 +21,7 @@ import de.matthiasmann.twl.utils.PNGDecoder;
 import de.matthiasmann.twl.utils.PNGDecoder.Format;
 import object.texture.TextureData;
 
-public class GameTextureLoader {
+public class TextureBufferLoader {
 	
 	/**
 	 * Map of named textures indicies.
