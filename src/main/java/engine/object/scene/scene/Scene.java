@@ -227,7 +227,7 @@ public class Scene implements SceneInterface {
 	@Override
 	public void clean() {
 		this.environmentMap.delete();
-		this.entityManager.clearAll();
+		this.entityManager.clean();
 		this.terrainManager.clearAll();
 		this.waterManager.clearAll();
 		this.chunkManager.clearAll();

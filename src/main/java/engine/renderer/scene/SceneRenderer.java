@@ -54,7 +54,7 @@ public class SceneRenderer {
 	private SceneInterface scene;
 	private ControlsInterface controls;
 
-	public void init(SceneInterface scene) {
+	public void initialize(SceneInterface scene) {
 		this.scene = scene;
 		this.masterRenderer = new MainRenderer(scene.getCamera());
 		ParticleMaster.init(masterRenderer.getProjectionMatrix());
@@ -169,9 +169,9 @@ public class SceneRenderer {
 		textList.add(fpsText);
 		textList.add(coordsText);
 		GUIInterface statusInterface = new GUI("status", textureList, textList);
-		scene.getUserInterface().createEmptyGUIGroup("statusGroup");
-		scene.getUserInterface().getGUIGroup("statusGroup").add(statusInterface);
-		((GUIObject) scene.getUserInterface().getGUIGroup("statusGroup")).show();
+		scene.getUserInterface().getGroups().createEmpty("statusGroup");
+		scene.getUserInterface().getGroups().get("statusGroup").add(statusInterface);
+		((GUIObject) scene.getUserInterface().getGroups().get("statusGroup")).show();
 		scene.getUserInterface().render();
 		// scene.getUserInterface().deleteGUIGroup("statusGroup");
 	}

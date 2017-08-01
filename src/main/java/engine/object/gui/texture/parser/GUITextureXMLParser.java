@@ -14,19 +14,19 @@ import object.gui.texture.GUITexture;
 import object.gui.texture.GUITextureBuilder;
 import object.gui.texture.GUITextureBuilderInterface;
 import tool.xml.XMLUtils;
+import tool.xml.parser.ListParserInterface;
+import tool.xml.parser.XMLParser;
 
-public class GUITextureXMLParser implements GUITextureParserInterface {
-
-	private Document document;
+public class GUITextureXMLParser extends XMLParser implements ListParserInterface<GUITexture> {
 
 	public GUITextureXMLParser(Document document) {
-		this.document = document;
+		super(document);
 	}
 
 	@Override
 	public List<GUITexture> parse() {
 
-		NodeList nodeList = document.getDocumentElement().getChildNodes();
+		NodeList nodeList = this.document.getDocumentElement().getChildNodes();
 		List<GUITexture> textureList = new ArrayList<GUITexture>();
 		for (int i = 0; i < nodeList.getLength(); i++) {
 			Node node = nodeList.item(i);

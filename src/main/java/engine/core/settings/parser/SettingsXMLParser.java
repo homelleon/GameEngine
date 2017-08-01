@@ -7,19 +7,19 @@ import org.w3c.dom.NodeList;
 
 import core.settings.GameSettings;
 import tool.xml.XMLUtils;
+import tool.xml.parser.ObjectParserInterface;
+import tool.xml.parser.XMLParser;
 
-public class SettingsXMLParser implements SettingsParserInterface {
-
-	private Document document;
+public class SettingsXMLParser extends XMLParser implements ObjectParserInterface<GameSettings> {
 
 	public SettingsXMLParser(Document document) {
-		this.document = document;
+		super(document);
 	}
 
 	@Override
 	public GameSettings parse() {
 		GameSettings settings = GameSettings.getInstance();
-		NodeList nodeList = document.getDocumentElement().getChildNodes();
+		NodeList nodeList = this.document.getDocumentElement().getChildNodes();
 
 		for (int i = 0; i < nodeList.getLength(); i++) {
 			Node node = nodeList.item(i);

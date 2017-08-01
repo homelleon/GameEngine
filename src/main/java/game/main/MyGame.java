@@ -23,7 +23,7 @@ public class MyGame extends Game {
 	private GUIInterface hintsUI;
 	int time = 0;
 	
-	GUIMenuInterface menu = new GUIMenu();
+	GUIMenuInterface menu = new GUIMenu("menu1");
 	
 	/**
 	 * Action when game is just started. 
@@ -38,14 +38,14 @@ public class MyGame extends Game {
 		GUIBuilderInterface helpGUIBuilder = new GUIBuilder();
 		helpGUIBuilder.setText(gameManager.getScene().getUserInterface()
 				.getComponent().getTexts().get("inputHints"));
-		this.helpGroup = this.gameManager.getScene().getUserInterface().createEmptyGUIGroup(guiGroupName);
+		this.helpGroup = this.gameManager.getScene().getUserInterface().getGroups().createEmpty(guiGroupName);
 		this.helpGroup.add(helpGUIBuilder.getGUI("help"));
 		
 		//-------sign button GUI-------------//
 		GUIBuilderInterface signGUIBuilder = new GUIBuilder();
 		signGUIBuilder.setTexture(gameManager.getScene().getUserInterface()
 				.getComponent().getTextures().get("Sign"));
-		GUIGroupInterface signGroup = this.gameManager.getScene().getUserInterface().createEmptyGUIGroup("sign");
+		GUIGroupInterface signGroup = this.gameManager.getScene().getUserInterface().getGroups().createEmpty("sign");
 		signGroup.add(signGUIBuilder.getGUI("sign"));
 		((GUIObject) signGroup).show();
 		

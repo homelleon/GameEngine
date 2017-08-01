@@ -14,14 +14,13 @@ import tool.math.Maths;
  */
 public abstract class GUIButtonBase extends GUIObject implements GUIButtonInterface {
 
-	protected String name;
 	protected GUIInterface gui;
 	protected boolean isSelected = false;
 	protected Vector2f point1;
 	protected Vector2f point2;
 
 	protected GUIButtonBase(String name, GUIInterface gui, Vector2f point1, Vector2f point2) {
-		this.name = name;
+		super(name);
 		this.gui = gui;
 		this.point1 = point1;
 		this.point2 = point2;

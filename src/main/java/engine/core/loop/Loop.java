@@ -7,7 +7,6 @@ import core.GameCore;
 import core.display.DisplayManager;
 import core.settings.EngineSettings;
 import core.settings.GameSettings;
-import core.settings.parser.SettingsParserInterface;
 import core.settings.parser.SettingsXMLParser;
 import game.game.GameInterface;
 import object.input.MouseGame;
@@ -25,6 +24,7 @@ import renderer.object.main.MainRenderer;
 import renderer.scene.SceneRenderer;
 import tool.xml.loader.XMLFileLoader;
 import tool.xml.loader.XMLLoaderInterface;
+import tool.xml.parser.ObjectParserInterface;
 
 /**
  * Game looping system that initialize preloaded game variables and objects and
@@ -68,7 +68,7 @@ public class Loop implements LoopInterface {
 	 * 
 	 * @see #prepare()
 	 */
-	private void init() {
+	private void initialize() {
 		DisplayManager.createDisplay();
 		/*--------------PRE LOAD TOOLS-------------*/
 		this.loader = Loader.getInstance();
@@ -101,8 +101,8 @@ public class Loop implements LoopInterface {
 	 * start.
 	 */
 	private void prepare() {
-		init();
-		sceneRenderer.init(scene);
+		initialize();
+		sceneRenderer.initialize(scene);
 		MouseGame.initilize(10);
 		this.game = GameCore.loadGame();
 		game.__onStart();
@@ -172,7 +172,7 @@ public class Loop implements LoopInterface {
 	private void loadGameSettings() {
 		XMLLoaderInterface xmlLoader = new XMLFileLoader(
 				EngineSettings.SETTINGS_GAME_PATH + SETTINGS_NAME + EngineSettings.EXTENSION_XML);
-		SettingsParserInterface settingsParser = new SettingsXMLParser(xmlLoader.load());
+		ObjectParserInterface<GameSettings> settingsParser = new SettingsXMLParser(xmlLoader.load());
 		GameSettings settings = settingsParser.parse();
 		loadMap(settings.getMapName());
 		loadObjectMap(settings.getObjectMapName());

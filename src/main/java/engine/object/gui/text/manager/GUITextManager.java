@@ -2,6 +2,7 @@ package object.gui.text.manager;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.w3c.dom.Document;
@@ -11,11 +12,11 @@ import object.gui.font.TextMeshData;
 import object.gui.font.manager.FontManager;
 import object.gui.font.manager.FontManagerInterface;
 import object.gui.text.GUIText;
-import object.gui.text.parser.GUITextParserInterface;
 import object.gui.text.parser.GUITextXMLParser;
 import renderer.loader.Loader;
 import tool.xml.loader.XMLFileLoader;
 import tool.xml.loader.XMLLoaderInterface;
+import tool.xml.parser.ListParserInterface;
 
 /**
  * Manager for text that rendered in the screen.
@@ -40,11 +41,16 @@ public class GUITextManager implements GUITextManagerInterface {
 
 	@Override
 	public void addAll(Collection<GUIText> textList) {
+		this.addAll((Collection<GUIText>)textList);
+	}
+
+	@Override
+	public void addAll(List<GUIText> textList) {
 		if ((textList != null) && (!textList.isEmpty())) {
 			for (GUIText text : textList) {
 				this.add(text);
 			}
-		}
+		}		
 	}
 
 	@Override
@@ -74,12 +80,17 @@ public class GUITextManager implements GUITextManagerInterface {
 	}
 
 	@Override
-	public void remove(String name) {
-		this.texts.remove(name);
+	public boolean delete(String name) {
+		if(this.texts.containsKey(name)) {
+			this.texts.remove(name);
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	@Override
-	public void cleanUp() {
+	public void clean() {
 		this.fontManager.cleanUp();
 		this.texts.clear();
 	}
@@ -93,13 +104,13 @@ public class GUITextManager implements GUITextManagerInterface {
 	public void readFile(String fileName) {
 		XMLLoaderInterface xmlLoader = new XMLFileLoader(
 				EngineSettings.INTERFACE_PATH + fileName + EngineSettings.EXTENSION_XML);
-		GUITextParserInterface parser = new GUITextXMLParser(xmlLoader.load());
+		ListParserInterface<GUIText> parser = new GUITextXMLParser(xmlLoader.load());
 		this.addAll(parser.parse());
 	}
 
 	@Override
 	public void readDocument(Document document) {
-		GUITextParserInterface parser = new GUITextXMLParser(document);
+		ListParserInterface<GUIText> parser = new GUITextXMLParser(document);
 		this.addAll(parser.parse());		
 	}
 

@@ -5,19 +5,19 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import tool.xml.XMLUtils;
+import tool.xml.parser.ObjectParserInterface;
+import tool.xml.parser.XMLParser;
 
-public class TextXMLParser implements TextParserInterface {
-
-	private Document document;
+public class TextXMLParser extends XMLParser implements ObjectParserInterface<String> {
 
 	public TextXMLParser(Document document) {
-		this.document = document;
+		super(document);
 	}
 
 	@Override
 	public String parse() {
 
-		NodeList nodeList = document.getDocumentElement().getChildNodes();
+		NodeList nodeList = this.document.getDocumentElement().getChildNodes();
 		String text = "";
 		for (int i = 0; i < nodeList.getLength(); i++) {
 			Node node = nodeList.item(i);

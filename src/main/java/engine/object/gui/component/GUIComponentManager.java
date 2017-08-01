@@ -24,13 +24,13 @@ public class GUIComponentManager implements GUIComponentManagerInterface {
 	public GUIComponentManager(GUITextureManagerInterface textureManager, GUITextManagerInterface textManager) {
 		this.textManager = textManager;
 		this.textureManager = textureManager;
-		this.guiRenderer = new GUIRenderer(textManager.getFonts());
+		this.guiRenderer = new GUIRenderer(this.textManager.getFonts());
 	}
 
 	public GUIComponentManager(String guiFileName) {
 		this.textureManager = new GUITextureManager();
 		this.textManager = new GUITextManager();
-		this.guiRenderer = new GUIRenderer(textManager.getFonts());
+		this.guiRenderer = new GUIRenderer(this.textManager.getFonts());
 		XMLLoaderInterface loader = new XMLFileLoader(EngineSettings.INTERFACE_PATH + guiFileName + EngineSettings.EXTENSION_XML);
 		Document document = loader.load();
 		textManager.readDocument(document);
@@ -55,7 +55,7 @@ public class GUIComponentManager implements GUIComponentManagerInterface {
 	@Override
 	public void cleanAll() {
 		this.guiRenderer.cleanUp();
-		this.textManager.cleanUp();
+		this.textManager.clean();
 		this.textureManager.cleanUp();
 	}
 

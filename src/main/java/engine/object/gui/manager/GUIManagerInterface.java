@@ -1,9 +1,8 @@
 package object.gui.manager;
 
-import java.util.Collection;
-
 import object.gui.component.GUIComponentManagerInterface;
-import object.gui.group.GUIGroupInterface;
+import object.gui.group.manager.GUIGroupManagerInterface;
+import object.gui.pattern.menu.system.GUIMenuSystemInterface;
 
 /**
  * UI Manager Interface.
@@ -17,58 +16,20 @@ public interface GUIManagerInterface {
 	 * Initialize ui manager.
 	 */
 	void initialize();
-
+	
 	/**
-	 * Creates empty GUI Group and add it to guiManager.
+	 * Gets GUI group manager.
 	 * 
-	 * @param name
-	 *            string value of group name
-	 * 
-	 * @return {@link GUIGroupInterface} value of group
+	 * @return {@link GUIGroupManagerInterface} object
 	 */
-	GUIGroupInterface createEmptyGUIGroup(String name);
-
+	GUIGroupManagerInterface getGroups();
+	
 	/**
-	 * Adds list of user interface groups.
+	 * Gets GUI menu system interface.
 	 * 
-	 * @param groupList
+	 * @return {@link GUIMenuSystemInterface} tool
 	 */
-	void addAllGUIGroups(Collection<GUIGroupInterface> groupList);
-
-	/**
-	 * Adds user interface group.
-	 * 
-	 * @param groupList
-	 */
-	void addGUIGroup(GUIGroupInterface group);
-
-	/**
-	 * Returns UIGroup by name.
-	 * 
-	 * @param name
-	 *            {@link String} value
-	 * 
-	 * @return {@link GUIGroupInterface} value of user interfaces
-	 */
-	GUIGroupInterface getGUIGroup(String name);
-
-	/**
-	 * Returns list of all UIGroups.
-	 * 
-	 * @return {@link Collection}<{@link GUIGroupInterface}> value of all user
-	 *         interface groups
-	 */
-	Collection<GUIGroupInterface> getAllGUIGroups();
-
-	/**
-	 * Deletes GUI group and its all content from memory.
-	 * 
-	 * @param name
-	 *            string value of GUI group name
-	 * @return true if group is exist<br>
-	 *         false if group isn't exist
-	 */
-	boolean deleteGUIGroup(String name);
+	GUIMenuSystemInterface getMenus();
 
 	/**
 	 * Returns component manager that controls engine default interface

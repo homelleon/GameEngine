@@ -18,6 +18,9 @@ import object.gui.text.GUITextBuilderInterface;
 import tool.xml.XMLUtils;
 import tool.xml.loader.XMLFileLoader;
 import tool.xml.loader.XMLLoaderInterface;
+import tool.xml.parser.ListParserInterface;
+import tool.xml.parser.ObjectParserInterface;
+import tool.xml.parser.XMLParser;
 
 /**
  * Parser to read xml-file and parse text used for graphic user interface.
@@ -25,9 +28,7 @@ import tool.xml.loader.XMLLoaderInterface;
  * @author homelleon
  * @see GUITextParserInterface
  */
-public class GUITextXMLParser implements GUITextParserInterface {
-
-	private Document document;
+public class GUITextXMLParser extends XMLParser implements ListParserInterface<GUIText> {
 
 	/**
 	 * Constracts parser with document and textMaster.
@@ -38,13 +39,13 @@ public class GUITextXMLParser implements GUITextParserInterface {
 	 *            {@link TextProcessor}
 	 */
 	public GUITextXMLParser(Document document) {
-		this.document = document;
+		super(document);
 	}
 
 	@Override
 	public List<GUIText> parse() {
 
-		NodeList nodeList = document.getDocumentElement().getChildNodes();
+		NodeList nodeList = this.document.getDocumentElement().getChildNodes();
 		List<GUIText> textList = new ArrayList<GUIText>();
 
 		for (int i = 0; i < nodeList.getLength(); i++) {
@@ -106,7 +107,7 @@ public class GUITextXMLParser implements GUITextParserInterface {
 				Vector3f color = new Vector3f(r, g, b);
 				XMLLoaderInterface xmlLoader = new XMLFileLoader(
 						EngineSettings.TEXT_PATH + path + EngineSettings.EXTENSION_XML);
-				TextParserInterface textParser = new TextXMLParser(xmlLoader.load());
+				ObjectParserInterface<String> textParser = new TextXMLParser(xmlLoader.load());
 				String text = textParser.parse();
 				count++;
 				if (EngineDebug.hasDebugPermission()) {

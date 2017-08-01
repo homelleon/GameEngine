@@ -1,23 +1,22 @@
 package object.gui.manager;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-
 import core.debug.EngineDebug;
 import object.gui.component.GUIComponentManager;
 import object.gui.component.GUIComponentManagerInterface;
-import object.gui.group.GUIGroup;
-import object.gui.group.GUIGroupInterface;
-import object.gui.gui.GUIInterface;
-import object.gui.text.GUIText;
+import object.gui.group.manager.GUIGroupManager;
+import object.gui.group.manager.GUIGroupManagerInterface;
+import object.gui.pattern.menu.system.GUIMenuSystem;
+import object.gui.pattern.menu.system.GUIMenuSystemInterface;
 
 public class GUIManager implements GUIManagerInterface {
 
-	private static final String GUI_FILE_NAME = "Interface";
+	private static final String GUI_FILE_NAME = "interface";
+	private static final String GUI_MENU_NAME = "menu";
 
 	GUIComponentManagerInterface componentManager;
-	Map<String, GUIGroupInterface> groups = new HashMap<String, GUIGroupInterface>();
+	GUIMenuSystemInterface menuSystem;
+	GUIGroupManagerInterface groupManager;
+	
 
 	@Override
 	public void initialize() {
@@ -25,53 +24,24 @@ public class GUIManager implements GUIManagerInterface {
 			System.out.println("Prepare User Interface...");
 		}
 		this.componentManager = new GUIComponentManager(GUI_FILE_NAME);
+		this.menuSystem = new GUIMenuSystem();
+		this.groupManager = new GUIGroupManager(this.componentManager);
 		if (EngineDebug.hasDebugPermission()) {
 			System.out.println("done!");
 		}
 	}
-
+	
 	@Override
-	public GUIGroupInterface createEmptyGUIGroup(String name) {
-		GUIGroupInterface group = new GUIGroup(name);
-		this.groups.put(group.getName(), group);
-		return group;
+	public GUIGroupManagerInterface getGroups() {
+		return groupManager;
+	}
+	
+	
+	@Override
+	public GUIMenuSystemInterface getMenus() {
+		return this.menuSystem;
 	}
 
-	@Override
-	public GUIGroupInterface getGUIGroup(String name) {
-		return groups.get(name);
-	}
-
-	@Override
-	public void addAllGUIGroups(Collection<GUIGroupInterface> groupList) {
-		groupList.forEach(group -> this.groups.put(group.getName(), group));
-	}
-
-	@Override
-	public void addGUIGroup(GUIGroupInterface group) {
-		this.groups.put(group.getName(), group);
-	}
-
-	@Override
-	public Collection<GUIGroupInterface> getAllGUIGroups() {
-		return this.groups.values();
-	}
-
-	@Override
-	public boolean deleteGUIGroup(String name) {
-		boolean isExist = false;
-		if (this.groups.containsKey(name)) {
-			isExist = true;
-			for (GUIInterface gui : this.groups.get(name).getAll()) {
-				for (GUIText text : gui.getTexts()) {
-					this.componentManager.getTexts().remove(text.getName());
-				}
-			}
-			this.groups.get(name).clean();
-			this.groups.remove(name);
-		}
-		return isExist;
-	}
 
 	@Override
 	public GUIComponentManagerInterface getComponent() {
@@ -80,15 +50,13 @@ public class GUIManager implements GUIManagerInterface {
 
 	@Override
 	public void render() {
-		this.componentManager.render(this.getAllGUIGroups());
+		this.componentManager.render(this.getGroups().getAll());
 	}
 
 	@Override
 	public void cleanAll() {
-		for (GUIGroupInterface group : this.groups.values()) {
-			group.clean();
-		}
-		this.groups.clear();
+		this.menuSystem.clean();
+		this.groupManager.clean();
 	}
 
 }

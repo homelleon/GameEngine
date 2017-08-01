@@ -22,7 +22,7 @@ public class GUI extends GUIObject implements GUIInterface {
 	private List<GUIText> guiTexts;
 
 	public GUI(String name, List<GUITexture> guiTextureList, List<GUIText> guiTextList) {
-		this.name = name;
+		super(name);
 		this.guiTextures = guiTextureList;
 		this.guiTexts = guiTextList;
 	}

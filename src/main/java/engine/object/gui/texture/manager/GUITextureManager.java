@@ -8,10 +8,10 @@ import org.w3c.dom.Document;
 
 import core.settings.EngineSettings;
 import object.gui.texture.GUITexture;
-import object.gui.texture.parser.GUITextureParserInterface;
 import object.gui.texture.parser.GUITextureXMLParser;
 import tool.xml.loader.XMLFileLoader;
 import tool.xml.loader.XMLLoaderInterface;
+import tool.xml.parser.ListParserInterface;
 
 /**
  * Graphic interface manager for controling and storing structured map and
@@ -65,13 +65,13 @@ public class GUITextureManager implements GUITextureManagerInterface {
 	public void readFile(String fileName) {
 		XMLLoaderInterface xmlLoader = new XMLFileLoader(
 				EngineSettings.INTERFACE_PATH + fileName + EngineSettings.EXTENSION_XML);
-		GUITextureParserInterface parser = new GUITextureXMLParser(xmlLoader.load());
+		ListParserInterface<GUITexture> parser = new GUITextureXMLParser(xmlLoader.load());
 		this.addAll(parser.parse());
 	}
 
 	@Override
 	public void readDocument(Document document) {
-		GUITextureParserInterface parser = new GUITextureXMLParser(document);
+		ListParserInterface<GUITexture> parser = new GUITextureXMLParser(document);
 		this.addAll(parser.parse());		
 	}
 

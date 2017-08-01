@@ -19,6 +19,10 @@ import object.gui.pattern.object.GUIObject;
  */
 public class GUIMenu extends GUIObject implements GUIMenuInterface {
 	
+	public GUIMenu(String name) {
+		super(name);
+	}
+
 	private boolean hasButtons = false;
 	private boolean wasNext = false;
 	private boolean wasPrevious = false;

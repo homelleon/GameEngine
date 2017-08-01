@@ -104,7 +104,7 @@ public class MainRenderer implements MainRendererInterface {
 			environmentRendered = false;
 		}
 		if (!environmentRendered) {
-			enviroRenderer.render(scene, this, scene.getEntities().getByName("Cuby4"));
+			enviroRenderer.render(scene, this, scene.getEntities().get("Cuby4"));
 			this.environmentRendered = true;
 		}
 		render(scene.getChunks(), scene.getLights().getAll(), scene.getCamera(), clipPlane, isLowDistance);

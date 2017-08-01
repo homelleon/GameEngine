@@ -14,14 +14,14 @@ public class GUIGroup extends GUIObject implements GUIGroupInterface {
 	private Map<String, GUIInterface> guis = new HashMap<String, GUIInterface>();
 
 	public GUIGroup(String name, List<GUIInterface> guiList) {
-		this.name = name;
+		super(name);
 		if (!guiList.isEmpty()) {
 			guiList.forEach(gui -> this.guis.put(gui.getName(), gui));
 		}
 	}
 
 	public GUIGroup(String name) {
-		this.name = name;
+		super(name);
 	}
 
 	@Override

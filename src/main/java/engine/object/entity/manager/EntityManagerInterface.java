@@ -6,6 +6,7 @@ import java.util.Map;
 
 import object.entity.entity.Entity;
 import renderer.viewCulling.frustum.Frustum;
+import tool.manager.ManagerInterface;
 
 /**
  * Entity control manager interface.
@@ -14,19 +15,8 @@ import renderer.viewCulling.frustum.Frustum;
  * @version 1.0
  *
  */
-public interface EntityManagerInterface {
+public interface EntityManagerInterface extends ManagerInterface<Entity> {
 
-	/**
-	 * Add entity list into entity array.
-	 * 
-	 * @param entityList
-	 *            {@link Collection}<{@link Entity}> value of {@link Entity}
-	 *            list
-	 * @see #add(Entity)
-	 * @see #getAll()
-	 * @see #getByName(String)
-	 */
-	void addAll(Collection<Entity> entityList);
 
 	/**
 	 * Add list of entities chosen by player.
@@ -66,14 +56,6 @@ public interface EntityManagerInterface {
 	void addFrustumMap(Map<Float, List<Entity>> frustumMap);
 
 	/**
-	 * Add one entity in entity array.
-	 * 
-	 * @param entity
-	 *            {@link Entity} value
-	 */
-	void add(Entity entity);
-
-	/**
 	 * Add one entity chosen by player into the pointed entity array.
 	 * 
 	 * @param entity
@@ -107,21 +89,6 @@ public interface EntityManagerInterface {
 	 */
 	void updateWithFrustum(Frustum frustum);
 
-	/**
-	 * Returns entity from entity array by name.
-	 * 
-	 * @param name
-	 *            String value of entity's name
-	 * @return {@link Entity} value of chosen entity
-	 */
-	Entity getByName(String name);
-
-	/**
-	 * Returns all entities in array list.
-	 * 
-	 * @return {@link Collection}<{@link Entity}> value of entity list
-	 */
-	Collection<Entity> getAll();
 
 	/**
 	 * Returns map of entities chosen by frustum culling.
@@ -157,9 +124,4 @@ public interface EntityManagerInterface {
 	 * Clear array of entities chosen by player.
 	 */
 	void clearPointed();
-
-	/**
-	 * Clear all arrays of entities.
-	 */
-	void clearAll();
 }

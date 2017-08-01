@@ -7,6 +7,10 @@ public abstract class GUIObject implements Hideable {
 	protected boolean isShown = false;
 	protected String name;
 	
+	public GUIObject(String name) {
+		this.name = name;
+	}
+	
 	@Override
 	public void show() {
 		this.isShown = true;

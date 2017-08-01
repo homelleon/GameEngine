@@ -92,7 +92,7 @@ public class SceneManager implements SceneManagerInterface {
 		scene.getParticles().addAll(ParticleManager.createParticleSystem(loader));
 
 		scene.spreadEntitiesOnHeights(scene.getEntities().getAll());
-		scene.getEntities().getByName("Cuby4").getModel().getTexture().setReflectiveFactor(1.2f);
+		scene.getEntities().get("Cuby4").getModel().getTexture().setReflectiveFactor(1.2f);
 
 	}
 

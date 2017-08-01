@@ -34,9 +34,18 @@ public class EntityManager implements EntityManagerInterface {
 	public List<Entity> editorEntities = new ArrayList<Entity>();
 
 	@Override
-	public void addAll(Collection<Entity> entityList) {
-		if ((entityList != null) && (!entityList.isEmpty())) {
-			for (Entity entity : entityList) {
+	public void addAll(List<Entity> elementList) {
+		if ((elementList != null) && (!elementList.isEmpty())) {
+			for (Entity entity : elementList) {
+				this.allEntities.put(entity.getName(), entity);
+			}
+		}
+	}
+	
+	@Override
+	public void addAll(Collection<Entity> elementList) {
+		if ((elementList != null) && (!elementList.isEmpty())) {
+			for (Entity entity : elementList) {
 				this.allEntities.put(entity.getName(), entity);
 			}
 		}
@@ -125,7 +134,7 @@ public class EntityManager implements EntityManagerInterface {
 	}
 
 	@Override
-	public Entity getByName(String name) {
+	public Entity get(String name) {
 		Entity entity = null;
 		if (this.allEntities.containsKey(name)) {
 			entity = this.allEntities.get(name);
@@ -136,6 +145,16 @@ public class EntityManager implements EntityManagerInterface {
 	@Override
 	public Collection<Entity> getAll() {
 		return this.allEntities.values();
+	}
+	
+	@Override
+	public boolean delete(String name) {
+		if(this.allEntities.containsKey(name)) {
+			this.allEntities.remove(name);
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	@Override
@@ -167,10 +186,10 @@ public class EntityManager implements EntityManagerInterface {
 	}
 
 	@Override
-	public void clearAll() {
+	public void clean() {
 		this.allEntities.clear();
 		this.pointedEntities.clear();
-		this.frustumEntities.clear();
+		this.frustumEntities.clear();		
 	}
 
 }
