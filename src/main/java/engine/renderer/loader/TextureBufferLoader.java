@@ -82,8 +82,6 @@ public class TextureBufferLoader {
 			} else {
 				System.out.println("Anisotropic filtering is not supported");
 			}
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

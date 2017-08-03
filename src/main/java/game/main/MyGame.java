@@ -49,6 +49,14 @@ public class MyGame extends Game {
 		signGroup.add(signGUIBuilder.getGUI("sign"));
 		((GUIObject) signGroup).show();
 		
+		//-----------button GUI--------------//
+		GUIBuilderInterface buttonGUIBuilder = new GUIBuilder();
+		buttonGUIBuilder.setTexture(gameManager.getScene().getUserInterface()
+				.getComponent().getTextures().get("Button"));
+		GUIGroupInterface buttonGroup = this.gameManager.getScene().getUserInterface().getGroups().createEmpty("button");
+		buttonGroup.add(buttonGUIBuilder.getGUI("button"));
+		((GUIObject) buttonGroup).show();
+		
 		GUIButtonInterface button1 = new GUIButton("signButton1", signGUIBuilder.getGUI("sign1"), new Vector2f(400,300), new Vector2f(600,500));
 		GUIButtonInterface button2 = new GUIButton("signButton2", signGUIBuilder.getGUI("sign2"), new Vector2f(400,300), new Vector2f(600,500));
 		GUIButtonInterface button3 = new GUIButton("signButton3", signGUIBuilder.getGUI("sign3"), new Vector2f(400,300), new Vector2f(600,500));

@@ -72,5 +72,14 @@
 				<y>0.5f</y>
 			</scale>
 		</GUITexture>
+		<GUITexture id="4">
+			<name>Button</name>
+			<texture>button</texture>
+			<position>
+				<x>0</x>
+				<y>0</y>
+			</position>
+			<scale><x>1f</x>
+				<y>1f</y></scale></GUITexture>
 	</GUITextures>
 </GUI>
