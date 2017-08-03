@@ -1,17 +1,18 @@
 package object.gui.texture;
 
 import org.lwjgl.util.vector.Vector2f;
+import org.newdawn.slick.opengl.Texture;
 
 public class GUITexture {
 
 	private String name;
 	private boolean isShown = false;
 
-	private int texture;
+	private Texture texture;
 	private Vector2f position;
 	private Vector2f scale;
 
-	public GUITexture(String name, int texture, Vector2f position, Vector2f scale) {
+	public GUITexture(String name, Texture texture, Vector2f position, Vector2f scale) {
 		this.name = name;
 		this.texture = texture;
 		this.position = position;
@@ -22,7 +23,7 @@ public class GUITexture {
 		return name;
 	}
 
-	public int getTexture() {
+	public Texture getTexture() {
 		return this.texture;
 	}
 

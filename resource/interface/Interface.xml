@@ -76,7 +76,7 @@
 			<name>Button</name>
 			<texture>button</texture>
 			<position>
-				<x>0</x>
+				<x>0.5f</x>
 				<y>0</y>
 			</position>
 			<scale><x>1f</x>

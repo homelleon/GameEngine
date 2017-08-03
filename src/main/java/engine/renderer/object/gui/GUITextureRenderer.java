@@ -7,7 +7,9 @@ import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Vector2f;
 
+import core.display.DisplayManager;
 import object.gui.texture.GUITexture;
 import object.model.RawModel;
 import renderer.loader.Loader;
@@ -37,8 +39,11 @@ public class GUITextureRenderer {
 		for (GUITexture guiTexture : textureList) {
 			if (guiTexture.getIsShown()) {
 				GL13.glActiveTexture(GL13.GL_TEXTURE0);
-				GL11.glBindTexture(GL11.GL_TEXTURE_2D, guiTexture.getTexture());
-				Matrix4f matrix = Maths.createTransformationMatrix(guiTexture.getPosition(), guiTexture.getScale());
+				GL11.glBindTexture(GL11.GL_TEXTURE_2D, guiTexture.getTexture().getTextureID());
+				Vector2f size = new Vector2f(guiTexture.getTexture().getImageWidth() / (float) DisplayManager.getWidth(), 
+						 guiTexture.getTexture().getImageHeight() / (float) DisplayManager.getHeight());
+				Vector2f scale = new Vector2f(size.x * guiTexture.getScale().getX(), size.y * guiTexture.getScale().getY());
+				Matrix4f matrix = Maths.createTransformationMatrix(guiTexture.getPosition(), scale);
 				this.shader.loadTransformation(matrix);
 				GL11.glDrawArrays(GL11.GL_TRIANGLE_STRIP, 0, this.quad.getVertexCount());
 			}

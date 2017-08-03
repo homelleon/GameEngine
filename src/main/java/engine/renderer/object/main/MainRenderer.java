@@ -23,7 +23,6 @@ import object.shadow.renderer.ShadowMapMasterRenderer;
 import object.terrain.terrain.TerrainInterface;
 import object.texture.Texture;
 import object.voxel.manager.ChunkManagerInterface;
-import renderer.loader.Loader;
 import renderer.object.bounding.BoundingRenderer;
 import renderer.object.entity.EntityRenderer;
 import renderer.object.entity.NormalMappingRenderer;
