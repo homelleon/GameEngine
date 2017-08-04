@@ -10,9 +10,9 @@ import org.w3c.dom.NodeList;
 import core.debug.EngineDebug;
 import core.settings.EngineSettings;
 import object.entity.entity.Entity;
-import object.entity.entity.EntityBuilder;
-import object.entity.entity.TexturedEntity;
+import object.entity.entity.EntityBuilderInterface;
 import object.entity.entity.SimpleEntityBuilder;
+import object.entity.entity.TexturedEntity;
 import object.model.TexturedModel;
 import tool.EngineUtils;
 import tool.xml.XMLUtils;
@@ -68,18 +68,22 @@ public class ModelMapXMLParser extends XMLParser implements ObjectParserInterfac
 				Vector3f rotation = new Vector3f(0, 0, 0);
 				float scale = Float.valueOf(XMLUtils.getTagValue(entityEl, XMLUtils.SCALE));
 				boolean isNormal = Boolean.valueOf(XMLUtils.getTagValue(entityEl, XMLUtils.NORMAL));
+				EntityBuilderInterface builder;
 				if (isNormal) {
 					String normalMap = XMLUtils.getTagValue(entityEl, XMLUtils.NORMAL_TEXTURE);
 					String specularMap = XMLUtils.getTagValue(entityEl, XMLUtils.SPECULAR_TEXTURE);
 					float shine = Float.valueOf(XMLUtils.getTagValue(entityEl, XMLUtils.SHINE_DUMPER));
 					float reflectivity = Float.valueOf(XMLUtils.getTagValue(entityEl, XMLUtils.REFLECTIVITY));
+					builder = new SimpleEntityBuilder();
+					builder.setModel(model).setTexture(texture).setPosition(position).setRotation(rotation).setScale(scale);
+					Entity entity = builder.createEntity(name);
 					TexturedModel staticModel = EngineUtils.loadNormalModel(name, texture, normalMap, specularMap);
 					staticModel.getTexture().setShineDamper(shine);
 					staticModel.getTexture().setReflectivity(reflectivity);
 					TexturedEntity entity = new TexturedEntity(name, EngineSettings.ENTITY_TYPE_NORMAL, staticModel, position, rotation, scale);
 					map.addEntity(entity);
 				} else {
-					EntityBuilder builder = new SimpleEntityBuilder();
+					builder = new SimpleEntityBuilder();
 					builder.setModel(model).setTexture(texture).setPosition(position).setRotation(rotation).setScale(scale);
 					Entity entity = builder.createEntity(name);
 					map.createEntity(name, model, texture, position, new Vector3f(0, 0, 0), scale);
