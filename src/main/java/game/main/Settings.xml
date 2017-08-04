@@ -1,8 +1,7 @@
-<maps>
-	<map>
-		<name>newMap</name>
-	</map>
-	<object>
-		<name>objectMap</name>
-	</object>
-</maps>
+<settings>
+	<maps>
+	<level_map>
+		<name>newMap</name></level_map>
+	<model_map>
+		<name>modelMap</name></model_map></maps>
+</settings>

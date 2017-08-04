@@ -22,7 +22,7 @@ public class TexturedEntity implements Entity {
 	private TexturedModel model; // текстурная модель
 	private String name; // имя
 	private Vector3f position; // позиция
-	private float rotX, rotY, rotZ; // повороты
+	private Vector3f rotation; // повороты
 	private float scale; // масштаб
 	private float radius = 1f; // радицс
 	private boolean isVisible = true; // видимый
@@ -46,9 +46,7 @@ public class TexturedEntity implements Entity {
 		this.model = model;
 		this.radius = model.getRawModel().getBSphere().getRadius() * scale;
 		this.position = position;
-		this.rotX = rotation.x;
-		this.rotY = rotation.y;
-		this.rotZ = rotation.z;
+		this.rotation = rotation;
 		this.scale = scale;
 	}
 
@@ -63,16 +61,13 @@ public class TexturedEntity implements Entity {
 	 * @param rotZ
 	 * @param scale
 	 */
-	public TexturedEntity(String name, int typeID, TexturedModel model, Vector3f position, float rotX, float rotY,
-			float rotZ, float scale) {
+	public TexturedEntity(String name, int typeID, TexturedModel model, Vector3f position, Vector3f rotation, float scale) {
 		this.name = name;
 		this.model = model;
 		this.radius = model.getRawModel().getBSphere().getRadius() * scale;
 		this.typeID = typeID;
 		this.position = position;
-		this.rotX = rotX;
-		this.rotY = rotY;
-		this.rotZ = rotZ;
+		this.rotation = rotation;
 		this.scale = scale;
 	}
 
@@ -88,16 +83,13 @@ public class TexturedEntity implements Entity {
 	 * @param rotZ
 	 * @param scale
 	 */
-	public TexturedEntity(String name, int typeID, TexturedModel model, int textureIndex, Vector3f position, float rotX,
-			float rotY, float rotZ, float scale) {
+	public TexturedEntity(String name, int typeID, TexturedModel model, int textureIndex, Vector3f position, Vector3f rotation, float scale) {
 		this.name = name;
 		this.textureIndex = textureIndex;
 		this.model = model;
 		this.radius = model.getRawModel().getBSphere().getRadius() * scale;
 		this.position = position;
-		this.rotX = rotX;
-		this.rotY = rotY;
-		this.rotZ = rotZ;
+		this.rotation = rotation;
 		this.scale = scale;
 	}
 
@@ -142,18 +134,18 @@ public class TexturedEntity implements Entity {
 
 	@Override
 	public void move(float forwardSpeed, float strafeSpeed) {
-		float dx = (float) (forwardSpeed * Math.sin(Math.toRadians(getRotY()))
-				+ (strafeSpeed * Math.sin(Math.toRadians(getRotY() + 90))));
-		float dz = (float) (forwardSpeed * Math.cos(Math.toRadians(getRotY()))
-				+ (strafeSpeed * Math.cos(Math.toRadians(getRotY() + 90))));
+		float dx = (float) (forwardSpeed * Math.sin(Math.toRadians(this.rotation.getY()))
+				+ (strafeSpeed * Math.sin(Math.toRadians(this.rotation.getY() + 90))));
+		float dz = (float) (forwardSpeed * Math.cos(Math.toRadians(this.rotation.getY()))
+				+ (strafeSpeed * Math.cos(Math.toRadians(this.rotation.getY() + 90))));
 		increasePosition(dx, 0, dz);
 	}
 
 	@Override
 	public void increaseRotation(float dx, float dy, float dz) {
-		this.rotX += dx;
-		this.rotY += dy;
-		this.rotZ += dz;
+		this.rotation.x += dx;
+		this.rotation.y += dy;
+		this.rotation.z += dz;
 	}
 
 	@Override
@@ -187,33 +179,14 @@ public class TexturedEntity implements Entity {
 	}
 
 	@Override
-	public float getRotX() {
-		return rotX;
+	public void setRotation(Vector3f rotation) {
+		this.rotation = rotation;
+		
 	}
 
 	@Override
-	public void setRotX(float rotX) {
-		this.rotX = rotX;
-	}
-
-	@Override
-	public float getRotY() {
-		return rotY;
-	}
-
-	@Override
-	public void setRotY(float rotY) {
-		this.rotY = rotY;
-	}
-
-	@Override
-	public float getRotZ() {
-		return rotZ;
-	}
-
-	@Override
-	public void setRotZ(float rotZ) {
-		this.rotZ = rotZ;
+	public Vector3f getRotation() {
+		return this.rotation;
 	}
 
 	@Override
@@ -230,5 +203,12 @@ public class TexturedEntity implements Entity {
 	public float getSphereRadius() {
 		return this.radius;
 	}
+	
+	@Override
+	public Entity clone(String name) {
+		Entity entity = new TexturedEntity(name, this.model, this.position, this.rotation, this.scale);
+		return entity;
+	}
+
 
 }

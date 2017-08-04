@@ -14,7 +14,7 @@ import object.camera.CameraInterface;
 import object.entity.entity.Entity;
 import object.entity.entity.EntityBuilder;
 import object.entity.entity.TexturedEntity;
-import object.entity.entity.TexturedEntityBuilder;
+import object.entity.entity.SimpleEntityBuilder;
 import object.entity.player.PlayerInterface;
 import object.gui.texture.GUITexture;
 import object.light.Light;
@@ -27,7 +27,7 @@ import object.water.WaterTile;
 import renderer.loader.Loader;
 import tool.EngineUtils;
 
-public class ModelMap {
+public class ModelMap implements ModelMapInterface {
 
 	private String name;
 	private Map<String, Entity> entities = new WeakHashMap<String, Entity>();
@@ -40,12 +40,9 @@ public class ModelMap {
 	private Map<String, PlayerInterface> players = new WeakHashMap<String, PlayerInterface>();
 	private Map<String, WaterTile> waters = new WeakHashMap<String, WaterTile>();
 	private Map<String, Light> lights = new WeakHashMap<String, Light>();
-
-	private Loader loader;
-
-	public ModelMap(String name, Loader loader) {
+	
+	public ModelMap(String name) {
 		this.name = name;
-		this.loader = loader;
 	}
 
 	public String getName() {
@@ -96,7 +93,7 @@ public class ModelMap {
 		int x = (int) position.x;
 		int y = (int) position.y;
 		TerrainInterface terrain = EngineUtils.createMultiTexTerrain(terrainName, x, y, baseTexture, redTexture,
-				greenTexture, blueTexture, blendTexture, amplitude, octave, roughness, loader);
+				greenTexture, blueTexture, blendTexture, amplitude, octave, roughness);
 		this.terrains.put(terrain.getName(), terrain);
 	}
 
@@ -105,7 +102,7 @@ public class ModelMap {
 		int x = (int) position.x;
 		int y = (int) position.y;
 		TerrainInterface terrain = EngineUtils.createMultiTexTerrain(terrainName, x, y, baseTexture, redTexture,
-				greenTexture, blueTexture, blendTexture, heightMap, loader);
+				greenTexture, blueTexture, blendTexture, heightMap, Loader.getInstance());
 		this.terrains.put(terrain.getName(), terrain);
 	}
 
@@ -263,7 +260,7 @@ public class ModelMap {
 
 	public void createEntity(String name, String model, String texName, Vector3f position, Vector3f rotation,
 			float scale) {
-		EntityBuilder builder = new TexturedEntityBuilder();
+		EntityBuilder builder = new SimpleEntityBuilder();
 		builder.setModel(model).setTexture(texName).setPosition(position).setRotation(rotation).setScale(scale);
 		Entity entity = builder.createEntity(name);
 		this.entities.put(name, entity);
@@ -274,14 +271,14 @@ public class ModelMap {
 		TexturedModel staticModel = EngineUtils.loadNormalModel(name, texName, normal, specular);
 		staticModel.getTexture().setShineDamper(shine);
 		staticModel.getTexture().setReflectivity(reflectivity);
-		TexturedEntity entity = new TexturedEntity(name, EngineSettings.ENTITY_TYPE_NORMAL, staticModel, position, rotX,
-				rotY, rotZ, scale);
+		TexturedEntity entity = new TexturedEntity(name, EngineSettings.ENTITY_TYPE_NORMAL, staticModel, position, new Vector3f(rotX,
+				rotY, rotZ), scale);
 		this.entities.put(name, entity);
 	}
 
 	public void createParticles(String name, String texName, int texDimentions, boolean additive, float pps,
 			float speed, float gravityComplient, float lifeLength, float scale) {
-		ParticleTexture texture = new ParticleTexture(loader.getTextureLoader().loadTexture(EngineSettings.TEXTURE_PARTICLE_PATH, texName),
+		ParticleTexture texture = new ParticleTexture(Loader.getInstance().getTextureLoader().loadTexture(EngineSettings.TEXTURE_PARTICLE_PATH, texName),
 				texDimentions, additive);
 		ParticleSystem particles = new ParticleSystem(name, texture, pps, speed, gravityComplient, lifeLength, scale);
 		this.particleSystems.put(name, particles);

@@ -3,7 +3,7 @@ package object.entity.entity;
 import object.model.TexturedModel;
 import tool.EngineUtils;
 
-public class TexturedEntityBuilder extends EntityBuilder {
+public class SimpleEntityBuilder extends EntityBuilder implements EntityBuilderInterface {
 
 	@Override
 	public Entity createEntity(String name) {

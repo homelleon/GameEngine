@@ -19,5 +19,5 @@ public interface LevelMapInterface {
 
 	Entity getEntity(int index);
 
-	void loadEntity(String name, String model, String texName);
+	void addEntity(Entity entity);
 }

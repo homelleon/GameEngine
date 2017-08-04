@@ -20,13 +20,18 @@ public class SettingsXMLParser extends XMLParser implements ObjectParserInterfac
 	public GameSettings parse() {
 		GameSettings settings = GameSettings.getInstance();
 		NodeList nodeList = this.document.getDocumentElement().getChildNodes();
-
 		for (int i = 0; i < nodeList.getLength(); i++) {
 			Node node = nodeList.item(i);
-			if (XMLUtils.ifNodeIsElement(node, XMLUtils.MAP)) {
-				readMapSettings(node, settings);
-			} else if (XMLUtils.ifNodeIsElement(node, XMLUtils.OBJECT_MAP)) {
-				readObjectMapSettings(node, settings);
+			if(XMLUtils.ifNodeIsElement(node, XMLUtils.MAPS)) {
+				NodeList settingsNodeList = node.getChildNodes(); 
+				for(int j = 0; j < settingsNodeList.getLength(); j++) {
+					Node mapNode = node.getChildNodes().item(j);
+					if (XMLUtils.ifNodeIsElement(mapNode, XMLUtils.LEVEL_MAP)) {
+						readMapSettings(mapNode, settings);
+					} else if (XMLUtils.ifNodeIsElement(mapNode, XMLUtils.MODEL_MAP)) {
+						readObjectMapSettings(mapNode, settings);
+					}
+				}
 			}
 		}
 		return settings;

@@ -74,11 +74,11 @@ public class EngineUtils {
 				sizeNoise = 1 + 2 * (float) random.nextDouble();
 				Entity grassEntity = new TexturedEntity("Grass" + String.valueOf(i) + "/" + String.valueOf(j),
 						EngineSettings.ENTITY_TYPE_DETAIL, grass, texIndex,
-						new Vector3f(x + density * i, 0, z + density * j), 0, 0, 0, sizeNoise);
+						new Vector3f(x + density * i, 0, z + density * j), new Vector3f(0, 0, 0), sizeNoise);
 				grasses.add(grassEntity);
 				Entity grassEntity1 = new TexturedEntity("Grass" + String.valueOf(i) + "/" + String.valueOf(j),
 						EngineSettings.ENTITY_TYPE_DETAIL, grass, texIndex,
-						new Vector3f(x + density * i, 0, z + density * j), 0, 100, 0, sizeNoise);
+						new Vector3f(x + density * i, 0, z + density * j), new Vector3f(0, 100, 0), sizeNoise);
 				grasses.add(grassEntity1);
 
 			}
@@ -118,8 +118,8 @@ public class EngineUtils {
 	}
 
 	public static Terrain createMultiTexTerrain(String name, int x, int y, String basicTexture, String redTexture,
-			String greenTexture, String blueTexture, String blendTexture, float amplitude, int octaves, float roughness,
-			Loader loader) {
+			String greenTexture, String blueTexture, String blendTexture, float amplitude, int octaves, float roughness) {
+		Loader loader = Loader.getInstance();
 		TerrainTexture backgroundTexture = new TerrainTexture(basicTexture,
 				loader.getTextureLoader().loadTexture(EngineSettings.TEXTURE_TERRAIN_PATH, basicTexture));
 		TerrainTexture rTexture = new TerrainTexture(redTexture,

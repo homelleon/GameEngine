@@ -91,7 +91,7 @@ public class SceneRenderer {
 		if (KeyboardGame.isKeyPressed(Keyboard.KEY_T)) {
 			EngineMain.pauseEngine(true);
 			ModelMapWriterInterface mapWriter = new ModelMapXMLWriter();
-			ModelMap map = new ModelMap("newMap", loader);
+			ModelMap map = new ModelMap("newMap");
 			map.setEntities(scene.getEntities().getAll());
 			map.setTerrains(scene.getTerrains().getAll());
 			mapWriter.write(map, loader);

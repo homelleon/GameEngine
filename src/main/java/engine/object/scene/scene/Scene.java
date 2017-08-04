@@ -19,7 +19,7 @@ import object.gui.manager.GUIManagerInterface;
 import object.light.Light;
 import object.light.LightManager;
 import object.light.LightManagerStructured;
-import object.map.modelMap.ModelMap;
+import object.map.modelMap.ModelMapInterface;
 import object.particle.ParticleSystem;
 import object.particle.manager.ParticleManager;
 import object.particle.manager.ParticleManagerInterface;
@@ -59,7 +59,7 @@ public class Scene implements SceneInterface {
 	public Scene() {
 	}
 
-	public Scene(ModelMap map) {
+	public Scene(ModelMapInterface map) {
 		this.getEntities().addAll(map.getEntities().values());
 		this.getTerrains().addAll(map.getTerrains().values());
 		this.getWaters().addAll(map.getWaters().values());

@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import object.entity.entity.Entity;
-import object.entity.entity.EntityBuilder;
-import object.entity.entity.TexturedEntityBuilder;
 
 /**
  * Map that controls entity objects to load in the editor menu.
@@ -28,11 +26,8 @@ public class LevelMap implements LevelMapInterface {
 	}
 
 	@Override
-	public void loadEntity(String name, String model, String texName) {
-		EntityBuilder builder = new TexturedEntityBuilder();
-		builder.setModel(model).setTexture(texName);
-		Entity entity = builder.createEntity(name);
-		this.entities.add(entity);
+	public void addEntity(Entity entity) {
+		entities.add(entity);
 	}
 
 }

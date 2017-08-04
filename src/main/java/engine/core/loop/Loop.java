@@ -10,10 +10,9 @@ import core.settings.GameSettings;
 import core.settings.parser.SettingsXMLParser;
 import game.game.GameInterface;
 import object.input.MouseGame;
-import object.map.levelMap.LevelMapParserInterface;
+import object.map.levelMap.LevelMapInterface;
 import object.map.levelMap.LevelMapXMLParser;
-import object.map.modelMap.ModelMap;
-import object.map.modelMap.ModelMapParserInterface;
+import object.map.modelMap.ModelMapInterface;
 import object.map.modelMap.ModelMapXMLParser;
 import object.scene.manager.SceneManager;
 import object.scene.manager.SceneManagerInterface;
@@ -46,7 +45,8 @@ public class Loop implements LoopInterface {
 	private SceneManagerInterface sceneManager;
 
 	private SceneInterface scene;
-	private ModelMap map;
+	private ModelMapInterface modelMap;
+	private LevelMapInterface levelMap;
 
 	private GameInterface game;
 
@@ -78,7 +78,7 @@ public class Loop implements LoopInterface {
 			loadMap("map");
 		}
 
-		this.scene = new Scene(map);
+		this.scene = new Scene(modelMap);
 		this.sceneRenderer = new SceneRenderer();
 		this.sceneManager = new SceneManager();
 		sceneManager.init(scene, loader);
@@ -142,8 +142,8 @@ public class Loop implements LoopInterface {
 	 */
 	private void loadMap(String name) {
 		XMLLoaderInterface xmlLoader = new XMLFileLoader(EngineSettings.MAP_PATH + name + EngineSettings.EXTENSION_XML);
-		ModelMapParserInterface mapParser = new ModelMapXMLParser(xmlLoader.load(), name, loader);
-		this.map = mapParser.parseMap();
+		ObjectParserInterface<ModelMapInterface> mapParser = new ModelMapXMLParser(xmlLoader.load(), name);
+		this.modelMap = mapParser.parse();
 		this.mapIsLoaded = true;
 	}
 
@@ -157,9 +157,8 @@ public class Loop implements LoopInterface {
 	 */
 	private void loadObjectMap(String name) {
 		XMLLoaderInterface xmlLoader = new XMLFileLoader(EngineSettings.MAP_PATH + name + EngineSettings.EXTENSION_XML);
-		LevelMapParserInterface mapParser = new LevelMapXMLParser();
-		// MapsLoaderInterface mapLoader = new MapsXMLLoader();
-		// ObjectMapInterface objectMap = mapLoader.loadObjectMap(name, loader);
+		ObjectParserInterface<LevelMapInterface> mapParser = new LevelMapXMLParser(xmlLoader.load(), this.modelMap);
+		this.levelMap = mapParser.parse();
 	}
 
 	/**
@@ -175,7 +174,7 @@ public class Loop implements LoopInterface {
 		ObjectParserInterface<GameSettings> settingsParser = new SettingsXMLParser(xmlLoader.load());
 		GameSettings settings = settingsParser.parse();
 		loadMap(settings.getMapName());
-		loadObjectMap(settings.getObjectMapName());
+		//loadObjectMap(settings.getObjectMapName());
 	}
 
 	@Override

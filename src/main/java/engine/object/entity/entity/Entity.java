@@ -43,32 +43,51 @@ public interface Entity {
 	// управление текстурной моделью
 	public TexturedModel getModel();
 
+	/**
+	 * Sets enitity textured model object.
+	 * 
+	 * @param model {@link TexturedModel} object
+	 */
 	public void setModel(TexturedModel model);
 
-	// управление позицией
+	/**
+	 * Gets entity current position in 3 dimentional space coordinates.
+	 *  
+	 * @return {@link Vector3f} value of current position
+	 */
 	public Vector3f getPosition();
 
 	public void setPosition(Vector3f position);
+	
+	public void setRotation(Vector3f rotation);
+	
+	public Vector3f getRotation();
 
-	// управление поворотом
-	public float getRotX();
-
-	public void setRotX(float rotX);
-
-	public float getRotY();
-
-	public void setRotY(float rotY);
-
-	public float getRotZ();
-
-	public void setRotZ(float rotZ);
-
-	// управление масштабом
+	/**
+	 * Gets entity size scale value.
+	 * 
+	 * @return float scale value
+	 */
 	public float getScale();
 
+	/**
+	 * Sets entity size scale variable.
+	 * 
+	 * @param scale float value
+	 */
 	public void setScale(float scale);
 
-	// вернуть радиус ограничивающей сферы
+	/**
+	 * Gets bounding sphere radius.
+	 * 
+	 * @return float value of sphere radius
+	 */
 	public float getSphereRadius();
+	
+	/**
+	 * Returns clone of current entity
+	 * @return {@link Entity} object
+	 */
+	public Entity clone(String name);
 
 }

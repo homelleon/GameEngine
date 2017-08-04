@@ -1,5 +1,5 @@
-<model_map>
-  <entities>
+<level_map>
+	<entities>
     <entity id="5">
 		<name>barrel</name>
 		<model>barrel</model>
@@ -105,4 +105,4 @@
 		<roughness>0.5</roughness>
     </terrain>
   </terrains>
-</model_map>
+</level_map>

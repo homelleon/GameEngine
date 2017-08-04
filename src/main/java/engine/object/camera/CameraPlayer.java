@@ -77,7 +77,7 @@ public class CameraPlayer implements CameraInterface {
 		float horizontalDistance = calculateHorizontalDistance();
 		float verticalDistance = calculateVerticalDistance();
 		calculateCameraPosition(horizontalDistance, verticalDistance);
-		this.yaw = 180 - ((player).getRotY() + angleAroundPlayer);
+		this.yaw = 180 - ((player).getRotation().getY() + angleAroundPlayer);
 	}
 
 	@Override
@@ -111,7 +111,7 @@ public class CameraPlayer implements CameraInterface {
 
 	// вычислить позицию камеры относительно игрока
 	private void calculateCameraPosition(float horizDistance, float verticDistance) {
-		float theta = player.getRotY() + angleAroundPlayer;
+		float theta = player.getRotation().getY() + angleAroundPlayer;
 		float offsetX = (float) (horizDistance * Math.sin(Math.toRadians(theta)));
 		float offsetZ = (float) (horizDistance * Math.cos(Math.toRadians(theta)));
 		position.x = player.getPosition().x - offsetX;

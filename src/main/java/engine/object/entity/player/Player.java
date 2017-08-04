@@ -44,10 +44,10 @@ public class Player extends TexturedEntity implements PlayerInterface {
 			speedCorrector = 2;
 		}
 
-		float dx = (float) (fowardDistance * Math.sin(Math.toRadians(super.getRotY()))
-				+ (strafeDistance * Math.sin(Math.toRadians(super.getRotY() + 90)))) / speedCorrector;
-		float dz = (float) (fowardDistance * Math.cos(Math.toRadians(super.getRotY()))
-				+ (strafeDistance * Math.cos(Math.toRadians(super.getRotY() + 90)))) / speedCorrector;
+		float dx = (float) (fowardDistance * Math.sin(Math.toRadians(super.getRotation().getY()))
+				+ (strafeDistance * Math.sin(Math.toRadians(super.getRotation().getY() + 90)))) / speedCorrector;
+		float dz = (float) (fowardDistance * Math.cos(Math.toRadians(super.getRotation().getY()))
+				+ (strafeDistance * Math.cos(Math.toRadians(super.getRotation().getY() + 90)))) / speedCorrector;
 		super.increasePosition(dx, 0, dz);
 		upwardsSpeed += EngineSettings.GRAVITY * DisplayManager.getFrameTimeSeconds();
 		super.increasePosition(0, upwardsSpeed * DisplayManager.getFrameTimeSeconds(), 0);

@@ -27,8 +27,11 @@ public class XMLUtils {
 	public static final String SEPARATOR = " ";
 	/* ================================================== */
 	/* object names */
+	public static final String SETTINGS = "settings";
+	public static final String MAPS = "maps";
 	public static final String MAP = "map";
-	public static final String OBJECT_MAP = "object";
+	public static final String LEVEL_MAP = "level_map";
+	public static final String MODEL_MAP = "model_map";
 	public static final String ENTITIES = "entities";
 	public static final String ENTITY = "entity";
 	public static final String TERRAINS = "terrains";
@@ -144,7 +147,7 @@ public class XMLUtils {
 	public static boolean ifNodeIsElement(Node node, String name) {
 		boolean value = false;
 		if (node.getNodeType() == Node.ELEMENT_NODE) {
-			if (node.getNodeName() == name) {
+			if (node.getNodeName().equals(name)) {
 				value = true;
 			}
 		}
