@@ -69,25 +69,22 @@ public class ModelMapXMLParser extends XMLParser implements ObjectParserInterfac
 				float scale = Float.valueOf(XMLUtils.getTagValue(entityEl, XMLUtils.SCALE));
 				boolean isNormal = Boolean.valueOf(XMLUtils.getTagValue(entityEl, XMLUtils.NORMAL));
 				EntityBuilderInterface builder;
+				Entity entity = null;
 				if (isNormal) {
 					String normalMap = XMLUtils.getTagValue(entityEl, XMLUtils.NORMAL_TEXTURE);
 					String specularMap = XMLUtils.getTagValue(entityEl, XMLUtils.SPECULAR_TEXTURE);
 					float shine = Float.valueOf(XMLUtils.getTagValue(entityEl, XMLUtils.SHINE_DUMPER));
 					float reflectivity = Float.valueOf(XMLUtils.getTagValue(entityEl, XMLUtils.REFLECTIVITY));
-					builder = new SimpleEntityBuilder();
-					builder.setModel(model).setTexture(texture).setPosition(position).setRotation(rotation).setScale(scale);
-					Entity entity = builder.createEntity(name);
 					TexturedModel staticModel = EngineUtils.loadNormalModel(name, texture, normalMap, specularMap);
 					staticModel.getTexture().setShineDamper(shine);
 					staticModel.getTexture().setReflectivity(reflectivity);
-					TexturedEntity entity = new TexturedEntity(name, EngineSettings.ENTITY_TYPE_NORMAL, staticModel, position, rotation, scale);
-					map.addEntity(entity);
+					entity = new TexturedEntity(name, EngineSettings.ENTITY_TYPE_NORMAL, staticModel, position, rotation, scale);
 				} else {
 					builder = new SimpleEntityBuilder();
 					builder.setModel(model).setTexture(texture).setPosition(position).setRotation(rotation).setScale(scale);
-					Entity entity = builder.createEntity(name);
-					map.createEntity(name, model, texture, position, new Vector3f(0, 0, 0), scale);
+					entity = builder.createEntity(name);
 				}
+				map.addEntity(entity);
 				if (EngineDebug.hasDebugPermission()) {
 					System.out.println(map.getEntities().get(name).getName());
 				}
