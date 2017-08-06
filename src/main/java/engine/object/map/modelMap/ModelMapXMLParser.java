@@ -70,7 +70,7 @@ public class ModelMapXMLParser extends XMLParser implements ObjectParserInterfac
 				boolean isNormal = Boolean.valueOf(XMLUtils.getTagValue(entityEl, XMLUtils.NORMAL));
 				EntityBuilderInterface builder;
 				Entity entity = null;
-				if (isNormal) {
+				if (isNormal) { 
 					String normalMap = XMLUtils.getTagValue(entityEl, XMLUtils.NORMAL_TEXTURE);
 					String specularMap = XMLUtils.getTagValue(entityEl, XMLUtils.SPECULAR_TEXTURE);
 					float shine = Float.valueOf(XMLUtils.getTagValue(entityEl, XMLUtils.SHINE_DUMPER));
