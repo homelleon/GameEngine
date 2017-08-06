@@ -78,7 +78,7 @@ public class Loop implements LoopInterface {
 			loadMap("map");
 		}
 
-		this.scene = new Scene(modelMap);
+		this.scene = new Scene(modelMap, levelMap);
 		this.sceneRenderer = new SceneRenderer();
 		this.sceneManager = new SceneManager();
 		sceneManager.init(scene, loader);
@@ -174,7 +174,7 @@ public class Loop implements LoopInterface {
 		ObjectParserInterface<GameSettings> settingsParser = new SettingsXMLParser(xmlLoader.load());
 		GameSettings settings = settingsParser.parse();
 		loadMap(settings.getMapName());
-		//loadObjectMap(settings.getObjectMapName());
+		loadObjectMap(settings.getObjectMapName());
 	}
 
 	@Override

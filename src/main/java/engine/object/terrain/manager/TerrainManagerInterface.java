@@ -2,7 +2,7 @@ package object.terrain.manager;
 
 import java.util.Collection;
 
-import object.terrain.terrain.TerrainInterface;
+import object.terrain.terrain.Terrain;
 
 /**
  * Interface to store and control terrains.
@@ -16,18 +16,18 @@ public interface TerrainManagerInterface {
 	 * Adds list of terrains into terrains map array.
 	 * 
 	 * @param terrainList
-	 *            {@link Collection}<{@link TerrainInterface}> value of terrain
+	 *            {@link Collection}<{@link Terrain}> value of terrain
 	 *            list
 	 */
-	void addAll(Collection<TerrainInterface> terrainList);
+	void addAll(Collection<Terrain> terrainList);
 
 	/**
 	 * Adds one terrain into terrains map array.
 	 * 
 	 * @param terrain
-	 *            {@link TerrainInterface} value
+	 *            {@link Terrain} value
 	 */
-	void add(TerrainInterface terrain);
+	void add(Terrain terrain);
 
 	/**
 	 * Returns terrain by name.
@@ -35,17 +35,17 @@ public interface TerrainManagerInterface {
 	 * @param name
 	 *            {@link String} value
 	 * 
-	 * @return {@link TerrainInterface} value of chosen terrain
+	 * @return {@link Terrain} value of chosen terrain
 	 */
-	TerrainInterface getByName(String name);
+	Terrain getByName(String name);
 
 	/**
 	 * Returns list of terrains groupped by name.
 	 * 
-	 * @return {@link Collection}<{@link TerrainInterface}> value of terrains
+	 * @return {@link Collection}<{@link Terrain}> value of terrains
 	 *         list
 	 */
-	Collection<TerrainInterface> getAll();
+	Collection<Terrain> getAll();
 
 	/**
 	 * Clear all terrains map and arrays.

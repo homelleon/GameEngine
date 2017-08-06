@@ -10,7 +10,7 @@ import org.lwjgl.util.vector.Vector3f;
 
 import object.camera.CameraInterface;
 import object.model.RawModel;
-import object.terrain.terrain.TerrainInterface;
+import object.terrain.terrain.Terrain;
 import shader.shadow.ShadowShader;
 import tool.math.Maths;
 
@@ -39,8 +39,8 @@ public class ShadowMapTerrainRenderer {
 	 * @param terrains
 	 *            - the terrains to be rendered to the shadow map.
 	 */
-	public void render(Collection<TerrainInterface> terrains, CameraInterface camera) {
-		for (TerrainInterface terrain : terrains) {
+	public void render(Collection<Terrain> terrains, CameraInterface camera) {
+		for (Terrain terrain : terrains) {
 			RawModel rawModel = terrain.getModel();
 			bindModel(rawModel);
 			// GL13.glActiveTexture(GL13.GL_TEXTURE0);
@@ -84,7 +84,7 @@ public class ShadowMapTerrainRenderer {
 		GL30.glBindVertexArray(0);
 	}
 
-	private void prepareInstance(TerrainInterface terrain) {
+	private void prepareInstance(Terrain terrain) {
 		Matrix4f modelMatrix = Maths.createTransformationMatrix(new Vector3f(terrain.getX(), 0, terrain.getZ()), 0, 0,
 				0, 1);
 		Matrix4f mvpMatrix = Matrix4f.mul(projectionViewMatrix, modelMatrix, null);

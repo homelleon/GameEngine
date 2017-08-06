@@ -12,7 +12,7 @@ import object.entity.entity.Entity;
 import object.light.Light;
 import object.model.TexturedModel;
 import object.scene.scene.SceneInterface;
-import object.terrain.terrain.TerrainInterface;
+import object.terrain.terrain.Terrain;
 import renderer.object.entity.EntityRenderer;
 import renderer.viewCulling.frustum.Frustum;
 
@@ -90,7 +90,7 @@ public interface MainRendererInterface {
 	 * @param lights
 	 * @param camera
 	 */
-	void renderLowQualityScene(Map<TexturedModel, List<Entity>> entities, Collection<TerrainInterface> terrains,
+	void renderLowQualityScene(Map<TexturedModel, List<Entity>> entities, Collection<Terrain> terrains,
 			Collection<Light> lights, CameraInterface camera);
 
 	/**

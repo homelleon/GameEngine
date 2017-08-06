@@ -8,13 +8,10 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import core.debug.EngineDebug;
-import core.settings.EngineSettings;
 import object.entity.entity.Entity;
 import object.entity.entity.EntityBuilderInterface;
+import object.entity.entity.NormalMappedEntityBuilder;
 import object.entity.entity.SimpleEntityBuilder;
-import object.entity.entity.TexturedEntity;
-import object.model.TexturedModel;
-import tool.EngineUtils;
 import tool.xml.XMLUtils;
 import tool.xml.parser.ObjectParserInterface;
 import tool.xml.parser.XMLParser;
@@ -41,7 +38,8 @@ public class ModelMapXMLParser extends XMLParser implements ObjectParserInterfac
 				}
 			}
 			if (EngineDebug.hasDebugPermission()) {
-				System.out.println("Loading complete!");
+				System.out.println("Loading models complete!");
+				System.out.println("-------------------------");
 			}
 		} else {
 			throw new NullPointerException("Incorrect parent element name of used model map file!");
@@ -52,7 +50,7 @@ public class ModelMapXMLParser extends XMLParser implements ObjectParserInterfac
 
 	private void parseEntities(Node node, ModelMapInterface map) {
 		if (EngineDebug.hasDebugPermission()) {
-			System.out.println("Loading entities...");
+			System.out.println("Loading entity models...");
 		}
 		Node entities = node;
 		NodeList entityList = entities.getChildNodes();
@@ -66,22 +64,23 @@ public class ModelMapXMLParser extends XMLParser implements ObjectParserInterfac
 				String texture = XMLUtils.getTagValue(entityEl, XMLUtils.TEXTURE);
 				Vector3f position = new Vector3f(0, 0, 0);
 				Vector3f rotation = new Vector3f(0, 0, 0);
-				float scale = Float.valueOf(XMLUtils.getTagValue(entityEl, XMLUtils.SCALE));
 				boolean isNormal = Boolean.valueOf(XMLUtils.getTagValue(entityEl, XMLUtils.NORMAL));
 				EntityBuilderInterface builder;
 				Entity entity = null;
-				if (isNormal) { 
+				if (isNormal) {
 					String normalMap = XMLUtils.getTagValue(entityEl, XMLUtils.NORMAL_TEXTURE);
 					String specularMap = XMLUtils.getTagValue(entityEl, XMLUtils.SPECULAR_TEXTURE);
-					float shine = Float.valueOf(XMLUtils.getTagValue(entityEl, XMLUtils.SHINE_DUMPER));
+					float shiness = Float.valueOf(XMLUtils.getTagValue(entityEl, XMLUtils.SHINE_DUMPER));
 					float reflectivity = Float.valueOf(XMLUtils.getTagValue(entityEl, XMLUtils.REFLECTIVITY));
-					TexturedModel staticModel = EngineUtils.loadNormalModel(name, texture, normalMap, specularMap);
-					staticModel.getTexture().setShineDamper(shine);
-					staticModel.getTexture().setReflectivity(reflectivity);
-					entity = new TexturedEntity(name, EngineSettings.ENTITY_TYPE_NORMAL, staticModel, position, rotation, scale);
+					builder = new NormalMappedEntityBuilder();
+					builder.setModel(model).setTexture(texture).setNormaTexture(normalMap)
+						   .setSpecularTexture(specularMap).setTextureReflectivity(reflectivity)
+						   .setTextureShiness(shiness)
+						   .setPosition(position).setRotation(rotation);
+					entity = builder.createEntity(name);
 				} else {
 					builder = new SimpleEntityBuilder();
-					builder.setModel(model).setTexture(texture).setPosition(position).setRotation(rotation).setScale(scale);
+					builder.setModel(model).setTexture(texture).setPosition(position).setRotation(rotation);
 					entity = builder.createEntity(name);
 				}
 				map.addEntity(entity);
@@ -97,7 +96,7 @@ public class ModelMapXMLParser extends XMLParser implements ObjectParserInterfac
 
 	private void parseTerrains(Node node, ModelMapInterface map) {
 		if (EngineDebug.hasDebugPermission()) {
-			System.out.println("Loading terrains...");
+			System.out.println("Loading terrain models...");
 		}
 		Node terrains = node;
 		NodeList terrainList = terrains.getChildNodes();

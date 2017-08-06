@@ -19,13 +19,14 @@ import object.gui.manager.GUIManagerInterface;
 import object.light.Light;
 import object.light.LightManager;
 import object.light.LightManagerStructured;
+import object.map.levelMap.LevelMapInterface;
 import object.map.modelMap.ModelMapInterface;
 import object.particle.ParticleSystem;
 import object.particle.manager.ParticleManager;
 import object.particle.manager.ParticleManagerInterface;
 import object.terrain.manager.TerrainManager;
 import object.terrain.manager.TerrainManagerInterface;
-import object.terrain.terrain.TerrainInterface;
+import object.terrain.terrain.Terrain;
 import object.texture.Texture;
 import object.voxel.manager.ChunkManager;
 import object.voxel.manager.ChunkManagerInterface;
@@ -59,9 +60,9 @@ public class Scene implements SceneInterface {
 	public Scene() {
 	}
 
-	public Scene(ModelMapInterface map) {
-		this.getEntities().addAll(map.getEntities().values());
-		this.getTerrains().addAll(map.getTerrains().values());
+	public Scene(ModelMapInterface map, LevelMapInterface levelMap) {
+		this.getEntities().addAll(levelMap.getEntities());
+		this.getTerrains().addAll(levelMap.getTerrains());
 		this.getWaters().addAll(map.getWaters().values());
 		this.getParticles().addAll(map.getParticles().values());
 		this.getLights().addAll(map.getLights().values());
@@ -202,7 +203,7 @@ public class Scene implements SceneInterface {
 			for (Entity entity : entityList) {
 				float terrainHeight = 0;
 
-				for (TerrainInterface terrain : this.terrainManager.getAll()) {
+				for (Terrain terrain : this.terrainManager.getAll()) {
 					terrainHeight += terrain.getHeightOfTerrain(entity.getPosition().x, entity.getPosition().z);
 				}
 				entity.setPosition(new Vector3f(entity.getPosition().x, terrainHeight, entity.getPosition().z));
@@ -216,7 +217,7 @@ public class Scene implements SceneInterface {
 			for (ParticleSystem system : systems) {
 				float terrainHeight = 0;
 
-				for (TerrainInterface terrain : this.terrainManager.getAll()) {
+				for (Terrain terrain : this.terrainManager.getAll()) {
 					terrainHeight += terrain.getHeightOfTerrain(system.getPosition().x, system.getPosition().z);
 				}
 				system.setPosition(new Vector3f(system.getPosition().x, terrainHeight, system.getPosition().z));

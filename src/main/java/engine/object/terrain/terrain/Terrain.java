@@ -1,402 +1,145 @@
 package object.terrain.terrain;
 
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
-
-import org.lwjgl.util.vector.Vector2f;
-import org.lwjgl.util.vector.Vector3f;
-
-import core.settings.EngineSettings;
 import object.model.RawModel;
-import object.terrain.generator.HeightsGenerator;
 import object.texture.terrain.TerrainTexture;
 import object.texture.terrain.TerrainTexturePack;
-import renderer.loader.Loader;
-import tool.math.Maths;
 
 /**
- * Terrain class representing landscape plane.
+ * Terrain interface represents common landscape terrain methods.
  * 
  * @author homelleon
- * @see TerrainInterface
+ * 
+ * @see MappedTerrain
  */
-public class Terrain implements TerrainInterface {
-
-	private static final float SIZE = 500;
-	private static final float MAX_HEIGHT = 1000;
-	private static final float MAX_PIXEL_COLOUR = 256 * 256 * 256;
-
-	private float x;
-	private float z;
-	private RawModel model;
-	private TerrainTexturePack texturePack;
-	private TerrainTexture blendMap;
-	private String heightMapName;
-	private boolean isProcedureGenerated = false;
-	private String name;
-	private boolean isVisible = true;
-	private float amplitude;
-	private int octaves;
-	private float roughness;
-
-	private float[][] heights;
+public interface Terrain {
 
 	/**
-	 * Constructs terrain plane from height map.
+	 * Gets size of terrain tiles.
 	 * 
-	 * @param name
-	 *            {@link String} value of terrain name
-	 * @param gridX
-	 *            {@link integer} value of x-roordinate with step = SIZE
-	 * @param gridZ
-	 *            {@link integer} value of z-roordinate with step = SIZE
-	 * @param loader
-	 *            {@link Loader} object used to load textures and verticies
-	 * @param texturePack
-	 *            {@link TerrainTexturePack} pack of 4 textures
-	 * @param blendMap
-	 *            {@link TerrainTexture} texture to define intensity of blending
-	 *            affect on surface
-	 * @param heightMap
-	 *            {@link String} value of height map name
-	 * 
-	 * @see #Terrain(String, int, int, Loader, TerrainTexturePack,
-	 *      TerrainTexture, float, int, float)
+	 * @return {@link Float} value of terrain size
 	 */
-	public Terrain(String name, int gridX, int gridZ, TerrainTexturePack texturePack,
-			TerrainTexture blendMap, String heightMap) {
-		this.texturePack = texturePack;
-		this.blendMap = blendMap;
-		this.x = gridX * SIZE;
-		this.z = gridZ * SIZE;
-		this.model = generateTerrain(heightMap);
-		this.name = name;
-	}
+	public float getSize();
 
 	/**
-	 * Constructs random terrain plane from input parameters by terrain
+	 * Gets x-coordinate at terrain sized coordinate axis.
+	 * 
+	 * @return {@link Float} value of x-coordinate
+	 */
+	public float getX();
+
+	/**
+	 * Gets z-coordinate at terrain sized coordinate axis.
+	 * 
+	 * @return {@link Float} value of z-coordinate
+	 */
+	public float getZ();
+	
+	public void setXPosition(int xPosition);
+	
+	public void setZPosition(int zPosition);
+
+	/**
+	 * Gets terrain raw model with all vertices.
+	 * 
+	 * @return {@link RawModel} value of terrain raw model
+	 */
+	public RawModel getModel();
+
+	/**
+	 * Returns terrain name.
+	 * 
+	 * @return {@link String} value of terrain name
+	 */
+	public String getName();
+
+	/**
+	 * Returns if terrain is visible.
+	 * 
+	 * @return true if terrain is visible<br>
+	 *         false if terrain is hidden
+	 */
+	public boolean isVisible();
+
+	/**
+	 * Sets terrain visible or hiding.
+	 * 
+	 * @param isVisible
+	 *            {@link Boolean} value to define terrain visibity parameter
+	 */
+	public void setVisible(boolean isVisible);
+
+	/**
+	 * Gets Terrain texture pack consisted from 4 texture.
+	 * 
+	 * @return {@link TerrainTexturePack} value of 4 texture pack
+	 */
+	public TerrainTexturePack getTexturePack();
+
+	/**
+	 * Gets texture map of intensity of blending that effects on terrain
+	 * lightning system.
+	 * 
+	 * @return {@link TerrainTexture} value of blending texture.
+	 */
+	public TerrainTexture getBlendMap();
+
+	/**
+	 * Gets terrain height texture-map name.
+	 * 
+	 * @return {@link String} value of height texture map name
+	 */
+	public String getHeightMapName();
+
+	/**
+	 * Returns if terrain is procedurally generated or not.
+	 * 
+	 * @return true if terrain is procedurally generated<br>
+	 *         false if terrain is not procedurally generated
+	 */
+	public boolean isProcedureGenerated();
+
+	/**
+	 * Gets maximum and minimum value (amplitude) of terrain height for
 	 * procedure generator.
 	 * 
-	 * @param name
-	 *            {@link String} value of terrain name
-	 * @param gridX
-	 *            {@link integer} value of x-roordinate with step = SIZE
-	 * @param gridZ
-	 *            {@link integer} value of z-roordinate with step = SIZE
-	 * @param loader
-	 *            {@link Loader} object used to load textures and verticies
-	 * @param texturePack
-	 *            {@link TerrainTexturePack} pack of 4 textures
-	 * @param blendMap
-	 *            {@link TerrainTexture} texture to define intensity of blending
-	 *            affect on surface
-	 * @param amplitude
-	 *            {@link Float} value of maximum and minimum height for terrain
-	 *            generation
-	 * @param octaves
-	 *            {@link Integer} value of point to point changes intensity for
-	 *            terrain generator
-	 * @param roughness
-	 *            {@link Float} value of terrain edges roughness for terrain
-	 *            generator
-	 * @see #Terrain(String, int, int, Loader, TerrainTexturePack,
-	 *      TerrainTexture, String)
+	 * @return {link Float} value of terrain height amplitude
 	 */
-	public Terrain(String name, int gridX, int gridZ, Loader loader, TerrainTexturePack texturePack,
-			TerrainTexture blendMap, float amplitude, int octaves, float roughness) {
-		this.texturePack = texturePack;
-		this.blendMap = blendMap;
-		this.x = gridX * SIZE;
-		this.z = gridZ * SIZE;
-		this.amplitude = amplitude;
-		this.octaves = octaves;
-		this.roughness = roughness;
-		this.model = generateWithProcedure(loader, amplitude, octaves, roughness);
-		this.name = name;
-	}
+	public float getAmplitude();
 
-	@Override
-	public float getSize() {
-		return SIZE;
-	}
+	/**
+	 * Gets intensity of point to point changes due to terrain procedure
+	 * generation.
+	 * 
+	 * @return {@link Integer} value of change intensity
+	 */
+	public int getOctaves();
 
-	@Override
-	public float getX() {
-		return x;
-	}
+	/**
+	 * Gets terrain edge roughness for terrain procedure generation.
+	 * 
+	 * @return {@link Float} value of terrain edge roughness
+	 */
+	public float getRoughness();
 
-	@Override
-	public float getZ() {
-		return z;
-	}
-
-	@Override
-	public RawModel getModel() {
-		return model;
-	}
-
-	@Override
-	public String getName() {
-		return name;
-	}
-
-	@Override
-	public boolean isVisible() {
-		return isVisible;
-	}
-
-	@Override
-	public void setVisible(boolean isVisible) {
-		this.isVisible = isVisible;
-	}
-
-	@Override
-	public TerrainTexturePack getTexturePack() {
-		return texturePack;
-	}
-
-	@Override
-	public TerrainTexture getBlendMap() {
-		return blendMap;
-	}
-
-	@Override
-	public String getHeightMapName() {
-		return heightMapName;
-	}
-
-	@Override
-	public boolean isProcedureGenerated() {
-		return isProcedureGenerated;
-	}
-
-	@Override
-	public float getAmplitude() {
-		return amplitude;
-	}
-
-	@Override
-	public int getOctaves() {
-		return octaves;
-	}
-
-	@Override
-	public float getRoughness() {
-		return roughness;
-	}
-
-	@Override
-	public float getHeightOfTerrain(float worldX, float worldZ) {
-		float terrainX = worldX - this.x;
-		float terrainZ = worldZ - this.z;
-		float gridSquareSize = SIZE / ((float) heights.length - 1);
-		int gridX = (int) Math.floor(terrainX / gridSquareSize);
-		int gridZ = (int) Math.floor(terrainZ / gridSquareSize);
-		if (gridX >= heights.length - 1 || gridZ >= heights.length - 1 || gridX < 0 || gridZ < 0) {
-			return 0;
-		}
-		float xCoord = (terrainX % gridSquareSize) / gridSquareSize;
-		float zCoord = (terrainZ % gridSquareSize) / gridSquareSize;
-		float answer;
-		if (xCoord <= (1 - zCoord)) {
-			answer = Maths.barryCentric(new Vector3f(0, heights[gridX][gridZ], 0),
-					new Vector3f(1, heights[gridX + 1][gridZ], 0), new Vector3f(0, heights[gridX][gridZ + 1], 1),
-					new Vector2f(xCoord, zCoord));
-		} else {
-			answer = Maths.barryCentric(new Vector3f(1, heights[gridX + 1][gridZ], 0),
-					new Vector3f(1, heights[gridX + 1][gridZ + 1], 1), new Vector3f(0, heights[gridX][gridZ + 1], 1),
-					new Vector2f(xCoord, zCoord));
-		}
-		return answer;
-	}
-
-	private RawModel generateTerrain(String heightMap) {
-
-		BufferedImage image = null;
-		try {
-			image = ImageIO.read(new File(EngineSettings.TEXTURE_HEIGHT_MAP_PATH + heightMap + ".png"));
-			this.heightMapName = heightMap;
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		int VERTEX_COUNT = image.getHeight();
-		heights = new float[VERTEX_COUNT][VERTEX_COUNT];
-		int count = VERTEX_COUNT * VERTEX_COUNT;
-		float[] vertices = new float[count * 3];
-		float[] normals = new float[count * 3];
-		float[] textureCoords = new float[count * 2];
-		int[] indices = new int[6 * (VERTEX_COUNT - 1) * (VERTEX_COUNT - 1)];
-		int vertexPointer = 0;
-		for (int i = 0; i < VERTEX_COUNT; i++) {
-			for (int j = 0; j < VERTEX_COUNT; j++) {
-				vertices[vertexPointer * 3] = j / ((float) VERTEX_COUNT - 1) * SIZE;
-				float height = getHeight(j, i, image);
-				heights[j][i] = height;
-				vertices[vertexPointer * 3 + 1] = height;
-				vertices[vertexPointer * 3 + 2] = i / ((float) VERTEX_COUNT - 1) * SIZE;
-				Vector3f normal = calculateNormal(j, i, image);
-				normals[vertexPointer * 3] = normal.x;
-				normals[vertexPointer * 3 + 1] = normal.y;
-				normals[vertexPointer * 3 + 2] = normal.z;
-				textureCoords[vertexPointer * 2] = j / ((float) VERTEX_COUNT - 1);
-				textureCoords[vertexPointer * 2 + 1] = i / ((float) VERTEX_COUNT - 1);
-				vertexPointer++;
-			}
-		}
-		int pointer = 0;
-		for (int gz = 0; gz < VERTEX_COUNT - 1; gz++) {
-			for (int gx = 0; gx < VERTEX_COUNT - 1; gx++) {
-				int topLeft = (gz * VERTEX_COUNT) + gx;
-				int topRight = topLeft + 1;
-				int bottomLeft = ((gz + 1) * VERTEX_COUNT) + gx;
-				int bottomRight = bottomLeft + 1;
-				indices[pointer++] = topLeft;
-				indices[pointer++] = bottomLeft;
-				indices[pointer++] = topRight;
-				indices[pointer++] = topRight;
-				indices[pointer++] = bottomLeft;
-				indices[pointer++] = bottomRight;
-			}
-		}
-		return Loader.getInstance().getVertexLoader().loadToVAO(vertices, textureCoords, normals, indices);
-	}
-
-	private RawModel generateWithProcedure(Loader loader, float amp, int oct, float rough) {
-		this.isProcedureGenerated = true;
-		HeightsGenerator generator = new HeightsGenerator(amp, oct, rough);
-
-		int VERTEX_COUNT = 128;
-		heights = new float[VERTEX_COUNT][VERTEX_COUNT];
-		int count = VERTEX_COUNT * VERTEX_COUNT;
-		float[] vertices = new float[count * 3];
-		float[] normals = new float[count * 3];
-		float[] textureCoords = new float[count * 2];
-		int[] indices = new int[6 * (VERTEX_COUNT - 1) * (VERTEX_COUNT - 1)];
-		int vertexPointer = 0;
-		for (int i = 0; i < VERTEX_COUNT; i++) {
-			for (int j = 0; j < VERTEX_COUNT; j++) {
-				vertices[vertexPointer * 3] = j / ((float) VERTEX_COUNT - 1) * SIZE;
-				float height = getHeight(j, i, generator);
-				heights[j][i] = height;
-				vertices[vertexPointer * 3 + 1] = height;
-				vertices[vertexPointer * 3 + 2] = i / ((float) VERTEX_COUNT - 1) * SIZE;
-				Vector3f normal = calculateNormal(j, i, generator);
-				normals[vertexPointer * 3] = normal.x;
-				normals[vertexPointer * 3 + 1] = normal.y;
-				normals[vertexPointer * 3 + 2] = normal.z;
-				textureCoords[vertexPointer * 2] = j / ((float) VERTEX_COUNT - 1);
-				textureCoords[vertexPointer * 2 + 1] = i / ((float) VERTEX_COUNT - 1);
-				vertexPointer++;
-			}
-		}
-		int pointer = 0;
-		for (int gz = 0; gz < VERTEX_COUNT - 1; gz++) {
-			for (int gx = 0; gx < VERTEX_COUNT - 1; gx++) {
-				int topLeft = (gz * VERTEX_COUNT) + gx;
-				int topRight = topLeft + 1;
-				int bottomLeft = ((gz + 1) * VERTEX_COUNT) + gx;
-				int bottomRight = bottomLeft + 1;
-				indices[pointer++] = topLeft;
-				indices[pointer++] = bottomLeft;
-				indices[pointer++] = topRight;
-				indices[pointer++] = topRight;
-				indices[pointer++] = bottomLeft;
-				indices[pointer++] = bottomRight;
-			}
-		}
-		return Loader.getInstance().getVertexLoader().loadToVAO(vertices, textureCoords, normals, indices);
-	}
-
-	// private RawModel generateWithProcedure(Loader loader, float amp, int oct,
-	// float rough) {
-	// this.isProcedureGenerated = true;
-	// HeightsGenerator generator = new HeightsGenerator(amp, oct, rough);
-	//
-	// int VERTEX_COUNT = 128;
-	// heights = new float[VERTEX_COUNT][VERTEX_COUNT];
-	// int count = VERTEX_COUNT * VERTEX_COUNT;
-	// float[] vertices = new float[count * 3];
-	// float[] normals = new float[count * 3];
-	// float[] textureCoords = new float[count * 2];
-	// int[] indices = new int[2*(VERTEX_COUNT-1)*(VERTEX_COUNT-1)];
-	// int vertexPointer = 0;
-	// for(int i=0;i<VERTEX_COUNT;i++){
-	// for(int j=0;j<VERTEX_COUNT;j++){
-	// vertices[vertexPointer*3] = (float)j/((float)VERTEX_COUNT - 1) * SIZE;
-	// float height = getHeight(j, i, generator);
-	// heights[j][i] = height;
-	// vertices[vertexPointer*3+1] = height;
-	// vertices[vertexPointer*3+2] = (float)i/((float)VERTEX_COUNT - 1) * SIZE;
-	// Vector3f normal = calculateNormal(j, i, generator);
-	// normals[vertexPointer*3] = normal.x;
-	// normals[vertexPointer*3+1] = normal.y;
-	// normals[vertexPointer*3+2] = normal.z;
-	// textureCoords[vertexPointer*2] = (float)j/((float)VERTEX_COUNT - 1);
-	// textureCoords[vertexPointer*2+1] = (float)i/((float)VERTEX_COUNT - 1);
-	// vertexPointer++;
-	// }
-	// }
-	// int pointer = 0;
-	// int INDEX_COUNT = VERTEX_COUNT / 3;
-	// for(int gz=0;gz<INDEX_COUNT-1;gz++) {
-	// for(int gx=0;gx<INDEX_COUNT-1;gx++) {
-	// int center = ((3 * gz + 1) * VERTEX_COUNT) + 3 * gx + 1;
-	// int topLeft = ((3 * gz) * VERTEX_COUNT) + 3 * gx;
-	// int top = topLeft + 1;
-	// int topRight = ((3 * gz) * VERTEX_COUNT) + 3 * gx + 2;
-	// int bottomRight = ((3 * gz + 2) * VERTEX_COUNT) + 3 * gx + 2;
-	// int bottomLeft = bottomRight - 2;
-	// int left = center - 1;
-	//
-	// indices[pointer++] = center;
-	// indices[pointer++] = topLeft;
-	// indices[pointer++] = top;
-	// indices[pointer++] = topRight;
-	// indices[pointer++] = bottomRight;
-	// indices[pointer++] = bottomLeft;
-	// indices[pointer++] = left;
-	// indices[pointer++] = topLeft;
-	// }
-	// }
-	// return loader.loadToVAO(vertices, textureCoords, normals, indices);
-	// }
-
-	private Vector3f calculateNormal(int x, int z, BufferedImage image) {
-		float heightL = getHeight(x - 1, z, image);
-		float heightR = getHeight(x + 1, z, image);
-		float heightD = getHeight(x, z - 1, image);
-		float heightU = getHeight(x, z + 1, image);
-		Vector3f normal = new Vector3f(heightL - heightR, 2f, heightD - heightU);
-		normal.normalise();
-		return normal;
-	}
-
-	private float getHeight(int x, int z, BufferedImage image) {
-		if (x < 0 || x >= image.getHeight() || z < 0 || z >= image.getHeight()) {
-			return 0;
-		}
-		float height = image.getRGB(x, z);
-		height += MAX_PIXEL_COLOUR / 2f;
-		height /= MAX_PIXEL_COLOUR / 2f;
-		height *= MAX_HEIGHT;
-		return height;
-	}
-
-	private float getHeight(int x, int z, HeightsGenerator generator) {
-		return generator.generateHeight(x, z);
-	}
-
-	private Vector3f calculateNormal(int x, int z, HeightsGenerator generator) {
-		float heightL = getHeight(x - 1, z, generator);
-		float heightR = getHeight(x + 1, z, generator);
-		float heightD = getHeight(x, z - 1, generator);
-		float heightU = getHeight(x, z + 1, generator);
-		Vector3f normal = new Vector3f(heightL - heightR, 2f, heightD - heightU);
-		normal.normalise();
-		return normal;
-	}
+	/**
+	 * Gets terrain height value (y-coordinate in game world space) due to input
+	 * x and z coodrinates in game world space.
+	 * 
+	 * @param worldX
+	 *            {@link Float} value of x-coordinate in game world space
+	 * @param worldZ
+	 *            {@link Float} value of z-coordinate in game world space
+	 * @return
+	 */
+	public float getHeightOfTerrain(float worldX, float worldZ);
+	
+	/**
+	 * Clones current terrain.
+	 * 
+	 * @param name String value of cloned terrain name
+	 * 
+	 * @return {@link Terrain} object
+	 */
+	public Terrain clone(String name);
 
 }

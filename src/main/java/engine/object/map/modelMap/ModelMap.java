@@ -13,14 +13,15 @@ import object.audio.source.AudioSourceInterface;
 import object.camera.CameraInterface;
 import object.entity.entity.Entity;
 import object.entity.entity.EntityBuilder;
-import object.entity.entity.TexturedEntity;
+import object.entity.entity.NormalMappedEntity;
 import object.entity.entity.SimpleEntityBuilder;
+import object.entity.entity.TexturedEntity;
 import object.entity.player.PlayerInterface;
 import object.gui.texture.GUITexture;
 import object.light.Light;
 import object.model.TexturedModel;
 import object.particle.ParticleSystem;
-import object.terrain.terrain.TerrainInterface;
+import object.terrain.terrain.Terrain;
 import object.texture.particle.ParticleTexture;
 import object.trigger.Trigger;
 import object.water.WaterTile;
@@ -31,7 +32,7 @@ public class ModelMap implements ModelMapInterface {
 
 	private String name;
 	private Map<String, Entity> entities = new WeakHashMap<String, Entity>();
-	private Map<String, TerrainInterface> terrains = new WeakHashMap<String, TerrainInterface>();
+	private Map<String, Terrain> terrains = new WeakHashMap<String, Terrain>();
 	private Map<String, AudioSourceInterface> audioSorces = new WeakHashMap<String, AudioSourceInterface>();
 	private Map<String, Trigger> triggers = new WeakHashMap<String, Trigger>();
 	private Map<String, ParticleSystem> particleSystems = new WeakHashMap<String, ParticleSystem>();
@@ -73,17 +74,17 @@ public class ModelMap implements ModelMapInterface {
 	 * 
 	 */
 
-	public Map<String, TerrainInterface> getTerrains() {
+	public Map<String, Terrain> getTerrains() {
 		return terrains;
 	}
 
-	public void setTerrains(Collection<TerrainInterface> terrainList) {
-		for (TerrainInterface terrain : terrainList) {
+	public void setTerrains(Collection<Terrain> terrainList) {
+		for (Terrain terrain : terrainList) {
 			this.terrains.put(terrain.getName(), terrain);
 		}
 	}
 
-	public void addTerrian(TerrainInterface terrain) {
+	public void addTerrian(Terrain terrain) {
 		this.terrains.put(terrain.getName(), terrain);
 	}
 
@@ -92,7 +93,7 @@ public class ModelMap implements ModelMapInterface {
 			float roughness) {
 		int x = (int) position.x;
 		int y = (int) position.y;
-		TerrainInterface terrain = EngineUtils.createMultiTexTerrain(terrainName, x, y, baseTexture, redTexture,
+		Terrain terrain = EngineUtils.createMultiTexTerrain(terrainName, x, y, baseTexture, redTexture,
 				greenTexture, blueTexture, blendTexture, amplitude, octave, roughness);
 		this.terrains.put(terrain.getName(), terrain);
 	}
@@ -101,7 +102,7 @@ public class ModelMap implements ModelMapInterface {
 			String greenTexture, String blueTexture, String blendTexture, String heightMap) {
 		int x = (int) position.x;
 		int y = (int) position.y;
-		TerrainInterface terrain = EngineUtils.createMultiTexTerrain(terrainName, x, y, baseTexture, redTexture,
+		Terrain terrain = EngineUtils.createMultiTexTerrain(terrainName, x, y, baseTexture, redTexture,
 				greenTexture, blueTexture, blendTexture, heightMap, Loader.getInstance());
 		this.terrains.put(terrain.getName(), terrain);
 	}
@@ -256,24 +257,6 @@ public class ModelMap implements ModelMapInterface {
 
 	public void addLight(Light light) {
 		this.lights.put(light.getName(), light);
-	}
-
-	public void createEntity(String name, String model, String texName, Vector3f position, Vector3f rotation,
-			float scale) {
-		EntityBuilder builder = new SimpleEntityBuilder();
-		builder.setModel(model).setTexture(texName).setPosition(position).setRotation(rotation).setScale(scale);
-		Entity entity = builder.createEntity(name);
-		this.entities.put(name, entity);
-	}
-
-	public void createEntity(String name, String model, String texName, String normal, String specular,
-			Vector3f position, float rotX, float rotY, float rotZ, float scale, float shine, float reflectivity) {
-		TexturedModel staticModel = EngineUtils.loadNormalModel(name, texName, normal, specular);
-		staticModel.getTexture().setShineDamper(shine);
-		staticModel.getTexture().setReflectivity(reflectivity);
-		TexturedEntity entity = new TexturedEntity(name, EngineSettings.ENTITY_TYPE_NORMAL, staticModel, position, new Vector3f(rotX,
-				rotY, rotZ), scale);
-		this.entities.put(name, entity);
 	}
 
 	public void createParticles(String name, String texName, int texDimentions, boolean additive, float pps,

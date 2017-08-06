@@ -17,7 +17,7 @@ import object.model.TexturedModel;
 import object.shadow.ShadowBox;
 import object.shadow.ShadowFrameBuffer;
 import object.shadow.ShadowMapTerrainRenderer;
-import object.terrain.terrain.TerrainInterface;
+import object.terrain.terrain.Terrain;
 import shader.shadow.ShadowShader;
 
 /**
@@ -76,7 +76,7 @@ public class ShadowMapMasterRenderer {
 	 * @param sun
 	 *            - the light acting as the sun in the scene.
 	 */
-	public void render(Map<TexturedModel, List<Entity>> entities, Collection<TerrainInterface> terrains,
+	public void render(Map<TexturedModel, List<Entity>> entities, Collection<Terrain> terrains,
 			Map<TexturedModel, List<Entity>> normalMapEntities, Light sun, CameraInterface camera) {
 		shadowBox.update();
 		Vector3f sunPosition = sun.getPosition();

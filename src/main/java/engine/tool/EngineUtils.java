@@ -11,6 +11,8 @@ import object.entity.entity.Entity;
 import object.entity.entity.TexturedEntity;
 import object.model.RawModel;
 import object.model.TexturedModel;
+import object.terrain.terrain.MappedTerrain;
+import object.terrain.terrain.ProceduredTerrain;
 import object.terrain.terrain.Terrain;
 import object.texture.model.ModelTexture;
 import object.texture.terrain.TerrainTexture;
@@ -53,8 +55,6 @@ public class EngineUtils {
 
 	public static List<Entity> createGrassField(float x, float z, float r, float sizeNoise, float density) {
 		// TODO: Noise - better using
-
-		Loader loader = Loader.getInstance();
 		TexturedModel grass = loadStaticModel("grassObject", "grassObjAtlas");
 		int texIndex = 4;
 		grass.getTexture().setNumberOfRows(2);
@@ -72,12 +72,10 @@ public class EngineUtils {
 		for (Integer j = 0; j < r; j++) {
 			for (Integer i = 0; i < r; i++) {
 				sizeNoise = 1 + 2 * (float) random.nextDouble();
-				Entity grassEntity = new TexturedEntity("Grass" + String.valueOf(i) + "/" + String.valueOf(j),
-						EngineSettings.ENTITY_TYPE_DETAIL, grass, texIndex,
+				Entity grassEntity = new TexturedEntity("Grass" + String.valueOf(i) + "/" + String.valueOf(j), grass, texIndex,
 						new Vector3f(x + density * i, 0, z + density * j), new Vector3f(0, 0, 0), sizeNoise);
 				grasses.add(grassEntity);
-				Entity grassEntity1 = new TexturedEntity("Grass" + String.valueOf(i) + "/" + String.valueOf(j),
-						EngineSettings.ENTITY_TYPE_DETAIL, grass, texIndex,
+				Entity grassEntity1 = new TexturedEntity("Grass" + String.valueOf(i) + "/" + String.valueOf(j), grass, texIndex,
 						new Vector3f(x + density * i, 0, z + density * j), new Vector3f(0, 100, 0), sizeNoise);
 				grasses.add(grassEntity1);
 
@@ -98,7 +96,7 @@ public class EngineUtils {
 		return waters;
 	}
 
-	public static Terrain createMultiTexTerrain(String name, int x, int y, String basicTexture, String redTexture,
+	public static MappedTerrain createMultiTexTerrain(String name, int x, int y, String basicTexture, String redTexture,
 			String greenTexture, String blueTexture, String blendTexture, String heightTexture, Loader loader) {
 		TerrainTexture backgroundTexture = new TerrainTexture(basicTexture,
 				loader.getTextureLoader().loadTexture(EngineSettings.TEXTURE_TERRAIN_PATH, basicTexture));
@@ -113,7 +111,7 @@ public class EngineUtils {
 				gTexture, bTexture);
 		TerrainTexture blendMap = new TerrainTexture(blendTexture,
 				loader.getTextureLoader().loadTexture(EngineSettings.TEXTURE_BLEND_MAP_PATH, blendTexture));
-		Terrain terrain = new Terrain(name, x, y, texturePack, blendMap, heightTexture);
+		MappedTerrain terrain = new MappedTerrain(name, x, y, texturePack, blendMap, heightTexture);
 		return terrain;
 	}
 
@@ -133,7 +131,7 @@ public class EngineUtils {
 				gTexture, bTexture);
 		TerrainTexture blendMap = new TerrainTexture(blendTexture,
 				loader.getTextureLoader().loadTexture(EngineSettings.TEXTURE_BLEND_MAP_PATH, blendTexture));
-		Terrain terrain = new Terrain(name, x, y, loader, texturePack, blendMap, amplitude, octaves, roughness);
+		Terrain terrain = new ProceduredTerrain(name, x, y, texturePack, blendMap, amplitude, octaves, roughness);
 		return terrain;
 	}
 

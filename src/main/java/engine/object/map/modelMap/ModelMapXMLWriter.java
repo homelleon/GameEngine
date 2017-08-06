@@ -9,7 +9,7 @@ import java.util.List;
 
 import core.settings.EngineSettings;
 import object.entity.entity.Entity;
-import object.terrain.terrain.TerrainInterface;
+import object.terrain.terrain.Terrain;
 import renderer.loader.Loader;
 import tool.xml.XMLUtils;
 
@@ -30,7 +30,7 @@ public class ModelMapXMLWriter implements ModelMapWriterInterface {
 			System.out.println("Saving terrains...");
 			if (!map.getTerrains().isEmpty()) {
 				lines.add(XMLUtils.getBeginTag(XMLUtils.TERRAINS, 1));
-				for (TerrainInterface terrain : map.getTerrains().values()) {
+				for (Terrain terrain : map.getTerrains().values()) {
 					lines.add(XMLUtils.getBeginTag(XMLUtils.TERRAIN, 2));
 					String name = String.valueOf(terrain.getName());
 

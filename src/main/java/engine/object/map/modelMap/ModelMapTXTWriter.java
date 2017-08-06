@@ -9,7 +9,7 @@ import java.util.List;
 
 import core.settings.EngineSettings;
 import object.entity.entity.Entity;
-import object.terrain.terrain.TerrainInterface;
+import object.terrain.terrain.Terrain;
 import renderer.loader.Loader;
 
 public class ModelMapTXTWriter implements ModelMapWriterInterface {
@@ -27,7 +27,7 @@ public class ModelMapTXTWriter implements ModelMapWriterInterface {
 
 			System.out.println("Saving terrains...");
 			if (!map.getTerrains().isEmpty()) {
-				for (TerrainInterface terrain : map.getTerrains().values()) {
+				for (Terrain terrain : map.getTerrains().values()) {
 					String line = "<t> ";
 					line += String.valueOf(terrain.getName());
 					line += " ";

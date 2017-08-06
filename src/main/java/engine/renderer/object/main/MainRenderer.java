@@ -20,7 +20,7 @@ import object.light.Light;
 import object.model.TexturedModel;
 import object.scene.scene.SceneInterface;
 import object.shadow.renderer.ShadowMapMasterRenderer;
-import object.terrain.terrain.TerrainInterface;
+import object.terrain.terrain.Terrain;
 import object.texture.Texture;
 import object.voxel.manager.ChunkManagerInterface;
 import renderer.object.bounding.BoundingRenderer;
@@ -61,7 +61,7 @@ public class MainRenderer implements MainRendererInterface {
 
 	private Map<TexturedModel, List<Entity>> entities = new HashMap<TexturedModel, List<Entity>>();
 	private Map<TexturedModel, List<Entity>> normalMapEntities = new HashMap<TexturedModel, List<Entity>>();
-	private Collection<TerrainInterface> terrains = new ArrayList<TerrainInterface>();
+	private Collection<Terrain> terrains = new ArrayList<Terrain>();
 
 	public MainRenderer(CameraInterface camera) {
 		OGLUtils.cullBackFaces(true);
@@ -88,7 +88,7 @@ public class MainRenderer implements MainRendererInterface {
 	public void renderScene(SceneInterface scene, Vector4f clipPlane, boolean isLowDistance) {
 		this.frustum.extractFrustum(scene.getCamera(), projectionMatrix);
 		this.environmentMap = scene.getEnvironmentMap();
-		for (TerrainInterface terrain : scene.getTerrains().getAll()) {
+		for (Terrain terrain : scene.getTerrains().getAll()) {
 			processor.processTerrain(terrain, terrains);
 		}
 
@@ -139,7 +139,7 @@ public class MainRenderer implements MainRendererInterface {
 	}
 
 	@Override
-	public void renderLowQualityScene(Map<TexturedModel, List<Entity>> entities, Collection<TerrainInterface> terrains,
+	public void renderLowQualityScene(Map<TexturedModel, List<Entity>> entities, Collection<Terrain> terrains,
 			Collection<Light> lights, CameraInterface camera) {
 		entityRenderer.renderLow(entities, lights, camera);
 		terrainRenderer.renderLow(terrains, lights, camera);

@@ -14,7 +14,7 @@ import object.entity.player.PlayerInterface;
 import object.gui.texture.GUITexture;
 import object.light.Light;
 import object.particle.ParticleSystem;
-import object.terrain.terrain.TerrainInterface;
+import object.terrain.terrain.Terrain;
 import object.trigger.Trigger;
 import object.water.WaterTile;
 
@@ -43,11 +43,11 @@ public interface ModelMapInterface {
 	 * 
 	 */
 
-	public Map<String, TerrainInterface> getTerrains();
+	public Map<String, Terrain> getTerrains();
 
-	public void setTerrains(Collection<TerrainInterface> terrainList);
+	public void setTerrains(Collection<Terrain> terrainList);
 
-	public void addTerrian(TerrainInterface terrain);
+	public void addTerrian(Terrain terrain);
 
 	public void createTerrain(String terrainName, Vector2f position, String baseTexture, String redTexture,
 			String greenTexture, String blueTexture, String blendTexture, float amplitude, int octave,
@@ -143,12 +143,6 @@ public interface ModelMapInterface {
 	public void setLights(List<Light> lightList);
 
 	public void addLight(Light light);
-
-	public void createEntity(String name, String model, String texName, Vector3f position, Vector3f rotation,
-			float scale);
-
-	public void createEntity(String name, String model, String texName, String normal, String specular,
-			Vector3f position, float rotX, float rotY, float rotZ, float scale, float shine, float reflectivity);
 
 	public void createParticles(String name, String texName, int texDimentions, boolean additive, float pps,
 			float speed, float gravityComplient, float lifeLength, float scale);

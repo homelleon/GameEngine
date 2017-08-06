@@ -6,14 +6,14 @@ import java.util.List;
 
 import object.camera.CameraInterface;
 import object.entity.entity.Entity;
-import object.terrain.terrain.TerrainInterface;
+import object.terrain.terrain.Terrain;
 
 public class CullingTerrainHeight implements Culling {
 
-	private List<TerrainInterface> terrains = new ArrayList<TerrainInterface>();
+	private List<Terrain> terrains = new ArrayList<Terrain>();
 	private CameraInterface camera;
 
-	public CullingTerrainHeight(CameraInterface camera, Collection<TerrainInterface> terrains) {
+	public CullingTerrainHeight(CameraInterface camera, Collection<Terrain> terrains) {
 		this.terrains.addAll(terrains);
 		this.camera = camera;
 	}

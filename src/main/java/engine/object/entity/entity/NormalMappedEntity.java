@@ -17,7 +17,7 @@ import object.model.TexturedModel;
  *
  */
 
-public class TexturedEntity extends BaseEntity implements Entity {
+public class NormalMappedEntity extends BaseEntity implements Entity {
 	
 	/**
 	 * 
@@ -29,8 +29,8 @@ public class TexturedEntity extends BaseEntity implements Entity {
 	 * @param rotZ
 	 * @param scale
 	 */
-	public TexturedEntity(String name, TexturedModel model, Vector3f position, Vector3f rotation, float scale) {
-		super(name, EngineSettings.ENTITY_TYPE_SIMPLE, model, position, rotation, scale);
+	public NormalMappedEntity(String name, TexturedModel model, Vector3f position, Vector3f rotation, float scale) {
+		super(name, EngineSettings.ENTITY_TYPE_NORMAL, model, position, rotation, scale);
 	}
 	
 	/**
@@ -42,13 +42,13 @@ public class TexturedEntity extends BaseEntity implements Entity {
 	 * @param rotation
 	 * @param scale
 	 */
-	public TexturedEntity(String name, TexturedModel model, int textureIndex, Vector3f position, Vector3f rotation, float scale) {
-		super(name, EngineSettings.ENTITY_TYPE_SIMPLE, model, textureIndex, position, rotation, scale);
+	public NormalMappedEntity(String name, TexturedModel model, int textureIndex, Vector3f position, Vector3f rotation, float scale) {
+		super(name, EngineSettings.ENTITY_TYPE_NORMAL, model, textureIndex, position, rotation, scale);
 	} 
 	
 	@Override
 	public Entity clone(String name) {
-		Entity entity = new TexturedEntity(name, this.model, this.position, this.rotation, this.scale);
+		Entity entity = new NormalMappedEntity(name, this.model, this.position, this.rotation, this.scale);
 		return entity;
 	}
 

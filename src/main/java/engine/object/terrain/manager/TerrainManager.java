@@ -4,7 +4,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import object.terrain.terrain.TerrainInterface;
+import object.terrain.terrain.Terrain;
 
 /**
  * Terrain manager for controling and storing structured map and arrays of
@@ -15,27 +15,27 @@ import object.terrain.terrain.TerrainInterface;
  */
 public class TerrainManager implements TerrainManagerInterface {
 
-	Map<String, TerrainInterface> terrains = new HashMap<String, TerrainInterface>();
+	Map<String, Terrain> terrains = new HashMap<String, Terrain>();
 
 	@Override
-	public void addAll(Collection<TerrainInterface> terrainList) {
+	public void addAll(Collection<Terrain> terrainList) {
 		if ((terrainList != null) && (!terrainList.isEmpty())) {
-			for (TerrainInterface terrain : terrainList) {
+			for (Terrain terrain : terrainList) {
 				this.terrains.put(terrain.getName(), terrain);
 			}
 		}
 	}
 
 	@Override
-	public void add(TerrainInterface terrain) {
+	public void add(Terrain terrain) {
 		if (terrain != null) {
 			this.terrains.put(terrain.getName(), terrain);
 		}
 	}
 
 	@Override
-	public TerrainInterface getByName(String name) {
-		TerrainInterface terrain = null;
+	public Terrain getByName(String name) {
+		Terrain terrain = null;
 		if (this.terrains.containsKey(name)) {
 			terrain = this.terrains.get(name);
 		}
@@ -43,7 +43,7 @@ public class TerrainManager implements TerrainManagerInterface {
 	}
 
 	@Override
-	public Collection<TerrainInterface> getAll() {
+	public Collection<Terrain> getAll() {
 		return this.terrains.values();
 	}
 

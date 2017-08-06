@@ -1,5 +1,6 @@
 package object.entity.entity;
 
+import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
 import object.model.TexturedModel;
@@ -8,39 +9,87 @@ import object.model.TexturedModel;
  * 
  * @author homelleon
  * @see TexturedEntity
+ * @see NormalMappedEntity
  */
 public interface Entity {
 
-	// управление видимостью
+	/**
+	 * Gets entity "visible" flag.
+	 * 
+	 * @return true if entity is visible<br>
+	 * 		   false if entity is hidden
+	 */
 	public boolean getIsVisible();
 
+	/**
+	 * Sets entity "visible" flag.
+	 * 
+	 * @param isVisible boolean value
+	 */
 	public void setIsVisible(boolean isVisible);
 
-	// управление выбора указателем
+	/**
+	 * Gets entity "selected" flag.
+	 * 
+	 * @return true if entity is chosen<br>
+	 * 		   false if entity is not chosen
+	 */
 	public boolean getIsChosen();
 
+	/**
+	 * Switches entity "selected" flag.
+	 * 
+	 * @param isChosen boolean value 
+	 */
 	public void setIsChosen(boolean isChosen);
+	
+	public Vector2f getTextureOffset();
 
-	// управление смещением текстур
-	public float getTextureXOffset();
-
-	public float getTextureYOffset();
-
-	// увеличить позицию
+	/**
+	 * Increses entity position value in 3 dimentional space.
+	 * 
+	 * @param dx float value of OX plane
+	 * @param dy float value of OY plane
+	 * @param dz float value of OZ plane
+	 */
 	public void increasePosition(float dx, float dy, float dz);
-
+	
+	/**
+	 * Moves entity depending on speed.
+	 * 
+	 * @param forwardSpeed float value of forward speed
+	 * @param strafeSpeed float value of side speed
+	 */
 	public void move(float forwardSpeed, float strafeSpeed);
 
-	// увеличить поворот
+	/**
+	 * Increases entity rotation value in 3 dimentional space.
+	 * 
+	 * @param dx float value of OX rotation plane
+	 * @param dy float value of OY rotation plane
+	 * @param dz float value of OZ rotation plane
+	 */
 	public void increaseRotation(float dx, float dy, float dz);
 
-	// вернуть имя
+	/**
+	 * Gets entity name.
+	 * 
+	 * @return String value of entity name
+	 */
 	public String getName();
 
-	// вернуть тип
+	/**
+	 * Gets entity texture type model.
+	 * 
+	 * @return int value of texture type
+	 */
 	public int getType();
 
-	// управление текстурной моделью
+	/**
+	 * Gets entity textured model object.
+	 * 
+	 * @return {@link TexturedModel} object
+	 */
 	public TexturedModel getModel();
 
 	/**
@@ -57,8 +106,18 @@ public interface Entity {
 	 */
 	public Vector3f getPosition();
 
+	/**
+	 * Sets entity position in 3 dimentional space.
+	 * 
+	 * @param position {@link Vector3f} value in 3 dimentions
+	 */
 	public void setPosition(Vector3f position);
 	
+	/**
+	 * Sets entity rotation scale in 3 dimentions.
+	 * 
+	 * @param rotation {@link Vector3f} value in 3 dimentions
+	 */
 	public void setRotation(Vector3f rotation);
 	
 	public Vector3f getRotation();

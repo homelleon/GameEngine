@@ -9,6 +9,7 @@ import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector4f;
 
 import core.settings.EngineSettings;
@@ -230,7 +231,8 @@ public class EntityRenderer {
 		Matrix4f transformationMatrix = Maths.createTransformationMatrix(entity.getPosition(), entity.getRotation().getX(),
 				entity.getRotation().getY(), entity.getRotation().getZ(), entity.getScale());
 		shader.loadTranformationMatrix(transformationMatrix);
-		shader.loadOffset(entity.getTextureXOffset(), entity.getTextureYOffset());
+		Vector2f textureOffset = entity.getTextureOffset();
+		shader.loadOffset(textureOffset.x, textureOffset.y);
 		shader.loadManipulateVariables(entity.getIsChosen());
 	}
 

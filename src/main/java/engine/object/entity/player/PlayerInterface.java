@@ -3,9 +3,9 @@ package object.entity.player;
 import java.util.Collection;
 
 import object.entity.entity.Entity;
-import object.terrain.terrain.TerrainInterface;
+import object.terrain.terrain.Terrain;
 
 public interface PlayerInterface extends Entity {
 
-	public void move(Collection<TerrainInterface> terrains);
+	public void move(Collection<Terrain> terrains);
 }

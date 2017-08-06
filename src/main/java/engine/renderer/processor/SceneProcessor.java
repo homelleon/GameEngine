@@ -10,13 +10,13 @@ import org.lwjgl.util.vector.Vector3f;
 import core.settings.EngineSettings;
 import object.entity.entity.Entity;
 import object.model.TexturedModel;
-import object.terrain.terrain.TerrainInterface;
+import object.terrain.terrain.Terrain;
 import renderer.viewCulling.frustum.Frustum;
 
 public class SceneProcessor implements SceneProcessorInterface {
 
 	@Override
-	public void processTerrain(TerrainInterface terrain, Collection<TerrainInterface> terrains) {
+	public void processTerrain(Terrain terrain, Collection<Terrain> terrains) {
 		terrains.add(terrain);
 	}
 
