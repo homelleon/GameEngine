@@ -1,7 +1,10 @@
 <settings>
 	<maps>
-	<level_map>
-		<name>modelMap</name></level_map>
-	<model_map>
-		<name>levelMap</name></model_map></maps>
+		<level_map>
+			<name>modelMap</name>
+		</level_map>
+		<model_map>
+			<name>levelMap</name>
+		</model_map>
+	</maps>
 </settings>
