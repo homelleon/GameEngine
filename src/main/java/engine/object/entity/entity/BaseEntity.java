@@ -153,6 +153,6 @@ public abstract class BaseEntity {
 		return this.radius;
 	}
 	
-	public abstract Entity clone(String name);
+	public abstract IEntity clone(String name);
 
 }

@@ -8,8 +8,8 @@ import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Matrix4f;
 
-import object.camera.CameraInterface;
-import object.entity.entity.Entity;
+import object.camera.ICamera;
+import object.entity.entity.IEntity;
 import object.model.RawModel;
 import object.model.TexturedModel;
 import shader.bounding.BoundingShader;
@@ -28,15 +28,15 @@ public class BoundingRenderer {
 		shader.stop();
 	}
 
-	public void render(Map<TexturedModel, List<Entity>> entities, Map<TexturedModel, List<Entity>> normalEntities,
-			CameraInterface camera) {
+	public void render(Map<TexturedModel, List<IEntity>> entities, Map<TexturedModel, List<IEntity>> normalEntities,
+			ICamera camera) {
 		checkWiredFrameOn(boundingWiredFrame);
 		shader.start();
 		shader.loadViewMatrix(camera);
 		for (TexturedModel model : entities.keySet()) {
 			RawModel bModel = model.getRawModel().getBBox().getModel();
 			prepareModel(bModel);
-			for (Entity entity : entities.get(model)) {
+			for (IEntity entity : entities.get(model)) {
 				prepareInstance(entity);
 				GL11.glDrawElements(GL11.GL_TRIANGLES, model.getRawModel().getBBox().getModel().getVertexCount(),
 						GL11.GL_UNSIGNED_INT, 0);
@@ -46,7 +46,7 @@ public class BoundingRenderer {
 		for (TexturedModel model : normalEntities.keySet()) {
 			RawModel bModel = model.getRawModel().getBBox().getModel();
 			prepareModel(bModel);
-			for (Entity entity : normalEntities.get(model)) {
+			for (IEntity entity : normalEntities.get(model)) {
 				prepareInstance(entity);
 				GL11.glDrawElements(GL11.GL_TRIANGLES, model.getRawModel().getBBox().getModel().getVertexCount(),
 						GL11.GL_UNSIGNED_INT, 0);
@@ -71,7 +71,7 @@ public class BoundingRenderer {
 		GL30.glBindVertexArray(0);
 	}
 
-	public void prepareInstance(Entity entity) {
+	public void prepareInstance(IEntity entity) {
 		Matrix4f transformationMatrix = Maths.createTransformationMatrix(entity.getPosition(), entity.getRotation().getX(),
 				entity.getRotation().getY(), entity.getRotation().getZ(), entity.getScale());
 		shader.loadTranformationMatrix(transformationMatrix);

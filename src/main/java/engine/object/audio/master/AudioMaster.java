@@ -16,11 +16,11 @@ import core.settings.EngineSettings;
  * 
  * @author homelleon
  * @version 1.0
- * @see AudioMasterInterface
+ * @see IAudioMaster
  *
  */
 
-public class AudioMaster implements AudioMasterInterface {
+public class AudioMaster implements IAudioMaster {
 
 	/**
 	 * Represents a map of audio buffers stored in OpenAL engine.

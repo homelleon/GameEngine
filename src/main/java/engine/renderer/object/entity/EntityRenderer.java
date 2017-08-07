@@ -13,14 +13,14 @@ import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector4f;
 
 import core.settings.EngineSettings;
-import object.camera.CameraInterface;
-import object.entity.entity.Entity;
+import object.camera.ICamera;
+import object.entity.entity.IEntity;
 import object.light.Light;
 import object.model.RawModel;
 import object.model.TexturedModel;
 import object.texture.Texture;
 import object.texture.model.ModelTexture;
-import renderer.object.main.MainRendererInterface;
+import renderer.object.main.IMainRenderer;
 import shader.entity.EntityShader;
 import tool.math.Maths;
 import tool.openGL.OGLUtils;
@@ -35,8 +35,8 @@ import tool.openGL.OGLUtils;
  * @author homelleon
  * @version 1.0
  * 
- * @see Entity
- * @see MainRendererInterface
+ * @see IEntity
+ * @see IMainRenderer
  */
 public class EntityRenderer {
 
@@ -67,27 +67,27 @@ public class EntityRenderer {
 	 * rendering engine.
 	 * 
 	 * @param entities
-	 *            - map of {@link Entity} list with {@link TexturedModel} key
+	 *            - map of {@link IEntity} list with {@link TexturedModel} key
 	 *            that have to be rendered
 	 * @param clipPlane
 	 *            - {@link Vector4f} plane that clipps scene
 	 * @param lights
 	 *            - collection of {@link Light} that effects on scene
 	 * @param camera
-	 *            - {@link CameraInterface} that represents point of view
+	 *            - {@link ICamera} that represents point of view
 	 * @param toShadowMapSpace
 	 *            - {@link Matrix4f} value of space where shadow map is rendered
 	 * @param environmentMap
 	 *            - {@link Texture} value of reflection map to render at
 	 *            reflecting objects
 	 * 
-	 * @see Entity
+	 * @see IEntity
 	 * @see Light
-	 * @see CameraInterface
+	 * @see ICamera
 	 * @see Texture
 	 */
-	public void render(Map<TexturedModel, List<Entity>> entities, Vector4f clipPlane, Collection<Light> lights,
-			CameraInterface camera, Matrix4f toShadowMapSpace, Texture environmentMap) {
+	public void render(Map<TexturedModel, List<IEntity>> entities, Vector4f clipPlane, Collection<Light> lights,
+			ICamera camera, Matrix4f toShadowMapSpace, Texture environmentMap) {
 		this.environmentMap = environmentMap;
 		shader.start();
 		shader.loadClipPlane(clipPlane);
@@ -100,8 +100,8 @@ public class EntityRenderer {
 				EngineSettings.SHADOW_TRANSITION_DISTANCE, EngineSettings.SHADOW_PCF);
 		for (TexturedModel model : entities.keySet()) {
 			prepareTexturedModel(model);
-			List<Entity> batch = entities.get(model);
-			for (Entity entity : batch) {
+			List<IEntity> batch = entities.get(model);
+			for (IEntity entity : batch) {
 				prepareInstance(entity);
 				GL11.glDrawElements(GL11.GL_TRIANGLES, model.getRawModel().getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
 			}
@@ -115,19 +115,19 @@ public class EntityRenderer {
 	 * uniforms and OpenGL per indicies rendering engine
 	 * 
 	 * @param entities
-	 *            - map of {@link Entity} list with {@link TexturedModel} key
+	 *            - map of {@link IEntity} list with {@link TexturedModel} key
 	 *            that have to be rendered
 	 * @param lights
 	 *            - collection of {@link Light} that effects on scene
 	 * 
 	 * @param camera
-	 *            - {@link CameraInterface} that represents point of view
+	 *            - {@link ICamera} that represents point of view
 	 * 
-	 * @see Entity
+	 * @see IEntity
 	 * @see Light
-	 * @see CameraInterface
+	 * @see ICamera
 	 */
-	public void renderLow(Map<TexturedModel, List<Entity>> entities, Collection<Light> lights, CameraInterface camera) {
+	public void renderLow(Map<TexturedModel, List<IEntity>> entities, Collection<Light> lights, ICamera camera) {
 		GL11.glClearColor(1, 1, 1, 1);
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 		shader.start();
@@ -140,8 +140,8 @@ public class EntityRenderer {
 				EngineSettings.SHADOW_TRANSITION_DISTANCE, EngineSettings.SHADOW_PCF);
 		for (TexturedModel model : entities.keySet()) {
 			prepareLowTexturedModel(model);
-			List<Entity> batch = entities.get(model);
-			for (Entity entity : batch) {
+			List<IEntity> batch = entities.get(model);
+			for (IEntity entity : batch) {
 				prepareInstance(entity);
 				GL11.glDrawElements(GL11.GL_TRIANGLES, model.getRawModel().getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
 			}
@@ -224,10 +224,10 @@ public class EntityRenderer {
 	 * Prepare entity shader for each entity used as value.
 	 * 
 	 * @param entity
-	 *            -{@link Entity} used to prepare entity shader
+	 *            -{@link IEntity} used to prepare entity shader
 	 */
 
-	private void prepareInstance(Entity entity) {
+	private void prepareInstance(IEntity entity) {
 		Matrix4f transformationMatrix = Maths.createTransformationMatrix(entity.getPosition(), entity.getRotation().getX(),
 				entity.getRotation().getY(), entity.getRotation().getZ(), entity.getScale());
 		shader.loadTranformationMatrix(transformationMatrix);

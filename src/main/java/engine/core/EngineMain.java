@@ -1,8 +1,8 @@
 package core;
 
 import core.loop.Loop;
-import core.loop.LoopInterface;
-import object.scene.scene.SceneInterface;
+import core.loop.ILoop;
+import object.scene.scene.IScene;
 
 /**
  * Main engine class. Contains main method to create {@link Loop} and start
@@ -15,7 +15,7 @@ import object.scene.scene.SceneInterface;
 
 public class EngineMain {
 
-	private static LoopInterface loopGame;
+	private static ILoop loopGame;
 
 	/**
 	 * Main method to create Loop object and run it.
@@ -28,12 +28,12 @@ public class EngineMain {
 	}
 
 	/**
-	 * Method to return {@link SceneInterface} scene parameter to manipulate it
+	 * Method to return {@link IScene} scene parameter to manipulate it
 	 * out the engine.
 	 * 
 	 * @return Scene object
 	 */
-	public static SceneInterface getScene() {
+	public static IScene getScene() {
 		return loopGame.getScene();
 	}
 

@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 
-import object.gui.pattern.button.GUIButtonInterface;
+import object.gui.pattern.button.IGUIButton;
 import object.gui.pattern.object.GUIObject;
 
 /**
@@ -14,10 +14,10 @@ import object.gui.pattern.object.GUIObject;
  * with ability to store buttons.
  *  
  * @author homelleon
- * @see GUIMenuInterface
+ * @see IGUIMenu
  *
  */
-public class GUIMenu extends GUIObject implements GUIMenuInterface {
+public class GUIMenu extends GUIObject implements IGUIMenu {
 	
 	public GUIMenu(String name) {
 		super(name);
@@ -27,8 +27,8 @@ public class GUIMenu extends GUIObject implements GUIMenuInterface {
 	private boolean wasNext = false;
 	private boolean wasPrevious = false;
 	private Map<String, GUIObject> objects = new HashMap<String, GUIObject>();
-	private List<GUIButtonInterface> buttons = new ArrayList<GUIButtonInterface>();
-	private ListIterator<GUIButtonInterface> buttonIterator;
+	private List<IGUIButton> buttons = new ArrayList<IGUIButton>();
+	private ListIterator<IGUIButton> buttonIterator;
 	
 	@Override
 	public void add(GUIObject object) {
@@ -36,7 +36,7 @@ public class GUIMenu extends GUIObject implements GUIMenuInterface {
 	}
 
 	@Override
-	public void addButton(GUIButtonInterface button) {
+	public void addButton(IGUIButton button) {
 		buttons.add(button);
 		this.hasButtons = true;
 		this.updateIterator();
@@ -99,7 +99,7 @@ public class GUIMenu extends GUIObject implements GUIMenuInterface {
 
 	@Override
 	public void useButton() {
-		for(GUIButtonInterface button : this.buttons) {
+		for(IGUIButton button : this.buttons) {
 			if(button.getIsSelected()) {
 				button.use();
 				break;

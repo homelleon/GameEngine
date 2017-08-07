@@ -6,25 +6,25 @@ import java.util.List;
 import object.gui.text.GUIText;
 import object.gui.texture.GUITexture;
 
-public class GUIBuilder implements GUIBuilderInterface {
+public class GUIBuilder implements IGUIBuilder {
 	
 	private List<GUITexture> textures = new ArrayList<GUITexture>();
 	private List<GUIText> texts = new ArrayList<GUIText>();
 
 	@Override
-	public GUIBuilderInterface setTexture(GUITexture texture) {
+	public IGUIBuilder setTexture(GUITexture texture) {
 		this.textures.add(texture);
 		return this;
 	}
 
 	@Override
-	public GUIBuilderInterface setText(GUIText text) {
+	public IGUIBuilder setText(GUIText text) {
 		this.texts.add(text);
 		return this;
 	}
 
 	@Override
-	public GUIInterface getGUI(String name) {
+	public IGUI getGUI(String name) {
 		return new GUI(name, this.textures, this.texts);
 	}
 

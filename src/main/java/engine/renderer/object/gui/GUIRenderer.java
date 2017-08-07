@@ -7,9 +7,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import object.gui.font.manager.FontManagerInterface;
-import object.gui.group.GUIGroupInterface;
-import object.gui.gui.GUIInterface;
+import object.gui.font.manager.IFontManager;
+import object.gui.group.IGUIGroup;
+import object.gui.gui.IGUI;
 
 /**
  * Graphic user interface renderer class to render GUI groups.
@@ -17,29 +17,29 @@ import object.gui.gui.GUIInterface;
  * @author homelleon
  *
  */
-public class GUIRenderer implements GUIRendererInterface {
+public class GUIRenderer implements IGUIRenderer {
 
 	private GUITextureRenderer textureRenderer;
 	private GUITextRenderer textRenderer;
-	Map<Integer, List<GUIGroupInterface>> groups;
+	Map<Integer, List<IGUIGroup>> groups;
 
-	public GUIRenderer(FontManagerInterface fontManager) {
+	public GUIRenderer(IFontManager fontManager) {
 		this.textureRenderer = new GUITextureRenderer();
 		this.textRenderer = new GUITextRenderer(fontManager);
-		this.groups = new HashMap<Integer, List<GUIGroupInterface>>();
+		this.groups = new HashMap<Integer, List<IGUIGroup>>();
 	}
 
 	@Override
-	public void render(Collection<GUIGroupInterface> groupCollection) {
-		for (GUIGroupInterface group : groupCollection) {
+	public void render(Collection<IGUIGroup> groupCollection) {
+		for (IGUIGroup group : groupCollection) {
 			processGroup(group);
 		}
 		List<Integer> keys = new ArrayList<Integer>();
 		keys.addAll(this.groups.keySet());
 		Collections.sort(keys);
 		for (int i = 0; i < keys.size(); i++) {
-			for (GUIGroupInterface group : this.groups.get(keys.get(i))) {
-				for (GUIInterface gui : group.getAll()) {
+			for (IGUIGroup group : this.groups.get(keys.get(i))) {
+				for (IGUI gui : group.getAll()) {
 					if (gui.getIsShown()) {
 						this.textureRenderer.render(gui.getTextures());
 						this.textRenderer.render(gui.getTexts());
@@ -56,13 +56,13 @@ public class GUIRenderer implements GUIRendererInterface {
 		this.textRenderer.cleanUp();
 	}
 
-	private void processGroup(GUIGroupInterface group) {
+	private void processGroup(IGUIGroup group) {
 		int priorityNumber = group.getPriorityNumber();
-		List<GUIGroupInterface> batch = this.groups.get(priorityNumber);
+		List<IGUIGroup> batch = this.groups.get(priorityNumber);
 		if (batch != null) {
 			batch.add(group);
 		} else {
-			List<GUIGroupInterface> newBatch = new ArrayList<GUIGroupInterface>();
+			List<IGUIGroup> newBatch = new ArrayList<IGUIGroup>();
 			newBatch.add(group);
 			this.groups.put(priorityNumber, newBatch);
 		}

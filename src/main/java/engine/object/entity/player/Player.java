@@ -12,9 +12,9 @@ import object.entity.entity.TexturedEntity;
 import object.input.KeyboardGame;
 import object.input.MouseGame;
 import object.model.TexturedModel;
-import object.terrain.terrain.Terrain;
+import object.terrain.terrain.ITerrain;
 
-public class Player extends TexturedEntity implements PlayerInterface {
+public class Player extends TexturedEntity implements IPlayer {
 
 	private static final float MOVE_SPEED = 20;
 	private static final float RUN_SPEED = 100;
@@ -33,7 +33,7 @@ public class Player extends TexturedEntity implements PlayerInterface {
 	}
 
 	@Override
-	public void move(Collection<Terrain> terrains) {
+	public void move(Collection<ITerrain> terrains) {
 		checkInputs();
 		super.increaseRotation(0, currentTurnSpeed * DisplayManager.getFrameTimeSeconds(), 0);
 		float fowardDistance = currentForwardSpeed * DisplayManager.getFrameTimeSeconds();
@@ -53,7 +53,7 @@ public class Player extends TexturedEntity implements PlayerInterface {
 		super.increasePosition(0, upwardsSpeed * DisplayManager.getFrameTimeSeconds(), 0);
 
 		float terrainHeight = 0;
-		for (Terrain terrain : terrains) {
+		for (ITerrain terrain : terrains) {
 			terrainHeight += terrain.getHeightOfTerrain(super.getPosition().x, super.getPosition().z);
 		}
 

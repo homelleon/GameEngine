@@ -11,9 +11,9 @@ import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 
 import core.settings.EngineSettings;
-import object.camera.CameraInterface;
-import object.entity.entity.Entity;
-import object.scene.scene.SceneInterface;
+import object.camera.ICamera;
+import object.entity.entity.IEntity;
+import object.scene.scene.IScene;
 import tool.math.Maths;
 
 /**
@@ -28,17 +28,17 @@ public class MousePicker {
 
 	private Matrix4f projectionMatrix;
 	private Matrix4f viewMatrix;
-	private CameraInterface camera;
+	private ICamera camera;
 
 	/**
 	 * Mouse ray constructor.
 	 * 
 	 * @param camera
-	 *            {@link CameraInterface} with current view position
+	 *            {@link ICamera} with current view position
 	 * @param projectionMatrix
 	 *            {@link Matrix4f} value of object projection
 	 */
-	public MousePicker(CameraInterface camera, Matrix4f projectionMatrix) {
+	public MousePicker(ICamera camera, Matrix4f projectionMatrix) {
 		this.camera = camera;
 		this.projectionMatrix = projectionMatrix;
 		this.viewMatrix = Maths.createViewMatrix(camera);
@@ -240,11 +240,11 @@ public class MousePicker {
 		return new Vector2f(x, y);
 	}
 
-	public Entity chooseObjectByRay(SceneInterface scene) {
-		Entity pickedEntity = null;
-		List<Entity> pointedEntities = new ArrayList<Entity>();
-		for (List<Entity> frustumList : scene.getEntities().getFromFrustum().values()) {
-			for (Entity entity : frustumList) {
+	public IEntity chooseObjectByRay(IScene scene) {
+		IEntity pickedEntity = null;
+		List<IEntity> pointedEntities = new ArrayList<IEntity>();
+		for (List<IEntity> frustumList : scene.getEntities().getFromFrustum().values()) {
+			for (IEntity entity : frustumList) {
 				if (intersects(entity.getPosition(), entity.getSphereRadius())) {
 					Vector3f min = entity.getModel().getRawModel().getBBox().getMin();
 					Vector3f max = entity.getModel().getRawModel().getBBox().getMax();

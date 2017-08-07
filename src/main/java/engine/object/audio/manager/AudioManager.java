@@ -4,8 +4,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import object.audio.master.AudioMasterInterface;
-import object.audio.source.AudioSourceInterface;
+import object.audio.master.IAudioMaster;
+import object.audio.source.IAudioSource;
 
 /**
  * Audio manager for controling and storing structured map and arrays of audio
@@ -15,34 +15,34 @@ import object.audio.source.AudioSourceInterface;
  * @version 1.0
  */
 
-public class AudioManager implements AudioManagerInterface {
+public class AudioManager implements IAudioManager {
 
-	private Map<String, AudioSourceInterface> audioSources = new HashMap<String, AudioSourceInterface>();
-	private AudioMasterInterface audioMaster;
+	private Map<String, IAudioSource> audioSources = new HashMap<String, IAudioSource>();
+	private IAudioMaster audioMaster;
 
-	public AudioManager(AudioMasterInterface audioMaster) {
+	public AudioManager(IAudioMaster audioMaster) {
 		this.audioMaster = audioMaster;
 	}
 
 	@Override
-	public void addAll(Collection<AudioSourceInterface> audioList) {
+	public void addAll(Collection<IAudioSource> audioList) {
 		if ((audioList != null) && (!audioList.isEmpty())) {
-			for (AudioSourceInterface audio : audioList) {
+			for (IAudioSource audio : audioList) {
 				this.audioSources.put(audio.getName(), audio);
 			}
 		}
 	}
 
 	@Override
-	public void add(AudioSourceInterface audio) {
+	public void add(IAudioSource audio) {
 		if (audio != null) {
 			this.audioSources.put(audio.getName(), audio);
 		}
 	}
 
 	@Override
-	public AudioSourceInterface getByName(String name) {
-		AudioSourceInterface audio = null;
+	public IAudioSource getByName(String name) {
+		IAudioSource audio = null;
 		if (this.audioSources.containsKey(name)) {
 			audio = this.audioSources.get(name);
 		}
@@ -50,17 +50,17 @@ public class AudioManager implements AudioManagerInterface {
 	}
 
 	@Override
-	public Collection<AudioSourceInterface> getAll() {
+	public Collection<IAudioSource> getAll() {
 		return this.audioSources.values();
 	}
 
 	@Override
-	public AudioMasterInterface getMaster() {
+	public IAudioMaster getMaster() {
 		return audioMaster;
 	}
 
 	@Override
-	public void clearAll() {
+	public void clean() {
 		this.audioMaster.cleanUp();
 		this.audioSources.clear();
 	}

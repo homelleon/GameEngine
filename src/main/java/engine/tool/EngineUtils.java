@@ -7,13 +7,13 @@ import java.util.Random;
 import org.lwjgl.util.vector.Vector3f;
 
 import core.settings.EngineSettings;
-import object.entity.entity.Entity;
+import object.entity.entity.IEntity;
 import object.entity.entity.TexturedEntity;
 import object.model.RawModel;
 import object.model.TexturedModel;
 import object.terrain.terrain.MappedTerrain;
 import object.terrain.terrain.ProceduredTerrain;
-import object.terrain.terrain.Terrain;
+import object.terrain.terrain.ITerrain;
 import object.texture.model.ModelTexture;
 import object.texture.terrain.TerrainTexture;
 import object.texture.terrain.TerrainTexturePack;
@@ -53,7 +53,7 @@ public class EngineUtils {
 		return model;
 	}
 
-	public static List<Entity> createGrassField(float x, float z, float r, float sizeNoise, float density) {
+	public static List<IEntity> createGrassField(float x, float z, float r, float sizeNoise, float density) {
 		// TODO: Noise - better using
 		TexturedModel grass = loadStaticModel("grassObject", "grassObjAtlas");
 		int texIndex = 4;
@@ -68,14 +68,14 @@ public class EngineUtils {
 		r = r * density;
 		density = 1 / density;
 		Random random = new Random();
-		List<Entity> grasses = new ArrayList<Entity>();
+		List<IEntity> grasses = new ArrayList<IEntity>();
 		for (Integer j = 0; j < r; j++) {
 			for (Integer i = 0; i < r; i++) {
 				sizeNoise = 1 + 2 * (float) random.nextDouble();
-				Entity grassEntity = new TexturedEntity("Grass" + String.valueOf(i) + "/" + String.valueOf(j), grass, texIndex,
+				IEntity grassEntity = new TexturedEntity("Grass" + String.valueOf(i) + "/" + String.valueOf(j), grass, texIndex,
 						new Vector3f(x + density * i, 0, z + density * j), new Vector3f(0, 0, 0), sizeNoise);
 				grasses.add(grassEntity);
-				Entity grassEntity1 = new TexturedEntity("Grass" + String.valueOf(i) + "/" + String.valueOf(j), grass, texIndex,
+				IEntity grassEntity1 = new TexturedEntity("Grass" + String.valueOf(i) + "/" + String.valueOf(j), grass, texIndex,
 						new Vector3f(x + density * i, 0, z + density * j), new Vector3f(0, 100, 0), sizeNoise);
 				grasses.add(grassEntity1);
 
@@ -115,7 +115,7 @@ public class EngineUtils {
 		return terrain;
 	}
 
-	public static Terrain createMultiTexTerrain(String name, int x, int y, String basicTexture, String redTexture,
+	public static ITerrain createMultiTexTerrain(String name, int x, int y, String basicTexture, String redTexture,
 			String greenTexture, String blueTexture, String blendTexture, float amplitude, int octaves, float roughness) {
 		Loader loader = Loader.getInstance();
 		TerrainTexture backgroundTexture = new TerrainTexture(basicTexture,
@@ -131,7 +131,7 @@ public class EngineUtils {
 				gTexture, bTexture);
 		TerrainTexture blendMap = new TerrainTexture(blendTexture,
 				loader.getTextureLoader().loadTexture(EngineSettings.TEXTURE_BLEND_MAP_PATH, blendTexture));
-		Terrain terrain = new ProceduredTerrain(name, x, y, texturePack, blendMap, amplitude, octaves, roughness);
+		ITerrain terrain = new ProceduredTerrain(name, x, y, texturePack, blendMap, amplitude, octaves, roughness);
 		return terrain;
 	}
 

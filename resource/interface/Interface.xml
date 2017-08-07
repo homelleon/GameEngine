@@ -76,8 +76,8 @@
 			<name>Button</name>
 			<texture>button</texture>
 			<position>
-				<x>0.5f</x>
-				<y>0</y>
+				<x>0.0f</x>
+				<y>0.0f</y>
 			</position>
 			<scale><x>1f</x>
 				<y>1f</y></scale></GUITexture>

@@ -6,68 +6,71 @@ import org.lwjgl.util.vector.Vector3f;
 
 import core.settings.EngineSettings;
 import object.audio.manager.AudioManager;
-import object.audio.manager.AudioManagerInterface;
+import object.audio.manager.IAudioManager;
 import object.audio.master.AudioMaster;
-import object.audio.master.AudioMasterInterface;
-import object.camera.CameraInterface;
-import object.entity.entity.Entity;
+import object.audio.master.IAudioMaster;
+import object.camera.ICamera;
+import object.entity.entity.IEntity;
 import object.entity.manager.EntityManager;
-import object.entity.manager.EntityManagerInterface;
-import object.entity.player.PlayerInterface;
+import object.entity.manager.IEntityManager;
+import object.entity.player.IPlayer;
 import object.gui.manager.GUIManager;
-import object.gui.manager.GUIManagerInterface;
+import object.gui.manager.IGUIManager;
+import object.light.ILightManager;
 import object.light.Light;
 import object.light.LightManager;
-import object.light.LightManagerStructured;
-import object.map.levelMap.LevelMapInterface;
-import object.map.modelMap.ModelMapInterface;
+import object.map.objectMap.IObjectManager;
 import object.particle.ParticleSystem;
+import object.particle.manager.IParticleManager;
 import object.particle.manager.ParticleManager;
-import object.particle.manager.ParticleManagerInterface;
+import object.terrain.manager.ITerrainManager;
 import object.terrain.manager.TerrainManager;
-import object.terrain.manager.TerrainManagerInterface;
-import object.terrain.terrain.Terrain;
+import object.terrain.terrain.ITerrain;
 import object.texture.Texture;
 import object.voxel.manager.ChunkManager;
-import object.voxel.manager.ChunkManagerInterface;
+import object.voxel.manager.IChunkManager;
+import object.water.manager.IWaterManager;
 import object.water.manager.WaterManager;
-import object.water.manager.WaterManagerInterface;
 import renderer.viewCulling.frustum.Frustum;
 import tool.MousePicker;
 
-public class Scene implements SceneInterface {
+public class Scene implements IScene {
 
 	private final static int CHUNK_WORLD_SIZE = 2;
-	private PlayerInterface player;
-	private CameraInterface camera;
+	private IPlayer player;
+	private ICamera camera;
 	private Light sun;
 
 	private Texture environmentMap = Texture.newEmptyCubeMap(128);
 
 	private Frustum frustum = new Frustum();
 	private MousePicker picker;
-	private AudioMasterInterface audioMaster = new AudioMaster();
+	private IAudioMaster audioMaster = new AudioMaster();
 
-	private EntityManagerInterface entityManager = new EntityManager();
-	private TerrainManagerInterface terrainManager = new TerrainManager();
-	private WaterManagerInterface waterManager = new WaterManager();
-	private ChunkManagerInterface chunkManager = new ChunkManager(CHUNK_WORLD_SIZE, new Vector3f(0, 0, 0));
-	private ParticleManagerInterface particleManager = new ParticleManager();
-	private LightManager lightManager = new LightManagerStructured();
-	private AudioManagerInterface audioManager = new AudioManager(audioMaster);
-	private GUIManagerInterface uiManager = new GUIManager();
+	private IEntityManager entityManager = new EntityManager();
+	private ITerrainManager terrainManager = new TerrainManager();
+	private IWaterManager waterManager = new WaterManager();
+	private IChunkManager chunkManager = new ChunkManager(CHUNK_WORLD_SIZE, new Vector3f(0, 0, 0));
+	private IParticleManager particleManager = new ParticleManager();
+	private ILightManager lightManager = new LightManager();
+	private IAudioManager audioManager = new AudioManager(audioMaster);
+	private IGUIManager uiManager = new GUIManager();
 
 	public Scene() {
 	}
 
-	public Scene(ModelMapInterface map, LevelMapInterface levelMap) {
-		this.getEntities().addAll(levelMap.getEntities());
-		this.getTerrains().addAll(levelMap.getTerrains());
-		this.getWaters().addAll(map.getWaters().values());
-		this.getParticles().addAll(map.getParticles().values());
-		this.getLights().addAll(map.getLights().values());
+	public Scene(IObjectManager objectMap, IObjectManager levelMap) {
+		initialize(objectMap, levelMap);
+	}
+	
+	private void initialize(IObjectManager objectMap, IObjectManager levelMap) {
+		this.getEntities().addAll(levelMap.getEntities().getAll());
+		this.getTerrains().addAll(levelMap.getTerrains().getAll());
+		//this.getWaters().addAll(objectMap.getWaters().values());
+		this.getParticles().addAll(objectMap.getParticles().getAll());
+		this.getLights().addAll(objectMap.getLights().getAll());
 		this.getAudioSources().getMaster().init();
-		this.getAudioSources().addAll(map.getAudioSources().values());
+		this.getAudioSources().addAll(objectMap.getAudioSources().getAll());
 		for (int i = 0; i < CHUNK_WORLD_SIZE * CHUNK_WORLD_SIZE * CHUNK_WORLD_SIZE; i++) {
 			for (int x = 0; x <= EngineSettings.VOXEL_CHUNK_SIZE; x++) {
 				for (int y = 0; y <= EngineSettings.VOXEL_CHUNK_SIZE; y++) {
@@ -86,22 +89,22 @@ public class Scene implements SceneInterface {
 	}
 
 	@Override
-	public PlayerInterface getPlayer() {
+	public IPlayer getPlayer() {
 		return this.player;
 	}
 
 	@Override
-	public void setPlayer(PlayerInterface player) {
+	public void setPlayer(IPlayer player) {
 		this.player = player;
 	}
 
 	@Override
-	public CameraInterface getCamera() {
+	public ICamera getCamera() {
 		return this.camera;
 	}
 
 	@Override
-	public void setCamera(CameraInterface camera) {
+	public void setCamera(ICamera camera) {
 		this.camera = camera;
 	}
 
@@ -119,7 +122,7 @@ public class Scene implements SceneInterface {
 	 * @Enitites
 	 */
 	@Override
-	public EntityManagerInterface getEntities() {
+	public IEntityManager getEntities() {
 		return this.entityManager;
 	}
 
@@ -128,7 +131,7 @@ public class Scene implements SceneInterface {
 	 */
 
 	@Override
-	public TerrainManagerInterface getTerrains() {
+	public ITerrainManager getTerrains() {
 		return this.terrainManager;
 	}
 
@@ -137,7 +140,7 @@ public class Scene implements SceneInterface {
 	 */
 
 	@Override
-	public WaterManagerInterface getWaters() {
+	public IWaterManager getWaters() {
 		return this.waterManager;
 	}
 
@@ -146,7 +149,7 @@ public class Scene implements SceneInterface {
 	 */
 
 	@Override
-	public ChunkManagerInterface getChunks() {
+	public IChunkManager getChunks() {
 		return this.chunkManager;
 	}
 
@@ -155,7 +158,7 @@ public class Scene implements SceneInterface {
 	 */
 
 	@Override
-	public ParticleManagerInterface getParticles() {
+	public IParticleManager getParticles() {
 		return this.particleManager;
 	}
 
@@ -164,7 +167,7 @@ public class Scene implements SceneInterface {
 	 */
 
 	@Override
-	public LightManager getLights() {
+	public ILightManager getLights() {
 		return this.lightManager;
 	}
 
@@ -173,12 +176,12 @@ public class Scene implements SceneInterface {
 	 */
 
 	@Override
-	public AudioManagerInterface getAudioSources() {
+	public IAudioManager getAudioSources() {
 		return this.audioManager;
 	}
 
 	@Override
-	public GUIManagerInterface getUserInterface() {
+	public IGUIManager getUserInterface() {
 		return this.uiManager;
 	}
 
@@ -198,12 +201,12 @@ public class Scene implements SceneInterface {
 	}
 
 	@Override
-	public void spreadEntitiesOnHeights(Collection<Entity> entityList) {
+	public void spreadEntitiesOnHeights(Collection<IEntity> entityList) {
 		if (!entityList.isEmpty()) {
-			for (Entity entity : entityList) {
+			for (IEntity entity : entityList) {
 				float terrainHeight = 0;
 
-				for (Terrain terrain : this.terrainManager.getAll()) {
+				for (ITerrain terrain : this.terrainManager.getAll()) {
 					terrainHeight += terrain.getHeightOfTerrain(entity.getPosition().x, entity.getPosition().z);
 				}
 				entity.setPosition(new Vector3f(entity.getPosition().x, terrainHeight, entity.getPosition().z));
@@ -217,7 +220,7 @@ public class Scene implements SceneInterface {
 			for (ParticleSystem system : systems) {
 				float terrainHeight = 0;
 
-				for (Terrain terrain : this.terrainManager.getAll()) {
+				for (ITerrain terrain : this.terrainManager.getAll()) {
 					terrainHeight += terrain.getHeightOfTerrain(system.getPosition().x, system.getPosition().z);
 				}
 				system.setPosition(new Vector3f(system.getPosition().x, terrainHeight, system.getPosition().z));
@@ -229,12 +232,12 @@ public class Scene implements SceneInterface {
 	public void clean() {
 		this.environmentMap.delete();
 		this.entityManager.clean();
-		this.terrainManager.clearAll();
+		this.terrainManager.clean();
 		this.waterManager.clearAll();
 		this.chunkManager.clearAll();
-		this.particleManager.clearAll();
-		this.lightManager.clearAll();
-		this.audioManager.clearAll();
+		this.particleManager.clean();
+		this.lightManager.clean();
+		this.audioManager.clean();
 		this.uiManager.cleanAll();
 	}
 

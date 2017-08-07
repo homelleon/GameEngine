@@ -10,23 +10,23 @@ import org.w3c.dom.Document;
 import core.settings.EngineSettings;
 import object.gui.font.TextMeshData;
 import object.gui.font.manager.FontManager;
-import object.gui.font.manager.FontManagerInterface;
+import object.gui.font.manager.IFontManager;
 import object.gui.text.GUIText;
 import object.gui.text.parser.GUITextXMLParser;
 import renderer.loader.Loader;
 import tool.xml.loader.XMLFileLoader;
-import tool.xml.loader.XMLLoaderInterface;
-import tool.xml.parser.ListParserInterface;
+import tool.xml.loader.IXMLLoader;
+import tool.xml.parser.IListParser;
 
 /**
  * Manager for text that rendered in the screen.
  * 
  * @author homelleon
- * @see GUITextManagerInterface
+ * @see IGUITextManager
  */
-public class GUITextManager implements GUITextManagerInterface {
+public class GUITextManager implements IGUITextManager {
 
-	private FontManagerInterface fontManager;
+	private IFontManager fontManager;
 	private Map<String, GUIText> texts = new HashMap<String, GUIText>();
 
 	/**
@@ -96,21 +96,21 @@ public class GUITextManager implements GUITextManagerInterface {
 	}
 
 	@Override
-	public FontManagerInterface getFonts() {
+	public IFontManager getFonts() {
 		return fontManager;
 	}
 
 	@Override
 	public void readFile(String fileName) {
-		XMLLoaderInterface xmlLoader = new XMLFileLoader(
+		IXMLLoader xmlLoader = new XMLFileLoader(
 				EngineSettings.INTERFACE_PATH + fileName + EngineSettings.EXTENSION_XML);
-		ListParserInterface<GUIText> parser = new GUITextXMLParser(xmlLoader.load());
+		IListParser<GUIText> parser = new GUITextXMLParser(xmlLoader.load());
 		this.addAll(parser.parse());
 	}
 
 	@Override
 	public void readDocument(Document document) {
-		ListParserInterface<GUIText> parser = new GUITextXMLParser(document);
+		IListParser<GUIText> parser = new GUITextXMLParser(document);
 		this.addAll(parser.parse());		
 	}
 

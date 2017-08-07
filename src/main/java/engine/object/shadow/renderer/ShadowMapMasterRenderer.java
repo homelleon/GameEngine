@@ -10,14 +10,14 @@ import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
 import core.settings.EngineSettings;
-import object.camera.CameraInterface;
-import object.entity.entity.Entity;
+import object.camera.ICamera;
+import object.entity.entity.IEntity;
 import object.light.Light;
 import object.model.TexturedModel;
 import object.shadow.ShadowBox;
 import object.shadow.ShadowFrameBuffer;
 import object.shadow.ShadowMapTerrainRenderer;
-import object.terrain.terrain.Terrain;
+import object.terrain.terrain.ITerrain;
 import shader.shadow.ShadowShader;
 
 /**
@@ -53,7 +53,7 @@ public class ShadowMapMasterRenderer {
 	 * @param camera
 	 *            - the camera being used in the scene.
 	 */
-	public ShadowMapMasterRenderer(CameraInterface camera) {
+	public ShadowMapMasterRenderer(ICamera camera) {
 		shader = new ShadowShader();
 		shadowBox = new ShadowBox(lightViewMatrix, camera);
 		shadowFbo = new ShadowFrameBuffer(EngineSettings.SHADOW_MAP_SIZE, EngineSettings.SHADOW_MAP_SIZE);
@@ -76,8 +76,8 @@ public class ShadowMapMasterRenderer {
 	 * @param sun
 	 *            - the light acting as the sun in the scene.
 	 */
-	public void render(Map<TexturedModel, List<Entity>> entities, Collection<Terrain> terrains,
-			Map<TexturedModel, List<Entity>> normalMapEntities, Light sun, CameraInterface camera) {
+	public void render(Map<TexturedModel, List<IEntity>> entities, Collection<ITerrain> terrains,
+			Map<TexturedModel, List<IEntity>> normalMapEntities, Light sun, ICamera camera) {
 		shadowBox.update();
 		Vector3f sunPosition = sun.getPosition();
 		Vector3f lightDirection = new Vector3f(-sunPosition.x, -sunPosition.y, -sunPosition.z);

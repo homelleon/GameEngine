@@ -13,18 +13,19 @@ import core.EngineMain;
 import core.display.DisplayManager;
 import core.settings.EngineSettings;
 import object.gui.gui.GUI;
-import object.gui.gui.GUIInterface;
+import object.gui.gui.IGUI;
 import object.gui.pattern.object.GUIObject;
 import object.gui.text.GUIText;
 import object.gui.texture.GUITexture;
 import object.input.Controls;
-import object.input.ControlsInterface;
+import object.input.IControls;
 import object.input.KeyboardGame;
-import object.map.modelMap.ModelMap;
-import object.map.modelMap.ModelMapWriterInterface;
-import object.map.modelMap.ModelMapXMLWriter;
+import object.map.objectMap.IObjectManager;
+import object.map.objectMap.ObjectMapManager;
+import object.map.writer.IModelMapWriter;
+import object.map.writer.ModelMapXMLWriter;
 import object.particle.master.ParticleMaster;
-import object.scene.scene.SceneInterface;
+import object.scene.scene.IScene;
 import object.water.WaterFrameBuffers;
 import renderer.loader.Loader;
 import renderer.object.main.MainRenderer;
@@ -51,10 +52,10 @@ public class SceneRenderer {
 	private Fbo outputFbo;
 	private Fbo outputFbo2;
 	private MousePicker picker;
-	private SceneInterface scene;
-	private ControlsInterface controls;
+	private IScene scene;
+	private IControls controls;
 
-	public void initialize(SceneInterface scene) {
+	public void initialize(IScene scene) {
 		this.scene = scene;
 		this.masterRenderer = new MainRenderer(scene.getCamera());
 		ParticleMaster.init(masterRenderer.getProjectionMatrix());
@@ -90,10 +91,10 @@ public class SceneRenderer {
 	private void saveMap(Loader loader) {
 		if (KeyboardGame.isKeyPressed(Keyboard.KEY_T)) {
 			EngineMain.pauseEngine(true);
-			ModelMapWriterInterface mapWriter = new ModelMapXMLWriter();
-			ModelMap map = new ModelMap("newMap");
-			map.setEntities(scene.getEntities().getAll());
-			map.setTerrains(scene.getTerrains().getAll());
+			IModelMapWriter mapWriter = new ModelMapXMLWriter();
+			IObjectManager map = new ObjectMapManager("newMap");
+			map.getEntities().addAll(scene.getEntities().getAll());
+			map.getTerrains().addAll(scene.getTerrains().getAll());
 			mapWriter.write(map, loader);
 			System.out.println("save");
 			EngineMain.pauseEngine(false);
@@ -168,7 +169,7 @@ public class SceneRenderer {
 		List<GUIText> textList = new ArrayList<GUIText>();
 		textList.add(fpsText);
 		textList.add(coordsText);
-		GUIInterface statusInterface = new GUI("status", textureList, textList);
+		IGUI statusInterface = new GUI("status", textureList, textList);
 		scene.getUserInterface().getGroups().createEmpty("statusGroup");
 		scene.getUserInterface().getGroups().get("statusGroup").add(statusInterface);
 		((GUIObject) scene.getUserInterface().getGroups().get("statusGroup")).show();

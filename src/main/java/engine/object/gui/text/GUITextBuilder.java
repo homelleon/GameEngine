@@ -2,7 +2,7 @@ package object.gui.text;
 
 import org.lwjgl.util.vector.Vector2f;
 
-public class GUITextBuilder implements GUITextBuilderInterface {
+public class GUITextBuilder implements IGUITextBuilder {
 
 	private String name;
 	private String text;
@@ -13,43 +13,43 @@ public class GUITextBuilder implements GUITextBuilderInterface {
 	private boolean isCentered;
 
 	@Override
-	public GUITextBuilderInterface setName(String name) {
+	public IGUITextBuilder setName(String name) {
 		this.name = name;
 		return this;
 	}
 
 	@Override
-	public GUITextBuilderInterface setContent(String text) {
+	public IGUITextBuilder setContent(String text) {
 		this.text = text;
 		return this;
 	}
 
 	@Override
-	public GUITextBuilderInterface setFontName(String fontName) {
+	public IGUITextBuilder setFontName(String fontName) {
 		this.fontName = fontName;
 		return this;
 	}
 
 	@Override
-	public GUITextBuilderInterface setFontSize(float fontSize) {
+	public IGUITextBuilder setFontSize(float fontSize) {
 		this.fontSize = fontSize;
 		return this;
 	}
 
 	@Override
-	public GUITextBuilderInterface setPosition(Vector2f position) {
+	public IGUITextBuilder setPosition(Vector2f position) {
 		this.position = position;
 		return this;
 	}
 
 	@Override
-	public GUITextBuilderInterface setLineMaxSize(float lineSize) {
+	public IGUITextBuilder setLineMaxSize(float lineSize) {
 		this.lineSize = lineSize;
 		return this;
 	}
 
 	@Override
-	public GUITextBuilderInterface setCentered(boolean value) {
+	public IGUITextBuilder setCentered(boolean value) {
 		this.isCentered = value;
 		return this;
 	}

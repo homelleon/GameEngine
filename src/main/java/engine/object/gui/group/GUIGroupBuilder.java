@@ -3,20 +3,20 @@ package object.gui.group;
 import java.util.ArrayList;
 import java.util.List;
 
-import object.gui.gui.GUIInterface;
+import object.gui.gui.IGUI;
 
-public class GUIGroupBuilder implements GUIGroupBuilderInterface {
+public class GUIGroupBuilder implements IGUIGroupBuilder {
 	
-	private List<GUIInterface> guis = new ArrayList<GUIInterface>();
+	private List<IGUI> guis = new ArrayList<IGUI>();
 
 	@Override
-	public GUIGroupBuilderInterface setGUI(GUIInterface gui) {
+	public IGUIGroupBuilder setGUI(IGUI gui) {
 		this.guis.add(gui);
 		return this;
 	}
 
 	@Override
-	public GUIGroupInterface getGUIGroup(String name) {
+	public IGUIGroup getGUIGroup(String name) {
 		if(guis.isEmpty()) {
 			return new GUIGroup(name);
 		} else {

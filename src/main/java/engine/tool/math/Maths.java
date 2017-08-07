@@ -4,9 +4,9 @@ import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
-import object.camera.CameraInterface;
-import object.entity.entity.Entity;
-import object.terrain.terrain.Terrain;
+import object.camera.ICamera;
+import object.entity.entity.IEntity;
+import object.terrain.terrain.ITerrain;
 
 public class Maths {
 
@@ -37,7 +37,7 @@ public class Maths {
 		return matrix;
 	}
 
-	public static Matrix4f createViewMatrix(CameraInterface camera) {
+	public static Matrix4f createViewMatrix(ICamera camera) {
 		Matrix4f viewMatrix = new Matrix4f();
 		viewMatrix.setIdentity();
 		Matrix4f.rotate((float) Math.toRadians(camera.getPitch()), new Vector3f(1, 0, 0), viewMatrix, viewMatrix);
@@ -107,12 +107,12 @@ public class Maths {
 	}
 
 	/* distance from camera to entity */
-	public static float distanceFromCamera(Entity entity, CameraInterface camera) {
+	public static float distanceFromCamera(IEntity entity, ICamera camera) {
 		return distance2Points(entity.getPosition(), camera.getPosition());
 	}
 
 	/* distance from camera to terrain */
-	public static float distanceFromCamera(Terrain terrain, CameraInterface camera) {
+	public static float distanceFromCamera(ITerrain terrain, ICamera camera) {
 		float distance = 0;
 
 		float cX = camera.getPosition().x;

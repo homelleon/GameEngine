@@ -8,7 +8,7 @@ import core.settings.EngineSettings;
 import object.gui.font.FontType;
 import renderer.loader.Loader;
 
-public class FontManager implements FontManagerInterface {
+public class FontManager implements IFontManager {
 
 	private Map<String, FontType> fonts = new HashMap<String, FontType>();
 

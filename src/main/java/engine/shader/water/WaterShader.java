@@ -4,7 +4,7 @@ import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 
 import core.settings.EngineSettings;
-import object.camera.CameraInterface;
+import object.camera.ICamera;
 import object.light.Light;
 import shader.ShaderProgram;
 import tool.math.Maths;
@@ -99,7 +99,7 @@ public class WaterShader extends ShaderProgram {
 		loadMatrix(location_projectionMatrix, projection);
 	}
 
-	public void loadViewMatrix(CameraInterface camera) {
+	public void loadViewMatrix(ICamera camera) {
 		Matrix4f viewMatrix = Maths.createViewMatrix(camera);
 		loadMatrix(location_viewMatrix, viewMatrix);
 		super.loadVector(location_cameraPosition, camera.getPosition());

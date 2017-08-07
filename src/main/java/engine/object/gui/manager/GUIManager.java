@@ -2,49 +2,50 @@ package object.gui.manager;
 
 import core.debug.EngineDebug;
 import object.gui.component.GUIComponentManager;
-import object.gui.component.GUIComponentManagerInterface;
+import object.gui.component.IGUIComponentManager;
 import object.gui.group.manager.GUIGroupManager;
-import object.gui.group.manager.GUIGroupManagerInterface;
+import object.gui.group.manager.IGUIGroupManager;
 import object.gui.pattern.menu.system.GUIMenuSystem;
-import object.gui.pattern.menu.system.GUIMenuSystemInterface;
+import object.gui.pattern.menu.system.IGUIMenuSystem;
 
-public class GUIManager implements GUIManagerInterface {
+public class GUIManager implements IGUIManager {
 
 	private static final String GUI_FILE_NAME = "interface";
 	private static final String GUI_MENU_NAME = "menu";
 
-	GUIComponentManagerInterface componentManager;
-	GUIMenuSystemInterface menuSystem;
-	GUIGroupManagerInterface groupManager;
+	IGUIComponentManager componentManager;
+	IGUIMenuSystem menuSystem;
+	IGUIGroupManager groupManager;
 	
 
 	@Override
 	public void initialize() {
 		if (EngineDebug.hasDebugPermission()) {
-			System.out.println("Prepare User Interface...");
+			System.out.println("Loading User Interface...");
 		}
 		this.componentManager = new GUIComponentManager(GUI_FILE_NAME);
 		this.menuSystem = new GUIMenuSystem();
 		this.groupManager = new GUIGroupManager(this.componentManager);
 		if (EngineDebug.hasDebugPermission()) {
-			System.out.println("done!");
+			System.out.println("Loading complete!");
+			System.out.println("-------------------------");
 		}
 	}
 	
 	@Override
-	public GUIGroupManagerInterface getGroups() {
+	public IGUIGroupManager getGroups() {
 		return groupManager;
 	}
 	
 	
 	@Override
-	public GUIMenuSystemInterface getMenus() {
+	public IGUIMenuSystem getMenus() {
 		return this.menuSystem;
 	}
 
 
 	@Override
-	public GUIComponentManagerInterface getComponent() {
+	public IGUIComponentManager getComponent() {
 		return this.componentManager;
 	}
 

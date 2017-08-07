@@ -13,10 +13,10 @@ import object.gui.texture.GUITexture;
  * together.
  * 
  * @author homelleon
- * @see GUIInterface
+ * @see IGUI
  *
  */
-public class GUI extends GUIObject implements GUIInterface {
+public class GUI extends GUIObject implements IGUI {
 
 	private List<GUITexture> guiTextures;
 	private List<GUIText> guiTexts;

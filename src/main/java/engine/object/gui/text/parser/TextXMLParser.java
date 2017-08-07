@@ -5,10 +5,10 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import tool.xml.XMLUtils;
-import tool.xml.parser.ObjectParserInterface;
+import tool.xml.parser.IObjectParser;
 import tool.xml.parser.XMLParser;
 
-public class TextXMLParser extends XMLParser implements ObjectParserInterface<String> {
+public class TextXMLParser extends XMLParser implements IObjectParser<String> {
 
 	public TextXMLParser(Document document) {
 		super(document);

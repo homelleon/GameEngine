@@ -12,18 +12,18 @@ import org.lwjgl.opengl.GL14;
 import org.lwjgl.opengl.GL30;
 
 import object.camera.CameraCubeMap;
-import object.camera.CameraInterface;
-import object.entity.entity.Entity;
+import object.camera.ICamera;
+import object.entity.entity.IEntity;
 import object.model.TexturedModel;
-import object.scene.scene.SceneInterface;
+import object.scene.scene.IScene;
 import renderer.object.main.MainRenderer;
 
 public class EnvironmentMapRenderer {
 
-	Map<TexturedModel, List<Entity>> entities = new HashMap<TexturedModel, List<Entity>>();
+	Map<TexturedModel, List<IEntity>> entities = new HashMap<TexturedModel, List<IEntity>>();
 
-	public void render(SceneInterface scene, MainRenderer renderer, Entity shinyEntity) {
-		CameraInterface cubeCamera = new CameraCubeMap(shinyEntity.getPosition());
+	public void render(IScene scene, MainRenderer renderer, IEntity shinyEntity) {
+		ICamera cubeCamera = new CameraCubeMap(shinyEntity.getPosition());
 		int fbo = GL30.glGenFramebuffers();
 		GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, fbo);
 		GL11.glDrawBuffer(GL30.GL_COLOR_ATTACHMENT0);
@@ -36,7 +36,7 @@ public class EnvironmentMapRenderer {
 				depthBuffer);
 
 		GL11.glViewport(0, 0, scene.getEnvironmentMap().size, scene.getEnvironmentMap().size);
-		for (Entity entity : scene.getEntities().getAll()) {
+		for (IEntity entity : scene.getEntities().getAll()) {
 			if (entity != shinyEntity) {
 				processEntity(entity);
 			}
@@ -58,13 +58,13 @@ public class EnvironmentMapRenderer {
 		entities.clear();
 	}
 
-	public void processEntity(Entity entity) {
+	public void processEntity(IEntity entity) {
 		TexturedModel entityModel = entity.getModel();
-		List<Entity> batch = entities.get(entityModel);
+		List<IEntity> batch = entities.get(entityModel);
 		if (batch != null) {
 			batch.add(entity);
 		} else {
-			List<Entity> newBatch = new ArrayList<Entity>();
+			List<IEntity> newBatch = new ArrayList<IEntity>();
 			newBatch.add(entity);
 			entities.put(entityModel, newBatch);
 		}

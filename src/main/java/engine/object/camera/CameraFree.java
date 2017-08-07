@@ -8,7 +8,7 @@ import org.lwjgl.util.vector.Vector3f;
 import core.display.DisplayManager;
 import core.settings.EngineSettings;
 
-public class CameraFree implements CameraInterface {
+public class CameraFree implements ICamera {
 
 	/*
 	 * CameraFree - свободная камера

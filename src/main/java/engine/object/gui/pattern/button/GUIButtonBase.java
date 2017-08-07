@@ -3,23 +3,23 @@ package object.gui.pattern.button;
 import org.lwjgl.util.vector.Vector2f;
 
 import core.debug.EngineDebug;
-import object.gui.gui.GUIInterface;
+import object.gui.gui.IGUI;
 import object.gui.pattern.object.GUIObject;
 import tool.math.Maths;
 
 /**
  * 
  * @author homelleon
- * @see GUIButtonInterface
+ * @see IGUIButton
  */
-public abstract class GUIButtonBase extends GUIObject implements GUIButtonInterface {
+public abstract class GUIButtonBase extends GUIObject implements IGUIButton {
 
-	protected GUIInterface gui;
+	protected IGUI gui;
 	protected boolean isSelected = false;
 	protected Vector2f point1;
 	protected Vector2f point2;
 
-	protected GUIButtonBase(String name, GUIInterface gui, Vector2f point1, Vector2f point2) {
+	protected GUIButtonBase(String name, IGUI gui, Vector2f point1, Vector2f point2) {
 		super(name);
 		this.gui = gui;
 		this.point1 = point1;

@@ -5,15 +5,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import object.gui.gui.GUIInterface;
+import object.gui.gui.IGUI;
 import object.gui.pattern.object.GUIObject;
 
-public class GUIGroup extends GUIObject implements GUIGroupInterface {
+public class GUIGroup extends GUIObject implements IGUIGroup {
 
 	private int priorityNumber = 0;
-	private Map<String, GUIInterface> guis = new HashMap<String, GUIInterface>();
+	private Map<String, IGUI> guis = new HashMap<String, IGUI>();
 
-	public GUIGroup(String name, List<GUIInterface> guiList) {
+	public GUIGroup(String name, List<IGUI> guiList) {
 		super(name);
 		if (!guiList.isEmpty()) {
 			guiList.forEach(gui -> this.guis.put(gui.getName(), gui));
@@ -41,18 +41,18 @@ public class GUIGroup extends GUIObject implements GUIGroupInterface {
 	}
 
 	@Override
-	public void add(GUIInterface gui) {
+	public void add(IGUI gui) {
 		this.guis.put(gui.getName(), gui);
 	}
 
 	@Override
-	public void addAll(List<GUIInterface> guiList) {
+	public void addAll(List<IGUI> guiList) {
 		guiList.forEach(gui -> this.guis.put(gui.getName(), gui));
 	}
 
 	@Override
-	public GUIInterface get(String name) {
-		GUIInterface gui = null;
+	public IGUI get(String name) {
+		IGUI gui = null;
 		if (!guis.isEmpty()) {
 			gui = this.guis.get(name);
 		}
@@ -60,7 +60,7 @@ public class GUIGroup extends GUIObject implements GUIGroupInterface {
 	}
 
 	@Override
-	public Collection<GUIInterface> getAll() {
+	public Collection<IGUI> getAll() {
 		return guis.values();
 	}
 
@@ -77,7 +77,7 @@ public class GUIGroup extends GUIObject implements GUIGroupInterface {
 	@Override
 	public void clean() {
 		if (!guis.isEmpty()) {
-			for (GUIInterface gui : guis.values()) {
+			for (IGUI gui : guis.values()) {
 				gui.clean();
 			}
 		}

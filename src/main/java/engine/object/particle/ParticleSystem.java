@@ -10,7 +10,7 @@ import core.display.DisplayManager;
 import object.particle.particle.Particle;
 import object.texture.particle.ParticleTexture;
 
-public class ParticleSystem {
+public class ParticleSystem implements IParticleSystem {
 
 	private String name;
 
@@ -38,17 +38,12 @@ public class ParticleSystem {
 		this.position = new Vector3f(0, 0, 0);
 	}
 
+	@Override
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * @param direction
-	 *            - The average direction in which particles are emitted.
-	 * @param deviation
-	 *            - A value between 0 and 1 indicating how far from the chosen
-	 *            direction particles can deviate.
-	 */
+	@Override
 	public void setDirection(Vector3f direction, float deviation) {
 		this.direction = new Vector3f(direction);
 		this.directionDeviation = (float) (deviation * Math.PI);
@@ -58,38 +53,32 @@ public class ParticleSystem {
 		randomRotation = true;
 	}
 
-	/**
-	 * @param error
-	 *            - A number between 0 and 1, where 0 means no error margin.
-	 */
+	@Override
 	public void setSpeedError(float error) {
 		this.speedError = error * averageSpeed;
 	}
 
-	/**
-	 * @param error
-	 *            - A number between 0 and 1, where 0 means no error margin.
-	 */
+	@Override
 	public void setLifeError(float error) {
 		this.lifeError = error * averageLifeLength;
 	}
 
-	/**
-	 * @param error
-	 *            - A number between 0 and 1, where 0 means no error margin.
-	 */
+	@Override
 	public void setScaleError(float error) {
 		this.scaleError = error * averageScale;
 	}
 
+	@Override
 	public void setPosition(Vector3f position) {
 		this.position = position;
 	}
 
+	@Override
 	public Vector3f getPosition() {
 		return position;
 	}
 
+	@Override
 	public void generateParticles() {
 		float delta = DisplayManager.getFrameTimeSeconds();
 		float particlesToCreate = pps * delta;

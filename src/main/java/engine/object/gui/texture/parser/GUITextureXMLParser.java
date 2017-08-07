@@ -12,12 +12,12 @@ import org.w3c.dom.NodeList;
 import core.debug.EngineDebug;
 import object.gui.texture.GUITexture;
 import object.gui.texture.GUITextureBuilder;
-import object.gui.texture.GUITextureBuilderInterface;
+import object.gui.texture.IGUITextureBuilder;
 import tool.xml.XMLUtils;
-import tool.xml.parser.ListParserInterface;
+import tool.xml.parser.IListParser;
 import tool.xml.parser.XMLParser;
 
-public class GUITextureXMLParser extends XMLParser implements ListParserInterface<GUITexture> {
+public class GUITextureXMLParser extends XMLParser implements IListParser<GUITexture> {
 
 	public GUITextureXMLParser(Document document) {
 		super(document);
@@ -33,17 +33,16 @@ public class GUITextureXMLParser extends XMLParser implements ListParserInterfac
 			if (XMLUtils.ifNodeIsElement(node, XMLUtils.GUI_TEXTURES)) {
 				textureList = createTexture(node);
 			}
-		}
+		}		
 		if (EngineDebug.hasDebugPermission()) {
-			System.out.println("Loading complete!");
+			System.out.println("---");
 		}
-
 		return textureList;
 	}
 
 	private List<GUITexture> createTexture(Node node) {
 		if (EngineDebug.hasDebugPermission()) {
-			System.out.println("Loading GUI textures...");
+			System.out.println("> Loading GUI textures...");
 		}
 		List<GUITexture> textureList = new ArrayList<GUITexture>();
 		Node guiTextures = node;
@@ -70,17 +69,17 @@ public class GUITextureXMLParser extends XMLParser implements ListParserInterfac
 						System.err.println("error id order!");
 					}
 				}
-				GUITextureBuilderInterface builder = new GUITextureBuilder();
+				IGUITextureBuilder builder = new GUITextureBuilder();
 				builder.setName(name).setTextureName(textureName).setPosition(position).setScale(scale);
 				GUITexture guiTexture = builder.getTexture();
 				textureList.add(guiTexture);
 				if (EngineDebug.hasDebugPermission()) {
-					System.out.println(guiTexture.getName());
+					System.out.println(">> " + guiTexture.getName());
 				}
 			}
 		}
 		if (EngineDebug.hasDebugPermission()) {
-			System.out.println("Succed!");
+			System.out.println("> Succed!");
 		}
 
 		return textureList;

@@ -23,7 +23,7 @@ public abstract class EntityBuilder {
 		return this;
 	}
 	
-	public EntityBuilder setNormaTexture(String textureName) {
+	public EntityBuilder setNormalTexture(String textureName) {
 		this.normalTextureName = textureName;
 		return this;
 	}
@@ -58,6 +58,6 @@ public abstract class EntityBuilder {
 		return this;
 	}
 
-	public abstract Entity createEntity(String name);
+	public abstract IEntity createEntity(String name);
 
 }

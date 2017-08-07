@@ -20,9 +20,9 @@ import tool.math.Maths;
  * Terrain class representing landscape plane.
  * 
  * @author homelleon
- * @see Terrain
+ * @see ITerrain
  */
-public class MappedTerrain implements Terrain {
+public class MappedTerrain implements ITerrain {
 
 	private static final float SIZE = 500;
 	private static final float MAX_HEIGHT = 1000;
@@ -182,7 +182,7 @@ public class MappedTerrain implements Terrain {
 	
 
 	@Override
-	public Terrain clone(String name) {
+	public ITerrain clone(String name) {
 		int gridX = (int) (this.x / SIZE);
 		int gridZ = (int) (this.z / SIZE);
 		return new MappedTerrain(name, gridX, gridZ, this.texturePack,this.blendMap,this.heightMapName);

@@ -8,36 +8,36 @@ import java.util.Map;
 
 import org.lwjgl.util.vector.Vector2f;
 
-import object.gui.pattern.button.GUIButtonInterface;
+import object.gui.pattern.button.IGUIButton;
 
-public class GUIButtonManager implements GUIButtonManagerInterface {
+public class GUIButtonManager implements IGUIButtonManager {
 
-	private Map<String, GUIButtonInterface> buttons = new HashMap<String, GUIButtonInterface>();
+	private Map<String, IGUIButton> buttons = new HashMap<String, IGUIButton>();
 
 	@Override
-	public GUIButtonInterface get(String name) {
+	public IGUIButton get(String name) {
 		return this.buttons.get(name);
 	}
 
 	@Override
-	public Collection<GUIButtonInterface> getAll() {
+	public Collection<IGUIButton> getAll() {
 		return this.buttons.values();
 	}
 
 	@Override
-	public void add(GUIButtonInterface button) {
+	public void add(IGUIButton button) {
 		this.buttons.put(button.getName(), button);
 	}
 
 	@Override
-	public void addAll(List<GUIButtonInterface> buttonList) {
+	public void addAll(List<IGUIButton> buttonList) {
 		buttonList.forEach(button -> this.buttons.put(button.getName(), button));
 	}
 
 	@Override
-	public List<GUIButtonInterface> getMouseOverButton(Vector2f mouseCoord) {
-		List<GUIButtonInterface> buttonList = new ArrayList<GUIButtonInterface>();
-		for (GUIButtonInterface button : this.buttons.values()) {
+	public List<IGUIButton> getMouseOverButton(Vector2f mouseCoord) {
+		List<IGUIButton> buttonList = new ArrayList<IGUIButton>();
+		for (IGUIButton button : this.buttons.values()) {
 			if (button.getIsMouseOver(mouseCoord)) {
 				buttonList.add(button);
 			}

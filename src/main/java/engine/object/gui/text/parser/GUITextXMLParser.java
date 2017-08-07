@@ -14,12 +14,12 @@ import core.debug.EngineDebug;
 import core.settings.EngineSettings;
 import object.gui.text.GUIText;
 import object.gui.text.GUITextBuilder;
-import object.gui.text.GUITextBuilderInterface;
+import object.gui.text.IGUITextBuilder;
 import tool.xml.XMLUtils;
 import tool.xml.loader.XMLFileLoader;
-import tool.xml.loader.XMLLoaderInterface;
-import tool.xml.parser.ListParserInterface;
-import tool.xml.parser.ObjectParserInterface;
+import tool.xml.loader.IXMLLoader;
+import tool.xml.parser.IListParser;
+import tool.xml.parser.IObjectParser;
 import tool.xml.parser.XMLParser;
 
 /**
@@ -28,7 +28,7 @@ import tool.xml.parser.XMLParser;
  * @author homelleon
  * @see GUITextParserInterface
  */
-public class GUITextXMLParser extends XMLParser implements ListParserInterface<GUIText> {
+public class GUITextXMLParser extends XMLParser implements IListParser<GUIText> {
 
 	/**
 	 * Constracts parser with document and textMaster.
@@ -44,7 +44,6 @@ public class GUITextXMLParser extends XMLParser implements ListParserInterface<G
 
 	@Override
 	public List<GUIText> parse() {
-
 		NodeList nodeList = this.document.getDocumentElement().getChildNodes();
 		List<GUIText> textList = new ArrayList<GUIText>();
 
@@ -55,7 +54,7 @@ public class GUITextXMLParser extends XMLParser implements ListParserInterface<G
 			}
 		}
 		if (EngineDebug.hasDebugPermission()) {
-			System.out.println("Loading complete!");
+			System.out.println("---");
 		}
 
 		return textList;
@@ -68,7 +67,7 @@ public class GUITextXMLParser extends XMLParser implements ListParserInterface<G
 	 */
 	private List<GUIText> createText(Node node) {
 		if (EngineDebug.hasDebugPermission()) {
-			System.out.println("Loading texts...");
+			System.out.println("> Loading GUI texts...");
 		}
 
 		List<GUIText> textList = new ArrayList<GUIText>();
@@ -105,9 +104,9 @@ public class GUITextXMLParser extends XMLParser implements ListParserInterface<G
 					}
 				}
 				Vector3f color = new Vector3f(r, g, b);
-				XMLLoaderInterface xmlLoader = new XMLFileLoader(
+				IXMLLoader xmlLoader = new XMLFileLoader(
 						EngineSettings.TEXT_PATH + path + EngineSettings.EXTENSION_XML);
-				ObjectParserInterface<String> textParser = new TextXMLParser(xmlLoader.load());
+				IObjectParser<String> textParser = new TextXMLParser(xmlLoader.load());
 				String text = textParser.parse();
 				count++;
 				if (EngineDebug.hasDebugPermission()) {
@@ -115,19 +114,19 @@ public class GUITextXMLParser extends XMLParser implements ListParserInterface<G
 						System.err.println("error id order!");
 					}
 				}
-				GUITextBuilderInterface builder = new GUITextBuilder();
+				IGUITextBuilder builder = new GUITextBuilder();
 				builder.setName(name).setContent(text).setFontSize(size).setFontName(fontName).setPosition(position)
 						.setLineMaxSize(maxLength).setCentered(isCentered);
 				GUIText guiText = builder.getText();
 				guiText.setColour(color);
 				textList.add(guiText);
 				if (EngineDebug.hasDebugPermission()) {
-					System.out.println(guiText.getName());
+					System.out.println(">> " + guiText.getName());
 				}
 			}
 		}
 		if (EngineDebug.hasDebugPermission()) {
-			System.out.println("Succed!");
+			System.out.println("> Succed!");
 		}
 
 		return textList;

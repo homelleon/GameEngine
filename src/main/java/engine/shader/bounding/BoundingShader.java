@@ -3,7 +3,7 @@ package shader.bounding;
 import org.lwjgl.util.vector.Matrix4f;
 
 import core.settings.EngineSettings;
-import object.camera.CameraInterface;
+import object.camera.ICamera;
 import shader.ShaderProgram;
 import tool.math.Maths;
 
@@ -39,7 +39,7 @@ public class BoundingShader extends ShaderProgram {
 		super.loadMatrix(location_transformationMatrix, matrix);
 	}
 
-	public void loadViewMatrix(CameraInterface camera) {
+	public void loadViewMatrix(ICamera camera) {
 		Matrix4f viewMatrix = Maths.createViewMatrix(camera);
 		super.loadMatrix(location_viewMatrix, viewMatrix);
 	}

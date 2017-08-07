@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import core.settings.EngineSettings;
-import object.entity.entity.Entity;
+import object.entity.entity.IEntity;
 import renderer.viewCulling.frustum.Frustum;
 
 /**
@@ -26,35 +26,35 @@ import renderer.viewCulling.frustum.Frustum;
  * @version 1.0
  * 
  */
-public class EntityManager implements EntityManagerInterface {
+public class EntityManager implements IEntityManager {
 
-	public Map<String, Entity> allEntities = new HashMap<String, Entity>();
-	public Map<Float, List<Entity>> frustumEntities = new HashMap<Float, List<Entity>>();
-	public List<Entity> pointedEntities = new ArrayList<Entity>();
-	public List<Entity> editorEntities = new ArrayList<Entity>();
+	public Map<String, IEntity> allEntities = new HashMap<String, IEntity>();
+	public Map<Float, List<IEntity>> frustumEntities = new HashMap<Float, List<IEntity>>();
+	public List<IEntity> pointedEntities = new ArrayList<IEntity>();
+	public List<IEntity> editorEntities = new ArrayList<IEntity>();
 
 	@Override
-	public void addAll(List<Entity> elementList) {
+	public void addAll(List<IEntity> elementList) {
 		if ((elementList != null) && (!elementList.isEmpty())) {
-			for (Entity entity : elementList) {
+			for (IEntity entity : elementList) {
 				this.allEntities.put(entity.getName(), entity);
 			}
 		}
 	}
 	
 	@Override
-	public void addAll(Collection<Entity> elementList) {
+	public void addAll(Collection<IEntity> elementList) {
 		if ((elementList != null) && (!elementList.isEmpty())) {
-			for (Entity entity : elementList) {
+			for (IEntity entity : elementList) {
 				this.allEntities.put(entity.getName(), entity);
 			}
 		}
 	}
 
 	@Override
-	public void addPointedList(Collection<Entity> pointedList) {
+	public void addPointedList(Collection<IEntity> pointedList) {
 		if ((pointedList != null) && (!pointedList.isEmpty())) {
-			for (Entity entity : pointedList) {
+			for (IEntity entity : pointedList) {
 				entity.setIsChosen(true);
 				this.pointedEntities.add(entity);
 			}
@@ -62,7 +62,7 @@ public class EntityManager implements EntityManagerInterface {
 	}
 
 	@Override
-	public void setEditorList(List<Entity> editorList) {
+	public void setEditorList(List<IEntity> editorList) {
 		if (editorList != null) {
 			this.editorEntities = editorList;
 		}
@@ -70,11 +70,11 @@ public class EntityManager implements EntityManagerInterface {
 	}
 
 	@Override
-	public void addFrustumMap(Map<Float, List<Entity>> frustumMap) {
+	public void addFrustumMap(Map<Float, List<IEntity>> frustumMap) {
 		if ((frustumMap != null) && (!frustumMap.isEmpty())) {
 			for (Float key : frustumMap.keySet()) {
-				List<Entity> batch = new ArrayList<Entity>();
-				for (Entity entity : frustumMap.get(key)) {
+				List<IEntity> batch = new ArrayList<IEntity>();
+				for (IEntity entity : frustumMap.get(key)) {
 					batch.add(entity);
 				}
 				this.frustumEntities.put(key, batch);
@@ -83,14 +83,14 @@ public class EntityManager implements EntityManagerInterface {
 	}
 
 	@Override
-	public void add(Entity entity) {
+	public void add(IEntity entity) {
 		if (entity != null) {
 			this.allEntities.put(entity.getName(), entity);
 		}
 	}
 
 	@Override
-	public void addPointed(Entity entity) {
+	public void addPointed(IEntity entity) {
 		if (entity != null) {
 			entity.setIsChosen(true);
 			this.pointedEntities.add(entity);
@@ -98,17 +98,17 @@ public class EntityManager implements EntityManagerInterface {
 	}
 
 	@Override
-	public void addForEditor(Entity entity) {
+	public void addForEditor(IEntity entity) {
 		this.editorEntities.add(entity);
 	}
 
 	@Override
-	public void addInFrustum(float distance, Entity entity) {
+	public void addInFrustum(float distance, IEntity entity) {
 		if (entity != null) {
 			if (this.frustumEntities.containsKey(distance)) {
 				this.frustumEntities.get(distance).add(entity);
 			} else {
-				List<Entity> batch = new ArrayList<Entity>();
+				List<IEntity> batch = new ArrayList<IEntity>();
 				batch.add(entity);
 				this.frustumEntities.put(distance, batch);
 			}
@@ -118,14 +118,14 @@ public class EntityManager implements EntityManagerInterface {
 	@Override
 	public void updateWithFrustum(Frustum frustum) {
 		this.frustumEntities.clear();
-		for (Entity entity : this.allEntities.values()) {
+		for (IEntity entity : this.allEntities.values()) {
 			float distance = frustum.distanceSphereInFrustum(entity.getPosition(), entity.getSphereRadius());
 			if (distance >= 0 && distance < EngineSettings.RENDERING_VIEW_DISTANCE) {
-				List<Entity> batch;
+				List<IEntity> batch;
 				if (this.frustumEntities.containsKey(distance)) {
 					batch = frustumEntities.get(distance);
 				} else {
-					batch = new ArrayList<Entity>();
+					batch = new ArrayList<IEntity>();
 				}
 				batch.add(entity);
 				this.frustumEntities.put(distance, batch);
@@ -134,8 +134,8 @@ public class EntityManager implements EntityManagerInterface {
 	}
 
 	@Override
-	public Entity get(String name) {
-		Entity entity = null;
+	public IEntity get(String name) {
+		IEntity entity = null;
 		if (this.allEntities.containsKey(name)) {
 			entity = this.allEntities.get(name);
 		}
@@ -143,7 +143,7 @@ public class EntityManager implements EntityManagerInterface {
 	}
 
 	@Override
-	public Collection<Entity> getAll() {
+	public Collection<IEntity> getAll() {
 		return this.allEntities.values();
 	}
 	
@@ -158,28 +158,28 @@ public class EntityManager implements EntityManagerInterface {
 	}
 
 	@Override
-	public Map<Float, List<Entity>> getFromFrustum() {
+	public Map<Float, List<IEntity>> getFromFrustum() {
 		return this.frustumEntities;
 	}
 
 	@Override
-	public List<Entity> getPointed() {
+	public List<IEntity> getPointed() {
 		return this.pointedEntities;
 	}
 
 	@Override
-	public List<Entity> getForEditor() {
+	public List<IEntity> getForEditor() {
 		return this.editorEntities;
 	}
 
 	@Override
-	public Entity getForEditorByIndex(int index) {
+	public IEntity getForEditorByIndex(int index) {
 		return this.editorEntities.get(index);
 	}
 
 	@Override
 	public void clearPointed() {
-		for (Entity entity : this.pointedEntities) {
+		for (IEntity entity : this.pointedEntities) {
 			entity.setIsChosen(false);
 		}
 		this.pointedEntities.clear();

@@ -5,25 +5,25 @@ import org.lwjgl.util.vector.Vector2f;
 
 import core.EngineMain;
 import game.game.Game;
-import object.gui.group.GUIGroupInterface;
+import object.gui.group.IGUIGroup;
 import object.gui.gui.GUIBuilder;
-import object.gui.gui.GUIBuilderInterface;
-import object.gui.gui.GUIInterface;
+import object.gui.gui.IGUIBuilder;
+import object.gui.gui.IGUI;
 import object.gui.pattern.button.GUIButton;
-import object.gui.pattern.button.GUIButtonInterface;
+import object.gui.pattern.button.IGUIButton;
 import object.gui.pattern.menu.GUIMenu;
-import object.gui.pattern.menu.GUIMenuInterface;
+import object.gui.pattern.menu.IGUIMenu;
 import object.gui.pattern.object.GUIObject;
 import object.input.KeyboardGame;
 
 public class MyGame extends Game {
 	
 	private String guiGroupName = "help";
-	private GUIGroupInterface helpGroup;
-	private GUIInterface hintsUI;
+	private IGUIGroup helpGroup;
+	private IGUI hintsUI;
 	int time = 0;
 	
-	GUIMenuInterface menu = new GUIMenu("menu1");
+	IGUIMenu menu = new GUIMenu("menu1");
 	
 	/**
 	 * Action when game is just started. 
@@ -35,31 +35,31 @@ public class MyGame extends Game {
 		//world1 = PE10.peCreateWorld(new Vector3f(0,0,0), new Vector3f(0,0,0));
 		
 		//--------help hints GUI-------------//
-		GUIBuilderInterface helpGUIBuilder = new GUIBuilder();
+		IGUIBuilder helpGUIBuilder = new GUIBuilder();
 		helpGUIBuilder.setText(gameManager.getScene().getUserInterface()
 				.getComponent().getTexts().get("inputHints"));
 		this.helpGroup = this.gameManager.getScene().getUserInterface().getGroups().createEmpty(guiGroupName);
 		this.helpGroup.add(helpGUIBuilder.getGUI("help"));
 		
 		//-------sign button GUI-------------//
-		GUIBuilderInterface signGUIBuilder = new GUIBuilder();
+		IGUIBuilder signGUIBuilder = new GUIBuilder();
 		signGUIBuilder.setTexture(gameManager.getScene().getUserInterface()
 				.getComponent().getTextures().get("Sign"));
-		GUIGroupInterface signGroup = this.gameManager.getScene().getUserInterface().getGroups().createEmpty("sign");
+		IGUIGroup signGroup = this.gameManager.getScene().getUserInterface().getGroups().createEmpty("sign");
 		signGroup.add(signGUIBuilder.getGUI("sign"));
 		((GUIObject) signGroup).show();
 		
 		//-----------button GUI--------------//
-		GUIBuilderInterface buttonGUIBuilder = new GUIBuilder();
+		IGUIBuilder buttonGUIBuilder = new GUIBuilder();
 		buttonGUIBuilder.setTexture(gameManager.getScene().getUserInterface()
 				.getComponent().getTextures().get("Button"));
-		GUIGroupInterface buttonGroup = this.gameManager.getScene().getUserInterface().getGroups().createEmpty("button");
+		IGUIGroup buttonGroup = this.gameManager.getScene().getUserInterface().getGroups().createEmpty("button");
 		buttonGroup.add(buttonGUIBuilder.getGUI("button"));
 		((GUIObject) buttonGroup).show();
 		
-		GUIButtonInterface button1 = new GUIButton("signButton1", signGUIBuilder.getGUI("sign1"), new Vector2f(400,300), new Vector2f(600,500));
-		GUIButtonInterface button2 = new GUIButton("signButton2", signGUIBuilder.getGUI("sign2"), new Vector2f(400,300), new Vector2f(600,500));
-		GUIButtonInterface button3 = new GUIButton("signButton3", signGUIBuilder.getGUI("sign3"), new Vector2f(400,300), new Vector2f(600,500));
+		IGUIButton button1 = new GUIButton("signButton1", signGUIBuilder.getGUI("sign1"), new Vector2f(400,300), new Vector2f(600,500));
+		IGUIButton button2 = new GUIButton("signButton2", signGUIBuilder.getGUI("sign2"), new Vector2f(400,300), new Vector2f(600,500));
+		IGUIButton button3 = new GUIButton("signButton3", signGUIBuilder.getGUI("sign3"), new Vector2f(400,300), new Vector2f(600,500));
 		this.menu.addButton(button1);
 		this.menu.addButton(button2);
 		this.menu.addButton(button3);

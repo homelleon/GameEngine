@@ -13,7 +13,7 @@ import object.particle.ParticleSystem;
 import object.texture.particle.ParticleTexture;
 import renderer.loader.Loader;
 
-public class ParticleManager implements ParticleManagerInterface {
+public class ParticleManager implements IParticleManager {
 
 	Map<String, ParticleSystem> particles = new HashMap<String, ParticleSystem>();
 
@@ -73,7 +73,7 @@ public class ParticleManager implements ParticleManagerInterface {
 	}
 
 	@Override
-	public void clearAll() {
+	public void clean() {
 		this.particles.clear();
 	}
 

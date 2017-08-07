@@ -13,9 +13,9 @@ import org.xml.sax.SAXException;
 /**
  * 
  * @author homelleon
- * @see XMLLoaderInterface
+ * @see IXMLLoader
  */
-public class XMLFileLoader implements XMLLoaderInterface {
+public class XMLFileLoader implements IXMLLoader {
 
 	private File file;
 

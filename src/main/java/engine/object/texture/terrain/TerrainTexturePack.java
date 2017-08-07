@@ -2,11 +2,11 @@ package object.texture.terrain;
 
 public class TerrainTexturePack {
 
+	private String name;
 	private TerrainTexture backgroundTexture;
 	private TerrainTexture rTexture;
 	private TerrainTexture gTexture;
-	private TerrainTexture bTexture;
-	private String name;
+	private TerrainTexture bTexture;	
 
 	public TerrainTexturePack(TerrainTexture backgroundTexture, TerrainTexture rTexture, TerrainTexture gTexture,
 			TerrainTexture bTexture) {

@@ -4,20 +4,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 import core.EngineMain;
-import object.gui.gui.GUIInterface;
-import object.scene.scene.SceneInterface;
+import object.gui.gui.IGUI;
+import object.scene.scene.IScene;
 
-public class GameManager implements GameManagerInterface {
+public class GameManager implements IGameManager {
 
-	SceneInterface scene;
+	IScene scene;
 
 	public GameManager() {
 		this.scene = EngineMain.getScene();
-		List<GUIInterface> uis = new ArrayList<GUIInterface>();
+		List<IGUI> uis = new ArrayList<IGUI>();
 	}
 
 	@Override
-	public SceneInterface getScene() {
+	public IScene getScene() {
 		return this.scene;
 	}
 

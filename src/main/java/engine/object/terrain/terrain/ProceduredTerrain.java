@@ -21,9 +21,9 @@ import tool.math.Maths;
  * Terrain class representing landscape plane.
  * 
  * @author homelleon
- * @see Terrain
+ * @see ITerrain
  */
-public class ProceduredTerrain implements Terrain {
+public class ProceduredTerrain implements ITerrain {
 
 	private static final float SIZE = 500;
 
@@ -191,7 +191,7 @@ public class ProceduredTerrain implements Terrain {
 	
 
 	@Override
-	public Terrain clone(String name) {
+	public ITerrain clone(String name) {
 		int gridX = (int) (this.x / SIZE);
 		int gridZ = (int) (this.z / SIZE);
 		return new ProceduredTerrain(name, gridX, gridZ, this.texturePack,this.blendMap, this.amplitude, this.octaves, this.roughness);

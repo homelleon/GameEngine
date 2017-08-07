@@ -3,10 +3,10 @@ package object.entity.entity;
 import object.model.TexturedModel;
 import tool.EngineUtils;
 
-public class NormalMappedEntityBuilder extends EntityBuilder implements EntityBuilderInterface {
+public class NormalMappedEntityBuilder extends EntityBuilder implements IEntityBuilder {
 
 	@Override
-	public Entity createEntity(String name) {
+	public IEntity createEntity(String name) {
 		if(textureName!=null && normalTextureName!=null && specularTextureName!=null) {
 			TexturedModel staticModel = EngineUtils.loadNormalModel(name, textureName, normalTextureName, specularTextureName);
 			staticModel.getTexture().setShineDamper(shiness);

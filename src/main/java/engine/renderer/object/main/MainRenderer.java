@@ -14,15 +14,15 @@ import org.lwjgl.util.vector.Vector4f;
 
 import core.debug.EngineDebug;
 import core.settings.EngineSettings;
-import object.camera.CameraInterface;
-import object.entity.entity.Entity;
+import object.camera.ICamera;
+import object.entity.entity.IEntity;
 import object.light.Light;
 import object.model.TexturedModel;
-import object.scene.scene.SceneInterface;
+import object.scene.scene.IScene;
 import object.shadow.renderer.ShadowMapMasterRenderer;
-import object.terrain.terrain.Terrain;
+import object.terrain.terrain.ITerrain;
 import object.texture.Texture;
-import object.voxel.manager.ChunkManagerInterface;
+import object.voxel.manager.IChunkManager;
 import renderer.object.bounding.BoundingRenderer;
 import renderer.object.entity.EntityRenderer;
 import renderer.object.entity.NormalMappingRenderer;
@@ -31,11 +31,11 @@ import renderer.object.skybox.SkyboxRenderer;
 import renderer.object.terrain.TerrainRenderer;
 import renderer.object.voxel.VoxelRenderer;
 import renderer.processor.SceneProcessor;
-import renderer.processor.SceneProcessorInterface;
+import renderer.processor.ISceneProcessor;
 import renderer.viewCulling.frustum.Frustum;
 import tool.openGL.OGLUtils;
 
-public class MainRenderer implements MainRendererInterface {
+public class MainRenderer implements IMainRenderer {
 
 	private Matrix4f projectionMatrix;
 	private Matrix4f normalDistProjectionMatrix;
@@ -49,7 +49,7 @@ public class MainRenderer implements MainRendererInterface {
 	private ShadowMapMasterRenderer shadowMapRenderer;
 	private EnvironmentMapRenderer enviroRenderer;
 
-	private SceneProcessorInterface processor;
+	private ISceneProcessor processor;
 
 	private Texture environmentMap;
 	private Frustum frustum = new Frustum();
@@ -59,11 +59,11 @@ public class MainRenderer implements MainRendererInterface {
 	private boolean environmentDinamic = false;
 	private boolean environmentRendered = false;
 
-	private Map<TexturedModel, List<Entity>> entities = new HashMap<TexturedModel, List<Entity>>();
-	private Map<TexturedModel, List<Entity>> normalMapEntities = new HashMap<TexturedModel, List<Entity>>();
-	private Collection<Terrain> terrains = new ArrayList<Terrain>();
+	private Map<TexturedModel, List<IEntity>> entities = new HashMap<TexturedModel, List<IEntity>>();
+	private Map<TexturedModel, List<IEntity>> normalMapEntities = new HashMap<TexturedModel, List<IEntity>>();
+	private Collection<ITerrain> terrains = new ArrayList<ITerrain>();
 
-	public MainRenderer(CameraInterface camera) {
+	public MainRenderer(ICamera camera) {
 		OGLUtils.cullBackFaces(true);
 		createProjectionMatrix();
 		createLowDistProjectionMatrix();
@@ -80,19 +80,19 @@ public class MainRenderer implements MainRendererInterface {
 	}
 
 	@Override
-	public void renderScene(SceneInterface scene, Vector4f clipPlane) {
+	public void renderScene(IScene scene, Vector4f clipPlane) {
 		renderScene(scene, clipPlane, false);
 	}
 
 	@Override
-	public void renderScene(SceneInterface scene, Vector4f clipPlane, boolean isLowDistance) {
+	public void renderScene(IScene scene, Vector4f clipPlane, boolean isLowDistance) {
 		this.frustum.extractFrustum(scene.getCamera(), projectionMatrix);
 		this.environmentMap = scene.getEnvironmentMap();
-		for (Terrain terrain : scene.getTerrains().getAll()) {
+		for (ITerrain terrain : scene.getTerrains().getAll()) {
 			processor.processTerrain(terrain, terrains);
 		}
 
-		for (Entity entity : scene.getEntities().getAll()) {
+		for (IEntity entity : scene.getEntities().getAll()) {
 			if (entity.getType() == EngineSettings.ENTITY_TYPE_SIMPLE) {
 				processor.processEntity(entity, entities, frustum);
 			} else if (entity.getType() == EngineSettings.ENTITY_TYPE_NORMAL) {
@@ -110,7 +110,7 @@ public class MainRenderer implements MainRendererInterface {
 
 	}
 
-	private void render(ChunkManagerInterface chunkManager, Collection<Light> lights, CameraInterface camera,
+	private void render(IChunkManager chunkManager, Collection<Light> lights, ICamera camera,
 			Vector4f clipPlane, boolean isLowDistance) {
 		prepare();
 		checkWiredFrameOn(entitiyWiredFrame);
@@ -139,16 +139,16 @@ public class MainRenderer implements MainRendererInterface {
 	}
 
 	@Override
-	public void renderLowQualityScene(Map<TexturedModel, List<Entity>> entities, Collection<Terrain> terrains,
-			Collection<Light> lights, CameraInterface camera) {
+	public void renderLowQualityScene(Map<TexturedModel, List<IEntity>> entities, Collection<ITerrain> terrains,
+			Collection<Light> lights, ICamera camera) {
 		entityRenderer.renderLow(entities, lights, camera);
 		terrainRenderer.renderLow(terrains, lights, camera);
 		skyboxRenderer.render(camera);
 	}
 
 	@Override
-	public void renderShadowMap(SceneInterface scene) {
-		for (Entity entity : scene.getEntities().getAll()) {
+	public void renderShadowMap(IScene scene) {
+		for (IEntity entity : scene.getEntities().getAll()) {
 			if (entity.getType() == EngineSettings.ENTITY_TYPE_SIMPLE) {
 				processor.processShadowEntity(entity, entities, frustum);
 			} else if (entity.getType() == EngineSettings.ENTITY_TYPE_NORMAL) {
@@ -220,10 +220,10 @@ public class MainRenderer implements MainRendererInterface {
 	}
 
 	@Override
-	public Collection<Entity> createFrustumEntities(SceneInterface scene) {
+	public Collection<IEntity> createFrustumEntities(IScene scene) {
 		frustum.extractFrustum(scene.getCamera(), projectionMatrix);
-		List<Entity> frustumEntities = new ArrayList<Entity>();
-		for (Entity entity : scene.getEntities().getAll()) {
+		List<IEntity> frustumEntities = new ArrayList<IEntity>();
+		for (IEntity entity : scene.getEntities().getAll()) {
 			if (frustum.sphereInFrustum(entity.getPosition(), entity.getSphereRadius())) {
 				frustumEntities.add(entity);
 			}

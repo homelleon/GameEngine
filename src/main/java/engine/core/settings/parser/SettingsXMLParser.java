@@ -7,10 +7,10 @@ import org.w3c.dom.NodeList;
 
 import core.settings.GameSettings;
 import tool.xml.XMLUtils;
-import tool.xml.parser.ObjectParserInterface;
+import tool.xml.parser.IObjectParser;
 import tool.xml.parser.XMLParser;
 
-public class SettingsXMLParser extends XMLParser implements ObjectParserInterface<GameSettings> {
+public class SettingsXMLParser extends XMLParser implements IObjectParser<GameSettings> {
 
 	public SettingsXMLParser(Document document) {
 		super(document);

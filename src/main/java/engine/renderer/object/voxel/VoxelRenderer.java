@@ -12,14 +12,14 @@ import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 
 import core.settings.EngineSettings;
-import object.camera.CameraInterface;
+import object.camera.ICamera;
 import object.light.Light;
 import object.model.RawModel;
 import object.model.TexturedModel;
 import object.texture.model.ModelTexture;
 import object.voxel.Chunk;
 import object.voxel.data.FaceCullingData;
-import object.voxel.manager.ChunkManagerInterface;
+import object.voxel.manager.IChunkManager;
 import renderer.loader.Loader;
 import renderer.viewCulling.frustum.Frustum;
 import shader.voxel.VoxelShader;
@@ -114,8 +114,8 @@ public class VoxelRenderer {
 		texture.setNumberOfRows(1);
 	}
 
-	public void render(ChunkManagerInterface chunkManager, Vector4f clipPlane, Collection<Light> lights,
-			CameraInterface camera, Matrix4f toShadowMapSpace, Frustum frustum) {
+	public void render(IChunkManager chunkManager, Vector4f clipPlane, Collection<Light> lights,
+			ICamera camera, Matrix4f toShadowMapSpace, Frustum frustum) {
 		shader.start();
 		shader.loadClipPlane(clipPlane);
 		shader.loadSkyColour(EngineSettings.DISPLAY_RED, EngineSettings.DISPLAY_GREEN, EngineSettings.DISPLAY_BLUE);
@@ -224,7 +224,7 @@ public class VoxelRenderer {
 		return fcData;
 	}
 
-	private FaceCullingData isNeedChunkCulling(ChunkManagerInterface chunker, int index) {
+	private FaceCullingData isNeedChunkCulling(IChunkManager chunker, int index) {
 		FaceCullingData fcData = new FaceCullingData();
 		for (int face = 0; face < 6; face++) {
 			if (isFaceCovered(chunker, index, face)) {
@@ -280,7 +280,7 @@ public class VoxelRenderer {
 		return isCovered;
 	}
 
-	private boolean isFaceCovered(ChunkManagerInterface chunker, int index, int face) {
+	private boolean isFaceCovered(IChunkManager chunker, int index, int face) {
 		boolean isCovered = false;
 		Vector3i position = chunker.getChunkXYZIndex(index);
 		switch (face) {

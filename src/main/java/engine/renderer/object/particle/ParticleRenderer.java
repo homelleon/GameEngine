@@ -13,7 +13,7 @@ import org.lwjgl.opengl.GL31;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 
-import object.camera.CameraInterface;
+import object.camera.ICamera;
 import object.model.RawModel;
 import object.particle.particle.Particle;
 import object.texture.particle.ParticleTexture;
@@ -53,7 +53,7 @@ public class ParticleRenderer {
 		shader.stop();
 	}
 
-	public void render(Map<ParticleTexture, List<Particle>> particles, CameraInterface camera) {
+	public void render(Map<ParticleTexture, List<Particle>> particles, ICamera camera) {
 		Matrix4f viewMatrix = Maths.createViewMatrix(camera);
 		prepare();
 		for (ParticleTexture texture : particles.keySet()) {

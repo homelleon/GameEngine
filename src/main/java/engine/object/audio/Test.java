@@ -7,9 +7,9 @@ import org.lwjgl.openal.AL11;
 import org.lwjgl.util.vector.Vector3f;
 
 import object.audio.master.AudioMaster;
-import object.audio.master.AudioMasterInterface;
+import object.audio.master.IAudioMaster;
 import object.audio.source.AudioSource;
-import object.audio.source.AudioSourceInterface;
+import object.audio.source.IAudioSource;
 
 /**
  * Runnable test class for Audio Engine.
@@ -24,11 +24,11 @@ import object.audio.source.AudioSourceInterface;
 public class Test {
 
 	public static void main(String[] args) throws IOException, InterruptedException {
-		AudioMasterInterface master = new AudioMaster();
+		IAudioMaster master = new AudioMaster();
 		master.init();
 		master.setListenerData(new Vector3f(0, 0, 0));
 		AL10.alDistanceModel(AL11.AL_LINEAR_DISTANCE_CLAMPED);
-		AudioSourceInterface source = new AudioSource("audio1", "forest.wav", 20, master);
+		IAudioSource source = new AudioSource("audio1", "forest.wav", 20, master);
 		source.setLooping(true);
 		source.play();
 

@@ -17,7 +17,7 @@ import object.model.TexturedModel;
  *
  */
 
-public class TexturedEntity extends BaseEntity implements Entity {
+public class TexturedEntity extends BaseEntity implements IEntity {
 	
 	/**
 	 * 
@@ -47,8 +47,8 @@ public class TexturedEntity extends BaseEntity implements Entity {
 	} 
 	
 	@Override
-	public Entity clone(String name) {
-		Entity entity = new TexturedEntity(name, this.model, this.position, this.rotation, this.scale);
+	public IEntity clone(String name) {
+		IEntity entity = new TexturedEntity(name, this.model, this.position, this.rotation, this.scale);
 		return entity;
 	}
 

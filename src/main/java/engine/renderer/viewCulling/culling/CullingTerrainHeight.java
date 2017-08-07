@@ -4,29 +4,29 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import object.camera.CameraInterface;
-import object.entity.entity.Entity;
-import object.terrain.terrain.Terrain;
+import object.camera.ICamera;
+import object.entity.entity.IEntity;
+import object.terrain.terrain.ITerrain;
 
 public class CullingTerrainHeight implements Culling {
 
-	private List<Terrain> terrains = new ArrayList<Terrain>();
-	private CameraInterface camera;
+	private List<ITerrain> terrains = new ArrayList<ITerrain>();
+	private ICamera camera;
 
-	public CullingTerrainHeight(CameraInterface camera, Collection<Terrain> terrains) {
+	public CullingTerrainHeight(ICamera camera, Collection<ITerrain> terrains) {
 		this.terrains.addAll(terrains);
 		this.camera = camera;
 	}
 
 	@Override
-	public Boolean getVisibility(Entity entity) {
+	public Boolean getVisibility(IEntity entity) {
 		Boolean isVisible = false;
 
 		return isVisible;
 	}
 
 	@Override
-	public void update(CameraInterface camera) {
+	public void update(ICamera camera) {
 
 	}
 

@@ -1,6 +1,6 @@
 package core;
 
-import game.game.GameInterface;
+import game.game.IGame;
 import main.MyGame;
 
 public class GameCore {
@@ -13,7 +13,7 @@ public class GameCore {
 	 * 
 	 * @return GameInterface game
 	 */
-	public static GameInterface loadGame() {
+	public static IGame loadGame() {
 		return new MyGame();
 	}
 

@@ -3,7 +3,7 @@ package object.audio.source;
 import org.lwjgl.openal.AL10;
 import org.lwjgl.util.vector.Vector3f;
 
-import object.audio.master.AudioMasterInterface;
+import object.audio.master.IAudioMaster;
 
 /**
  * Simple type of Audio Source using name, sourceId, fileName to represent the
@@ -14,12 +14,12 @@ import object.audio.master.AudioMasterInterface;
  *
  */
 
-public class AudioSource implements AudioSourceInterface {
+public class AudioSource implements IAudioSource {
 
 	private String name; // имя аудио
 	private int sourceId; // ID аудио
 	private String fileName; // расположение файла
-	private AudioMasterInterface master; // аудио-мастер
+	private IAudioMaster master; // аудио-мастер
 	private Vector3f position; // позиция аудио-источника
 
 	/**
@@ -35,11 +35,11 @@ public class AudioSource implements AudioSourceInterface {
 	 *            AudioMaster object needed to check same audio files and store
 	 *            audio source with same audio track in the same list of auido
 	 *            buffer map
-	 * @see AudioSourceInterface
+	 * @see IAudioSource
 	 * @see #AudioSourceSimple(String, String, int, Vector3f,
-	 *      AudioMasterInterface)
+	 *      IAudioMaster)
 	 */
-	public AudioSource(String name, String file, int maxDistance, AudioMasterInterface master) {
+	public AudioSource(String name, String file, int maxDistance, IAudioMaster master) {
 		sourceId = AL10.alGenSources();
 		AL10.alSourcef(sourceId, AL10.AL_ROLLOFF_FACTOR, 1);
 		AL10.alSourcef(sourceId, AL10.AL_REFERENCE_DISTANCE, 6);
@@ -67,10 +67,10 @@ public class AudioSource implements AudioSourceInterface {
 	 *            AudioMaster object needed to check same audio files and store
 	 *            audio source with same audio track in the same list of auido
 	 *            buffer map
-	 * @see AudioSourceInterface
-	 * @see #AudioSourceSimple(String, String, int, AudioMasterInterface)
+	 * @see IAudioSource
+	 * @see #AudioSourceSimple(String, String, int, IAudioMaster)
 	 */
-	public AudioSource(String name, String file, int maxDistance, Vector3f position, AudioMasterInterface master) {
+	public AudioSource(String name, String file, int maxDistance, Vector3f position, IAudioMaster master) {
 		sourceId = AL10.alGenSources();
 		AL10.alSourcef(sourceId, AL10.AL_ROLLOFF_FACTOR, 1);
 		AL10.alSourcef(sourceId, AL10.AL_REFERENCE_DISTANCE, 6);

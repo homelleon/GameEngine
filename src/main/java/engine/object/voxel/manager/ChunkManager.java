@@ -23,7 +23,7 @@ import tool.math.Maths;
  * @version 1.0
  *
  */
-public class ChunkManager implements ChunkManagerInterface {
+public class ChunkManager implements IChunkManager {
 
 	private List<Chunk> chunks = new ArrayList<Chunk>();
 	private int size;

@@ -8,18 +8,18 @@ import org.lwjgl.opengl.GL11;
 import core.EngineMain;
 import core.debug.EngineDebug;
 import game.manager.GameManager;
-import game.manager.GameManagerInterface;
+import game.manager.IGameManager;
 import object.gui.gui.GUI;
-import object.gui.gui.GUIInterface;
+import object.gui.gui.IGUI;
 import object.gui.text.GUIText;
 import object.gui.texture.GUITexture;
-import object.scene.scene.SceneInterface;
+import object.scene.scene.IScene;
 
-public abstract class Game extends Thread implements GameInterface {
+public abstract class Game extends Thread implements IGame {
 
-	public GameManagerInterface gameManager;
+	public IGameManager gameManager;
 	public int world1;
-	public SceneInterface scene;
+	public IScene scene;
 
 	/**
 	 * Realize game events on engine start.<br>
@@ -34,7 +34,7 @@ public abstract class Game extends Thread implements GameInterface {
 		List<GUIText> versionTextList = new ArrayList<GUIText>();
 		List<GUITexture> versionTextureList = new ArrayList<GUITexture>();
 		versionTextList.add(this.gameManager.getScene().getUserInterface().getComponent().getTexts().get("version"));
-		GUIInterface versionGUI = new GUI("version", versionTextureList, versionTextList);
+		IGUI versionGUI = new GUI("version", versionTextureList, versionTextList);
 
 		if (EngineDebug.hasDebugPermission()) {
 			System.out.println(GL11.glGetString(GL11.GL_VENDOR));

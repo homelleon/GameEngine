@@ -5,36 +5,36 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import object.gui.pattern.menu.GUIMenuInterface;
+import object.gui.pattern.menu.IGUIMenu;
 import object.gui.pattern.object.GUIObject;
 
-public class GUIMenuSystem implements GUIMenuSystemInterface {
+public class GUIMenuSystem implements IGUIMenuSystem {
 	
-	Map<String, GUIMenuInterface> menus = new HashMap<String, GUIMenuInterface>();
-	GUIMenuInterface activeMenu;
+	Map<String, IGUIMenu> menus = new HashMap<String, IGUIMenu>();
+	IGUIMenu activeMenu;
 
 	@Override
-	public void add(GUIMenuInterface menu) {
+	public void add(IGUIMenu menu) {
 		this.menus.put(((GUIObject) menu).getName(), menu);		
 	}
 
 	@Override
-	public void addAll(List<GUIMenuInterface> menuList) {
+	public void addAll(List<IGUIMenu> menuList) {
 		menuList.forEach(menu -> this.menus.put(((GUIObject) menu).getName(), menu));
 	}
 
 	@Override
-	public GUIMenuInterface get(String name) {
+	public IGUIMenu get(String name) {
 		return this.menus.get(name);
 	}
 
 	@Override
-	public Collection<GUIMenuInterface> getAll() {
+	public Collection<IGUIMenu> getAll() {
 		return this.menus.values();
 	}	
 
 	@Override
-	public GUIMenuInterface active(String name) {
+	public IGUIMenu active(String name) {
 		this.activeMenu = this.menus.get(name);
 		return this.activeMenu;
 	}

@@ -4,52 +4,52 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import object.gui.component.GUIComponentManagerInterface;
+import object.gui.component.IGUIComponentManager;
 import object.gui.group.GUIGroup;
-import object.gui.group.GUIGroupInterface;
-import object.gui.gui.GUIInterface;
+import object.gui.group.IGUIGroup;
+import object.gui.gui.IGUI;
 
-public class GUIGroupManager implements GUIGroupManagerInterface {
+public class GUIGroupManager implements IGUIGroupManager {
 
-	Map<String, GUIGroupInterface> groups = new HashMap<String, GUIGroupInterface>();
-	GUIComponentManagerInterface componentManager;
+	Map<String, IGUIGroup> groups = new HashMap<String, IGUIGroup>();
+	IGUIComponentManager componentManager;
 	
-	public GUIGroupManager(GUIComponentManagerInterface componentManager) {
+	public GUIGroupManager(IGUIComponentManager componentManager) {
 		this.componentManager = componentManager;
 	}
 	
 	@Override
-	public GUIGroupInterface createEmpty(String name) {
-		GUIGroupInterface group = new GUIGroup(name);
+	public IGUIGroup createEmpty(String name) {
+		IGUIGroup group = new GUIGroup(name);
 		this.groups.put(group.getName(), group);
 		return group;
 	}
 
 	@Override
-	public GUIGroupInterface get(String name) {
+	public IGUIGroup get(String name) {
 		return groups.get(name);
 	}
 
 	@Override
-	public void addAll(Collection<GUIGroupInterface> groupList) {
+	public void addAll(Collection<IGUIGroup> groupList) {
 		groupList.forEach(group -> 
 		this.groups.put(group.getName(), group));
 	}
 
 	@Override
-	public void add(GUIGroupInterface group) {
+	public void add(IGUIGroup group) {
 		this.groups.put(group.getName(), group);
 	}
 
 	@Override
-	public Collection<GUIGroupInterface> getAll() {
+	public Collection<IGUIGroup> getAll() {
 		return this.groups.values();
 	}
 
 	@Override
 	public boolean delete(String name) {
 		if (this.groups.containsKey(name)) {
-			for (GUIInterface gui : this.groups.get(name).getAll()) {
+			for (IGUI gui : this.groups.get(name).getAll()) {
 				gui.getTexts().forEach(text -> 
 				this.componentManager.getTexts()
 					.delete(text.getName()));

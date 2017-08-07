@@ -1,52 +1,53 @@
 package object.light;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
- * Interface to store and control lights.
+ * Light manager for controling and storing structured map and arrays of lights.
  * 
  * @author homelleon
- *
+ * @version 1.0
  */
 
-public interface LightManager {
+public class LightManager implements ILightManager {
 
-	/**
-	 * Adds list of lights into lights map array.
-	 * 
-	 * @param lightList
-	 *            {@link Collection}<{@link Light}> value of lights list
-	 */
-	void addAll(Collection<Light> lightList);
+	private Map<String, Light> lights = new HashMap<String, Light>();
 
-	/**
-	 * Adds one light into lights map array.
-	 * 
-	 * @param light
-	 *            {@link Light} value
-	 */
-	void add(Light light);
+	@Override
+	public void addAll(Collection<Light> lightList) {
+		if ((lightList != null) && (!lightList.isEmpty())) {
+			for (Light light : lightList) {
+				this.lights.put(light.getName(), light);
+			}
+		}
+	}
 
-	/**
-	 * Returns light by name.
-	 * 
-	 * @param name
-	 *            {@link String} value
-	 * 
-	 * @return {@link Light} value of chosen light
-	 */
-	Light getByName(String name);
+	@Override
+	public void add(Light light) {
+		if (light != null) {
+			this.lights.put(light.getName(), light);
+		}
+	}
 
-	/**
-	 * Returns list of lights groupped by name.
-	 * 
-	 * @return {@link Collection}<{@link Light}> value of lights list
-	 */
-	Collection<Light> getAll();
+	@Override
+	public Light getByName(String name) {
+		Light light = null;
+		if (this.lights.containsKey(name)) {
+			light = this.lights.get(name);
+		}
+		return light;
+	}
 
-	/**
-	 * Clear all lights map and arrays.
-	 */
-	void clearAll();
+	@Override
+	public Collection<Light> getAll() {
+		return this.lights.values();
+	}
+
+	@Override
+	public void clean() {
+		this.lights.clear();
+	}
 
 }

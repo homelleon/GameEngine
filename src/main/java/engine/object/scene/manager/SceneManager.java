@@ -9,15 +9,15 @@ import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
 import object.audio.source.AudioSource;
-import object.audio.source.AudioSourceInterface;
+import object.audio.source.IAudioSource;
 import object.camera.CameraPlayer;
 import object.entity.player.Player;
-import object.entity.player.PlayerInterface;
+import object.entity.player.IPlayer;
 import object.gui.text.GUIText;
 import object.light.Light;
 import object.model.TexturedModel;
 import object.particle.manager.ParticleManager;
-import object.scene.scene.SceneInterface;
+import object.scene.scene.IScene;
 import object.water.WaterTile;
 import renderer.loader.Loader;
 import tool.EngineUtils;
@@ -28,17 +28,17 @@ import tool.EngineUtils;
  * @author homelleon
  *
  */
-public class SceneManager implements SceneManagerInterface {
+public class SceneManager implements ISceneManager {
 
 	private String playerName = "player1";
 	private String cameraName = "cameraMain";
 	private String defaultFont = "candara";
 
 	@Override
-	public void init(SceneInterface scene, Loader loader) {
+	public void init(IScene scene, Loader loader) {
 		/*------------------PLAYER-----------------*/
 		TexturedModel cubeModel = EngineUtils.loadStaticModel("cube", "cube1");
-		PlayerInterface player1 = new Player(playerName, cubeModel, new Vector3f(100, 0, 10), new Vector3f(0, 0, 0), 1);
+		IPlayer player1 = new Player(playerName, cubeModel, new Vector3f(100, 0, 10), new Vector3f(0, 0, 0), 1);
 		player1.getModel().getTexture().setReflectiveFactor(1.0f);
 		player1.getModel().getTexture().setRefractiveFactor(1.0f);
 		player1.getModel().getTexture().setRefractiveIndex(1.33f);
@@ -58,7 +58,7 @@ public class SceneManager implements SceneManagerInterface {
 
 		/*--------------AUDIO----------------*/
 		AL10.alDistanceModel(AL11.AL_LINEAR_DISTANCE_CLAMPED);
-		AudioSourceInterface ambientSource = new AudioSource("birds", "forest.wav", 1000,
+		IAudioSource ambientSource = new AudioSource("birds", "forest.wav", 1000,
 				scene.getAudioSources().getMaster());
 		ambientSource.setLooping(true);
 		ambientSource.setVolume(0.3f);

@@ -10,8 +10,8 @@ import core.settings.EngineSettings;
 import object.gui.texture.GUITexture;
 import object.gui.texture.parser.GUITextureXMLParser;
 import tool.xml.loader.XMLFileLoader;
-import tool.xml.loader.XMLLoaderInterface;
-import tool.xml.parser.ListParserInterface;
+import tool.xml.loader.IXMLLoader;
+import tool.xml.parser.IListParser;
 
 /**
  * Graphic interface manager for controling and storing structured map and
@@ -19,10 +19,10 @@ import tool.xml.parser.ListParserInterface;
  * 
  * @author homelleon
  * @version 1.0
- * @see GUITextureManagerInterface
+ * @see IGUITextureManager
  */
 
-public class GUITextureManager implements GUITextureManagerInterface {
+public class GUITextureManager implements IGUITextureManager {
 
 	private Map<String, GUITexture> textures = new HashMap<String, GUITexture>();
 
@@ -63,15 +63,15 @@ public class GUITextureManager implements GUITextureManagerInterface {
 
 	@Override
 	public void readFile(String fileName) {
-		XMLLoaderInterface xmlLoader = new XMLFileLoader(
+		IXMLLoader xmlLoader = new XMLFileLoader(
 				EngineSettings.INTERFACE_PATH + fileName + EngineSettings.EXTENSION_XML);
-		ListParserInterface<GUITexture> parser = new GUITextureXMLParser(xmlLoader.load());
+		IListParser<GUITexture> parser = new GUITextureXMLParser(xmlLoader.load());
 		this.addAll(parser.parse());
 	}
 
 	@Override
 	public void readDocument(Document document) {
-		ListParserInterface<GUITexture> parser = new GUITextureXMLParser(document);
+		IListParser<GUITexture> parser = new GUITextureXMLParser(document);
 		this.addAll(parser.parse());		
 	}
 

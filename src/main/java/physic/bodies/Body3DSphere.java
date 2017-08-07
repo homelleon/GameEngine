@@ -6,11 +6,11 @@ import java.util.List;
 import org.lwjgl.util.vector.Vector3f;
 
 import intersects.IntersectData;
-import object.entity.entity.Entity;
+import object.entity.entity.IEntity;
 import physicMain.PE10;
 import tool.math.Maths;
 
-public class Body3DSphere extends BodyBasic implements BodyInterface {
+public class Body3DSphere extends BodyBasic implements IBody {
 
 	public Body3DSphere(Vector3f position, float size) {
 		super(position, size);
@@ -47,17 +47,17 @@ public class Body3DSphere extends BodyBasic implements BodyInterface {
 		super.update();
 	}
 	
-	public void attachEntity(Entity entity) {
+	public void attachEntity(IEntity entity) {
 		super.attachEntity(entity);
 	}
 	
 	@Override
-	public Entity getEntity() {
+	public IEntity getEntity() {
 		return super.getEntity();
 	}
 	
 	@Override
-	public IntersectData checkIntersection(BodyInterface body) {
+	public IntersectData checkIntersection(IBody body) {
 		IntersectData data = null;
 		if (body.getTypeID() == PE10.BODY_3D_SPHERE) {
 			data = check2SphereIntersection(body);
@@ -65,7 +65,7 @@ public class Body3DSphere extends BodyBasic implements BodyInterface {
 		return data;
 	}
 	
-	private IntersectData check2SphereIntersection(BodyInterface body) {
+	private IntersectData check2SphereIntersection(IBody body) {
 		float distance = Maths.distance2Points(this.position, body.getPosition());
 		System.out.println(this.position);
 		System.out.println(body.getPosition());

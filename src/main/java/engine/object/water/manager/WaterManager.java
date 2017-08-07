@@ -6,7 +6,7 @@ import java.util.Map;
 
 import object.water.WaterTile;
 
-public class WaterManager implements WaterManagerInterface {
+public class WaterManager implements IWaterManager {
 
 	Map<String, WaterTile> waters = new HashMap<String, WaterTile>();
 

@@ -4,18 +4,18 @@ import java.util.List;
 
 import org.w3c.dom.Document;
 
-import object.gui.pattern.menu.GUIMenuInterface;
-import tool.xml.parser.ListParserInterface;
+import object.gui.pattern.menu.IGUIMenu;
+import tool.xml.parser.IListParser;
 import tool.xml.parser.XMLParser;
 
-public class GUIMenuSystemParser extends XMLParser implements ListParserInterface<GUIMenuInterface> {
+public class GUIMenuSystemParser extends XMLParser implements IListParser<IGUIMenu> {
 	
 	public GUIMenuSystemParser(Document document) {
 		super(document);
 	}
 	
 	@Override
-	public List<GUIMenuInterface> parse() {
+	public List<IGUIMenu> parse() {
 		return null;
 	}
 

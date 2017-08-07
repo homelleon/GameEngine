@@ -11,7 +11,7 @@ import org.lwjgl.util.vector.Vector3f;
 
 import core.display.DisplayManager;
 import core.settings.EngineSettings;
-import object.camera.CameraInterface;
+import object.camera.ICamera;
 import object.light.Light;
 import object.model.RawModel;
 import object.water.WaterFrameBuffers;
@@ -51,7 +51,7 @@ public class WaterRenderer {
 		setUpVAO();
 	}
 
-	public void render(Collection<WaterTile> water, CameraInterface camera, Light sun) {
+	public void render(Collection<WaterTile> water, ICamera camera, Light sun) {
 		prepareRender(camera, sun);
 		for (WaterTile tile : water) {
 			Matrix4f modelMatrix = Maths.createTransformationMatrix(
@@ -64,7 +64,7 @@ public class WaterRenderer {
 		unbind();
 	}
 
-	private void prepareRender(CameraInterface camera, Light sun) {
+	private void prepareRender(ICamera camera, Light sun) {
 		shader.start();
 		shader.loadViewMatrix(camera);
 		moveFactor += WAVE_SPEED * DisplayManager.getFrameTimeSeconds();

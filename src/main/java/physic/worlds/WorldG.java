@@ -12,15 +12,15 @@ import bodies.Body3DCube;
 import bodies.Body3DMesh;
 import bodies.Body3DPyramid;
 import bodies.Body3DSphere;
-import bodies.BodyInterface;
-import object.entity.entity.Entity;
+import bodies.IBody;
+import object.entity.entity.IEntity;
 import physicMain.PE10;
 
 /*
  *  world with gravity
  */
 
-public class WorldG extends WorldB implements WorldInterface {
+public class WorldG extends WorldB implements IWorld {
 	
 	private float gravity = 9.8f;
 	
@@ -28,7 +28,7 @@ public class WorldG extends WorldB implements WorldInterface {
 	public WorldG(int id, Vector3f position1, Vector3f position2) {
 		super(id, position1, position2);
 		super.hasGravity = true;
-		super.bodies = new WeakHashMap<Integer, BodyInterface>();
+		super.bodies = new WeakHashMap<Integer, IBody>();
 	}
 
 	@Override
@@ -52,8 +52,8 @@ public class WorldG extends WorldB implements WorldInterface {
 	}
 	
 	@Override
-	public int attachToEntity(Entity entity, int bodyType) {
-		BodyInterface body = null;
+	public int attachToEntity(IEntity entity, int bodyType) {
+		IBody body = null;
 		switch(bodyType) {
 			case PE10.BODY_2D_CIRCLE: 
 				body = new Body2DCircle();

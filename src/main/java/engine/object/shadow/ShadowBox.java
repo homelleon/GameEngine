@@ -6,7 +6,7 @@ import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 
 import core.settings.EngineSettings;
-import object.camera.CameraInterface;
+import object.camera.ICamera;
 
 /**
  * Represents the 3D cuboidal area of the world in which objects will cast
@@ -31,7 +31,7 @@ public class ShadowBox {
 	private float minY, maxY;
 	private float minZ, maxZ;
 	private Matrix4f lightViewMatrix;
-	private CameraInterface cam;
+	private ICamera cam;
 
 	private float farHeight, farWidth, nearHeight, nearWidth;
 
@@ -48,7 +48,7 @@ public class ShadowBox {
 	 * @param camera
 	 *            - the in-game camera.
 	 */
-	public ShadowBox(Matrix4f lightViewMatrix, CameraInterface camera) {
+	public ShadowBox(Matrix4f lightViewMatrix, ICamera camera) {
 		this.lightViewMatrix = lightViewMatrix;
 		this.cam = camera;
 		calculateWidthsAndHeights();

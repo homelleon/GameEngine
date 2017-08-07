@@ -9,7 +9,7 @@ import org.lwjgl.util.vector.Matrix4f;
 import core.EngineMain;
 import core.display.DisplayManager;
 import core.settings.EngineSettings;
-import object.camera.CameraInterface;
+import object.camera.ICamera;
 import object.model.RawModel;
 import renderer.loader.Loader;
 import shader.skybox.SkyboxShader;
@@ -58,7 +58,7 @@ public class SkyboxRenderer {
 		shader.stop();
 	}
 
-	public void render(CameraInterface camera) {
+	public void render(ICamera camera) {
 		shader.start();
 		shader.loadViewMatrix(camera);
 		shader.loadFogColour(EngineSettings.DISPLAY_RED, EngineSettings.DISPLAY_GREEN, EngineSettings.DISPLAY_BLUE);
