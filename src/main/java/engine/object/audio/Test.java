@@ -41,7 +41,7 @@ public class Test {
 		}
 
 		source.delete();
-		master.cleanUp();
+		master.clear();
 		master = null;
 	}
 

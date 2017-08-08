@@ -3,6 +3,7 @@ package object.entity.entity;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
+import object.Nameable;
 import object.model.TexturedModel;
 
 /**
@@ -11,7 +12,7 @@ import object.model.TexturedModel;
  * @see TexturedEntity
  * @see NormalMappedEntity
  */
-public interface IEntity {
+public interface IEntity extends Nameable {
 
 	/**
 	 * Gets entity "visible" flag.
@@ -70,13 +71,6 @@ public interface IEntity {
 	 * @param dz float value of OZ rotation plane
 	 */
 	public void increaseRotation(float dx, float dy, float dz);
-
-	/**
-	 * Gets entity name.
-	 * 
-	 * @return String value of entity name
-	 */
-	public String getName();
 
 	/**
 	 * Gets entity texture type model.

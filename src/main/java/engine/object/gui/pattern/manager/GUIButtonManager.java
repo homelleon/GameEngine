@@ -32,6 +32,11 @@ public class GUIButtonManager implements IGUIButtonManager {
 	@Override
 	public void addAll(List<IGUIButton> buttonList) {
 		buttonList.forEach(button -> this.buttons.put(button.getName(), button));
+	}	
+
+	@Override
+	public void addAll(Collection<IGUIButton> buttonList) {
+		buttonList.forEach(button -> this.buttons.put(button.getName(), button));		
 	}
 
 	@Override
@@ -48,6 +53,18 @@ public class GUIButtonManager implements IGUIButtonManager {
 	@Override
 	public void clean() {
 		this.buttons.clear();
+	}
+
+	
+
+	@Override
+	public boolean delete(String name) {
+		if(this.buttons.containsKey(name)) {
+			this.buttons.remove(name);
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 }

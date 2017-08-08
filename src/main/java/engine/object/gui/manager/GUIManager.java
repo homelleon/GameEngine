@@ -11,7 +11,6 @@ import object.gui.pattern.menu.system.IGUIMenuSystem;
 public class GUIManager implements IGUIManager {
 
 	private static final String GUI_FILE_NAME = "interface";
-	private static final String GUI_MENU_NAME = "menu";
 
 	IGUIComponentManager componentManager;
 	IGUIMenuSystem menuSystem;

@@ -52,12 +52,12 @@
 			<name>Sign</name>
 			<texture>Sign</texture>
 			<position>
-				<x>0.0f</x>
+				<x>0.5f</x>
 				<y>0.7f</y>
 			</position>
 			<scale>
-				<x>0.5f</x>
-				<y>0.5f</y>
+				<x>0.3f</x>
+				<y>0.3f</y>
 			</scale>
 		</GUITexture>
 		<GUITexture id="3">

@@ -81,14 +81,4 @@ public abstract class GUIButtonBase extends GUIObject implements IGUIButton {
 	public boolean getIsSelected() {
 		return this.isSelected;
 	}
-
-	/**
-	 * Gets graphic user interface name.
-	 * 
-	 * @return {@link String} value of gui button name
-	 */
-	public String getName() {
-		return this.name;
-	}
-
 }

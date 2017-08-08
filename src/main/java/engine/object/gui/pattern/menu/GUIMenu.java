@@ -33,15 +33,12 @@ public class GUIMenu extends GUIObject implements IGUIMenu {
 	@Override
 	public void add(GUIObject object) {
 		this.objects.put(object.getName(), object);
-	}
-
-	@Override
-	public void addButton(IGUIButton button) {
-		buttons.add(button);
-		this.hasButtons = true;
-		this.updateIterator();
-		this.add((GUIObject) button);
-		this.deselectAllButtons();
+		if(object instanceof IGUIButton) {
+			buttons.add((IGUIButton)object);
+			this.hasButtons = true;
+			this.updateIterator();
+			this.deselectAllButtons();
+		}
 	}
 	
 	@Override
@@ -143,13 +140,11 @@ public class GUIMenu extends GUIObject implements IGUIMenu {
 	}
 	
 	private boolean checkIfHassButtons() {
-		boolean passed = false;
 		if(hasButtons) {
-			passed = true;
+			return true;
 		} else {
 			throw new ArrayIndexOutOfBoundsException ("There is no buttons in " + this.getName() + " menu!");
 		}
-		return passed;
 	}
 
 

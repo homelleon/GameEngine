@@ -56,6 +56,6 @@ public interface IAudioMaster {
 	/**
 	 * Clean audio buffer and destroy OpenAL context.
 	 */
-	void cleanUp();
+	void clear();
 
 }

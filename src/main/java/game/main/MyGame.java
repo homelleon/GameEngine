@@ -60,9 +60,9 @@ public class MyGame extends Game {
 		IGUIButton button1 = new GUIButton("signButton1", signGUIBuilder.getGUI("sign1"), new Vector2f(400,300), new Vector2f(600,500));
 		IGUIButton button2 = new GUIButton("signButton2", signGUIBuilder.getGUI("sign2"), new Vector2f(400,300), new Vector2f(600,500));
 		IGUIButton button3 = new GUIButton("signButton3", signGUIBuilder.getGUI("sign3"), new Vector2f(400,300), new Vector2f(600,500));
-		this.menu.addButton(button1);
-		this.menu.addButton(button2);
-		this.menu.addButton(button3);
+		this.menu.add((GUIObject) button1);
+		this.menu.add((GUIObject) button2);
+		this.menu.add((GUIObject) button3);
 		this.menu.selectNextButton();
 		//PE10.peAttachBody(tree1, PE10.BODY_3D_SPHERE, world1);
 		//PE10.peAttachBody(tree2, PE10.BODY_3D_SPHERE, world1);

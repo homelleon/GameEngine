@@ -64,7 +64,7 @@ public class AudioMaster implements IAudioMaster {
 	}
 
 	@Override
-	public void cleanUp() {
+	public void clear() {
 		for (int buffer : buffers.values()) {
 			AL10.alDeleteBuffers(buffer);
 		}

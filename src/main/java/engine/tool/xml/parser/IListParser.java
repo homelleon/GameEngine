@@ -9,6 +9,10 @@ import java.util.List;
  */
 public interface IListParser<E> extends IObjectParser<List<E>> {
 
+	/**
+	 * Parses data.
+	 * <br>Returns list of elements.
+	 */
 	List<E> parse();
 
 }

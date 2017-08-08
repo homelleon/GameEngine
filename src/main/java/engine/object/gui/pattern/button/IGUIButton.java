@@ -2,6 +2,8 @@ package object.gui.pattern.button;
 
 import org.lwjgl.util.vector.Vector2f;
 
+import object.Nameable;
+
 /**
  * Represent Interface of graphic user interface button unit.
  * 
@@ -9,7 +11,7 @@ import org.lwjgl.util.vector.Vector2f;
  * @see GUIButton
  *
  */
-public interface IGUIButton {
+public interface IGUIButton extends Nameable {
 
 	/**
 	 * Does selecetion action for current button.
@@ -41,12 +43,5 @@ public interface IGUIButton {
 	 *         false if the current button is not selected
 	 */
 	boolean getIsSelected();
-
-	/**
-	 * Gets graphic user interface name.
-	 * 
-	 * @return {@link String} value of gui button name
-	 */
-	String getName();
 
 }

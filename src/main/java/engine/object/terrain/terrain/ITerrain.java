@@ -1,5 +1,6 @@
 package object.terrain.terrain;
 
+import object.Nameable;
 import object.model.RawModel;
 import object.texture.terrain.TerrainTexture;
 import object.texture.terrain.TerrainTexturePack;
@@ -11,7 +12,7 @@ import object.texture.terrain.TerrainTexturePack;
  * 
  * @see MappedTerrain
  */
-public interface ITerrain {
+public interface ITerrain extends Nameable {
 
 	/**
 	 * Gets size of terrain tiles.
@@ -44,13 +45,6 @@ public interface ITerrain {
 	 * @return {@link RawModel} value of terrain raw model
 	 */
 	public RawModel getModel();
-
-	/**
-	 * Returns terrain name.
-	 * 
-	 * @return {@link String} value of terrain name
-	 */
-	public String getName();
 
 	/**
 	 * Returns if terrain is visible.

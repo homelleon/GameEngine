@@ -1,8 +1,9 @@
 package object.gui.pattern.object;
 
+import object.Nameable;
 import object.gui.Hideable;
 
-public abstract class GUIObject implements Hideable {
+public abstract class GUIObject implements Hideable, Nameable {
 	
 	protected boolean isShown = false;
 	protected String name;
@@ -26,6 +27,7 @@ public abstract class GUIObject implements Hideable {
 		return this.isShown;
 	}
 	
+	@Override
 	public String getName() {
 		return this.name;
 	}

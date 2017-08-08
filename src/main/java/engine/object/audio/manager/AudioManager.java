@@ -2,6 +2,7 @@ package object.audio.manager;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import object.audio.master.IAudioMaster;
@@ -30,6 +31,19 @@ public class AudioManager implements IAudioManager {
 			for (IAudioSource audio : audioList) {
 				this.audioSources.put(audio.getName(), audio);
 			}
+		} else {
+			throw new NullPointerException("Trying to add null value into AudioManager array!");
+		}
+	}
+	
+	@Override
+	public void addAll(List<IAudioSource> audioList) {
+		if ((audioList != null) && (!audioList.isEmpty())) {
+			for (IAudioSource audio : audioList) {
+				this.audioSources.put(audio.getName(), audio);
+			}
+		} else {
+			throw new NullPointerException("Trying to add null value into AudioManager array!");
 		}
 	}
 
@@ -37,21 +51,30 @@ public class AudioManager implements IAudioManager {
 	public void add(IAudioSource audio) {
 		if (audio != null) {
 			this.audioSources.put(audio.getName(), audio);
+		} else {
+			throw new NullPointerException("Trying to add null value into AudioManager array!");
 		}
 	}
 
 	@Override
-	public IAudioSource getByName(String name) {
-		IAudioSource audio = null;
-		if (this.audioSources.containsKey(name)) {
-			audio = this.audioSources.get(name);
-		}
-		return audio;
+	public IAudioSource get(String name) {
+		return this.audioSources.get(name);
 	}
 
 	@Override
 	public Collection<IAudioSource> getAll() {
 		return this.audioSources.values();
+	}
+	
+
+	@Override
+	public boolean delete(String name) {
+		if(this.audioSources.containsKey(name)) {
+			this.audioSources.remove(name);
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	@Override
@@ -61,7 +84,7 @@ public class AudioManager implements IAudioManager {
 
 	@Override
 	public void clean() {
-		this.audioMaster.cleanUp();
+		this.audioMaster.clear();
 		this.audioSources.clear();
 	}
 

@@ -19,8 +19,13 @@ public class GUIMenuSystem implements IGUIMenuSystem {
 	}
 
 	@Override
-	public void addAll(List<IGUIMenu> menuList) {
+	public void addAll(Collection<IGUIMenu> menuList) {
 		menuList.forEach(menu -> this.menus.put(((GUIObject) menu).getName(), menu));
+	}
+
+	@Override
+	public void addAll(List<IGUIMenu> menuList) {
+		menuList.forEach(menu -> this.menus.put(((GUIObject) menu).getName(), menu));	
 	}
 
 	@Override

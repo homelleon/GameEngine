@@ -1,5 +1,7 @@
 package core.loop;
 
+import java.io.File;
+
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 
@@ -75,7 +77,7 @@ public class Loop implements ILoop {
 
 		loadGameSettings();
 		if (!this.mapIsLoaded) {
-			loadMap("map");
+			loadModelMap("defaultModelMap");
 		}
 
 		this.scene = new Scene(modelMap, levelMap);
@@ -140,14 +142,19 @@ public class Loop implements ILoop {
 	 * 
 	 * @see #loadGameSettings()
 	 */
-	private void loadMap(String name) {
+	private void loadModelMap(String name) {
 		if (EngineDebug.hasDebugPermission()) {
 			System.out.println("Loading models...");
 		}
-		IXMLLoader xmlLoader = new XMLFileLoader(EngineSettings.MAP_PATH + name + EngineSettings.EXTENSION_XML);
-		IObjectParser<IObjectManager> mapParser = new ModelMapXMLParser(xmlLoader.load(), name);
-		this.modelMap = mapParser.parse();
-		this.mapIsLoaded = true;
+		String path = EngineSettings.MAP_PATH + name + EngineSettings.EXTENSION_XML;
+		if(new File(path).exists()) {
+			IXMLLoader xmlLoader = new XMLFileLoader(path);
+			IObjectParser<IObjectManager> mapParser = new ModelMapXMLParser(xmlLoader.load(), name);
+			this.modelMap = mapParser.parse();
+			this.mapIsLoaded = true;
+		} else {
+			System.out.println("File " + path + " is not extisted! Can't load model map!");
+		}
 	}
 
 	/**
@@ -162,16 +169,21 @@ public class Loop implements ILoop {
 		if (EngineDebug.hasDebugPermission()) {
 			System.out.println("Loading objects...");
 		}
-		IXMLLoader xmlLoader = new XMLFileLoader(EngineSettings.MAP_PATH + name + EngineSettings.EXTENSION_XML);
-		IObjectParser<IObjectManager> mapParser = new LevelMapXMLParser(xmlLoader.load(), this.modelMap);
-		this.levelMap = mapParser.parse();
+		String path = EngineSettings.MAP_PATH + name + EngineSettings.EXTENSION_XML;
+		if(new File(path).exists()) {
+			IXMLLoader xmlLoader = new XMLFileLoader(EngineSettings.MAP_PATH + name + EngineSettings.EXTENSION_XML);
+			IObjectParser<IObjectManager> mapParser = new LevelMapXMLParser(xmlLoader.load(), this.modelMap);
+			this.levelMap = mapParser.parse();
+		} else {
+			System.out.println("File " + path + " is not extisted! Can't load object map!");
+		}
 	}
 
 	/**
 	 * Loads game settings and sets name to map and object map. After that it
 	 * loads map and object map using name written in the game settings file.
 	 * 
-	 * @see #loadMap(String)
+	 * @see #loadModelMap(String)
 	 * @see #loadObjectMap(String)
 	 */
 	private void loadGameSettings() {
@@ -185,7 +197,7 @@ public class Loop implements ILoop {
 		if (EngineDebug.hasDebugPermission()) {
 			System.out.println("Loading complete...");
 		}
-		loadMap(settings.getMapName());
+		loadModelMap(settings.getMapName());
 		loadObjectMap(settings.getObjectMapName());
 	}
 
