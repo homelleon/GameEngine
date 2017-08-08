@@ -9,6 +9,7 @@ import java.util.Map;
 import core.settings.EngineSettings;
 import object.entity.entity.IEntity;
 import renderer.viewCulling.frustum.Frustum;
+import tool.manager.AbstractManager;
 
 /**
  * Manages entities in the game engine.
@@ -26,30 +27,12 @@ import renderer.viewCulling.frustum.Frustum;
  * @version 1.0
  * 
  */
-public class EntityManager implements IEntityManager {
+public class EntityManager extends AbstractManager<IEntity> implements IEntityManager {
 
-	public Map<String, IEntity> allEntities = new HashMap<String, IEntity>();
 	public Map<Float, List<IEntity>> frustumEntities = new HashMap<Float, List<IEntity>>();
 	public List<IEntity> pointedEntities = new ArrayList<IEntity>();
 	public List<IEntity> editorEntities = new ArrayList<IEntity>();
 
-	@Override
-	public void addAll(List<IEntity> elementList) {
-		if ((elementList != null) && (!elementList.isEmpty())) {
-			for (IEntity entity : elementList) {
-				this.allEntities.put(entity.getName(), entity);
-			}
-		}
-	}
-	
-	@Override
-	public void addAll(Collection<IEntity> elementList) {
-		if ((elementList != null) && (!elementList.isEmpty())) {
-			for (IEntity entity : elementList) {
-				this.allEntities.put(entity.getName(), entity);
-			}
-		}
-	}
 
 	@Override
 	public void addPointedList(Collection<IEntity> pointedList) {
@@ -82,12 +65,6 @@ public class EntityManager implements IEntityManager {
 		}
 	}
 
-	@Override
-	public void add(IEntity entity) {
-		if (entity != null) {
-			this.allEntities.put(entity.getName(), entity);
-		}
-	}
 
 	@Override
 	public void addPointed(IEntity entity) {
@@ -118,7 +95,7 @@ public class EntityManager implements IEntityManager {
 	@Override
 	public void updateWithFrustum(Frustum frustum) {
 		this.frustumEntities.clear();
-		for (IEntity entity : this.allEntities.values()) {
+		for (IEntity entity : this.getAll()) {
 			float distance = frustum.distanceSphereInFrustum(entity.getPosition(), entity.getSphereRadius());
 			if (distance >= 0 && distance < EngineSettings.RENDERING_VIEW_DISTANCE) {
 				List<IEntity> batch;
@@ -133,29 +110,6 @@ public class EntityManager implements IEntityManager {
 		}
 	}
 
-	@Override
-	public IEntity get(String name) {
-		IEntity entity = null;
-		if (this.allEntities.containsKey(name)) {
-			entity = this.allEntities.get(name);
-		}
-		return entity;
-	}
-
-	@Override
-	public Collection<IEntity> getAll() {
-		return this.allEntities.values();
-	}
-	
-	@Override
-	public boolean delete(String name) {
-		if(this.allEntities.containsKey(name)) {
-			this.allEntities.remove(name);
-			return true;
-		} else {
-			return false;
-		}
-	}
 
 	@Override
 	public Map<Float, List<IEntity>> getFromFrustum() {
@@ -187,9 +141,10 @@ public class EntityManager implements IEntityManager {
 
 	@Override
 	public void clean() {
-		this.allEntities.clear();
+		super.clean();
 		this.pointedEntities.clear();
 		this.frustumEntities.clear();		
 	}
+
 
 }

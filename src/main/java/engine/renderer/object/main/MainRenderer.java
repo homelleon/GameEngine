@@ -16,7 +16,7 @@ import core.debug.EngineDebug;
 import core.settings.EngineSettings;
 import object.camera.ICamera;
 import object.entity.entity.IEntity;
-import object.light.Light;
+import object.light.ILight;
 import object.model.TexturedModel;
 import object.scene.scene.IScene;
 import object.shadow.renderer.ShadowMapMasterRenderer;
@@ -30,8 +30,8 @@ import renderer.object.environment.EnvironmentMapRenderer;
 import renderer.object.skybox.SkyboxRenderer;
 import renderer.object.terrain.TerrainRenderer;
 import renderer.object.voxel.VoxelRenderer;
-import renderer.processor.SceneProcessor;
 import renderer.processor.ISceneProcessor;
+import renderer.processor.SceneProcessor;
 import renderer.viewCulling.frustum.Frustum;
 import tool.openGL.OGLUtils;
 
@@ -110,7 +110,7 @@ public class MainRenderer implements IMainRenderer {
 
 	}
 
-	private void render(IChunkManager chunkManager, Collection<Light> lights, ICamera camera,
+	private void render(IChunkManager chunkManager, Collection<ILight> lights, ICamera camera,
 			Vector4f clipPlane, boolean isLowDistance) {
 		prepare();
 		checkWiredFrameOn(entitiyWiredFrame);
@@ -140,7 +140,7 @@ public class MainRenderer implements IMainRenderer {
 
 	@Override
 	public void renderLowQualityScene(Map<TexturedModel, List<IEntity>> entities, Collection<ITerrain> terrains,
-			Collection<Light> lights, ICamera camera) {
+			Collection<ILight> lights, ICamera camera) {
 		entityRenderer.renderLow(entities, lights, camera);
 		terrainRenderer.renderLow(terrains, lights, camera);
 		skyboxRenderer.render(camera);

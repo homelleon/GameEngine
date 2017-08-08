@@ -8,7 +8,7 @@ import org.lwjgl.util.vector.Vector3f;
  * ------------
  */
 
-public class Light {
+public class Light implements ILight {
 
 	private Vector3f position; // позиция
 	private Vector3f colour; // цвеь

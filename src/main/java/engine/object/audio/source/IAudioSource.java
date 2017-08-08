@@ -2,6 +2,7 @@ package object.audio.source;
 
 import org.lwjgl.util.vector.Vector3f;
 
+import object.Nameable;
 import object.audio.master.AudioMaster;
 import object.audio.master.IAudioMaster;
 
@@ -18,17 +19,7 @@ import object.audio.master.IAudioMaster;
  *
  */
 
-public interface IAudioSource {
-
-	/**
-	 * Method to return name of audio source stored in audio buffer of
-	 * {@link AuidoMaster}.
-	 * 
-	 * @return String name
-	 * @see AuidoMaster
-	 * @see AudioMaster
-	 */
-	public String getName();
+public interface IAudioSource extends Nameable {
 
 	/**
 	 * Method to start sound source to play.

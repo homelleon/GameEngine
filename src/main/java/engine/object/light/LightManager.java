@@ -1,8 +1,6 @@
 package object.light;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import tool.manager.AbstractManager;
 
 /**
  * Light manager for controling and storing structured map and arrays of lights.
@@ -11,43 +9,4 @@ import java.util.Map;
  * @version 1.0
  */
 
-public class LightManager implements ILightManager {
-
-	private Map<String, Light> lights = new HashMap<String, Light>();
-
-	@Override
-	public void addAll(Collection<Light> lightList) {
-		if ((lightList != null) && (!lightList.isEmpty())) {
-			for (Light light : lightList) {
-				this.lights.put(light.getName(), light);
-			}
-		}
-	}
-
-	@Override
-	public void add(Light light) {
-		if (light != null) {
-			this.lights.put(light.getName(), light);
-		}
-	}
-
-	@Override
-	public Light getByName(String name) {
-		Light light = null;
-		if (this.lights.containsKey(name)) {
-			light = this.lights.get(name);
-		}
-		return light;
-	}
-
-	@Override
-	public Collection<Light> getAll() {
-		return this.lights.values();
-	}
-
-	@Override
-	public void clean() {
-		this.lights.clear();
-	}
-
-}
+public class LightManager extends AbstractManager<ILight> implements ILightManager {}

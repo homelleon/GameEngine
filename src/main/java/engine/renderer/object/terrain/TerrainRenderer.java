@@ -12,7 +12,7 @@ import org.lwjgl.util.vector.Vector4f;
 
 import core.settings.EngineSettings;
 import object.camera.ICamera;
-import object.light.Light;
+import object.light.ILight;
 import object.model.RawModel;
 import object.terrain.terrain.ITerrain;
 import object.texture.terrain.TerrainTexturePack;
@@ -31,7 +31,7 @@ public class TerrainRenderer {
 		shader.stop();
 	}
 
-	public void render(Collection<ITerrain> terrains, Vector4f clipPlane, Collection<Light> lights,
+	public void render(Collection<ITerrain> terrains, Vector4f clipPlane, Collection<ILight> lights,
 			ICamera camera, Matrix4f toShadowMapSpace) {
 		shader.start();
 		shader.loadClipPlane(clipPlane);
@@ -54,7 +54,7 @@ public class TerrainRenderer {
 		shader.stop();
 	}
 
-	public void renderLow(Collection<ITerrain> terrains, Collection<Light> lights, ICamera camera) {
+	public void renderLow(Collection<ITerrain> terrains, Collection<ILight> lights, ICamera camera) {
 		shader.start();
 		shader.loadClipPlane(EngineSettings.NO_CLIP);
 		shader.loadSkyColour(EngineSettings.DISPLAY_RED, EngineSettings.DISPLAY_GREEN, EngineSettings.DISPLAY_BLUE);

@@ -1,8 +1,7 @@
 package object.particle.manager;
 
-import java.util.Collection;
-
-import object.particle.ParticleSystem;
+import object.particle.IParticleSystem;
+import tool.manager.IManager;
 
 /**
  * Interface to store and control paricle systems.
@@ -11,46 +10,4 @@ import object.particle.ParticleSystem;
  *
  */
 
-public interface IParticleManager {
-
-	/**
-	 * Adds list of paricle systems into the paricle systems map array.
-	 * 
-	 * @param particleList
-	 *            {@link Collection}<{@link ParticleSystem}> value of paricle
-	 *            systems list
-	 */
-	void addAll(Collection<ParticleSystem> particleList);
-
-	/**
-	 * Adds one paricle system into the paricle systems map array.
-	 * 
-	 * @param particle
-	 *            {@link ParticleSystem} value
-	 */
-	void add(ParticleSystem particle);
-
-	/**
-	 * Returns paricle system by name.
-	 * 
-	 * @param name
-	 *            {@link String} value
-	 * 
-	 * @return {@link ParticleSystem} value of chosen paricle system
-	 */
-	ParticleSystem getByName(String name);
-
-	/**
-	 * Returns list of paricle systems groupped by name.
-	 * 
-	 * @return {@link Collection}<{@link ParticleSystem}> value of paricle
-	 *         systems list
-	 */
-	Collection<ParticleSystem> getAll();
-
-	/**
-	 * Clear all paricle systems map and arrays.
-	 */
-	void clean();
-
-}
+public interface IParticleManager extends IManager<IParticleSystem> {}

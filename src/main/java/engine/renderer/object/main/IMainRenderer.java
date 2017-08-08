@@ -9,7 +9,7 @@ import org.lwjgl.util.vector.Vector4f;
 
 import object.camera.ICamera;
 import object.entity.entity.IEntity;
-import object.light.Light;
+import object.light.ILight;
 import object.model.TexturedModel;
 import object.scene.scene.IScene;
 import object.terrain.terrain.ITerrain;
@@ -91,7 +91,7 @@ public interface IMainRenderer {
 	 * @param camera
 	 */
 	void renderLowQualityScene(Map<TexturedModel, List<IEntity>> entities, Collection<ITerrain> terrains,
-			Collection<Light> lights, ICamera camera);
+			Collection<ILight> lights, ICamera camera);
 
 	/**
 	 * 

@@ -1,7 +1,5 @@
 package object.audio.manager;
 
-import java.util.Collection;
-
 import object.audio.master.IAudioMaster;
 import object.audio.source.IAudioSource;
 import tool.manager.IManager;

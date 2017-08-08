@@ -2,14 +2,10 @@ package object.particle;
 
 import org.lwjgl.util.vector.Vector3f;
 
-public interface IParticleSystem {
-	
-	/**
-	 * Gets particle system name.
-	 * 
-	 * @return String value of particle system name
-	 */
-	public String getName();
+import object.Nameable;
+
+public interface IParticleSystem extends Nameable {
+
 	
 	/**
 	 * @param direction

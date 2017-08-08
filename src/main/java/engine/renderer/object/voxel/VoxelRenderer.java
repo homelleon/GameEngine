@@ -13,7 +13,7 @@ import org.lwjgl.util.vector.Vector4f;
 
 import core.settings.EngineSettings;
 import object.camera.ICamera;
-import object.light.Light;
+import object.light.ILight;
 import object.model.RawModel;
 import object.model.TexturedModel;
 import object.texture.model.ModelTexture;
@@ -114,7 +114,7 @@ public class VoxelRenderer {
 		texture.setNumberOfRows(1);
 	}
 
-	public void render(IChunkManager chunkManager, Vector4f clipPlane, Collection<Light> lights,
+	public void render(IChunkManager chunkManager, Vector4f clipPlane, Collection<ILight> lights,
 			ICamera camera, Matrix4f toShadowMapSpace, Frustum frustum) {
 		shader.start();
 		shader.loadClipPlane(clipPlane);

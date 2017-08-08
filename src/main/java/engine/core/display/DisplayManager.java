@@ -13,7 +13,7 @@ import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.PixelFormat;
 
 import core.settings.EngineSettings;
-import frame.Frame;
+import frame.IFrame;
 import frame.FrameEditor;
 import object.input.KeyboardGame;
 
@@ -39,7 +39,7 @@ public class DisplayManager {
 
 		if (mode == EngineSettings.DISPLAY_EDIT_MODE) {
 			// режим редактирования
-			Frame frame = new FrameEditor("Editor");
+			IFrame frame = new FrameEditor("Editor");
 			width = frame.getWidth() / 2;
 			height = frame.getHeight() / 2;
 			Canvas canvas = new Canvas();

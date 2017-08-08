@@ -15,6 +15,7 @@ import org.lwjgl.util.vector.Vector4f;
 import core.settings.EngineSettings;
 import object.camera.ICamera;
 import object.entity.entity.IEntity;
+import object.light.ILight;
 import object.light.Light;
 import object.model.RawModel;
 import object.model.TexturedModel;
@@ -86,7 +87,7 @@ public class EntityRenderer {
 	 * @see ICamera
 	 * @see Texture
 	 */
-	public void render(Map<TexturedModel, List<IEntity>> entities, Vector4f clipPlane, Collection<Light> lights,
+	public void render(Map<TexturedModel, List<IEntity>> entities, Vector4f clipPlane, Collection<ILight> lights,
 			ICamera camera, Matrix4f toShadowMapSpace, Texture environmentMap) {
 		this.environmentMap = environmentMap;
 		shader.start();
@@ -127,7 +128,7 @@ public class EntityRenderer {
 	 * @see Light
 	 * @see ICamera
 	 */
-	public void renderLow(Map<TexturedModel, List<IEntity>> entities, Collection<Light> lights, ICamera camera) {
+	public void renderLow(Map<TexturedModel, List<IEntity>> entities, Collection<ILight> lights, ICamera camera) {
 		GL11.glClearColor(1, 1, 1, 1);
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 		shader.start();
