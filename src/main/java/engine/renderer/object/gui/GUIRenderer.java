@@ -53,7 +53,7 @@ public class GUIRenderer implements IGUIRenderer {
 	@Override
 	public void cleanUp() {
 		this.textureRenderer.cleanUp();
-		this.textRenderer.cleanUp();
+		this.textRenderer.clean();
 	}
 
 	private void processGroup(IGUIGroup group) {

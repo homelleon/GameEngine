@@ -26,7 +26,7 @@ public class EngineSettings {
 	public static final float DISPLAY_GREEN = 0.5f;
 	public static final float DISPLAY_BLUE = 0.55f;
 
-	public static final float DISPLAY_CONTRAST = 0.5f;
+	public static final float DISPLAY_CONTRAST = 0.8f;
 
 	/* audio settings */
 	public static final float MUSIC_VOLUME = 0.05f;
@@ -81,13 +81,13 @@ public class EngineSettings {
 	public static final int SHADOW_MAP_SIZE = 16384;
 	public static final float SHADOW_TRANSITION_DISTANCE = SHADOW_DISTANCE;
 	public static final int SHADOW_PCF = 2;
-	public static final float RENDERING_VIEW_DISTANCE = 400;
+	public static final float RENDERING_VIEW_DISTANCE = 500;
 	public static final float DETAIL_VIEW_DISTANCE = 150;
 	public static final int MAX_LIGHTS = 10;
 
 	/* voxel settings */
 	public static final float VOXEL_BLOCK_SIZE = 5f;
-	public static final int VOXEL_CHUNK_SIZE = 5;
+	public static final int VOXEL_CHUNK_SIZE = 8;
 
 	/* path settings */
 	public final static String PROJECT_PATH = "src/main/java/";

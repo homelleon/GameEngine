@@ -33,7 +33,21 @@
 				<g>0</g>
 				<b>0</b>
 			</color>
-		</GUIText>			
+		</GUIText>
+		<GUIText id="3">
+			<name>buttonLabel1</name>
+			<path>buttonLabel1</path>
+			<size>1</size>
+			<font>candara</font>
+			<position>
+				<x>0.0f</x>
+				<y>0.1f</y></position>
+			<max_length>1</max_length>
+			<centered>true</centered>
+			<color>
+				<r>0</r>
+				<g>1</g>
+				<b>0</b></color></GUIText>
 	</GUITexts>
 	<GUITextures>
 		<GUITexture id="1">

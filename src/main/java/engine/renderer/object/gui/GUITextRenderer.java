@@ -28,7 +28,7 @@ public class GUITextRenderer {
 		this.shader = new FontShader();
 	}
 
-	public void cleanUp() {
+	public void clean() {
 		this.shader.clean();
 	}
 

@@ -53,6 +53,8 @@ public class MyGame extends Game {
 		IGUIBuilder buttonGUIBuilder = new GUIBuilder();
 		buttonGUIBuilder.setTexture(gameManager.getScene().getUserInterface()
 				.getComponent().getTextures().get("Button"));
+		buttonGUIBuilder.setText(gameManager.getScene().getUserInterface()
+				.getComponent().getTexts().get("buttonLabel1"));
 		IGUIGroup buttonGroup = this.gameManager.getScene().getUserInterface().getGroups().createEmpty("button");
 		buttonGroup.add(buttonGUIBuilder.getGUI("button"));
 		((GUIObject) buttonGroup).show();

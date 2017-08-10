@@ -178,7 +178,7 @@ public class SceneRenderer {
 	}
 
 	protected GUIText createFPSText(float FPS, String fontName) {
-		GUIText guiText = new GUIText("FPS", "FPS: " + String.valueOf((int) FPS), 2f, fontName, new Vector2f(0.65f, 0),
+		GUIText guiText = new GUIText("FPS", "FPS: " + String.valueOf((int) FPS), 2f, fontName, new Vector2f(0.65f, 0.9f),
 				0.5f, true);
 		scene.getUserInterface().getComponent().getTexts().add(guiText);
 		return guiText;
@@ -186,7 +186,7 @@ public class SceneRenderer {
 
 	protected GUIText createPickerCoordsText(MousePicker picker, String fontName) {
 		String text = String.valueOf(picker.getCurrentRay());
-		GUIText guiText = new GUIText("Coords", text, 1, fontName, new Vector2f(0.3f, 0.2f), 1f, true);
+		GUIText guiText = new GUIText("Coords", text, 1, fontName, new Vector2f(0.3f, 0.8f), 1f, true);
 		scene.getUserInterface().getComponent().getTexts().add(guiText);
 		return guiText;
 	}

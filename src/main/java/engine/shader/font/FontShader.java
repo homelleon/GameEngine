@@ -28,7 +28,6 @@ public class FontShader extends ShaderProgram {
 	protected void getAllUniformLocations() {
 		location_colour = super.getUniformLocation("colour");
 		location_translation = super.getUniformLocation("translation");
-		location_translation = super.getUniformLocation("translation");
 		location_width = super.getUniformLocation("width");
 		location_edge = super.getUniformLocation("edge");
 		location_borderWidth = super.getUniformLocation("borderWidth");
