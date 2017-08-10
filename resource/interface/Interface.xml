@@ -37,7 +37,7 @@
 		<GUIText id="3">
 			<name>buttonLabel1</name>
 			<path>buttonLabel1</path>
-			<size>1</size>
+			<size>2</size>
 			<font>candara</font>
 			<position>
 				<x>0.0f</x>
@@ -47,7 +47,9 @@
 			<color>
 				<r>0</r>
 				<g>1</g>
-				<b>0</b></color></GUIText>
+				<b>0</b>
+			</color>
+		</GUIText>
 	</GUITexts>
 	<GUITextures>
 		<GUITexture id="1">
@@ -66,8 +68,8 @@
 			<name>Sign</name>
 			<texture>Sign</texture>
 			<position>
-				<x>0.5f</x>
-				<y>0.7f</y>
+				<x>0.8f</x>
+				<y>0.8f</y>
 			</position>
 			<scale>
 				<x>0.3f</x>
@@ -93,7 +95,9 @@
 				<x>0.0f</x>
 				<y>0.0f</y>
 			</position>
-			<scale><x>1f</x>
-				<y>1f</y></scale></GUITexture>
+			<scale><x>0.5f</x>
+				<y>0.5f</y>
+			</scale>
+		</GUITexture>
 	</GUITextures>
 </GUI>

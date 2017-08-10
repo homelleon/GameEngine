@@ -7,12 +7,14 @@ import core.EngineMain;
 import game.game.Game;
 import object.gui.group.IGUIGroup;
 import object.gui.gui.GUIBuilder;
-import object.gui.gui.IGUIBuilder;
 import object.gui.gui.IGUI;
+import object.gui.gui.IGUIBuilder;
 import object.gui.pattern.button.GUIButton;
 import object.gui.pattern.button.IGUIButton;
 import object.gui.pattern.menu.GUIMenu;
 import object.gui.pattern.menu.IGUIMenu;
+import object.gui.pattern.menu.system.GUIMenuSystem;
+import object.gui.pattern.menu.system.IGUIMenuSystem;
 import object.gui.pattern.object.GUIObject;
 import object.input.KeyboardGame;
 
@@ -21,6 +23,7 @@ public class MyGame extends Game {
 	private String guiGroupName = "help";
 	private IGUIGroup helpGroup;
 	private IGUI hintsUI;
+	IGUIMenuSystem menuSystem1;
 	int time = 0;
 	
 	IGUIMenu menu = new GUIMenu("menu1");
@@ -49,7 +52,11 @@ public class MyGame extends Game {
 		signGroup.add(signGUIBuilder.getGUI("sign"));
 		((GUIObject) signGroup).show();
 		
-		//-----------button GUI--------------//
+		//-----------button GUI--------------//		
+		menuSystem1 = new GUIMenuSystem();
+		IGUIMenu menu = new GUIMenu("first menu");
+		menuSystem1.add(menu);
+		
 		IGUIBuilder buttonGUIBuilder = new GUIBuilder();
 		buttonGUIBuilder.setTexture(gameManager.getScene().getUserInterface()
 				.getComponent().getTextures().get("Button"));
@@ -57,11 +64,30 @@ public class MyGame extends Game {
 				.getComponent().getTexts().get("buttonLabel1"));
 		IGUIGroup buttonGroup = this.gameManager.getScene().getUserInterface().getGroups().createEmpty("button");
 		buttonGroup.add(buttonGUIBuilder.getGUI("button"));
-		((GUIObject) buttonGroup).show();
+		menu.add((GUIObject) buttonGroup);
+
 		
-		IGUIButton button1 = new GUIButton("signButton1", signGUIBuilder.getGUI("sign1"), new Vector2f(400,300), new Vector2f(600,500));
-		IGUIButton button2 = new GUIButton("signButton2", signGUIBuilder.getGUI("sign2"), new Vector2f(400,300), new Vector2f(600,500));
-		IGUIButton button3 = new GUIButton("signButton3", signGUIBuilder.getGUI("sign3"), new Vector2f(400,300), new Vector2f(600,500));
+		buttonGUIBuilder = new GUIBuilder();
+		buttonGUIBuilder.setTexture(gameManager.getScene().getUserInterface()
+				.getComponent().getTextures().get("Button"));
+		buttonGUIBuilder.setText(gameManager.getScene().getUserInterface()
+				.getComponent().getTexts().get("buttonLabel1"));
+		buttonGroup = this.gameManager.getScene().getUserInterface().getGroups().createEmpty("button1");
+		buttonGroup.add(buttonGUIBuilder.getGUI("button"));
+		menu.add((GUIObject) buttonGroup);
+		
+		buttonGUIBuilder = new GUIBuilder();
+		buttonGUIBuilder.setTexture(gameManager.getScene().getUserInterface()
+				.getComponent().getTextures().get("Button"));
+		buttonGUIBuilder.setText(gameManager.getScene().getUserInterface()
+				.getComponent().getTexts().get("buttonLabel1"));
+		buttonGroup = this.gameManager.getScene().getUserInterface().getGroups().createEmpty("button2");
+		buttonGroup.add(buttonGUIBuilder.getGUI("button"));
+		menu.add((GUIObject) buttonGroup);
+		
+		IGUIButton button1 = new GUIButton("signButton1", signGUIBuilder.getGUI("button"), new Vector2f(400,300), new Vector2f(600,500));
+		IGUIButton button2 = new GUIButton("signButton2", signGUIBuilder.getGUI("button"), new Vector2f(400,300), new Vector2f(600,500));
+		IGUIButton button3 = new GUIButton("signButton3", signGUIBuilder.getGUI("button"), new Vector2f(400,300), new Vector2f(600,500));
 		this.menu.add((GUIObject) button1);
 		this.menu.add((GUIObject) button2);
 		this.menu.add((GUIObject) button3);
@@ -89,6 +115,7 @@ public class MyGame extends Game {
 	@Override
 	public void __onUpdateWithPause() {
 		if(EngineMain.getIsEnginePaused()) {
+			menuSystem1.show();
 			if(KeyboardGame.isKeyPressed(Keyboard.KEY_UP)) {
 				menu.selectNextButton();				
 			} else if(KeyboardGame.isKeyPressed(Keyboard.KEY_DOWN)) {
@@ -96,6 +123,8 @@ public class MyGame extends Game {
 			} else if(KeyboardGame.isKeyPressed(Keyboard.KEY_RETURN)) {
 				menu.useButton();
 			}
+		} else {
+			menuSystem1.hide();
 		}
 		
 		time += 1;

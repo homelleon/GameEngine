@@ -1,9 +1,10 @@
 package object.gui.pattern.menu.system;
 
+import object.gui.Hideable;
 import object.gui.pattern.menu.IGUIMenu;
 import tool.manager.IManager;
 
-public interface IGUIMenuSystem extends IManager<IGUIMenu> {
+public interface IGUIMenuSystem extends IManager<IGUIMenu>, Hideable {
 	
 	/**
 	 * Actives GUI menu by name.

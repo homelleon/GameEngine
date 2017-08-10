@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import object.gui.Hideable;
 import object.gui.pattern.menu.IGUIMenu;
 import object.gui.pattern.object.GUIObject;
 
@@ -12,6 +13,7 @@ public class GUIMenuSystem implements IGUIMenuSystem {
 	
 	Map<String, IGUIMenu> menus = new HashMap<String, IGUIMenu>();
 	IGUIMenu activeMenu;
+	private boolean isShown = false;
 
 	@Override
 	public void add(IGUIMenu menu) {
@@ -58,6 +60,21 @@ public class GUIMenuSystem implements IGUIMenuSystem {
 	public void clean() {
 		menus.values().forEach(menu -> menu.clean());
 		this.menus.clear();
+	}
+
+	@Override
+	public void show() {
+		this.menus.values().forEach(object -> ((Hideable) object).show());
+	}
+
+	@Override
+	public void hide() {
+		this.menus.values().forEach(object -> ((Hideable) object).hide());		
+	}
+
+	@Override
+	public boolean getIsShown() {
+		return this.isShown;
 	}
 
 }

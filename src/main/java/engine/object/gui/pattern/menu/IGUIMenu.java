@@ -1,6 +1,7 @@
 package object.gui.pattern.menu;
 
-import object.gui.pattern.button.IGUIButton;
+import object.Nameable;
+import object.gui.Hideable;
 import object.gui.pattern.object.GUIObject;
 
 /**
@@ -9,7 +10,7 @@ import object.gui.pattern.object.GUIObject;
  * @author homelleon
  * @see GUIMenu
  */
-public interface IGUIMenu {
+public interface IGUIMenu extends Hideable,Nameable {
 
 	/**
 	 * Adds {@link GUIObject} into GUI menu.

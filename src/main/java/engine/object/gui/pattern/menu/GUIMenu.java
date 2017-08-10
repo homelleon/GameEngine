@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 
+import object.gui.Hideable;
 import object.gui.pattern.button.IGUIButton;
 import object.gui.pattern.object.GUIObject;
 
@@ -122,13 +123,13 @@ public class GUIMenu extends GUIObject implements IGUIMenu {
 	@Override
 	public void show() {
 		super.show();
-		objects.values().forEach(object -> object.show());
+		objects.values().forEach(object -> ((Hideable) object).show());
 	}
 	
 	@Override
 	public void hide() {
 		super.hide();
-		objects.values().forEach(object -> object.hide());
+		objects.values().forEach(object -> ((Hideable) object).hide());
 	}
 	
 	private void updateIterator() {

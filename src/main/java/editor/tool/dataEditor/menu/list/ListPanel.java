@@ -1,7 +1,5 @@
 package tool.dataEditor.menu.list;
 
-import java.awt.Dimension;
-
 import javax.swing.Box;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
