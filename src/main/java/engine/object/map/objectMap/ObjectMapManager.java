@@ -6,10 +6,4 @@ package object.map.objectMap;
  * @author homelleon
  *
  */
-public class ObjectMapManager extends ObjectManager implements IObjectManager {
-
-	public ObjectMapManager(String name) {
-		super(name);
-	}
-	
-}
+public class ObjectMapManager extends ObjectManager implements IObjectManager {}

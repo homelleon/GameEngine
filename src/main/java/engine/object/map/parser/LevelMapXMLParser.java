@@ -26,15 +26,15 @@ public class LevelMapXMLParser extends XMLParser implements IObjectParser<IObjec
 
 	@Override
 	public IObjectManager parse() {
-		IObjectManager map = new ObjectMapManager("levelMap");
+		IObjectManager levelMap = new ObjectMapManager();
 		if(document.getDocumentElement().getNodeName().equals(XMLUtils.LEVEL_MAP)) {
 			NodeList nodeList = this.document.getDocumentElement().getChildNodes();
 			for(int i = 0; i < nodeList.getLength(); i++) {
 				Node node = nodeList.item(i);			
 				if(XMLUtils.ifNodeIsElement(node, XMLUtils.ENTITIES)) {
-					parseEntities(node, map);
+					parseEntities(node, levelMap);
 				} else if(XMLUtils.ifNodeIsElement(node, XMLUtils.TERRAINS)) {
-					parseTerrains(node, map);
+					parseTerrains(node, levelMap);
 				}
 			}
 			if (EngineDebug.hasDebugPermission()) {
@@ -44,7 +44,7 @@ public class LevelMapXMLParser extends XMLParser implements IObjectParser<IObjec
 		} else {
 			throw new NullPointerException("Incorrect parent element name of used level map file!");
 		}
-		return map;	
+		return levelMap;	
 	}
 
 	private void parseEntities(Node node, IObjectManager levelMap) {

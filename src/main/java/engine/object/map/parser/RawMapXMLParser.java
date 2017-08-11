@@ -22,17 +22,18 @@ import tool.xml.XMLUtils;
 import tool.xml.parser.IObjectParser;
 import tool.xml.parser.XMLParser;
 
-public class ModelMapXMLParser extends XMLParser implements IObjectParser<IObjectManager> {
+public class RawMapXMLParser extends XMLParser implements IObjectParser<IObjectManager> {
 
 	private IObjectManager modelMap;
 
-	public ModelMapXMLParser(Document document) {
+	public RawMapXMLParser(Document document) {
 		super(document);
 		this.modelMap = new ObjectMapManager();
 	}
 
 	@Override
 	public IObjectManager parse() {
+		//TODO: CHANGE IT ALL!
 		if(document.getDocumentElement().getNodeName().equals(XMLUtils.MODEL_MAP)) {
 			NodeList nodeList = document.getDocumentElement().getChildNodes();
 			for (int i = 0; i < nodeList.getLength(); i++) {

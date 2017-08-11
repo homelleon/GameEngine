@@ -1,5 +1,6 @@
 package object.map.objectMap;
 
+import object.Nameable;
 import object.audio.manager.IAudioManager;
 import object.entity.manager.IEntityManager;
 import object.light.ILightManager;
@@ -16,8 +17,6 @@ import object.terrain.manager.ITerrainManager;
  */
 public interface IObjectManager {
 	
-	String getName();
-
 	IEntityManager getEntities();
 
 	ITerrainManager getTerrains();

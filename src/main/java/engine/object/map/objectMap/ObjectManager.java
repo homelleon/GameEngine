@@ -13,24 +13,18 @@ import object.terrain.manager.TerrainManager;
 
 public abstract class ObjectManager {
 	
-	protected String name;
 	protected IEntityManager entityManager;
 	protected ITerrainManager terrainManager;
 	protected IParticleManager particleManager;
 	protected IAudioManager audioManager;
 	protected ILightManager lightManager;
 	
-	protected ObjectManager(String name) {
-		this.name = name;
+	protected ObjectManager() {
 		this.entityManager = new EntityManager();
 		this.terrainManager = new TerrainManager();
 		this.particleManager = new ParticleManager();
 		this.audioManager = new AudioManager(null);
 		this.lightManager = new LightManager();		
-	}
-	
-	public String getName() {
-		return this.name;
 	}
 
 	public IEntityManager getEntities() {

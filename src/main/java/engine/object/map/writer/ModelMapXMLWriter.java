@@ -19,10 +19,10 @@ public class ModelMapXMLWriter implements IModelMapWriter {
 	@Override
 	public void write(IObjectManager map, Loader loader) {
 		try {
-			File mapFile = new File(EngineSettings.MAP_PATH + map.getName() + ".xml");
+			File mapFile = new File(EngineSettings.MAP_PATH + "newModelMap" + ".xml");
 			BufferedWriter writer = new BufferedWriter(new FileWriter(mapFile));
 
-			System.out.println("Start saving map '" + map.getName() + "'...");
+			System.out.println("Start saving map model map...");
 			List<String> lines = new ArrayList<String>();
 
 			lines.add("<!-- This map is createrd by MapXMLWriter -->");

@@ -149,7 +149,7 @@ public class Loop implements ILoop {
 		String path = EngineSettings.MAP_PATH + name + EngineSettings.EXTENSION_XML;
 		if(new File(path).exists()) {
 			IXMLLoader xmlLoader = new XMLFileLoader(path);
-			IObjectParser<IObjectManager> mapParser = new ModelMapXMLParser(xmlLoader.load(), name);
+			IObjectParser<IObjectManager> mapParser = new ModelMapXMLParser(xmlLoader.load());
 			this.modelMap = mapParser.parse();
 			this.mapIsLoaded = true;
 		} else {
