@@ -6,14 +6,19 @@ import org.w3c.dom.Document;
 
 import core.settings.EngineSettings;
 import object.gui.group.IGUIGroup;
+import object.gui.text.GUIText;
 import object.gui.text.manager.GUITextManager;
 import object.gui.text.manager.IGUITextManager;
+import object.gui.text.reader.GUITextReader;
+import object.gui.texture.GUITexture;
 import object.gui.texture.manager.GUITextureManager;
 import object.gui.texture.manager.IGUITextureManager;
+import object.gui.texture.reader.GUITextureReader;
 import renderer.object.gui.GUIRenderer;
 import renderer.object.gui.IGUIRenderer;
-import tool.xml.loader.XMLFileLoader;
 import tool.xml.loader.IXMLLoader;
+import tool.xml.loader.XMLFileLoader;
+import tool.xml.reader.IXMLReader;
 
 public class GUIComponentManager implements IGUIComponentManager {
 
@@ -33,8 +38,10 @@ public class GUIComponentManager implements IGUIComponentManager {
 		this.guiRenderer = new GUIRenderer(this.textManager.getFonts());
 		IXMLLoader loader = new XMLFileLoader(EngineSettings.INTERFACE_PATH + guiFileName + EngineSettings.EXTENSION_XML);
 		Document document = loader.load();
-		textManager.readDocument(document);
-		textureManager.readDocument(document);
+		IXMLReader<GUITexture> textureReader = new GUITextureReader();
+		textureManager.addAll(textureReader.readDocument(document));
+		IXMLReader<GUIText> textReader = new GUITextReader();
+		textManager.addAll(textReader.readDocument(document));
 	}
 
 	@Override
@@ -56,7 +63,7 @@ public class GUIComponentManager implements IGUIComponentManager {
 	public void cleanAll() {
 		this.guiRenderer.cleanUp();
 		this.textManager.clean();
-		this.textureManager.cleanUp();
+		this.textureManager.clean();
 	}
 
 }

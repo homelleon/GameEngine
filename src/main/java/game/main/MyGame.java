@@ -13,9 +13,8 @@ import object.gui.pattern.button.GUIButton;
 import object.gui.pattern.button.IGUIButton;
 import object.gui.pattern.menu.GUIMenu;
 import object.gui.pattern.menu.IGUIMenu;
-import object.gui.pattern.menu.system.GUIMenuSystem;
-import object.gui.pattern.menu.system.IGUIMenuSystem;
 import object.gui.pattern.object.GUIObject;
+import object.gui.system.IGUIMenuSystem;
 import object.input.KeyboardGame;
 
 public class MyGame extends Game {
@@ -23,7 +22,7 @@ public class MyGame extends Game {
 	private String guiGroupName = "help";
 	private IGUIGroup helpGroup;
 	private IGUI hintsUI;
-	IGUIMenuSystem menuSystem1;
+	IGUIMenuSystem menuSystem;
 	int time = 0;
 	
 	IGUIMenu menu = new GUIMenu("menu1");
@@ -53,9 +52,9 @@ public class MyGame extends Game {
 		((GUIObject) signGroup).show();
 		
 		//-----------button GUI--------------//		
-		menuSystem1 = new GUIMenuSystem();
-		IGUIMenu menu = new GUIMenu("first menu");
-		menuSystem1.add(menu);
+		menuSystem = scene.getUserInterface().getMenus();
+		IGUIMenu mainMenu = new GUIMenu("first menu");
+		menuSystem.add(mainMenu);
 		
 		IGUIBuilder buttonGUIBuilder = new GUIBuilder();
 		buttonGUIBuilder.setTexture(gameManager.getScene().getUserInterface()
@@ -64,7 +63,7 @@ public class MyGame extends Game {
 				.getComponent().getTexts().get("buttonLabel1"));
 		IGUIGroup buttonGroup = this.gameManager.getScene().getUserInterface().getGroups().createEmpty("button");
 		buttonGroup.add(buttonGUIBuilder.getGUI("button"));
-		menu.add((GUIObject) buttonGroup);
+		mainMenu.add((GUIObject) buttonGroup);
 
 		
 		buttonGUIBuilder = new GUIBuilder();
@@ -74,7 +73,7 @@ public class MyGame extends Game {
 				.getComponent().getTexts().get("buttonLabel1"));
 		buttonGroup = this.gameManager.getScene().getUserInterface().getGroups().createEmpty("button1");
 		buttonGroup.add(buttonGUIBuilder.getGUI("button"));
-		menu.add((GUIObject) buttonGroup);
+		mainMenu.add((GUIObject) buttonGroup);
 		
 		buttonGUIBuilder = new GUIBuilder();
 		buttonGUIBuilder.setTexture(gameManager.getScene().getUserInterface()
@@ -83,15 +82,15 @@ public class MyGame extends Game {
 				.getComponent().getTexts().get("buttonLabel1"));
 		buttonGroup = this.gameManager.getScene().getUserInterface().getGroups().createEmpty("button2");
 		buttonGroup.add(buttonGUIBuilder.getGUI("button"));
-		menu.add((GUIObject) buttonGroup);
+		mainMenu.add((GUIObject) buttonGroup);
 		
 		IGUIButton button1 = new GUIButton("signButton1", signGUIBuilder.getGUI("button"), new Vector2f(400,300), new Vector2f(600,500));
 		IGUIButton button2 = new GUIButton("signButton2", signGUIBuilder.getGUI("button"), new Vector2f(400,300), new Vector2f(600,500));
 		IGUIButton button3 = new GUIButton("signButton3", signGUIBuilder.getGUI("button"), new Vector2f(400,300), new Vector2f(600,500));
-		this.menu.add((GUIObject) button1);
-		this.menu.add((GUIObject) button2);
-		this.menu.add((GUIObject) button3);
-		this.menu.selectNextButton();
+		mainMenu.add((GUIObject) button1);
+		mainMenu.add((GUIObject) button2);
+		mainMenu.add((GUIObject) button3);
+		mainMenu.selectNextButton();
 		//PE10.peAttachBody(tree1, PE10.BODY_3D_SPHERE, world1);
 		//PE10.peAttachBody(tree2, PE10.BODY_3D_SPHERE, world1);
 		//PE10.peAttachBody(tree3, PE10.BODY_3D_SPHERE, world1);
@@ -115,16 +114,16 @@ public class MyGame extends Game {
 	@Override
 	public void __onUpdateWithPause() {
 		if(EngineMain.getIsEnginePaused()) {
-			menuSystem1.show();
+			menuSystem.show("first menu");
 			if(KeyboardGame.isKeyPressed(Keyboard.KEY_UP)) {
-				menu.selectNextButton();				
+				menuSystem.get("first menu").selectNextButton();				
 			} else if(KeyboardGame.isKeyPressed(Keyboard.KEY_DOWN)) {
-				menu.selectPreviousButton();
+				menuSystem.get("first menu").selectPreviousButton();
 			} else if(KeyboardGame.isKeyPressed(Keyboard.KEY_RETURN)) {
-				menu.useButton();
+				menuSystem.get("first menu").useButton();
 			}
 		} else {
-			menuSystem1.hide();
+			menuSystem.hide("first menu");
 		}
 		
 		time += 1;

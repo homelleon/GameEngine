@@ -1,4 +1,4 @@
-package object.gui.pattern.menu.system;
+package object.gui.system;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -60,6 +60,24 @@ public class GUIMenuSystem implements IGUIMenuSystem {
 	public void clean() {
 		menus.values().forEach(menu -> menu.clean());
 		this.menus.clear();
+	}
+	
+	@Override
+	public void show(String name) {
+		if(this.menus.containsKey(name)) {
+			this.menus.get(name).show();
+		} else {
+			throw new NullPointerException("There is no menu with "+ name + " in menu system!");
+		}
+	}
+	
+	@Override
+	public void hide(String name) {
+		if(this.menus.containsKey(name)) {
+			this.menus.get(name).hide();
+		} else {
+			throw new NullPointerException("There is no menu with "+ name + " in menu system!");
+		}
 	}
 
 	@Override

@@ -2,16 +2,10 @@ package object.gui.texture.manager;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-import org.w3c.dom.Document;
-
-import core.settings.EngineSettings;
 import object.gui.texture.GUITexture;
-import object.gui.texture.parser.GUITextureXMLParser;
-import tool.xml.loader.XMLFileLoader;
-import tool.xml.loader.IXMLLoader;
-import tool.xml.parser.IListParser;
 
 /**
  * Graphic interface manager for controling and storing structured map and
@@ -28,6 +22,17 @@ public class GUITextureManager implements IGUITextureManager {
 
 	@Override
 	public void addAll(Collection<GUITexture> guiList) {
+		if ((guiList != null) && (!guiList.isEmpty())) {
+			for (GUITexture guiTexture : guiList) {
+				this.textures.put(guiTexture.getName(), guiTexture);
+			}
+		}
+	}
+	
+
+
+	@Override
+	public void addAll(List<GUITexture> guiList) {
 		if ((guiList != null) && (!guiList.isEmpty())) {
 			for (GUITexture guiTexture : guiList) {
 				this.textures.put(guiTexture.getName(), guiTexture);
@@ -57,22 +62,18 @@ public class GUITextureManager implements IGUITextureManager {
 	}
 
 	@Override
-	public void cleanUp() {
+	public boolean delete(String name) {
+		if(this.textures.containsKey(name)) {
+			this.textures.remove(name);
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	@Override
+	public void clean() {
 		this.textures.clear();
-	}
-
-	@Override
-	public void readFile(String fileName) {
-		IXMLLoader xmlLoader = new XMLFileLoader(
-				EngineSettings.INTERFACE_PATH + fileName + EngineSettings.EXTENSION_XML);
-		IListParser<GUITexture> parser = new GUITextureXMLParser(xmlLoader.load());
-		this.addAll(parser.parse());
-	}
-
-	@Override
-	public void readDocument(Document document) {
-		IListParser<GUITexture> parser = new GUITextureXMLParser(document);
-		this.addAll(parser.parse());		
 	}
 
 }

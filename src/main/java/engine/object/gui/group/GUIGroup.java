@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.lwjgl.util.vector.Vector2f;
+
 import object.gui.gui.IGUI;
 import object.gui.pattern.object.GUIObject;
 
@@ -62,6 +64,11 @@ public class GUIGroup extends GUIObject implements IGUIGroup {
 	@Override
 	public Collection<IGUI> getAll() {
 		return guis.values();
+	}
+
+	@Override
+	public void move(Vector2f position) {
+		this.guis.values().forEach(gui -> gui.move(position));		
 	}
 
 	@Override

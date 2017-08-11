@@ -3,6 +3,8 @@ package object.gui.group;
 import java.util.Collection;
 import java.util.List;
 
+import org.lwjgl.util.vector.Vector2f;
+
 import object.gui.gui.IGUI;
 
 /**
@@ -53,6 +55,15 @@ public interface IGUIGroup {
 	 * @return {@link Collection}<{@link IGUI}> value of user interfaces
 	 */
 	Collection<IGUI> getAll();
+	
+	/**
+	 * Moves user interface object at schedule position depending on its
+	 * starting position.
+	 * 
+	 * @param position
+	 *            {@link Vector2f} value
+	 */
+	void move(Vector2f position);
 
 	/**
 	 * Returns render priority number of current group.

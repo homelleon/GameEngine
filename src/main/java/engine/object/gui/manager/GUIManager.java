@@ -5,8 +5,8 @@ import object.gui.component.GUIComponentManager;
 import object.gui.component.IGUIComponentManager;
 import object.gui.group.manager.GUIGroupManager;
 import object.gui.group.manager.IGUIGroupManager;
-import object.gui.pattern.menu.system.GUIMenuSystem;
-import object.gui.pattern.menu.system.IGUIMenuSystem;
+import object.gui.system.GUIMenuSystem;
+import object.gui.system.IGUIMenuSystem;
 
 public class GUIManager implements IGUIManager {
 
@@ -34,14 +34,12 @@ public class GUIManager implements IGUIManager {
 	@Override
 	public IGUIGroupManager getGroups() {
 		return groupManager;
-	}
-	
+	}	
 	
 	@Override
 	public IGUIMenuSystem getMenus() {
 		return this.menuSystem;
 	}
-
 
 	@Override
 	public IGUIComponentManager getComponent() {

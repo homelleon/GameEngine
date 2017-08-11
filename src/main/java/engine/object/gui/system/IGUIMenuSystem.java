@@ -1,4 +1,4 @@
-package object.gui.pattern.menu.system;
+package object.gui.system;
 
 import object.gui.Hideable;
 import object.gui.pattern.menu.IGUIMenu;
@@ -13,5 +13,19 @@ public interface IGUIMenuSystem extends IManager<IGUIMenu>, Hideable {
 	 * @return {@link IGUIMenu} objec
 	 */
 	IGUIMenu active(String name);
+	
+	/**
+	 * Shows menu with defined name.
+	 * 
+	 * @param name String value of menu name
+	 */
+	void show(String name);
+	
+	/**
+	 * Shows menu with defined name.
+	 * 
+	 * @param name String value of menu name
+	 */
+	void hide(String name);
 
 }

@@ -1,4 +1,4 @@
-package object.gui.pattern.menu.system.parser;
+package object.gui.system.parser;
 
 import java.util.List;
 

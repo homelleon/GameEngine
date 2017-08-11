@@ -100,18 +100,4 @@ public class GUITextManager implements IGUITextManager {
 		return fontManager;
 	}
 
-	@Override
-	public void readFile(String fileName) {
-		IXMLLoader xmlLoader = new XMLFileLoader(
-				EngineSettings.INTERFACE_PATH + fileName + EngineSettings.EXTENSION_XML);
-		IListParser<GUIText> parser = new GUITextXMLParser(xmlLoader.load());
-		this.addAll(parser.parse());
-	}
-
-	@Override
-	public void readDocument(Document document) {
-		IListParser<GUIText> parser = new GUITextXMLParser(document);
-		this.addAll(parser.parse());		
-	}
-
 }

@@ -2,7 +2,7 @@ package object.gui.manager;
 
 import object.gui.component.IGUIComponentManager;
 import object.gui.group.manager.IGUIGroupManager;
-import object.gui.pattern.menu.system.IGUIMenuSystem;
+import object.gui.system.IGUIMenuSystem;
 
 /**
  * UI Manager Interface.
