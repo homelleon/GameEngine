@@ -1,0 +1,32 @@
+<raw_map>
+	<models>
+		<raw_model id="1">
+			<name>cube</name>
+			<model>cube</model>
+		</raw_model>
+		<raw_model id="2">
+			<name>barrel</name>
+			<model>barrel</model>
+		</raw_model>
+	</models>
+	<textures>
+		<entities>
+			<texture id="1">
+				<name>dice</name>
+				<base_texture>Cube1</base_texture>
+				<normal>false</normal>
+				<normal_texture></normal_texture>
+				<specular>false</specular>
+				<specular_texture></specular_texture>
+			</texture>
+			<texture id="2">
+				<name>barrel</name>
+				<base_texture>barrel</base_texture>
+				<normal>true</normal>
+				<normal_texture>barrelNormal</normal_texture>
+				<specular>true</specular>
+				<specular_texture>barrelS</specular_texture>
+			</texture>
+		</entities>
+	</textures>
+</raw_map>

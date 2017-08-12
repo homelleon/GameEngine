@@ -1,47 +1,44 @@
 package object.map.parser;
 
-import org.lwjgl.util.vector.Vector3f;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import core.debug.EngineDebug;
-import object.entity.entity.IEntity;
-import object.entity.entity.IEntityBuilder;
-import object.entity.entity.NormalMappedEntityBuilder;
-import object.entity.entity.SimpleEntityBuilder;
-import object.map.objectMap.IObjectManager;
-import object.map.objectMap.ObjectMapManager;
-import object.terrain.builder.ITerrainBuilder;
-import object.terrain.builder.MappedTerrainBuilder;
-import object.terrain.builder.ProceduredTerrainBuilder;
+import core.settings.EngineSettings;
+import object.map.raw.IRawManager;
+import object.map.raw.RawManager;
+import object.model.RawModel;
+import object.texture.model.ModelTexture;
 import object.texture.terrain.ITerrainTexturePackBuilder;
 import object.texture.terrain.TerrainTexturePackBuilder;
+import renderer.loader.Loader;
+import renderer.loader.TextureBufferLoader;
+import tool.converter.object.ModelData;
+import tool.converter.object.OBJFileLoader;
 import tool.xml.XMLUtils;
 import tool.xml.parser.IObjectParser;
 import tool.xml.parser.XMLParser;
 
-public class RawMapXMLParser extends XMLParser implements IObjectParser<IObjectManager> {
-
-	private IObjectManager modelMap;
+public class RawMapXMLParser extends XMLParser implements IObjectParser<IRawManager> {
 
 	public RawMapXMLParser(Document document) {
 		super(document);
-		this.modelMap = new ObjectMapManager();
 	}
 
 	@Override
-	public IObjectManager parse() {
+	public IRawManager parse() {
 		//TODO: CHANGE IT ALL!
-		if(document.getDocumentElement().getNodeName().equals(XMLUtils.MODEL_MAP)) {
+		IRawManager map = new RawManager();
+		if(document.getDocumentElement().getNodeName().equals(XMLUtils.RAW_MAP)) {
 			NodeList nodeList = document.getDocumentElement().getChildNodes();
 			for (int i = 0; i < nodeList.getLength(); i++) {
 				Node node = nodeList.item(i);
-				if (XMLUtils.ifNodeIsElement(node, XMLUtils.ENTITIES)) {
-					parseEntities(node, modelMap);
-				} else if (XMLUtils.ifNodeIsElement(node, XMLUtils.TERRAINS)) {
-					parseTerrains(node, modelMap);
+				if (XMLUtils.ifNodeIsElement(node, XMLUtils.MODELS)) {
+					parseRawModel(node, map);
+				} else if (XMLUtils.ifNodeIsElement(node, XMLUtils.TEXTURES)) {
+					parseTextures(node, map);
 				}
 			}
 			if (EngineDebug.hasDebugPermission()) {
@@ -52,45 +49,88 @@ public class RawMapXMLParser extends XMLParser implements IObjectParser<IObjectM
 			throw new NullPointerException("Incorrect parent element name of used model map file!");
 		}
 
-		return modelMap;
+		return map;
+	}
+	
+	private void parseRawModel(Node node, IRawManager map) {
+		if (EngineDebug.hasDebugPermission()) {
+			System.out.println("> Loading models...");
+		}
+		Node rawModels = node;
+		NodeList rawModelList = rawModels.getChildNodes();
+		for (int j = 0; j < rawModelList.getLength(); j++) {
+			Node rawModelNode = rawModelList.item(j);
+			if (XMLUtils.ifNodeIsElement(rawModelNode, XMLUtils.RAW_MODEL)) {
+				Element rawModelElement = (Element) rawModelNode;
+				String ID = XMLUtils.getAttributeValue(rawModelNode, XMLUtils.ID);
+				String name = XMLUtils.getTagValue(rawModelElement, XMLUtils.NAME);
+				String model = XMLUtils.getTagValue(rawModelElement, XMLUtils.MODEL);
+				ModelData data = OBJFileLoader.loadOBJ(model);
+				RawModel rawModel = Loader.getInstance().getVertexLoader().loadToVAO(data.getVertices(), data.getTextureCoords(), data.getNormals(),
+						data.getIndices());
+				map.addRawModel(rawModel);
+				if (EngineDebug.hasDebugPermission()) {
+					System.out.println(">> " + map.getRawModel(name).getName());
+				}
+			}
+		}
+		if (EngineDebug.hasDebugPermission()) {
+			System.out.println("> Succed!");
+		}
+	}
+	
+	private void parseTextures(Node node, IRawManager map) {
+		if (EngineDebug.hasDebugPermission()) {
+			System.out.println("> Loading textures...");
+		}
+		Node rawModels = node;
+		NodeList rawModelList = rawModels.getChildNodes();
+		for (int j = 0; j < rawModelList.getLength(); j++) {
+			Node rawModelNode = rawModelList.item(j);
+			if (XMLUtils.ifNodeIsElement(rawModelNode, XMLUtils.ENTITIES)) {
+				parseEntities(rawModelNode, map);
+			} else if (XMLUtils.ifNodeIsElement(rawModelNode, XMLUtils.TERRAINS)) {
+				parseTerrains(rawModelNode, map);
+			}
+		}
+		if (EngineDebug.hasDebugPermission()) {
+			System.out.println("> Succed!");
+		}
+		
 	}
 
-	private void parseEntities(Node node, IObjectManager map) {
+	private void parseEntities(Node node, IRawManager map) {
 		if (EngineDebug.hasDebugPermission()) {
 			System.out.println("> Loading entities...");
 		}
 		Node entities = node;
 		NodeList entityList = entities.getChildNodes();
-		for (int j = 0; j < entityList.getLength(); j++) {
-			Node entityNode = entityList.item(j);
-			if (XMLUtils.ifNodeIsElement(entityNode, XMLUtils.ENTITY)) {
+		for (int k = 0; k < entityList.getLength(); k++) {
+			Node entityNode = entityList.item(k);
+			if (XMLUtils.ifNodeIsElement(entityNode, XMLUtils.TEXTURE)) {
 				Element entityEl = (Element) entityNode;
 				String ID = XMLUtils.getAttributeValue(entityNode, XMLUtils.ID);
 				String name = XMLUtils.getTagValue(entityEl, XMLUtils.NAME);
-				String model = XMLUtils.getTagValue(entityEl, XMLUtils.MODEL);
-				String texture = XMLUtils.getTagValue(entityEl, XMLUtils.TEXTURE);
-				Vector3f position = new Vector3f(0, 0, 0);
-				Vector3f rotation = new Vector3f(0, 0, 0);
+				String baseTexture = XMLUtils.getTagValue(entityEl, XMLUtils.BASE_TEXTURE);
+				TextureBufferLoader textureLoader = Loader.getInstance().getTextureLoader();
+				int textureID = textureLoader.loadTexture(EngineSettings.TEXTURE_MODEL_PATH, baseTexture);
+				ModelTexture texture = new ModelTexture(name, textureID);
 				boolean isNormal = Boolean.valueOf(XMLUtils.getTagValue(entityEl, XMLUtils.NORMAL));
-				IEntityBuilder builder;
-				IEntity entity = null;
-				if (isNormal) {
-					builder = new NormalMappedEntityBuilder();
-					String normalMap = XMLUtils.getTagValue(entityEl, XMLUtils.NORMAL_TEXTURE);
-					String specularMap = XMLUtils.getTagValue(entityEl, XMLUtils.SPECULAR_TEXTURE);
-					float shiness = Float.valueOf(XMLUtils.getTagValue(entityEl, XMLUtils.SHINE_DUMPER));
-					float reflectivity = Float.valueOf(XMLUtils.getTagValue(entityEl, XMLUtils.REFLECTIVITY));
-					builder.setNormalTexture(normalMap).setSpecularTexture(specularMap)
-						   .setTextureReflectivity(reflectivity).setTextureShiness(shiness);
-					
-				} else {
-					builder = new SimpleEntityBuilder();
+				if(isNormal) {
+					String normalTexture = XMLUtils.getTagValue(entityEl, XMLUtils.NORMAL_TEXTURE);
+					int normalID = textureLoader.loadTexture(EngineSettings.TEXTURE_NORMAL_MAP_PATH, normalTexture);
+					texture.setNormalMap(normalID);
 				}
-				builder.setModel(model).setTexture(texture).setPosition(position).setRotation(rotation);
-				entity = builder.createEntity(name);
-				map.getEntities().add(entity);
+				boolean isSpecular = Boolean.valueOf(XMLUtils.getTagValue(entityEl, XMLUtils.SPECULAR));
+				if(isSpecular) {
+					String specularTexture = XMLUtils.getTagValue(entityEl, XMLUtils.SPECULAR_TEXTURE);
+					int specularID = textureLoader.loadTexture(EngineSettings.TEXTURE_SPECULAR_MAP_PATH, specularTexture);
+					texture.setSpecularMap(specularID);
+				}
+				map.addModelTexture(texture);
+
 				if (EngineDebug.hasDebugPermission()) {
-					System.out.println(">> " + map.getEntities().get(name).getName());
+					System.out.println(">> " + map.getModelTexture(name).getName());
 				}
 			}
 		}
@@ -99,44 +139,28 @@ public class RawMapXMLParser extends XMLParser implements IObjectParser<IObjectM
 		}
 	}
 
-	private void parseTerrains(Node node, IObjectManager map) {
+	private void parseTerrains(Node node, IRawManager map) {
 		if (EngineDebug.hasDebugPermission()) {
 			System.out.println("> Loading terrains...");
 		}
 		Node terrains = node;
 		NodeList terrainList = terrains.getChildNodes();
-		for (int j = 0; j < terrainList.getLength(); j++) {
-			Node terrain = terrainList.item(j);
+		for (int k = 0; k < terrainList.getLength(); k++) {
+			Node terrain = terrainList.item(k);
 			if (XMLUtils.ifNodeIsElement(terrain, XMLUtils.TERRAIN)) {
-				ITerrainBuilder terrainBuilder;
-				ITerrainTexturePackBuilder textureBuilder = new TerrainTexturePackBuilder();
-				Element terrainEl = (Element) terrain;
+				Element terrainElement = (Element) terrain;
 				String ID = XMLUtils.getAttributeValue(terrain, XMLUtils.ID);
-				String name = XMLUtils.getTagValue(terrainEl, XMLUtils.NAME);
-				String baseTexture = XMLUtils.getTagValue(terrainEl, XMLUtils.BASE_TEXTURE);
-				String redTexture = XMLUtils.getTagValue(terrainEl, XMLUtils.RED_TEXTURE);
-				String greenTexture = XMLUtils.getTagValue(terrainEl, XMLUtils.GREEN_TEXTURE);
-				String blueTexture = XMLUtils.getTagValue(terrainEl, XMLUtils.BLUE_TEXTURE);
-				String blendTexture = XMLUtils.getTagValue(terrainEl, XMLUtils.BLEND_TEXTURE);
-				Boolean isProcedured = Boolean.valueOf(XMLUtils.getTagValue(terrainEl, XMLUtils.PROCEDURE_GENERATED));
+				String name = XMLUtils.getTagValue(terrainElement, XMLUtils.NAME);
+				String baseTexture = XMLUtils.getTagValue(terrainElement, XMLUtils.BASE_TEXTURE);
+				String redTexture = XMLUtils.getTagValue(terrainElement, XMLUtils.RED_TEXTURE);
+				String greenTexture = XMLUtils.getTagValue(terrainElement, XMLUtils.GREEN_TEXTURE);
+				String blueTexture = XMLUtils.getTagValue(terrainElement, XMLUtils.BLUE_TEXTURE);
+				ITerrainTexturePackBuilder textureBuilder = new TerrainTexturePackBuilder();
 				textureBuilder.setBackgroundTexture(baseTexture).setRedTexture(redTexture)
 							  .setGreenTexture(greenTexture).setBlueTexture(blueTexture);
-				if (isProcedured) {
-					terrainBuilder = new ProceduredTerrainBuilder();					
-					Float amplitude = Float.valueOf(XMLUtils.getTagValue(terrainEl, XMLUtils.AMPLITUDE));
-					Integer octaves = Integer.valueOf(XMLUtils.getTagValue(terrainEl, XMLUtils.OCTAVE));
-					Float roughness = Float.valueOf(XMLUtils.getTagValue(terrainEl, XMLUtils.ROUGHTNESS));					
-					terrainBuilder.setAmplitude(amplitude).setOctaves(octaves).setRoughness(roughness);				
-				} else {
-					terrainBuilder = new MappedTerrainBuilder();
-					String heightMap = XMLUtils.getTagValue(terrainEl, XMLUtils.HEIGHT_TEXTURE);
-					terrainBuilder.setHeightTextureName(heightMap);
-				}
-				terrainBuilder.setTexturePack(textureBuilder.create(name + "TexturePack"))
-							  .setBlendTextureName(blendTexture);
-				map.getTerrains().add(terrainBuilder.create(name));
+				map.addTerrainTexturePack(textureBuilder.create(name));
 				if (EngineDebug.hasDebugPermission()) {
-					System.out.println(">> " + map.getTerrains().get(name).getName());
+					System.out.println(">> " + map.getTerrainTexturePack(name).getName());
 				}
 			}
 		}

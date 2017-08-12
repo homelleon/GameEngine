@@ -32,6 +32,10 @@ public class XMLUtils {
 	public static final String MAP = "map";
 	public static final String LEVEL_MAP = "level_map";
 	public static final String MODEL_MAP = "model_map";
+	public static final String RAW_MAP = "raw_map";
+	public static final String MODELS = "models";
+	public static final String RAW_MODEL = "raw_model";
+	public static final String TEXTURES = "textures";
 	public static final String ENTITIES = "entities";
 	public static final String ENTITY = "entity";
 	public static final String TERRAINS = "terrains";
@@ -89,7 +93,8 @@ public class XMLUtils {
 
 	/* boolean values */
 	public final static String NORMAL = "normal";
-	public final static String CENTERED = "centered";
+	public final static String SPECULAR = "specular";
+	public final static String CENTERED = "centered";	
 	public final static String PROCEDURE_GENERATED = "procedure_generated";
 
 	/* html text tags */

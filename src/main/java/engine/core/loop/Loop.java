@@ -197,7 +197,7 @@ public class Loop implements ILoop {
 		if (EngineDebug.hasDebugPermission()) {
 			System.out.println("Loading complete...");
 		}
-		loadModelMap(settings.getMapName());
+		loadModelMap(settings.getModelMapName());
 		loadObjectMap(settings.getObjectMapName());
 	}
 

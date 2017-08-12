@@ -12,8 +12,9 @@ package core.settings;
 public class GameSettings {
 
 	private static GameSettings instance;
-	String mapName;
+	String modelMapName;
 	String objectMapName;
+	String rawMapName;
 
 	private GameSettings() {
 	}
@@ -26,11 +27,15 @@ public class GameSettings {
 	}
 
 	public void setMapName(String name) {
-		this.mapName = name;
+		this.modelMapName = name;
 	}
 
-	public String getMapName() {
-		return this.mapName;
+	public String getModelMapName() {
+		return this.modelMapName;
+	}
+	
+	public String getRawMapName() {
+		return this.rawMapName;
 	}
 
 	public void setObjectMapName(String name) {
@@ -39,6 +44,10 @@ public class GameSettings {
 
 	public String getObjectMapName() {
 		return this.objectMapName;
+	}
+	
+	public void setRawMapName(String rawMapName) {
+		this.rawMapName = rawMapName;
 	}
 
 }

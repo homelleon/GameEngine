@@ -6,5 +6,6 @@
 		<model_map>
 			<name>levelMap</name>
 		</model_map>
-	</maps>
+		<raw_map>
+			<name>rawMap</name></raw_map></maps>
 </settings>
