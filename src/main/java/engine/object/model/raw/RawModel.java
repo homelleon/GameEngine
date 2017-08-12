@@ -1,4 +1,4 @@
-package object.model;
+package object.model.raw;
 
 import object.bounding.BoundingBox;
 import object.bounding.BoundingSphere;
@@ -16,6 +16,14 @@ public class RawModel {
 		this.vertexCount = vertexCount;
 		this.sphere = sphere;
 		this.box = box;
+		this.name = name;
+	}
+	
+	public RawModel(String name, RawModel model) {
+		this.vaoID = model.getVaoID();
+		this.vertexCount = model.getVertexCount();
+		this.sphere = model.getBSphere();
+		this.box = model.getBBox();
 		this.name = name;
 	}
 

@@ -15,7 +15,7 @@ import object.entity.player.Player;
 import object.entity.player.IPlayer;
 import object.gui.text.GUIText;
 import object.light.Light;
-import object.model.TexturedModel;
+import object.model.textured.TexturedModel;
 import object.particle.manager.ParticleManager;
 import object.scene.scene.IScene;
 import object.water.WaterTile;

@@ -15,7 +15,7 @@ import org.lwjgl.util.vector.Vector3f;
 
 import object.bounding.BoundingBox;
 import object.bounding.BoundingSphere;
-import object.model.RawModel;
+import object.model.raw.RawModel;
 import tool.math.Maths;
 
 public class VertexBufferLoader {

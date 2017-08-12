@@ -12,7 +12,7 @@ import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
 import core.settings.EngineSettings;
-import object.model.RawModel;
+import object.model.raw.RawModel;
 import renderer.loader.Loader;
 
 public class NormalMappedObjLoader {

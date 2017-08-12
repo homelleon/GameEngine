@@ -1,9 +1,9 @@
 package object.terrain.terrain;
 
 import object.Nameable;
-import object.model.RawModel;
-import object.texture.terrain.TerrainTexture;
-import object.texture.terrain.TerrainTexturePack;
+import object.model.raw.RawModel;
+import object.texture.terrain.pack.TerrainTexturePack;
+import object.texture.terrain.texture.TerrainTexture;
 
 /**
  * Terrain interface represents common landscape terrain methods.

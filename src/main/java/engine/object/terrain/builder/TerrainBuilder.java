@@ -1,7 +1,7 @@
 package object.terrain.builder;
 
 import object.terrain.terrain.ITerrain;
-import object.texture.terrain.TerrainTexturePack;
+import object.texture.terrain.pack.TerrainTexturePack;
 
 public abstract class TerrainBuilder {
 	

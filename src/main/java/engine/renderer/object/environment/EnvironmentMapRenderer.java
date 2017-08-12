@@ -14,7 +14,7 @@ import org.lwjgl.opengl.GL30;
 import object.camera.CameraCubeMap;
 import object.camera.ICamera;
 import object.entity.entity.IEntity;
-import object.model.TexturedModel;
+import object.model.textured.TexturedModel;
 import object.scene.scene.IScene;
 import renderer.object.main.MainRenderer;
 

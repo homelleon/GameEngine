@@ -5,9 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import object.model.RawModel;
+import object.model.raw.RawModel;
 import object.texture.model.ModelTexture;
-import object.texture.terrain.TerrainTexturePack;
+import object.texture.terrain.pack.TerrainTexturePack;
 
 public class RawManager implements IRawManager {
 	

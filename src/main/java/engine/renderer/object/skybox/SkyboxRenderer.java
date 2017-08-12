@@ -10,7 +10,7 @@ import core.EngineMain;
 import core.display.DisplayManager;
 import core.settings.EngineSettings;
 import object.camera.ICamera;
-import object.model.RawModel;
+import object.model.raw.RawModel;
 import renderer.loader.Loader;
 import shader.skybox.SkyboxShader;
 

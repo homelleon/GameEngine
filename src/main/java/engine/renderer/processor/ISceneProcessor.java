@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import object.entity.entity.IEntity;
-import object.model.TexturedModel;
+import object.model.textured.TexturedModel;
 import object.terrain.terrain.ITerrain;
 import renderer.viewCulling.frustum.Frustum;
 

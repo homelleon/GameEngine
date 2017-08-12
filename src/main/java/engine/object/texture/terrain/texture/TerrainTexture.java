@@ -1,6 +1,8 @@
-package object.texture.terrain;
+package object.texture.terrain.texture;
 
-public class TerrainTexture {
+import object.Nameable;
+
+public class TerrainTexture implements Nameable {
 
 	private int textureID;
 	private String name;
@@ -10,6 +12,7 @@ public class TerrainTexture {
 		this.name = name;
 	}
 
+	@Override
 	public String getName() {
 		return name;
 	}

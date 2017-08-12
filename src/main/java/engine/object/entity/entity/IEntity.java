@@ -4,7 +4,7 @@ import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
 import object.Nameable;
-import object.model.TexturedModel;
+import object.model.textured.TexturedModel;
 
 /**
  * 

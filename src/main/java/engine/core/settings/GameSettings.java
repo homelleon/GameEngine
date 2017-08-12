@@ -46,8 +46,8 @@ public class GameSettings {
 		return this.objectMapName;
 	}
 	
-	public void setRawMapName(String rawMapName) {
-		this.rawMapName = rawMapName;
+	public void setRawMapName(String name) {
+		this.rawMapName = name;
 	}
 
 }

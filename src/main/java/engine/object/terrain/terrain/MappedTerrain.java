@@ -10,9 +10,9 @@ import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
 import core.settings.EngineSettings;
-import object.model.RawModel;
-import object.texture.terrain.TerrainTexture;
-import object.texture.terrain.TerrainTexturePack;
+import object.model.raw.RawModel;
+import object.texture.terrain.pack.TerrainTexturePack;
+import object.texture.terrain.texture.TerrainTexture;
 import renderer.loader.Loader;
 import tool.math.Maths;
 

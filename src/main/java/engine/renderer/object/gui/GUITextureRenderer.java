@@ -11,7 +11,7 @@ import org.lwjgl.util.vector.Vector2f;
 
 import core.display.DisplayManager;
 import object.gui.texture.GUITexture;
-import object.model.RawModel;
+import object.model.raw.RawModel;
 import renderer.loader.Loader;
 import shader.guiTexture.GUITextureShader;
 import tool.math.Maths;

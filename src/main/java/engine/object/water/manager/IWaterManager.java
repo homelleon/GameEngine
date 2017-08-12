@@ -49,5 +49,5 @@ public interface IWaterManager {
 	/**
 	 * Clear all water tiles map and arrays.
 	 */
-	void clearAll();
+	void clean();
 }

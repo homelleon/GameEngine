@@ -11,13 +11,15 @@ import object.entity.entity.IEntity;
 import object.entity.entity.IEntityBuilder;
 import object.entity.entity.NormalMappedEntityBuilder;
 import object.entity.entity.SimpleEntityBuilder;
-import object.map.objectMap.IObjectManager;
 import object.map.objectMap.ObjectMapManager;
+import object.map.raw.IRawManager;
+import object.model.raw.RawModel;
+import object.scene.manager.IObjectManager;
 import object.terrain.builder.ITerrainBuilder;
 import object.terrain.builder.MappedTerrainBuilder;
 import object.terrain.builder.ProceduredTerrainBuilder;
-import object.texture.terrain.ITerrainTexturePackBuilder;
-import object.texture.terrain.TerrainTexturePackBuilder;
+import object.texture.terrain.pack.builder.ITerrainTexturePackBuilder;
+import object.texture.terrain.pack.builder.TerrainTexturePackBuilder;
 import tool.xml.XMLUtils;
 import tool.xml.parser.IObjectParser;
 import tool.xml.parser.XMLParser;
@@ -25,9 +27,11 @@ import tool.xml.parser.XMLParser;
 public class ModelMapXMLParser extends XMLParser implements IObjectParser<IObjectManager> {
 
 	private IObjectManager modelMap;
+	private IRawManager rawMap;
 
-	public ModelMapXMLParser(Document document) {
+	public ModelMapXMLParser(Document document, IRawManager rawMap) {
 		super(document);
+		this.rawMap = rawMap;
 		this.modelMap = new ObjectMapManager();
 	}
 
@@ -85,7 +89,8 @@ public class ModelMapXMLParser extends XMLParser implements IObjectParser<IObjec
 				} else {
 					builder = new SimpleEntityBuilder();
 				}
-				builder.setModel(model).setTexture(texture).setPosition(position).setRotation(rotation);
+				RawModel rawModel = rawMap.getRawModel(model);
+				builder.setModel(model, rawModel).setTexture(texture).setPosition(position).setRotation(rotation);
 				entity = builder.createEntity(name);
 				map.getEntities().add(entity);
 				if (EngineDebug.hasDebugPermission()) {

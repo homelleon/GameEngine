@@ -41,7 +41,7 @@ public class WaterManager implements IWaterManager {
 	}
 
 	@Override
-	public void clearAll() {
+	public void clean() {
 		this.waters.clear();
 	}
 

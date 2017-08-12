@@ -30,6 +30,8 @@ public class SettingsXMLParser extends XMLParser implements IObjectParser<GameSe
 						readMapSettings(mapNode, settings);
 					} else if (XMLUtils.ifNodeIsElement(mapNode, XMLUtils.MODEL_MAP)) {
 						readObjectMapSettings(mapNode, settings);
+					} else if (XMLUtils.ifNodeIsElement(mapNode, XMLUtils.RAW_MAP)) {
+						readRawMapSettings(mapNode, settings);
 					}
 				}
 			}
@@ -47,6 +49,12 @@ public class SettingsXMLParser extends XMLParser implements IObjectParser<GameSe
 		Element objectMap = (Element) node;
 		String name = XMLUtils.getTagValue(objectMap, XMLUtils.NAME);
 		settings.setObjectMapName(name);
+	}
+	
+	private void readRawMapSettings(Node node, GameSettings settings) {
+		Element rawMap = (Element) node;
+		String name = XMLUtils.getTagValue(rawMap, XMLUtils.NAME);
+		settings.setRawMapName(name);
 	}
 
 }

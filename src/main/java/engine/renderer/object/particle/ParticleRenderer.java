@@ -14,7 +14,7 @@ import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 
 import object.camera.ICamera;
-import object.model.RawModel;
+import object.model.raw.RawModel;
 import object.particle.particle.Particle;
 import object.texture.particle.ParticleTexture;
 import renderer.loader.Loader;

@@ -2,7 +2,7 @@ package object.bounding;
 
 import org.lwjgl.util.vector.Vector3f;
 
-import object.model.RawModel;
+import object.model.raw.RawModel;
 import renderer.loader.Loader;
 
 public class BoundingBox {

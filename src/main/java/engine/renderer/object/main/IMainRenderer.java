@@ -10,7 +10,7 @@ import org.lwjgl.util.vector.Vector4f;
 import object.camera.ICamera;
 import object.entity.entity.IEntity;
 import object.light.ILight;
-import object.model.TexturedModel;
+import object.model.textured.TexturedModel;
 import object.scene.scene.IScene;
 import object.terrain.terrain.ITerrain;
 import renderer.object.entity.EntityRenderer;

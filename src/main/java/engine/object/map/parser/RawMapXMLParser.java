@@ -9,10 +9,10 @@ import core.debug.EngineDebug;
 import core.settings.EngineSettings;
 import object.map.raw.IRawManager;
 import object.map.raw.RawManager;
-import object.model.RawModel;
+import object.model.raw.RawModel;
 import object.texture.model.ModelTexture;
-import object.texture.terrain.ITerrainTexturePackBuilder;
-import object.texture.terrain.TerrainTexturePackBuilder;
+import object.texture.terrain.pack.builder.ITerrainTexturePackBuilder;
+import object.texture.terrain.pack.builder.TerrainTexturePackBuilder;
 import renderer.loader.Loader;
 import renderer.loader.TextureBufferLoader;
 import tool.converter.object.ModelData;
@@ -29,7 +29,6 @@ public class RawMapXMLParser extends XMLParser implements IObjectParser<IRawMana
 
 	@Override
 	public IRawManager parse() {
-		//TODO: CHANGE IT ALL!
 		IRawManager map = new RawManager();
 		if(document.getDocumentElement().getNodeName().equals(XMLUtils.RAW_MAP)) {
 			NodeList nodeList = document.getDocumentElement().getChildNodes();
@@ -66,8 +65,9 @@ public class RawMapXMLParser extends XMLParser implements IObjectParser<IRawMana
 				String name = XMLUtils.getTagValue(rawModelElement, XMLUtils.NAME);
 				String model = XMLUtils.getTagValue(rawModelElement, XMLUtils.MODEL);
 				ModelData data = OBJFileLoader.loadOBJ(model);
-				RawModel rawModel = Loader.getInstance().getVertexLoader().loadToVAO(data.getVertices(), data.getTextureCoords(), data.getNormals(),
-						data.getIndices());
+				RawModel rawModel = new RawModel(name, Loader.getInstance().getVertexLoader()
+						.loadToVAO(data.getVertices(), data.getTextureCoords(), data.getNormals(),
+						data.getIndices()));
 				map.addRawModel(rawModel);
 				if (EngineDebug.hasDebugPermission()) {
 					System.out.println(">> " + map.getRawModel(name).getName());
@@ -101,7 +101,7 @@ public class RawMapXMLParser extends XMLParser implements IObjectParser<IRawMana
 
 	private void parseEntities(Node node, IRawManager map) {
 		if (EngineDebug.hasDebugPermission()) {
-			System.out.println("> Loading entities...");
+			System.out.println(">> Loading entity textures...");
 		}
 		Node entities = node;
 		NodeList entityList = entities.getChildNodes();
@@ -130,12 +130,12 @@ public class RawMapXMLParser extends XMLParser implements IObjectParser<IRawMana
 				map.addModelTexture(texture);
 
 				if (EngineDebug.hasDebugPermission()) {
-					System.out.println(">> " + map.getModelTexture(name).getName());
+					System.out.println(">>> " + map.getModelTexture(name).getName());
 				}
 			}
 		}
 		if (EngineDebug.hasDebugPermission()) {
-			System.out.println("> Succed!");
+			System.out.println(">> Succed!");
 		}
 	}
 

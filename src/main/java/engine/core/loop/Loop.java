@@ -12,10 +12,14 @@ import core.settings.EngineSettings;
 import core.settings.GameSettings;
 import core.settings.parser.SettingsXMLParser;
 import game.game.IGame;
+import object.audio.master.AudioMaster;
+import object.audio.master.IAudioMaster;
 import object.input.MouseGame;
-import object.map.objectMap.IObjectManager;
 import object.map.parser.LevelMapXMLParser;
 import object.map.parser.ModelMapXMLParser;
+import object.map.parser.RawMapXMLParser;
+import object.map.raw.IRawManager;
+import object.scene.manager.IObjectManager;
 import object.scene.manager.ISceneManager;
 import object.scene.manager.SceneManager;
 import object.scene.scene.IScene;
@@ -49,6 +53,7 @@ public class Loop implements ILoop {
 	private IScene scene;
 	private IObjectManager modelMap;
 	private IObjectManager levelMap;
+	private IRawManager rawMap;
 
 	private IGame game;
 
@@ -79,8 +84,8 @@ public class Loop implements ILoop {
 		if (!this.mapIsLoaded) {
 			loadModelMap("defaultModelMap");
 		}
-
-		this.scene = new Scene(modelMap, levelMap);
+		IAudioMaster audioMaster = new AudioMaster();
+		this.scene = new Scene(modelMap, levelMap, audioMaster);
 		this.sceneRenderer = new SceneRenderer();
 		this.sceneManager = new SceneManager();
 		sceneManager.init(scene, loader);
@@ -95,7 +100,7 @@ public class Loop implements ILoop {
 			}
 			update();
 		}
-		cleanUp();
+		clean();
 	}
 
 	/**
@@ -127,10 +132,13 @@ public class Loop implements ILoop {
 	 * Starts cleaning process for game looping objects and close display to
 	 * exit the application.
 	 */
-	private void cleanUp() {
-		scene.clean();
-		loader.clean();
-		sceneRenderer.clean();
+	private void clean() {
+		this.scene.clean();
+		this.loader.clean();
+		this.sceneRenderer.clean();
+		this.levelMap.clean();
+		this.modelMap.clean();
+		this.rawMap.clean();
 		DisplayManager.closeDisplay();
 	}
 
@@ -149,7 +157,7 @@ public class Loop implements ILoop {
 		String path = EngineSettings.MAP_PATH + name + EngineSettings.EXTENSION_XML;
 		if(new File(path).exists()) {
 			IXMLLoader xmlLoader = new XMLFileLoader(path);
-			IObjectParser<IObjectManager> mapParser = new ModelMapXMLParser(xmlLoader.load());
+			IObjectParser<IObjectManager> mapParser = new ModelMapXMLParser(xmlLoader.load(), rawMap);
 			this.modelMap = mapParser.parse();
 			this.mapIsLoaded = true;
 		} else {
@@ -178,6 +186,20 @@ public class Loop implements ILoop {
 			System.out.println("File " + path + " is not extisted! Can't load object map!");
 		}
 	}
+	
+	private void loadRawMap(String name) {
+		if (EngineDebug.hasDebugPermission()) {
+			System.out.println("Loading raws...");
+		}
+		String path = EngineSettings.MAP_PATH + name + EngineSettings.EXTENSION_XML;
+		if(new File(path).exists()) {
+			IXMLLoader xmlLoader = new XMLFileLoader(EngineSettings.MAP_PATH + name + EngineSettings.EXTENSION_XML);
+			IObjectParser<IRawManager> mapParser = new RawMapXMLParser(xmlLoader.load());
+			this.rawMap = mapParser.parse();
+		} else {
+			System.out.println("File " + path + " is not extisted! Can't load raw map!");
+		}
+	}
 
 	/**
 	 * Loads game settings and sets name to map and object map. After that it
@@ -197,6 +219,7 @@ public class Loop implements ILoop {
 		if (EngineDebug.hasDebugPermission()) {
 			System.out.println("Loading complete...");
 		}
+		loadRawMap(settings.getRawMapName());
 		loadModelMap(settings.getModelMapName());
 		loadObjectMap(settings.getObjectMapName());
 	}

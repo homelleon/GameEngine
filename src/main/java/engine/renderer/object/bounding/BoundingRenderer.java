@@ -10,8 +10,8 @@ import org.lwjgl.util.vector.Matrix4f;
 
 import object.camera.ICamera;
 import object.entity.entity.IEntity;
-import object.model.RawModel;
-import object.model.TexturedModel;
+import object.model.raw.RawModel;
+import object.model.textured.TexturedModel;
 import shader.bounding.BoundingShader;
 import tool.math.Maths;
 import tool.openGL.OGLUtils;

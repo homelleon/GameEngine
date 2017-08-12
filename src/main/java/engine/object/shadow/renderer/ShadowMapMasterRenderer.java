@@ -13,7 +13,7 @@ import core.settings.EngineSettings;
 import object.camera.ICamera;
 import object.entity.entity.IEntity;
 import object.light.Light;
-import object.model.TexturedModel;
+import object.model.textured.TexturedModel;
 import object.shadow.ShadowBox;
 import object.shadow.ShadowFrameBuffer;
 import object.shadow.ShadowMapTerrainRenderer;

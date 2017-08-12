@@ -9,14 +9,14 @@ import org.lwjgl.util.vector.Vector3f;
 import core.settings.EngineSettings;
 import object.entity.entity.IEntity;
 import object.entity.entity.TexturedEntity;
-import object.model.RawModel;
-import object.model.TexturedModel;
+import object.model.raw.RawModel;
+import object.model.textured.TexturedModel;
 import object.terrain.terrain.MappedTerrain;
 import object.terrain.terrain.ProceduredTerrain;
 import object.terrain.terrain.ITerrain;
 import object.texture.model.ModelTexture;
-import object.texture.terrain.TerrainTexture;
-import object.texture.terrain.TerrainTexturePack;
+import object.texture.terrain.pack.TerrainTexturePack;
+import object.texture.terrain.texture.TerrainTexture;
 import object.water.WaterTile;
 import renderer.loader.Loader;
 import tool.converter.normalMapObject.NormalMappedObjLoader;
@@ -25,17 +25,38 @@ import tool.converter.object.OBJFileLoader;
 
 public class EngineUtils {
 
-	public static TexturedModel loadStaticModel(String objFile, String texName) {
+	public static TexturedModel loadStaticModel(String objFile, String textureName) {
 		ModelData data = OBJFileLoader.loadOBJ(objFile);
 		Loader loader = Loader.getInstance();
 		RawModel rawModel = loader.getVertexLoader().loadToVAO(data.getVertices(), data.getTextureCoords(), data.getNormals(),
 				data.getIndices());
 		TexturedModel staticModel = new TexturedModel(objFile, rawModel,
-				new ModelTexture(texName, loader.getTextureLoader().loadTexture(EngineSettings.TEXTURE_MODEL_PATH, texName)));
+				new ModelTexture(textureName, loader.getTextureLoader().loadTexture(EngineSettings.TEXTURE_MODEL_PATH, textureName)));
+		return staticModel;
+	}
+	
+	public static TexturedModel loadStaticModel(String objFile, ModelTexture texture) {
+		ModelData data = OBJFileLoader.loadOBJ(objFile);
+		Loader loader = Loader.getInstance();
+		RawModel rawModel = loader.getVertexLoader().loadToVAO(data.getVertices(), data.getTextureCoords(), data.getNormals(),
+				data.getIndices());
+		TexturedModel staticModel = new TexturedModel(objFile, rawModel, texture);
+		return staticModel;
+	}
+	
+	public static TexturedModel loadStaticModel(String name, RawModel rawModel, String textureName) {
+		Loader loader = Loader.getInstance();
+		TexturedModel staticModel = new TexturedModel(name, rawModel,
+				new ModelTexture(textureName, loader.getTextureLoader().loadTexture(EngineSettings.TEXTURE_MODEL_PATH, textureName)));
+		return staticModel;
+	}
+	
+	public static TexturedModel loadStaticModel(String name, RawModel rawModel, ModelTexture texture) {
+		TexturedModel staticModel = new TexturedModel(name, rawModel, texture);
 		return staticModel;
 	}
 
-	public static TexturedModel loadNormalModel(String objFile, String texName, String normalTexture,
+	public static TexturedModel loadStaticModel(String objFile, String textureName, String normalTexture,
 			String specularTexture) {
 		Loader loader = Loader.getInstance();
 		RawModel rawModel = NormalMappedObjLoader.loadOBJ(objFile);
@@ -43,12 +64,20 @@ public class EngineUtils {
 		TexturedModel model = new TexturedModel(objFile, rawModel, texture);
 		int normaMap = loader.getTextureLoader().loadTexture(EngineSettings.TEXTURE_NORMAL_MAP_PATH, normalTexture);
 		model.getTexture().setNormalMap(normaMap);
-		model.getTexture().setShineDamper(10);
-		model.getTexture().setReflectivity(0.5f);
 		// TODO: настроить проверку на нуль
 		if (specularTexture != null) {
 			int specularMap = loader.getTextureLoader().loadTexture(EngineSettings.TEXTURE_SPECULAR_MAP_PATH, specularTexture);
 			model.getTexture().setSpecularMap(specularMap);
+		}
+		return model;
+	}
+	
+	public static TexturedModel loadStaticModel(String name, RawModel rawModel, ModelTexture texture, ModelTexture normalTexture,
+			ModelTexture specularTexture) {
+		TexturedModel model = new TexturedModel(name, rawModel, texture);
+		model.getTexture().setNormalMap(normalTexture.getID());
+		if(specularTexture!= null) {
+			model.getTexture().setSpecularMap(specularTexture.getID());
 		}
 		return model;
 	}

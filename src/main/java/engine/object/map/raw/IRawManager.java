@@ -2,9 +2,9 @@ package object.map.raw;
 
 import java.util.List;
 
-import object.model.RawModel;
+import object.model.raw.RawModel;
 import object.texture.model.ModelTexture;
-import object.texture.terrain.TerrainTexturePack;
+import object.texture.terrain.pack.TerrainTexturePack;
 
 public interface IRawManager {
 	

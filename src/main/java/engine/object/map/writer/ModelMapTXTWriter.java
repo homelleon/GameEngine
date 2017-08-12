@@ -9,7 +9,7 @@ import java.util.List;
 
 import core.settings.EngineSettings;
 import object.entity.entity.IEntity;
-import object.map.objectMap.IObjectManager;
+import object.scene.manager.IObjectManager;
 import object.terrain.terrain.ITerrain;
 import renderer.loader.Loader;
 

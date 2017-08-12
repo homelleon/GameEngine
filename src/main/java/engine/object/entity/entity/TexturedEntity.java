@@ -3,7 +3,7 @@ package object.entity.entity;
 import org.lwjgl.util.vector.Vector3f;
 
 import core.settings.EngineSettings;
-import object.model.TexturedModel;
+import object.model.textured.TexturedModel;
 
 /*
  * EntityTextured - объект с текстурой

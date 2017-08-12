@@ -1,6 +1,6 @@
 package object.entity.entity;
 
-import object.model.TexturedModel;
+import object.model.textured.TexturedModel;
 import tool.EngineUtils;
 
 public class NormalMappedEntityBuilder extends EntityBuilder implements IEntityBuilder {
@@ -8,7 +8,7 @@ public class NormalMappedEntityBuilder extends EntityBuilder implements IEntityB
 	@Override
 	public IEntity createEntity(String name) {
 		if(textureName!=null && normalTextureName!=null && specularTextureName!=null) {
-			TexturedModel staticModel = EngineUtils.loadNormalModel(name, textureName, normalTextureName, specularTextureName);
+			TexturedModel staticModel = EngineUtils.loadStaticModel(name, textureName, normalTextureName, specularTextureName);
 			staticModel.getTexture().setShineDamper(shiness);
 			staticModel.getTexture().setReflectivity(reflectivity);
 			return new NormalMappedEntity(name, staticModel, position, rotation, scale);

@@ -9,7 +9,7 @@ import org.lwjgl.util.vector.Vector3f;
 
 import core.settings.EngineSettings;
 import object.entity.entity.IEntity;
-import object.model.TexturedModel;
+import object.model.textured.TexturedModel;
 import object.terrain.terrain.ITerrain;
 import renderer.viewCulling.frustum.Frustum;
 

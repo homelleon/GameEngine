@@ -13,9 +13,9 @@ import org.lwjgl.util.vector.Vector4f;
 import core.settings.EngineSettings;
 import object.camera.ICamera;
 import object.light.ILight;
-import object.model.RawModel;
+import object.model.raw.RawModel;
 import object.terrain.terrain.ITerrain;
-import object.texture.terrain.TerrainTexturePack;
+import object.texture.terrain.pack.TerrainTexturePack;
 import shader.terrain.TerrainShader;
 import tool.math.Maths;
 

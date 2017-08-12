@@ -1,4 +1,6 @@
-package object.texture.terrain;
+package object.texture.terrain.pack;
+
+import object.texture.terrain.texture.TerrainTexture;
 
 public class TerrainTexturePack {
 

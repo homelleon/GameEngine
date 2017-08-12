@@ -13,7 +13,7 @@ import core.display.DisplayManager;
 import core.settings.EngineSettings;
 import object.camera.ICamera;
 import object.light.Light;
-import object.model.RawModel;
+import object.model.raw.RawModel;
 import object.water.WaterFrameBuffers;
 import object.water.WaterTile;
 import renderer.loader.TextureBufferLoader;

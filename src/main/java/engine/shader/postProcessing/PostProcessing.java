@@ -5,7 +5,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 
-import object.model.RawModel;
+import object.model.raw.RawModel;
 import renderer.loader.Loader;
 import shader.postProcessing.bloom.BrightFilter;
 import shader.postProcessing.bloom.CombineFilter;

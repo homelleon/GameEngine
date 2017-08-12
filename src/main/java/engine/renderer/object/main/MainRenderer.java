@@ -17,7 +17,7 @@ import core.settings.EngineSettings;
 import object.camera.ICamera;
 import object.entity.entity.IEntity;
 import object.light.ILight;
-import object.model.TexturedModel;
+import object.model.textured.TexturedModel;
 import object.scene.scene.IScene;
 import object.shadow.renderer.ShadowMapMasterRenderer;
 import object.terrain.terrain.ITerrain;

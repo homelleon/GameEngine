@@ -1,6 +1,8 @@
-package object.texture.terrain;
+package object.texture.terrain.pack.builder;
 
 import core.settings.EngineSettings;
+import object.texture.terrain.pack.TerrainTexturePack;
+import object.texture.terrain.texture.TerrainTexture;
 import renderer.loader.Loader;
 
 public class TerrainTexturePackBuilder implements ITerrainTexturePackBuilder {

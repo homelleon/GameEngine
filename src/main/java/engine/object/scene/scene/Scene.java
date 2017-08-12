@@ -19,10 +19,11 @@ import object.gui.manager.IGUIManager;
 import object.light.ILightManager;
 import object.light.Light;
 import object.light.LightManager;
-import object.map.objectMap.IObjectManager;
 import object.particle.ParticleSystem;
 import object.particle.manager.IParticleManager;
 import object.particle.manager.ParticleManager;
+import object.scene.manager.IObjectManager;
+import object.scene.manager.ObjectManager;
 import object.terrain.manager.ITerrainManager;
 import object.terrain.manager.TerrainManager;
 import object.terrain.terrain.ITerrain;
@@ -34,7 +35,7 @@ import object.water.manager.WaterManager;
 import renderer.viewCulling.frustum.Frustum;
 import tool.MousePicker;
 
-public class Scene implements IScene {
+public class Scene extends ObjectManager implements IScene {
 
 	private final static int CHUNK_WORLD_SIZE = 2;
 	private IPlayer player;
@@ -45,21 +46,16 @@ public class Scene implements IScene {
 
 	private Frustum frustum = new Frustum();
 	private MousePicker picker;
-	private IAudioMaster audioMaster = new AudioMaster();
 
-	private IEntityManager entityManager = new EntityManager();
-	private ITerrainManager terrainManager = new TerrainManager();
-	private IWaterManager waterManager = new WaterManager();
 	private IChunkManager chunkManager = new ChunkManager(CHUNK_WORLD_SIZE, new Vector3f(0, 0, 0));
-	private IParticleManager particleManager = new ParticleManager();
-	private ILightManager lightManager = new LightManager();
-	private IAudioManager audioManager = new AudioManager(audioMaster);
 	private IGUIManager uiManager = new GUIManager();
 
-	public Scene() {
+	public Scene(IAudioMaster audioMaster) {
+		super(audioMaster);
 	}
 
-	public Scene(IObjectManager objectMap, IObjectManager levelMap) {
+	public Scene(IObjectManager objectMap, IObjectManager levelMap, IAudioMaster audioMaster) {
+		super(audioMaster);
 		initialize(objectMap, levelMap);
 	}
 	
@@ -230,14 +226,9 @@ public class Scene implements IScene {
 
 	@Override
 	public void clean() {
+		super.clean();
 		this.environmentMap.delete();
-		this.entityManager.clean();
-		this.terrainManager.clean();
-		this.waterManager.clearAll();
 		this.chunkManager.clearAll();
-		this.particleManager.clean();
-		this.lightManager.clean();
-		this.audioManager.clean();
 		this.uiManager.cleanAll();
 	}
 

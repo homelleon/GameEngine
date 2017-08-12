@@ -12,8 +12,8 @@ import org.lwjgl.util.vector.Vector2f;
 
 import object.camera.ICamera;
 import object.entity.entity.IEntity;
-import object.model.RawModel;
-import object.model.TexturedModel;
+import object.model.raw.RawModel;
+import object.model.textured.TexturedModel;
 import shader.shadow.ShadowShader;
 import tool.math.Maths;
 import tool.openGL.OGLUtils;

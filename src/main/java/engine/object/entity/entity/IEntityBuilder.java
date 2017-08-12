@@ -2,15 +2,26 @@ package object.entity.entity;
 
 import org.lwjgl.util.vector.Vector3f;
 
+import object.model.raw.RawModel;
+import object.texture.model.ModelTexture;
+
 public interface IEntityBuilder {
 	
 	public EntityBuilder setModel(String modelName);
 	
+	public EntityBuilder setModel(String modelName, RawModel rawModel);
+	
 	public EntityBuilder setTexture(String textureName);
+	
+	public EntityBuilder setTexture(ModelTexture texture);
 	
 	public EntityBuilder setNormalTexture(String textureName);
 	
+	public EntityBuilder setNormalTexture(ModelTexture texture);
+	
 	public EntityBuilder setSpecularTexture(String textureName);
+	
+	public EntityBuilder setSpecularTexture(ModelTexture texture);
 	
 	public EntityBuilder setTextureShiness(float shiness);
 	

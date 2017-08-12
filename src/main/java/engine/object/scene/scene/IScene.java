@@ -8,11 +8,12 @@ import object.entity.entity.IEntity;
 import object.entity.manager.IEntityManager;
 import object.entity.player.IPlayer;
 import object.gui.manager.IGUIManager;
-import object.light.Light;
 import object.light.ILightManager;
+import object.light.Light;
 import object.particle.ParticleSystem;
 import object.particle.manager.IParticleManager;
 import object.particle.master.ParticleMaster;
+import object.scene.manager.IObjectManager;
 import object.terrain.manager.ITerrainManager;
 import object.texture.Texture;
 import object.voxel.manager.IChunkManager;
@@ -28,7 +29,7 @@ import tool.MousePicker;
  * @see Scene
  *
  */
-public interface IScene {
+public interface IScene extends IObjectManager {
 
 	/**
 	 * Returns texture of current environment map.
@@ -83,26 +84,6 @@ public interface IScene {
 	 */
 	void setSun(Light sun);
 
-	/**
-	 * Returns entity manager object to control scene entities.
-	 * 
-	 * @return EntityManager value
-	 */
-	IEntityManager getEntities();
-
-	/**
-	 * Returns terrain manager object to control terrains.
-	 * 
-	 * @return {@link ITerrainManager} value
-	 */
-	ITerrainManager getTerrains();
-
-	/**
-	 * Returns water manager object to control water tiles.
-	 * 
-	 * @return {@link IWaterManager} value
-	 */
-	IWaterManager getWaters();
 
 	/**
 	 * Returns chunk manager.
@@ -110,27 +91,6 @@ public interface IScene {
 	 * @return {@link IChunkManager} value
 	 */
 	IChunkManager getChunks();
-
-	/**
-	 * Returns partilce manager object to control particle systems.
-	 * 
-	 * @return {@link ParticleMaster} value
-	 */
-	IParticleManager getParticles();
-
-	/**
-	 * Returns light manager object to control lights.
-	 * 
-	 * @return {@link ILightManager} value
-	 */
-	ILightManager getLights();
-
-	/**
-	 * Returns audio manager.
-	 * 
-	 * @return {@link IAudioManager} value
-	 */
-	IAudioManager getAudioSources();
 
 	/**
 	 * Rerturns manager to control user interface.
@@ -170,10 +130,5 @@ public interface IScene {
 	 * Spreads all particles on the surface of terrain's height.
 	 */
 	void spreadParitclesOnHeights(Collection<ParticleSystem> systems);
-
-	/**
-	 * Clear all variables and arrays of scene objects.
-	 */
-	void clean();
 
 }

@@ -1,5 +1,6 @@
-package object.model;
+package object.model.textured;
 
+import object.model.raw.RawModel;
 import object.texture.model.ModelTexture;
 
 public class TexturedModel {

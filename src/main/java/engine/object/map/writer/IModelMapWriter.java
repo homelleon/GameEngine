@@ -1,6 +1,6 @@
 package object.map.writer;
 
-import object.map.objectMap.IObjectManager;
+import object.scene.manager.IObjectManager;
 import renderer.loader.Loader;
 
 public interface IModelMapWriter {

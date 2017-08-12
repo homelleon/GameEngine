@@ -11,7 +11,7 @@ import core.settings.EngineSettings;
 import object.entity.entity.TexturedEntity;
 import object.input.KeyboardGame;
 import object.input.MouseGame;
-import object.model.TexturedModel;
+import object.model.textured.TexturedModel;
 import object.terrain.terrain.ITerrain;
 
 public class Player extends TexturedEntity implements IPlayer {
