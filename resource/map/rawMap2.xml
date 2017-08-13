@@ -16,6 +16,14 @@
 			id="4"
 			name="barrelSpecularTexture"
 			file="specularMap/barrelS" />
+		<model_texture
+			id="5"
+			name="grassTexture"
+			file="model/grassObject" />
+		<model_texture
+			id="6"
+			name="stallTexture"
+			file="model/stallTexture" />
 	</model_textures>
 	<terrain_textures>
 		<terrain_texture
@@ -61,6 +69,14 @@
 			id="2"
 			name="barrelRawModel"
 			file="barrel" />
+		<raw_model 
+			id="3"
+			name="grassRawModel"
+			file="grass" />
+		<raw_model 
+			id="4"
+			name="stallRawModel"
+			file="stall" />
 	</models>
 	<textured_models>
 		<simple>
@@ -71,10 +87,24 @@
 				base_texture = "diceTexture"
 				isNormal="false"
 				isSpecular="false" />
+			<textured_model
+				id="2"
+				name="grassModel"
+				raw_model="grassRawModel"
+				base_texture = "grassTexture"
+				isNormal="false"
+				isSpecular="false" />
+			<textured_model
+				id="3"
+				name="stallModel"
+				raw_model="stallRawModel"
+				base_texture = "stallTexture"
+				isNormal="false"
+				isSpecular="false" />
 		</simple>
 		<normal>
 			<textured_model 
-				id="2"
+				id="1"
 				name="barrelModel"
 				raw_model="barrelRawModel"
 				base_texture="barrelTexture"

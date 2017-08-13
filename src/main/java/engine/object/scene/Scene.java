@@ -5,25 +5,18 @@ import java.util.Collection;
 import org.lwjgl.util.vector.Vector3f;
 
 import core.settings.EngineSettings;
-import manager.audio.AudioManager;
 import manager.audio.IAudioManager;
-import manager.entity.EntityManager;
 import manager.entity.IEntityManager;
 import manager.gui.GUIManager;
 import manager.gui.IGUIManager;
 import manager.light.ILightManager;
-import manager.light.LightManager;
 import manager.particle.IParticleManager;
-import manager.particle.ParticleManager;
 import manager.scene.IObjectManager;
 import manager.scene.ObjectManager;
 import manager.terrain.ITerrainManager;
-import manager.terrain.TerrainManager;
 import manager.voxel.ChunkManager;
 import manager.voxel.IChunkManager;
 import manager.water.IWaterManager;
-import manager.water.WaterManager;
-import object.audio.master.AudioMaster;
 import object.audio.master.IAudioMaster;
 import object.camera.ICamera;
 import object.entity.entity.IEntity;
@@ -54,19 +47,19 @@ public class Scene extends ObjectManager implements IScene {
 		super(audioMaster);
 	}
 
-	public Scene(IObjectManager objectMap, IObjectManager levelMap, IAudioMaster audioMaster) {
+	public Scene(IObjectManager levelMap, IAudioMaster audioMaster) {
 		super(audioMaster);
-		initialize(objectMap, levelMap);
+		initialize(levelMap);
 	}
 	
-	private void initialize(IObjectManager objectMap, IObjectManager levelMap) {
+	private void initialize(IObjectManager levelMap) {
 		this.getEntities().addAll(levelMap.getEntities().getAll());
 		this.getTerrains().addAll(levelMap.getTerrains().getAll());
 		//this.getWaters().addAll(objectMap.getWaters().values());
-		this.getParticles().addAll(objectMap.getParticles().getAll());
-		this.getLights().addAll(objectMap.getLights().getAll());
+		this.getParticles().addAll(levelMap.getParticles().getAll());
+		this.getLights().addAll(levelMap.getLights().getAll());
 		this.getAudioSources().getMaster().init();
-		this.getAudioSources().addAll(objectMap.getAudioSources().getAll());
+		this.getAudioSources().addAll(levelMap.getAudioSources().getAll());
 		for (int i = 0; i < CHUNK_WORLD_SIZE * CHUNK_WORLD_SIZE * CHUNK_WORLD_SIZE; i++) {
 			for (int x = 0; x <= EngineSettings.VOXEL_CHUNK_SIZE; x++) {
 				for (int y = 0; y <= EngineSettings.VOXEL_CHUNK_SIZE; y++) {

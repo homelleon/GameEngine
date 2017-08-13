@@ -142,7 +142,7 @@ public class RawMapXMLParser extends XMLParser implements IObjectParser<IRawMana
 		NodeList packList = node.getChildNodes();
 		for (int k = 0; k < packList.getLength(); k++) {
 			Node textureNode = packList.item(k);
-			if (XMLUtils.ifNodeIsElement(textureNode, XMLUtils.TERRAIN_TEXTURE)) {
+			if (XMLUtils.ifNodeIsElement(textureNode, XMLUtils.TERRAIN_PACK)) {
 				Element packElement = (Element) textureNode;
 				String ID = XMLUtils.getAttributeValue(textureNode, XMLUtils.ID);
 				String name = XMLUtils.getAttributeValue(packElement, XMLUtils.NAME);
