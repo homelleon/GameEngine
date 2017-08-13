@@ -10,9 +10,7 @@ public class MappedTerrainBuilder extends TerrainBuilder implements ITerrainBuil
 
 	@Override
 	public ITerrain create(String name) {
-		if(this.texturePack != null && this.blendTextureName != null && this.heightTextureName != null) {
-			TerrainTexture blendTexture = new TerrainTexture(this.blendTextureName, 
-					Loader.getInstance().getTextureLoader().loadTexture(EngineSettings.TEXTURE_BLEND_MAP_PATH, this.blendTextureName));
+		if(this.texturePack != null && this.blendTexture != null && this.heightTextureName != null) {
 			return new MappedTerrain(name, this.gridX, this.gridZ, this.texturePack, blendTexture, this.heightTextureName);
 		} else {
 			throw new NullPointerException("Some parameters are missing in mapped terrain builder!");

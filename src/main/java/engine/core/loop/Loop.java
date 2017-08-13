@@ -1,6 +1,7 @@
 package core.loop;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
@@ -161,7 +162,7 @@ public class Loop implements ILoop {
 			this.modelMap = mapParser.parse();
 			this.mapIsLoaded = true;
 		} else {
-			System.out.println("File " + path + " is not extisted! Can't load model map!");
+			throw new NullPointerException("File " + path + " is not existed! Can't load model map!");
 		}
 	}
 
@@ -173,7 +174,7 @@ public class Loop implements ILoop {
 	 * 
 	 * @see #loadGameSettings()
 	 */
-	private void loadObjectMap(String name) {
+	private void loadLevelMap(String name) {
 		if (EngineDebug.hasDebugPermission()) {
 			System.out.println("Loading objects...");
 		}
@@ -183,7 +184,7 @@ public class Loop implements ILoop {
 			IObjectParser<IObjectManager> mapParser = new LevelMapXMLParser(xmlLoader.load(), this.modelMap);
 			this.levelMap = mapParser.parse();
 		} else {
-			System.out.println("File " + path + " is not extisted! Can't load object map!");
+			throw new NullPointerException("File " + path + " is not existed! Can't load level map!");
 		}
 	}
 	
@@ -197,7 +198,7 @@ public class Loop implements ILoop {
 			IObjectParser<IRawManager> mapParser = new RawMapXMLParser(xmlLoader.load());
 			this.rawMap = mapParser.parse();
 		} else {
-			System.out.println("File " + path + " is not extisted! Can't load raw map!");
+			throw new NullPointerException("File " + path + " is not existed! Can't load raw map!");
 		}
 	}
 
@@ -206,7 +207,7 @@ public class Loop implements ILoop {
 	 * loads map and object map using name written in the game settings file.
 	 * 
 	 * @see #loadModelMap(String)
-	 * @see #loadObjectMap(String)
+	 * @see #loadLevelMap(String)
 	 */
 	private void loadGameSettings() {
 		if (EngineDebug.hasDebugPermission()) {
@@ -217,11 +218,16 @@ public class Loop implements ILoop {
 		IObjectParser<GameSettings> settingsParser = new SettingsXMLParser(xmlLoader.load());
 		GameSettings settings = settingsParser.parse();
 		if (EngineDebug.hasDebugPermission()) {
+			System.out.println("> " + settings.getRawMapName());
+			System.out.println("> " + settings.getModelMapName());
+			System.out.println("> " + settings.getLevelMapName());
+		}
+		if (EngineDebug.hasDebugPermission()) {
 			System.out.println("Loading complete...");
 		}
 		loadRawMap(settings.getRawMapName());
 		loadModelMap(settings.getModelMapName());
-		loadObjectMap(settings.getObjectMapName());
+		loadLevelMap(settings.getLevelMapName());
 	}
 
 	@Override

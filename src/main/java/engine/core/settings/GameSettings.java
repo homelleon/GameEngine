@@ -13,7 +13,7 @@ public class GameSettings {
 
 	private static GameSettings instance;
 	String modelMapName;
-	String objectMapName;
+	String levelMapName;
 	String rawMapName;
 
 	private GameSettings() {
@@ -26,28 +26,28 @@ public class GameSettings {
 		return instance;
 	}
 
-	public void setMapName(String name) {
+	public void setModelMapName(String name) {
 		this.modelMapName = name;
 	}
 
 	public String getModelMapName() {
 		return this.modelMapName;
 	}
+
+	public void setRawMapName(String name) {
+		this.rawMapName = name;
+	}
 	
 	public String getRawMapName() {
 		return this.rawMapName;
 	}
 
-	public void setObjectMapName(String name) {
-		this.objectMapName = name;
+	public void setLevelMapName(String name) {
+		this.levelMapName = name;
 	}
 
-	public String getObjectMapName() {
-		return this.objectMapName;
-	}
-	
-	public void setRawMapName(String name) {
-		this.rawMapName = name;
-	}
+	public String getLevelMapName() {
+		return this.levelMapName;
+	}	
 
 }

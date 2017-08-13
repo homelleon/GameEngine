@@ -2,14 +2,15 @@ package object.terrain.builder;
 
 import object.terrain.terrain.ITerrain;
 import object.texture.terrain.pack.TerrainTexturePack;
+import object.texture.terrain.texture.TerrainTexture;
 
 public abstract class TerrainBuilder {
 	
 	protected int gridX = 0;
 	protected int gridZ = 0;
-	protected TerrainTexturePack texturePack = null;
-	protected String blendTextureName = null;
-	protected String heightTextureName = null;
+	protected TerrainTexturePack texturePack;
+	protected TerrainTexture blendTexture;
+	protected String heightTextureName;
 	protected float amplitude = 0;
 	protected int octaves = 0;
 	protected float roughness = 0;
@@ -19,8 +20,8 @@ public abstract class TerrainBuilder {
 		return (ITerrainBuilder) this;
 	}
 	
-	public ITerrainBuilder setYPosition(int y) {
-		this.gridZ = y;
+	public ITerrainBuilder setZPosition(int z) {
+		this.gridZ = z;
 		return (ITerrainBuilder) this;
 	}
 	
@@ -29,8 +30,8 @@ public abstract class TerrainBuilder {
 		return (ITerrainBuilder) this;
 	}
 	
-	public ITerrainBuilder setBlendTextureName(String name) {
-		this.blendTextureName = name;
+	public ITerrainBuilder setBlendTexture(TerrainTexture texture) {
+		this.blendTexture = texture;
 		return (ITerrainBuilder) this;
 	}
 	

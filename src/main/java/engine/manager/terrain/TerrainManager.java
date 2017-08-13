@@ -49,11 +49,11 @@ public class TerrainManager implements ITerrainManager {
 
 	@Override
 	public ITerrain get(String name) {
-		ITerrain terrain = null;
 		if (this.terrains.containsKey(name)) {
-			terrain = this.terrains.get(name);
+			return this.terrains.get(name);
+		} else {
+			throw new NullPointerException("No terrain with name: " + name + " in the terrain array!");
 		}
-		return terrain;
 	}
 
 	@Override
