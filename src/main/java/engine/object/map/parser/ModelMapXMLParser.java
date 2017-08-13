@@ -7,6 +7,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import core.debug.EngineDebug;
+import manager.scene.IObjectManager;
 import object.entity.entity.IEntity;
 import object.entity.entity.IEntityBuilder;
 import object.entity.entity.NormalMappedEntityBuilder;
@@ -14,7 +15,6 @@ import object.entity.entity.SimpleEntityBuilder;
 import object.map.objectMap.ObjectMapManager;
 import object.map.raw.IRawManager;
 import object.model.raw.RawModel;
-import object.scene.manager.IObjectManager;
 import object.terrain.builder.ITerrainBuilder;
 import object.terrain.builder.MappedTerrainBuilder;
 import object.terrain.builder.ProceduredTerrainBuilder;

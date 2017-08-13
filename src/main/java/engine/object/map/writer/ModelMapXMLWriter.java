@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import core.settings.EngineSettings;
+import manager.scene.IObjectManager;
 import object.entity.entity.IEntity;
-import object.scene.manager.IObjectManager;
 import object.terrain.terrain.ITerrain;
 import renderer.loader.Loader;
 import tool.xml.XMLUtils;

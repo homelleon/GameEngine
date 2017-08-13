@@ -1,6 +1,6 @@
 package object.input;
 
-import object.scene.scene.IScene;
+import object.scene.IScene;
 
 public interface IControls {
 

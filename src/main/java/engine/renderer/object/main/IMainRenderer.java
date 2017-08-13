@@ -11,7 +11,7 @@ import object.camera.ICamera;
 import object.entity.entity.IEntity;
 import object.light.ILight;
 import object.model.textured.TexturedModel;
-import object.scene.scene.IScene;
+import object.scene.IScene;
 import object.terrain.terrain.ITerrain;
 import renderer.object.entity.EntityRenderer;
 import renderer.viewCulling.frustum.Frustum;

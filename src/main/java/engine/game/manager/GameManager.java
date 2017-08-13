@@ -5,7 +5,7 @@ import java.util.List;
 
 import core.EngineMain;
 import object.gui.gui.IGUI;
-import object.scene.scene.IScene;
+import object.scene.IScene;
 
 public class GameManager implements IGameManager {
 

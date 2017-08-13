@@ -12,6 +12,7 @@ import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 
 import core.settings.EngineSettings;
+import manager.voxel.IChunkManager;
 import object.camera.ICamera;
 import object.light.ILight;
 import object.model.raw.RawModel;
@@ -19,7 +20,6 @@ import object.model.textured.TexturedModel;
 import object.texture.model.ModelTexture;
 import object.voxel.Chunk;
 import object.voxel.data.FaceCullingData;
-import object.voxel.manager.IChunkManager;
 import renderer.loader.Loader;
 import renderer.viewCulling.frustum.Frustum;
 import shader.voxel.VoxelShader;

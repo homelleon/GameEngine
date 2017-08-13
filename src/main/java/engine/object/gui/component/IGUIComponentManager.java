@@ -2,10 +2,10 @@ package object.gui.component;
 
 import java.util.Collection;
 
+import manager.gui.text.IGUITextManager;
+import manager.gui.texture.IGUITextureManager;
 import object.gui.group.IGUIGroup;
-import object.gui.text.manager.IGUITextManager;
 import object.gui.texture.GUITexture;
-import object.gui.texture.manager.IGUITextureManager;
 
 /**
  * Manages component of user interface such as Graphic user interface textures

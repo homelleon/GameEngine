@@ -7,9 +7,9 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import core.debug.EngineDebug;
+import manager.scene.IObjectManager;
 import object.entity.entity.IEntity;
 import object.map.objectMap.ObjectMapManager;
-import object.scene.manager.IObjectManager;
 import object.terrain.terrain.ITerrain;
 import tool.xml.XMLUtils;
 import tool.xml.parser.IObjectParser;

@@ -13,7 +13,7 @@ import object.gui.gui.GUI;
 import object.gui.gui.IGUI;
 import object.gui.text.GUIText;
 import object.gui.texture.GUITexture;
-import object.scene.scene.IScene;
+import object.scene.IScene;
 
 public abstract class Game extends Thread implements IGame {
 

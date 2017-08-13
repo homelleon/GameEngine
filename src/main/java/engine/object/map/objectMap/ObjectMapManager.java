@@ -1,7 +1,7 @@
 package object.map.objectMap;
 
-import object.scene.manager.IObjectManager;
-import object.scene.manager.ObjectManager;
+import manager.scene.IObjectManager;
+import manager.scene.ObjectManager;
 
 /**
  * Map that controls entity objects to load in the editor menu.

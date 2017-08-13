@@ -1,8 +1,8 @@
 package core;
 
 import core.loop.Loop;
+import object.scene.IScene;
 import core.loop.ILoop;
-import object.scene.scene.IScene;
 
 /**
  * Main engine class. Contains main method to create {@link Loop} and start

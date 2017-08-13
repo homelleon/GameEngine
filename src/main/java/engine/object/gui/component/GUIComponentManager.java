@@ -5,14 +5,14 @@ import java.util.Collection;
 import org.w3c.dom.Document;
 
 import core.settings.EngineSettings;
+import manager.gui.text.GUITextManager;
+import manager.gui.text.IGUITextManager;
+import manager.gui.texture.GUITextureManager;
+import manager.gui.texture.IGUITextureManager;
 import object.gui.group.IGUIGroup;
 import object.gui.text.GUIText;
-import object.gui.text.manager.GUITextManager;
-import object.gui.text.manager.IGUITextManager;
 import object.gui.text.reader.GUITextReader;
 import object.gui.texture.GUITexture;
-import object.gui.texture.manager.GUITextureManager;
-import object.gui.texture.manager.IGUITextureManager;
 import object.gui.texture.reader.GUITextureReader;
 import renderer.object.gui.GUIRenderer;
 import renderer.object.gui.IGUIRenderer;

@@ -13,7 +13,7 @@ import org.lwjgl.util.vector.Vector4f;
 import core.settings.EngineSettings;
 import object.camera.ICamera;
 import object.entity.entity.IEntity;
-import object.scene.scene.IScene;
+import object.scene.IScene;
 import tool.math.Maths;
 
 /**

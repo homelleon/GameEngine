@@ -5,7 +5,7 @@ import org.lwjgl.input.Keyboard;
 import core.debug.EngineDebug;
 import core.settings.EngineSettings;
 import object.entity.entity.IEntity;
-import object.scene.scene.IScene;
+import object.scene.IScene;
 
 public class Controls implements IControls {
 

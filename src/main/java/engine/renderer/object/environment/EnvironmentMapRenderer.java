@@ -15,7 +15,7 @@ import object.camera.CameraCubeMap;
 import object.camera.ICamera;
 import object.entity.entity.IEntity;
 import object.model.textured.TexturedModel;
-import object.scene.scene.IScene;
+import object.scene.IScene;
 import renderer.object.main.MainRenderer;
 
 public class EnvironmentMapRenderer {

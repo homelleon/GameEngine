@@ -1,6 +1,6 @@
 package core.loop;
 
-import object.scene.scene.IScene;
+import object.scene.IScene;
 
 /**
  * Runnable looping interaface for main game initialization and external

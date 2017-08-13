@@ -14,15 +14,15 @@ import org.lwjgl.util.vector.Vector4f;
 
 import core.debug.EngineDebug;
 import core.settings.EngineSettings;
+import manager.voxel.IChunkManager;
 import object.camera.ICamera;
 import object.entity.entity.IEntity;
 import object.light.ILight;
 import object.model.textured.TexturedModel;
-import object.scene.scene.IScene;
+import object.scene.IScene;
 import object.shadow.renderer.ShadowMapMasterRenderer;
 import object.terrain.terrain.ITerrain;
 import object.texture.Texture;
-import object.voxel.manager.IChunkManager;
 import renderer.object.bounding.BoundingRenderer;
 import renderer.object.entity.EntityRenderer;
 import renderer.object.entity.NormalMappingRenderer;

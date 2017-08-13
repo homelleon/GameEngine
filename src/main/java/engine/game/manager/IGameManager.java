@@ -1,6 +1,6 @@
 package game.manager;
 
-import object.scene.scene.IScene;
+import object.scene.IScene;
 
 /**
  * 
