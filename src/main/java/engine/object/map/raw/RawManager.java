@@ -6,14 +6,18 @@ import java.util.List;
 import java.util.Map;
 
 import object.model.raw.RawModel;
+import object.model.textured.TexturedModel;
 import object.texture.model.ModelTexture;
 import object.texture.terrain.pack.TerrainTexturePack;
+import object.texture.terrain.texture.TerrainTexture;
 
 public class RawManager implements IRawManager {
 	
 	private Map<String, RawModel> models = new HashMap<String, RawModel>();
 	private Map<String, ModelTexture> modelTextures = new HashMap<String, ModelTexture>();
+	private Map<String, TerrainTexture> terrainTextures = new HashMap<String, TerrainTexture>();
 	private Map<String, TerrainTexturePack> terrainTexturePacks = new HashMap<String, TerrainTexturePack>();
+	private Map<String, TexturedModel> texturedModels = new HashMap<String, TexturedModel>();
 
 	@Override
 	public void addRawModel(RawModel model) {
@@ -59,12 +63,10 @@ public class RawManager implements IRawManager {
 		}
 	}
 
-
 	@Override
 	public void addTerrainTexturePack(TerrainTexturePack texturePack) {
 		this.terrainTexturePacks.put(texturePack.getName(), texturePack);		
 	}
-
 
 	@Override
 	public List<TerrainTexturePack> getTerrainTexturePacks() {
@@ -72,7 +74,6 @@ public class RawManager implements IRawManager {
 		list.addAll(this.terrainTexturePacks.values());
 		return list;
 	}
-
 
 	@Override
 	public TerrainTexturePack getTerrainTexturePack(String name) {
@@ -82,12 +83,58 @@ public class RawManager implements IRawManager {
 			throw new NullPointerException("There is no texture pack with name " + name + " in terrain texture pack array!");
 		}
 	}
+	
+	@Override
+	public void addTerrainTexture(TerrainTexture terrainTexture) {
+		this.terrainTextures.put(terrainTexture.getName(), terrainTexture);
+	}
+
+	@Override
+	public List<TerrainTexture> getTerrainTextures() {
+		List<TerrainTexture> list = new ArrayList<TerrainTexture>();
+		list.addAll(this.terrainTextures.values());
+		return list;
+	}
+
+	@Override
+	public TerrainTexture getTerrainTexture(String name) {
+		if(this.terrainTextures.containsKey(name)) {
+			return this.terrainTextures.get(name);
+		} else {
+			throw new NullPointerException("There is no terrain texture with name " + name + " in terrain texture array!");
+		}
+	}
+	
+
+
+	@Override
+	public void addTexturedModel(TexturedModel model) {
+		this.texturedModels.put(model.getName(), model);		
+	}
+
+	@Override
+	public List<TexturedModel> getTexturedModels() {
+		List<TexturedModel> list = new ArrayList<TexturedModel>();
+		list.addAll(this.texturedModels.values());
+		return list;
+	}
+
+	@Override
+	public TexturedModel getTexturedModel(String name) {
+		if(this.texturedModels.containsKey(name)) {
+			return this.texturedModels.get(name);
+		} else {
+			throw new NullPointerException("There is no textured model with name " + name + " in textured model array!");
+		}
+	}
 
 	@Override
 	public void clean() {
 		this.models.clear();
 		this.modelTextures.clear();
 		this.terrainTexturePacks.clear();
+		this.terrainTextures.clear();
+		this.texturedModels.clear();
 	}
 
 

@@ -81,7 +81,7 @@ public class ModelMapXMLParser extends XMLParser implements IObjectParser<IObjec
 					builder = new NormalMappedEntityBuilder();
 					String normalMap = XMLUtils.getTagValue(entityEl, XMLUtils.NORMAL_TEXTURE);
 					String specularMap = XMLUtils.getTagValue(entityEl, XMLUtils.SPECULAR_TEXTURE);
-					float shiness = Float.valueOf(XMLUtils.getTagValue(entityEl, XMLUtils.SHINE_DUMPER));
+					float shiness = Float.valueOf(XMLUtils.getTagValue(entityEl, XMLUtils.SHINE_DAMPER));
 					float reflectivity = Float.valueOf(XMLUtils.getTagValue(entityEl, XMLUtils.REFLECTIVITY));
 					builder.setNormalTexture(normalMap).setSpecularTexture(specularMap)
 						   .setTextureReflectivity(reflectivity).setTextureShiness(shiness);

@@ -111,7 +111,7 @@ public class ModelMapXMLWriter implements IModelMapWriter {
 						lines.add(XMLUtils.addTagValue(XMLUtils.NORMAL, normal, 3));
 						lines.add(XMLUtils.addTagValue(XMLUtils.NORMAL_TEXTURE, normalTexture, 3));
 						lines.add(XMLUtils.addTagValue(XMLUtils.SPECULAR_TEXTURE, specularTexture, 3));
-						lines.add(XMLUtils.addTagValue(XMLUtils.SHINE_DUMPER, shineDumper, 3));
+						lines.add(XMLUtils.addTagValue(XMLUtils.SHINE_DAMPER, shineDumper, 3));
 						lines.add(XMLUtils.addTagValue(XMLUtils.REFLECTIVITY, reflectivity, 3));
 					}
 					lines.add(XMLUtils.getEndTag(XMLUtils.ENTITY, 2));

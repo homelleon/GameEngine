@@ -1,0 +1,51 @@
+<model_map>
+  <entities>
+    <entity 
+		id="1"
+		name="Barrel"
+		textured_model="barrelModel"
+		scale="1.0" />
+    <entity 
+		id="2"
+		name="Cube1"
+		textured_model="diceModel"
+		scale="1.0" />
+    <entity 
+		id="3"
+		name="Cube2"
+		textured_model="diceModel"
+		scale="1.0" />
+    <entity 
+		id="4"
+		name="Grass"
+		textured_model="grassModel"
+		scale="1.2" />
+    <entity 
+		id="5"
+		name="Stall"
+		textured_model="stallModel"
+		scale="4.0" />
+  </entities>
+  <terrains>
+	<height_mapped>	
+	</height_mapped>
+	<procedured>
+		<terrain 
+			id="1"
+			name="Terrain1"
+			texture_pack="terrainPack"
+			blend_texture="terrainBlendMap"
+			amplitude="100.0"
+			octave="5"
+			roughness="0.5" />
+		<terrain 
+			id="2"
+			name="Terrain2"
+			texture_pack="terrainPack"
+			blend_texture="terrainBlendMap"
+			amplitude="50.0"
+			octave="6"
+			roughness="0.5" />
+	</procedured>
+  </terrains>
+</model_map>
