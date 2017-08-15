@@ -1,4 +1,4 @@
-package object.map.raw;
+package map.raw;
 
 import java.util.List;
 

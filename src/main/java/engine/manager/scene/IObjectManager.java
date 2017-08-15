@@ -6,7 +6,7 @@ import manager.light.ILightManager;
 import manager.particle.IParticleManager;
 import manager.terrain.ITerrainManager;
 import manager.water.IWaterManager;
-import object.map.objectMap.ObjectMapManager;
+import map.objectMap.ObjectMapManager;
 
 /**
  * Contains lists of objects.

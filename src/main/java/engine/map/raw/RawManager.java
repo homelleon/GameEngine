@@ -1,4 +1,4 @@
-package object.map.raw;
+package map.raw;
 
 import java.util.ArrayList;
 import java.util.HashMap;

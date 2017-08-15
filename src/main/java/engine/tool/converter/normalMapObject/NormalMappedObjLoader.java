@@ -12,12 +12,11 @@ import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
 import core.settings.EngineSettings;
-import object.model.raw.RawModel;
-import renderer.loader.Loader;
+import tool.converter.object.ModelData;
 
 public class NormalMappedObjLoader {
 
-	public static RawModel loadOBJ(String objFileName) {
+	public static ModelData loadOBJ(String objFileName) {
 		FileReader isr = null;
 		File objFile = new File(EngineSettings.MODEL_PATH + objFileName + ".obj");
 
@@ -81,11 +80,9 @@ public class NormalMappedObjLoader {
 		float[] texturesArray = new float[vertices.size() * 2];
 		float[] normalsArray = new float[vertices.size() * 3];
 		float[] tangentsArray = new float[vertices.size() * 3];
-		float farthest = convertDataToArrays(vertices, textures, normals, verticesArray, texturesArray, normalsArray,
-				tangentsArray);
 		int[] indicesArray = convertIndicesListToArray(indices);
-
-		return Loader.getInstance().getVertexLoader().loadToVAO(verticesArray, texturesArray, normalsArray, tangentsArray, indicesArray);
+		ModelData data = new ModelData(verticesArray, texturesArray, normalsArray, tangentsArray, indicesArray);
+		return data;
 	}
 
 	// NEW
