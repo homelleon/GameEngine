@@ -2,7 +2,7 @@
 	<entities>
 	    <entity id="1">
 			<name>barrel</name>
-			<model>barrel</model>
+			<model>barrelEntity</model>
 			<position>
 				<x>200.0</x>
 				<y>21.033976</y>
@@ -12,7 +12,7 @@
 	    </entity>
 	    <entity id="2">
 			<name>Bo</name>
-			<model>cube</model>
+			<model>cubeEntity1</model>
 			<position>
 				<x>70.0</x>
 				<y>15.42662</y>
@@ -22,7 +22,7 @@
 	    </entity>
 	    <entity id="3">
 			<name>cube</name>
-			<model>cube1</model>
+			<model>cubeEntity2</model>
 			<position>
 				<x>100.0</x>
 				<y>3.334204</y>
@@ -32,7 +32,7 @@
 	    </entity>
 	    <entity id="4">
 			<name>player1</name>
-			<model>cube</model>
+			<model>cubeEntity2</model>
 			<position>
 				<x>100.0</x>
 				<y>3.334204</y>
@@ -42,7 +42,7 @@
 	    </entity>
 	    <entity id="5">
 			<name>Grass1_0</name>
-			<model>grass</model>
+			<model>grassEntity</model>
 			<position>
 				<x>510.0</x>
 				<y>0.0</y>
@@ -52,7 +52,7 @@
 	    </entity>   
 			<entity id="6">
 			<name>Cuby4</name>
-			<model>cube</model>
+			<model>cubeEntity1</model>
 			<position>
 				<x>100.0</x>
 				<y>27.123322</y>
@@ -62,7 +62,7 @@
 	    </entity>
 	    <entity id="7">
 			<name>stall</name>
-			<model>stall</model>
+			<model>stallEntity</model>
 			<position>
 				<x>50.0</x>
 				<y>14.35382</y>
@@ -74,7 +74,7 @@
   <terrains>
     <terrain id="1">
 		<name>Terrain1</name>
-		<model>Terrain1</model>
+		<model>defaultTerrain1</model>
 		<position>
 			<x>1</x>
 			<z>0</z>
@@ -82,7 +82,7 @@
     </terrain>
     <terrain id="2">
 		<name>Terrain2</name>
-		<model>Terrain2</model>
+		<model>defaultTerrain2</model>
 		<position>
 			<x>0</x>
 			<z>0</z>

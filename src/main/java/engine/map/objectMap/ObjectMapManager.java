@@ -1,4 +1,4 @@
-package object.map.objectMap;
+package map.objectMap;
 
 import manager.scene.IObjectManager;
 import manager.scene.ObjectManager;

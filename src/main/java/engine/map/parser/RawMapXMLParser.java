@@ -1,4 +1,4 @@
-package object.map.parser;
+package map.parser;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -7,14 +7,15 @@ import org.w3c.dom.NodeList;
 
 import core.debug.EngineDebug;
 import core.settings.EngineSettings;
-import object.map.raw.IRawManager;
-import object.map.raw.RawManager;
+import map.raw.IRawManager;
+import map.raw.RawManager;
 import object.model.raw.RawModel;
 import object.model.textured.TexturedModel;
 import object.texture.model.ModelTexture;
 import object.texture.terrain.pack.TerrainTexturePack;
 import object.texture.terrain.texture.TerrainTexture;
 import renderer.loader.Loader;
+import tool.converter.normalMapObject.NormalMappedObjLoader;
 import tool.converter.object.ModelData;
 import tool.converter.object.OBJFileLoader;
 import tool.xml.XMLUtils;
@@ -69,10 +70,23 @@ public class RawMapXMLParser extends XMLParser implements IObjectParser<IRawMana
 				String ID = XMLUtils.getAttributeValue(rawModelNode, XMLUtils.ID);
 				String name = XMLUtils.getAttributeValue(rawModelElement, XMLUtils.NAME);
 				String file = XMLUtils.getAttributeValue(rawModelElement, XMLUtils.FILE);
-				ModelData data = OBJFileLoader.loadOBJ(file);
-				RawModel rawModel = new RawModel(name, Loader.getInstance().getVertexLoader()
-						.loadToVAO(data.getVertices(), data.getTextureCoords(), data.getNormals(),
-						data.getIndices()));
+				String type = XMLUtils.getAttributeValue(rawModelElement, XMLUtils.TYPE);
+				RawModel rawModel;
+				ModelData data;
+				if(type.equals(XMLUtils.SIMPLE)) {
+					 data = OBJFileLoader.loadOBJ(file);
+					 rawModel = new RawModel(name, Loader.getInstance().getVertexLoader()
+								.loadToVAO(data.getVertices(), data.getTextureCoords(), data.getNormals(),
+										data.getIndices()));
+				} else if(type.equals(XMLUtils.NORMAL)) {
+					data = NormalMappedObjLoader.loadOBJ(file);
+					rawModel = new RawModel(name, Loader.getInstance().getVertexLoader()
+							.loadToVAO(data.getVertices(), data.getTextureCoords(), data.getNormals(),
+							data.getTangents(), data.getIndices()));
+				} else {
+					throw new IllegalArgumentException(type + " is incorrect model type!");
+				}
+				
 				map.addRawModel(rawModel);
 				if (EngineDebug.hasDebugPermission()) {
 					System.out.println(">> " + map.getRawModel(name).getName());

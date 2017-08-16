@@ -1,4 +1,4 @@
-package object.map.parser;
+package map.parser;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -7,10 +7,10 @@ import org.w3c.dom.NodeList;
 
 import core.debug.EngineDebug;
 import manager.scene.IObjectManager;
+import map.objectMap.ObjectMapManager;
+import map.raw.IRawManager;
 import object.entity.entity.EntityBuilder;
 import object.entity.entity.IEntityBuilder;
-import object.map.objectMap.ObjectMapManager;
-import object.map.raw.IRawManager;
 import object.model.textured.TexturedModel;
 import object.terrain.builder.ITerrainBuilder;
 import object.terrain.builder.ProceduredTerrainBuilder;
@@ -106,7 +106,12 @@ public class ModelMapXMLParser extends XMLParser implements IObjectParser<IObjec
 						TerrainTexturePack terrainPack = this.rawMap.getTerrainTexturePack(terrainPackName);
 						TerrainTexture blendTexture = this.rawMap.getTerrainTexture(blendTextureName);
 						ITerrainBuilder terrainBuilder = new ProceduredTerrainBuilder();
-						terrainBuilder.setTexturePack(terrainPack).setBlendTexture(blendTexture).setAmplitude(amplitude).setOctaves(octaves).setRoughness(roughness);
+						terrainBuilder
+							.setTexturePack(terrainPack)
+							.setBlendTexture(blendTexture)
+							.setAmplitude(amplitude)
+							.setOctaves(octaves)
+							.setRoughness(roughness);
 						map.getTerrains().add(terrainBuilder.create(name));
 						if (EngineDebug.hasDebugPermission()) {
 							System.out.println(">> " + map.getTerrains().get(name).getName());

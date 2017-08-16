@@ -59,7 +59,10 @@ public class EngineUtils {
 	public static TexturedModel loadStaticModel(String objFile, String textureName, String normalTexture,
 			String specularTexture) {
 		Loader loader = Loader.getInstance();
-		RawModel rawModel = NormalMappedObjLoader.loadOBJ(objFile);
+		ModelData data = NormalMappedObjLoader.loadOBJ(objFile);
+		RawModel rawModel = new RawModel(objFile, Loader.getInstance().getVertexLoader()
+				.loadToVAO(data.getVertices(), data.getTextureCoords(), data.getNormals(),
+				data.getIndices()));
 		ModelTexture texture = new ModelTexture(loader.getTextureLoader().loadTexture(EngineSettings.TEXTURE_MODEL_PATH, "barrel"));
 		TexturedModel model = new TexturedModel(objFile, rawModel, texture);
 		int normaMap = loader.getTextureLoader().loadTexture(EngineSettings.TEXTURE_NORMAL_MAP_PATH, normalTexture);

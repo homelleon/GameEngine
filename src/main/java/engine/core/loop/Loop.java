@@ -16,13 +16,13 @@ import game.game.IGame;
 import manager.scene.IObjectManager;
 import manager.scene.ISceneManager;
 import manager.scene.SceneManager;
+import map.parser.LevelMapXMLParser;
+import map.parser.ModelMapXMLParser;
+import map.parser.RawMapXMLParser;
+import map.raw.IRawManager;
 import object.audio.master.AudioMaster;
 import object.audio.master.IAudioMaster;
 import object.input.MouseGame;
-import object.map.parser.LevelMapXMLParser;
-import object.map.parser.ModelMapXMLParser;
-import object.map.parser.RawMapXMLParser;
-import object.map.raw.IRawManager;
 import object.scene.IScene;
 import object.scene.Scene;
 import renderer.loader.Loader;
@@ -86,7 +86,7 @@ public class Loop implements ILoop {
 			loadModelMap("defaultModelMap");
 		}
 		IAudioMaster audioMaster = new AudioMaster();
-		this.scene = new Scene(modelMap, levelMap, audioMaster);
+		this.scene = new Scene(levelMap, audioMaster);
 		this.sceneRenderer = new SceneRenderer();
 		this.sceneManager = new SceneManager();
 		sceneManager.init(scene, loader);

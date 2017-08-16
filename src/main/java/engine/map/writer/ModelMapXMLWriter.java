@@ -1,4 +1,4 @@
-package object.map.writer;
+package map.writer;
 
 import java.io.BufferedWriter;
 import java.io.File;

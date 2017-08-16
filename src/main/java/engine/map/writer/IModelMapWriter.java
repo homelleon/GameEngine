@@ -1,4 +1,4 @@
-package object.map.writer;
+package map.writer;
 
 import manager.scene.IObjectManager;
 import renderer.loader.Loader;

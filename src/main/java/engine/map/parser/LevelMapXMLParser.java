@@ -1,4 +1,4 @@
-package object.map.parser;
+package map.parser;
 
 import org.lwjgl.util.vector.Vector3f;
 import org.w3c.dom.Document;
@@ -8,8 +8,8 @@ import org.w3c.dom.NodeList;
 
 import core.debug.EngineDebug;
 import manager.scene.IObjectManager;
+import map.objectMap.ObjectMapManager;
 import object.entity.entity.IEntity;
-import object.map.objectMap.ObjectMapManager;
 import object.terrain.terrain.ITerrain;
 import tool.xml.XMLUtils;
 import tool.xml.parser.IObjectParser;
@@ -72,7 +72,7 @@ public class LevelMapXMLParser extends XMLParser implements IObjectParser<IObjec
 				entityClone.setScale(scale);
 				levelMap.getEntities().add(entityClone);
 				if (EngineDebug.hasDebugPermission()) {
-					System.out.println(">> " + entityClone.getName());
+					System.out.println(">> " + levelMap.getEntities().get(name).getName());
 				}
 			}
 		}

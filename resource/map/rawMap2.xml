@@ -64,19 +64,23 @@
 		<raw_model
 			id="1"
 			name="cubeRawModel"
-			file="cube" />
+			file="cube" 
+			type="simple"/>			
 		<raw_model 
 			id="2"
-			name="barrelRawModel"
-			file="barrel" />
+			name="grassRawModel"
+			file="grass"
+			type="simple" />
 		<raw_model 
 			id="3"
-			name="grassRawModel"
-			file="grass" />
+			name="stallRawModel"
+			file="stall"
+			type="simple" />
 		<raw_model 
 			id="4"
-			name="stallRawModel"
-			file="stall" />
+			name="barrelRawModel"
+			file="barrel" 
+			type="normal" />
 	</models>
 	<textured_models>
 		<simple>

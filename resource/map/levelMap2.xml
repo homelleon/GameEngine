@@ -5,10 +5,10 @@
 			name="Barrel"
 			model="barrelEntity"
 			scale="1.0">
-				<position 
-					x="200.0"
-					y="21.0"
-					z="200.0" />
+				<position
+					x="-1"
+					y="0"
+					z="-1" />
 	    </entity>
 	    <entity 
 			id="2"

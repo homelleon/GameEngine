@@ -105,6 +105,7 @@ public class XMLUtils {
 	public final static String ROUGHTNESS = "roughness";
 
 	/* boolean values */
+	public final static String TYPE = "type";
 	public final static String SIMPLE = "simple";
 	public final static String NORMAL = "normal";
 	public final static String SPECULAR = "specular";
