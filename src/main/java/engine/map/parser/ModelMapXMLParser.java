@@ -106,7 +106,12 @@ public class ModelMapXMLParser extends XMLParser implements IObjectParser<IObjec
 						TerrainTexturePack terrainPack = this.rawMap.getTerrainTexturePack(terrainPackName);
 						TerrainTexture blendTexture = this.rawMap.getTerrainTexture(blendTextureName);
 						ITerrainBuilder terrainBuilder = new ProceduredTerrainBuilder();
-						terrainBuilder.setTexturePack(terrainPack).setBlendTexture(blendTexture).setAmplitude(amplitude).setOctaves(octaves).setRoughness(roughness);
+						terrainBuilder
+							.setTexturePack(terrainPack)
+							.setBlendTexture(blendTexture)
+							.setAmplitude(amplitude)
+							.setOctaves(octaves)
+							.setRoughness(roughness);
 						map.getTerrains().add(terrainBuilder.create(name));
 						if (EngineDebug.hasDebugPermission()) {
 							System.out.println(">> " + map.getTerrains().get(name).getName());

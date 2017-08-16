@@ -81,6 +81,7 @@ public class NormalMappedObjLoader {
 		float[] normalsArray = new float[vertices.size() * 3];
 		float[] tangentsArray = new float[vertices.size() * 3];
 		int[] indicesArray = convertIndicesListToArray(indices);
+		convertDataToArrays(vertices, textures, normals, verticesArray, texturesArray, normalsArray, tangentsArray);
 		ModelData data = new ModelData(verticesArray, texturesArray, normalsArray, tangentsArray, indicesArray);
 		return data;
 	}

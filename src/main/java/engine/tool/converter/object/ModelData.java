@@ -1,5 +1,8 @@
 package tool.converter.object;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ModelData {
 
 	private float[] vertices;
@@ -47,6 +50,20 @@ public class ModelData {
 
 	public float getFurthestPoint() {
 		return furthestPoint;
-	}	
+	}
+	
+	@Override
+	public String toString() {
+		List<Float> vertList = new ArrayList<Float>();
+		for(int i = 0; i < vertices.length; i++) {
+			vertList.add(vertices[i]);
+		}
+		return (this.getClass().getName() + "@vertices:" + vertList +
+				"; textureCoords:" + this.textureCoords.toString() +
+				"; normals:" + this.normals.toString() + 
+				"; indices:" + this.indices.toString() + 
+				"; furthestPoint:" + this.furthestPoint +
+				"; tangents:" + this.tangents.toString());
+	}
 
 }

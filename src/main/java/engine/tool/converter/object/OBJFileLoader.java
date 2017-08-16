@@ -67,7 +67,6 @@ public class OBJFileLoader {
 				String[] vertex2 = currentLine[2].split("/");
 				String[] vertex3 = currentLine[3].split("/");
 				processVertex(vertex1, vertices, indices);
-				;
 				processVertex(vertex2, vertices, indices);
 				processVertex(vertex3, vertices, indices);
 				line = reader.readLine();
