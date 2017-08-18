@@ -8,9 +8,9 @@ import org.lwjgl.util.vector.Vector3f;
  * 
  * @author homelleon
  * 
- * @see CameraFree
- * @see CameraPlayer
- * @see CameraCubeMap
+ * @see FreeCamera
+ * @see TargetCamera
+ * @see CubeMapCamera
  *
  */
 

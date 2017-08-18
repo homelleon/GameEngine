@@ -6,11 +6,12 @@ import org.newdawn.slick.opengl.Texture;
 public class GUITexture {
 
 	private String name;
-	private boolean isShown = false;
+	private boolean isVisible = false;
 
 	private Texture texture;
 	private Vector2f position;
 	private Vector2f scale;
+	private float transparency = 0;
 
 	public GUITexture(String name, Texture texture, Vector2f position, Vector2f scale) {
 		this.name = name;
@@ -38,13 +39,32 @@ public class GUITexture {
 	public Vector2f getScale() {
 		return this.scale;
 	}
-
-	public boolean getIsShown() {
-		return this.isShown;
+	
+	/**
+	 * Sets trasparency value.
+	 * 
+	 * @param value float of texture transparency
+	 */
+	public void setTransparency(float value) {
+		this.transparency = value;
+	}
+	
+	/**
+	 * Gets if the texture is should be visible.
+	 * 
+	 * @return true if text is visible<br>
+	 * 		   false if text is invisible
+	 */
+	public float getTransparency() {
+		return this.transparency;
 	}
 
-	public void setIsShown(boolean value) {
-		this.isShown = value;
+	public boolean getIsVisible() {
+		return this.isVisible;
+	}
+
+	public void setIsVisible(boolean value) {
+		this.isVisible = value;
 	}
 
 }

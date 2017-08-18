@@ -1,7 +1,7 @@
 package manager.gui;
 
-import object.gui.component.IGUIComponentManager;
-import object.gui.group.manager.IGUIGroupManager;
+import manager.gui.component.IGUIComponentManager;
+import manager.gui.group.IGUIGroupManager;
 import object.gui.system.IGUIMenuSystem;
 
 /**

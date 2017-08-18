@@ -41,10 +41,10 @@ public class GUI extends GUIObject implements IGUI {
 
 	private void doSwitch(boolean value) {
 		if (!guiTextures.isEmpty()) {
-			guiTextures.forEach(gui -> gui.setIsShown(value));
+			guiTextures.forEach(gui -> gui.setIsVisible(value));
 		}
 		if (!guiTexts.isEmpty()) {
-			guiTexts.forEach(tui -> tui.setIsShown(value));
+			guiTexts.forEach(tui -> tui.setIsVisible(value));
 		}
 	}
 
@@ -60,8 +60,8 @@ public class GUI extends GUIObject implements IGUI {
 
 	@Override
 	public void setTransparency(float value) {
-		// TODO Auto-generated method stub
-
+		this.guiTextures.forEach(texture -> texture.setTransparency(value));
+		
 	}
 
 	@Override

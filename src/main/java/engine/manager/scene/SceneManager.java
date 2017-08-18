@@ -11,7 +11,7 @@ import org.lwjgl.util.vector.Vector3f;
 import manager.particle.ParticleManager;
 import object.audio.source.AudioSource;
 import object.audio.source.IAudioSource;
-import object.camera.CameraPlayer;
+import object.camera.TargetCamera;
 import object.entity.player.Player;
 import object.entity.player.IPlayer;
 import object.gui.text.GUIText;
@@ -79,7 +79,7 @@ public class SceneManager implements ISceneManager {
 		scene.getAudioSources().getMaster().setListenerData(scene.getPlayer().getPosition());
 		scene.getEntities().add(player1);
 		scene.getEntities().addAll(EngineUtils.createGrassField(500, 500, 50, 1, 0.1f));
-		scene.setCamera(new CameraPlayer(player1, cameraName));
+		scene.setCamera(new TargetCamera(player1, cameraName));
 		scene.setSun(new Light("Sun", new Vector3f(-100000, 150000, -100000), new Vector3f(1.3f, 1.3f, 1.3f)));
 		scene.getLights().add(scene.getSun());
 		scene.getLights().add(new Light("Light1", new Vector3f(200, 2, 200), new Vector3f(10, 0, 0),

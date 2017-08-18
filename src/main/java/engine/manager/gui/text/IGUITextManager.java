@@ -1,6 +1,6 @@
 package manager.gui.text;
 
-import object.gui.font.manager.IFontManager;
+import manager.gui.font.IFontManager;
 import object.gui.text.GUIText;
 import tool.manager.IManager;
 

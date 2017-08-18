@@ -36,8 +36,9 @@ public class GUIText {
 
 	private Vector2f offset = new Vector2f(0f, 0f);
 	private Vector3f outlineColour = new Vector3f(0f, 0f, 0f);
-
-	private boolean isShown = false;
+	
+	private float transparency = 0;
+	private boolean isVisible = false;
 
 	/**
 	 * Creates a new text, loads the text's quads into a VAO, and adds the text
@@ -240,12 +241,42 @@ public class GUIText {
 		return this.vertexCount;
 	}
 
-	public void setIsShown(boolean value) {
-		this.isShown = value;
+	/**
+	 * Sets visibility parameter for text.
+	 * <p>Invisible text is not rendered. 
+	 * 
+	 * @param value boolean to set into visibility parameter
+	 */
+	public void setIsVisible(boolean value) {
+		this.isVisible = value;
 	}
 
-	public boolean getIsShown() {
-		return this.isShown;
+	/**
+	 * Gets if the text is should be visible.
+	 * 
+	 * @return true if text is visible<br>
+	 * 		   false if text is invisible
+	 */
+	public boolean getIsVisible() {
+		return this.isVisible;
+	}
+	
+	/**
+	 * Sets trasparency value.
+	 * 
+	 * @param value float of text transparency
+	 */
+	public void setTransparency(float value) {
+		this.transparency = value;
+	}
+	
+	/**
+	 * Gets transparency value.
+	 * 
+	 * @return float value of text transparency
+	 */
+	public float getTransparency() {
+		return this.transparency;
 	}
 
 	/**

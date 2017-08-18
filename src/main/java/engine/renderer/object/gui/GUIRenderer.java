@@ -7,9 +7,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import object.gui.font.manager.IFontManager;
+import manager.gui.font.IFontManager;
 import object.gui.group.IGUIGroup;
 import object.gui.gui.IGUI;
+import renderer.object.gui.text.GUITextRenderer;
+import renderer.object.gui.texture.GUITextureRenderer;
 
 /**
  * Graphic user interface renderer class to render GUI groups.

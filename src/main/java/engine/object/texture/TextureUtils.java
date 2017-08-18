@@ -13,6 +13,7 @@ import org.lwjgl.opengl.GLContext;
 
 import de.matthiasmann.twl.utils.PNGDecoder;
 import de.matthiasmann.twl.utils.PNGDecoder.Format;
+import object.texture.builder.TextureBuilder;
 import tool.MyFile;
 
 public class TextureUtils {
@@ -51,7 +52,7 @@ public class TextureUtils {
 		return texID;
 	}
 
-	protected static TextureData decodeTextureFile(MyFile file) {
+	public static TextureData decodeTextureFile(MyFile file) {
 		int width = 0;
 		int height = 0;
 		ByteBuffer buffer = null;
@@ -72,7 +73,7 @@ public class TextureUtils {
 		return new TextureData(buffer, width, height);
 	}
 
-	protected static int loadTextureToOpenGL(TextureData data, TextureBuilder builder) {
+	public static int loadTextureToOpenGL(TextureData data, TextureBuilder builder) {
 		int texID = GL11.glGenTextures();
 		GL13.glActiveTexture(GL13.GL_TEXTURE0);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, texID);

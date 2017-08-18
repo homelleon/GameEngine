@@ -8,9 +8,9 @@ import java.util.Map;
 import org.w3c.dom.Document;
 
 import core.settings.EngineSettings;
+import manager.gui.font.FontManager;
+import manager.gui.font.IFontManager;
 import object.gui.font.TextMeshData;
-import object.gui.font.manager.FontManager;
-import object.gui.font.manager.IFontManager;
 import object.gui.text.GUIText;
 import object.gui.text.parser.GUITextXMLParser;
 import renderer.loader.Loader;

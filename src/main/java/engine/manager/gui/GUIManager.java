@@ -1,10 +1,10 @@
 package manager.gui;
 
 import core.debug.EngineDebug;
-import object.gui.component.GUIComponentManager;
-import object.gui.component.IGUIComponentManager;
-import object.gui.group.manager.GUIGroupManager;
-import object.gui.group.manager.IGUIGroupManager;
+import manager.gui.component.GUIComponentManager;
+import manager.gui.component.IGUIComponentManager;
+import manager.gui.group.GUIGroupManager;
+import manager.gui.group.IGUIGroupManager;
 import object.gui.system.GUIMenuSystem;
 import object.gui.system.IGUIMenuSystem;
 

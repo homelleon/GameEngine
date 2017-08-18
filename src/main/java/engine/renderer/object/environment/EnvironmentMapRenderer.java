@@ -11,7 +11,7 @@ import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL14;
 import org.lwjgl.opengl.GL30;
 
-import object.camera.CameraCubeMap;
+import object.camera.CubeMapCamera;
 import object.camera.ICamera;
 import object.entity.entity.IEntity;
 import object.model.textured.TexturedModel;
@@ -23,7 +23,7 @@ public class EnvironmentMapRenderer {
 	Map<TexturedModel, List<IEntity>> entities = new HashMap<TexturedModel, List<IEntity>>();
 
 	public void render(IScene scene, MainRenderer renderer, IEntity shinyEntity) {
-		ICamera cubeCamera = new CameraCubeMap(shinyEntity.getPosition());
+		ICamera cubeCamera = new CubeMapCamera(shinyEntity.getPosition());
 		int fbo = GL30.glGenFramebuffers();
 		GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, fbo);
 		GL11.glDrawBuffer(GL30.GL_COLOR_ATTACHMENT0);
