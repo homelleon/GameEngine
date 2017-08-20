@@ -10,7 +10,6 @@ import core.debug.EngineDebug;
 import manager.scene.IObjectManager;
 import map.objectMap.ObjectMapManager;
 import object.entity.entity.IEntity;
-import object.terrain.terrain.ITerrain;
 import tool.xml.XMLUtils;
 import tool.xml.parser.IObjectParser;
 import tool.xml.parser.XMLParser;
@@ -27,14 +26,13 @@ public class LevelMapXMLParser extends XMLParser implements IObjectParser<IObjec
 	@Override
 	public IObjectManager parse() {
 		IObjectManager levelMap = new ObjectMapManager();
+		levelMap.getTerrains().addAll(this.modelMap.getTerrains().getAll());
 		if(document.getDocumentElement().getNodeName().equals(XMLUtils.LEVEL_MAP)) {
 			NodeList nodeList = this.document.getDocumentElement().getChildNodes();
 			for(int i = 0; i < nodeList.getLength(); i++) {
 				Node node = nodeList.item(i);			
 				if(XMLUtils.ifNodeIsElement(node, XMLUtils.ENTITIES)) {
 					parseEntities(node, levelMap);
-				} else if(XMLUtils.ifNodeIsElement(node, XMLUtils.TERRAINS)) {
-					parseTerrains(node, levelMap);
 				}
 			}
 			if (EngineDebug.hasDebugPermission()) {
@@ -73,37 +71,6 @@ public class LevelMapXMLParser extends XMLParser implements IObjectParser<IObjec
 				levelMap.getEntities().add(entityClone);
 				if (EngineDebug.hasDebugPermission()) {
 					System.out.println(">> " + levelMap.getEntities().get(name).getName());
-				}
-			}
-		}
-		if (EngineDebug.hasDebugPermission()) {
-			System.out.println("> Succed!");
-		}
-	}
-	
-	private void parseTerrains(Node node, IObjectManager levelMap) {
-		if (EngineDebug.hasDebugPermission()) {
-			System.out.println("> Loading terrains...");
-		}
-		Node terrains = node;
-		NodeList terrainList = terrains.getChildNodes();
-		for (int j = 0; j < terrainList.getLength(); j++) {
-			Node terrainNode = terrainList.item(j);
-			if (XMLUtils.ifNodeIsElement(terrainNode, XMLUtils.TERRAIN)) {
-				Element terrainElelement = (Element) terrainNode;
-				String ID = XMLUtils.getAttributeValue(terrainNode, XMLUtils.ID);
-				String name = XMLUtils.getAttributeValue(terrainElelement, XMLUtils.NAME);
-				String model = XMLUtils.getAttributeValue(terrainElelement, XMLUtils.MODEL);
-				Element positionElement = XMLUtils.getChildElementByTag(terrainElelement, XMLUtils.POSITION);
-				int x = Integer.valueOf(XMLUtils.getAttributeValue(positionElement, XMLUtils.X));
-				int z = Integer.valueOf(XMLUtils.getAttributeValue(positionElement, XMLUtils.Z));
-				ITerrain terrainBase = modelMap.getTerrains().get(model);
-				ITerrain terrainClone = terrainBase.clone(name);
-				terrainClone.setXPosition(x);
-				terrainClone.setZPosition(z);
-				levelMap.getTerrains().add(terrainClone);
-				if (EngineDebug.hasDebugPermission()) {
-					System.out.println(">> " + terrainClone.getName());
 				}
 			}
 		}

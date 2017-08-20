@@ -1,6 +1,0 @@
-#map-file for game engine
-#default empty map
-#created by @homelleon
-
-<t> Terrain1 0 0 grass ground floweredGrass road blendMap true 0 0 0
-<end>

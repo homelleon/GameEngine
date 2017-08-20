@@ -11,6 +11,7 @@ import org.lwjgl.util.vector.Vector3f;
 
 import core.settings.EngineSettings;
 import object.model.raw.RawModel;
+import object.terrain.generator.HeightsGenerator;
 import object.texture.terrain.pack.TerrainTexturePack;
 import object.texture.terrain.texture.TerrainTexture;
 import renderer.loader.Loader;
@@ -24,7 +25,7 @@ import tool.math.Maths;
  */
 public class MappedTerrain implements ITerrain {
 
-	private static final float SIZE = 500;
+	public static final float SIZE = 500;
 	private static final float MAX_HEIGHT = 1000;
 	private static final float MAX_PIXEL_COLOUR = 256 * 256 * 256;
 
@@ -136,7 +137,7 @@ public class MappedTerrain implements ITerrain {
 	}
 
 	@Override
-	public boolean isProcedureGenerated() {
+	public boolean getIsProcedureGenerated() {
 		return isProcedureGenerated;
 	}
 
@@ -178,8 +179,12 @@ public class MappedTerrain implements ITerrain {
 					new Vector2f(xCoord, zCoord));
 		}
 		return answer;
+	}	
+
+	@Override
+	public HeightsGenerator getGenerator() {
+		return null;
 	}
-	
 
 	@Override
 	public ITerrain clone(String name) {
@@ -260,5 +265,6 @@ public class MappedTerrain implements ITerrain {
 		height *= MAX_HEIGHT;
 		return height;
 	}
+
 
 }

@@ -2,6 +2,7 @@ package object.terrain.terrain;
 
 import object.Nameable;
 import object.model.raw.RawModel;
+import object.terrain.generator.HeightsGenerator;
 import object.texture.terrain.pack.TerrainTexturePack;
 import object.texture.terrain.texture.TerrainTexture;
 
@@ -90,7 +91,7 @@ public interface ITerrain extends Nameable {
 	 * @return true if terrain is procedurally generated<br>
 	 *         false if terrain is not procedurally generated
 	 */
-	public boolean isProcedureGenerated();
+	public boolean getIsProcedureGenerated();
 
 	/**
 	 * Gets maximum and minimum value (amplitude) of terrain height for
@@ -126,6 +127,13 @@ public interface ITerrain extends Nameable {
 	 * @return
 	 */
 	public float getHeightOfTerrain(float worldX, float worldZ);
+	
+	/**
+	 * Gets saved height generator.
+	 * 
+	 * @return {@link HeightsGenerator} object
+	 */
+	public HeightsGenerator getGenerator();
 	
 	/**
 	 * Clones current terrain.

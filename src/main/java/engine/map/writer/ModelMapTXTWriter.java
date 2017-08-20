@@ -46,7 +46,7 @@ public class ModelMapTXTWriter implements IModelMapWriter {
 					line += " ";
 					line += String.valueOf(terrain.getBlendMap().getName());
 					line += " ";
-					if (terrain.isProcedureGenerated()) {
+					if (terrain.getIsProcedureGenerated()) {
 						line += "true";
 						line += " ";
 						line += String.valueOf(terrain.getAmplitude());

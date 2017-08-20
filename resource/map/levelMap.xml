@@ -1,92 +1,74 @@
 <level_map>
 	<entities>
-	    <entity id="1">
-			<name>barrel</name>
-			<model>barrelEntity</model>
-			<position>
-				<x>200.0</x>
-				<y>21.033976</y>
-				<z>200.0</z>
-			</position>
-			<scale>1.0</scale>
+	    <entity 
+			id="1"
+			name="Barrel"
+			model="barrelEntity"
+			scale="1.0">
+				<position
+					x="-1"
+					y="0"
+					z="-1" />
 	    </entity>
-	    <entity id="2">
-			<name>Bo</name>
-			<model>cubeEntity1</model>
-			<position>
-				<x>70.0</x>
-				<y>15.42662</y>
-				<z>70.0</z>
-			</position>
-			<scale>8.0</scale>
+	    <entity 
+			id="2"
+			name="Bo"
+			model="cubeEntity1"
+			scale="8.0">
+				<position 
+					x="70.0"
+					y="15.0"
+					z="70.0" />
 	    </entity>
-	    <entity id="3">
-			<name>cube</name>
-			<model>cubeEntity2</model>
-			<position>
-				<x>100.0</x>
-				<y>3.334204</y>
-				<z>10.0</z>
-			</position>
-			<scale>1.0</scale>
+	    <entity 
+			id="3"
+			name="Cube"
+			model="cubeEntity1"
+			scale="1.0">
+				<position 
+					x="100.0"
+					y="3.0"
+					z="10.0" />
 	    </entity>
-	    <entity id="4">
-			<name>player1</name>
-			<model>cubeEntity2</model>
-			<position>
-				<x>100.0</x>
-				<y>3.334204</y>
-				<z>10.0</z>
-			</position>
-			<scale>1.0</scale>
+	    <entity 
+			id="4"
+			name="Player1"
+			model="cubeEntity2"
+			scale="1.0">
+				<position 
+					x="100.0"
+					y="3.0"
+					z="10.0" />
 	    </entity>
-	    <entity id="5">
-			<name>Grass1_0</name>
-			<model>grassEntity</model>
-			<position>
-				<x>510.0</x>
-				<y>0.0</y>
-				<z>500.0</z>
-			</position>
-			<scale>1.215454</scale>
+	    <entity 
+			id="5"
+			name="Grass1"
+			model="grassEntity"
+			scale="1.2">
+				<position 
+					x="510.0"
+					y="0.0"
+					z="500.0" />
 	    </entity>   
-			<entity id="6">
-			<name>Cuby4</name>
-			<model>cubeEntity1</model>
-			<position>
-				<x>100.0</x>
-				<y>27.123322</y>
-				<z>100.0</z>
-			</position>
-			<scale>25.0</scale>
+		<entity 
+			id="6"
+			name="Cuby4"
+			model="cubeEntity1"
+			scale="25.0">
+				<position 
+					x="100.0"
+					y="27.0"
+					z="100.0" />
 	    </entity>
-	    <entity id="7">
-			<name>stall</name>
-			<model>stallEntity</model>
-			<position>
-				<x>50.0</x>
-				<y>14.35382</y>
-				<z>50.0</z>
-			</position>
-			<scale>4.0</scale>
+	    <entity 
+			id="7"
+			name="Stall"
+			model="stallEntity"
+			scale="4.0">
+				<position 
+					x="50.0"
+					y="14.3"
+					z="50.0" />
 	    </entity>
   </entities>
-  <terrains>
-    <terrain id="1">
-		<name>Terrain1</name>
-		<model>defaultTerrain1</model>
-		<position>
-			<x>1</x>
-			<z>0</z>
-		</position>
-    </terrain>
-    <terrain id="2">
-		<name>Terrain2</name>
-		<model>defaultTerrain2</model>
-		<position>
-			<x>0</x>
-			<z>0</z>
-		</position>
-    </terrain>
-  </terrains>
 </level_map>

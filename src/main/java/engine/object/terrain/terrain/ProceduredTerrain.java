@@ -1,15 +1,8 @@
 package object.terrain.terrain;
 
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
-
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
-import core.settings.EngineSettings;
 import object.model.raw.RawModel;
 import object.terrain.generator.HeightsGenerator;
 import object.texture.terrain.pack.TerrainTexturePack;
@@ -25,7 +18,7 @@ import tool.math.Maths;
  */
 public class ProceduredTerrain implements ITerrain {
 
-	private static final float SIZE = 500;
+	public static final float SIZE = 500;
 
 	private float x;
 	private float z;
@@ -33,12 +26,13 @@ public class ProceduredTerrain implements ITerrain {
 	private TerrainTexturePack texturePack;
 	private TerrainTexture blendMap;
 	private String heightMapName;
-	private boolean isProcedureGenerated = false;
+	private boolean isProcedureGenerated = true;
 	private String name;
 	private boolean isVisible = true;
 	private float amplitude;
 	private int octaves;
 	private float roughness;
+	private HeightsGenerator generator;
 
 	private float[][] heights;
 
@@ -81,6 +75,33 @@ public class ProceduredTerrain implements ITerrain {
 		this.octaves = octaves;
 		this.roughness = roughness;
 		this.model = generateWithProcedure(amplitude, octaves, roughness);
+		this.name = name;
+	}
+	
+	public ProceduredTerrain(String name, float[] previousHeights, int gridX, int gridZ, TerrainTexturePack texturePack,
+			TerrainTexture blendMap, float amplitude, int octaves, float roughness) {
+		this.texturePack = texturePack;
+		this.blendMap = blendMap;
+		this.x = gridX * SIZE;
+		this.z = gridZ * SIZE;
+		this.amplitude = amplitude;
+		this.octaves = octaves;
+		this.roughness = roughness;
+		this.model = generateWithProcedure(amplitude, octaves, roughness, previousHeights);
+		this.name = name;
+	}
+	
+	public ProceduredTerrain(String name, int gridX, int gridZ, TerrainTexturePack texturePack,
+			TerrainTexture blendMap, float amplitude, int octaves, float roughness, float[][] heights, RawModel model) {
+		this.texturePack = texturePack;
+		this.blendMap = blendMap;
+		this.x = gridX * SIZE;
+		this.z = gridZ * SIZE;
+		this.amplitude = amplitude;
+		this.octaves = octaves;
+		this.roughness = roughness;
+		this.heights = heights;
+		this.model = model;
 		this.name = name;
 	}
 
@@ -145,7 +166,7 @@ public class ProceduredTerrain implements ITerrain {
 	}
 
 	@Override
-	public boolean isProcedureGenerated() {
+	public boolean getIsProcedureGenerated() {
 		return isProcedureGenerated;
 	}
 
@@ -189,18 +210,23 @@ public class ProceduredTerrain implements ITerrain {
 		return answer;
 	}
 	
+	@Override
+	public HeightsGenerator getGenerator() {
+		return this.generator;
+	}
+	
 
 	@Override
 	public ITerrain clone(String name) {
 		int gridX = (int) (this.x / SIZE);
 		int gridZ = (int) (this.z / SIZE);
-		return new ProceduredTerrain(name, gridX, gridZ, this.texturePack,this.blendMap, this.amplitude, this.octaves, this.roughness);
+		return new ProceduredTerrain(name, gridX, gridZ, 
+				this.texturePack,this.blendMap, this.amplitude, 
+				this.octaves, this.roughness, this.heights, this.model);
 	}
 
 	private RawModel generateWithProcedure(float amp, int oct, float rough) {
-		this.isProcedureGenerated = true;
-		HeightsGenerator generator = new HeightsGenerator(amp, oct, rough);
-
+		this.generator = new HeightsGenerator(amp, oct, rough);
 		int VERTEX_COUNT = 128;
 		heights = new float[VERTEX_COUNT][VERTEX_COUNT];
 		int count = VERTEX_COUNT * VERTEX_COUNT;
@@ -242,60 +268,64 @@ public class ProceduredTerrain implements ITerrain {
 		}
 		return Loader.getInstance().getVertexLoader().loadToVAO(vertices, textureCoords, normals, indices);
 	}
-
-	// private RawModel generateWithProcedure(Loader loader, float amp, int oct,
-	// float rough) {
-	// this.isProcedureGenerated = true;
-	// HeightsGenerator generator = new HeightsGenerator(amp, oct, rough);
-	//
-	// int VERTEX_COUNT = 128;
-	// heights = new float[VERTEX_COUNT][VERTEX_COUNT];
-	// int count = VERTEX_COUNT * VERTEX_COUNT;
-	// float[] vertices = new float[count * 3];
-	// float[] normals = new float[count * 3];
-	// float[] textureCoords = new float[count * 2];
-	// int[] indices = new int[2*(VERTEX_COUNT-1)*(VERTEX_COUNT-1)];
-	// int vertexPointer = 0;
-	// for(int i=0;i<VERTEX_COUNT;i++){
-	// for(int j=0;j<VERTEX_COUNT;j++){
-	// vertices[vertexPointer*3] = (float)j/((float)VERTEX_COUNT - 1) * SIZE;
-	// float height = getHeight(j, i, generator);
-	// heights[j][i] = height;
-	// vertices[vertexPointer*3+1] = height;
-	// vertices[vertexPointer*3+2] = (float)i/((float)VERTEX_COUNT - 1) * SIZE;
-	// Vector3f normal = calculateNormal(j, i, generator);
-	// normals[vertexPointer*3] = normal.x;
-	// normals[vertexPointer*3+1] = normal.y;
-	// normals[vertexPointer*3+2] = normal.z;
-	// textureCoords[vertexPointer*2] = (float)j/((float)VERTEX_COUNT - 1);
-	// textureCoords[vertexPointer*2+1] = (float)i/((float)VERTEX_COUNT - 1);
-	// vertexPointer++;
-	// }
-	// }
-	// int pointer = 0;
-	// int INDEX_COUNT = VERTEX_COUNT / 3;
-	// for(int gz=0;gz<INDEX_COUNT-1;gz++) {
-	// for(int gx=0;gx<INDEX_COUNT-1;gx++) {
-	// int center = ((3 * gz + 1) * VERTEX_COUNT) + 3 * gx + 1;
-	// int topLeft = ((3 * gz) * VERTEX_COUNT) + 3 * gx;
-	// int top = topLeft + 1;
-	// int topRight = ((3 * gz) * VERTEX_COUNT) + 3 * gx + 2;
-	// int bottomRight = ((3 * gz + 2) * VERTEX_COUNT) + 3 * gx + 2;
-	// int bottomLeft = bottomRight - 2;
-	// int left = center - 1;
-	//
-	// indices[pointer++] = center;
-	// indices[pointer++] = topLeft;
-	// indices[pointer++] = top;
-	// indices[pointer++] = topRight;
-	// indices[pointer++] = bottomRight;
-	// indices[pointer++] = bottomLeft;
-	// indices[pointer++] = left;
-	// indices[pointer++] = topLeft;
-	// }
-	// }
-	// return loader.loadToVAO(vertices, textureCoords, normals, indices);
-	// }
+	
+	private RawModel generateWithProcedure(float amp, int oct, float rough, float[] previousHeights) {
+		this.generator = new HeightsGenerator(amp, oct, rough);
+		int VERTEX_COUNT = 128;
+		heights = new float[VERTEX_COUNT][VERTEX_COUNT];
+		int count = VERTEX_COUNT * VERTEX_COUNT;
+		float[] vertices = new float[count * 3];
+		float[] normals = new float[count * 3];
+		float[] textureCoords = new float[count * 2];
+		int[] indices = new int[6 * (VERTEX_COUNT - 1) * (VERTEX_COUNT - 1)];
+		int vertexPointer = 0;
+		for (int i = 0; i < VERTEX_COUNT-1; i++) {
+			for (int j = 0; j < VERTEX_COUNT; j++) {
+				vertices[vertexPointer * 3] = j / ((float) VERTEX_COUNT - 1) * SIZE;
+				float height = getHeight(j, i, generator);
+				heights[j][i] = height;
+				vertices[vertexPointer * 3 + 1] = height;
+				vertices[vertexPointer * 3 + 2] = i / ((float) VERTEX_COUNT - 1) * SIZE;
+				Vector3f normal = calculateNormal(j, i, generator);
+				normals[vertexPointer * 3] = normal.x;
+				normals[vertexPointer * 3 + 1] = normal.y;
+				normals[vertexPointer * 3 + 2] = normal.z;
+				textureCoords[vertexPointer * 2] = j / ((float) VERTEX_COUNT - 1);
+				textureCoords[vertexPointer * 2 + 1] = i / ((float) VERTEX_COUNT - 1);
+				vertexPointer++;
+			}
+		}		
+		for(int j = 0; j < VERTEX_COUNT; j++) {
+			vertices[vertexPointer * 3] = j / ((float) VERTEX_COUNT - 1) * SIZE;
+			float height = previousHeights[j];
+			heights[j][VERTEX_COUNT-1] = height;
+			vertices[vertexPointer * 3 + 1] = height;
+			vertices[vertexPointer * 3 + 2] = VERTEX_COUNT-1 / ((float) VERTEX_COUNT - 1) * SIZE;
+			Vector3f normal = calculateNormal(j, VERTEX_COUNT-1, generator);
+			normals[vertexPointer * 3] = normal.x;
+			normals[vertexPointer * 3 + 1] = normal.y;
+			normals[vertexPointer * 3 + 2] = normal.z;
+			textureCoords[vertexPointer * 2] = j / ((float) VERTEX_COUNT - 1);
+			textureCoords[vertexPointer * 2 + 1] = VERTEX_COUNT-1 / ((float) VERTEX_COUNT - 1);
+			vertexPointer++;
+		}
+		int pointer = 0;
+		for (int gz = 0; gz < VERTEX_COUNT - 1; gz++) {
+			for (int gx = 0; gx < VERTEX_COUNT - 1; gx++) {
+				int topLeft = (gz * VERTEX_COUNT) + gx;
+				int topRight = topLeft + 1;
+				int bottomLeft = ((gz + 1) * VERTEX_COUNT) + gx;
+				int bottomRight = bottomLeft + 1;
+				indices[pointer++] = topLeft;
+				indices[pointer++] = bottomLeft;
+				indices[pointer++] = topRight;
+				indices[pointer++] = topRight;
+				indices[pointer++] = bottomLeft;
+				indices[pointer++] = bottomRight;
+			}
+		}
+		return Loader.getInstance().getVertexLoader().loadToVAO(vertices, textureCoords, normals, indices);
+	}
 
 	private float getHeight(int x, int z, HeightsGenerator generator) {
 		return generator.generateHeight(x, z);

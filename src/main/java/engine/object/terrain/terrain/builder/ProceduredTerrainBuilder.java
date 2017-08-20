@@ -8,8 +8,13 @@ public class ProceduredTerrainBuilder extends TerrainBuilder implements ITerrain
 	@Override
 	public ITerrain create(String name) {
 		if(this.texturePack != null && this.blendTexture != null) {
+			if(this.heights == null) {
 			return new ProceduredTerrain(name, this.gridX, this.gridZ, this.texturePack, blendTexture, 
 					this.amplitude, this.octaves, this.roughness);
+			} else {
+				return new ProceduredTerrain(name, heights, this.gridX, this.gridZ, this.texturePack, blendTexture, 
+						this.amplitude, this.octaves, this.roughness);
+			}
 		} else {
 			throw new NullPointerException("Some parameters are missing in procedure terrain builder!");
 		}

@@ -1,69 +1,73 @@
 <model_map>
   <entities>
-    <entity id="1">
-		<name>barrel</name>
-		<model>barrel</model>
-		<texture>barrel</texture>
-		<scale>1.0</scale>
-		<normal>true</normal>
-		<normal_texture>barrelNormal</normal_texture>
-		<specular_texture>barrelS</specular_texture>
-		<shine_dumper>10.0</shine_dumper>
-		<reflectivity>0.5</reflectivity>	
-    </entity>
-    <entity id="2">
-		<name>cube</name>
-		<model>cube</model>
-        <texture>Cube1</texture>
-		<scale>1.0</scale>
-		<normal>false</normal>
-    </entity>
-    <entity id="3">
-		<name>cube1</name>
-		<model>cube</model>
-        <texture>Cube1</texture>
-		<scale>1.0</scale>
-		<normal>false</normal>
-    </entity>
-    <entity id="4">
-		<name>grass</name>
-		<model>grassObject</model>
-		<texture>grassObjAtlas</texture>
-		<scale>1.215454</scale>
-		<normal>false</normal>
-    </entity>
-    <entity id="5">
-		<name>stall</name>
-		<model>stall</model>
-		<texture>stallTexture</texture>
-		<scale>4.0</scale>
-		<normal>false</normal>
-    </entity>
+    <entity 
+		id="1"
+		name="barrelEntity"
+		textured_model="barrelModel"
+		scale="1.0" />
+    <entity 
+		id="2"
+		name="cubeEntity1"
+		textured_model="diceModel"
+		scale="1.0" />
+    <entity 
+		id="3"
+		name="cubeEntity2"
+		textured_model="diceModel"
+		scale="1.0" />
+    <entity 
+		id="4"
+		name="grassEntity"
+		textured_model="grassModel"
+		scale="1.2" />
+    <entity 
+		id="5"
+		name="stallEntity"
+		textured_model="stallModel"
+		scale="4.0" />
   </entities>
   <terrains>
-    <terrain id="1">
-		<name>Terrain1</name>
-		<base_texture>grass</base_texture>
-		<red_texture>ground</red_texture>
-		<green_texture>floweredGrass</green_texture>
-		<blue_texture>road</blue_texture>
-		<blend_texture>blendMap</blend_texture>
-		<procedure_generated>true</procedure_generated>
-		<amplitude>100.0</amplitude>
-		<octave>5</octave>
-		<roughness>0.5</roughness>
+	<mapped>	
+	</mapped>
+	<procedure_generated>
+	<terrains>
+    <terrain 
+		id="1"
+		name="Terrain1"
+		model="defaultTerrain1">
+		
     </terrain>
-    <terrain id="2">
-		<name>Terrain2</name>
-		<base_texture>grass</base_texture>
-		<red_texture>ground</red_texture>
-		<green_texture>floweredGrass</green_texture>
-		<blue_texture>road</blue_texture>
-		<blend_texture>blendMap</blend_texture>
-		<procedure_generated>true</procedure_generated>
-		<amplitude>50.0</amplitude>
-		<octave>6</octave>
-		<roughness>0.5</roughness>
+    <terrain 
+		id="2"
+		name="Terrain2"
+		model="defaultTerrain2">
+		
     </terrain>
+  </terrains>
+		<terrain 
+			id="1"
+			name="Terrain1"
+			terrain_pack="terrainPack"
+			blend_texture="terrainBlendMap"
+			amplitude="100.0"
+			octave="5"
+			roughness="0.5">
+				<position
+				x="0"
+				z="0" />
+		</terrain>
+		<terrain 
+			id="2"
+			name="Terrain2"
+			terrain_pack="terrainPack"
+			blend_texture="terrainBlendMap"
+			amplitude="50.0"
+			octave="6"
+			roughness="0.5">
+				<position
+				x="1"
+				z="0" />
+		</terrain>
+	</procedure_generated>
   </terrains>
 </model_map>

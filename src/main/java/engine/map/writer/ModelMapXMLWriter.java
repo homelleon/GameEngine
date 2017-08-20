@@ -52,7 +52,7 @@ public class ModelMapXMLWriter implements IModelMapWriter {
 					lines.add(XMLUtils.addTagValue(XMLUtils.GREEN_TEXTURE, greenTexture, 3));
 					lines.add(XMLUtils.addTagValue(XMLUtils.BLUE_TEXTURE, blueTexture, 3));
 					lines.add(XMLUtils.addTagValue(XMLUtils.BLEND_TEXTURE, blendTexture, 3));
-					if (terrain.isProcedureGenerated()) {
+					if (terrain.getIsProcedureGenerated()) {
 						procGenerated = "true";
 						String amplitude = String.valueOf(terrain.getAmplitude());
 						String octave = String.valueOf(terrain.getOctaves());

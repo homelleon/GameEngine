@@ -1,11 +1,11 @@
 <settings>
 	<maps>
 		<level_map>
-			<name>levelMap2</name>
+			<name>levelMap</name>
 		</level_map>
 		<model_map>
-			<name>modelMap2</name>
+			<name>modelMap</name>
 		</model_map>
 		<raw_map>
-			<name>rawMap2</name></raw_map></maps>
+			<name>rawMap</name></raw_map></maps>
 </settings>

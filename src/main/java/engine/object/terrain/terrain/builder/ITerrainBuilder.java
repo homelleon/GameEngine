@@ -14,6 +14,7 @@ public interface ITerrainBuilder {
 	ITerrainBuilder setAmplitude(float amplitude);
 	ITerrainBuilder setOctaves(int octaves);
 	ITerrainBuilder setRoughness(float roughness);
+	ITerrainBuilder setHeights(float[] heights);
 	ITerrain create(String name);
 
 }

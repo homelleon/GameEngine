@@ -1,10 +1,7 @@
 package object.terrain.terrain.builder;
 
-import core.settings.EngineSettings;
 import object.terrain.terrain.ITerrain;
 import object.terrain.terrain.MappedTerrain;
-import object.texture.terrain.texture.TerrainTexture;
-import renderer.loader.Loader;
 
 public class MappedTerrainBuilder extends TerrainBuilder implements ITerrainBuilder {
 
