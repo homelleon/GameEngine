@@ -1,6 +1,5 @@
 package object.terrain.terrain.builder;
 
-import object.terrain.generator.HeightsGenerator;
 import object.terrain.terrain.ITerrain;
 import object.texture.terrain.pack.TerrainTexturePack;
 import object.texture.terrain.texture.TerrainTexture;
@@ -15,7 +14,7 @@ public abstract class TerrainBuilder {
 	protected float amplitude = 0;
 	protected int octaves = 0;
 	protected float roughness = 0;
-	protected float[] heights;
+	protected int seed;
 	
 	public ITerrainBuilder setXPosition(int x) {
 		this.gridX = x;
@@ -57,8 +56,8 @@ public abstract class TerrainBuilder {
 		return (ITerrainBuilder) this;
 	}
 	
-	public  ITerrainBuilder setHeights(float[] heights) {
-		this.heights = heights;
+	public  ITerrainBuilder setSeed(int seed) {
+		this.seed = seed;
 		return (ITerrainBuilder) this;
 	}
 	

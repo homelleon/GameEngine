@@ -25,7 +25,6 @@ import tool.math.Maths;
  */
 public class MappedTerrain implements ITerrain {
 
-	public static final float SIZE = 500;
 	private static final float MAX_HEIGHT = 1000;
 	private static final float MAX_PIXEL_COLOUR = 256 * 256 * 256;
 
@@ -70,15 +69,15 @@ public class MappedTerrain implements ITerrain {
 			TerrainTexture blendMap, String heightMap) {
 		this.texturePack = texturePack;
 		this.blendMap = blendMap;
-		this.x = gridX * SIZE;
-		this.z = gridZ * SIZE;
+		this.x = gridX * EngineSettings.TERRAIN_SIZE;
+		this.z = gridZ * EngineSettings.TERRAIN_SIZE;
 		this.model = generateTerrain(heightMap);
 		this.name = name;
 	}
 
 	@Override
 	public float getSize() {
-		return SIZE;
+		return EngineSettings.TERRAIN_SIZE;
 	}
 
 	@Override
@@ -93,12 +92,12 @@ public class MappedTerrain implements ITerrain {
 
 	@Override
 	public void setXPosition(int xPosition) {
-		this.x = xPosition * SIZE;		
+		this.x = xPosition * EngineSettings.TERRAIN_SIZE;		
 	}
 
 	@Override
 	public void setZPosition(int zPosition) {
-		this.z = zPosition * SIZE;		
+		this.z = zPosition * EngineSettings.TERRAIN_SIZE;		
 	}
 
 	@Override
@@ -160,7 +159,7 @@ public class MappedTerrain implements ITerrain {
 	public float getHeightOfTerrain(float worldX, float worldZ) {
 		float terrainX = worldX - this.x;
 		float terrainZ = worldZ - this.z;
-		float gridSquareSize = SIZE / ((float) heights.length - 1);
+		float gridSquareSize = EngineSettings.TERRAIN_SIZE / ((float) heights.length - 1);
 		int gridX = (int) Math.floor(terrainX / gridSquareSize);
 		int gridZ = (int) Math.floor(terrainZ / gridSquareSize);
 		if (gridX >= heights.length - 1 || gridZ >= heights.length - 1 || gridX < 0 || gridZ < 0) {
@@ -188,8 +187,8 @@ public class MappedTerrain implements ITerrain {
 
 	@Override
 	public ITerrain clone(String name) {
-		int gridX = (int) (this.x / SIZE);
-		int gridZ = (int) (this.z / SIZE);
+		int gridX = (int) (this.x / EngineSettings.TERRAIN_SIZE);
+		int gridZ = (int) (this.z / EngineSettings.TERRAIN_SIZE);
 		return new MappedTerrain(name, gridX, gridZ, this.texturePack,this.blendMap,this.heightMapName);
 	}
 
@@ -212,11 +211,11 @@ public class MappedTerrain implements ITerrain {
 		int vertexPointer = 0;
 		for (int i = 0; i < VERTEX_COUNT; i++) {
 			for (int j = 0; j < VERTEX_COUNT; j++) {
-				vertices[vertexPointer * 3] = j / ((float) VERTEX_COUNT - 1) * SIZE;
+				vertices[vertexPointer * 3] = j / ((float) VERTEX_COUNT - 1) * EngineSettings.TERRAIN_SIZE;
 				float height = getHeight(j, i, image);
 				heights[j][i] = height;
 				vertices[vertexPointer * 3 + 1] = height;
-				vertices[vertexPointer * 3 + 2] = i / ((float) VERTEX_COUNT - 1) * SIZE;
+				vertices[vertexPointer * 3 + 2] = i / ((float) VERTEX_COUNT - 1) * EngineSettings.TERRAIN_SIZE;
 				Vector3f normal = calculateNormal(j, i, image);
 				normals[vertexPointer * 3] = normal.x;
 				normals[vertexPointer * 3 + 1] = normal.y;

@@ -16,6 +16,13 @@ public class HeightsGenerator {
 		this.octaves = octaves;
 		this.roughness = roughness;
 	}
+	
+	public HeightsGenerator(float amplitude, int octaves, float roughness, int seed) {
+		this.seed = seed;
+		this.amplitude = amplitude;
+		this.octaves = octaves;
+		this.roughness = roughness;
+	}
 
 	public float generateHeight(int x, int z) {
 		float total = 0;
@@ -26,6 +33,10 @@ public class HeightsGenerator {
 			total += getInterpolatedNoise(x * freq, z * freq) * amp;
 		}
 		return total;
+	}
+	
+	public int getSeed() {
+		return this.seed;
 	}
 
 	private float getInterpolatedNoise(float x, float z) {
@@ -58,7 +69,7 @@ public class HeightsGenerator {
 
 	}
 
-	public float getNoise(int x, int z) {
+	private float getNoise(int x, int z) {
 		random.setSeed(x * 49632 + z * 325176 + seed);
 		return random.nextFloat() * 2f - 1f;
 	}

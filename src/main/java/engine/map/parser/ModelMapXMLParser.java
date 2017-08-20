@@ -12,8 +12,6 @@ import map.raw.IRawManager;
 import object.entity.entity.builder.EntityBuilder;
 import object.entity.entity.builder.IEntityBuilder;
 import object.model.textured.TexturedModel;
-import object.terrain.generator.HeightsGenerator;
-import object.terrain.terrain.ProceduredTerrain;
 import object.terrain.terrain.builder.ITerrainBuilder;
 import object.terrain.terrain.builder.ProceduredTerrainBuilder;
 import object.texture.terrain.pack.TerrainTexturePack;
@@ -26,7 +24,7 @@ public class ModelMapXMLParser extends XMLParser implements IObjectParser<IObjec
 
 	private IObjectManager modelMap;
 	private IRawManager rawMap;
-	private float[] heights;
+	private int seed = 0;
 
 	public ModelMapXMLParser(Document document, IRawManager rawMap) {
 		super(document);
@@ -119,14 +117,13 @@ public class ModelMapXMLParser extends XMLParser implements IObjectParser<IObjec
 							.setBlendTexture(blendTexture)
 							.setAmplitude(amplitude)
 							.setOctaves(octaves)
-							.setRoughness(roughness)
-							.setHeights(heights);
+							.setRoughness(roughness);
+						if(this.seed != 0) {
+							terrainBuilder.setSeed(seed);
+						}
 						map.getTerrains().add(terrainBuilder.create(name));
-						if(map.getTerrains().get(name).getIsProcedureGenerated()) {
-							this.heights = new float[128];
-							for(int i = 0; i < 128; i++) {
-								this.heights[i] = map.getTerrains().get(name).getHeightOfTerrain(127, i);
-							}
+						if(this.seed == 0) {
+							this.seed = map.getTerrains().get(name).getGenerator().getSeed();
 						}
 						if (EngineDebug.hasDebugPermission()) {
 							System.out.println(">> " + map.getTerrains().get(name).getName());

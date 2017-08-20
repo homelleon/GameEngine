@@ -3,6 +3,7 @@ package object.terrain.terrain;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
+import core.settings.EngineSettings;
 import object.model.raw.RawModel;
 import object.terrain.generator.HeightsGenerator;
 import object.texture.terrain.pack.TerrainTexturePack;
@@ -17,8 +18,6 @@ import tool.math.Maths;
  * @see ITerrain
  */
 public class ProceduredTerrain implements ITerrain {
-
-	public static final float SIZE = 500;
 
 	private float x;
 	private float z;
@@ -69,8 +68,8 @@ public class ProceduredTerrain implements ITerrain {
 			TerrainTexture blendMap, float amplitude, int octaves, float roughness) {
 		this.texturePack = texturePack;
 		this.blendMap = blendMap;
-		this.x = gridX * SIZE;
-		this.z = gridZ * SIZE;
+		this.x = gridX * EngineSettings.TERRAIN_SIZE;
+		this.z = gridZ * EngineSettings.TERRAIN_SIZE;
 		this.amplitude = amplitude;
 		this.octaves = octaves;
 		this.roughness = roughness;
@@ -78,16 +77,16 @@ public class ProceduredTerrain implements ITerrain {
 		this.name = name;
 	}
 	
-	public ProceduredTerrain(String name, float[] previousHeights, int gridX, int gridZ, TerrainTexturePack texturePack,
+	public ProceduredTerrain(String name, int seed, int gridX, int gridZ, TerrainTexturePack texturePack,
 			TerrainTexture blendMap, float amplitude, int octaves, float roughness) {
 		this.texturePack = texturePack;
 		this.blendMap = blendMap;
-		this.x = gridX * SIZE;
-		this.z = gridZ * SIZE;
+		this.x = gridX * EngineSettings.TERRAIN_SIZE;
+		this.z = gridZ * EngineSettings.TERRAIN_SIZE;
 		this.amplitude = amplitude;
 		this.octaves = octaves;
 		this.roughness = roughness;
-		this.model = generateWithProcedure(amplitude, octaves, roughness, previousHeights);
+		this.model = generateWithProcedure(amplitude, octaves, roughness, seed);
 		this.name = name;
 	}
 	
@@ -95,8 +94,8 @@ public class ProceduredTerrain implements ITerrain {
 			TerrainTexture blendMap, float amplitude, int octaves, float roughness, float[][] heights, RawModel model) {
 		this.texturePack = texturePack;
 		this.blendMap = blendMap;
-		this.x = gridX * SIZE;
-		this.z = gridZ * SIZE;
+		this.x = gridX * EngineSettings.TERRAIN_SIZE;
+		this.z = gridZ * EngineSettings.TERRAIN_SIZE;
 		this.amplitude = amplitude;
 		this.octaves = octaves;
 		this.roughness = roughness;
@@ -107,7 +106,7 @@ public class ProceduredTerrain implements ITerrain {
 
 	@Override
 	public float getSize() {
-		return SIZE;
+		return EngineSettings.TERRAIN_SIZE;
 	}
 
 	@Override
@@ -122,12 +121,12 @@ public class ProceduredTerrain implements ITerrain {
 
 	@Override
 	public void setXPosition(int xPosition) {
-		this.x = xPosition * SIZE;		
+		this.x = xPosition * EngineSettings.TERRAIN_SIZE;		
 	}
 
 	@Override
 	public void setZPosition(int zPosition) {
-		this.z = zPosition * SIZE;		
+		this.z = zPosition * EngineSettings.TERRAIN_SIZE;		
 	}
 
 	@Override
@@ -189,7 +188,7 @@ public class ProceduredTerrain implements ITerrain {
 	public float getHeightOfTerrain(float worldX, float worldZ) {
 		float terrainX = worldX - this.x;
 		float terrainZ = worldZ - this.z;
-		float gridSquareSize = SIZE / ((float) heights.length - 1);
+		float gridSquareSize = EngineSettings.TERRAIN_SIZE / ((float) heights.length - 1);
 		int gridX = (int) Math.floor(terrainX / gridSquareSize);
 		int gridZ = (int) Math.floor(terrainZ / gridSquareSize);
 		if (gridX >= heights.length - 1 || gridZ >= heights.length - 1 || gridX < 0 || gridZ < 0) {
@@ -218,8 +217,8 @@ public class ProceduredTerrain implements ITerrain {
 
 	@Override
 	public ITerrain clone(String name) {
-		int gridX = (int) (this.x / SIZE);
-		int gridZ = (int) (this.z / SIZE);
+		int gridX = (int) (this.x / EngineSettings.TERRAIN_SIZE);
+		int gridZ = (int) (this.z / EngineSettings.TERRAIN_SIZE);
 		return new ProceduredTerrain(name, gridX, gridZ, 
 				this.texturePack,this.blendMap, this.amplitude, 
 				this.octaves, this.roughness, this.heights, this.model);
@@ -237,11 +236,11 @@ public class ProceduredTerrain implements ITerrain {
 		int vertexPointer = 0;
 		for (int i = 0; i < VERTEX_COUNT; i++) {
 			for (int j = 0; j < VERTEX_COUNT; j++) {
-				vertices[vertexPointer * 3] = j / ((float) VERTEX_COUNT - 1) * SIZE;
+				vertices[vertexPointer * 3] = j / ((float) VERTEX_COUNT - 1) * EngineSettings.TERRAIN_SIZE;
 				float height = getHeight(j, i, generator);
 				heights[j][i] = height;
 				vertices[vertexPointer * 3 + 1] = height;
-				vertices[vertexPointer * 3 + 2] = i / ((float) VERTEX_COUNT - 1) * SIZE;
+				vertices[vertexPointer * 3 + 2] = i / ((float) VERTEX_COUNT - 1) * EngineSettings.TERRAIN_SIZE;
 				Vector3f normal = calculateNormal(j, i, generator);
 				normals[vertexPointer * 3] = normal.x;
 				normals[vertexPointer * 3 + 1] = normal.y;
@@ -269,8 +268,8 @@ public class ProceduredTerrain implements ITerrain {
 		return Loader.getInstance().getVertexLoader().loadToVAO(vertices, textureCoords, normals, indices);
 	}
 	
-	private RawModel generateWithProcedure(float amp, int oct, float rough, float[] previousHeights) {
-		this.generator = new HeightsGenerator(amp, oct, rough);
+	private RawModel generateWithProcedure(float amp, int oct, float rough, int seed) {
+		this.generator = new HeightsGenerator(amp, oct, rough, seed);
 		int VERTEX_COUNT = 128;
 		heights = new float[VERTEX_COUNT][VERTEX_COUNT];
 		int count = VERTEX_COUNT * VERTEX_COUNT;
@@ -279,13 +278,13 @@ public class ProceduredTerrain implements ITerrain {
 		float[] textureCoords = new float[count * 2];
 		int[] indices = new int[6 * (VERTEX_COUNT - 1) * (VERTEX_COUNT - 1)];
 		int vertexPointer = 0;
-		for (int i = 0; i < VERTEX_COUNT-1; i++) {
+		for (int i = 0; i < VERTEX_COUNT; i++) {
 			for (int j = 0; j < VERTEX_COUNT; j++) {
-				vertices[vertexPointer * 3] = j / ((float) VERTEX_COUNT - 1) * SIZE;
+				vertices[vertexPointer * 3] = j / ((float) VERTEX_COUNT - 1) * EngineSettings.TERRAIN_SIZE;
 				float height = getHeight(j, i, generator);
 				heights[j][i] = height;
 				vertices[vertexPointer * 3 + 1] = height;
-				vertices[vertexPointer * 3 + 2] = i / ((float) VERTEX_COUNT - 1) * SIZE;
+				vertices[vertexPointer * 3 + 2] = i / ((float) VERTEX_COUNT - 1) * EngineSettings.TERRAIN_SIZE;
 				Vector3f normal = calculateNormal(j, i, generator);
 				normals[vertexPointer * 3] = normal.x;
 				normals[vertexPointer * 3 + 1] = normal.y;
@@ -294,20 +293,6 @@ public class ProceduredTerrain implements ITerrain {
 				textureCoords[vertexPointer * 2 + 1] = i / ((float) VERTEX_COUNT - 1);
 				vertexPointer++;
 			}
-		}		
-		for(int j = 0; j < VERTEX_COUNT; j++) {
-			vertices[vertexPointer * 3] = j / ((float) VERTEX_COUNT - 1) * SIZE;
-			float height = previousHeights[j];
-			heights[j][VERTEX_COUNT-1] = height;
-			vertices[vertexPointer * 3 + 1] = height;
-			vertices[vertexPointer * 3 + 2] = VERTEX_COUNT-1 / ((float) VERTEX_COUNT - 1) * SIZE;
-			Vector3f normal = calculateNormal(j, VERTEX_COUNT-1, generator);
-			normals[vertexPointer * 3] = normal.x;
-			normals[vertexPointer * 3 + 1] = normal.y;
-			normals[vertexPointer * 3 + 2] = normal.z;
-			textureCoords[vertexPointer * 2] = j / ((float) VERTEX_COUNT - 1);
-			textureCoords[vertexPointer * 2 + 1] = VERTEX_COUNT-1 / ((float) VERTEX_COUNT - 1);
-			vertexPointer++;
 		}
 		int pointer = 0;
 		for (int gz = 0; gz < VERTEX_COUNT - 1; gz++) {
