@@ -7,6 +7,7 @@ import java.util.Map;
 import manager.gui.component.IGUIComponentManager;
 import object.gui.group.GUIGroup;
 import object.gui.group.IGUIGroup;
+import object.gui.pattern.object.GUIObject;
 
 public class GUIGroupManager implements IGUIGroupManager {
 

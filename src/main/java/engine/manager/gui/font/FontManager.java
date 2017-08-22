@@ -28,21 +28,17 @@ public class FontManager implements IFontManager {
 
 	@Override
 	public FontType get(String name) {
-		FontType font = null;
-		if (fonts.containsKey(name)) {
-			font = fonts.get(name);
-		}
-		return font;
+		return fonts.containsKey(name) ? fonts.get(name) : null;
 	}
 
 	@Override
 	public boolean delete(String name) {
-		boolean wasExisted = false;
 		if (fonts.containsKey(name)) {
-			wasExisted = true;
 			fonts.remove(name);
+			return true;
+		} else {
+			return false;
 		}
-		return wasExisted;
 	}
 
 	@Override

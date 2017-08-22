@@ -2,9 +2,12 @@ package manager.entity;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import core.settings.EngineSettings;
 import object.entity.entity.IEntity;
@@ -83,9 +86,10 @@ public class EntityManager extends AbstractManager<IEntity> implements IEntityMa
 			if (this.frustumEntities.containsKey(distance)) {
 				this.frustumEntities.get(distance).add(entity);
 			} else {
-				List<IEntity> batch = new ArrayList<IEntity>();
-				batch.add(entity);
-				this.frustumEntities.put(distance, batch);
+				this.frustumEntities.put(distance, 
+						Stream.of(entity)
+							  .collect(Collectors.toList())
+				); 
 			}
 		}
 	}
