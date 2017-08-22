@@ -18,7 +18,7 @@ public class GUIGroupBuilder implements IGUIGroupBuilder {
 	}
 
 	@Override
-	public IGUIGroup getGUIGroup(String name) {
+	public IGUIGroup build(String name) {
 		if(guis.isEmpty()) {
 			return new GUIGroup(name);
 		} else {

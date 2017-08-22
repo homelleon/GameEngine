@@ -13,9 +13,8 @@ public class WaterManager implements IWaterManager {
 	@Override
 	public void addAll(Collection<WaterTile> waterList) {
 		if ((waterList != null) && (!waterList.isEmpty())) {
-			for (WaterTile water : waterList) {
-				this.waters.put(water.getName(), water);
-			}
+			waterList.forEach(water -> 
+				this.waters.put(water.getName(), water));
 		}
 	}
 

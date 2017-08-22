@@ -35,13 +35,11 @@ public class GUITextRenderer {
 	public void render(Collection<GUIText> textList) {
 		processText(textList);
 		prepare();
-		for (FontType font : this.texts.keySet()) {
+		this.texts.keySet().forEach(font -> {
 			GL13.glActiveTexture(GL13.GL_TEXTURE0);
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, font.getTextureAtlas());
-			for (GUIText text : this.texts.get(font)) {
-				renderText(text);
-			}
-		}
+			this.texts.get(font).forEach(text -> renderText(text));
+		});
 		endRendering();
 	}
 

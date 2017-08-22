@@ -43,15 +43,14 @@ public class NormalMappingRenderer {
 		shader.loadShadowVariables(EngineSettings.SHADOW_DISTANCE, EngineSettings.SHADOW_MAP_SIZE,
 				EngineSettings.SHADOW_TRANSITION_DISTANCE, EngineSettings.SHADOW_PCF);
 		prepare(clipPlane, lights, camera);
-		for (TexturedModel model : entities.keySet()) {
+		entities.keySet().forEach(model -> {
 			prepareTexturedModel(model);
-			List<IEntity> batch = entities.get(model);
-			for (IEntity entity : batch) {
+			entities.get(model).forEach(entity -> {
 				prepareInstance(entity);
 				GL11.glDrawElements(GL11.GL_TRIANGLES, model.getRawModel().getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
-			}
+			});
 			unbindTexturedModel();
-		}
+		});
 		shader.stop();
 	}
 

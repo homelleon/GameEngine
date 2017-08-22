@@ -73,7 +73,7 @@ public class ModelMapXMLParser extends XMLParser implements IObjectParser<IObjec
 				IEntityBuilder builder =  new EntityBuilder();
 				builder.setModel(model);
 				builder.setScale(scale);
-				map.getEntities().add(builder.createEntity(name));
+				map.getEntities().add(builder.build(name));
 				if (EngineDebug.hasDebugPermission()) {
 					System.out.println(">> " + map.getEntities().get(name).getName());
 				}
@@ -121,7 +121,7 @@ public class ModelMapXMLParser extends XMLParser implements IObjectParser<IObjec
 						if(this.seed != 0) {
 							terrainBuilder.setSeed(seed);
 						}
-						map.getTerrains().add(terrainBuilder.create(name));
+						map.getTerrains().add(terrainBuilder.build(name));
 						if(this.seed == 0) {
 							this.seed = map.getTerrains().get(name).getGenerator().getSeed();
 						}

@@ -61,6 +61,6 @@ public abstract class TerrainBuilder {
 		return (ITerrainBuilder) this;
 	}
 	
-	public abstract ITerrain create(String name);
+	public abstract ITerrain build(String name);
 	
 }

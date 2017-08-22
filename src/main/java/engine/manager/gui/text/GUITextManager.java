@@ -5,18 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.w3c.dom.Document;
-
-import core.settings.EngineSettings;
 import manager.gui.font.FontManager;
 import manager.gui.font.IFontManager;
 import object.gui.font.TextMeshData;
 import object.gui.text.GUIText;
-import object.gui.text.parser.GUITextXMLParser;
 import renderer.loader.Loader;
-import tool.xml.loader.XMLFileLoader;
-import tool.xml.loader.IXMLLoader;
-import tool.xml.parser.IListParser;
 
 /**
  * Manager for text that rendered in the screen.
@@ -47,9 +40,7 @@ public class GUITextManager implements IGUITextManager {
 	@Override
 	public void addAll(List<GUIText> textList) {
 		if ((textList != null) && (!textList.isEmpty())) {
-			for (GUIText text : textList) {
-				this.add(text);
-			}
+			textList.forEach(text -> this.add(text));
 		}		
 	}
 
@@ -91,7 +82,7 @@ public class GUITextManager implements IGUITextManager {
 
 	@Override
 	public void clean() {
-		this.fontManager.cleanUp();
+		this.fontManager.clean();
 		this.texts.clear();
 	}
 

@@ -26,7 +26,7 @@ public class GUIBuilder implements IGUIBuilder {
 	}
 
 	@Override
-	public IGUI getGUI(String name) {
+	public IGUI build(String name) {
 		return new GUI(name, this.textures, this.texts);
 	}
 

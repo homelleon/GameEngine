@@ -36,11 +36,11 @@ public class BoundingRenderer {
 		for (TexturedModel model : entities.keySet()) {
 			RawModel bModel = model.getRawModel().getBBox().getModel();
 			prepareModel(bModel);
-			for (IEntity entity : entities.get(model)) {
+			entities.get(model).forEach(entity -> {
 				prepareInstance(entity);
 				GL11.glDrawElements(GL11.GL_TRIANGLES, model.getRawModel().getBBox().getModel().getVertexCount(),
 						GL11.GL_UNSIGNED_INT, 0);
-			}
+			});
 			unbindModel();
 		}
 		for (TexturedModel model : normalEntities.keySet()) {

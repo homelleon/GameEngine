@@ -8,6 +8,6 @@ public interface IGUIBuilder {
 	
 	IGUIBuilder setTexture(GUITexture texture);
 	IGUIBuilder setText(GUIText text);
-	IGUI getGUI(String name);
+	IGUI build(String name);
 
 }

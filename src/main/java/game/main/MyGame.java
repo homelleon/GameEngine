@@ -41,14 +41,14 @@ public class MyGame extends Game {
 		helpGUIBuilder.setText(gameManager.getScene().getUserInterface()
 				.getComponent().getTexts().get("inputHints"));
 		this.helpGroup = this.gameManager.getScene().getUserInterface().getGroups().createEmpty(guiGroupName);
-		this.helpGroup.add(helpGUIBuilder.getGUI("help"));
+		this.helpGroup.add(helpGUIBuilder.build("help"));
 		
 		//-------sign button GUI-------------//
 		IGUIBuilder signGUIBuilder = new GUIBuilder();
 		signGUIBuilder.setTexture(gameManager.getScene().getUserInterface()
 				.getComponent().getTextures().get("Sign"));
 		IGUIGroup signGroup = this.gameManager.getScene().getUserInterface().getGroups().createEmpty("sign");
-		signGroup.add(signGUIBuilder.getGUI("sign"));
+		signGroup.add(signGUIBuilder.build("sign"));
 		((GUIObject) signGroup).show();
 		
 		//-----------button GUI--------------//		
@@ -62,7 +62,7 @@ public class MyGame extends Game {
 		buttonGUIBuilder.setText(gameManager.getScene().getUserInterface()
 				.getComponent().getTexts().get("buttonLabel1"));
 		IGUIGroup buttonGroup = this.gameManager.getScene().getUserInterface().getGroups().createEmpty("button");
-		buttonGroup.add(buttonGUIBuilder.getGUI("button"));
+		buttonGroup.add(buttonGUIBuilder.build("button"));
 		mainMenu.add((GUIObject) buttonGroup);
 
 		
@@ -72,7 +72,7 @@ public class MyGame extends Game {
 		buttonGUIBuilder.setText(gameManager.getScene().getUserInterface()
 				.getComponent().getTexts().get("buttonLabel1"));
 		buttonGroup = this.gameManager.getScene().getUserInterface().getGroups().createEmpty("button1");
-		buttonGroup.add(buttonGUIBuilder.getGUI("button"));
+		buttonGroup.add(buttonGUIBuilder.build("button"));
 		mainMenu.add((GUIObject) buttonGroup);
 		
 		buttonGUIBuilder = new GUIBuilder();
@@ -81,12 +81,12 @@ public class MyGame extends Game {
 		buttonGUIBuilder.setText(gameManager.getScene().getUserInterface()
 				.getComponent().getTexts().get("buttonLabel1"));
 		buttonGroup = this.gameManager.getScene().getUserInterface().getGroups().createEmpty("button2");
-		buttonGroup.add(buttonGUIBuilder.getGUI("button"));
+		buttonGroup.add(buttonGUIBuilder.build("button"));
 		mainMenu.add((GUIObject) buttonGroup);
 		
-		IGUIButton button1 = new GUIButton("signButton1", signGUIBuilder.getGUI("button"), new Vector2f(400,300), new Vector2f(600,500));
-		IGUIButton button2 = new GUIButton("signButton2", signGUIBuilder.getGUI("button"), new Vector2f(400,300), new Vector2f(600,500));
-		IGUIButton button3 = new GUIButton("signButton3", signGUIBuilder.getGUI("button"), new Vector2f(400,300), new Vector2f(600,500));
+		IGUIButton button1 = new GUIButton("signButton1", signGUIBuilder.build("button"), new Vector2f(400,300), new Vector2f(600,500));
+		IGUIButton button2 = new GUIButton("signButton2", signGUIBuilder.build("button"), new Vector2f(400,300), new Vector2f(600,500));
+		IGUIButton button3 = new GUIButton("signButton3", signGUIBuilder.build("button"), new Vector2f(400,300), new Vector2f(600,500));
 		mainMenu.add((GUIObject) button1);
 		mainMenu.add((GUIObject) button2);
 		mainMenu.add((GUIObject) button3);

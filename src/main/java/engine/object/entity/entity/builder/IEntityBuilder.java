@@ -3,9 +3,7 @@ package object.entity.entity.builder;
 import org.lwjgl.util.vector.Vector3f;
 
 import object.entity.entity.IEntity;
-import object.model.raw.RawModel;
 import object.model.textured.TexturedModel;
-import object.texture.model.ModelTexture;
 
 public interface IEntityBuilder {
 	
@@ -17,6 +15,6 @@ public interface IEntityBuilder {
 
 	public IEntityBuilder setRotation(Vector3f rotation);
 
-	public IEntity createEntity(String name);
+	public IEntity build(String name);
 
 }

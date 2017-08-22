@@ -8,16 +8,9 @@ import renderer.loader.Loader;
 
 public class GUITextureBuilder implements IGUITextureBuilder {
 
-	private String name;
 	private String textureName;
 	private Vector2f position;
 	private Vector2f scale;
-
-	@Override
-	public IGUITextureBuilder setName(String name) {
-		this.name = name;
-		return this;
-	}
 
 	@Override
 	public IGUITextureBuilder setTextureName(String textureName) {
@@ -38,10 +31,10 @@ public class GUITextureBuilder implements IGUITextureBuilder {
 	}
 
 	@Override
-	public GUITexture getTexture() {
+	public GUITexture build(String name) {
 		Loader loader = Loader.getInstance();
 		Texture texture = loader.getTextureLoader().loadGUITexture(EngineSettings.TEXTURE_INTERFACE_PATH, this.textureName);
-		return new GUITexture(this.name, texture, this.position, this.scale);
+		return new GUITexture(name, texture, this.position, this.scale);
 	}
 
 }

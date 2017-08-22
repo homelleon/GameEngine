@@ -40,14 +40,13 @@ public class GUIRenderer implements IGUIRenderer {
 		keys.addAll(this.groups.keySet());
 		Collections.sort(keys);
 		for (int i = 0; i < keys.size(); i++) {
-			for (IGUIGroup group : this.groups.get(keys.get(i))) {
-				for (IGUI gui : group.getAll()) {
-					if (gui.getIsShown()) {
-						this.textureRenderer.render(gui.getTextures());
-						this.textRenderer.render(gui.getTexts());
-					}
-				}
-			}
+			this.groups.get(keys.get(i)).forEach(group -> {
+				group.getAll().stream()
+				.filter(gui -> gui.getIsShown()).forEach(gui -> {
+					this.textureRenderer.render(gui.getTextures());
+					this.textRenderer.render(gui.getTexts());
+				});
+			});
 		}
 		this.groups.clear();
 	}

@@ -39,7 +39,7 @@ public class EntityBuilder implements IEntityBuilder {
 	}
 
 	@Override
-	public IEntity createEntity(String name) {
+	public IEntity build(String name) {
 		if(model!= null) {
 			if(model.getTexture().getNormalMap()!= 0) {
 				return new NormalMappedEntity(name, model, position, rotation, scale);

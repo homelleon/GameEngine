@@ -39,7 +39,7 @@ public class AnimatedModelLoader {
 	 * @return The diffuse texture.
 	 */
 	private static Texture loadTexture(MyFile textureFile) {
-		Texture diffuseTexture = Texture.newTexture(textureFile).anisotropic().create();
+		Texture diffuseTexture = Texture.newTexture(textureFile).anisotropic().build();
 		return diffuseTexture;
 	}
 

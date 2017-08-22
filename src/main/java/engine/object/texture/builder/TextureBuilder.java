@@ -18,12 +18,6 @@ public class TextureBuilder {
 		this.file = textureFile;
 	}
 
-	public Texture create() {
-		TextureData textureData = TextureUtils.decodeTextureFile(file);
-		int textureId = TextureUtils.loadTextureToOpenGL(textureData, this);
-		return new Texture(textureId, textureData.getWidth());
-	}
-
 	public TextureBuilder clampEdges() {
 		this.clampEdges = true;
 		return this;
@@ -62,6 +56,12 @@ public class TextureBuilder {
 
 	public boolean isNearest() {
 		return nearest;
+	}
+
+	public Texture build() {
+		TextureData textureData = TextureUtils.decodeTextureFile(file);
+		int textureId = TextureUtils.loadTextureToOpenGL(textureData, this);
+		return new Texture(textureId, textureData.getWidth());
 	}
 
 }

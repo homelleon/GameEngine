@@ -37,10 +37,10 @@ public class EntityManager extends AbstractManager<IEntity> implements IEntityMa
 	@Override
 	public void addPointedList(Collection<IEntity> pointedList) {
 		if ((pointedList != null) && (!pointedList.isEmpty())) {
-			for (IEntity entity : pointedList) {
+			pointedList.forEach(entity -> {
 				entity.setIsChosen(true);
 				this.pointedEntities.add(entity);
-			}
+			});
 		}
 	}
 
@@ -55,13 +55,11 @@ public class EntityManager extends AbstractManager<IEntity> implements IEntityMa
 	@Override
 	public void addFrustumMap(Map<Float, List<IEntity>> frustumMap) {
 		if ((frustumMap != null) && (!frustumMap.isEmpty())) {
-			for (Float key : frustumMap.keySet()) {
+			frustumMap.keySet().forEach(key -> {
 				List<IEntity> batch = new ArrayList<IEntity>();
-				for (IEntity entity : frustumMap.get(key)) {
-					batch.add(entity);
-				}
+				frustumMap.get(key).forEach(entity -> batch.add(entity));
 				this.frustumEntities.put(key, batch);
-			}
+			});
 		}
 	}
 
@@ -95,7 +93,7 @@ public class EntityManager extends AbstractManager<IEntity> implements IEntityMa
 	@Override
 	public void updateWithFrustum(Frustum frustum) {
 		this.frustumEntities.clear();
-		for (IEntity entity : this.getAll()) {
+		this.getAll().forEach(entity -> {
 			float distance = frustum.distanceSphereInFrustum(entity.getPosition(), entity.getSphereRadius());
 			if (distance >= 0 && distance < EngineSettings.RENDERING_VIEW_DISTANCE) {
 				List<IEntity> batch;
@@ -107,7 +105,7 @@ public class EntityManager extends AbstractManager<IEntity> implements IEntityMa
 				batch.add(entity);
 				this.frustumEntities.put(distance, batch);
 			}
-		}
+		});
 	}
 
 
@@ -133,9 +131,7 @@ public class EntityManager extends AbstractManager<IEntity> implements IEntityMa
 
 	@Override
 	public void clearPointed() {
-		for (IEntity entity : this.pointedEntities) {
-			entity.setIsChosen(false);
-		}
+		this.pointedEntities.forEach(entity -> entity.setIsChosen(false));
 		this.pointedEntities.clear();
 	}
 

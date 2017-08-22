@@ -21,18 +21,16 @@ public class TerrainManager implements ITerrainManager {
 	@Override
 	public void addAll(Collection<ITerrain> terrainList) {
 		if ((terrainList != null) && (!terrainList.isEmpty())) {
-			for (ITerrain terrain : terrainList) {
-				this.terrains.put(terrain.getName(), terrain);
-			}
+			terrainList.forEach(terrain -> 
+				this.terrains.put(terrain.getName(), terrain));
 		}
 	}
 	
 	@Override
 	public void addAll(List<ITerrain> terrainList) {
 		if ((terrainList != null) && (!terrainList.isEmpty())) {
-			for (ITerrain terrain : terrainList) {
-				this.terrains.put(terrain.getName(), terrain);
-			}
+			terrainList.forEach(terrain ->
+				this.terrains.put(terrain.getName(), terrain));
 		} else {
 			throw new NullPointerException("Trying to add null value into TerrainManager array!");
 		}

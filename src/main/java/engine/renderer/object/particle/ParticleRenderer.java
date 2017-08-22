@@ -61,11 +61,11 @@ public class ParticleRenderer {
 			List<Particle> particleList = particles.get(texture);
 			pointer = 0;
 			float[] vboData = new float[particleList.size() * INSTANCE_DATA_LENGTH];
-			for (Particle particle : particleList) {
+			particleList.forEach(particle -> {
 				updateModelViewMatrix(particle.getPosition(), particle.getRotation(), particle.getScale(), viewMatrix,
 						vboData);
 				updateTexCoordInfo(particle, vboData);
-			}
+			});
 			Loader.getInstance().getVertexLoader().updateVbo(vbo, vboData, buffer);
 			GL31.glDrawArraysInstanced(GL11.GL_TRIANGLE_STRIP, 0, quad.getVertexCount(), particleList.size());
 		}

@@ -15,6 +15,6 @@ public interface ITerrainBuilder {
 	ITerrainBuilder setOctaves(int octaves);
 	ITerrainBuilder setRoughness(float roughness);
 	ITerrainBuilder setSeed(int seed);
-	ITerrain create(String name);
+	ITerrain build(String name);
 
 }

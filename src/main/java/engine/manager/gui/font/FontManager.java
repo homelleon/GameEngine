@@ -46,7 +46,7 @@ public class FontManager implements IFontManager {
 	}
 
 	@Override
-	public void cleanUp() {
+	public void clean() {
 		fonts.clear();
 	}
 

@@ -36,11 +36,9 @@ public class EnvironmentMapRenderer {
 				depthBuffer);
 
 		GL11.glViewport(0, 0, scene.getEnvironmentMap().size, scene.getEnvironmentMap().size);
-		for (IEntity entity : scene.getEntities().getAll()) {
-			if (entity != shinyEntity) {
-				processEntity(entity);
-			}
-		}
+		scene.getEntities().getAll().stream()
+			 .filter(entity -> entity != shinyEntity)
+			 .forEach(entity -> processEntity(entity));
 
 		for (int i = 0; i < 6; i++) {
 			GL30.glFramebufferTexture2D(GL30.GL_FRAMEBUFFER, GL30.GL_COLOR_ATTACHMENT0,

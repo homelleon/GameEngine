@@ -88,17 +88,14 @@ public class MainRenderer implements IMainRenderer {
 	public void renderScene(IScene scene, Vector4f clipPlane, boolean isLowDistance) {
 		this.frustum.extractFrustum(scene.getCamera(), projectionMatrix);
 		this.environmentMap = scene.getEnvironmentMap();
-		for (ITerrain terrain : scene.getTerrains().getAll()) {
-			processor.processTerrain(terrain, terrains);
-		}
-
-		for (IEntity entity : scene.getEntities().getAll()) {
-			if (entity.getType() == EngineSettings.ENTITY_TYPE_SIMPLE) {
-				processor.processEntity(entity, entities, frustum);
-			} else if (entity.getType() == EngineSettings.ENTITY_TYPE_NORMAL) {
-				processor.processNormalMapEntity(entity, normalMapEntities, frustum);
-			}
-		}
+		scene.getTerrains().getAll()
+			 .forEach(terrain -> processor.processTerrain(terrain, terrains));
+		scene.getEntities().getAll().stream()
+			 .filter(entity -> entity.getType() == EngineSettings.ENTITY_TYPE_SIMPLE)
+			 .forEach(entity -> processor.processEntity(entity, entities, frustum));
+		scene.getEntities().getAll().stream()
+		 	 .filter(entity -> entity.getType() == EngineSettings.ENTITY_TYPE_NORMAL)
+		 	 .forEach(entity -> processor.processNormalMapEntity(entity, normalMapEntities, frustum));
 		if (this.environmentDinamic) {
 			environmentRendered = false;
 		}
@@ -114,7 +111,7 @@ public class MainRenderer implements IMainRenderer {
 			Vector4f clipPlane, boolean isLowDistance) {
 		prepare();
 		checkWiredFrameOn(entitiyWiredFrame);
-		entityRenderer.render(entities, clipPlane, lights, camera, shadowMapRenderer.getToShadowMapSpaceMatrix(),
+		entityRenderer.renderHigh(entities, clipPlane, lights, camera, shadowMapRenderer.getToShadowMapSpaceMatrix(),
 				environmentMap);
 		if (EngineDebug.boundingMode != EngineDebug.BOUNDING_NONE) {
 			boundingRenderer.render(entities, normalMapEntities, camera);
@@ -148,14 +145,12 @@ public class MainRenderer implements IMainRenderer {
 
 	@Override
 	public void renderShadowMap(IScene scene) {
-		for (IEntity entity : scene.getEntities().getAll()) {
-			if (entity.getType() == EngineSettings.ENTITY_TYPE_SIMPLE) {
-				processor.processShadowEntity(entity, entities, frustum);
-			} else if (entity.getType() == EngineSettings.ENTITY_TYPE_NORMAL) {
-				processor.processShadowNormalMapEntity(entity, normalMapEntities, frustum);
-			}
-		}
-
+		scene.getEntities().getAll().stream()
+			 .filter(entity -> entity.getType() == EngineSettings.ENTITY_TYPE_SIMPLE)
+			 .forEach(entity -> processor.processShadowEntity(entity, entities, frustum));
+		scene.getEntities().getAll().stream()
+		 	 .filter(entity -> entity.getType() == EngineSettings.ENTITY_TYPE_NORMAL)
+		 	 .forEach(entity -> processor.processShadowNormalMapEntity(entity, normalMapEntities, frustum));
 		shadowMapRenderer.render(entities, terrains, normalMapEntities, scene.getSun(), scene.getCamera());
 		entities.clear();
 		normalMapEntities.clear();
@@ -223,11 +218,9 @@ public class MainRenderer implements IMainRenderer {
 	public Collection<IEntity> createFrustumEntities(IScene scene) {
 		frustum.extractFrustum(scene.getCamera(), projectionMatrix);
 		List<IEntity> frustumEntities = new ArrayList<IEntity>();
-		for (IEntity entity : scene.getEntities().getAll()) {
-			if (frustum.sphereInFrustum(entity.getPosition(), entity.getSphereRadius())) {
-				frustumEntities.add(entity);
-			}
-		}
+		scene.getEntities().getAll().stream()
+			 .filter(entity -> frustum.sphereInFrustum(entity.getPosition(), entity.getSphereRadius()))
+			 .forEach(entity -> frustumEntities.add(entity));
 		return frustumEntities;
 	}
 

@@ -3,20 +3,13 @@ package object.gui.text;
 import org.lwjgl.util.vector.Vector2f;
 
 public class GUITextBuilder implements IGUITextBuilder {
-
-	private String name;
+	
 	private String text;
 	private String fontName;
 	private float fontSize;
 	private Vector2f position;
 	private float lineSize;
 	private boolean isCentered;
-
-	@Override
-	public IGUITextBuilder setName(String name) {
-		this.name = name;
-		return this;
-	}
 
 	@Override
 	public IGUITextBuilder setContent(String text) {
@@ -55,8 +48,8 @@ public class GUITextBuilder implements IGUITextBuilder {
 	}
 
 	@Override
-	public GUIText getText() {
-		return new GUIText(this.name, text, fontSize, fontName, position, lineSize, isCentered);
+	public GUIText build(String name) {
+		return new GUIText(name, text, fontSize, fontName, position, lineSize, isCentered);
 	}
 
 }

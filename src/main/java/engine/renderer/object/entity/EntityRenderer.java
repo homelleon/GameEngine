@@ -87,7 +87,7 @@ public class EntityRenderer {
 	 * @see ICamera
 	 * @see Texture
 	 */
-	public void render(Map<TexturedModel, List<IEntity>> entities, Vector4f clipPlane, Collection<ILight> lights,
+	public void renderHigh(Map<TexturedModel, List<IEntity>> entities, Vector4f clipPlane, Collection<ILight> lights,
 			ICamera camera, Matrix4f toShadowMapSpace, Texture environmentMap) {
 		this.environmentMap = environmentMap;
 		shader.start();
@@ -99,15 +99,14 @@ public class EntityRenderer {
 		shader.loadToShadowSpaceMatrix(toShadowMapSpace);
 		shader.loadShadowVariables(EngineSettings.SHADOW_DISTANCE, EngineSettings.SHADOW_MAP_SIZE,
 				EngineSettings.SHADOW_TRANSITION_DISTANCE, EngineSettings.SHADOW_PCF);
-		for (TexturedModel model : entities.keySet()) {
+		entities.keySet().forEach(model -> {
 			prepareTexturedModel(model);
-			List<IEntity> batch = entities.get(model);
-			for (IEntity entity : batch) {
+			entities.get(model).forEach(entity -> {
 				prepareInstance(entity);
 				GL11.glDrawElements(GL11.GL_TRIANGLES, model.getRawModel().getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
-			}
+			});
 			unbindTexturedModel();
-		}
+		});
 		shader.stop();
 	}
 
@@ -139,15 +138,14 @@ public class EntityRenderer {
 		shader.loadCamera(camera);
 		shader.loadShadowVariables(EngineSettings.SHADOW_DISTANCE, EngineSettings.SHADOW_MAP_SIZE,
 				EngineSettings.SHADOW_TRANSITION_DISTANCE, EngineSettings.SHADOW_PCF);
-		for (TexturedModel model : entities.keySet()) {
+		entities.keySet().forEach(model -> {
 			prepareLowTexturedModel(model);
-			List<IEntity> batch = entities.get(model);
-			for (IEntity entity : batch) {
+			entities.get(model).forEach(entity -> {
 				prepareInstance(entity);
 				GL11.glDrawElements(GL11.GL_TRIANGLES, model.getRawModel().getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
-			}
+			});
 			unbindTexturedModel();
-		}
+		});
 		shader.stop();
 	}
 

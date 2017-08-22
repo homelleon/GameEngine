@@ -4,8 +4,6 @@ import org.lwjgl.util.vector.Vector2f;
 
 public interface IGUITextBuilder {
 
-	IGUITextBuilder setName(String name);
-
 	IGUITextBuilder setContent(String text);
 
 	IGUITextBuilder setFontName(String fontName);
@@ -18,5 +16,5 @@ public interface IGUITextBuilder {
 
 	IGUITextBuilder setCentered(boolean value);
 
-	GUIText getText();
+	GUIText build(String name);
 }

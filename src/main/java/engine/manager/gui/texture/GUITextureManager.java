@@ -23,9 +23,8 @@ public class GUITextureManager implements IGUITextureManager {
 	@Override
 	public void addAll(Collection<GUITexture> guiList) {
 		if ((guiList != null) && (!guiList.isEmpty())) {
-			for (GUITexture guiTexture : guiList) {
-				this.textures.put(guiTexture.getName(), guiTexture);
-			}
+			guiList.forEach(guiTexture ->
+				this.textures.put(guiTexture.getName(), guiTexture));
 		}
 	}
 	
@@ -34,9 +33,8 @@ public class GUITextureManager implements IGUITextureManager {
 	@Override
 	public void addAll(List<GUITexture> guiList) {
 		if ((guiList != null) && (!guiList.isEmpty())) {
-			for (GUITexture guiTexture : guiList) {
-				this.textures.put(guiTexture.getName(), guiTexture);
-			}
+			guiList.forEach(guiTexture -> 
+				this.textures.put(guiTexture.getName(), guiTexture));
 		}
 	}
 

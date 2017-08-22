@@ -46,6 +46,6 @@ public interface IFontManager {
 	/**
 	 * Clean fonts array deleting all fonts.
 	 */
-	public void cleanUp();
+	public void clean();
 
 }

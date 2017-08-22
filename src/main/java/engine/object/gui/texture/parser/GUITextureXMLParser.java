@@ -70,8 +70,10 @@ public class GUITextureXMLParser extends XMLParser implements IListParser<GUITex
 					}
 				}
 				IGUITextureBuilder builder = new GUITextureBuilder();
-				builder.setName(name).setTextureName(textureName).setPosition(position).setScale(scale);
-				GUITexture guiTexture = builder.getTexture();
+				builder.setTextureName(textureName)
+					   .setPosition(position)
+					   .setScale(scale);
+				GUITexture guiTexture = builder.build(name);
 				textureList.add(guiTexture);
 				if (EngineDebug.hasDebugPermission()) {
 					System.out.println(">> " + guiTexture.getName());

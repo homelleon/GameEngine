@@ -69,9 +69,9 @@ public class SceneManager implements ISceneManager {
 		List<WaterTile> waterList = new ArrayList<WaterTile>();
 		WaterTile water = new WaterTile("Water", 0, 0, -4, 1000);
 		waterList.add(water);
-		waterList.stream().forEach((i) -> i.setTilingSize(0.05f));
-		waterList.stream().forEach((i) -> i.setWaterSpeed(0.7f));
-		waterList.stream().forEach((i) -> i.setWaveStrength(0.1f));
+		waterList.stream().forEach(waterTile -> waterTile.setTilingSize(0.05f));
+		waterList.stream().forEach(waterTile -> waterTile.setWaterSpeed(0.7f));
+		waterList.stream().forEach(waterTile -> waterTile.setWaveStrength(0.1f));
 		/*---------------SCENE-------------*/
 
 		/* TODO: replace it by map loading system */
