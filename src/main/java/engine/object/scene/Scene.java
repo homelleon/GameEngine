@@ -69,7 +69,7 @@ public class Scene extends ObjectManager implements IScene {
 				}
 			}
 		}
-		// chunkManager.getChunk(2).setIsActive(false);
+		chunkManager.getChunk(2).getBlock(0,5,5).setIsActive(false);
 	}
 
 	@Override

@@ -42,16 +42,18 @@ public class GUITextureManager implements IGUITextureManager {
 	public void add(GUITexture guiTexture) {
 		if (guiTexture != null) {
 			this.textures.put(guiTexture.getName(), guiTexture);
+		} else {
+			
 		}
 	}
 
 	@Override
 	public GUITexture get(String name) {
-		GUITexture guiTexture = null;
-		if (this.textures.containsKey(name)) {
-			guiTexture = this.textures.get(name);
+		if(this.textures.containsKey(name)) {
+			return this.textures.get(name);
+		} else {
+			throw new NullPointerException("There is no texture with name " + name + "in gui texture array!");
 		}
-		return guiTexture;
 	}
 
 	@Override

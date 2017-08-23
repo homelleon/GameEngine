@@ -12,7 +12,6 @@ import org.w3c.dom.NodeList;
 import core.debug.EngineDebug;
 import object.gui.texture.GUITexture;
 import object.gui.texture.GUITextureBuilder;
-import object.gui.texture.IGUITextureBuilder;
 import tool.xml.XMLUtils;
 import tool.xml.parser.IListParser;
 import tool.xml.parser.XMLParser;
@@ -69,11 +68,11 @@ public class GUITextureXMLParser extends XMLParser implements IListParser<GUITex
 						System.err.println("error id order!");
 					}
 				}
-				IGUITextureBuilder builder = new GUITextureBuilder();
-				builder.setTextureName(textureName)
+				GUITexture guiTexture =	new GUITextureBuilder()
+					   .setTextureName(textureName)
 					   .setPosition(position)
-					   .setScale(scale);
-				GUITexture guiTexture = builder.build(name);
+					   .setScale(scale)
+					   .build(name);
 				textureList.add(guiTexture);
 				if (EngineDebug.hasDebugPermission()) {
 					System.out.println(">> " + guiTexture.getName());
@@ -83,7 +82,6 @@ public class GUITextureXMLParser extends XMLParser implements IListParser<GUITex
 		if (EngineDebug.hasDebugPermission()) {
 			System.out.println("> Succed!");
 		}
-
 		return textureList;
 	}
 

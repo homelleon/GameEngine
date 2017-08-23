@@ -27,11 +27,7 @@ public class WaterManager implements IWaterManager {
 
 	@Override
 	public WaterTile getByName(String name) {
-		WaterTile water = null;
-		if (this.waters.containsKey(name)) {
-			water = this.waters.get(name);
-		}
-		return water;
+		return this.waters.containsKey(name) ? this.waters.get(name) : null;
 	}
 
 	@Override

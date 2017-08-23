@@ -13,7 +13,6 @@ import object.camera.ICamera;
 import object.particle.InsertionSort;
 import object.particle.particle.Particle;
 import object.texture.particle.ParticleTexture;
-import renderer.loader.Loader;
 import renderer.object.particle.ParticleRenderer;
 
 public class ParticleMaster {

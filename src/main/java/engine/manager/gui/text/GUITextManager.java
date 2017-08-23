@@ -41,7 +41,7 @@ public class GUITextManager implements IGUITextManager {
 	public void addAll(List<GUIText> textList) {
 		if ((textList != null) && (!textList.isEmpty())) {
 			textList.forEach(text -> this.add(text));
-		}		
+		}
 	}
 
 	@Override
@@ -58,11 +58,7 @@ public class GUITextManager implements IGUITextManager {
 
 	@Override
 	public GUIText get(String name) {
-		GUIText text = null;
-		if (this.texts.containsKey(name)) {
-			text = this.texts.get(name);
-		}
-		return text;
+		return this.texts.containsKey(name) ? this.texts.get(name) : null;
 	}
 
 	@Override

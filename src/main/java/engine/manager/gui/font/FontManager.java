@@ -14,7 +14,7 @@ public class FontManager implements IFontManager {
 
 	@Override
 	public FontType create(String name) {
-		FontType font = null;
+		FontType font;
 		if (fonts.containsKey(name)) {
 			font = fonts.get(name);
 		} else {

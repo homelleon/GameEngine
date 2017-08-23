@@ -7,6 +7,7 @@ import java.util.List;
  * @author homelleon
  * @param <E>
  */
+@FunctionalInterface
 public interface IListParser<E> extends IObjectParser<List<E>> {
 
 	/**

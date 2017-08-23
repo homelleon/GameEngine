@@ -2,10 +2,10 @@ package manager.entity;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -58,11 +58,7 @@ public class EntityManager extends AbstractManager<IEntity> implements IEntityMa
 	@Override
 	public void addFrustumMap(Map<Float, List<IEntity>> frustumMap) {
 		if ((frustumMap != null) && (!frustumMap.isEmpty())) {
-			frustumMap.keySet().forEach(key -> {
-				List<IEntity> batch = new ArrayList<IEntity>();
-				frustumMap.get(key).forEach(entity -> batch.add(entity));
-				this.frustumEntities.put(key, batch);
-			});
+			this.frustumEntities.putAll(frustumMap);
 		}
 	}
 
@@ -86,7 +82,8 @@ public class EntityManager extends AbstractManager<IEntity> implements IEntityMa
 			if (this.frustumEntities.containsKey(distance)) {
 				this.frustumEntities.get(distance).add(entity);
 			} else {
-				this.frustumEntities.put(distance, 
+				this.frustumEntities.put(
+						distance, 
 						Stream.of(entity)
 							  .collect(Collectors.toList())
 				); 
@@ -100,12 +97,8 @@ public class EntityManager extends AbstractManager<IEntity> implements IEntityMa
 		this.getAll().forEach(entity -> {
 			float distance = frustum.distanceSphereInFrustum(entity.getPosition(), entity.getSphereRadius());
 			if (distance >= 0 && distance < EngineSettings.RENDERING_VIEW_DISTANCE) {
-				List<IEntity> batch;
-				if (this.frustumEntities.containsKey(distance)) {
-					batch = frustumEntities.get(distance);
-				} else {
-					batch = new ArrayList<IEntity>();
-				}
+				List<IEntity> batch = this.frustumEntities.containsKey(distance) ?
+						frustumEntities.get(distance) : new ArrayList<IEntity>();
 				batch.add(entity);
 				this.frustumEntities.put(distance, batch);
 			}

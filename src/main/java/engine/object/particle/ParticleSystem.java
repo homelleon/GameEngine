@@ -93,12 +93,9 @@ public class ParticleSystem implements IParticleSystem {
 	}
 
 	private void emitParticle(Vector3f center) {
-		Vector3f velocity = null;
-		if (direction != null) {
-			velocity = generateRandomUnitVectorWithinCone(direction, directionDeviation);
-		} else {
-			velocity = generateRandomUnitVector();
-		}
+		Vector3f velocity = (direction != null) ? 
+				generateRandomUnitVectorWithinCone(direction, directionDeviation) :
+				generateRandomUnitVector();
 		velocity.normalise();
 		velocity.scale(generateValue(averageSpeed, speedError));
 		float scale = generateValue(averageScale, scaleError);
@@ -112,11 +109,7 @@ public class ParticleSystem implements IParticleSystem {
 	}
 
 	private float generateRotation() {
-		if (randomRotation) {
-			return random.nextFloat() * 360f;
-		} else {
-			return 0;
-		}
+		return randomRotation ? random.nextFloat() * 360f : 0;
 	}
 
 	private static Vector3f generateRandomUnitVectorWithinCone(Vector3f coneDirection, float angle) {
