@@ -7,7 +7,7 @@
 			<font>candara</font>
 			<position>
 				<x>0.0f</x>
-				<y>0.0f</y>
+				<y>0.9f</y>
 			</position>
 			<max_length>1</max_length>
 			<centered>true</centered>

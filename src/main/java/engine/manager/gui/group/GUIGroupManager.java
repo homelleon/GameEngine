@@ -7,7 +7,6 @@ import java.util.Map;
 import manager.gui.component.IGUIComponentManager;
 import object.gui.group.GUIGroup;
 import object.gui.group.IGUIGroup;
-import object.gui.pattern.object.GUIObject;
 
 public class GUIGroupManager implements IGUIGroupManager {
 
@@ -32,7 +31,8 @@ public class GUIGroupManager implements IGUIGroupManager {
 
 	@Override
 	public void addAll(Collection<IGUIGroup> groupList) {
-		groupList.forEach(group -> this.groups.put(group.getName(), group));
+		groupList
+			.forEach(group -> this.groups.put(group.getName(), group));
 	}
 
 	@Override
@@ -48,11 +48,9 @@ public class GUIGroupManager implements IGUIGroupManager {
 	@Override
 	public boolean delete(String name) {
 		if (this.groups.containsKey(name)) {
-			this.groups.get(name).getAll().forEach(gui -> {
-				gui.getTexts().forEach(text -> 
-					this.componentManager.getTexts().delete(text.getName())
-				);
-			});
+			this.get(name).getAll().stream()
+				.flatMap(gui -> gui.getTexts().stream())
+				.forEach(text -> this.componentManager.getTexts().delete(text.getName()));
 			this.groups.get(name).clean();
 			this.groups.remove(name);
 			return true;
@@ -63,7 +61,8 @@ public class GUIGroupManager implements IGUIGroupManager {
 
 	@Override
 	public void clean() {
-		this.groups.values().forEach(group -> group.clean());
+		this.groups.values()
+			.forEach(group -> group.clean());
 		this.groups.clear();		
 	}
 }

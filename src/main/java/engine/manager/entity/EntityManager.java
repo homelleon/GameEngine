@@ -2,6 +2,7 @@ package manager.entity;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -128,7 +129,8 @@ public class EntityManager extends AbstractManager<IEntity> implements IEntityMa
 
 	@Override
 	public void clearPointed() {
-		this.pointedEntities.forEach(entity -> entity.setIsChosen(false));
+		this.pointedEntities
+			.forEach(entity -> entity.setIsChosen(false));
 		this.pointedEntities.clear();
 	}
 

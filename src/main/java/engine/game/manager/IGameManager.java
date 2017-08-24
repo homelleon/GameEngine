@@ -1,5 +1,7 @@
 package game.manager;
 
+import manager.gui.text.IGUITextManager;
+import manager.gui.texture.IGUITextureManager;
 import object.scene.IScene;
 
 /**
@@ -10,5 +12,7 @@ import object.scene.IScene;
 public interface IGameManager {
 
 	IScene getScene();
+	IGUITextureManager getTextures();
+	IGUITextManager getTexts();
 
 }

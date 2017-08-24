@@ -12,9 +12,10 @@ import manager.particle.ParticleManager;
 import object.audio.source.AudioSource;
 import object.audio.source.IAudioSource;
 import object.camera.TargetCamera;
-import object.entity.player.Player;
 import object.entity.player.IPlayer;
+import object.entity.player.Player;
 import object.gui.text.GUIText;
+import object.gui.text.GUITextBuilder;
 import object.light.Light;
 import object.model.textured.TexturedModel;
 import object.scene.IScene;
@@ -38,7 +39,13 @@ public class SceneManager implements ISceneManager {
 	public void init(IScene scene, Loader loader) {
 		/*------------------PLAYER-----------------*/
 		TexturedModel cubeModel = EngineUtils.loadStaticModel("cube", "cube1");
-		IPlayer player1 = new Player(playerName, cubeModel, new Vector3f(100, 0, 10), new Vector3f(0, 0, 0), 1);
+		IPlayer player1 = new Player(
+				playerName, 
+				cubeModel, 
+				new Vector3f(100, 0, 10), 
+				new Vector3f(0, 0, 0), 
+				1
+		);
 		player1.getModel().getTexture().setReflectiveFactor(1.0f);
 		player1.getModel().getTexture().setRefractiveFactor(1.0f);
 		player1.getModel().getTexture().setRefractiveIndex(1.33f);
@@ -47,14 +54,6 @@ public class SceneManager implements ISceneManager {
 		/*--------------UI-------------------*/
 		scene.getUserInterface().initialize();
 		/*--------------TEXT----------------*/
-
-		List<GUIText> guiTextList = new ArrayList<GUIText>();
-		// Version
-		GUIText text1 = new GUIText("version", "This is an Alfa-version of the game engine", 1, defaultFont,
-				new Vector2f(0.25f, 0), 0.5f, true);
-		guiTextList.add(text1);
-
-		text1.setColour(1, 0, 0);
 
 		/*--------------AUDIO----------------*/
 		AL10.alDistanceModel(AL11.AL_LINEAR_DISTANCE_CLAMPED);
@@ -69,9 +68,12 @@ public class SceneManager implements ISceneManager {
 		List<WaterTile> waterList = new ArrayList<WaterTile>();
 		WaterTile water = new WaterTile("Water", 0, 0, -4, 1000);
 		waterList.add(water);
-		waterList.stream().forEach(waterTile -> waterTile.setTilingSize(0.05f));
-		waterList.stream().forEach(waterTile -> waterTile.setWaterSpeed(0.7f));
-		waterList.stream().forEach(waterTile -> waterTile.setWaveStrength(0.1f));
+		waterList.stream()
+			.forEach(waterTile -> {
+				waterTile.setTilingSize(0.05f);
+				waterTile.setWaterSpeed(0.7f);
+				waterTile.setWaveStrength(0.1f);
+			});
 		/*---------------SCENE-------------*/
 
 		/* TODO: replace it by map loading system */

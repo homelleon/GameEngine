@@ -5,6 +5,8 @@ import org.lwjgl.util.vector.Vector2f;
 
 import core.EngineMain;
 import game.game.Game;
+import manager.gui.text.IGUITextManager;
+import manager.gui.texture.IGUITextureManager;
 import object.gui.group.IGUIGroup;
 import object.gui.gui.IGUI;
 import object.gui.gui.builder.GUIBuilder;
@@ -21,7 +23,7 @@ public class MyGame extends Game {
 	
 	private String guiGroupName = "help";
 	private IGUIGroup helpGroup;
-	private IGUI hintsUI;
+	private IGUI hintsUI;		
 	IGUIMenuSystem menuSystem;
 	int time = 0;
 	
@@ -38,15 +40,15 @@ public class MyGame extends Game {
 		
 		//--------help hints GUI-------------//
 		IGUIBuilder helpGUIBuilder = new GUIBuilder();
-		helpGUIBuilder.setText(gameManager.getScene().getUserInterface()
-				.getComponent().getTexts().get("inputHints"));
+		helpGUIBuilder.setText(this.gameManager.getTexts().get("inputHints"));
 		this.helpGroup = this.gameManager.getScene().getUserInterface().getGroups().createEmpty(guiGroupName);
 		this.helpGroup.add(helpGUIBuilder.build("help"));
-		
+		helpGUIBuilder = new GUIBuilder();
+		helpGUIBuilder.setText(this.gameManager.getTexts().get("version"));
+		this.helpGroup.add(helpGUIBuilder.build("version"));
 		//-------sign button GUI-------------//
 		IGUIBuilder signGUIBuilder = new GUIBuilder();
-		signGUIBuilder.setTexture(gameManager.getScene().getUserInterface()
-				.getComponent().getTextures().get("Sign"));
+		signGUIBuilder.setTexture(this.gameManager.getTextures().get("Sign"));
 		IGUIGroup signGroup = this.gameManager.getScene().getUserInterface().getGroups().createEmpty("sign");
 		signGroup.add(signGUIBuilder.build("sign"));
 		((GUIObject) signGroup).show();
@@ -57,8 +59,7 @@ public class MyGame extends Game {
 		menuSystem.add(mainMenu);
 		
 		IGUIBuilder buttonGUIBuilder = new GUIBuilder();
-		buttonGUIBuilder.setTexture(gameManager.getScene().getUserInterface()
-				.getComponent().getTextures().get("Button"));
+		buttonGUIBuilder.setTexture(this.gameManager.getTextures().get("Button"));
 		buttonGUIBuilder.setText(gameManager.getScene().getUserInterface()
 				.getComponent().getTexts().get("buttonLabel1"));
 		IGUIGroup buttonGroup = this.gameManager.getScene().getUserInterface().getGroups().createEmpty("button");
@@ -76,8 +77,7 @@ public class MyGame extends Game {
 		mainMenu.add((GUIObject) buttonGroup);
 		
 		buttonGUIBuilder = new GUIBuilder();
-		buttonGUIBuilder.setTexture(gameManager.getScene().getUserInterface()
-				.getComponent().getTextures().get("Button"));
+		buttonGUIBuilder.setTexture(this.gameManager.getTextures().get("Button"));
 		buttonGUIBuilder.setText(gameManager.getScene().getUserInterface()
 				.getComponent().getTexts().get("buttonLabel1"));
 		buttonGroup = this.gameManager.getScene().getUserInterface().getGroups().createEmpty("button2");
