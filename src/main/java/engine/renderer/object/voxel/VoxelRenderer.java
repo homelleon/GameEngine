@@ -30,8 +30,8 @@ import tool.openGL.OGLUtils;
 public class VoxelRenderer {
 
 	private static final float SIZE = EngineSettings.VOXEL_BLOCK_SIZE / 2;
-	private static final float BLOCK_RADIUS = 3 * SIZE;
-	private static final float CHUNK_RADIUS = 3 * BLOCK_RADIUS * EngineSettings.VOXEL_CHUNK_SIZE;
+	private static final float BLOCK_RADIUS = 2 * SIZE;
+	private static final float CHUNK_RADIUS = 2 * BLOCK_RADIUS * EngineSettings.VOXEL_CHUNK_SIZE;
 
 	private static final float[] VERTICES = {
 			// front
@@ -174,7 +174,7 @@ public class VoxelRenderer {
 	private boolean checkVisibility(Frustum frustum, Vector3f position, float radius) {
 		boolean isVisible = false;
 		float distance = frustum.distanceSphereInFrustum(position, radius);
-		if (distance > 0 && distance <= 2 * EngineSettings.RENDERING_VIEW_DISTANCE) {
+		if (distance > 0 && distance <= EngineSettings.RENDERING_VIEW_DISTANCE) {
 			isVisible = true;
 		}
 		return isVisible;

@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.lwjgl.openal.AL10;
 import org.lwjgl.openal.AL11;
-import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
 import manager.particle.ParticleManager;
@@ -14,8 +13,6 @@ import object.audio.source.IAudioSource;
 import object.camera.TargetCamera;
 import object.entity.player.IPlayer;
 import object.entity.player.Player;
-import object.gui.text.GUIText;
-import object.gui.text.GUITextBuilder;
 import object.light.Light;
 import object.model.textured.TexturedModel;
 import object.scene.IScene;
@@ -33,7 +30,6 @@ public class SceneManager implements ISceneManager {
 
 	private String playerName = "player1";
 	private String cameraName = "cameraMain";
-	private String defaultFont = "candara";
 
 	@Override
 	public void init(IScene scene, Loader loader) {

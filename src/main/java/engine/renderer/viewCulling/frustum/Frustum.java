@@ -14,7 +14,6 @@ import tool.math.Maths;
 
 public class Frustum {
 
-	private Collection<IEntity> entities = new ArrayList<IEntity>();
 	private float[][] plane = new float[6][4];
 
 	public void extractFrustum(ICamera camera, Matrix4f projectionMatrix) {
@@ -134,22 +133,13 @@ public class Frustum {
 
 	public float distanceSphereInFrustum(Vector3f position, float radius) {
 		float distance = 0;
-		boolean isInFrustum = true;
-
 		for (int p = 0; p < 6; p++) {
 			distance = plane[p][0] * position.x + plane[p][1] * position.y + plane[p][2] * position.z + plane[p][3];
 			if (distance <= -radius) {
-				isInFrustum = false;
-				break;
-			}
+				return 0;
+			}			
 		}
-
-		if (isInFrustum) {
-			distance = distance + radius;
-		} else {
-			distance = 0;
-		}
-		return distance;
+		return distance + radius;
 	}
 
 	public List<IEntity> updateFrustumEntities(Collection<IEntity> entities) {
@@ -162,10 +152,6 @@ public class Frustum {
 			}
 		}
 		return frustumEntities;
-	}
-
-	public Collection<IEntity> getEntities() {
-		return this.entities;
 	}
 
 }

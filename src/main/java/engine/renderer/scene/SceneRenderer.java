@@ -81,7 +81,6 @@ public class SceneRenderer {
 		if (!isPaused) {
 			move();
 		}
-		scene.getEntities().updateWithFrustum(scene.getFrustum());
 		masterRenderer.renderShadowMap(scene);
 		renderParticles();
 		renderWaterSurface();

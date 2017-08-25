@@ -87,15 +87,24 @@ public class MainRenderer implements IMainRenderer {
 	@Override
 	public void renderScene(IScene scene, Vector4f clipPlane, boolean isLowDistance) {
 		this.frustum.extractFrustum(scene.getCamera(), projectionMatrix);
+		scene.getEntities().updateWithFrustum(scene.getFrustum());
 		this.environmentMap = scene.getEnvironmentMap();
 		scene.getTerrains().getAll()
 			 .forEach(terrain -> processor.processTerrain(terrain, terrains));
-		scene.getEntities().getAll().stream()
-			 .filter(entity -> entity.getType() == EngineSettings.ENTITY_TYPE_SIMPLE)
-			 .forEach(entity -> processor.processEntity(entity, entities, frustum));
-		scene.getEntities().getAll().stream()
-		 	 .filter(entity -> entity.getType() == EngineSettings.ENTITY_TYPE_NORMAL)
-		 	 .forEach(entity -> processor.processNormalMapEntity(entity, normalMapEntities, frustum));
+		
+		Map<Float, List<IEntity>> frustumEntities = scene.getEntities().getFromFrustum();
+		frustumEntities.keySet().stream()
+				 	 .filter(distance -> distance <= EngineSettings.RENDERING_VIEW_DISTANCE)
+				 	 .map(distance -> frustumEntities.get(distance))
+					 .flatMap(list -> list.stream())
+					 .filter(entity -> entity.getType() == EngineSettings.ENTITY_TYPE_SIMPLE)
+					 .forEach(entity -> processor.processEntity(entity, entities, frustum));
+		frustumEntities.keySet().stream()
+			 		.filter(distance -> distance <= EngineSettings.RENDERING_VIEW_DISTANCE)
+			 		.map(distance -> frustumEntities.get(distance))
+			 		.flatMap(list -> list.stream())
+				 	.filter(entity -> entity.getType() == EngineSettings.ENTITY_TYPE_NORMAL)
+				 	.forEach(entity -> processor.processNormalMapEntity(entity, normalMapEntities, frustum));
 		if (this.environmentDinamic) {
 			environmentRendered = false;
 		}
