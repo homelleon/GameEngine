@@ -50,7 +50,7 @@ public class Frustum {
 		plane[1][1] /= t;
 		plane[1][2] /= t;
 		plane[1][3] /= t;
-
+		
 		/* BOTTOM */
 		/* find A,B,C,D for the BOTTOM plane */
 		this.plane[2][0] = clip.m03 + clip.m01;
@@ -64,7 +64,7 @@ public class Frustum {
 		plane[2][1] /= t;
 		plane[2][2] /= t;
 		plane[2][3] /= t;
-
+		
 		/* TOP */
 		/* find A,B,C,D for the TOP plane */
 		this.plane[3][0] = clip.m03 - clip.m01;
@@ -78,7 +78,7 @@ public class Frustum {
 		plane[3][1] /= t;
 		plane[3][2] /= t;
 		plane[3][3] /= t;
-
+		
 		/* BACK */
 		/* find A,B,C,D for the BACK plane */
 		this.plane[4][0] = clip.m03 - clip.m02;
@@ -92,7 +92,7 @@ public class Frustum {
 		plane[4][1] /= t;
 		plane[4][2] /= t;
 		plane[4][3] /= t;
-
+		
 		/* FRONT */
 		/* find A,B,C,D for the FRONT plane */
 		this.plane[5][0] = clip.m03 + clip.m02;
@@ -137,21 +137,9 @@ public class Frustum {
 			distance = plane[p][0] * position.x + plane[p][1] * position.y + plane[p][2] * position.z + plane[p][3];
 			if (distance <= -radius) {
 				return 0;
-			}			
+			}		
 		}
 		return distance + radius;
-	}
-
-	public List<IEntity> updateFrustumEntities(Collection<IEntity> entities) {
-		List<IEntity> frustumEntities = new ArrayList<IEntity>();
-		for (IEntity entity : entities) {
-			float distance;
-			distance = distanceSphereInFrustum(entity.getPosition(), entity.getSphereRadius());
-			if (distance > 0 && distance <= EngineSettings.RENDERING_VIEW_DISTANCE) {
-				frustumEntities.add(entity);
-			}
-		}
-		return frustumEntities;
 	}
 
 }

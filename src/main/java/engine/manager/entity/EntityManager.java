@@ -111,36 +111,15 @@ public class EntityManager extends AbstractManager<IEntity> implements IEntityMa
 			}
 			
 			public boolean valid() {
-				return distance >= 0 && distance < EngineSettings.RENDERING_VIEW_DISTANCE;
+				return distance > 0;
 			}
 		}
 		
-//		Map<Float, List<IEntity>> validEntities = this.getAll().stream()
-//			.map(Pair::new)
-//			.filter(pair -> pair.valid())
-//			.collect(Collectors.groupingBy(Pair::getDistance, Collectors.mapping(Pair::getEntity, Collectors.toList())));
-//		this.frustumEntities.putAll(validEntities);
-//
-//		this.getAll().forEach(entity -> {
-//			float distance = frustum.distanceSphereInFrustum(entity.getPosition(), entity.getSphereRadius());
-//			if (distance >= 0 && distance < EngineSettings.RENDERING_VIEW_DISTANCE) {
-//				List<IEntity> batch = this.frustumEntities.containsKey(distance) ?
-//						frustumEntities.get(distance) : new ArrayList<IEntity>();
-//				batch.add(entity);
-//				this.frustumEntities.put(distance, batch);
-//			}
-//		});
-		for(IEntity entity : this.getAll()) {
-			float distance = frustum.distanceSphereInFrustum(entity.getPosition(), entity.getSphereRadius());
-			if (distance > 0) {
-				this.addInFrustum(distance, entity);
-			}
-		}
-		
-		System.out.println(this.frustumEntities.values()
-				.stream()
-				.map(list -> list.size())
-				.reduce(0,(acc,element) -> acc + element));
+		Map<Float, List<IEntity>> validEntities = this.getAll().stream()
+			.map(Pair::new)
+			.filter(pair -> pair.valid())
+			.collect(Collectors.groupingBy(Pair::getDistance, Collectors.mapping(Pair::getEntity, Collectors.toList())));
+		this.frustumEntities.putAll(validEntities);		
 	}
 
 
