@@ -12,7 +12,7 @@ import manager.gui.IGUIManager;
 import manager.light.ILightManager;
 import manager.particle.IParticleManager;
 import manager.scene.IObjectManager;
-import manager.scene.ObjectManager;
+import manager.scene.AObjectManager;
 import manager.terrain.ITerrainManager;
 import manager.voxel.ChunkManager;
 import manager.voxel.IChunkManager;
@@ -28,7 +28,7 @@ import object.texture.Texture;
 import renderer.viewCulling.frustum.Frustum;
 import tool.MousePicker;
 
-public class Scene extends ObjectManager implements IScene {
+public class Scene extends AObjectManager implements IScene {
 
 	private final static int CHUNK_WORLD_SIZE = 2;
 	private IPlayer player;
@@ -172,11 +172,6 @@ public class Scene extends ObjectManager implements IScene {
 	@Override
 	public IGUIManager getUserInterface() {
 		return this.uiManager;
-	}
-
-	@Override
-	public Frustum getFrustum() {
-		return this.frustum;
 	}
 
 	@Override

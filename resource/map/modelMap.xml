@@ -49,23 +49,11 @@
 			name="Terrain1"
 			terrain_pack="terrainPack"
 			blend_texture="terrainBlendMap"
-			amplitude="100.0"
-			octave="20"
-			roughness="0.9">
+			amplitude="20.0"
+			octave="10"
+			roughness="1.2">
 				<position
 				x="0"
-				z="0" />
-		</terrain>
-		<terrain 
-			id="2"
-			name="Terrain2"
-			terrain_pack="terrainPack"
-			blend_texture="terrainBlendMap"
-			amplitude="50.0"
-			octave="20"
-			roughness="1.0">
-				<position
-				x="1"
 				z="0" />
 		</terrain>
 	</procedure_generated>

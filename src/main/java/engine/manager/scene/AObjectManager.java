@@ -14,7 +14,7 @@ import manager.water.IWaterManager;
 import manager.water.WaterManager;
 import object.audio.master.IAudioMaster;
 
-public abstract class ObjectManager {
+public abstract class AObjectManager {
 	
 	protected IEntityManager entityManager;
 	protected ITerrainManager terrainManager;
@@ -23,7 +23,7 @@ public abstract class ObjectManager {
 	protected ILightManager lightManager;
 	protected IWaterManager waterManager;
 	
-	protected ObjectManager() {
+	protected AObjectManager() {
 		this.entityManager = new EntityManager();
 		this.terrainManager = new TerrainManager();
 		this.particleManager = new ParticleManager();
@@ -32,7 +32,7 @@ public abstract class ObjectManager {
 		this.waterManager = new WaterManager();
 	}
 	
-	protected ObjectManager(IAudioMaster master) {
+	protected AObjectManager(IAudioMaster master) {
 		this.entityManager = new EntityManager();
 		this.terrainManager = new TerrainManager();
 		this.particleManager = new ParticleManager();

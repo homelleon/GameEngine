@@ -1,7 +1,7 @@
 package map.objectMap;
 
 import manager.scene.IObjectManager;
-import manager.scene.ObjectManager;
+import manager.scene.AObjectManager;
 
 /**
  * Map that controls entity objects to load in the editor menu.
@@ -9,4 +9,4 @@ import manager.scene.ObjectManager;
  * @author homelleon
  *
  */
-public class ObjectMapManager extends ObjectManager implements IObjectManager {}
+public class ObjectMapManager extends AObjectManager implements IObjectManager {}

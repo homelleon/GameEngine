@@ -62,7 +62,7 @@ public class SceneManager implements ISceneManager {
 
 		/*--------------WATER----------------*/
 		List<WaterTile> waterList = new ArrayList<WaterTile>();
-		WaterTile water = new WaterTile("Water", 0, 0, -4, 1000);
+		WaterTile water = new WaterTile("Water", 0, 0, -4, 10000);
 		waterList.add(water);
 		waterList.stream()
 			.forEach(waterTile -> {

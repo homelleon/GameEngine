@@ -100,13 +100,6 @@ public interface IScene extends IObjectManager {
 	IGUIManager getUserInterface();
 
 	/**
-	 * Returns visual frustum object.
-	 * 
-	 * @return {@link Frustum} value of visual frustum
-	 */
-	Frustum getFrustum();
-
-	/**
 	 * Returns mouse coordinates picker object.
 	 * 
 	 * @return {@link MousePicker} value

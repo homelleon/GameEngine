@@ -2,7 +2,7 @@ package object.water;
 
 public class WaterTile {
 
-	public static final float TILE_SIZE = 100;
+	public static final float TILE_SIZE = 10000;
 
 	private float height;
 	private float x, z;
