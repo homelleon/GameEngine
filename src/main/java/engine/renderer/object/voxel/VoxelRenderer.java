@@ -1,6 +1,8 @@
 package renderer.object.voxel;
 
 import java.util.Collection;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
@@ -126,47 +128,126 @@ public class VoxelRenderer {
 		shader.loadShadowVariables(EngineSettings.SHADOW_DISTANCE, EngineSettings.SHADOW_MAP_SIZE,
 				EngineSettings.SHADOW_TRANSITION_DISTANCE, EngineSettings.SHADOW_PCF);
 		prepareModel(cube.getRawModel());
-		// OGLUtils.doWiredFrame(true);
 		bindTexture(texture);
-		int t = 0;
-		String s = "";
-		for (int i = 0; i < chunkManager.getSize(); i++) {
-			if (checkVisibility(frustum, chunkManager.getChunkPosition(i), CHUNK_RADIUS)) {
-				if (chunkManager.getChunk(i).getIsAcitve()) {
-					FaceCullingData chunkFCData = isNeedChunkCulling(chunkManager, i);
-					// s = s + " " + i;
-					t += 1;
-					for (int x = 0; x <= EngineSettings.VOXEL_CHUNK_SIZE; x++) {
-						for (int y = 0; y <= EngineSettings.VOXEL_CHUNK_SIZE; y++) {
-							for (int z = 0; z <= EngineSettings.VOXEL_CHUNK_SIZE; z++) {
-								if (checkVisibility(frustum, chunkManager.getBlockPosition(i, new Vector3i(x, y, z)),
-										BLOCK_RADIUS)) {
-									FaceCullingData blockFCData = isNeedBlockCulling(chunkManager.getChunk(i), x, y, z);
-									if (!isAllFaceCulled(blockFCData)) {
-										if (chunkManager.getChunk(i).getBlock(x, y, z).getIsActive()) {
-											prepareInstance(chunkManager.getBlockPosition(i, new Vector3i(x, y, z)));
-											for (int j = 0; j < 6; j++) {
-												if (!blockFCData.getFace(j)) {
-													GL12.glDrawRangeElements(GL11.GL_TRIANGLES, 0, 6, 6,
-															GL11.GL_UNSIGNED_INT, 24 * j);
-												}
-											}
-										}
-									}
-									blockFCData = null;
-								}
-							}
-						}
-					}
-					chunkFCData = null;
-				}
+		
+		class Index {
+			private int i;
+			private int x;
+			private int y;
+			private int z;
+			private FaceCullingData fcd;
+			
+			public Index(int i) {
+				this.i = i;
+			}
+			
+			public int getI() {
+				return i;
+			}
+			
+			public Index setX(int x) {
+				this.x = x;
+				return this;
+			}
+			
+			public int getX() {
+				return x;
+			}
+			
+			public Index setY(int y) {
+				this.y = y;
+				return this;
+			}
+			
+			public int getY() {
+				return y;
+			}
+			
+			public Index setZ(int z) {
+				this.z = z;
+				return this;
+			}
+			
+			public int getZ() {
+				return z;
+			}
+			
+			public Index setFCD(FaceCullingData fcd) {
+				this.fcd = fcd;
+				return this;
+			}
+			
+			public FaceCullingData getFCD() {
+				return this.fcd;
 			}
 		}
-		// System.out.println(s);
-		// System.out.println(t);
-		// System.out.println(counter);
-		counter = 0;
-		OGLUtils.doWiredFrame(false);
+		
+		IntStream.range(0, chunkManager.getSize())
+			.filter(i -> checkVisibility(frustum, chunkManager.getChunkPosition(i), CHUNK_RADIUS))
+			.filter(i -> chunkManager.getChunk(i).getIsAcitve())
+			.mapToObj(Index::new)
+			.flatMap(index -> IntStream.range(0, EngineSettings.VOXEL_CHUNK_SIZE+1)
+						.mapToObj(x -> new Index(index.getI())
+								.setX(x))
+					)
+			.flatMap(index -> IntStream.range(0, EngineSettings.VOXEL_CHUNK_SIZE+1)
+						.mapToObj(y -> new Index(index.getI())
+								.setX(index.getX()).setY(y))
+						)
+			.flatMap(index -> IntStream.range(0, EngineSettings.VOXEL_CHUNK_SIZE+1)
+					.mapToObj(z -> new Index(index.getI())
+							.setX(index.getX()).setY(index.getY()).setZ(z))
+					)
+			.peek(index -> index.setFCD(isNeedBlockCulling(chunkManager.getChunk(
+						index.getI()), index.getX(), index.getY(), index.getZ())))
+			.filter(index ->
+				!isAllFaceCulled(index.getFCD())
+					)
+			.filter(index -> chunkManager.getChunk(
+					index.getI()).getBlock(index.getX(), index.getY(), index.getZ())
+						.getIsActive())
+			.forEach(index -> { 
+						prepareInstance(chunkManager.getBlockPosition(
+								index.getI(), new Vector3i(
+										index.getX(), index.getY(), index.getZ()))
+								);
+						IntStream.range(0, 6)
+							.filter(face -> !index.getFCD().getFace(face))
+							.forEachOrdered(face -> GL12.glDrawRangeElements(GL11.GL_TRIANGLES, 0, 6, 6,
+																GL11.GL_UNSIGNED_INT, 24 * face));
+					}
+				);
+//		
+//		for (int i = 0; i < chunkManager.getSize(); i++) {
+//			if (checkVisibility(frustum, chunkManager.getChunkPosition(i), CHUNK_RADIUS)) {
+//				if (chunkManager.getChunk(i).getIsAcitve()) {
+//					FaceCullingData chunkFCData = isNeedChunkCulling(chunkManager, i);
+//					for (int x = 0; x <= EngineSettings.VOXEL_CHUNK_SIZE; x++) {
+//						for (int y = 0; y <= EngineSettings.VOXEL_CHUNK_SIZE; y++) {
+//							for (int z = 0; z <= EngineSettings.VOXEL_CHUNK_SIZE; z++) {
+//								if (checkVisibility(frustum, chunkManager.getBlockPosition(i, new Vector3i(x, y, z)),
+//										BLOCK_RADIUS)) {
+//									FaceCullingData blockFCData = isNeedBlockCulling(chunkManager.getChunk(i), x, y, z);
+//									if (!isAllFaceCulled(blockFCData)) {
+//										if (chunkManager.getChunk(i).getBlock(x, y, z).getIsActive()) {
+//											prepareInstance(chunkManager.getBlockPosition(i, new Vector3i(x, y, z)));
+//											for (int j = 0; j < 6; j++) {
+//												if (!blockFCData.getFace(j)) {
+//													GL12.glDrawRangeElements(GL11.GL_TRIANGLES, 0, 6, 6,
+//															GL11.GL_UNSIGNED_INT, 24 * j);
+//												}
+//											}
+//										}
+//									}
+//									blockFCData = null;
+//								}
+//							}
+//						}
+//					}
+//					chunkFCData = null;
+//				}
+//			}
+//		}
 		unbindTexturedModel();
 		shader.stop();
 	}
