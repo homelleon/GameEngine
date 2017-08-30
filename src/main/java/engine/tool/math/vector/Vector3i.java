@@ -1,4 +1,4 @@
-package tool;
+package tool.math.vector;
 
 public class Vector3i {
 

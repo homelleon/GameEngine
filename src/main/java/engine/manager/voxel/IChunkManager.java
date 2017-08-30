@@ -3,13 +3,14 @@ package manager.voxel;
 import org.lwjgl.util.vector.Vector3f;
 
 import object.voxel.Chunk;
-import tool.Vector3i;
+import tool.math.vector.Vector3i;
 
 /**
  * Chunk Manager Interface for external chunks, blocks and voxel control.
  * 
  * @author homelleon
- *
+ * @version 1.0.1
+ * @see ChunkManager
  */
 public interface IChunkManager {
 
@@ -28,86 +29,83 @@ public interface IChunkManager {
 	public void deleteChunk();
 
 	/**
-	 * Returns world coordinate position of chunk by its strucutred xyz index
-	 * world position.
+	 * Returns world coordinate position of chunk by its 3 dimentional index
+	 * position in the chunk manager.
 	 * 
-	 * @param xyzIndex
-	 *            {@link Vector3i} value of structured xyz index chunk world
+	 * @param indexPosition
+	 *            {@link Vector3i} value of index position in the chunk manager 
 	 *            position
 	 * @return {@link Vector3f} value of chunk world coordinate position
 	 */
-	public Vector3f getChunkPosition(Vector3i xyzIndex);
+	public Vector3f getChunkPosition(Vector3i indexPosition);
 
 	/**
-	 * Returns chunk world position by its index position in array.
+	 * Returns chunk world position by its index in array.
 	 * 
 	 * @param index
-	 *            {@link Integer} value of index position in array
+	 *            {@link Integer} value of index in array
 	 * @return {@link Vector3f} value of chunk position in world coordinate
 	 *         space
 	 */
 	public Vector3f getChunkPosition(int index);
 
 	/**
-	 * Returns block world position accroding chunk position it depended on and
-	 * using structured xyz index world position of block.
+	 * Returns block world position by its 3 dimentional index position in the chunk.
 	 * 
 	 * @param index
-	 *            {@link Integer} value of chunk array index position
-	 * @param xzyIndex
-	 *            {@link Vector3i} value of block structured xyz position in
-	 *            chunk
-	 * @return {@link Vector3f} value of block position in world coordinate
+	 *            {@link Integer} value of chunk array index
+	 * @param indexPosition
+	 *            {@link Vector3i} value of block 3d index position in chunk
+	 * @return {@link Vector3f} value of block position in world coordinates
 	 *         space
 	 */
-	public Vector3f getBlockPosition(int index, Vector3i xzyIndex);
+	public Vector3f getBlockPosition(int index, Vector3i indexPosition);
 
 	/**
-	 * Returns xyz index of chunk in structured chunk system by its index
-	 * position in array.
+	 * Returns 3d index position of chunk in the chunk manager by its index
+	 * in the chunk manager array.
 	 * 
 	 * @param index
-	 *            {@link Integer} value of index position in array
-	 * @return {@link Vector3i} value of strucured xyz index world position of
-	 *         chunk
+	 *            {@link Integer} value of index in array
+	 * @return {@link Vector3i} value of index position in the chunk manager
 	 */
-	public Vector3i getChunkXYZIndex(int index);
+	public Vector3i getChunkIndexVector(int index);
 
 	/**
-	 * Checks if the chunk chosen by index position in array is existed.
+	 * Checks if the chunk chosen by index in the chunk manager is existed.
 	 * 
 	 * @param index
-	 *            {@link Integer} value of index position in array
+	 *            {@link Integer} value of index in the chunk manager
 	 * @return true if chunk is existed<br>
 	 *         false if chunks is not existed
 	 */
 	public boolean isChunkExist(int index);
 
 	/**
-	 * Checks if the chunk chosen by structured xyz index world position is
+	 * Checks if the chunk is chosen by 3d index position in the chunk manager is
 	 * existed.
 	 * 
-	 * @param xyzIndex
-	 *            {@link Vector3i} value of structured xyz index world position
+	 * @param indexPosition
+	 *            {@link Vector3i} value of 3d index position in the chunk manager
 	 * @return true if chunk is existed<br>
 	 *         false if chunks is not existed
 	 */
-	public boolean isChunkExist(Vector3i xyzIndex);
+	public boolean isChunkExist(Vector3i indexPosition);
 
 	/**
 	 * Returns chunk by structured xyz index world position.
 	 * 
-	 * @param xyzIndex
-	 *            {@link Vector3i} value of structured xyz index world position
+	 * @param indexPosition
+	 *            {@link Vector3i} value of 3d index position in the chunk manager
 	 * @return {@link Chunk} value
 	 */
-	public Chunk getChunk(Vector3i xyzIndex);
+	public Chunk getChunk(Vector3i indexPosition);
 
 	/**
-	 * Returns chunk by index position in chunks array.
+	 * Returns chunk by its index in the chunk manager.
 	 * 
 	 * @param index
-	 *            {@link Integer} value chunk position in array
+	 *            {@link Integer} value chunk index in the chunk manager
 	 * @return {@link Chunk} value
 	 */
 	public Chunk getChunk(int index);

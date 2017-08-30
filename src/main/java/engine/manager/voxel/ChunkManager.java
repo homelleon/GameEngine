@@ -2,25 +2,29 @@ package manager.voxel;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import org.lwjgl.util.vector.Vector3f;
 
 import core.settings.EngineSettings;
 import object.voxel.Chunk;
-import tool.Vector3i;
 import tool.math.Maths;
+import tool.math.vector.IVectorBuilder3;
+import tool.math.vector.Vector3i;
+import tool.math.vector.VectorBuilder3f;
+import tool.math.vector.VectorBuilder3i;
 
 /**
  * Structured manage system is expected to implement chunks, blocks and voxels
- * contol sorting it in spacial arrays and provide access to it using friendly
- * interface.
+ * control.
  * <p>
  * No matter that chunks are structured as one dimentional array for low memory
  * storage, user can get access to it using 3-dimentional {@link Vector3i}
  * variable.
  * 
  * @author homelleon
- * @version 1.0
+ * @version 1.0.1
  *
  */
 public class ChunkManager implements IChunkManager {
@@ -32,13 +36,11 @@ public class ChunkManager implements IChunkManager {
 	public ChunkManager(int size, Vector3f position) {
 		this.size = size;
 		this.position = position;
-		for (int x = 0; x <= size; x++) {
-			for (int y = 0; y <= size; y++) {
-				for (int z = 0; z <= size; z++) {
-					this.chunks.add(new Chunk());
-				}
-			}
-		}
+		chunks = IntStream.range(0, size+1)
+			.flatMap(x -> IntStream.range(0, size+1))
+			.flatMap(y -> IntStream.range(0, size+1))
+			.mapToObj(z -> new Chunk())
+			.collect(Collectors.toList());
 	}
 
 	@Override
@@ -52,10 +54,14 @@ public class ChunkManager implements IChunkManager {
 	}
 
 	@Override
-	public Vector3f getChunkPosition(Vector3i xyzIndex) {
+	public Vector3f getChunkPosition(Vector3i indexPosition) {
 		float step = EngineSettings.VOXEL_CHUNK_SIZE * EngineSettings.VOXEL_BLOCK_SIZE;
-		return new Vector3f(position.x + xyzIndex.x * step, position.y + xyzIndex.y * step,
-				position.z + xyzIndex.z * step);
+		IVectorBuilder3<Float, Vector3f> vecBuilder = new VectorBuilder3f();
+		return vecBuilder
+					.setX(position.x + indexPosition.x * step)
+					.setY(position.y + indexPosition.y * step)
+					.setZ(position.z + indexPosition.z * step)
+					.build();
 	}
 
 	@Override
@@ -64,50 +70,53 @@ public class ChunkManager implements IChunkManager {
 		int x = (int) Math.floor(index / Maths.sqr(size));
 		int y = (int) Math.floor(index / size);
 		int z = index;
-		return new Vector3f(position.x + Maths.tailOfDivisionNoReminder(x, size) * step,
-				position.y + Maths.tailOfDivisionNoReminder(y, size) * step,
-				position.z + Maths.tailOfDivisionNoReminder(z, size) * step);
+		IVectorBuilder3<Float, Vector3f> vecBuilder = new VectorBuilder3f();
+		return vecBuilder
+					.setX(position.x + Maths.tailOfDivisionNoReminder(x, size) * step)
+					.setY(position.y + Maths.tailOfDivisionNoReminder(y, size) * step)
+					.setZ(position.z + Maths.tailOfDivisionNoReminder(z, size) * step)
+					.build();
 	}
 
 	@Override
-	public Vector3f getBlockPosition(int index, Vector3i xyzIndex) {
+	public Vector3f getBlockPosition(int index, Vector3i indexPosition) {
 		float step = EngineSettings.VOXEL_BLOCK_SIZE;
 		Vector3f chunkPosition = getChunkPosition(index);
-		return new Vector3f(chunkPosition.x + xyzIndex.x * step, chunkPosition.y + xyzIndex.y * step,
-				chunkPosition.z + xyzIndex.z * step);
+		IVectorBuilder3<Float, Vector3f> vecBuilder = new VectorBuilder3f();
+		return vecBuilder
+					.setX(chunkPosition.x + indexPosition.x * step)
+					.setY(chunkPosition.y + indexPosition.y * step)
+					.setZ(chunkPosition.z + indexPosition.z * step)
+					.build();
 	}
 
 	@Override
-	public Vector3i getChunkXYZIndex(int index) {
+	public Vector3i getChunkIndexVector(int index) {
 		int x = (int) Math.floor(index / Maths.sqr(size));
 		int y = (int) Math.floor(index / size);
 		int z = index;
-		return new Vector3i(Maths.tailOfDivisionNoReminder(x, size), Maths.tailOfDivisionNoReminder(y, size),
-				Maths.tailOfDivisionNoReminder(z, size));
+		IVectorBuilder3<Integer, Vector3i> vecBuilder = new VectorBuilder3i();
+		return vecBuilder
+					.setX(Maths.tailOfDivisionNoReminder(x, size))
+					.setY(Maths.tailOfDivisionNoReminder(y, size))
+					.setZ(Maths.tailOfDivisionNoReminder(z, size))
+					.build();
 	}
 
 	@Override
 	public boolean isChunkExist(int index) {
-		boolean isExist = false;
-		if (index >= 0 && index < this.chunks.size()) {
-			isExist = true;
-		}
-		return isExist;
+		return index >= 0 && index < this.chunks.size() ? true : false;
 	}
 
 	@Override
-	public boolean isChunkExist(Vector3i xyzIndex) {
-		boolean isExist = false;
-		int index = xyzIndex.x * size * size + xyzIndex.y * size + xyzIndex.z;
-		if (index >= 0 && index < this.chunks.size()) {
-			isExist = true;
-		}
-		return isExist;
+	public boolean isChunkExist(Vector3i indexPosition) {
+		int index = indexPosition.x * size * size + indexPosition.y * size + indexPosition.z;
+		return index >= 0 && index < this.chunks.size() ? true : false;
 	}
 
 	@Override
-	public Chunk getChunk(Vector3i position) {
-		return chunks.get(position.x * size * size + position.y * size + position.z);
+	public Chunk getChunk(Vector3i indexPosition) {
+		return chunks.get(indexPosition.x * size * size + indexPosition.y * size + indexPosition.z);
 	}
 
 	@Override

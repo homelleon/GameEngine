@@ -25,8 +25,8 @@ import object.voxel.data.FaceCullingData;
 import renderer.loader.Loader;
 import renderer.viewCulling.frustum.Frustum;
 import shader.voxel.VoxelShader;
-import tool.Vector3i;
 import tool.math.Maths;
+import tool.math.vector.Vector3i;
 import tool.openGL.OGLUtils;
 
 public class VoxelRenderer {
@@ -363,7 +363,7 @@ public class VoxelRenderer {
 
 	private boolean isFaceCovered(IChunkManager chunker, int index, int face) {
 		boolean isCovered = false;
-		Vector3i position = chunker.getChunkXYZIndex(index);
+		Vector3i position = chunker.getChunkIndexVector(index);
 		switch (face) {
 		case FRONT:
 			position.z += 1;

@@ -1,7 +1,7 @@
 package object.voxel;
 
 import core.settings.EngineSettings;
-import tool.Vector3i;
+import tool.math.vector.Vector3i;
 
 public class Chunk {
 

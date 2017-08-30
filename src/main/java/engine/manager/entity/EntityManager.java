@@ -8,7 +8,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import core.settings.EngineSettings;
 import object.entity.entity.IEntity;
 import renderer.viewCulling.frustum.Frustum;
 import tool.manager.AbstractManager;
@@ -26,7 +25,7 @@ import tool.manager.AbstractManager;
  * хранить сущности, выбранные игроком, и сущности для интерфейса редактора.
  * 
  * @author homelleon
- * @version 1.0
+ * @version 1.0.1
  * 
  */
 public class EntityManager extends AbstractManager<IEntity> implements IEntityManager {
@@ -93,32 +92,11 @@ public class EntityManager extends AbstractManager<IEntity> implements IEntityMa
 	@Override
 	public void updateWithFrustum(Frustum frustum) {
 		this.frustumEntities.clear();
-		
-		class Pair {
-			private float distance;
-			private IEntity entity;
-			
-			public Pair(IEntity entity) {
-				this.entity = entity;
-				this.distance = frustum.distanceSphereInFrustum(entity.getPosition(), entity.getSphereRadius());
-			}
-			public float getDistance() {
-				return this.distance;
-			}
-			
-			public IEntity getEntity() {
-				return this.entity;
-			}
-			
-			public boolean valid() {
-				return distance > 0;
-			}
-		}
-		
 		Map<Float, List<IEntity>> validEntities = this.getAll().stream()
-			.map(Pair::new)
-			.filter(pair -> pair.valid())
-			.collect(Collectors.groupingBy(Pair::getDistance, Collectors.mapping(Pair::getEntity, Collectors.toList())));
+			.map(entity -> new EDPair(entity, countDistance(entity, frustum))) 		//EDPair - pair of entity and distance
+			.filter(EDPair::valid)
+			.collect(Collectors.groupingBy(EDPair::getDistance, 
+					Collectors.mapping(EDPair::getEntity, Collectors.toList())));
 		this.frustumEntities.putAll(validEntities);		
 	}
 
@@ -155,6 +133,18 @@ public class EntityManager extends AbstractManager<IEntity> implements IEntityMa
 		super.clean();
 		this.pointedEntities.clear();
 		this.frustumEntities.clear();		
+	}
+	
+	/**
+	 * Counts distance from entity to furthest frustum plane.
+	 * <br>Returns 0 if entity is not in frustum view.
+	 *  
+	 * @param entity {@link IEntity} value of world entity object
+	 * @param frustum {@link Frustum} value of camera view frustum
+	 * @return float value of distance between entity and furthest frustum plane
+	 */
+	private float countDistance(IEntity entity, Frustum frustum) {
+		return frustum.distanceSphereInFrustum(entity.getPosition(), entity.getSphereRadius()); 
 	}
 
 
