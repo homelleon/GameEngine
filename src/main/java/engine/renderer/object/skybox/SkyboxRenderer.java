@@ -18,27 +18,58 @@ public class SkyboxRenderer {
 
 	private static final float SIZE = 500f;
 
-	private static final float[] VERTICES = { -SIZE, SIZE, -SIZE, -SIZE, -SIZE, -SIZE, SIZE, -SIZE, -SIZE, SIZE, -SIZE,
-			-SIZE, SIZE, SIZE, -SIZE, -SIZE, SIZE, -SIZE,
+	private static final float[] VERTICES = { 
+			-SIZE, SIZE, -SIZE, 
+			-SIZE, -SIZE, -SIZE, 
+			SIZE, -SIZE, -SIZE, 
+			
+			SIZE, -SIZE,-SIZE, 
+			SIZE, SIZE, -SIZE, 
+			-SIZE, SIZE, -SIZE,
+			
+			-SIZE, -SIZE, SIZE, 
+			-SIZE, -SIZE, -SIZE, 
+			-SIZE, SIZE, -SIZE, 
+			
+			-SIZE, SIZE, -SIZE, 
+			-SIZE, SIZE, SIZE, 
+			-SIZE,-SIZE, SIZE,
 
-			-SIZE, -SIZE, SIZE, -SIZE, -SIZE, -SIZE, -SIZE, SIZE, -SIZE, -SIZE, SIZE, -SIZE, -SIZE, SIZE, SIZE, -SIZE,
-			-SIZE, SIZE,
+			SIZE, -SIZE, -SIZE,
+			SIZE, -SIZE, SIZE,
+			SIZE, SIZE, SIZE,
+			SIZE, SIZE, SIZE,
+			
+			SIZE, SIZE, -SIZE,
+			SIZE, -SIZE, -SIZE,
+			-SIZE, -SIZE, SIZE,
+			-SIZE, SIZE, SIZE,
+			SIZE, SIZE, SIZE, 
+			
+			SIZE, SIZE, SIZE, 
+			SIZE, -SIZE, SIZE, 
+			-SIZE, -SIZE, SIZE,
+			-SIZE, SIZE, -SIZE, 
+			
+			SIZE, SIZE, -SIZE, 
+			SIZE, SIZE, SIZE, 
+			SIZE, SIZE, SIZE, 
+			-SIZE, SIZE, SIZE, 
+			
+			-SIZE, SIZE, -SIZE,
+			-SIZE, -SIZE, -SIZE, 
+			-SIZE, -SIZE, SIZE, 
+			SIZE, -SIZE, -SIZE,
+			
+			SIZE, -SIZE, -SIZE, 
+			-SIZE, -SIZE, SIZE, 
+			SIZE, -SIZE, SIZE };
 
-			SIZE, -SIZE, -SIZE, SIZE, -SIZE, SIZE, SIZE, SIZE, SIZE, SIZE, SIZE, SIZE, SIZE, SIZE, -SIZE, SIZE, -SIZE,
-			-SIZE,
-
-			-SIZE, -SIZE, SIZE, -SIZE, SIZE, SIZE, SIZE, SIZE, SIZE, SIZE, SIZE, SIZE, SIZE, -SIZE, SIZE, -SIZE, -SIZE,
-			SIZE,
-
-			-SIZE, SIZE, -SIZE, SIZE, SIZE, -SIZE, SIZE, SIZE, SIZE, SIZE, SIZE, SIZE, -SIZE, SIZE, SIZE, -SIZE, SIZE,
-			-SIZE,
-
-			-SIZE, -SIZE, -SIZE, -SIZE, -SIZE, SIZE, SIZE, -SIZE, -SIZE, SIZE, -SIZE, -SIZE, -SIZE, -SIZE, SIZE, SIZE,
-			-SIZE, SIZE };
-
-	private static String[] TEXTURE_FILES = { "right", "left", "top", "bottom", "back", "front" };
-	private static String[] NIGHT_TEXTURE_FILES = { "nightRight", "nightLeft", "nightTop", "nightBottom", "nightBack",
-			"nightFront" };
+	private static String[] TEXTURE_FILES = { 
+			"right", "left", "top", "bottom", "back", "front" };
+	private static String[] NIGHT_TEXTURE_FILES = { 
+			"nightRight", "nightLeft", "nightTop", 
+			"nightBottom", "nightBack", "nightFront" };
 
 	private RawModel cube;
 	private int dayTexture;
@@ -82,20 +113,20 @@ public class SkyboxRenderer {
 		float blendFactor;
 
 		if (time >= 0 && time < 5000) {
-			texture1 = nightTexture;
-			texture2 = nightTexture;
+			texture1 = dayTexture;
+			texture2 = dayTexture;
 			blendFactor = (time - 0) / (5000 - 0);
 		} else if (time >= 5000 && time < 8000) {
-			texture1 = nightTexture;
-			texture2 = dayTexture;
-			blendFactor = (time - 5000) / (8000 - 5000);
-		} else if (time >= 8000 && time < 21000) {
-			texture1 = dayTexture;
-			texture2 = dayTexture;
-			blendFactor = (time - 8000) / (21000 - 8000);
-		} else {
 			texture1 = dayTexture;
 			texture2 = nightTexture;
+			blendFactor = (time - 5000) / (8000 - 5000);
+		} else if (time >= 8000 && time < 21000) {
+			texture1 = nightTexture;
+			texture2 = nightTexture;
+			blendFactor = (time - 8000) / (21000 - 8000);
+		} else {
+			texture1 = nightTexture;
+			texture2 = dayTexture;
 			blendFactor = (time - 21000) / (24000 - 21000);
 		}
 		GL13.glActiveTexture(GL13.GL_TEXTURE0);

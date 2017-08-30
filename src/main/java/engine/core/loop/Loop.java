@@ -1,7 +1,6 @@
 package core.loop;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;

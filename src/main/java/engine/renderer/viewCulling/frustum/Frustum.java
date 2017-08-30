@@ -1,15 +1,9 @@
 package renderer.viewCulling.frustum;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 
-import core.settings.EngineSettings;
 import object.camera.ICamera;
-import object.entity.entity.IEntity;
 import tool.math.Maths;
 
 public class Frustum {

@@ -77,7 +77,7 @@ public class EngineSettings {
 	/* simulation settings */
 	public static final float GRAVITY = -50;
 	public static final float TIME_LENGTH = 1;
-	public static final float FOG_DENSITY = 0.002f;
+	public static final float FOG_DENSITY = 0.0022f;
 	public static final float SHADOW_DISTANCE = 150;
 	public static final int SHADOW_MAP_SIZE = 16384;
 	public static final float SHADOW_TRANSITION_DISTANCE = SHADOW_DISTANCE;
@@ -150,8 +150,8 @@ public class EngineSettings {
 	public final static Vector4f NO_CLIP = new Vector4f(0, 0, 0, 1);
 
 	/* global world settings */
-	public final static float SUN_MAX_HEIGHT = 4000;
-	public final static float SUN_MIN_HEIGHT = -4000;
+	public final static float SUN_MAX_HEIGHT = 40000;
+	public final static float SUN_MIN_HEIGHT = -40000;
 
 	/* display mode constants */
 	public final static int DISPLAY_DEBUG_MODE = 0;

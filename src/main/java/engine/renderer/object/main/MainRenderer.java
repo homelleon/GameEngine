@@ -133,10 +133,8 @@ public class MainRenderer implements IMainRenderer {
 		checkWiredFrameOff(entitiyWiredFrame);
 
 		checkWiredFrameOn(terrainWiredFrame);
-		if (!isLowDistance) {
-			voxelRenderer.render(chunkManager, clipPlane, lights, camera, shadowMapRenderer.getToShadowMapSpaceMatrix(),
-					frustum);
-		}
+		voxelRenderer.render(chunkManager, clipPlane, lights, camera, shadowMapRenderer.getToShadowMapSpaceMatrix(),
+				frustum);
 		terrainRenderer.render(terrains, clipPlane, lights, camera, shadowMapRenderer.getToShadowMapSpaceMatrix());
 		checkWiredFrameOff(terrainWiredFrame);
 
@@ -158,11 +156,16 @@ public class MainRenderer implements IMainRenderer {
 	@Override
 	public void renderShadowMap(IScene scene) {
 		scene.getEntities().getAll().stream()
-			 .filter(entity -> entity.getType() == EngineSettings.ENTITY_TYPE_SIMPLE)
-			 .forEach(entity -> processor.processShadowEntity(entity, entities, frustum));
-		scene.getEntities().getAll().stream()
-		 	 .filter(entity -> entity.getType() == EngineSettings.ENTITY_TYPE_NORMAL)
-		 	 .forEach(entity -> processor.processShadowNormalMapEntity(entity, normalMapEntities, frustum));
+			.forEach(entity -> { 
+				 switch(entity.getType()) {
+				 	case EngineSettings.ENTITY_TYPE_SIMPLE:
+				 		processor.processShadowEntity(entity, entities, frustum);
+				 		break;
+				 	case EngineSettings.ENTITY_TYPE_NORMAL:
+				 		processor.processShadowNormalMapEntity(entity, normalMapEntities, frustum);
+				 		break;
+				 }
+			 });
 		shadowMapRenderer.render(entities, terrains, normalMapEntities, scene.getSun(), scene.getCamera());
 		entities.clear();
 		normalMapEntities.clear();

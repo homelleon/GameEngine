@@ -92,12 +92,12 @@ public class EntityManager extends AbstractManager<IEntity> implements IEntityMa
 	@Override
 	public void updateWithFrustum(Frustum frustum) {
 		this.frustumEntities.clear();
-		Map<Float, List<IEntity>> validEntities = this.getAll().stream()
-			.map(entity -> new EDPair(entity, countDistance(entity, frustum))) 		//EDPair - pair of entity and distance
-			.filter(EDPair::valid)
-			.collect(Collectors.groupingBy(EDPair::getDistance, 
-					Collectors.mapping(EDPair::getEntity, Collectors.toList())));
-		this.frustumEntities.putAll(validEntities);		
+		this.frustumEntities.putAll(
+				this.getAll().stream()
+					.map(entity -> new EDPair(entity, countDistance(entity, frustum))) //EDPair - pair of entity and distance
+					.filter(EDPair::valid)
+					.collect(Collectors.groupingBy(EDPair::getDistance, 
+							Collectors.mapping(EDPair::getEntity, Collectors.toList()))));
 	}
 
 

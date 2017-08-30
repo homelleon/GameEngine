@@ -94,6 +94,7 @@ public class EntityRenderer {
 		shader.loadClipPlane(clipPlane);
 		shader.loadSkyColour(EngineSettings.DISPLAY_RED, EngineSettings.DISPLAY_GREEN, EngineSettings.DISPLAY_BLUE);
 		shader.loadFogDensity(EngineSettings.FOG_DENSITY);
+		shader.loadDistanceRendereringFactor(EngineSettings.DETAIL_VIEW_DISTANCE);
 		shader.loadLights(lights);
 		shader.loadCamera(camera);
 		shader.loadToShadowSpaceMatrix(toShadowMapSpace);
@@ -186,6 +187,8 @@ public class EntityRenderer {
 		GL20.glEnableVertexAttribArray(0);
 		GL20.glEnableVertexAttribArray(1);
 		GL20.glEnableVertexAttribArray(2);
+//		GL11.glEnable(GL11.GL_BLEND);
+//		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		ModelTexture texture = model.getTexture();
 		shader.loadNumberOfRows(texture.getNumberOfRows());
 		if (texture.isHasTransparency()) {
@@ -212,6 +215,7 @@ public class EntityRenderer {
 	 * Unbinds VBO for used model
 	 */
 	private void unbindTexturedModel() {
+//		GL11.glDisable(GL11.GL_BLEND);
 		OGLUtils.cullBackFaces(true);
 		GL20.glDisableVertexAttribArray(0);
 		GL20.glDisableVertexAttribArray(1);

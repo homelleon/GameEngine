@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.IntStream;
 
 import manager.gui.font.IFontManager;
 import object.gui.group.IGUIGroup;
@@ -39,15 +40,15 @@ public class GUIRenderer implements IGUIRenderer {
 		List<Integer> keys = new ArrayList<Integer>();
 		keys.addAll(this.groups.keySet());
 		Collections.sort(keys);
-		for (int i = 0; i < keys.size(); i++) {
-			this.groups.get(keys.get(i)).forEach(group -> {
-				group.getAll().stream()
-				.filter(gui -> gui.getIsShown()).forEach(gui -> {
-					this.textureRenderer.render(gui.getTextures());
-					this.textRenderer.render(gui.getTexts());
-				});
+		IntStream.range(0, keys.size())
+			.mapToObj(index -> this.groups.get(keys.get(index)))
+			.flatMap(list -> list.stream())
+			.flatMap(group -> group.getAll().stream())
+			.filter(IGUI::getIsShown)
+			.forEach(gui -> {
+				this.textureRenderer.render(gui.getTextures());
+				this.textRenderer.render(gui.getTexts());
 			});
-		}
 		this.groups.clear();
 	}
 

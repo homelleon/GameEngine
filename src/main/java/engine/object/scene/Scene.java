@@ -4,7 +4,6 @@ import java.util.Collection;
 
 import org.lwjgl.util.vector.Vector3f;
 
-import core.settings.EngineSettings;
 import manager.audio.IAudioManager;
 import manager.entity.IEntityManager;
 import manager.gui.GUIManager;
@@ -25,7 +24,6 @@ import object.light.Light;
 import object.particle.ParticleSystem;
 import object.terrain.terrain.ITerrain;
 import object.texture.Texture;
-import renderer.viewCulling.frustum.Frustum;
 import tool.MousePicker;
 
 public class Scene extends AObjectManager implements IScene {
@@ -36,11 +34,9 @@ public class Scene extends AObjectManager implements IScene {
 	private Light sun;
 
 	private Texture environmentMap = Texture.newEmptyCubeMap(128);
-
-	private Frustum frustum = new Frustum();
 	private MousePicker picker;
 
-	private IChunkManager chunkManager = new ChunkManager(CHUNK_WORLD_SIZE, new Vector3f(0, 0, 0));
+	private IChunkManager chunkManager;
 	private IGUIManager uiManager = new GUIManager();
 
 	public Scene(IAudioMaster audioMaster) {
@@ -55,21 +51,16 @@ public class Scene extends AObjectManager implements IScene {
 	private void initialize(IObjectManager levelMap) {
 		this.getEntities().addAll(levelMap.getEntities().getAll());
 		this.getTerrains().addAll(levelMap.getTerrains().getAll());
-		//this.getWaters().addAll(objectMap.getWaters().values());
+		this.getWaters().addAll(levelMap.getWaters().getAll());
 		this.getParticles().addAll(levelMap.getParticles().getAll());
 		this.getLights().addAll(levelMap.getLights().getAll());
 		this.getAudioSources().getMaster().init();
 		this.getAudioSources().addAll(levelMap.getAudioSources().getAll());
-		for (int i = 0; i < CHUNK_WORLD_SIZE * CHUNK_WORLD_SIZE * CHUNK_WORLD_SIZE; i++) {
-			for (int x = 0; x <= EngineSettings.VOXEL_CHUNK_SIZE; x++) {
-				for (int y = 0; y <= EngineSettings.VOXEL_CHUNK_SIZE; y++) {
-					for (int z = 0; z <= EngineSettings.VOXEL_CHUNK_SIZE; z++) {
-						chunkManager.getChunk(i).getBlock(x, y, z).setIsActive(true);
-					}
-				}
-			}
-		}
+		Vector3f voxelGridPosition = this.spreadPointOnHeights(new Vector3f(0,0,0));
+		this.chunkManager = new ChunkManager(CHUNK_WORLD_SIZE, voxelGridPosition);		
 		chunkManager.getChunk(2).getBlock(0,5,5).setIsActive(false);
+		chunkManager.getChunk(2).getBlock(0,4,5).setIsActive(false);
+		chunkManager.getChunk(2).getBlock(0,5,6).setIsActive(false);
 	}
 
 	@Override
@@ -184,6 +175,14 @@ public class Scene extends AObjectManager implements IScene {
 		this.picker = picker;
 	}
 
+	private Vector3f spreadPointOnHeights(Vector3f position) {
+		float terrainHeight = 0;
+		for (ITerrain terrain : this.terrainManager.getAll()) {
+			terrainHeight += terrain.getHeightOfTerrain(position.x, position.z);
+		}
+		position.setY(terrainHeight);
+		return position;
+	}
 	@Override
 	public void spreadEntitiesOnHeights(Collection<IEntity> entityList) {
 		if (!entityList.isEmpty()) {

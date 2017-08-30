@@ -41,6 +41,24 @@ public class ChunkManager implements IChunkManager {
 			.flatMap(y -> IntStream.range(0, size+1))
 			.mapToObj(z -> new Chunk())
 			.collect(Collectors.toList());
+		this.createVoxels();
+	}
+	
+	private void createVoxels() {
+		IntStream.range(0, size * size * size)
+		.mapToObj(ChunkIndex::new)
+		.flatMap(index -> IntStream.range(0, EngineSettings.VOXEL_CHUNK_SIZE + 1)
+				.mapToObj(x -> new ChunkIndex(index.getI())
+						.setX(x)))
+		.flatMap(index -> IntStream.range(0, EngineSettings.VOXEL_CHUNK_SIZE + 1)
+				.mapToObj(y -> new ChunkIndex(index.getI())
+						.setX(index.getX()).setY(y)))
+		.flatMap(index -> IntStream.range(0, EngineSettings.VOXEL_CHUNK_SIZE + 1)
+				.mapToObj(z -> new ChunkIndex(index.getI())
+						.setX(index.getX()).setY(index.getY()).setZ(z)))
+		.forEach(index -> getChunk(index.getI())
+				.getBlock(index.getX(), index.getY(), index.getZ())
+				.setIsActive(true));
 	}
 
 	@Override

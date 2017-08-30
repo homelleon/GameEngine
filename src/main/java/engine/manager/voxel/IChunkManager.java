@@ -13,7 +13,7 @@ import tool.math.vector.Vector3i;
  * @see ChunkManager
  */
 public interface IChunkManager {
-
+	
 	/**
 	 * Adds one chunk ito the chunks array.
 	 * <p>
