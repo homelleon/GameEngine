@@ -51,6 +51,7 @@ const float gradient = 3.0;
 //---distance
 uniform float distanceRenderingFactor;
 const float distanceTransition = 20.0;
+const float distanceTransitionPoint = 0.28; 
 
 void main(void) {
 
@@ -89,6 +90,9 @@ void main(void) {
    toCameraVector = (inverse(viewMatrix) * vec4(0.0,0.0,0.0,1.0)).xyz - worldPosition.xyz;
    
    float distance = length(positionRelativeToCam.xyz);
+   
+   distanceVisibility = exp(-pow((distance/distanceRenderingFactor*distanceTransitionPoint),distanceTransition));
+   distanceVisibility = clamp(distanceVisibility,0.0,1.0);
    
    fogVisibility = exp(-pow((distance*fogDensity),gradient));
    fogVisibility = clamp(fogVisibility,0.0,1.0);

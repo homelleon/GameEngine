@@ -8,9 +8,11 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import object.camera.ICamera;
 import object.entity.entity.IEntity;
 import renderer.viewCulling.frustum.Frustum;
 import tool.manager.AbstractManager;
+import tool.math.Maths;
 
 /**
  * Manages entities in the game engine.
@@ -90,14 +92,20 @@ public class EntityManager extends AbstractManager<IEntity> implements IEntityMa
 	}
 
 	@Override
-	public void updateWithFrustum(Frustum frustum) {
+	public void updateWithFrustum(Frustum frustum, ICamera camera) {
 		this.frustumEntities.clear();
-		this.frustumEntities.putAll(
-				this.getAll().stream()
-					.map(entity -> new EDPair(entity, countDistance(entity, frustum))) //EDPair - pair of entity and distance
-					.filter(EDPair::valid)
-					.collect(Collectors.groupingBy(EDPair::getDistance, 
-							Collectors.mapping(EDPair::getEntity, Collectors.toList()))));
+		this.frustumEntities.putAll(this.getAll().stream()
+				.filter(entity -> checkOnFrustum(entity, frustum))
+				.map(entity -> new EDPair(entity, Maths.distanceFromCameraWithRadius(entity, camera)))
+				.collect(Collectors.groupingBy(EDPair::getDistance,
+						Collectors.mapping(EDPair::getEntity, Collectors.toList()))));
+		
+//		this.frustumEntities.putAll(
+//				this.getAll().stream()
+//					.map(entity -> new EDPair(entity, countDistance(entity, frustum))) //EDPair - pair of entity and distance
+//					.filter(EDPair::valid)
+//					.collect(Collectors.groupingBy(EDPair::getDistance, 
+//							Collectors.mapping(EDPair::getEntity, Collectors.toList()))));
 	}
 
 
@@ -145,6 +153,10 @@ public class EntityManager extends AbstractManager<IEntity> implements IEntityMa
 	 */
 	private float countDistance(IEntity entity, Frustum frustum) {
 		return frustum.distanceSphereInFrustum(entity.getPosition(), entity.getSphereRadius()); 
+	}
+	
+	private boolean checkOnFrustum(IEntity entity, Frustum frustum) {
+		return frustum.sphereInFrustum(entity.getPosition(), entity.getSphereRadius());
 	}
 
 

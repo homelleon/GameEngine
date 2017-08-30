@@ -7,6 +7,8 @@ import org.lwjgl.util.vector.Vector3f;
 import object.camera.ICamera;
 import object.entity.entity.IEntity;
 import object.terrain.terrain.ITerrain;
+import tool.math.vector.IVectorBuilder3;
+import tool.math.vector.VectorBuilder3f;
 
 public class Maths {
 
@@ -109,6 +111,10 @@ public class Maths {
 	/* distance from camera to entity */
 	public static float distanceFromCamera(IEntity entity, ICamera camera) {
 		return distance2Points(entity.getPosition(), camera.getPosition());
+	}
+	
+	public static float distanceFromCameraWithRadius(IEntity entity, ICamera camera) {
+		return (distance2Points(entity.getPosition(), camera.getPosition()) - entity.getSphereRadius());
 	}
 
 	/* distance from camera to terrain */

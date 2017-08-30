@@ -87,13 +87,14 @@ public class MainRenderer implements IMainRenderer {
 	@Override
 	public void renderScene(IScene scene, Vector4f clipPlane, boolean isLowDistance) {
 		this.frustum.extractFrustum(scene.getCamera(), projectionMatrix);
-		scene.getEntities().updateWithFrustum(this.frustum);
+		scene.getEntities().updateWithFrustum(this.frustum, scene.getCamera());
 		this.environmentMap = scene.getEnvironmentMap();
 		scene.getTerrains().getAll()
 			 .forEach(terrain -> processor.processTerrain(terrain, terrains));
 		
 		Map<Float, List<IEntity>> frustumEntities = scene.getEntities().getFromFrustum();
 		
+		//TODO: Use distance from camera to entity not from frustum plane.
 		frustumEntities.keySet().stream()
 	 	 .filter(distance -> distance <= EngineSettings.RENDERING_VIEW_DISTANCE)
 	 	 .map(distance -> frustumEntities.get(distance))

@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import object.camera.ICamera;
 import object.entity.entity.IEntity;
 import renderer.viewCulling.frustum.Frustum;
 import tool.manager.IManager;
@@ -87,7 +88,7 @@ public interface IEntityManager extends IManager<IEntity> {
 	 * @param frustum
 	 *            {@link Frustum} value of frustum pyramid
 	 */
-	void updateWithFrustum(Frustum frustum);
+	void updateWithFrustum(Frustum frustum, ICamera camera);
 
 
 	/**
