@@ -50,7 +50,7 @@
 			terrain_pack="terrainPack"
 			blend_texture="terrainBlendMap"
 			amplitude="20.0"
-			octave="10"
+			octave="5"
 			roughness="1.2">
 				<position
 				x="0"

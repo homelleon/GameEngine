@@ -94,7 +94,6 @@ public class EntityRenderer {
 		shader.loadClipPlane(clipPlane);
 		shader.loadSkyColour(EngineSettings.DISPLAY_RED, EngineSettings.DISPLAY_GREEN, EngineSettings.DISPLAY_BLUE);
 		shader.loadFogDensity(EngineSettings.FOG_DENSITY);
-		shader.loadDistanceRendereringFactor(EngineSettings.DETAIL_VIEW_DISTANCE);
 		shader.loadLights(lights);
 		shader.loadCamera(camera);
 		shader.loadToShadowSpaceMatrix(toShadowMapSpace);

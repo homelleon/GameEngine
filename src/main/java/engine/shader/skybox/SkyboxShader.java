@@ -12,8 +12,8 @@ import tool.math.Maths;
 
 public class SkyboxShader extends ShaderProgram {
 
-	private static final String VERTEX_FILE = EngineSettings.SHADERS_SKYBOX_PATH + "skyboxVertexShader.txt";
-	private static final String FRAGMENT_FILE = EngineSettings.SHADERS_SKYBOX_PATH + "skyboxFragmentShader.txt";
+	private static final String VERTEX_FILE = EngineSettings.SHADERS_SKYBOX_PATH + "skyboxVertexShader.glsl";
+	private static final String FRAGMENT_FILE = EngineSettings.SHADERS_SKYBOX_PATH + "skyboxFragmentShader.glsl";
 
 	private static final float ROTATE_SPEED = 1f;
 

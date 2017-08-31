@@ -14,8 +14,8 @@ import shader.ShaderProgram;
 
 public class NormalMappingShader extends ShaderProgram {
 
-	private static final String VERTEX_FILE = EngineSettings.SHADERS_NORMAL_MAP_PATH + "normalMapVShader.txt";
-	private static final String FRAGMENT_FILE = EngineSettings.SHADERS_NORMAL_MAP_PATH + "normalMapFShader.txt";
+	private static final String VERTEX_FILE = EngineSettings.SHADERS_NORMAL_MAP_PATH + "normalMapVShader.glsl";
+	private static final String FRAGMENT_FILE = EngineSettings.SHADERS_NORMAL_MAP_PATH + "normalMapFShader.glsl";
 
 	private int location_transformationMatrix;
 	private int location_projectionMatrix;

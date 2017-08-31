@@ -22,8 +22,8 @@ import tool.math.Maths;
 
 public class EntityShader extends ShaderProgram {
 
-	public static final String VERTEX_FILE = EngineSettings.SHADERS_ENTITY_PATH + "entityVertexShader.txt";
-	public static final String FRAGMENT_FILE = EngineSettings.SHADERS_ENTITY_PATH + "entityFragmentShader.txt";
+	public static final String VERTEX_FILE = EngineSettings.SHADERS_ENTITY_PATH + "entityVertexShader.glsl";
+	public static final String FRAGMENT_FILE = EngineSettings.SHADERS_ENTITY_PATH + "entityFragmentShader.glsl";
 
 	private int location_transformationMatrix; // матрица трансформации
 	private int location_projectionMatrix; // проективная матрица
@@ -56,7 +56,6 @@ public class EntityShader extends ShaderProgram {
 	private int location_usesSpecularMap; // использовать карту бликов
 	private int location_modelTexture; // текстура модели
 	private int location_isChosen; // Выбранный объект
-	private int location_distanceRenderingFactor; //Дальность прорисовки
 
 	public EntityShader() {
 		super(VERTEX_FILE, FRAGMENT_FILE);
@@ -111,7 +110,6 @@ public class EntityShader extends ShaderProgram {
 		location_modelTexture = super.getUniformLocation("modelTexture");
 		location_enviroMap = super.getUniformLocation("enviroMap");
 		location_isChosen = super.getUniformLocation("isChosen");
-		location_distanceRenderingFactor = super.getUniformLocation("distanceRenderingFactor");
 
 		location_lightCount = super.getUniformLocation("lightCount");
 		location_lightPosition = new int[EngineSettings.MAX_LIGHTS];
@@ -175,10 +173,6 @@ public class EntityShader extends ShaderProgram {
 
 	public void loadFogDensity(float density) {
 		super.loadFloat(location_fogDensity, density);
-	}
-	
-	public void loadDistanceRendereringFactor(float distance) {
-		super.loadFloat(location_distanceRenderingFactor, distance);
 	}
 
 	public void loadCamera(ICamera camera) {

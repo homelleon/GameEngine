@@ -9,8 +9,8 @@ import tool.math.Maths;
 
 public class BoundingShader extends ShaderProgram {
 
-	public static final String VERTEX_FILE = EngineSettings.SHADERS_BOUNDING_PATH + "boundVertexShader.txt";
-	public static final String FRAGMENT_FILE = EngineSettings.SHADERS_BOUNDING_PATH + "boundFragmentShader.txt";
+	public static final String VERTEX_FILE = EngineSettings.SHADERS_BOUNDING_PATH + "boundVertexShader.glsl";
+	public static final String FRAGMENT_FILE = EngineSettings.SHADERS_BOUNDING_PATH + "boundFragmentShader.glsl";
 
 	private int location_transformationMatrix; // матрица трансформации
 	private int location_projectionMatrix; // проективная матрица

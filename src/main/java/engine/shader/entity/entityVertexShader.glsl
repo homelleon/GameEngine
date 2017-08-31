@@ -12,7 +12,6 @@ out vec3 toLightVector[10];
 out vec3 toCameraVector;
 out float fogVisibility;
 out vec4 shadowCoords;
-out float distanceVisibility;
 
 //---out reflection and refraction
 out vec3 reflectedVector;
@@ -46,12 +45,7 @@ uniform vec2 offset;
 
 //---fog
 uniform float fogDensity;
-const float gradient = 3.0;
-
-//---distance
-uniform float distanceRenderingFactor;
-const float distanceTransition = 20.0;
-const float distanceTransitionPoint = 0.28; 
+const float gradient = 5.0;
 
 void main(void) {
 
@@ -90,9 +84,6 @@ void main(void) {
    toCameraVector = (inverse(viewMatrix) * vec4(0.0,0.0,0.0,1.0)).xyz - worldPosition.xyz;
    
    float distance = length(positionRelativeToCam.xyz);
-   
-   distanceVisibility = exp(-pow((distance/distanceRenderingFactor*distanceTransitionPoint),distanceTransition));
-   distanceVisibility = clamp(distanceVisibility,0.0,1.0);
    
    fogVisibility = exp(-pow((distance*fogDensity),gradient));
    fogVisibility = clamp(fogVisibility,0.0,1.0);

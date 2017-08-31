@@ -1,4 +1,3 @@
-//BOUNDING FRAGMENT SHADER
 #version 400 core
 
 out vec4 out_Color;

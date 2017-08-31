@@ -14,7 +14,10 @@ import object.texture.terrain.texture.TerrainTexture;
  * @see MappedTerrain
  */
 public interface ITerrain extends Nameable {
-
+	
+	public static final int TERRAIN_VERTEX_COUNT = 256;
+	public static final int TERRAIN_SIZE = 10000;
+	
 	/**
 	 * Gets size of terrain tiles.
 	 * 

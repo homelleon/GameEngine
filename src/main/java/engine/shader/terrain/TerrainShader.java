@@ -15,8 +15,8 @@ import tool.math.Maths;
 
 public class TerrainShader extends ShaderProgram {
 
-	public static final String VERTEX_FILE = EngineSettings.SHADERS_TERRAIN_PATH + "terrainVertexShader.txt";
-	public static final String FRAGMENT_FILE = EngineSettings.SHADERS_TERRAIN_PATH + "terrainFragmentShader.txt";
+	public static final String VERTEX_FILE = EngineSettings.SHADERS_TERRAIN_PATH + "terrainVertexShader.glsl";
+	public static final String FRAGMENT_FILE = EngineSettings.SHADERS_TERRAIN_PATH + "terrainFragmentShader.glsl";
 
 	private int location_transformationMatrix;
 	private int location_projectionMatrix;

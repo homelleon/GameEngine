@@ -69,15 +69,15 @@ public class MappedTerrain implements ITerrain {
 			TerrainTexture blendMap, String heightMap) {
 		this.texturePack = texturePack;
 		this.blendMap = blendMap;
-		this.x = gridX * EngineSettings.TERRAIN_SIZE;
-		this.z = gridZ * EngineSettings.TERRAIN_SIZE;
+		this.x = gridX * ITerrain.TERRAIN_SIZE;
+		this.z = gridZ * ITerrain.TERRAIN_SIZE;
 		this.model = generateTerrain(heightMap);
 		this.name = name;
 	}
 
 	@Override
 	public float getSize() {
-		return EngineSettings.TERRAIN_SIZE;
+		return ITerrain.TERRAIN_SIZE;
 	}
 
 	@Override
@@ -92,12 +92,12 @@ public class MappedTerrain implements ITerrain {
 
 	@Override
 	public void setXPosition(int xPosition) {
-		this.x = xPosition * EngineSettings.TERRAIN_SIZE;		
+		this.x = xPosition * ITerrain.TERRAIN_SIZE;		
 	}
 
 	@Override
 	public void setZPosition(int zPosition) {
-		this.z = zPosition * EngineSettings.TERRAIN_SIZE;		
+		this.z = zPosition * ITerrain.TERRAIN_SIZE;		
 	}
 
 	@Override
@@ -159,7 +159,7 @@ public class MappedTerrain implements ITerrain {
 	public float getHeightOfTerrain(float worldX, float worldZ) {
 		float terrainX = worldX - this.x;
 		float terrainZ = worldZ - this.z;
-		float gridSquareSize = EngineSettings.TERRAIN_SIZE / ((float) heights.length - 1);
+		float gridSquareSize = ITerrain.TERRAIN_SIZE / ((float) heights.length - 1);
 		int gridX = (int) Math.floor(terrainX / gridSquareSize);
 		int gridZ = (int) Math.floor(terrainZ / gridSquareSize);
 		if (gridX >= heights.length - 1 || gridZ >= heights.length - 1 || gridX < 0 || gridZ < 0) {
@@ -187,8 +187,8 @@ public class MappedTerrain implements ITerrain {
 
 	@Override
 	public ITerrain clone(String name) {
-		int gridX = (int) (this.x / EngineSettings.TERRAIN_SIZE);
-		int gridZ = (int) (this.z / EngineSettings.TERRAIN_SIZE);
+		int gridX = (int) (this.x / ITerrain.TERRAIN_SIZE);
+		int gridZ = (int) (this.z / ITerrain.TERRAIN_SIZE);
 		return new MappedTerrain(name, gridX, gridZ, this.texturePack,this.blendMap,this.heightMapName);
 	}
 
@@ -211,11 +211,11 @@ public class MappedTerrain implements ITerrain {
 		int vertexPointer = 0;
 		for (int i = 0; i < VERTEX_COUNT; i++) {
 			for (int j = 0; j < VERTEX_COUNT; j++) {
-				vertices[vertexPointer * 3] = j / ((float) VERTEX_COUNT - 1) * EngineSettings.TERRAIN_SIZE;
+				vertices[vertexPointer * 3] = j / ((float) VERTEX_COUNT - 1) * ITerrain.TERRAIN_SIZE;
 				float height = getHeight(j, i, image);
 				heights[j][i] = height;
 				vertices[vertexPointer * 3 + 1] = height;
-				vertices[vertexPointer * 3 + 2] = i / ((float) VERTEX_COUNT - 1) * EngineSettings.TERRAIN_SIZE;
+				vertices[vertexPointer * 3 + 2] = i / ((float) VERTEX_COUNT - 1) * ITerrain.TERRAIN_SIZE;
 				Vector3f normal = calculateNormal(j, i, image);
 				normals[vertexPointer * 3] = normal.x;
 				normals[vertexPointer * 3 + 1] = normal.y;

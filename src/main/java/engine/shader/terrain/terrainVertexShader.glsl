@@ -23,7 +23,7 @@ uniform float shadowTransitionDistance;
 
 uniform float fogDensity;
 
-const float gradient = 3.0;
+const float gradient = 5.0;
 
 uniform vec4 plane;
 

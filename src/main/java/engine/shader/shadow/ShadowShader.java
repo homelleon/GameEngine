@@ -8,8 +8,8 @@ import shader.ShaderProgram;
 
 public class ShadowShader extends ShaderProgram {
 
-	private static final String VERTEX_FILE = EngineSettings.SHADERS_SHADOW_PATH + "shadowVertexShader.txt";
-	private static final String FRAGMENT_FILE = EngineSettings.SHADERS_SHADOW_PATH + "shadowFragmentShader.txt";
+	private static final String VERTEX_FILE = EngineSettings.SHADERS_SHADOW_PATH + "shadowVertexShader.glsl";
+	private static final String FRAGMENT_FILE = EngineSettings.SHADERS_SHADOW_PATH + "shadowFragmentShader.glsl";
 
 	private int location_mvpMatrix;
 	private int location_offset;

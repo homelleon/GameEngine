@@ -16,8 +16,8 @@ import tool.math.Maths;
 
 public class VoxelShader extends ShaderProgram {
 
-	public static final String VERTEX_FILE = EngineSettings.SHADERS_VOXEL_PATH + "voxelVertexShader.txt";
-	public static final String FRAGMENT_FILE = EngineSettings.SHADERS_VOXEL_PATH + "voxelFragmentShader.txt";
+	public static final String VERTEX_FILE = EngineSettings.SHADERS_VOXEL_PATH + "voxelVertexShader.glsl";
+	public static final String FRAGMENT_FILE = EngineSettings.SHADERS_VOXEL_PATH + "voxelFragmentShader.glsl";
 
 	private int location_transformationMatrix;
 	private int location_projectionMatrix;
