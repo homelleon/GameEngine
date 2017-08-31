@@ -44,7 +44,8 @@ public abstract class GUIButtonBase extends GUIObject implements IGUIButton {
 	}
 
 	@Override
-	public void use() {
+	public void use(IEvent event) {
+		event.start();
 		if(EngineDebug.hasDebugPermission()) {
 			System.out.println("Button " + this.name + " is used!");
 		}

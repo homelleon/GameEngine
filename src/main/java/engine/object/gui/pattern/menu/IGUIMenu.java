@@ -2,6 +2,7 @@ package object.gui.pattern.menu;
 
 import object.Nameable;
 import object.gui.Hideable;
+import object.gui.pattern.button.IEvent;
 import object.gui.pattern.object.GUIObject;
 
 /**
@@ -40,7 +41,7 @@ public interface IGUIMenu extends Hideable,Nameable {
 	/**
 	 * Uses selected button.
 	 */
-	public void useButton();
+	public void useButton(IEvent event);
 	
 	/**
 	 * Gets if the menu has any buttons.

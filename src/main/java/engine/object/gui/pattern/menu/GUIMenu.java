@@ -7,6 +7,7 @@ import java.util.ListIterator;
 import java.util.Map;
 
 import object.gui.Hideable;
+import object.gui.pattern.button.IEvent;
 import object.gui.pattern.button.IGUIButton;
 import object.gui.pattern.object.GUIObject;
 
@@ -96,10 +97,10 @@ public class GUIMenu extends GUIObject implements IGUIMenu {
 	}
 
 	@Override
-	public void useButton() {
+	public void useButton(IEvent event) {
 		for(IGUIButton button : this.buttons) {
 			if(button.getIsSelected()) {
-				button.use();
+				button.use(event);
 				break;
 			}
 		}

@@ -1,12 +1,13 @@
 package main;
 
+import java.util.stream.IntStream;
+
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.util.vector.Vector2f;
 
 import core.EngineMain;
 import game.game.Game;
-import manager.gui.text.IGUITextManager;
-import manager.gui.texture.IGUITextureManager;
+import object.entity.entity.IEntity;
 import object.gui.group.IGUIGroup;
 import object.gui.gui.IGUI;
 import object.gui.gui.builder.GUIBuilder;
@@ -82,6 +83,7 @@ public class MyGame extends Game {
 				.getComponent().getTexts().get("buttonLabel1"));
 		buttonGroup = this.gameManager.getScene().getUserInterface().getGroups().createEmpty("button2");
 		buttonGroup.add(buttonGUIBuilder.build("button"));
+		
 		mainMenu.add((GUIObject) buttonGroup);
 		
 		IGUIButton button1 = new GUIButton("signButton1", signGUIBuilder.build("button"), new Vector2f(400,300), new Vector2f(600,500));
@@ -91,6 +93,8 @@ public class MyGame extends Game {
 		mainMenu.add((GUIObject) button2);
 		mainMenu.add((GUIObject) button3);
 		mainMenu.selectNextButton();
+		IEntity entity = this.gameManager.getScene().getEntities().get("player1");
+		
 		//PE10.peAttachBody(tree1, PE10.BODY_3D_SPHERE, world1);
 		//PE10.peAttachBody(tree2, PE10.BODY_3D_SPHERE, world1);
 		//PE10.peAttachBody(tree3, PE10.BODY_3D_SPHERE, world1);
@@ -120,7 +124,7 @@ public class MyGame extends Game {
 			} else if(KeyboardGame.isKeyPressed(Keyboard.KEY_DOWN)) {
 				menuSystem.get("first menu").selectPreviousButton();
 			} else if(KeyboardGame.isKeyPressed(Keyboard.KEY_RETURN)) {
-				menuSystem.get("first menu").useButton();
+				menuSystem.get("first menu").useButton(()-> this.menuSystem.hide());
 			}
 		} else {
 			menuSystem.hide("first menu");

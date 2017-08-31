@@ -26,7 +26,7 @@ public interface IGUIButton extends Nameable {
 	/**
 	 * Uses button command that was pre-implemented.
 	 */
-	void use();
+	void use(IEvent event);
 
 	/**
 	 * Checks if mouse is pointing current button.
