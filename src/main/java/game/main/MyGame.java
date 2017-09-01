@@ -1,9 +1,12 @@
 package main;
 
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
+import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Vector2f;
 
 import core.EngineMain;
+import core.settings.EngineSettings;
 import game.game.Game;
 import gameTools.GUIGroupBuilderTexture;
 import gameTools.IGUIGroupBuilderTexture;
@@ -85,17 +88,17 @@ public class MyGame extends Game {
 		buttonGroup3.add(buttonGUIBuilder.build("button3GUI"));
 		mainMenu.add((GUIObject) buttonGroup3);
 		
-		IGUIButton button1 = new GUIButton("menuButton1", buttonGroup1, new Vector2f(400,300), new Vector2f(600,500));
+		IGUIButton button1 = new GUIButton("menuButton1", buttonGroup1);
 		button1.attachAction(()->{
 				System.out.println("Hello!");
 				button1.move(new Vector2f(0.1f,0));
 			});
 		
-		IGUIButton button2 = new GUIButton("menuButton2", buttonGroup2, new Vector2f(400,300), new Vector2f(600,500));
+		IGUIButton button2 = new GUIButton("menuButton2", buttonGroup2);
 		button2.attachAction(()->{System.out.println("Bye!");});
 		button2.move(new Vector2f(0,0.2f));
 		
-		IGUIButton button3 = new GUIButton("menuButton3", buttonGroup3, new Vector2f(400,300), new Vector2f(600,500));
+		IGUIButton button3 = new GUIButton("menuButton3", buttonGroup3);
 		button3.attachAction(()->{System.out.println("Go away!");});
 		button3.move(new Vector2f(0,0.4f));
 		
@@ -130,8 +133,13 @@ public class MyGame extends Game {
 			} else if(KeyboardGame.isKeyPressed(Keyboard.KEY_DOWN)) {
 				menuSystem.getActivated().selectPreviousButton();
 			} else if(KeyboardGame.isKeyPressed(Keyboard.KEY_RETURN)) {
-				menuSystem.getActivated().useButton();;
+				menuSystem.getActivated().useButton();
 			}
+			Vector2f mousePos = new Vector2f(2 * Mouse.getX() / (float) Display.getWidth() - 1f, 2 * Mouse.getY() / (float) Display.getHeight() - 1f);
+			System.out.println(mousePos);
+			menuSystem.getActivated().getAllButtons().stream()
+			.filter(button -> button.getIsMouseOver(mousePos))
+			.forEach(button -> button.use(()-> System.out.println(button.getName() + " under mouse")));
 		} else {
 			menuSystem.hide("first menu");
 		}

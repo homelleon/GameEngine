@@ -235,7 +235,7 @@ public class MousePicker {
 	 * @return Vector2f value of normialize and transponded mouse coordinates
 	 */
 	private Vector2f getNormalizedDeviceCoords(float mouseX, float mouseY) {
-		float x = (2f * mouseX) / Display.getWidth() - 1;
+		float x = (2f * mouseX) / Display.getWidth() - 1f;
 		float y = (2f * mouseY) / Display.getHeight() - 1f;
 		return new Vector2f(x, y);
 	}

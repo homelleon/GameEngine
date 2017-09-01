@@ -1,5 +1,7 @@
 package object.gui.pattern.menu;
 
+import java.util.List;
+
 import object.Nameable;
 import object.gui.Hideable;
 import object.gui.pattern.button.IAction;
@@ -28,6 +30,13 @@ public interface IGUIMenu extends Hideable,Nameable {
 	 * @return {@link GUIObject} value
 	 */
 	GUIObject get(String name);
+	
+	/**
+	 * Gets all buttons in List.
+	 * 
+	 * @return {@link List}<{@link IGUIButton}> List of buttons
+	 */
+	List<IGUIButton> getAllButtons();
 	
 	/**
 	 * Gets selected button.<br>

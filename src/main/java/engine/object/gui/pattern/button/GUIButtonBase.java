@@ -20,11 +20,12 @@ public abstract class GUIButtonBase extends GUIObject implements IGUIButton {
 	protected Vector2f point2;
 	protected IAction event;
 
-	protected GUIButtonBase(String name, IGUIGroup guiGroup, Vector2f point1, Vector2f point2) {
+	protected GUIButtonBase(String name, IGUIGroup guiGroup) {
 		super(name);
 		this.guiGroup = guiGroup;
-		this.point1 = point1;
-		this.point2 = point2;
+		this.point1 = calculateFirstPoint();
+		this.point2 = calculateSecondPoint();
+		System.out.println(point1 + "; " + point2);
 	}
 
 	@Override
@@ -79,6 +80,9 @@ public abstract class GUIButtonBase extends GUIObject implements IGUIButton {
 	@Override
 	public void move(Vector2f position) {
 		this.guiGroup.move(position);
+		this.point1 = Vector2f.add(this.point1, position, null);
+		this.point2 = Vector2f.add(this.point2, position, null);
+		System.out.println(point1 + ";" + point2);
 	}
 
 	/**
@@ -99,5 +103,32 @@ public abstract class GUIButtonBase extends GUIObject implements IGUIButton {
 	 */
 	public boolean getIsSelected() {
 		return this.isSelected;
+	}
+	
+	private Vector2f calculateFirstPoint() {
+		return this.guiGroup.getAll().stream()
+					.flatMap(gui -> gui.getTextures().stream())
+					.map(texture -> texture.getFirstPoint())
+					.min((a,b) -> compareTo(a,b))
+					.get();
+	}
+	
+	private Vector2f calculateSecondPoint() {
+		return this.guiGroup.getAll().stream()
+					.flatMap(gui -> gui.getTextures().stream())
+					.map(texture -> texture.getSecondPoint())
+					.max((a,b) -> compareTo(a,b))
+					.get();
+	}
+
+	private int compareTo(Vector2f a, Vector2f b) {
+			if(a == b) {
+				return 0;
+			} else if(a.x == b.x) {
+				if(a.y < b.y) {return -1;}
+			} else if(a.x < b.x) {
+				return -1;
+			}
+			return 1;
 	}
 }

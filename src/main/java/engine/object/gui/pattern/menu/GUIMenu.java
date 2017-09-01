@@ -1,6 +1,7 @@
 package object.gui.pattern.menu;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
@@ -47,6 +48,11 @@ public class GUIMenu extends GUIObject implements IGUIMenu {
 	@Override
 	public GUIObject get(String name) {
 		return this.objects.get(name);
+	}	
+
+	@Override
+	public List<IGUIButton> getAllButtons() {
+		return this.buttons;
 	}
 	
 	@Override
@@ -154,6 +160,5 @@ public class GUIMenu extends GUIObject implements IGUIMenu {
 			throw new ArrayIndexOutOfBoundsException ("There is no buttons in " + this.getName() + " menu!");
 		}
 	}
-
 
 }

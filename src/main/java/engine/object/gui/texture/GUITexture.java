@@ -1,5 +1,6 @@
 package object.gui.texture;
 
+import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Vector2f;
 import org.newdawn.slick.opengl.Texture;
 
@@ -34,6 +35,24 @@ public class GUITexture {
 
 	public Vector2f getPosition() {
 		return this.position;
+	}
+	
+	public Vector2f getFirstPoint() {
+		float width = this.texture.getTextureWidth()/(float)Display.getWidth();
+		float height = this.texture.getTextureHeight()/(float)Display.getHeight();
+		System.out.println(this.texture.getWidth());
+		System.out.println(this.texture.getHeight());
+		float x = this.position.x - width*scale.x/2;
+		float y = this.position.y - height*scale.y/2;
+		return new Vector2f(x, y); 
+	}
+	
+	public Vector2f getSecondPoint() {
+		float width = this.texture.getTextureWidth()/(float)Display.getWidth();
+		float height = this.texture.getTextureHeight()/(float)Display.getHeight();
+		float x = this.position.x + width*scale.x/2;
+		float y = this.position.y + height*scale.y/2;
+		return new Vector2f(x, y); 
 	}
 
 	public Vector2f getScale() {

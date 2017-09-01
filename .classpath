@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry excluding="**" kind="src" output="target/classes" path="resource">
-		<attributes>
-			<attribute name="maven.pomderived" value="true"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry kind="src" path="src/main/java/engine"/>
+	<classpathentry kind="src" path="src/main/java/resource"/>
 	<classpathentry kind="src" path="src/main/java/game"/>
 	<classpathentry kind="src" path="src/main/java/editor"/>
 	<classpathentry kind="src" path="src/main/java/physic"/>

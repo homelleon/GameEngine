@@ -91,7 +91,7 @@ public class EngineSettings {
 
 	/* path settings */
 	public final static String PROJECT_PATH = "src/main/java/";
-	public final static String RES_PATH = "resource/";
+	public final static String RES_PATH = PROJECT_PATH + "resource/";
 	public final static String GAME_PATH = PROJECT_PATH + "game/";
 	public final static String SOURCE_PATH = PROJECT_PATH + "engine/";
 	public final static String OBJECT_PATH = SOURCE_PATH + "object/";
