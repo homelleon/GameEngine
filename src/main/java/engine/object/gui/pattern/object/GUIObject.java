@@ -23,6 +23,15 @@ public abstract class GUIObject implements Hideable, Nameable {
 	}
 	
 	@Override
+	public void switchVisibility() {
+		if(this.isShown) {
+			this.hide();
+		} else {
+			this.show();
+		}
+	}
+	
+	@Override
 	public boolean getIsShown() {
 		return this.isShown;
 	}

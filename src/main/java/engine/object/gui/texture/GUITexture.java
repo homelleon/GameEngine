@@ -66,5 +66,9 @@ public class GUITexture {
 	public void setIsVisible(boolean value) {
 		this.isVisible = value;
 	}
+	
+	public GUITexture clone(String name) {
+		return new GUITexture(name, this.texture, this.position, this.scale);
+	}
 
 }

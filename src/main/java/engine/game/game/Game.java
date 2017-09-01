@@ -19,7 +19,6 @@ public abstract class Game extends Thread implements IGame {
 
 	public IGameManager gameManager;
 	public int world1;
-	public IScene scene;
 
 	/**
 	 * Realize game events on engine start.<br>
@@ -29,7 +28,6 @@ public abstract class Game extends Thread implements IGame {
 	@Override
 	public void __onStart() {
 		this.gameManager = new GameManager();
-		this.scene = EngineMain.getScene();
 
 		List<GUIText> versionTextList = new ArrayList<GUIText>();
 		List<GUITexture> versionTextureList = new ArrayList<GUITexture>();

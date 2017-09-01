@@ -1,12 +1,12 @@
 package main;
 
-import java.util.stream.IntStream;
-
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.util.vector.Vector2f;
 
 import core.EngineMain;
 import game.game.Game;
+import gameTools.GUIGroupBuilderTexture;
+import gameTools.IGUIGroupBuilderTexture;
 import object.entity.entity.IEntity;
 import object.gui.group.IGUIGroup;
 import object.gui.gui.IGUI;
@@ -40,55 +40,65 @@ public class MyGame extends Game {
 		//world1 = PE10.peCreateWorld(new Vector3f(0,0,0), new Vector3f(0,0,0));
 		
 		//--------help hints GUI-------------//
-		IGUIBuilder helpGUIBuilder = new GUIBuilder();
-		helpGUIBuilder.setText(this.gameManager.getTexts().get("inputHints"));
+		IGUIBuilder helpGUIBuilder = new GUIBuilder(this.gameManager.getScene().getUserInterface().getComponent());
+		helpGUIBuilder.setText("inputHintsText",this.gameManager.getTexts().get("inputHints"));
 		this.helpGroup = this.gameManager.getScene().getUserInterface().getGroups().createEmpty(guiGroupName);
 		this.helpGroup.add(helpGUIBuilder.build("help"));
-		helpGUIBuilder = new GUIBuilder();
-		helpGUIBuilder.setText(this.gameManager.getTexts().get("version"));
+		helpGUIBuilder = new GUIBuilder(this.gameManager.getScene().getUserInterface().getComponent());
+		helpGUIBuilder.setText("versionText",this.gameManager.getTexts().get("version"));
 		this.helpGroup.add(helpGUIBuilder.build("version"));
-		//-------sign button GUI-------------//
-		IGUIBuilder signGUIBuilder = new GUIBuilder();
-		signGUIBuilder.setTexture(this.gameManager.getTextures().get("Sign"));
-		IGUIGroup signGroup = this.gameManager.getScene().getUserInterface().getGroups().createEmpty("sign");
-		signGroup.add(signGUIBuilder.build("sign"));
+		//-------sign GUI-------------//
+		IGUIGroupBuilderTexture groupBuilder = new GUIGroupBuilderTexture(this.gameManager.getScene().getUserInterface())
+				.setTextureName("Sign");
+		IGUIGroup signGroup = groupBuilder.build("sign");
 		((GUIObject) signGroup).show();
 		
 		//-----------button GUI--------------//		
-		menuSystem = scene.getUserInterface().getMenus();
+		menuSystem = this.gameManager.getScene().getUserInterface().getMenus();
 		IGUIMenu mainMenu = new GUIMenu("first menu");
 		menuSystem.add(mainMenu);
+		menuSystem.active(mainMenu.getName());
 		
-		IGUIBuilder buttonGUIBuilder = new GUIBuilder();
-		buttonGUIBuilder.setTexture(this.gameManager.getTextures().get("Button"));
-		buttonGUIBuilder.setText(gameManager.getScene().getUserInterface()
+		IGUIBuilder buttonGUIBuilder = new GUIBuilder(this.gameManager.getScene().getUserInterface().getComponent());
+		buttonGUIBuilder.setTexture("button1Texture", this.gameManager.getTextures().get("Button"));
+		buttonGUIBuilder.setText("button1Text", gameManager.getScene().getUserInterface()
 				.getComponent().getTexts().get("buttonLabel1"));
-		IGUIGroup buttonGroup = this.gameManager.getScene().getUserInterface().getGroups().createEmpty("button");
-		buttonGroup.add(buttonGUIBuilder.build("button"));
-		mainMenu.add((GUIObject) buttonGroup);
+		IGUIGroup buttonGroup1 = this.gameManager.getScene().getUserInterface().getGroups().createEmpty("button1");
+		buttonGroup1.add(buttonGUIBuilder.build("button1GUI"));
+		mainMenu.add((GUIObject) buttonGroup1);
 
 		
-		buttonGUIBuilder = new GUIBuilder();
-		buttonGUIBuilder.setTexture(gameManager.getScene().getUserInterface()
+		buttonGUIBuilder = new GUIBuilder(this.gameManager.getScene().getUserInterface().getComponent());
+		buttonGUIBuilder.setTexture("button2Texture", gameManager.getScene().getUserInterface()
 				.getComponent().getTextures().get("Button"));
-		buttonGUIBuilder.setText(gameManager.getScene().getUserInterface()
+		buttonGUIBuilder.setText("button2Text", gameManager.getScene().getUserInterface()
 				.getComponent().getTexts().get("buttonLabel1"));
-		buttonGroup = this.gameManager.getScene().getUserInterface().getGroups().createEmpty("button1");
-		buttonGroup.add(buttonGUIBuilder.build("button"));
-		mainMenu.add((GUIObject) buttonGroup);
+		IGUIGroup buttonGroup2 = this.gameManager.getScene().getUserInterface().getGroups().createEmpty("button2");
+		buttonGroup2.add(buttonGUIBuilder.build("button2GUI"));
+		mainMenu.add((GUIObject) buttonGroup2);
 		
-		buttonGUIBuilder = new GUIBuilder();
-		buttonGUIBuilder.setTexture(this.gameManager.getTextures().get("Button"));
-		buttonGUIBuilder.setText(gameManager.getScene().getUserInterface()
+		buttonGUIBuilder = new GUIBuilder(this.gameManager.getScene().getUserInterface().getComponent());
+		buttonGUIBuilder.setTexture("button3Texture", this.gameManager.getTextures().get("Button"));
+		buttonGUIBuilder.setText("button3Text", gameManager.getScene().getUserInterface()
 				.getComponent().getTexts().get("buttonLabel1"));
-		buttonGroup = this.gameManager.getScene().getUserInterface().getGroups().createEmpty("button2");
-		buttonGroup.add(buttonGUIBuilder.build("button"));
+		IGUIGroup buttonGroup3 = this.gameManager.getScene().getUserInterface().getGroups().createEmpty("button3");
+		buttonGroup3.add(buttonGUIBuilder.build("button3GUI"));
+		mainMenu.add((GUIObject) buttonGroup3);
 		
-		mainMenu.add((GUIObject) buttonGroup);
+		IGUIButton button1 = new GUIButton("menuButton1", buttonGroup1, new Vector2f(400,300), new Vector2f(600,500));
+		button1.attachAction(()->{
+				System.out.println("Hello!");
+				button1.move(new Vector2f(0.1f,0));
+			});
 		
-		IGUIButton button1 = new GUIButton("signButton1", signGUIBuilder.build("button"), new Vector2f(400,300), new Vector2f(600,500));
-		IGUIButton button2 = new GUIButton("signButton2", signGUIBuilder.build("button"), new Vector2f(400,300), new Vector2f(600,500));
-		IGUIButton button3 = new GUIButton("signButton3", signGUIBuilder.build("button"), new Vector2f(400,300), new Vector2f(600,500));
+		IGUIButton button2 = new GUIButton("menuButton2", buttonGroup2, new Vector2f(400,300), new Vector2f(600,500));
+		button2.attachAction(()->{System.out.println("Bye!");});
+		button2.move(new Vector2f(0,0.2f));
+		
+		IGUIButton button3 = new GUIButton("menuButton3", buttonGroup3, new Vector2f(400,300), new Vector2f(600,500));
+		button3.attachAction(()->{System.out.println("Go away!");});
+		button3.move(new Vector2f(0,0.4f));
+		
 		mainMenu.add((GUIObject) button1);
 		mainMenu.add((GUIObject) button2);
 		mainMenu.add((GUIObject) button3);
@@ -107,24 +117,20 @@ public class MyGame extends Game {
 	public void __onUpdate() {
 		//PE10.peUpdateWorld(world1);		
 		if(KeyboardGame.isKeyPressed(Keyboard.KEY_N)) {
-			if(((GUIObject) this.helpGroup).getIsShown()) {
-				((GUIObject) this.helpGroup).hide();
-			} else {
-				((GUIObject) this.helpGroup).show();
-			}
+			((GUIObject) this.helpGroup).switchVisibility();			
 		}
 	}
 
 	@Override
 	public void __onUpdateWithPause() {
 		if(EngineMain.getIsEnginePaused()) {
-			menuSystem.show("first menu");
+			menuSystem.getActivated().show();
 			if(KeyboardGame.isKeyPressed(Keyboard.KEY_UP)) {
-				menuSystem.get("first menu").selectNextButton();				
+				menuSystem.getActivated().selectNextButton();				
 			} else if(KeyboardGame.isKeyPressed(Keyboard.KEY_DOWN)) {
-				menuSystem.get("first menu").selectPreviousButton();
+				menuSystem.getActivated().selectPreviousButton();
 			} else if(KeyboardGame.isKeyPressed(Keyboard.KEY_RETURN)) {
-				menuSystem.get("first menu").useButton(()-> this.menuSystem.hide());
+				menuSystem.getActivated().useButton();;
 			}
 		} else {
 			menuSystem.hide("first menu");

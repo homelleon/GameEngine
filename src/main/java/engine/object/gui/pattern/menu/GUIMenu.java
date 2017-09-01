@@ -7,7 +7,7 @@ import java.util.ListIterator;
 import java.util.Map;
 
 import object.gui.Hideable;
-import object.gui.pattern.button.IEvent;
+import object.gui.pattern.button.IAction;
 import object.gui.pattern.button.IGUIButton;
 import object.gui.pattern.object.GUIObject;
 
@@ -31,6 +31,7 @@ public class GUIMenu extends GUIObject implements IGUIMenu {
 	private Map<String, GUIObject> objects = new HashMap<String, GUIObject>();
 	private List<IGUIButton> buttons = new ArrayList<IGUIButton>();
 	private ListIterator<IGUIButton> buttonIterator;
+	private IGUIButton selectedButton;
 	
 	@Override
 	public void add(GUIObject object) {
@@ -61,13 +62,13 @@ public class GUIMenu extends GUIObject implements IGUIMenu {
 					wasPrevious = false;
 					selectNextButton();
 				} else {
-					this.buttonIterator.next().select();
+					this.selectedButton = this.buttonIterator.next().select();
 				}
 			} else {
 				while(this.buttonIterator.hasPrevious()) {
 					this.buttonIterator.previous();
 				}
-				this.buttonIterator.next().select();
+				this.selectedButton = this.buttonIterator.next().select();
 			}
 		}
 	}
@@ -85,25 +86,30 @@ public class GUIMenu extends GUIObject implements IGUIMenu {
 					wasNext = false;
 					selectPreviousButton();
 				} else {
-					this.buttonIterator.previous().select();
+					this.selectedButton = this.buttonIterator.previous().select();
 				}
 			} else {
 				while(this.buttonIterator.hasNext()) {
 					this.buttonIterator.next();
 				}
-				this.buttonIterator.previous().select();
+				this.selectedButton = this.buttonIterator.previous().select();
 			}
 		}
 	}
 
 	@Override
-	public void useButton(IEvent event) {
-		for(IGUIButton button : this.buttons) {
-			if(button.getIsSelected()) {
-				button.use(event);
-				break;
-			}
-		}
+	public void useButton(IAction action) {
+		this.selectedButton.use(action);
+	}
+	
+	@Override
+	public void useButton() {
+		this.selectedButton.use();
+	}
+
+	@Override
+	public IGUIButton getSelectedButton() {
+		return this.selectedButton;
 	}
 	
 	@Override

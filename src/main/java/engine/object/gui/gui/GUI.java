@@ -66,9 +66,9 @@ public class GUI extends GUIObject implements IGUI {
 
 	@Override
 	public void move(Vector2f position) {
-		for (GUITexture gui : this.guiTextures) {
-			Vector2f newPosition = Vector2f.add(gui.getPosition(), position, null);
-			gui.setPosition(newPosition);
+		for (GUITexture texture : this.guiTextures) {
+			Vector2f newPosition = Vector2f.add(texture.getPosition(), position, null);
+			texture.setPosition(newPosition);
 		}
 
 		for (GUIText text : this.guiTexts) {

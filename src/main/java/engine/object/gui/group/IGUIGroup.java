@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.lwjgl.util.vector.Vector2f;
 
+import object.Moveable;
+import object.gui.Hideable;
 import object.gui.gui.IGUI;
 
 /**
@@ -14,7 +16,7 @@ import object.gui.gui.IGUI;
  * @see GUIGroup
  *
  */
-public interface IGUIGroup {
+public interface IGUIGroup extends Hideable, Moveable<Vector2f> {
 
 	/**
 	 * Returns name of the user interface group.
@@ -55,15 +57,6 @@ public interface IGUIGroup {
 	 * @return {@link Collection}<{@link IGUI}> value of user interfaces
 	 */
 	Collection<IGUI> getAll();
-	
-	/**
-	 * Moves user interface object at schedule position depending on its
-	 * starting position.
-	 * 
-	 * @param position
-	 *            {@link Vector2f} value
-	 */
-	void move(Vector2f position);
 
 	/**
 	 * Returns render priority number of current group.

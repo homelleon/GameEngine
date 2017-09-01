@@ -9,6 +9,11 @@ import object.gui.Hideable;
 import object.gui.pattern.menu.IGUIMenu;
 import object.gui.pattern.object.GUIObject;
 
+/**
+ * 
+ * @author homelleon
+ * @see IGUIMenuSystem
+ */
 public class GUIMenuSystem implements IGUIMenuSystem {
 	
 	Map<String, IGUIMenu> menus = new HashMap<String, IGUIMenu>();
@@ -43,6 +48,11 @@ public class GUIMenuSystem implements IGUIMenuSystem {
 	@Override
 	public IGUIMenu active(String name) {
 		this.activeMenu = this.menus.get(name);
+		return this.activeMenu;
+	}	
+	
+	@Override
+	public IGUIMenu getActivated() {
 		return this.activeMenu;
 	}
 
@@ -88,6 +98,15 @@ public class GUIMenuSystem implements IGUIMenuSystem {
 	@Override
 	public void hide() {
 		this.menus.values().forEach(object -> ((Hideable) object).hide());		
+	}
+
+	@Override
+	public void switchVisibility() {
+		if(this.isShown) {
+			this.hide();
+		} else {
+			this.show();
+		}
 	}
 
 	@Override

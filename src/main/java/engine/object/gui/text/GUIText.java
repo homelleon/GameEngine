@@ -3,6 +3,8 @@ package object.gui.text;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
+import manager.gui.text.IGUITextManager;
+
 /**
  * Represents a piece of text in the game.
  * 
@@ -22,12 +24,12 @@ public class GUIText {
 	private Vector3f colour = new Vector3f(0f, 0f, 0f);
 
 	private Vector2f position;
-	private float lineMaxSize;
+	private float maxLineLength;
 	private int numberOfLines;
 
 	private String fontName;
 
-	private boolean centerText = false;
+	private boolean centered = false;
 
 	private float width = 0.5f;
 	private float edge = 0.1f;
@@ -72,8 +74,8 @@ public class GUIText {
 		this.fontSize = fontSize;
 		this.fontName = fontName;
 		this.position = position;
-		this.lineMaxSize = maxLineLength;
-		this.centerText = centered;
+		this.maxLineLength = maxLineLength;
+		this.centered = centered;
 		makeFontSmooth();
 	}
 
@@ -300,14 +302,14 @@ public class GUIText {
 	 * @return {@code true} if the text should be centered.
 	 */
 	public boolean isCentered() {
-		return centerText;
+		return centered;
 	}
 
 	/**
 	 * @return The maximum length of a line of this text.
 	 */
 	public float getMaxLineSize() {
-		return lineMaxSize;
+		return maxLineLength;
 	}
 
 	/**
@@ -315,6 +317,12 @@ public class GUIText {
 	 */
 	public String getTextString() {
 		return textString;
+	}
+	
+	public GUIText clone(String name) {
+		GUIText text = new GUIText(name, this.textString, this.fontSize, this.fontName, this.position, this.maxLineLength, this.centered);
+		text.setColour(this.colour);
+		return text;
 	}
 
 	private void makeFontSmooth() {

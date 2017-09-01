@@ -8,7 +8,7 @@ package core.debug;
  */
 public class EngineDebug {
 
-	private static boolean debugPermission = true;
+	private static boolean debugPermission = false;
 
 	/* bounding variables */
 	public static final int BOUNDING_NONE = 0;

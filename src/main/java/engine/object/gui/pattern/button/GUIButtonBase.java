@@ -3,7 +3,7 @@ package object.gui.pattern.button;
 import org.lwjgl.util.vector.Vector2f;
 
 import core.debug.EngineDebug;
-import object.gui.gui.IGUI;
+import object.gui.group.IGUIGroup;
 import object.gui.pattern.object.GUIObject;
 import tool.math.Maths;
 
@@ -14,26 +14,26 @@ import tool.math.Maths;
  */
 public abstract class GUIButtonBase extends GUIObject implements IGUIButton {
 
-	protected IGUI gui;
+	protected IGUIGroup guiGroup;
 	protected boolean isSelected = false;
 	protected Vector2f point1;
 	protected Vector2f point2;
+	protected IAction event;
 
-	protected GUIButtonBase(String name, IGUI gui, Vector2f point1, Vector2f point2) {
+	protected GUIButtonBase(String name, IGUIGroup guiGroup, Vector2f point1, Vector2f point2) {
 		super(name);
-		this.gui = gui;
+		this.guiGroup = guiGroup;
 		this.point1 = point1;
 		this.point2 = point2;
 	}
 
 	@Override
-	public void select() {
-		if (!this.isSelected) {
-			this.isSelected = true;
-			if(EngineDebug.hasDebugPermission()) {
-				System.out.println("Button " + this.name + " is selected!");
-			}
+	public IGUIButton select() {
+		this.isSelected = true;
+		if(EngineDebug.hasDebugPermission()) {
+			System.out.println("Button " + this.name + " is selected!");
 		}
+		return this;
 	}
 
 	@Override
@@ -44,23 +44,41 @@ public abstract class GUIButtonBase extends GUIObject implements IGUIButton {
 	}
 
 	@Override
-	public void use(IEvent event) {
-		event.start();
+	public void use(IAction action) {
+		action.start();
 		if(EngineDebug.hasDebugPermission()) {
 			System.out.println("Button " + this.name + " is used!");
 		}
+	}
+	
+	@Override
+	public void use() {
+		if(event != null) {this.event.start();}
+		if(EngineDebug.hasDebugPermission()) {
+			System.out.println("Button " + this.name + " is used!");
+		}
+	}
+	
+	@Override
+	public void attachAction(IAction action) {
+		this.event = action;
 	}
 
 	@Override
 	public void show() {
 		super.show();
-		this.gui.show();
+		this.guiGroup.show();
 	}
 
 	@Override
 	public void hide() {
 		super.hide();
-		this.gui.hide();
+		this.guiGroup.hide();
+	}
+	
+	@Override
+	public void move(Vector2f position) {
+		this.guiGroup.move(position);
 	}
 
 	/**

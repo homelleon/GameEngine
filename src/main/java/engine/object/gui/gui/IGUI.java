@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.lwjgl.util.vector.Vector2f;
 
+import object.Moveable;
 import object.gui.Hideable;
 import object.gui.text.GUIText;
 import object.gui.texture.GUITexture;
@@ -16,7 +17,7 @@ import object.gui.texture.GUITexture;
  * @see GUI
  *
  */
-public interface IGUI extends Hideable {
+public interface IGUI extends Hideable, Moveable<Vector2f> {
 
 	/**
 	 * Returns name of user interface object.
@@ -47,15 +48,6 @@ public interface IGUI extends Hideable {
 	 *            {@link Float}
 	 */
 	void setTransparency(float value);
-
-	/**
-	 * Moves user interface object at schedule position depending on its
-	 * starting position.
-	 * 
-	 * @param position
-	 *            {@link Vector2f} value
-	 */
-	void move(Vector2f position);
 
 	/**
 	 * Clear user interface.

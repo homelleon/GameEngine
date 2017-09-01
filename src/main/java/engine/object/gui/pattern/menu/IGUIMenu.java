@@ -2,7 +2,8 @@ package object.gui.pattern.menu;
 
 import object.Nameable;
 import object.gui.Hideable;
-import object.gui.pattern.button.IEvent;
+import object.gui.pattern.button.IAction;
+import object.gui.pattern.button.IGUIButton;
 import object.gui.pattern.object.GUIObject;
 
 /**
@@ -29,6 +30,14 @@ public interface IGUIMenu extends Hideable,Nameable {
 	GUIObject get(String name);
 	
 	/**
+	 * Gets selected button.<br>
+	 * Returns null if there is no button is selected.
+	 * 
+	 * @return {@link IGUIButton} object
+	 */
+	IGUIButton getSelectedButton();
+	
+	/**
 	 * Selects next button.
 	 */
 	public void selectNextButton();
@@ -39,9 +48,14 @@ public interface IGUIMenu extends Hideable,Nameable {
 	public void selectPreviousButton();
 	
 	/**
+	 * Uses selected button with command directions as param.
+	 */
+	public void useButton(IAction action);
+	
+	/**
 	 * Uses selected button.
 	 */
-	public void useButton(IEvent event);
+	public void useButton();
 	
 	/**
 	 * Gets if the menu has any buttons.

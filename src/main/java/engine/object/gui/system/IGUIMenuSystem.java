@@ -4,15 +4,26 @@ import object.gui.Hideable;
 import object.gui.pattern.menu.IGUIMenu;
 import tool.manager.IManager;
 
+/**
+ * 
+ * @author homelleon
+ * @see GUIMenuSystem
+ */
 public interface IGUIMenuSystem extends IManager<IGUIMenu>, Hideable {
 	
 	/**
 	 * Actives GUI menu by name.
 	 * 
 	 * @param name {@link String} value of menu name
-	 * @return {@link IGUIMenu} objec
+	 * @return {@link IGUIMenu} object
 	 */
 	IGUIMenu active(String name);
+	
+	/**
+	 * Gets activated menu 
+	 * @return {@link IGUIMenu} object
+	 */
+	IGUIMenu getActivated();
 	
 	/**
 	 * Shows menu with defined name.

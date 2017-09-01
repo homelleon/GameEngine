@@ -2,6 +2,7 @@ package object.gui.pattern.button;
 
 import org.lwjgl.util.vector.Vector2f;
 
+import object.Moveable;
 import object.Nameable;
 
 /**
@@ -11,22 +12,36 @@ import object.Nameable;
  * @see GUIButton
  *
  */
-public interface IGUIButton extends Nameable {
+public interface IGUIButton extends Nameable, Moveable<Vector2f> {
 
 	/**
 	 * Does selecetion action for current button.
 	 */
-	void select();
+	IGUIButton select();
 
 	/**
 	 * Does desecelection action for current button.
 	 */
 	void deselect();
+	
+	/**
+	 * Attaches action for button command.
+	 * 
+	 * @param action {@link IAction} command directions
+	 */
+	public void attachAction(IAction action);
 
 	/**
-	 * Uses button command that was pre-implemented.
+	 * Uses button command throw param.
+	 * @param action {@link IAction} commad directions
 	 */
-	void use(IEvent event);
+	void use(IAction action);
+	
+	/**
+	 * Uses button command with pre-attached event.<br>
+	 * If event wasn't attached this method does nothing.
+	 */
+	void use();
 
 	/**
 	 * Checks if mouse is pointing current button.

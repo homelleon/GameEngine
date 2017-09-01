@@ -9,14 +9,19 @@ package object.gui;
 public interface Hideable {
 
 	/**
-	 * Sets object to be show for renderer;
+	 * Sets object to be show for renderer.
 	 */
 	void show();
 
 	/**
-	 * Sets object to be hidden for renderer;
+	 * Sets object to be hidden for renderer.
 	 */
 	void hide();
+	
+	/**
+	 * Swithces between hide and show visibility.
+	 */
+	void switchVisibility();
 	
 	boolean getIsShown();
 
