@@ -40,9 +40,9 @@ public class GUITextureRenderer {
 			if (guiTexture.getIsVisible()) {
 				GL13.glActiveTexture(GL13.GL_TEXTURE0);
 				GL11.glBindTexture(GL11.GL_TEXTURE_2D, guiTexture.getTexture().getTextureID());
-				Vector2f size = new Vector2f(guiTexture.getTexture().getImageWidth() / (float) DisplayManager.getWidth(), 
-						 guiTexture.getTexture().getImageHeight() / (float) DisplayManager.getHeight());
-				Vector2f scale = new Vector2f(guiTexture.getScale().x, guiTexture.getScale().y);
+				Vector2f size = new Vector2f(guiTexture.getTexture().getWidth(), 
+						 guiTexture.getTexture().getHeight());
+				Vector2f scale = new Vector2f(size.x * guiTexture.getScale().x, size.y * guiTexture.getScale().y);
 				Matrix4f matrix = Maths.createTransformationMatrix(guiTexture.getPosition(), scale);
 				this.shader.loadTransformation(matrix);
 				GL11.glDrawArrays(GL11.GL_TRIANGLE_STRIP, 0, this.quad.getVertexCount());

@@ -50,6 +50,38 @@
 				<b>0</b>
 			</color>
 		</GUIText>
+		<GUIText id="4">
+			<name>exit</name>
+			<path>exit</path>
+			<size>2</size>
+			<font>candara</font>
+			<position>
+				<x>0.0f</x>
+				<y>0.1f</y></position>
+			<max_length>1</max_length>
+			<centered>true</centered>
+			<color>
+				<r>0</r>
+				<g>1</g>
+				<b>0</b>
+			</color>
+		</GUIText>
+		<GUIText id="5">
+			<name>start</name>
+			<path>start</path>
+			<size>2</size>
+			<font>candara</font>
+			<position>
+				<x>0.0f</x>
+				<y>0.1f</y></position>
+			<max_length>1</max_length>
+			<centered>true</centered>
+			<color>
+				<r>0</r>
+				<g>1</g>
+				<b>0</b>
+			</color>
+		</GUIText>
 	</GUITexts>
 	<GUITextures>
 		<GUITexture id="1">

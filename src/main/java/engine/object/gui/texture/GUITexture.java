@@ -40,8 +40,6 @@ public class GUITexture {
 	public Vector2f getFirstPoint() {
 		float width = this.texture.getTextureWidth()/(float)Display.getWidth();
 		float height = this.texture.getTextureHeight()/(float)Display.getHeight();
-		System.out.println(this.texture.getWidth());
-		System.out.println(this.texture.getHeight());
 		float x = this.position.x - width*scale.x/2;
 		float y = this.position.y - height*scale.y/2;
 		return new Vector2f(x, y); 
@@ -57,6 +55,10 @@ public class GUITexture {
 
 	public Vector2f getScale() {
 		return this.scale;
+	}
+	
+	public void increaseScale(Vector2f scale) {
+		this.scale = new Vector2f(this.scale.x + scale.x, this.scale.y + scale.y);
 	}
 	
 	/**

@@ -50,6 +50,13 @@ public interface IGUIButton extends Nameable, Moveable<Vector2f> {
 	 *         false if button is out of the current button
 	 */
 	boolean getIsMouseOver(Vector2f cursorPosition);
+	
+	/**
+	 * Sets scale for all GUI objects of current button.
+	 * 
+	 * @param scale {@link Vector2f} value of scale
+	 */
+	void increaseScale(Vector2f scale);
 
 	/**
 	 * Checks if the current button is selected or not.

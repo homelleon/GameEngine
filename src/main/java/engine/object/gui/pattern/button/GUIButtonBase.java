@@ -25,7 +25,6 @@ public abstract class GUIButtonBase extends GUIObject implements IGUIButton {
 		this.guiGroup = guiGroup;
 		this.point1 = calculateFirstPoint();
 		this.point2 = calculateSecondPoint();
-		System.out.println(point1 + "; " + point2);
 	}
 
 	@Override
@@ -82,7 +81,13 @@ public abstract class GUIButtonBase extends GUIObject implements IGUIButton {
 		this.guiGroup.move(position);
 		this.point1 = Vector2f.add(this.point1, position, null);
 		this.point2 = Vector2f.add(this.point2, position, null);
-		System.out.println(point1 + ";" + point2);
+	}
+	
+	@Override
+	public void increaseScale(Vector2f scale) {
+		this.guiGroup.getAll().stream()
+			.flatMap(gui -> gui.getTextures().stream())
+			.forEach(texture -> texture.increaseScale(scale));
 	}
 
 	/**
@@ -91,6 +96,7 @@ public abstract class GUIButtonBase extends GUIObject implements IGUIButton {
 	 * @return true if mouse is over the current button<br>
 	 *         false if button is out of the current button
 	 */
+	@Override
 	public boolean getIsMouseOver(Vector2f cursorPosition) {
 		return Maths.pointIsInQuad(cursorPosition, point1, point2);
 	}
