@@ -32,9 +32,9 @@ import tool.math.Maths;
  */
 public class EntityManager extends AbstractManager<IEntity> implements IEntityManager {
 
-	public Map<Float, List<IEntity>> frustumEntities = new HashMap<Float, List<IEntity>>();
-	public List<IEntity> pointedEntities = new ArrayList<IEntity>();
-	public List<IEntity> editorEntities = new ArrayList<IEntity>();
+	private Map<Float, List<IEntity>> frustumEntities = new HashMap<Float, List<IEntity>>();
+	private List<IEntity> pointedEntities = new ArrayList<IEntity>();
+	private List<IEntity> editorEntities = new ArrayList<IEntity>();
 
 
 	@Override

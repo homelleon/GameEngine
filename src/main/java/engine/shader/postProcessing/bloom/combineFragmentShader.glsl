@@ -1,14 +1,19 @@
+//FRAGMENT SHADER - Combine PostProcessing
 #version 150
 
+/*===== in ======*/
 in vec2 textureCoords;
 
+/*===== out =====*/
 out vec4 out_Colour;
 
+/*== uniforms ==*/
 uniform sampler2D colourTexture;
 uniform sampler2D highlightTexture2;
 uniform sampler2D highlightTexture4;
 uniform sampler2D highlightTexture8;
 
+/*------------- main ---------------*/
 void main(void) {
 
 	vec4 sceneColour = texture(colourTexture, textureCoords);

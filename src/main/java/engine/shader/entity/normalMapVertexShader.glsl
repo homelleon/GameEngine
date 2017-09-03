@@ -1,17 +1,20 @@
-//VERTEX SHADER
+//VERTEX SHADER - NM Entity
 #version 400 core
 
+/*==== in =====*/
 in vec3 position;
 in vec2 textureCoordinates;
 in vec3 normal;
 in vec3 tangent;
 
+/*==== out =====*/
 out vec2 pass_textureCoordinates;
 out vec3 toLightVector[10];
 out vec3 toCameraVector;
 out float visibility;
 out vec4 shadowCoords;
 
+/*===== uniforms =====*/
 uniform mat4 transformationMatrix;
 uniform mat4 projectionMatrix;
 uniform mat4 viewMatrix;
@@ -27,10 +30,11 @@ uniform float numberOfRows;
 uniform vec2 offset;
 
 uniform float fogDensity;
-const float gradient = 2.0;
 
+/*====== constants =======*/
+const float fogGradient = 2.0;
 
-
+/*------------- main ---------------*/
 void main(void) {
 	
 	vec4 worldPosition = transformationMatrix * vec4(position,1.0);
@@ -61,7 +65,7 @@ void main(void) {
 	toCameraVector = toTangentSpace * (-positionRelativeToCam.xyz);
 	
 	float distance = length(positionRelativeToCam.xyz);
-	visibility = exp(-pow((distance*fogDensity),gradient));
+	visibility = exp(-pow((distance*fogDensity),fogGradient));
 	visibility = clamp(visibility,0.0,1.0);
 
 	//distance = distance - (shadowDistance - shadowTransitionDistance);

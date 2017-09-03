@@ -5,8 +5,8 @@ import shader.ShaderProgram;
 
 public class VerticalBlurShader extends ShaderProgram {
 
-	private static final String VERTEX_FILE = EngineSettings.SHADERS_BLUR_PATH + "verticalBlurVertex.glsl";
-	private static final String FRAGMENT_FILE = EngineSettings.SHADERS_BLUR_PATH + "blurFragment.glsl";
+	private static final String VERTEX_FILE = EngineSettings.SHADERS_BLUR_PATH + "verticalBlurVertexShader.glsl";
+	private static final String FRAGMENT_FILE = EngineSettings.SHADERS_BLUR_PATH + "blurFragmentShader.glsl";
 
 	private int location_targetHeight;
 

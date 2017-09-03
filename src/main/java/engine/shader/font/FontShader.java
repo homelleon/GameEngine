@@ -8,8 +8,8 @@ import shader.ShaderProgram;
 
 public class FontShader extends ShaderProgram {
 
-	private static final String VERTEX_FILE = EngineSettings.SHADERS_FONT_PATH + "fontVertex.glsl";
-	private static final String FRAGMENT_FILE = EngineSettings.SHADERS_FONT_PATH + "fontFragment.glsl";
+	private static final String VERTEX_FILE = EngineSettings.SHADERS_FONT_PATH + "fontVertexShader.glsl";
+	private static final String FRAGMENT_FILE = EngineSettings.SHADERS_FONT_PATH + "fontFragmentShader.glsl";
 
 	private int location_colour;
 	private int location_translation;

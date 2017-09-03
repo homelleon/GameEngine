@@ -10,8 +10,8 @@ public class CombineShader extends ShaderProgram {
 	 * 03.02.17 ------------------------------
 	 */
 
-	private static final String VERTEX_FILE = EngineSettings.SHADERS_BLOOM_PATH + "simpleVertex.glsl";
-	private static final String FRAGMENT_FILE = EngineSettings.SHADERS_BLOOM_PATH + "combineFragment.glsl";
+	private static final String VERTEX_FILE = EngineSettings.SHADERS_BLOOM_PATH + "simpleVertexShader.glsl";
+	private static final String FRAGMENT_FILE = EngineSettings.SHADERS_BLOOM_PATH + "combineFragmentShader.glsl";
 
 	private int location_colourTexture;
 	private int location_highlightTexture2;

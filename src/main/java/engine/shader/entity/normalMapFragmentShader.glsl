@@ -1,18 +1,26 @@
-//FRAGMENT SHADER
+//FRAGMENT SHADER - NM Entity
 #version 400 core
 
+/*===== in ======*/
+//geometry
 in vec2 pass_textureCoordinates;
 in vec3 toLightVector[10];
 in vec3 toCameraVector;
-in float visibility;
 in vec4 shadowCoords;
 
+//factors
+in float visibility;
+
+/*===== out =====*/
 out vec4 out_Color;
 out vec4 out_BrightColor;
 
+/*== uniforms ==*/
+//textures
 uniform sampler2D modelTexture;
 uniform sampler2D normalMap;
 uniform sampler2D shadowMap;
+//light and colour
 uniform vec3 lightColour[10];
 uniform vec3 attenuation[10];
 uniform float shineDamper;
@@ -20,11 +28,14 @@ uniform float reflectivity;
 uniform vec3 skyColour;
 uniform int lightCount;
 
+//shadows
 uniform float shadowMapSize;
 uniform int shadowPCFCount;
 
+//control
 uniform bool isChosen;
 
+/*------------- main ---------------*/
 void main(void) {
 
 	float totalTexels = (shadowPCFCount * 2.0 + 1.0) * (shadowPCFCount * 2.0 + 1.0);

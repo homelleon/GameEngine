@@ -1,11 +1,16 @@
+//FRAGMENT SHADER - Blur PostProcessing
 #version 150
 
-out vec4 out_colour;
-
+/*===== in ======*/
 in vec2 blurTextureCoords[11];
 
+/*===== out =====*/
+out vec4 out_colour;
+
+/*== uniforms ==*/
 uniform sampler2D originalTexture;
 
+/*------------- main ---------------*/
 void main(void) {
 	
 	out_colour = vec4(0.0);

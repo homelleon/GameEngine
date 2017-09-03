@@ -1,43 +1,49 @@
-//ENTITY FRAGMENT SHADER
+//FRAGMENT SHADER - Entity
 #version 400 core
 
+/*===== in ======*/
+
+//geometry
 in vec2 pass_textureCoords;
 in vec3 surfaceNormal;
 in vec3 toLightVector[10];
 in vec3 toCameraVector;
-in float fogVisibility;
 in vec4 shadowCoords;
 in vec3 reflectedVector;
 in vec3 refractedVector;
+/*factors*/
+in float fogVisibility;
 
+/*===== out =====*/
 out vec4 out_Color;
 out vec4 out_BrightColor;
 
+/*== uniforms ==*/
 uniform sampler2D textureSampler;
 uniform sampler2D specularMap;
 uniform samplerCube enviroMap;
 
-//--shadows
+//shadows
 uniform float usesSpecularMap;
 uniform sampler2D shadowMap;
 uniform float shadowMapSize;
 uniform int shadowPCFCount;
 
-//--light
+//light and colour
 uniform vec3 lightColour[10];
 uniform vec3 attenuation[10];
 uniform int lightCount;
 uniform float shineDamper;
 uniform float reflectivity;
-
 uniform vec3 skyColour;
 
-//---reflection and refraction
+//reflection and refraction
 uniform float reflectiveFactor;
 uniform float refractiveFactor;
 
 uniform bool isChosen;
 
+/*------------- main ---------------*/
 void main(void) {
 
 	float totalTexels = (shadowPCFCount * 2.0 + 1.0) * (shadowPCFCount * 2.0 + 1.0);
@@ -81,7 +87,7 @@ void main(void) {
 	totalDiffuse = max(totalDiffuse * lightFactor, 0.4);
 
 	vec4 textureColour = texture(textureSampler,pass_textureCoords);
-	if(textureColour.a<0.5) {
+	if(textureColour.a < 0.5) {
 		discard;
 	}
 

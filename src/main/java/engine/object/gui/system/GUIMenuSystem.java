@@ -5,34 +5,34 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import object.gui.Hideable;
 import object.gui.pattern.menu.IGUIMenu;
-import object.gui.pattern.object.GUIObject;
 
 /**
+ * Realizes unique system of storage and accessig the graphic user interface menus.
  * 
  * @author homelleon
  * @see IGUIMenuSystem
+ * @version 1.0.1
  */
 public class GUIMenuSystem implements IGUIMenuSystem {
 	
 	Map<String, IGUIMenu> menus = new HashMap<String, IGUIMenu>();
-	IGUIMenu activeMenu;
+	private IGUIMenu activeMenu;
 	private boolean isShown = false;
 
 	@Override
 	public void add(IGUIMenu menu) {
-		this.menus.put(((GUIObject) menu).getName(), menu);		
+		this.menus.put(menu.getName(), menu);		
 	}
 
 	@Override
 	public void addAll(Collection<IGUIMenu> menuList) {
-		menuList.forEach(menu -> this.menus.put(((GUIObject) menu).getName(), menu));
+		menuList.forEach(menu -> this.menus.put(menu.getName(), menu));
 	}
 
 	@Override
 	public void addAll(List<IGUIMenu> menuList) {
-		menuList.forEach(menu -> this.menus.put(((GUIObject) menu).getName(), menu));	
+		menuList.forEach(menu -> this.menus.put(menu.getName(), menu));	
 	}
 
 	@Override
@@ -92,12 +92,12 @@ public class GUIMenuSystem implements IGUIMenuSystem {
 
 	@Override
 	public void show() {
-		this.menus.values().forEach(object -> ((Hideable) object).show());
+		this.menus.values().forEach(object -> object.show());
 	}
 
 	@Override
 	public void hide() {
-		this.menus.values().forEach(object -> ((Hideable) object).hide());		
+		this.menus.values().forEach(object -> object.hide());		
 	}
 
 	@Override

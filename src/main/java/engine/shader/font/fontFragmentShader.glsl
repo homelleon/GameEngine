@@ -1,9 +1,13 @@
+//FRAGMENT SHADER - Font
 #version 330
 
+/*===== in ======*/
 in vec2 pass_textureCoords;
 
+/*===== out =====*/
 out vec4 out_colour;
 
+/*== uniforms ==*/
 uniform vec3 colour;
 uniform sampler2D fontAtlas;
 
@@ -17,6 +21,7 @@ uniform vec2 offset;
 
 uniform vec3 outlineColour; 
 
+/*------------- main ---------------*/
 void main(void) {
 
 	float distance = 1.0 - texture(fontAtlas, pass_textureCoords).a;

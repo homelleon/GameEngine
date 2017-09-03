@@ -1,5 +1,7 @@
+//FRAGMENT SHADER - Terrain
 #version 400 core
 
+/*===== in ======*/
 in vec2 pass_textureCoords;
 in vec3 surfaceNormal;
 in vec3 toLightVector[10];
@@ -7,9 +9,11 @@ in vec3 toCameraVector;
 in float visibility;
 in vec4 shadowCoords;
 
+/*===== out =====*/
 out vec4 out_Color;
-out vec4 out_BrightColor;;
+out vec4 out_BrightColor;
 
+/*== uniforms ==*/
 uniform sampler2D backgroundTexture;
 uniform sampler2D rTexture;
 uniform sampler2D gTexture;
@@ -27,6 +31,7 @@ uniform vec3 skyColour;
 uniform float shadowMapSize;
 uniform int shadowPCFCount;
 
+/*------------- main ---------------*/
 void main(void) {
 
    float totalTexels = (shadowPCFCount * 2.0 + 1.0) * (shadowPCFCount * 2.0 + 1.0);

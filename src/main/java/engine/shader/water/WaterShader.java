@@ -11,8 +11,8 @@ import tool.math.Maths;
 
 public class WaterShader extends ShaderProgram {
 
-	private final static String VERTEX_FILE = EngineSettings.SHADERS_WATER_PATH + "waterVertex.glsl";
-	private final static String FRAGMENT_FILE = EngineSettings.SHADERS_WATER_PATH + "waterFragment.glsl";
+	private final static String VERTEX_FILE = EngineSettings.SHADERS_WATER_PATH + "waterVertexShader.glsl";
+	private final static String FRAGMENT_FILE = EngineSettings.SHADERS_WATER_PATH + "waterFragmentShader.glsl";
 
 	private int location_modelMatrix;
 	private int location_viewMatrix;

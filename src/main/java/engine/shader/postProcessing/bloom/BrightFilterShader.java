@@ -11,7 +11,7 @@ import shader.ShaderProgram;
 
 public class BrightFilterShader extends ShaderProgram {
 
-	private static final String VERTEX_FILE = EngineSettings.SHADERS_BLOOM_PATH + "simpleVertex.glsl";
+	private static final String VERTEX_FILE = EngineSettings.SHADERS_BLOOM_PATH + "simpleVertexShader.glsl";
 	private static final String FRAGMENT_FILE = EngineSettings.SHADERS_BLOOM_PATH + "brightFilterFragment.glsl";
 
 	public BrightFilterShader() {

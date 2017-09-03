@@ -1,12 +1,16 @@
-//FRAGMENT SHADER
+//FRAGMENT SHADER - Shadow
 #version 330
 
+/*===== in ======*/
 in vec2 textureCoords;
 
-out vec4 out_colour;
+/*===== out =====*/
+out vec4 out_Colour;
 
+/*== uniforms ==*/
 uniform sampler2D modelTexture;
 
+/*------------- main ---------------*/
 void main(void) {
 
 	float alpha = texture(modelTexture, textureCoords).a;
@@ -14,6 +18,6 @@ void main(void) {
 		discard;
 	}
 
-	out_colour = vec4(1.0);
+	out_Colour = vec4(1.0);
 	
 }

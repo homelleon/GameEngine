@@ -1,14 +1,18 @@
+//FRAGMENT SHADER - Water
 #version 400 core
 
+/*===== in ======*/
 in vec4 clipSpace;
 in vec2 textureCoords;
 in vec3 toCameraVector;
 in vec3 fromLightVector;
 in float visibility;
 
+/*===== out =====*/
 out vec4 out_Color;
 out vec4 out_BrightColor;
 
+/*== uniforms ==*/
 uniform sampler2D reflectionTexture;
 uniform sampler2D refractionTexture;
 uniform sampler2D dudvMap;
@@ -21,10 +25,11 @@ uniform float moveFactor;
 
 uniform float waveStrength;
 
+/*== constants ==*/
 const float shineDamper = 20.0;
 const float reflectivity = 0.4;
 
-
+/*------------- main ---------------*/
 void main(void) {
 
     vec2 ndc = (clipSpace.xy/clipSpace.w)/2.0 + 0.5;
