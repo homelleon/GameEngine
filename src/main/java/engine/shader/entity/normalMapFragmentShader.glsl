@@ -15,7 +15,7 @@ in float visibility;
 out vec4 out_Color;
 out vec4 out_BrightColor;
 
-/*== uniforms ==*/
+/*=== uniforms ==*/
 //textures
 uniform sampler2D modelTexture;
 uniform sampler2D normalMap;

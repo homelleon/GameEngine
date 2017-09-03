@@ -1,20 +1,26 @@
+//VERTEX SHADER - Animated entity
 #version 150
 
-const int MAX_JOINTS = 50;//max joints allowed in a skeleton
-const int MAX_WEIGHTS = 3;//max number of joints that can affect a vertex
-
+/*===== in ======*/
 in vec3 in_position;
 in vec2 in_textureCoordinates;
 in vec3 in_normal;
 in ivec3 in_jointIndices;
 in vec3 in_weights;
 
+/*===== out =====*/
 out vec2 pass_textureCoords;
 out vec3 pass_normal;
 
+/*=== uniforms ==*/
 uniform mat4 jointTransforms[MAX_JOINTS];
 uniform mat4 projectionViewMatrix;
 
+/*== constants ==*/
+const int MAX_JOINTS = 50;//max joints allowed in a skeleton
+const int MAX_WEIGHTS = 3;//max number of joints that can affect a vertex
+
+/*------------- main ---------------*/
 void main(void){
 	
 	vec4 totalLocalPos = vec4(0.0);

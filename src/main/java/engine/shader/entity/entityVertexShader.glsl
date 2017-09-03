@@ -15,11 +15,11 @@ out vec3 toCameraVector;
 out float fogVisibility;
 out vec4 shadowCoords;
 
-//---out reflection and refraction
+//reflection and refraction
 out vec3 reflectedVector;
 out vec3 refractedVector;
 
-/*== uniforms ==*/
+/*=== uniforms ==*/
 uniform mat4 transformationMatrix;
 uniform mat4 projectionMatrix;
 uniform mat4 viewMatrix;
@@ -27,26 +27,26 @@ uniform mat4 viewMatrix;
 uniform vec3 cameraPosition;
 uniform vec4 plane;
 
-//---light
+//light
 uniform vec3 lightPosition[10];
 uniform int lightCount;
 uniform float useFakeLighting;
 
-//---reflection and refraction
+//reflection and refraction
 uniform float reflectiveFactor;
 uniform float refractiveFactor;
 uniform float refractiveIndex;
 
-//---shadows
+//shadows
 uniform mat4 toShadowMapSpace;
 uniform float shadowDistance;
 uniform float shadowTransitionDistance;
 
-//---texture
+//texture
 uniform float numberOfRows;
 uniform vec2 offset;
 
-//---fog
+//fog
 uniform float fogDensity;
 
 /*== constants ==*/

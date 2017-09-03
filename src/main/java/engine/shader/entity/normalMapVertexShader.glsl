@@ -14,7 +14,7 @@ out vec3 toCameraVector;
 out float visibility;
 out vec4 shadowCoords;
 
-/*===== uniforms =====*/
+/*=== uniforms ==*/
 uniform mat4 transformationMatrix;
 uniform mat4 projectionMatrix;
 uniform mat4 viewMatrix;
@@ -31,7 +31,7 @@ uniform vec2 offset;
 
 uniform float fogDensity;
 
-/*====== constants =======*/
+/*== constants ==*/
 const float fogGradient = 2.0;
 
 /*------------- main ---------------*/

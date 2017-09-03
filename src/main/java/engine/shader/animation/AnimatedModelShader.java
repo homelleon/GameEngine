@@ -13,8 +13,8 @@ public class AnimatedModelShader extends ShaderProgram {
 												// skeleton
 	private static final int DIFFUSE_TEX_UNIT = 0;
 
-	private static final String VERTEX_SHADER = EngineSettings.SHADERS_ANIMATION_PATH + "animatedEntityVertex.glsl";
-	private static final String FRAGMENT_SHADER = EngineSettings.SHADERS_ANIMATION_PATH + "animatedEntityFragment.glsl";
+	private static final String VERTEX_SHADER = EngineSettings.SHADERS_ANIMATION_PATH + "animatedEntityVertexShader.glsl";
+	private static final String FRAGMENT_SHADER = EngineSettings.SHADERS_ANIMATION_PATH + "animatedEntityFragmentShader.glsl";
 
 	private int location_projectionViewMatrix;
 	private int location_lightDirection;
