@@ -39,8 +39,6 @@ public class BoundingQuad {
 	public void move(Vector2f position) {
 		this.leftPoint = Vector2f.add(this.leftPoint, position, null);
 		this.rightPoint = Vector2f.add(this.rightPoint, position, null);
-		System.out.println(leftPoint);
-		System.out.println(rightPoint);
 	}
 	
 	public BoundingQuad clone() {

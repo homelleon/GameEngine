@@ -27,6 +27,10 @@ public class EngineMain {
 		loopGame = Loop.getInstance();
 		loopGame.run();
 	}
+	
+	public static void exit() {
+		loopGame.exit();
+	}
 
 	/**
 	 * Returns {@link IScene} scene.

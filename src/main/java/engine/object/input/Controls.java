@@ -2,6 +2,7 @@ package object.input;
 
 import org.lwjgl.input.Keyboard;
 
+import core.EngineMain;
 import core.debug.EngineDebug;
 import core.settings.EngineSettings;
 import object.entity.entity.IEntity;
@@ -23,6 +24,9 @@ public class Controls implements IControls {
 	}
 
 	private void sceneControls() {
+		if(KeyboardGame.isKeyPressed(Keyboard.KEY_ESCAPE)) {
+			EngineMain.exit();
+		}
 		if (KeyboardGame.isKeyPressed(EngineSettings.KEY_DEBUG_BOUNDING_BOX)) {
 			EngineDebug.switchBounding();
 		}

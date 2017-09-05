@@ -35,8 +35,8 @@
 			</color>
 		</GUIText>
 		<GUIText id="3">
-			<name>buttonLabel1</name>
-			<path>buttonLabel1</path>
+			<name>resume</name>
+			<path>resume</path>
 			<size>2</size>
 			<font>candara</font>
 			<position>

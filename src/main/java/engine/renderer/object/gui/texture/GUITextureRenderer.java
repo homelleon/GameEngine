@@ -45,6 +45,7 @@ public class GUITextureRenderer {
 				Vector2f scale = new Vector2f(size.x * guiTexture.getScale().x, size.y * guiTexture.getScale().y);
 				Matrix4f matrix = Maths.createTransformationMatrix(guiTexture.getPosition(), scale);
 				this.shader.loadTransformation(matrix);
+				this.shader.loadMixColorVariables(guiTexture.isMixColored(), guiTexture.getMixColor());
 				GL11.glDrawArrays(GL11.GL_TRIANGLE_STRIP, 0, this.quad.getVertexCount());
 			}
 		}

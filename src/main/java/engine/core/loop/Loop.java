@@ -59,6 +59,7 @@ public class Loop implements ILoop {
 
 	private boolean mapIsLoaded = false;
 	private boolean isPaused = false;
+	private boolean isExit = false;
 
 	private Loop() {
 	}
@@ -95,12 +96,17 @@ public class Loop implements ILoop {
 	public void run() {
 		prepare();
 		while (!Display.isCloseRequested()) {
-			if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
+			if (this.isExit) {
 				break;
 			}
 			update();
 		}
 		clean();
+	}
+	
+	@Override
+	public void exit() {
+		this.isExit = true;
 	}
 
 	/**

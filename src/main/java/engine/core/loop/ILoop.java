@@ -73,4 +73,9 @@ public interface ILoop extends Runnable {
 	 *         false if scene is not paused
 	 */
 	boolean getIsScenePaused();
+	
+	/**
+	 * Initialize exiting the application. 
+	 */
+	void exit();
 }

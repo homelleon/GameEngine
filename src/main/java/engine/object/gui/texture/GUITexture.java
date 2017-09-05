@@ -1,7 +1,7 @@
 package object.gui.texture;
 
-import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Vector2f;
+import org.lwjgl.util.vector.Vector3f;
 import org.newdawn.slick.opengl.Texture;
 
 public class GUITexture {
@@ -12,6 +12,8 @@ public class GUITexture {
 	private Texture texture;
 	private Vector2f position;
 	private Vector2f scale;
+	private Vector3f mixColor = new Vector3f(1,0,0);
+	private boolean isMixColored = false;
 	private float transparency = 0;
 
 	public GUITexture(String name, Texture texture, Vector2f position, Vector2f scale) {
@@ -39,6 +41,22 @@ public class GUITexture {
 
 	public Vector2f getScale() {
 		return this.scale;
+	}
+	
+	public void setMixColor(Vector3f color) {
+		this.mixColor = color;
+	}
+	
+	public Vector3f getMixColor() {
+		return this.mixColor;
+	}
+
+	public boolean isMixColored() {
+		return this.isMixColored;
+	}
+
+	public void setMixColored(boolean isMixColored) {
+		this.isMixColored = isMixColored;
 	}
 	
 	public void increaseScale(Vector2f scale) {

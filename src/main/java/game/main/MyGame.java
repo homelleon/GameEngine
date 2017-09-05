@@ -71,7 +71,7 @@ public class MyGame extends Game {
 		IGUIBuilder buttonGUIBuilder = new GUIBuilder(this.gameManager.getScene().getUserInterface().getComponent());
 		buttonGUIBuilder.setTexture("button1Texture", this.gameManager.getTextures().get("Button"));
 		buttonGUIBuilder.setText("button1Text", gameManager.getScene().getUserInterface()
-				.getComponent().getTexts().get("buttonLabel1"));
+				.getComponent().getTexts().get("resume"));
 		IGUIGroup buttonGroup1 = this.gameManager.getScene().getUserInterface().getGroups().createEmpty("button1");
 		buttonGroup1.add(buttonGUIBuilder.build("button1GUI"));
 		mainMenu.add((GUIObject) buttonGroup1);
@@ -120,7 +120,7 @@ public class MyGame extends Game {
 		mainMenu.selectNextButton();
 		IEntity entity = this.gameManager.getScene().getEntities().get("player1");
 		
-		IGUIAnimation animation = (button, time, vector)-> {
+		IGUIAnimation<IGUIButton> buttonAnimation = (button, time, vector)-> {
 			IVectorInjectable injection = (vec) -> {
 				IntStream.range(0, time)
 				.mapToObj(i -> button)
@@ -130,34 +130,45 @@ public class MyGame extends Game {
 						} catch (InterruptedException e) {
 							e.printStackTrace();
 						}
-						btn.increaseScale(vec);
+						((GUIButton)btn).increaseScale(vec);
 					});
 			};
 			Runnable animThread = () -> {
+				button.getGroup().getAll().stream()
+					.flatMap(gui -> gui.getTextures().stream())
+					.forEach(texture -> {
+						texture.setMixColored(true);
+					});
 				injection.inject(vector);
 				injection.inject(new Vector2f(-vector.x, -vector.y));
 				this.buttonScale = false;
+				button.getGroup().getAll().stream()
+				.flatMap(gui -> gui.getTextures().stream())
+				.forEach(texture -> {
+					texture.setMixColored(false);
+				});
 			};
 			new Thread(animThread).start();
 		};
-		int time = 2;
-		Vector2f changeVector = new Vector2f(0,0.1f); 
+		int time = 1;
+		Vector2f changeVector = new Vector2f(0.05f,0.05f); 
 		IAction action1 = () -> {
-			animation.start(button1, time, changeVector);
-		};
-		
-		IAction action2 = () -> {
-			animation.start(button2, time, changeVector);
-		};
-		
-		IAction action3 = () -> {
-			animation.start(button3, time, changeVector);
+			buttonAnimation.start(button1, time, changeVector);
 			EngineMain.pauseEngine(false);
 		};
 		
-		button1.attachAction(action1);
-		button2.attachAction(action2);
-		button3.attachAction(action3);
+		IAction action2 = () -> {
+			buttonAnimation.start(button2, time, changeVector);
+		};
+		
+		IAction action3 = () -> {
+			buttonAnimation.start(button3, time, changeVector);
+			EngineMain.exit();
+		};
+		
+		button1.setAction(action1);
+		button2.setAction(action2);
+		button3.setAction(action3);
 		
 		//PE10.peAttachBody(tree1, PE10.BODY_3D_SPHERE, world1);
 		//PE10.peAttachBody(tree2, PE10.BODY_3D_SPHERE, world1);
@@ -187,7 +198,6 @@ public class MyGame extends Game {
 				menuSystem.getActivated().useButton();
 			}
 			Vector2f mousePos = new Vector2f(2 * Mouse.getX() / (float) Display.getWidth() - 1f, 2 * Mouse.getY() / (float) Display.getHeight() - 1f);
-			System.out.println(mousePos);
 			menuSystem.getActivated().getAllButtons().stream()
 			.filter(button -> button.getIsMouseOver(mousePos))
 			.forEach(button -> {

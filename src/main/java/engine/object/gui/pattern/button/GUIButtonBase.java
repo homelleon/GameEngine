@@ -74,6 +74,11 @@ public abstract class GUIButtonBase extends GUIObject implements IGUIButton {
 	}
 	
 	@Override
+	public IGUIGroup getGroup() {
+		return this.guiGroup;
+	}
+	
+	@Override
 	public void setBoundingArea(BoundingQuad quad, boolean centered) {
 		this.quad = quad.clone();
 		if(centered) {
@@ -95,7 +100,7 @@ public abstract class GUIButtonBase extends GUIObject implements IGUIButton {
 	}
 	
 	@Override
-	public void attachAction(IAction action) {
+	public void setAction(IAction action) {
 		this.event = action;
 	}
 

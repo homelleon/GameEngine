@@ -5,6 +5,7 @@ import org.lwjgl.util.vector.Vector2f;
 import object.Moveable;
 import object.Nameable;
 import object.bounding.BoundingQuad;
+import object.gui.group.IGUIGroup;
 
 /**
  * Represent Interface of graphic user interface button unit.
@@ -26,11 +27,11 @@ public interface IGUIButton extends Nameable, Moveable<Vector2f> {
 	void deselect();
 	
 	/**
-	 * Attaches action for button command.
+	 * Sets action for button command.
 	 * 
 	 * @param action {@link IAction} command directions
 	 */
-	public void attachAction(IAction action);
+	public void setAction(IAction action);
 
 	/**
 	 * Uses button command throw param.
@@ -43,6 +44,13 @@ public interface IGUIButton extends Nameable, Moveable<Vector2f> {
 	 * If event wasn't attached this method does nothing.
 	 */
 	void use();
+	
+	/**
+	 * Gets GUI group attached to that button.
+	 * 
+	 * @return {@link GUIGroup} object
+	 */
+	IGUIGroup getGroup();
 	
 	/**
 	 * Sets quad is bounding over the button that can be used for verification
