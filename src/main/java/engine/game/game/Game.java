@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.lwjgl.opengl.GL11;
 
-import core.EngineMain;
 import core.debug.EngineDebug;
 import game.manager.GameManager;
 import game.manager.IGameManager;
@@ -13,7 +12,6 @@ import object.gui.gui.GUI;
 import object.gui.gui.IGUI;
 import object.gui.text.GUIText;
 import object.gui.texture.GUITexture;
-import object.scene.IScene;
 
 public abstract class Game extends Thread implements IGame {
 

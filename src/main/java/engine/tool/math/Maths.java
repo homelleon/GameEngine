@@ -217,5 +217,16 @@ public class Maths {
 				(point.y <= quadPoint2.y)) ? true : false;
 		
 	}
+	
+	public static int compareTo(Vector2f a, Vector2f b) {
+		if(a == b) {
+			return 0;
+		} else if(a.x == b.x) {
+			if(a.y < b.y) {return -1;}
+		} else if(a.x < b.x) {
+			return -1;
+		}
+		return 1;
+}
 
 }

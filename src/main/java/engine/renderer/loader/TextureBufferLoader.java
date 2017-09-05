@@ -119,7 +119,6 @@ public class TextureBufferLoader {
 			default:
 				throw new TypeNotPresentException("Uknown file extention!", null);
 			}
-
 			texture = TextureLoader.getTexture(format, new FileInputStream(path + fileName + extension));
 			GL30.glGenerateMipmap(GL11.GL_TEXTURE_2D);
 			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR_MIPMAP_LINEAR);

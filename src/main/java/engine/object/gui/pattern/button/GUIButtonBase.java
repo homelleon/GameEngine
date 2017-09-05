@@ -1,14 +1,21 @@
 package object.gui.pattern.button;
 
+import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Vector2f;
 
 import core.debug.EngineDebug;
+import object.bounding.BoundingQuad;
 import object.gui.group.IGUIGroup;
 import object.gui.pattern.object.GUIObject;
+import object.gui.texture.GUITexture;
 import tool.math.Maths;
 
 /**
- * 
+ * Base abstract class of GUI button. Can be extended by any other class.<br>
+ * * All classes that extends that abstact class can be used as button
+ * navigation, can except use behaviour, change position and verify mouse
+ * pointer intersection with the button.
+ *  
  * @author homelleon
  * @see IGUIButton
  */
@@ -16,15 +23,22 @@ public abstract class GUIButtonBase extends GUIObject implements IGUIButton {
 
 	protected IGUIGroup guiGroup;
 	protected boolean isSelected = false;
-	protected Vector2f point1;
-	protected Vector2f point2;
 	protected IAction event;
+	protected BoundingQuad quad; 
+	protected Vector2f position = new Vector2f(0,0);
 
 	protected GUIButtonBase(String name, IGUIGroup guiGroup) {
 		super(name);
 		this.guiGroup = guiGroup;
-		this.point1 = calculateFirstPoint();
-		this.point2 = calculateSecondPoint();
+		Vector2f point1 = calculateFirstPoint();
+		Vector2f point2 = calculateSecondPoint();
+		this.quad = new BoundingQuad(point1, point2);		
+	}
+	
+	protected GUIButtonBase(String name, IGUIGroup guiGroup, BoundingQuad quad) {
+		super(name);
+		this.guiGroup = guiGroup;
+		this.quad = quad;
 	}
 
 	@Override
@@ -60,6 +74,27 @@ public abstract class GUIButtonBase extends GUIObject implements IGUIButton {
 	}
 	
 	@Override
+	public void setBoundingArea(BoundingQuad quad, boolean centered) {
+		this.quad = quad.clone();
+		if(centered) {
+			Vector2f center = 
+			this.guiGroup.getAll().stream()
+				.flatMap(list -> list.getTextures().stream())
+				.map(texture -> texture.getPosition())
+				.reduce((tPosition1, tPosition2) -> {
+					Vector2f summ = Vector2f.add(tPosition1, tPosition2, null);
+					return new Vector2f(summ.x/2,summ.y/2);
+				}).orElse(null);
+			this.quad.move(center);
+		}		
+	}
+	
+	@Override
+	public BoundingQuad getBoundingArea() {
+		return this.quad;
+	}
+	
+	@Override
 	public void attachAction(IAction action) {
 		this.event = action;
 	}
@@ -79,8 +114,7 @@ public abstract class GUIButtonBase extends GUIObject implements IGUIButton {
 	@Override
 	public void move(Vector2f position) {
 		this.guiGroup.move(position);
-		this.point1 = Vector2f.add(this.point1, position, null);
-		this.point2 = Vector2f.add(this.point2, position, null);
+		this.quad.move(position);
 	}
 	
 	@Override
@@ -98,7 +132,8 @@ public abstract class GUIButtonBase extends GUIObject implements IGUIButton {
 	 */
 	@Override
 	public boolean getIsMouseOver(Vector2f cursorPosition) {
-		return Maths.pointIsInQuad(cursorPosition, point1, point2);
+		return Maths.pointIsInQuad(cursorPosition,
+				quad.getLeftPoint(), quad.getRightPoint());
 	}
 
 	/**
@@ -111,30 +146,50 @@ public abstract class GUIButtonBase extends GUIObject implements IGUIButton {
 		return this.isSelected;
 	}
 	
+	/**
+	 * Calculates left-bottom point of bounding quad comparing all gui texture
+	 * points and selecting the lowest one.
+	 * <p>Works correctly only for squared textures.
+	 * 
+	 * @return {@link Vector2f} left-bottom point
+	 */
 	private Vector2f calculateFirstPoint() {
 		return this.guiGroup.getAll().stream()
 					.flatMap(gui -> gui.getTextures().stream())
-					.map(texture -> texture.getFirstPoint())
-					.min((a,b) -> compareTo(a,b))
+					.map(texture -> this.getTextureFirstPoint(texture))
+					.min((a,b) -> Maths.compareTo(a,b))
 					.get();
 	}
 	
+	/**
+	 * Calculates right-up point of bounding quad comparing all gui texture
+	 * points and selecting the highest one.
+	 * <p>Works correctly only for squared textures.
+	 * 
+	 * @return {@link Vector2f} right-up point
+	 */
 	private Vector2f calculateSecondPoint() {
 		return this.guiGroup.getAll().stream()
 					.flatMap(gui -> gui.getTextures().stream())
-					.map(texture -> texture.getSecondPoint())
-					.max((a,b) -> compareTo(a,b))
+					.map(texture -> this.getTextureSecondPoint(texture))
+					.max((a,b) -> Maths.compareTo(a,b))
 					.get();
 	}
-
-	private int compareTo(Vector2f a, Vector2f b) {
-			if(a == b) {
-				return 0;
-			} else if(a.x == b.x) {
-				if(a.y < b.y) {return -1;}
-			} else if(a.x < b.x) {
-				return -1;
-			}
-			return 1;
+	
+	private Vector2f getTextureFirstPoint(GUITexture texture) {
+		float width = texture.getTexture().getTextureWidth()/(float)Display.getWidth();
+		float height = texture.getTexture().getTextureHeight()/(float)Display.getHeight();
+		float x = texture.getPosition().x - width*texture.getScale().x/2;
+		float y = texture.getPosition().y - height*texture.getScale().y/2;
+		return new Vector2f(x, y); 
 	}
+	
+	public Vector2f getTextureSecondPoint(GUITexture texture) {
+		float width = texture.getTexture().getTextureWidth()/(float)Display.getWidth();
+		float height = texture.getTexture().getTextureHeight()/(float)Display.getHeight();
+		float x = texture.getPosition().x + width*texture.getScale().x/2;
+		float y = texture.getPosition().y + height*texture.getScale().y/2;
+		return new Vector2f(x, y); 
+	}
+
 }

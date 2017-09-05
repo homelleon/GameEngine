@@ -36,22 +36,6 @@ public class GUITexture {
 	public Vector2f getPosition() {
 		return this.position;
 	}
-	
-	public Vector2f getFirstPoint() {
-		float width = this.texture.getTextureWidth()/(float)Display.getWidth();
-		float height = this.texture.getTextureHeight()/(float)Display.getHeight();
-		float x = this.position.x - width*scale.x/2;
-		float y = this.position.y - height*scale.y/2;
-		return new Vector2f(x, y); 
-	}
-	
-	public Vector2f getSecondPoint() {
-		float width = this.texture.getTextureWidth()/(float)Display.getWidth();
-		float height = this.texture.getTextureHeight()/(float)Display.getHeight();
-		float x = this.position.x + width*scale.x/2;
-		float y = this.position.y + height*scale.y/2;
-		return new Vector2f(x, y); 
-	}
 
 	public Vector2f getScale() {
 		return this.scale;

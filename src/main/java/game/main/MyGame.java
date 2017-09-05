@@ -11,6 +11,7 @@ import core.EngineMain;
 import game.game.Game;
 import gameTools.GUIGroupBuilderTexture;
 import gameTools.IGUIGroupBuilderTexture;
+import object.bounding.BoundingQuad;
 import object.entity.entity.IEntity;
 import object.gui.group.IGUIGroup;
 import object.gui.gui.IGUI;
@@ -99,13 +100,18 @@ public class MyGame extends Game {
 		buttonGroup3.add(buttonGUIBuilder.build("button3GUI"));
 		mainMenu.add((GUIObject) buttonGroup3);
 		
+		BoundingQuad bQuad = new BoundingQuad(new Vector2f(-0.41f,-0.05f), new Vector2f(0.45f,0.2f)); 
+		
 		IGUIButton button1 = new GUIButton("menuButton1", buttonGroup1);
+		button1.setBoundingArea(bQuad, true);
+		
 		button1.move(new Vector2f(0,0.4f));
 		
 		IGUIButton button2 = new GUIButton("menuButton2", buttonGroup2);
-		
+		button2.setBoundingArea(bQuad, false);
 		
 		IGUIButton button3 = new GUIButton("menuButton3", buttonGroup3);
+		button3.setBoundingArea(bQuad, true);
 		button3.move(new Vector2f(0,-0.4f));
 		
 		mainMenu.add((GUIObject) button1);
