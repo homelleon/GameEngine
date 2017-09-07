@@ -3,9 +3,8 @@ package main;
 import java.util.stream.IntStream;
 
 import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Vector2f;
+import org.lwjgl.util.vector.Vector3f;
 
 import core.EngineMain;
 import game.game.Game;
@@ -69,9 +68,9 @@ public class MyGame extends Game {
 		menuSystem.active(mainMenu.getName());
 		
 		IGUIBuilder buttonGUIBuilder = new GUIBuilder(this.gameManager.getScene().getUserInterface().getComponent());
-		buttonGUIBuilder.setTexture("button1Texture", this.gameManager.getTextures().get("Button"));
+		buttonGUIBuilder.setTexture("button1Texture", this.gameManager.getTextures().get("Button").clone("btnTexture1"));
 		buttonGUIBuilder.setText("button1Text", gameManager.getScene().getUserInterface()
-				.getComponent().getTexts().get("resume"));
+				.getComponent().getTexts().get("menu").clone("resumeText","Resume"));
 		IGUIGroup buttonGroup1 = this.gameManager.getScene().getUserInterface().getGroups().createEmpty("button1");
 		buttonGroup1.add(buttonGUIBuilder.build("button1GUI"));
 		mainMenu.add((GUIObject) buttonGroup1);
@@ -79,7 +78,7 @@ public class MyGame extends Game {
 		
 		buttonGUIBuilder = new GUIBuilder(this.gameManager.getScene().getUserInterface().getComponent());
 		buttonGUIBuilder.setTexture("button2Texture", gameManager.getScene().getUserInterface()
-				.getComponent().getTextures().get("Button"));
+				.getComponent().getTextures().get("Button").clone("btnTexture2"));
 		
 		System.out.println(gameManager.getScene().getUserInterface()
 		.getComponent().getTextures().get("Button").getTexture().getHeight());
@@ -87,15 +86,15 @@ public class MyGame extends Game {
 				.getComponent().getTextures().get("Button").getTexture().getWidth());
 		
 		buttonGUIBuilder.setText("button2Text", gameManager.getScene().getUserInterface()
-				.getComponent().getTexts().get("start"));
+				.getComponent().getTexts().get("menu").clone("startText", "Start"));
 		IGUIGroup buttonGroup2 = this.gameManager.getScene().getUserInterface().getGroups().createEmpty("button2");
 		buttonGroup2.add(buttonGUIBuilder.build("button2GUI"));
 		mainMenu.add((GUIObject) buttonGroup2);
 		
 		buttonGUIBuilder = new GUIBuilder(this.gameManager.getScene().getUserInterface().getComponent());
-		buttonGUIBuilder.setTexture("button3Texture", this.gameManager.getTextures().get("Button"));
+		buttonGUIBuilder.setTexture("button3Texture", this.gameManager.getTextures().get("Button").clone("btnTexture3"));
 		buttonGUIBuilder.setText("button3Text", gameManager.getScene().getUserInterface()
-				.getComponent().getTexts().get("exit"));
+				.getComponent().getTexts().get("menu").clone("exitText", "Exit"));
 		IGUIGroup buttonGroup3 = this.gameManager.getScene().getUserInterface().getGroups().createEmpty("button3");
 		buttonGroup3.add(buttonGUIBuilder.build("button3GUI"));
 		mainMenu.add((GUIObject) buttonGroup3);
@@ -159,6 +158,7 @@ public class MyGame extends Game {
 		
 		IAction action2 = () -> {
 			buttonAnimation.start(button2, time, changeVector);
+			this.gameManager.getScene().getPlayer().setPosition(new Vector3f(0,0,0));
 		};
 		
 		IAction action3 = () -> {
@@ -188,26 +188,23 @@ public class MyGame extends Game {
 
 	@Override
 	public void __onUpdateWithPause() {
-		if(EngineMain.getIsEnginePaused()) {
-			menuSystem.getActivated().show();
-			if(KeyboardGame.isKeyPressed(Keyboard.KEY_UP)) {
-				menuSystem.getActivated().selectNextButton();				
-			} else if(KeyboardGame.isKeyPressed(Keyboard.KEY_DOWN)) {
-				menuSystem.getActivated().selectPreviousButton();
-			} else if(KeyboardGame.isKeyPressed(Keyboard.KEY_RETURN)) {
-				menuSystem.getActivated().useButton();
-			}
-			Vector2f mousePos = new Vector2f(2 * Mouse.getX() / (float) Display.getWidth() - 1f, 2 * Mouse.getY() / (float) Display.getHeight() - 1f);
-			menuSystem.getActivated().getAllButtons().stream()
-			.filter(button -> button.getIsMouseOver(mousePos))
-			.forEach(button -> {
-				if(!this.buttonScale && MouseGame.isOncePressed(MouseGame.LEFT_CLICK)) {
+		IGUIMenu activeMenu = menuSystem.getActivated();
+		if(EngineMain.getIsEnginePaused()) {			
+			if(!menuSystem.getIsVisible()){menuSystem.show();}			
+			if(KeyboardGame.isKeyPressed(Keyboard.KEY_UP)) {activeMenu.selectNextButton();}
+			else if(KeyboardGame.isKeyPressed(Keyboard.KEY_DOWN)) {activeMenu.selectPreviousButton();}
+			else if(KeyboardGame.isKeyPressed(Keyboard.KEY_RETURN)) {activeMenu.useButton();}
+			if(MouseGame.isOncePressed(MouseGame.LEFT_CLICK) && !this.buttonScale) {
+				menuSystem.getActivated().getAllButtons().stream()
+				.filter(button -> button.getIsMouseOver(
+						this.gameManager.getScene().getMousePicker().getCurrentScreanPoint()))
+				.forEach(button -> {
 					button.use();
 					this.buttonScale = true;
-				}
-			});	
+				});
+			}
 		} else {
-			menuSystem.hide("first menu");
+			if(menuSystem.getIsVisible()) {menuSystem.hide();}
 		}
 		
 	}

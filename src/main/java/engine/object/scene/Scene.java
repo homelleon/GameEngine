@@ -34,7 +34,7 @@ public class Scene extends AObjectManager implements IScene {
 	private Light sun;
 
 	private Texture environmentMap = Texture.newEmptyCubeMap(128);
-	private MousePicker picker;
+	private MousePicker mousePicker;
 
 	private IChunkManager chunkManager;
 	private IGUIManager uiManager = new GUIManager();
@@ -166,13 +166,13 @@ public class Scene extends AObjectManager implements IScene {
 	}
 
 	@Override
-	public MousePicker getPicker() {
-		return this.picker;
+	public MousePicker getMousePicker() {
+		return this.mousePicker;
 	}
 
 	@Override
-	public void setPicker(MousePicker picker) {
-		this.picker = picker;
+	public void setMousePicker(MousePicker mousePicker) {
+		this.mousePicker = mousePicker;
 	}
 
 	private Vector3f spreadPointOnHeights(Vector3f position) {

@@ -23,6 +23,6 @@ public interface Hideable {
 	 */
 	void switchVisibility();
 	
-	boolean getIsShown();
+	boolean getIsVisible();
 
 }

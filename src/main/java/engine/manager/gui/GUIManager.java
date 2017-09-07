@@ -23,7 +23,7 @@ public class GUIManager implements IGUIManager {
 			System.out.println("Loading User Interface...");
 		}
 		this.componentManager = new GUIComponentManager(GUI_FILE_NAME);
-		this.menuSystem = new GUIMenuSystem();
+		this.menuSystem = GUIMenuSystem.getInstace();
 		this.groupManager = new GUIGroupManager(this.componentManager);
 		if (EngineDebug.hasDebugPermission()) {
 			System.out.println("Loading complete!");

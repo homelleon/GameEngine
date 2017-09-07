@@ -44,7 +44,7 @@ public class GUIRenderer implements IGUIRenderer {
 			.mapToObj(index -> this.groups.get(keys.get(index)))
 			.flatMap(list -> list.stream())
 			.flatMap(group -> group.getAll().stream())
-			.filter(IGUI::getIsShown)
+			.filter(IGUI::getIsVisible)
 			.forEach(gui -> {
 				this.textureRenderer.render(gui.getTextures());
 				this.textRenderer.render(gui.getTexts());

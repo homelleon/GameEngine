@@ -118,7 +118,7 @@ public class GUITextXMLParser extends XMLParser implements IListParser<GUIText> 
 				builder.setContent(text).setFontSize(size).setFontName(fontName).setPosition(position)
 						.setLineMaxSize(maxLength).setCentered(isCentered);
 				GUIText guiText = builder.build(name);
-				guiText.setColour(color);
+				guiText.setColor(color);
 				textList.add(guiText);
 				if (EngineDebug.hasDebugPermission()) {
 					System.out.println(">> " + guiText.getName());

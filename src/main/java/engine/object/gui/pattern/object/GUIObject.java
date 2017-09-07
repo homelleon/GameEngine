@@ -5,7 +5,7 @@ import object.gui.Hideable;
 
 public abstract class GUIObject implements Hideable, Nameable {
 	
-	protected boolean isShown = false;
+	protected boolean isVisible = false;
 	protected String name;
 	
 	public GUIObject(String name) {
@@ -14,17 +14,17 @@ public abstract class GUIObject implements Hideable, Nameable {
 	
 	@Override
 	public void show() {
-		this.isShown = true;
+		this.isVisible = true;
 	}
 	
 	@Override
 	public void hide() {
-		this.isShown = false;
+		this.isVisible = false;
 	}
 	
 	@Override
 	public void switchVisibility() {
-		if(this.isShown) {
+		if(this.isVisible) {
 			this.hide();
 		} else {
 			this.show();
@@ -32,8 +32,8 @@ public abstract class GUIObject implements Hideable, Nameable {
 	}
 	
 	@Override
-	public boolean getIsShown() {
-		return this.isShown;
+	public boolean getIsVisible() {
+		return this.isVisible;
 	}
 	
 	@Override

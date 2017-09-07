@@ -3,7 +3,10 @@ package object.gui.system;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
+import object.gui.Hideable;
 import object.gui.pattern.menu.IGUIMenu;
 
 /**
@@ -15,18 +18,28 @@ import object.gui.pattern.menu.IGUIMenu;
  */
 public class GUIMenuSystem implements IGUIMenuSystem {
 	
+	private static IGUIMenuSystem instance;
 	Map<String, IGUIMenu> menus = new HashMap<String, IGUIMenu>();
 	private IGUIMenu activeMenu;
-	private boolean isShown = false;
-
+	private boolean isVisible = false;
+	
+	public static IGUIMenuSystem getInstace() {
+		if(instance == null) {instance = new GUIMenuSystem();}
+		return instance;
+	}
+	
+	private GUIMenuSystem() {}
+	
 	@Override
 	public void add(IGUIMenu menu) {
-		this.menus.put(menu.getName(), menu);		
+		this.menus.put(menu.getName(), menu);
 	}
 
 	@Override
 	public void addAll(Collection<IGUIMenu> menuList) {
-		menuList.forEach(menu -> this.menus.put(menu.getName(), menu));
+		this.menus.putAll(menuList.stream()
+				.collect(Collectors.toMap(
+						IGUIMenu::getName, Function.identity())));
 	}
 
 	@Override
@@ -41,8 +54,7 @@ public class GUIMenuSystem implements IGUIMenuSystem {
 
 	@Override
 	public IGUIMenu active(String name) {
-		this.activeMenu = this.menus.get(name);
-		return this.activeMenu;
+		return this.activeMenu = this.menus.get(name);
 	}	
 	
 	@Override
@@ -57,55 +69,52 @@ public class GUIMenuSystem implements IGUIMenuSystem {
 			return true;
 		} else {
 			return false; 
-		}		
+		}
 	}
 
 	@Override
 	public void clean() {
-		menus.values().forEach(menu -> menu.clean());
+		menus.values().forEach(IGUIMenu::clean);
 		this.menus.clear();
 	}
 	
 	@Override
 	public void show(String name) {
-		if(this.menus.containsKey(name)) {
-			this.menus.get(name).show();
-		} else {
+		if(this.menus.containsKey(name)) {this.menus.get(name).show();}
+		else {
 			throw new NullPointerException("There is no menu with "+ name + " in menu system!");
 		}
 	}
 	
 	@Override
 	public void hide(String name) {
-		if(this.menus.containsKey(name)) {
-			this.menus.get(name).hide();
-		} else {
+		if(this.menus.containsKey(name)) {this.menus.get(name).hide();}
+		else {
 			throw new NullPointerException("There is no menu with "+ name + " in menu system!");
 		}
 	}
 
 	@Override
 	public void show() {
-		this.menus.values().forEach(object -> object.show());
+		this.isVisible = true;
+		this.menus.values().forEach(Hideable::show);
 	}
 
 	@Override
 	public void hide() {
-		this.menus.values().forEach(object -> object.hide());		
+		this.isVisible = false;
+		this.menus.values().forEach(Hideable::hide);
 	}
 
 	@Override
 	public void switchVisibility() {
-		if(this.isShown) {
-			this.hide();
-		} else {
-			this.show();
-		}
+		if(this.isVisible) {this.hide();}
+		else {this.show();}
 	}
 
 	@Override
-	public boolean getIsShown() {
-		return this.isShown;
+	public boolean getIsVisible() {
+		return this.isVisible;
 	}
 
 }

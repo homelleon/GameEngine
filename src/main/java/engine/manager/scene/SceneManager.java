@@ -78,13 +78,17 @@ public class SceneManager implements ISceneManager {
 		scene.getEntities().add(player1);
 		scene.getEntities().addAll(EngineUtils.createGrassField(500, 500, 50, 1, 0.1f));
 		scene.setCamera(new TargetCamera(player1, cameraName));
-		scene.setSun(new Light("Sun", new Vector3f(-100000, 150000, -100000), new Vector3f(1.3f, 1.3f, 1.3f)));
+		scene.setSun(new Light("Sun", 
+				new Vector3f(-1000000, 500000, -1000000), 
+				new Vector3f(1.3f, 1.3f, 1.3f)));
 		scene.getLights().add(scene.getSun());
 		scene.getLights().add(new Light("Light1", new Vector3f(200, 2, 200), new Vector3f(10, 0, 0),
 				new Vector3f(1.1f, 0.01f, 0.002f)));
 		scene.getLights().add(
-				new Light("Light2", new Vector3f(20, 2, 20), new Vector3f(0, 5, 0), new Vector3f(1, 0.01f, 0.002f)));
-
+				new Light("Light2", 
+						new Vector3f(20, 2, 20), 
+						new Vector3f(0, 5, 0), 
+						new Vector3f(1, 0.01f, 0.002f)));
 		scene.getAudioSources().add(ambientSource);
 		scene.getWaters().addAll(waterList);
 		scene.getParticles().addAll(ParticleManager.createParticleSystem(loader));

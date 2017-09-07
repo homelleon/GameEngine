@@ -16,7 +16,7 @@ import renderer.loader.Loader;
 public class ModelMapTXTWriter implements IModelMapWriter {
 
 	@Override
-	public void write(IObjectManager map, Loader loader) {
+	public void write(IObjectManager map) {
 		try {
 			File mapFile = new File(EngineSettings.MAP_PATH + "newModelMap" + ".xml");
 			BufferedWriter writer = new BufferedWriter(new FileWriter(mapFile));
@@ -74,7 +74,7 @@ public class ModelMapTXTWriter implements IModelMapWriter {
 					line += String.valueOf(entity.getModel().getName());
 					line += " ";
 					// TODO: find out why it returns null texture
-					String texture = loader.getTextureLoader().getTextureByID(entity.getModel().getTexture().getID());
+					String texture = Loader.getInstance().getTextureLoader().getTextureByID(entity.getModel().getTexture().getID());
 					System.out.println(texture);
 					line += String.valueOf(texture);
 					line += " ";
@@ -89,8 +89,9 @@ public class ModelMapTXTWriter implements IModelMapWriter {
 					if (entity.getType() == EngineSettings.ENTITY_TYPE_SIMPLE) {
 						line += String.valueOf(false);
 					} else {
+						Loader loader = Loader.getInstance();
 						line += String.valueOf(true);
-						line += " ";
+						line += " ";						
 						String normal = loader.getTextureLoader().getTextureByID(entity.getModel().getTexture().getNormalMap());
 						line += normal;
 						line += " ";

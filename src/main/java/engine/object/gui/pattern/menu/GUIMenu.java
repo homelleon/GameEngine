@@ -136,13 +136,13 @@ public class GUIMenu extends GUIObject implements IGUIMenu {
 	@Override
 	public void show() {
 		super.show();
-		objects.values().forEach(object -> ((Hideable) object).show());
+		objects.values().forEach(Hideable::show);
 	}
 	
 	@Override
 	public void hide() {
 		super.hide();
-		objects.values().forEach(object -> ((Hideable) object).hide());
+		objects.values().forEach(Hideable::hide);
 	}
 	
 	private void updateIterator() {
@@ -150,7 +150,7 @@ public class GUIMenu extends GUIObject implements IGUIMenu {
 	}
 	
 	private void deselectAllButtons() {
-		this.buttons.forEach(button -> button.deselect());
+		this.buttons.forEach(IGUIButton::deselect);
 	}
 	
 	private boolean checkIfHassButtons() {

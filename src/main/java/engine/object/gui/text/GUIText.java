@@ -21,7 +21,7 @@ public class GUIText {
 
 	private int textMeshVao;
 	private int vertexCount;
-	private Vector3f colour = new Vector3f(0f, 0f, 0f);
+	private Vector3f color = new Vector3f(0f, 0f, 0f);
 
 	private Vector2f position;
 	private float maxLineLength;
@@ -37,7 +37,7 @@ public class GUIText {
 	private float borderEdge = 0.4f;
 
 	private Vector2f offset = new Vector2f(0f, 0f);
-	private Vector3f outlineColour = new Vector3f(0f, 0f, 0f);
+	private Vector3f outlineColor = new Vector3f(0f, 0f, 0f);
 	
 	private float transparency = 0;
 	private boolean isVisible = false;
@@ -129,12 +129,12 @@ public class GUIText {
 		this.offset = offset;
 	}
 
-	public Vector3f getOutlineColour() {
-		return outlineColour;
+	public Vector3f getOutlineColor() {
+		return this.outlineColor;
 	}
 
-	public void setOutlineColour(Vector3f outlineColour) {
-		this.outlineColour = outlineColour;
+	public void setOutlineColor(Vector3f outlineColor) {
+		this.outlineColor = outlineColor;
 	}
 
 	/**
@@ -163,8 +163,8 @@ public class GUIText {
 	 * @param b
 	 *            - blue value, between 0 and 1.
 	 */
-	public void setColour(float r, float g, float b) {
-		colour.set(r, g, b);
+	public void setColor(float r, float g, float b) {
+		this.color.set(r, g, b);
 	}
 
 	/**
@@ -173,15 +173,15 @@ public class GUIText {
 	 * @param color
 	 *            {@link Vecotr3f} value
 	 */
-	public void setColour(Vector3f color) {
-		colour.set(color);
+	public void setColor(Vector3f color) {
+		this.color.set(color);
 	}
 
 	/**
 	 * @return the colour of the text.
 	 */
-	public Vector3f getColour() {
-		return colour;
+	public Vector3f getColor() {
+		return this.color;
 	}
 
 	/**
@@ -320,9 +320,15 @@ public class GUIText {
 	}
 	
 	public GUIText clone(String name) {
-		GUIText text = new GUIText(name, this.textString, this.fontSize, this.fontName, this.position, this.maxLineLength, this.centered);
-		text.setColour(this.colour);
-		return text;
+		GUIText guiText = new GUIText(name, this.textString, this.fontSize, this.fontName, this.position, this.maxLineLength, this.centered);
+		guiText.setColor(this.color);
+		return guiText;
+	}
+	
+	public GUIText clone(String name, String text) {
+		GUIText guiText = new GUIText(name, text, this.fontSize, this.fontName, this.position, this.maxLineLength, this.centered);
+		guiText.setColor(this.color);
+		return guiText;
 	}
 
 	private void makeFontSmooth() {

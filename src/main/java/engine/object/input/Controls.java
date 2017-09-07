@@ -39,7 +39,7 @@ public class Controls implements IControls {
 		/* intersection of entities with mouse ray */
 		// TODO: make class for control
 		if (MouseGame.isOncePressed(MouseGame.LEFT_CLICK)) {
-			IEntity pointedEntity = scene.getPicker().chooseObjectByRay(scene);
+			IEntity pointedEntity = scene.getMousePicker().chooseObjectByRay(scene);
 			if (pointedEntity != null) {
 				scene.getEntities().addPointed(pointedEntity);
 			}

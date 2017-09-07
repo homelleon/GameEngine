@@ -104,7 +104,7 @@ public interface IScene extends IObjectManager {
 	 * 
 	 * @return {@link MousePicker} value
 	 */
-	MousePicker getPicker();
+	MousePicker getMousePicker();
 
 	/**
 	 * Sets mouse coordinates picker object.
@@ -112,7 +112,7 @@ public interface IScene extends IObjectManager {
 	 * @param picker
 	 *            {@link MousePicker} value
 	 */
-	void setPicker(MousePicker picker);
+	void setMousePicker(MousePicker picker);
 
 	/**
 	 * Spreads all entities on the surface of terrain's height.

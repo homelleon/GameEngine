@@ -51,12 +51,13 @@ public class SceneRenderer {
 	private Fbo multisampleFbo;
 	private Fbo outputFbo;
 	private Fbo outputFbo2;
-	private MousePicker picker;
+	private MousePicker mousePicker;
 	private IScene scene;
 	private IControls controls;
 
 	public void initialize(IScene scene) {
 		this.scene = scene;
+		this.scene.setMousePicker(mousePicker);
 		this.masterRenderer = new MainRenderer(scene.getCamera());
 		ParticleMaster.init(masterRenderer.getProjectionMatrix());
 		this.multisampleFbo = new Fbo(Display.getWidth(), Display.getHeight());
@@ -70,14 +71,13 @@ public class SceneRenderer {
 		WaterShader waterShader = new WaterShader();
 		this.waterRenderer = new WaterRenderer(waterShader, masterRenderer.getProjectionMatrix(), waterFBOs);
 
-		this.picker = new MousePicker(scene.getCamera(), masterRenderer.getProjectionMatrix());
-		scene.setPicker(picker);
+		this.mousePicker = new MousePicker(scene.getCamera(), masterRenderer.getProjectionMatrix());
+		scene.setMousePicker(mousePicker);
 		this.controls = new Controls();
 	}
 
 	public void render(Loader loader, boolean isPaused) {
 		checkInputs();
-		saveMap(loader);
 		if (!isPaused) {
 			move();
 		}
@@ -85,19 +85,6 @@ public class SceneRenderer {
 		renderParticles();
 		renderWaterSurface();
 		renderToScreen();
-	}
-
-	private void saveMap(Loader loader) {
-		if (KeyboardGame.isKeyPressed(Keyboard.KEY_T)) {
-			EngineMain.pauseEngine(true);
-			IModelMapWriter mapWriter = new ModelMapXMLWriter();
-			IObjectManager map = new ObjectMapManager();
-			map.getEntities().addAll(scene.getEntities().getAll());
-			map.getTerrains().addAll(scene.getTerrains().getAll());
-			mapWriter.write(map, loader);
-			System.out.println("save");
-			EngineMain.pauseEngine(false);
-		}
 	}
 
 	private void checkInputs() {
@@ -110,6 +97,16 @@ public class SceneRenderer {
 		}
 		if (KeyboardGame.isKeyPressed(Keyboard.KEY_H)) {
 			System.out.println("Key H pressed");
+		}
+		if (KeyboardGame.isKeyPressed(Keyboard.KEY_T)) {
+			EngineMain.pauseEngine(true);
+			IModelMapWriter mapWriter = new ModelMapXMLWriter();
+			IObjectManager map = new ObjectMapManager();
+			map.getEntities().addAll(scene.getEntities().getAll());
+			map.getTerrains().addAll(scene.getTerrains().getAll());
+			mapWriter.write(map);
+			System.out.println("save");
+			EngineMain.pauseEngine(false);
 		}
 
 	}
@@ -125,7 +122,7 @@ public class SceneRenderer {
 		multisampleFbo.resolveToFbo(GL30.GL_COLOR_ATTACHMENT1, outputFbo2);
 		PostProcessing.doPostProcessing(outputFbo.getColourTexture(), outputFbo2.getColourTexture());
 		renderGUI();
-		picker.update();
+		mousePicker.update();
 	}
 
 	private void renderWaterSurface() {
@@ -161,9 +158,9 @@ public class SceneRenderer {
 	protected void renderGUI() {
 		String fontName = "candara";
 		GUIText fpsText = createFPSText(Math.round(1 / DisplayManager.getFrameTimeSeconds()), fontName);
-		fpsText.setColour(1, 0, 0);
-		GUIText coordsText = createPickerCoordsText(picker, fontName);
-		coordsText.setColour(1, 0, 0);
+		fpsText.setColor(1, 0, 0);
+		GUIText coordsText = createPickerCoordsText(mousePicker, fontName);
+		coordsText.setColor(1, 0, 0);
 		List<GUITexture> textureList = new ArrayList<GUITexture>();
 		List<GUIText> textList = new ArrayList<GUIText>();
 		textList.add(fpsText);

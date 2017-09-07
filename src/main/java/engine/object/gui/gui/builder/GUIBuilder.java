@@ -26,13 +26,13 @@ public class GUIBuilder implements IGUIBuilder {
 	
 	@Override
 	public IGUIBuilder setTexture(String name, GUITexture texture) {
-		this.textures.add(texture.clone(name));
+		this.textures.add(texture);
 		return this;
 	}
 
 	@Override
 	public IGUIBuilder setText(String name, GUIText text) {
-		this.texts.add(text.clone(name));
+		this.texts.add(text);
 		return this;
 	}
 

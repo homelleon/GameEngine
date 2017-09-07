@@ -17,7 +17,7 @@ import tool.xml.XMLUtils;
 public class ModelMapXMLWriter implements IModelMapWriter {
 
 	@Override
-	public void write(IObjectManager map, Loader loader) {
+	public void write(IObjectManager map) {
 		try {
 			File mapFile = new File(EngineSettings.MAP_PATH + "newModelMap" + ".xml");
 			BufferedWriter writer = new BufferedWriter(new FileWriter(mapFile));
@@ -84,7 +84,7 @@ public class ModelMapXMLWriter implements IModelMapWriter {
 					String name = String.valueOf(entity.getName());
 					String model = String.valueOf(entity.getModel().getName());
 					// TODO: find out why it returns null texture
-					String texture = loader.getTextureLoader().getTextureByID(entity.getModel().getTexture().getID());
+					String texture = Loader.getInstance().getTextureLoader().getTextureByID(entity.getModel().getTexture().getID());
 					String x = String.valueOf(entity.getPosition().x);
 					String y = String.valueOf(entity.getPosition().y);
 					String z = String.valueOf(entity.getPosition().z);
@@ -103,6 +103,7 @@ public class ModelMapXMLWriter implements IModelMapWriter {
 						lines.add(XMLUtils.addTagValue(XMLUtils.NORMAL, normal, 3));
 					} else {
 						normal = String.valueOf(true);
+						Loader loader = Loader.getInstance();
 						String normalTexture = loader.getTextureLoader().getTextureByID(entity.getModel().getTexture().getNormalMap());
 						String specularTexture = loader.getTextureLoader().getTextureByID(entity.getModel().getTexture().getSpecularMap());
 						String shineDumper = String.valueOf(entity.getModel().getTexture().getShineDamper());

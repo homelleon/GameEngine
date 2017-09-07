@@ -25,6 +25,7 @@ import tool.math.Maths;
 public class MousePicker {
 
 	private Vector3f currentRay = new Vector3f(0, 0, 0);
+	private Vector2f current2DPoint = new Vector2f(0, 0);
 
 	private Matrix4f projectionMatrix;
 	private Matrix4f viewMatrix;
@@ -50,15 +51,19 @@ public class MousePicker {
 	 * @return {@link Vector3f} value of current ray
 	 */
 	public Vector3f getCurrentRay() {
-		return currentRay;
+		return this.currentRay;
+	}
+	
+	public Vector2f getCurrentScreanPoint() {
+		return this.current2DPoint;
 	}
 
 	/**
 	 * Update viewMatrix and the current ray for MousePicker.
 	 */
 	public void update() {
-		viewMatrix = Maths.createViewMatrix(camera);
-		currentRay = calculateMouseRay();
+		this.viewMatrix = Maths.createViewMatrix(this.camera);
+		this.currentRay = calculateMouseRay();
 	}
 
 	/**
@@ -70,8 +75,8 @@ public class MousePicker {
 	private Vector3f calculateMouseRay() {
 		float mouseX = Mouse.getX();
 		float mouseY = Mouse.getY();
-		Vector2f normalizedCoords = getNormalizedDeviceCoords(mouseX, mouseY);
-		Vector4f clipCoords = new Vector4f(normalizedCoords.x, normalizedCoords.y, -1f, 1f);
+		this.current2DPoint = getNormalizedDeviceCoords(mouseX, mouseY);
+		Vector4f clipCoords = new Vector4f(this.current2DPoint.x, this.current2DPoint.y, -1f, 1f);
 		Vector4f eyeCoords = toEyeCoords(clipCoords);
 		Vector3f worldRay = toWorldCoords(eyeCoords);
 		return worldRay;
@@ -92,8 +97,9 @@ public class MousePicker {
 	/* intersection with sphere */
 	public boolean intersects(Vector3f position, float radius) {
 		boolean isIntersects = false;
-		Vector3f l = new Vector3f(position.x - camera.getPosition().x, position.y - camera.getPosition().y,
-				position.z - camera.getPosition().z);
+		Vector3f l = new Vector3f(position.x - this.camera.getPosition().x, 
+				position.y - this.camera.getPosition().y,
+				position.z - this.camera.getPosition().z);
 		Vector3f currRay = getCurrentRay();
 		float d = Vector3f.dot(l, currRay);
 		float lSq = Vector3f.dot(l, l);
@@ -146,7 +152,7 @@ public class MousePicker {
 
 	public boolean intersects(Vector3f min, Vector3f max) {
 		Vector3f dir = getCurrentRay();
-		Vector3f center = camera.getPosition();
+		Vector3f center = this.camera.getPosition();
 
 		float tmin = (min.x - center.x) / dir.x;
 		float tmax = (max.x - center.x) / dir.x;
@@ -204,7 +210,7 @@ public class MousePicker {
 	 * @return Vector3f value of coordinates in world space
 	 */
 	private Vector3f toWorldCoords(Vector4f eyeCoords) {
-		Matrix4f invertedView = Matrix4f.invert(viewMatrix, null);
+		Matrix4f invertedView = Matrix4f.invert(this.viewMatrix, null);
 		Vector4f rayWorld = Matrix4f.transform(invertedView, eyeCoords, null);
 		Vector3f mouseRay = new Vector3f(rayWorld.x, rayWorld.y, rayWorld.z);
 		mouseRay.normalise();
@@ -220,7 +226,7 @@ public class MousePicker {
 	 * @return Vector4f value of eye-space plane coordinates.
 	 */
 	private Vector4f toEyeCoords(Vector4f clipCoords) {
-		Matrix4f invertedProjection = Matrix4f.invert(projectionMatrix, null);
+		Matrix4f invertedProjection = Matrix4f.invert(this.projectionMatrix, null);
 		Vector4f eyeCoords = Matrix4f.transform(invertedProjection, clipCoords, null);
 		return new Vector4f(eyeCoords.x, eyeCoords.y, -1f, 0f);
 	}
@@ -263,7 +269,7 @@ public class MousePicker {
 		float midDist = 0;
 		int index = -1;
 		for (int i = 0; i < pointedEntities.size(); i++) {
-			midDist = Maths.distanceFromCamera(pointedEntities.get(i), camera);
+			midDist = Maths.distanceFromCamera(pointedEntities.get(i), this.camera);
 			if (midDist <= distance) {
 				distance = midDist;
 				index = i;

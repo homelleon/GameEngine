@@ -2,6 +2,8 @@ package object.input;
 
 import org.lwjgl.input.Mouse;
 
+import core.settings.EngineSettings;
+
 public class MouseGame {
 
 	public static final int LEFT_CLICK = 0;
@@ -66,6 +68,10 @@ public class MouseGame {
 			}
 		}
 		return isWorked;
+	}
+	
+	public static void centerCoursor() {
+		Mouse.setCursorPosition(EngineSettings.DISPLAY_WIDTH / 2, EngineSettings.DISPLAY_HEIGHT / 2);
 	}
 
 	public static void update() {

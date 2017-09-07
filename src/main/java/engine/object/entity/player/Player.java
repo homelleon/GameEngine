@@ -109,7 +109,7 @@ public class Player extends TexturedEntity implements IPlayer {
 		if (!MouseGame.isPressed(MouseGame.MIDDLE_CLICK)) {
 			this.currentTurnSpeed = -TURN_SPEED * (Mouse.getX() - EngineSettings.DISPLAY_WIDTH / 2)
 					* EngineSettings.MOUSE_X_SPEED;
-			Mouse.setCursorPosition(EngineSettings.DISPLAY_WIDTH / 2, EngineSettings.DISPLAY_HEIGHT / 2);
+			MouseGame.centerCoursor();
 		}
 	}
 

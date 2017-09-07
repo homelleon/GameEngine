@@ -73,12 +73,12 @@ public class GUITextRenderer {
 		GL30.glBindVertexArray(text.getMesh());
 		GL20.glEnableVertexAttribArray(0);
 		GL20.glEnableVertexAttribArray(1);
-		this.shader.loadColour(text.getColour());
+		this.shader.loadColour(text.getColor());
 		this.shader.loadTranslation(text.getPosition());
 		this.shader.loadWidthAndEdge(text.getWidth(), text.getEdge());
 		this.shader.loadBorderWidthAndEdge(text.getBorderWidth(), text.getBorderEdge());
 		this.shader.loadOffset(text.getOffset());
-		this.shader.loadOutLineColour(text.getOutlineColour());
+		this.shader.loadOutLineColour(text.getOutlineColor());
 		GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, text.getVertexCount());
 		GL20.glDisableVertexAttribArray(0);
 		GL20.glDisableVertexAttribArray(1);
