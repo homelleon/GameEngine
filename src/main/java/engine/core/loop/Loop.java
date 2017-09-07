@@ -117,6 +117,7 @@ public class Loop implements ILoop {
 		initialize();
 		sceneRenderer.initialize(scene);
 		MouseGame.initilize(10);
+		MouseGame.switchCoursorVisibility();
 		this.game = GameCore.loadGame();
 		game.__onStart();
 	}
@@ -253,6 +254,7 @@ public class Loop implements ILoop {
 	@Override
 	public void setScenePaused(boolean value) {
 		MouseGame.centerCoursor();
+		MouseGame.switchCoursorVisibility();
 		this.isPaused = value;
 	}
 

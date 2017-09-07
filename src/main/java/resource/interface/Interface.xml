@@ -99,5 +99,16 @@
 				<y>0.5f</y>
 			</scale>
 		</GUITexture>
+		<GUITexture id="5">
+			<name>CoursorAim</name>
+			<texture>coursorAim</texture>
+			<position>
+				<x>0.0f</x>
+				<y>0.0f</y>
+			</position>
+			<scale><x>0.01f</x>
+				<y>0.01f</y>
+			</scale>
+		</GUITexture>
 	</GUITextures>
 </GUI>

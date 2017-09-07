@@ -19,6 +19,7 @@ public class MouseGame {
 	private static boolean[] isUsed = new boolean[8];
 	private static int[] timer = new int[8];
 	private static int echo;
+	private static boolean isCoursorVisible = true;
 	private static boolean isDebugged = false;
 
 	public MouseGame(int echoValue) {
@@ -72,6 +73,16 @@ public class MouseGame {
 	
 	public static void centerCoursor() {
 		Mouse.setCursorPosition(EngineSettings.DISPLAY_WIDTH / 2, EngineSettings.DISPLAY_HEIGHT / 2);
+	}
+	
+	public static void switchCoursorVisibility() {
+		if(isCoursorVisible) {
+			isCoursorVisible = false;
+			Mouse.setGrabbed(true);
+		} else {
+			isCoursorVisible = true;
+			Mouse.setGrabbed(false);
+		}
 	}
 
 	public static void update() {

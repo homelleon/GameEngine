@@ -34,6 +34,7 @@ public class MyGame extends Game {
 	private IGUIGroup helpGroup;
 	private IGUI hintsUI;
 	private boolean buttonScale = false;
+	private IGUIGroup coursorAimGroup;
 	IGUIMenuSystem menuSystem;
 	
 	IGUIMenu menu = new GUIMenu("menu1");
@@ -67,6 +68,12 @@ public class MyGame extends Game {
 		menuSystem.add(mainMenu);
 		menuSystem.active(mainMenu.getName());
 		
+		IGUIBuilder coursorGUIBuilder = new GUIBuilder(this.gameManager.getScene().getUserInterface().getComponent())
+				.setTexture("coursorTexture", this.gameManager.getTextures().get("CoursorAim"));
+		this.coursorAimGroup = this.gameManager.getScene().getUserInterface().getGroups().createEmpty("coursor");
+		this.coursorAimGroup.add(coursorGUIBuilder.build("coursorGUI"));
+		this.coursorAimGroup.show();
+		
 		IGUIBuilder buttonGUIBuilder = new GUIBuilder(this.gameManager.getScene().getUserInterface().getComponent());
 		buttonGUIBuilder.setTexture("button1Texture", this.gameManager.getTextures().get("Button").clone("btnTexture1"));
 		buttonGUIBuilder.setText("button1Text", gameManager.getScene().getUserInterface()
@@ -74,7 +81,7 @@ public class MyGame extends Game {
 		IGUIGroup buttonGroup1 = this.gameManager.getScene().getUserInterface().getGroups().createEmpty("button1");
 		buttonGroup1.add(buttonGUIBuilder.build("button1GUI"));
 		mainMenu.add((GUIObject) buttonGroup1);
-
+		
 		
 		buttonGUIBuilder = new GUIBuilder(this.gameManager.getScene().getUserInterface().getComponent());
 		buttonGUIBuilder.setTexture("button2Texture", gameManager.getScene().getUserInterface()
@@ -189,7 +196,8 @@ public class MyGame extends Game {
 	@Override
 	public void __onUpdateWithPause() {
 		IGUIMenu activeMenu = menuSystem.getActivated();
-		if(EngineMain.getIsEnginePaused()) {			
+		if(EngineMain.getIsEnginePaused()) {
+			if(this.coursorAimGroup.getIsVisible()){this.coursorAimGroup.hide();}
 			if(!menuSystem.getIsVisible()){menuSystem.show();}			
 			if(KeyboardGame.isKeyPressed(Keyboard.KEY_UP)) {activeMenu.selectNextButton();}
 			else if(KeyboardGame.isKeyPressed(Keyboard.KEY_DOWN)) {activeMenu.selectPreviousButton();}
@@ -205,6 +213,7 @@ public class MyGame extends Game {
 			}
 		} else {
 			if(menuSystem.getIsVisible()) {menuSystem.hide();}
+			if(!this.coursorAimGroup.getIsVisible()){this.coursorAimGroup.show();}
 		}
 		
 	}
