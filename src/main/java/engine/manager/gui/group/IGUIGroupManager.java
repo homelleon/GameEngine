@@ -1,6 +1,7 @@
 package manager.gui.group;
 
 import java.util.Collection;
+import java.util.List;
 
 import object.gui.group.IGUIGroup;
 
@@ -22,7 +23,7 @@ public interface IGUIGroupManager {
 	IGUIGroup createEmpty(String name);
 
 	/**
-	 * Adds list of user interface groups.
+	 * Adds collection of user interface groups.
 	 * 
 	 * @param groupList
 	 */

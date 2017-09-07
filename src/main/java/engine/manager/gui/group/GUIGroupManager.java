@@ -2,8 +2,12 @@ package manager.gui.group;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
+import core.debug.EngineDebug;
 import manager.gui.component.IGUIComponentManager;
 import object.gui.group.GUIGroup;
 import object.gui.group.IGUIGroup;
@@ -31,8 +35,17 @@ public class GUIGroupManager implements IGUIGroupManager {
 
 	@Override
 	public void addAll(Collection<IGUIGroup> groupList) {
-		groupList
-			.forEach(group -> this.groups.put(group.getName(), group));
+		if(groupList!=null && !groupList.isEmpty()) {
+			this.groups.putAll(
+					groupList.stream()
+						.collect(Collectors.toMap(
+								IGUIGroup::getName, Function.identity())));
+		} else {
+			if(EngineDebug.hasDebugPermission()) {
+				System.err.println(
+						"Trying to add null collection value into GUIGroupManager array!");
+			}
+		}
 	}
 
 	@Override

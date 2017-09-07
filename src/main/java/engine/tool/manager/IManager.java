@@ -13,13 +13,6 @@ public interface IManager<E> {
 	void add(E element);
 	
 	/**
-	 * Adds list of elements into manager.
-	 * 
-	 * @param elementList {@link List}<{@link E}> array of elements
-	 */
-	void addAll(List<E> elementList);
-	
-	/**
 	 * Adds collection of elements into manager.
 	 * 
 	 * @param elementList {@link List}<{@link E}> array of elements

@@ -97,15 +97,10 @@ public class EntityManager extends AbstractManager<IEntity> implements IEntityMa
 		this.frustumEntities.putAll(this.getAll().stream()
 				.filter(entity -> checkOnFrustum(entity, frustum))
 				.map(entity -> new EDPair(entity, Maths.distanceFromCameraWithRadius(entity, camera)))
-				.collect(Collectors.groupingBy(EDPair::getDistance,
-						Collectors.mapping(EDPair::getEntity, Collectors.toList()))));
-		
-//		this.frustumEntities.putAll(
-//				this.getAll().stream()
-//					.map(entity -> new EDPair(entity, countDistance(entity, frustum))) //EDPair - pair of entity and distance
-//					.filter(EDPair::valid)
-//					.collect(Collectors.groupingBy(EDPair::getDistance, 
-//							Collectors.mapping(EDPair::getEntity, Collectors.toList()))));
+				.collect(Collectors.groupingBy(
+						EDPair::getDistance,
+						Collectors.mapping(
+								EDPair::getEntity, Collectors.toList()))));
 	}
 
 
@@ -141,18 +136,6 @@ public class EntityManager extends AbstractManager<IEntity> implements IEntityMa
 		super.clean();
 		this.pointedEntities.clear();
 		this.frustumEntities.clear();		
-	}
-	
-	/**
-	 * Counts distance from entity to furthest frustum plane.
-	 * <br>Returns 0 if entity is not in frustum view.
-	 *  
-	 * @param entity {@link IEntity} value of world entity object
-	 * @param frustum {@link Frustum} value of camera view frustum
-	 * @return float value of distance between entity and furthest frustum plane
-	 */
-	private float countDistance(IEntity entity, Frustum frustum) {
-		return frustum.distanceSphereInFrustum(entity.getPosition(), entity.getSphereRadius()); 
 	}
 	
 	private boolean checkOnFrustum(IEntity entity, Frustum frustum) {

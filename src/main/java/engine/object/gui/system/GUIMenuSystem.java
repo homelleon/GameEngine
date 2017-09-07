@@ -2,7 +2,6 @@ package object.gui.system;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import object.gui.pattern.menu.IGUIMenu;
@@ -28,11 +27,6 @@ public class GUIMenuSystem implements IGUIMenuSystem {
 	@Override
 	public void addAll(Collection<IGUIMenu> menuList) {
 		menuList.forEach(menu -> this.menus.put(menu.getName(), menu));
-	}
-
-	@Override
-	public void addAll(List<IGUIMenu> menuList) {
-		menuList.forEach(menu -> this.menus.put(menu.getName(), menu));	
 	}
 
 	@Override

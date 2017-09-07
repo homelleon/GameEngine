@@ -2,9 +2,11 @@ package manager.terrain;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
+import core.debug.EngineDebug;
 import object.terrain.terrain.ITerrain;
 
 /**
@@ -21,18 +23,15 @@ public class TerrainManager implements ITerrainManager {
 	@Override
 	public void addAll(Collection<ITerrain> terrainList) {
 		if ((terrainList != null) && (!terrainList.isEmpty())) {
-			terrainList.forEach(terrain -> 
-				this.terrains.put(terrain.getName(), terrain));
-		}
-	}
-	
-	@Override
-	public void addAll(List<ITerrain> terrainList) {
-		if ((terrainList != null) && (!terrainList.isEmpty())) {
-			terrainList.forEach(terrain ->
-				this.terrains.put(terrain.getName(), terrain));
+			terrains.putAll(
+					terrainList.stream()
+						.collect(Collectors.toMap(
+								ITerrain::getName, Function.identity())));
 		} else {
-			throw new NullPointerException("Trying to add null value into TerrainManager array!");
+			if(EngineDebug.hasDebugPermission()) {
+				System.err.println(
+						"Trying to add null collection value into TerrainManager array!");
+			}
 		}
 	}
 
@@ -41,7 +40,10 @@ public class TerrainManager implements ITerrainManager {
 		if (terrain != null) {
 			this.terrains.put(terrain.getName(), terrain);
 		} else {
-			throw new NullPointerException("Trying to add null value into TerrainManager array!");
+			if(EngineDebug.hasDebugPermission()) {
+				System.err.println(
+						"Trying to add null value into TerrainManager array!");
+			}
 		}
 	}
 
@@ -50,7 +52,8 @@ public class TerrainManager implements ITerrainManager {
 		if (this.terrains.containsKey(name)) {
 			return this.terrains.get(name);
 		} else {
-			throw new NullPointerException("No terrain with name: " + name + " in the terrain array!");
+			throw new NullPointerException(
+					"No terrain with name: " + name + " in the terrain array!");
 		}
 	}
 

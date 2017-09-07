@@ -2,9 +2,9 @@ package manager.gui.text;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
+import core.debug.EngineDebug;
 import manager.gui.font.FontManager;
 import manager.gui.font.IFontManager;
 import object.gui.font.TextMeshData;
@@ -34,13 +34,13 @@ public class GUITextManager implements IGUITextManager {
 
 	@Override
 	public void addAll(Collection<GUIText> textList) {
-		this.addAll((Collection<GUIText>)textList);
-	}
-
-	@Override
-	public void addAll(List<GUIText> textList) {
 		if ((textList != null) && (!textList.isEmpty())) {
 			textList.forEach(text -> this.add(text));
+		} else {
+			if(EngineDebug.hasDebugPermission()) {
+				System.err.println(
+						"Trying to add null collection value into GUITextManager array!");
+			}
 		}
 	}
 
@@ -53,6 +53,11 @@ public class GUITextManager implements IGUITextManager {
 			TextMeshData data = fontManager.get(font).loadText(text);
 			int vao = Loader.getInstance().getVertexLoader().loadToVAO(data.getVertexPositions(), data.getTextureCoords());
 			text.setMeshInfo(vao, data.getVertexCount());
+		} else {
+			if(EngineDebug.hasDebugPermission()) {
+				System.err.println(
+						"Trying to add null value into GUITextManager array!");
+			}
 		}
 	}
 

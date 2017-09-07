@@ -2,9 +2,11 @@ package manager.gui.texture;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
+import core.debug.EngineDebug;
 import object.gui.texture.GUITexture;
 
 /**
@@ -23,18 +25,15 @@ public class GUITextureManager implements IGUITextureManager {
 	@Override
 	public void addAll(Collection<GUITexture> guiList) {
 		if ((guiList != null) && (!guiList.isEmpty())) {
-			guiList.forEach(guiTexture ->
-				this.textures.put(guiTexture.getName(), guiTexture));
-		}
-	}
-	
-
-
-	@Override
-	public void addAll(List<GUITexture> guiList) {
-		if ((guiList != null) && (!guiList.isEmpty())) {
-			guiList.forEach(guiTexture -> 
-				this.textures.put(guiTexture.getName(), guiTexture));
+			this.textures.putAll(
+					guiList.stream()
+						.collect(Collectors.toMap(
+								GUITexture::getName, Function.identity())));
+		} else {
+			if(EngineDebug.hasDebugPermission()) {
+				System.err.println(
+						"Trying to add null collection value into GUITextureManager array!");
+			}
 		}
 	}
 
@@ -43,7 +42,10 @@ public class GUITextureManager implements IGUITextureManager {
 		if (guiTexture != null) {
 			this.textures.put(guiTexture.getName(), guiTexture);
 		} else {
-			
+			if(EngineDebug.hasDebugPermission()) {
+				System.err.println(
+						"Trying to add null value into GUITextureManager array!");
+			}
 		}
 	}
 
