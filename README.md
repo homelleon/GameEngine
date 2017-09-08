@@ -64,5 +64,6 @@ how to start:
 ```
 6) write your code;
 7) use this.gameManager object to access the eninge in your game class;
-8) run the engine/core/EngineMain.java file.
+8) add your class into the "core.GameCore" calss in return of "loadGame()" method instead of "MyGame" class;
+9) run the engine/core/EngineMain.java file.
 ```
