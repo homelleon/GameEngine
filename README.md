@@ -60,7 +60,7 @@ how to start:
 4) put "super.__onStart()" and "super.__onUpdate" methods into created your methods before your code;
 5) create method __onGamePause();
 ```
-![MyGame](https://github.com/homelleon/GameEngine/blob/master/resource/other/myGame.jpg "MyGame example")
+![MyGame](https://github.com/homelleon/GameEngine/blob/master/src/main/java/resource/other/myGame.jpg "MyGame example")
 ```
 6) write your code;
 7) use this.gameManager object to access the eninge in your game class;
