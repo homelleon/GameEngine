@@ -71,9 +71,9 @@ public class DisplayManager {
 			ContextAttribs attribs = new ContextAttribs(3, 3).withForwardCompatible(true).withProfileCore(true);
 
 			try {
-				Display.setDisplayMode(new DisplayMode(width, height));
+				Display.setDisplayModeAndFullscreen(new DisplayMode(width, height));
 				Display.create(new PixelFormat().withDepthBits(24), attribs);
-				Display.isFullscreen();
+				Display.setFullscreen(true);
 				Display.setTitle("MyGame");
 
 			} catch (LWJGLException e) {

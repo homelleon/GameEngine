@@ -88,16 +88,8 @@ public class SceneRenderer {
 	}
 
 	private void checkInputs() {
-		if (KeyboardGame.isKeyPressed(EngineSettings.KEY_PAUSE)) {
-			EngineMain.pauseEngine(!EngineMain.getIsEnginePaused());
-		}
-
-		if (KeyboardGame.isKeyReleased(Keyboard.KEY_H)) {
-			System.out.println("Key H released");
-		}
-		if (KeyboardGame.isKeyPressed(Keyboard.KEY_H)) {
-			System.out.println("Key H pressed");
-		}
+		
+		
 		if (KeyboardGame.isKeyPressed(Keyboard.KEY_T)) {
 			EngineMain.pauseEngine(true);
 			IModelMapWriter mapWriter = new ModelMapXMLWriter();

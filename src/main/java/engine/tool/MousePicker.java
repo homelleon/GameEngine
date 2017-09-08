@@ -125,7 +125,7 @@ public class MousePicker {
 	 *         false if the box wasn't intersected
 	 */
 	/* intersection with box */
-	public boolean intersectsW(Vector3f min, Vector3f max) {
+	public boolean intersectsV(Vector3f min, Vector3f max) {
 		boolean isIntersects = false;
 		Vector3f invertRay = getCurrentRay();
 		invertRay = new Vector3f(1 / invertRay.x, 1 / invertRay.y, 1 / invertRay.z);
@@ -149,8 +149,43 @@ public class MousePicker {
 
 		return isIntersects;
 	}
-
+	
 	public boolean intersects(Vector3f min, Vector3f max) {
+		Vector3f dir = getCurrentRay();
+		Vector3f center = this.camera.getPosition();
+		
+		float tmin = -10000;
+		float tmax = 10000;
+		if(dir.x != 0) {
+			
+			float tx1 = (min.x - center.x) / dir.x;
+			float tx2 = (max.x - center.x) / dir.x;
+			
+			tmin = Math.max(tmin, Math.min(tx1, tx2));
+			tmax = Math.min(tmax, Math.max(tx1, tx2));
+			
+		}
+		
+		if(dir.y != 0) {
+			float ty1 = (min.y - center.y) / dir.y;
+			float ty2 = (max.y - center.y) / dir.y;
+			
+			tmin = Math.max(tmin, Math.min(ty1, ty2));
+			tmax = Math.min(tmax, Math.max(ty1, ty2));			
+		}
+		
+		if(dir.z != 0) {
+			float tz1 = (min.z - center.z) / dir.z;
+			float tz2 = (max.z - center.z) / dir.z;
+			
+			tmin = Math.max(tmin, Math.min(tz1, tz2));
+			tmax = Math.min(tmax, Math.max(tz1, tz2));			
+		}
+		
+		return tmax > tmin;
+	}
+
+	public boolean intersectsF(Vector3f min, Vector3f max) {
 		Vector3f dir = getCurrentRay();
 		Vector3f center = this.camera.getPosition();
 
@@ -255,11 +290,20 @@ public class MousePicker {
 					Vector3f min = entity.getModel().getRawModel().getBBox().getMin();
 					Vector3f max = entity.getModel().getRawModel().getBBox().getMax();
 					Vector3f position = entity.getPosition();
+					min = Vector3f.add(min, position, null);
+					max = Vector3f.add(max, position, null);
 					float scale = entity.getScale();
+					min.x *= scale;
+					min.y *= scale;
+					min.z *= scale;
+					max.x *= scale;
+					max.y *= scale;
+					max.z *= scale;
+					System.out.println(min);
+					System.out.println(max);
 					// only sphere intersection
-					pointedEntities.add(entity);
 					if (intersects(min, max)) {
-						// box intersection
+						pointedEntities.add(entity);
 					}
 				}
 

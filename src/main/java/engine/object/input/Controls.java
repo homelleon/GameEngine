@@ -27,12 +27,15 @@ public class Controls implements IControls {
 		if(KeyboardGame.isKeyPressed(Keyboard.KEY_ESCAPE)) {
 			EngineMain.exit();
 		}
+		if (KeyboardGame.isKeyPressed(EngineSettings.KEY_PAUSE)) {
+			EngineMain.pauseEngine(!EngineMain.getIsEnginePaused());
+		}
 		if (KeyboardGame.isKeyPressed(EngineSettings.KEY_DEBUG_BOUNDING_BOX)) {
 			EngineDebug.switchBounding();
 		}
 		if (KeyboardGame.isKeyPressed(EngineSettings.KEY_DEBUG_INFORMATION)) {
 			EngineDebug.switchDebugInformation();
-		}
+		}		
 	}
 
 	private void pointedEntitiesControls(IScene scene) {

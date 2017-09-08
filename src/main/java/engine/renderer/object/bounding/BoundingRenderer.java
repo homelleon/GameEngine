@@ -2,6 +2,7 @@ package renderer.object.bounding;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
@@ -33,22 +34,24 @@ public class BoundingRenderer {
 		checkWiredFrameOn(boundingWiredFrame);
 		shader.start();
 		shader.loadViewMatrix(camera);
+		
 		for (TexturedModel model : entities.keySet()) {
 			RawModel bModel = model.getRawModel().getBBox().getModel();
 			prepareModel(bModel);
 			entities.get(model).forEach(entity -> {
 				prepareInstance(entity);
-				GL11.glDrawElements(GL11.GL_TRIANGLES, model.getRawModel().getBBox().getModel().getVertexCount(),
+				GL11.glDrawElements(GL11.GL_TRIANGLES, bModel.getVertexCount(),
 						GL11.GL_UNSIGNED_INT, 0);
 			});
 			unbindModel();
 		}
+		
 		for (TexturedModel model : normalEntities.keySet()) {
 			RawModel bModel = model.getRawModel().getBBox().getModel();
 			prepareModel(bModel);
 			for (IEntity entity : normalEntities.get(model)) {
 				prepareInstance(entity);
-				GL11.glDrawElements(GL11.GL_TRIANGLES, model.getRawModel().getBBox().getModel().getVertexCount(),
+				GL11.glDrawElements(GL11.GL_TRIANGLES, bModel.getVertexCount(),
 						GL11.GL_UNSIGNED_INT, 0);
 			}
 			unbindModel();
@@ -57,11 +60,12 @@ public class BoundingRenderer {
 		checkWiredFrameOff(boundingWiredFrame);
 	}
 
-	public void prepareModel(RawModel model) {
+	public RawModel prepareModel(RawModel model) {
 		GL30.glBindVertexArray(model.getVaoID());
 		GL20.glEnableVertexAttribArray(0);
 		GL20.glEnableVertexAttribArray(1);
 		GL20.glEnableVertexAttribArray(2);
+		return model;
 	}
 
 	private void unbindModel() {

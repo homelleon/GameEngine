@@ -36,7 +36,6 @@ public class EntityManager extends AbstractManager<IEntity> implements IEntityMa
 	private List<IEntity> pointedEntities = new ArrayList<IEntity>();
 	private List<IEntity> editorEntities = new ArrayList<IEntity>();
 
-
 	@Override
 	public void addPointedList(Collection<IEntity> pointedList) {
 		if ((pointedList != null) && (!pointedList.isEmpty())) {
