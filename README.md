@@ -25,6 +25,7 @@ graphics:
 - particle systems;
 ```
 optimisation:
+```
 - all objects are stored in video buffers using VBO and VAO;
 - frustum culling technic to increase graphic performance;
 - uses shader program uniforms to manage position and visual effects on rendering;
