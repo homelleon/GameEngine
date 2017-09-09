@@ -7,8 +7,4 @@ package object.gui.pattern.button;
  *
  */
 @FunctionalInterface
-public interface IAction {
-	
-	void start();
-
-}
+public interface IAction extends Runnable {}

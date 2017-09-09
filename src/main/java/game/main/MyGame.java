@@ -3,6 +3,7 @@ package main;
 import java.util.stream.IntStream;
 
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
@@ -34,6 +35,7 @@ public class MyGame extends Game {
 	private IGUIGroup helpGroup;
 	private IGUI hintsUI;
 	private boolean buttonScale = false;
+	private boolean keyboardUsed = false;
 	private IGUIGroup coursorAimGroup;
 	IGUIMenuSystem menuSystem;
 	
@@ -123,7 +125,6 @@ public class MyGame extends Game {
 		mainMenu.add((GUIObject) button1);
 		mainMenu.add((GUIObject) button2);
 		mainMenu.add((GUIObject) button3);
-		mainMenu.selectNextButton();
 		IEntity entity = this.gameManager.getScene().getEntities().get("player1");
 		
 		IGUIAnimation<IGUIButton> buttonAnimation = (button, time, vector)-> {
@@ -139,23 +140,60 @@ public class MyGame extends Game {
 						((GUIButton)btn).increaseScale(vec);
 					});
 			};
-			Runnable animThread = () -> {
-				button.getGroup().getAll().stream()
-					.flatMap(gui -> gui.getTextures().stream())
-					.forEach(texture -> {
-						texture.setMixColored(true);
-					});
-				injection.inject(vector);
-				injection.inject(new Vector2f(-vector.x, -vector.y));
-				this.buttonScale = false;
-				button.getGroup().getAll().stream()
+			button.getGroup().getAll().stream()
 				.flatMap(gui -> gui.getTextures().stream())
 				.forEach(texture -> {
-					texture.setMixColored(false);
+					texture.setMixColored(true);
+					texture.setMixColor(new Vector3f(1,0,0));
 				});
-			};
-			new Thread(animThread).start();
+			injection.inject(vector);
+			injection.inject(new Vector2f(-vector.x, -vector.y));
+			this.buttonScale = false;
+			button.getGroup().getAll().stream()
+			.flatMap(gui -> gui.getTextures().stream())
+			.forEach(texture -> texture.setMixColored(false));
 		};
+		IGUIAnimation<IGUIButton> buttonSelectAnimation = (button, time, vector)-> {
+			IVectorInjectable injection = (vec) -> {
+				IntStream.range(0, time)
+				.mapToObj(i -> button)
+				.forEach(btn -> {
+						try {
+							sleep(100);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+						((GUIButton)btn).increaseScale(vec);
+					});
+			};
+			button.getGroup().getAll().stream()
+				.flatMap(gui -> gui.getTextures().stream())
+				.forEach(texture -> {
+					texture.setMixColored(true);
+					texture.setMixColor(new Vector3f(0,0,1));
+				});
+			injection.inject(vector);
+		};
+		
+		IGUIAnimation<IGUIButton> buttonDeselectAnimation = (button, time, vector)-> {
+			IVectorInjectable injection = (vec) -> {
+				IntStream.range(0, time)
+				.mapToObj(i -> button)
+				.forEach(btn -> {
+						try {
+							sleep(100);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+						((GUIButton)btn).increaseScale(vec);
+					});
+			};
+			injection.inject(new Vector2f(-vector.x, -vector.y));
+			button.getGroup().getAll().stream()
+			.flatMap(gui -> gui.getTextures().stream())
+			.forEach(texture -> texture.setMixColored(false));
+		};
+		
 		int time = 1;
 		Vector2f changeVector = new Vector2f(0.05f,0.05f); 
 		IAction action1 = () -> {
@@ -163,9 +201,26 @@ public class MyGame extends Game {
 			EngineMain.pauseEngine(false);
 		};
 		
+		IAction actionSelect1 = () -> {
+			buttonSelectAnimation.start(button1, time, changeVector);
+		};
+		
+		IAction actionDeselect1 = () -> {
+			buttonDeselectAnimation.start(button1, time, changeVector);
+		};
+		
 		IAction action2 = () -> {
 			buttonAnimation.start(button2, time, changeVector);
 			this.gameManager.getScene().getPlayer().setPosition(new Vector3f(0,0,0));
+		};
+		
+
+		IAction actionSelect2 = () -> {
+			buttonSelectAnimation.start(button2, time, changeVector);
+		};
+		
+		IAction actionDeselect2 = () -> {
+			buttonDeselectAnimation.start(button2, time, changeVector);
 		};
 		
 		IAction action3 = () -> {
@@ -173,9 +228,26 @@ public class MyGame extends Game {
 			EngineMain.exit();
 		};
 		
-		button1.setAction(action1);
-		button2.setAction(action2);
-		button3.setAction(action3);
+
+		IAction actionSelect3 = () -> {
+			buttonSelectAnimation.start(button3, time, changeVector);
+		};
+		
+		IAction actionDeselect3 = () -> {
+			buttonDeselectAnimation.start(button3, time, changeVector);
+		};
+		
+		button1.setUseAction(action1);
+		button1.setSelectedAction(actionSelect1);
+		button1.setDeselectedAction(actionDeselect1);
+		
+		button2.setUseAction(action2);
+		button2.setSelectedAction(actionSelect2);
+		button2.setDeselectedAction(actionDeselect2);
+		
+		button3.setUseAction(action3);
+		button3.setSelectedAction(actionSelect3);
+		button3.setDeselectedAction(actionDeselect3);
 		
 		//PE10.peAttachBody(tree1, PE10.BODY_3D_SPHERE, world1);
 		//PE10.peAttachBody(tree2, PE10.BODY_3D_SPHERE, world1);
@@ -198,18 +270,43 @@ public class MyGame extends Game {
 		IGUIMenu activeMenu = menuSystem.getActivated();
 		if(EngineMain.getIsEnginePaused()) {
 			if(this.coursorAimGroup.getIsVisible()){this.coursorAimGroup.hide();}
-			if(!menuSystem.getIsVisible()){menuSystem.show();}			
-			if(KeyboardGame.isKeyPressed(Keyboard.KEY_UP)) {activeMenu.selectNextButton();}
-			else if(KeyboardGame.isKeyPressed(Keyboard.KEY_DOWN)) {activeMenu.selectPreviousButton();}
-			else if(KeyboardGame.isKeyPressed(Keyboard.KEY_RETURN)) {activeMenu.useButton();}
-			if(MouseGame.isOncePressed(MouseGame.LEFT_CLICK) && !this.buttonScale) {
+			if(!menuSystem.getIsVisible()){menuSystem.show();}
+			if(Mouse.getDX()>0 || Mouse.getDY()>0) {
+				this.keyboardUsed = false;
+			}
+			if(KeyboardGame.isKeyPressed(Keyboard.KEY_UP)) {
+				activeMenu.selectNextButton();
+				this.keyboardUsed = true;
+			}
+			else if(KeyboardGame.isKeyPressed(Keyboard.KEY_DOWN)) {
+				activeMenu.selectPreviousButton();
+				this.keyboardUsed = true;
+			}
+			else if(KeyboardGame.isKeyPressed(Keyboard.KEY_RETURN)) {
+				activeMenu.useButton();
+				this.keyboardUsed = true;
+			}
+			if(!this.buttonScale && !this.keyboardUsed) {
 				menuSystem.getActivated().getAllButtons().stream()
 				.filter(button -> button.getIsMouseOver(
 						this.gameManager.getScene().getMousePicker().getCurrentScreanPoint()))
-				.forEach(button -> {
-					button.use();
-					this.buttonScale = true;
-				});
+				.filter(button -> !button.getIsSelected())
+				.forEach(button -> button.select());
+				
+				menuSystem.getActivated().getAllButtons().stream()
+				.filter(button -> !button.getIsMouseOver(
+						this.gameManager.getScene().getMousePicker().getCurrentScreanPoint()))
+				.filter(button -> button.getIsSelected())
+				.forEach(button -> button.deselect());
+				if(MouseGame.isOncePressed(MouseGame.LEFT_CLICK)) {
+					menuSystem.getActivated().getAllButtons().stream()
+						.filter(button -> button.getIsMouseOver(
+								this.gameManager.getScene().getMousePicker().getCurrentScreanPoint()))
+						.forEach(button -> {
+							button.use();
+							this.buttonScale = true;
+						});
+				}
 			}
 		} else {
 			if(menuSystem.getIsVisible()) {menuSystem.hide();}

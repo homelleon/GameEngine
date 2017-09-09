@@ -23,7 +23,9 @@ public abstract class GUIButtonBase extends GUIObject implements IGUIButton {
 
 	protected IGUIGroup guiGroup;
 	protected boolean isSelected = false;
-	protected IAction event;
+	protected IAction useAction;
+	protected IAction selectedAction;
+	protected IAction deselectedAction;
 	protected BoundingQuad quad; 
 	protected Vector2f position = new Vector2f(0,0);
 
@@ -42,24 +44,63 @@ public abstract class GUIButtonBase extends GUIObject implements IGUIButton {
 	}
 
 	@Override
-	public IGUIButton select() {
+	public Thread select() {
 		this.isSelected = true;
+		Thread thread = null;
+		if(this.selectedAction != null) {
+			thread = new Thread(this.selectedAction);
+			thread.start();
+		}
 		if(EngineDebug.hasDebugPermission()) {
 			System.out.println("Button " + this.name + " is selected!");
 		}
-		return this;
+		return thread;
+	}
+	
+	@Override
+	public Thread select(IAction action) {
+		this.isSelected = true;
+		Thread thread = new Thread(action);
+		thread.start();
+		if(EngineDebug.hasDebugPermission()) {
+			System.out.println("Button " + this.name + " is selected!");
+		}
+		return thread;
 	}
 
 	@Override
-	public void deselect() {
-		if (this.isSelected) {
-			this.isSelected = false;
+	public Thread deselect() {
+		this.isSelected = false;
+		Thread thread = null;
+		if(this.deselectedAction != null) {
+			thread = new Thread(this.deselectedAction);
+			thread.start();
 		}
+		if(EngineDebug.hasDebugPermission()) {
+			System.out.println("Button " + this.name + " is deselected!");
+		}		
+		return thread;
+	}
+	
+	@Override
+	public Thread deselect(IAction action) {
+		this.isSelected = false;
+		Thread thread = new Thread(action);
+		thread.start();
+		if(EngineDebug.hasDebugPermission()) {
+			System.out.println("Button " + this.name + " is deselected!");
+		}		
+		return thread;
 	}
 
 	@Override
 	public void use(IAction action) {
-		action.start();
+		try {
+			this.deselect().join();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		new Thread(action).start();
 		if(EngineDebug.hasDebugPermission()) {
 			System.out.println("Button " + this.name + " is used!");
 		}
@@ -67,7 +108,13 @@ public abstract class GUIButtonBase extends GUIObject implements IGUIButton {
 	
 	@Override
 	public void use() {
-		if(event != null) {this.event.start();}
+		try {
+			this.deselect().join();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		if(useAction != null) {new Thread(this.useAction).start();}
 		if(EngineDebug.hasDebugPermission()) {
 			System.out.println("Button " + this.name + " is used!");
 		}
@@ -100,8 +147,18 @@ public abstract class GUIButtonBase extends GUIObject implements IGUIButton {
 	}
 	
 	@Override
-	public void setAction(IAction action) {
-		this.event = action;
+	public void setUseAction(IAction action) {
+		this.useAction = action;
+	}
+	
+	@Override
+	public void setSelectedAction(IAction action) {
+		this.selectedAction = action;
+	}
+	
+	@Override
+	public void setDeselectedAction(IAction action) {
+		this.deselectedAction = action;
 	}
 
 	@Override

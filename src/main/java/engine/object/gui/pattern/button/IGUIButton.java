@@ -17,21 +17,57 @@ import object.gui.group.IGUIGroup;
 public interface IGUIButton extends Nameable, Moveable<Vector2f> {
 
 	/**
-	 * Does selecetion action for current button.
+	 * Does selection for current button.<br>
+	 * Uses selection action if is initilized. 
+	 * 
+	 * @return {link IGUIButton} object
 	 */
-	IGUIButton select();
-
-	/**
-	 * Does desecelection action for current button.
-	 */
-	void deselect();
+	Thread select();
 	
 	/**
-	 * Sets action for button command.
+	 * Does selecetion for current button with action as parameter.
+	 * 
+	 * @param action {@link IAction} command directions
+	 * @return {link IGUIButton} object
+	 */
+	Thread select(IAction action);
+
+	/**
+	 * Does desecelection for current button.<br>
+	 * Uses deselection action if is initialized. 
+	 *  
+	 * @return {link IGUIButton} object
+	 */
+	Thread deselect();
+	
+	/**
+	 * Does deselecetion for current button with action as parameter.
+	 * 
+	 * @param action {@link IAction} command directions
+	 * @return {link IGUIButton} object
+	 */
+	Thread deselect(IAction action);
+	
+	/**
+	 * Sets action for button on use.
 	 * 
 	 * @param action {@link IAction} command directions
 	 */
-	public void setAction(IAction action);
+	public void setUseAction(IAction action);
+	
+	/**
+	 * Sets action for button on selectetion.
+	 * 
+	 * @param action {@link IAction} command directions
+	 */
+	public void setSelectedAction(IAction action);
+	
+	/**
+	 * Sets action for button on deselection.
+	 * 
+	 * @param action {@link IAction} command directions
+	 */
+	public void setDeselectedAction(IAction action);
 
 	/**
 	 * Uses button command throw param.

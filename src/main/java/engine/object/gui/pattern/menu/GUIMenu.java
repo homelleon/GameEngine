@@ -68,13 +68,15 @@ public class GUIMenu extends GUIObject implements IGUIMenu {
 					wasPrevious = false;
 					selectNextButton();
 				} else {
-					this.selectedButton = this.buttonIterator.next().select();
+					this.selectedButton = this.buttonIterator.next();
+					this.selectedButton.select();
 				}
 			} else {
 				while(this.buttonIterator.hasPrevious()) {
 					this.buttonIterator.previous();
 				}
-				this.selectedButton = this.buttonIterator.next().select();
+				this.selectedButton = this.buttonIterator.next();
+				this.selectedButton.select();
 			}
 		}
 	}
@@ -92,13 +94,15 @@ public class GUIMenu extends GUIObject implements IGUIMenu {
 					wasNext = false;
 					selectPreviousButton();
 				} else {
-					this.selectedButton = this.buttonIterator.previous().select();
+					this.selectedButton = this.buttonIterator.previous();
+					this.selectedButton.select();
 				}
 			} else {
 				while(this.buttonIterator.hasNext()) {
 					this.buttonIterator.next();
 				}
-				this.selectedButton = this.buttonIterator.previous().select();
+				this.selectedButton = this.buttonIterator.previous();
+				this.selectedButton.select();
 			}
 		}
 	}
@@ -150,7 +154,9 @@ public class GUIMenu extends GUIObject implements IGUIMenu {
 	}
 	
 	private void deselectAllButtons() {
-		this.buttons.forEach(IGUIButton::deselect);
+		this.buttons.stream()
+			.filter(IGUIButton::getIsSelected)
+			.forEach(IGUIButton::deselect);
 	}
 	
 	private boolean checkIfHassButtons() {

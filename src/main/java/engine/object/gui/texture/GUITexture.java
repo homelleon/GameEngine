@@ -55,7 +55,7 @@ public class GUITexture {
 		return this.isMixColored;
 	}
 
-	public void setMixColored(boolean isMixColored) {
+	public synchronized void setMixColored(boolean isMixColored) {
 		this.isMixColored = isMixColored;
 	}
 	
