@@ -21,6 +21,7 @@ import object.model.raw.RawModel;
 import object.model.textured.TexturedModel;
 import object.texture.Texture;
 import object.texture.model.ModelTexture;
+import renderer.object.bounding.EntityModelPair;
 import renderer.object.main.IMainRenderer;
 import shader.entity.EntityShader;
 import tool.math.Maths;
@@ -138,14 +139,16 @@ public class EntityRenderer {
 		shader.loadCamera(camera);
 		shader.loadShadowVariables(EngineSettings.SHADOW_DISTANCE, EngineSettings.SHADOW_MAP_SIZE,
 				EngineSettings.SHADOW_TRANSITION_DISTANCE, EngineSettings.SHADOW_PCF);
-		entities.keySet().forEach(model -> {
-			prepareLowTexturedModel(model);
-			entities.get(model).forEach(entity -> {
-				prepareInstance(entity);
-				GL11.glDrawElements(GL11.GL_TRIANGLES, model.getRawModel().getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
+		entities.keySet()
+			.forEach(model -> {
+				prepareLowTexturedModel(model);
+				entities.get(model)
+					.forEach(entity -> {
+						prepareInstance(entity);
+						GL11.glDrawElements(GL11.GL_TRIANGLES, model.getRawModel().getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
+					});
+					unbindTexturedModel();
 			});
-			unbindTexturedModel();
-		});
 		shader.stop();
 	}
 

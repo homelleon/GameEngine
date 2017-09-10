@@ -3,8 +3,6 @@ package object.gui.text;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
-import manager.gui.text.IGUITextManager;
-
 /**
  * Represents a piece of text in the game.
  * 
@@ -40,7 +38,7 @@ public class GUIText {
 	private Vector3f outlineColor = new Vector3f(0f, 0f, 0f);
 	
 	private float transparency = 0;
-	private boolean isVisible = false;
+	private volatile boolean isVisible = false;
 
 	/**
 	 * Creates a new text, loads the text's quads into a VAO, and adds the text
@@ -93,7 +91,7 @@ public class GUIText {
 	 * 
 	 * @return {@link Float} value of current height
 	 */
-	public void setWidth(float width) {
+	public synchronized void setWidth(float width) {
 		this.width = width;
 	}
 
@@ -101,7 +99,7 @@ public class GUIText {
 		return edge;
 	}
 
-	public void setEdge(float edge) {
+	public synchronized void setEdge(float edge) {
 		this.edge = edge;
 	}
 
@@ -109,7 +107,7 @@ public class GUIText {
 		return borderWidth;
 	}
 
-	public void setBorderWidth(float borderWidth) {
+	public synchronized void setBorderWidth(float borderWidth) {
 		this.borderWidth = borderWidth;
 	}
 
@@ -117,7 +115,7 @@ public class GUIText {
 		return borderEdge;
 	}
 
-	public void setBorderEdge(float borderEdge) {
+	public synchronized void setBorderEdge(float borderEdge) {
 		this.borderEdge = borderEdge;
 	}
 
@@ -125,7 +123,7 @@ public class GUIText {
 		return offset;
 	}
 
-	public void setOffset(Vector2f offset) {
+	public synchronized void setOffset(Vector2f offset) {
 		this.offset = offset;
 	}
 
@@ -133,7 +131,7 @@ public class GUIText {
 		return this.outlineColor;
 	}
 
-	public void setOutlineColor(Vector3f outlineColor) {
+	public synchronized void setOutlineColor(Vector3f outlineColor) {
 		this.outlineColor = outlineColor;
 	}
 
@@ -163,7 +161,7 @@ public class GUIText {
 	 * @param b
 	 *            - blue value, between 0 and 1.
 	 */
-	public void setColor(float r, float g, float b) {
+	public synchronized void setColor(float r, float g, float b) {
 		this.color.set(r, g, b);
 	}
 
@@ -173,7 +171,7 @@ public class GUIText {
 	 * @param color
 	 *            {@link Vecotr3f} value
 	 */
-	public void setColor(Vector3f color) {
+	public synchronized void setColor(Vector3f color) {
 		this.color.set(color);
 	}
 
@@ -200,7 +198,7 @@ public class GUIText {
 	 * @param position
 	 *            {@link Vector2f} value
 	 */
-	public void setPosition(Vector2f position) {
+	public synchronized void setPosition(Vector2f position) {
 		this.position = position;
 	}
 
@@ -231,7 +229,7 @@ public class GUIText {
 	 * @param verticesCount
 	 *            - the total number of vertices in all of the quads.
 	 */
-	public void setMeshInfo(int vao, int verticesCount) {
+	public synchronized void setMeshInfo(int vao, int verticesCount) {
 		this.textMeshVao = vao;
 		this.vertexCount = verticesCount;
 	}
@@ -249,7 +247,7 @@ public class GUIText {
 	 * 
 	 * @param value boolean to set into visibility parameter
 	 */
-	public void setIsVisible(boolean value) {
+	public synchronized void setIsVisible(boolean value) {
 		this.isVisible = value;
 	}
 
@@ -268,7 +266,7 @@ public class GUIText {
 	 * 
 	 * @param value float of text transparency
 	 */
-	public void setTransparency(float value) {
+	public synchronized void setTransparency(float value) {
 		this.transparency = value;
 	}
 	
@@ -294,14 +292,14 @@ public class GUIText {
 	 * 
 	 * @param number
 	 */
-	public void setNumberOfLines(int number) {
+	public synchronized void setNumberOfLines(int number) {
 		this.numberOfLines = number;
 	}
 
 	/**
 	 * @return {@code true} if the text should be centered.
 	 */
-	public boolean isCentered() {
+	public synchronized boolean isCentered() {
 		return centered;
 	}
 

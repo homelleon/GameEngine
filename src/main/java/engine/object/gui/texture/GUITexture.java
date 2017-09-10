@@ -31,7 +31,7 @@ public class GUITexture {
 		return this.texture;
 	}
 
-	public void setPosition(Vector2f position) {
+	public synchronized void setPosition(Vector2f position) {
 		this.position = position;
 	}
 
@@ -43,7 +43,7 @@ public class GUITexture {
 		return this.scale;
 	}
 	
-	public void setMixColor(Vector3f color) {
+	public synchronized void setMixColor(Vector3f color) {
 		this.mixColor = color;
 	}
 	
@@ -59,7 +59,7 @@ public class GUITexture {
 		this.isMixColored = isMixColored;
 	}
 	
-	public void increaseScale(Vector2f scale) {
+	public synchronized void increaseScale(Vector2f scale) {
 		this.scale = new Vector2f(this.scale.x + scale.x, this.scale.y + scale.y);
 	}
 	
@@ -86,7 +86,7 @@ public class GUITexture {
 		return this.isVisible;
 	}
 
-	public void setIsVisible(boolean value) {
+	public synchronized void setIsVisible(boolean value) {
 		this.isVisible = value;
 	}
 	

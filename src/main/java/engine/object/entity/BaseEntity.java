@@ -64,7 +64,7 @@ public abstract class BaseEntity {
 		this.scale = scale;
 	}
 
-	public void setIsChosen(boolean isChosen) {
+	public synchronized void setIsChosen(boolean isChosen) {
 		this.isChosen = isChosen;
 	}
 
@@ -76,7 +76,7 @@ public abstract class BaseEntity {
 		return isVisible;
 	}
 
-	public void setIsVisible(boolean isVisible) {
+	public synchronized void setIsVisible(boolean isVisible) {
 		this.isVisible = isVisible;
 	}
 	
@@ -88,13 +88,13 @@ public abstract class BaseEntity {
 		return new Vector2f(xOffset, yOffset);
 	}
 
-	public void increasePosition(float dx, float dy, float dz) {
+	public synchronized void increasePosition(float dx, float dy, float dz) {
 		this.position.x += dx;
 		this.position.y += dy;
 		this.position.z += dz;
 	}
 
-	public void move(float forwardSpeed, float strafeSpeed) {
+	public synchronized void move(float forwardSpeed, float strafeSpeed) {
 		float dx = (float) (forwardSpeed * Math.sin(Math.toRadians(this.rotation.getY()))
 				+ (strafeSpeed * Math.sin(Math.toRadians(this.rotation.getY() + 90))));
 		float dz = (float) (forwardSpeed * Math.cos(Math.toRadians(this.rotation.getY()))
@@ -102,7 +102,7 @@ public abstract class BaseEntity {
 		increasePosition(dx, 0, dz);
 	}
 
-	public void increaseRotation(float dx, float dy, float dz) {
+	public synchronized void increaseRotation(float dx, float dy, float dz) {
 		this.rotation.x += dx;
 		this.rotation.y += dy;
 		this.rotation.z += dz;
@@ -120,7 +120,7 @@ public abstract class BaseEntity {
 		return model;
 	}
 
-	public void setModel(TexturedModel model) {
+	public synchronized void setModel(TexturedModel model) {
 		this.model = model;
 	}
 
@@ -128,11 +128,11 @@ public abstract class BaseEntity {
 		return position;
 	}
 
-	public void setPosition(Vector3f position) {
+	public synchronized void setPosition(Vector3f position) {
 		this.position = position;
 	}
 
-	public void setRotation(Vector3f rotation) {
+	public synchronized void setRotation(Vector3f rotation) {
 		this.rotation = rotation;
 		
 	}
@@ -145,7 +145,7 @@ public abstract class BaseEntity {
 		return scale;
 	}
 
-	public void setScale(float scale) {
+	public synchronized void setScale(float scale) {
 		this.scale = scale;
 		this.radius = model.getRawModel().getBSphere().getRadius() * scale;
 	}

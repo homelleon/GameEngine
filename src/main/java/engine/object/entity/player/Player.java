@@ -26,14 +26,14 @@ public class Player extends TexturedEntity implements IPlayer {
 	private float currentTurnSpeed = 0;
 	private float upwardsSpeed = 0;
 
-	public boolean isInAir = false;
+	public volatile boolean isInAir = false;
 
 	public Player(String name, TexturedModel model, Vector3f position, Vector3f rotation, float scale) {
 		super(name, model, position, rotation, scale);
 	}
 
 	@Override
-	public void move(Collection<ITerrain> terrains) {
+	public synchronized void move(Collection<ITerrain> terrains) {
 		checkInputs();
 		super.increaseRotation(0, currentTurnSpeed * DisplayManager.getFrameTimeSeconds(), 0);
 		float fowardDistance = currentForwardSpeed * DisplayManager.getFrameTimeSeconds();

@@ -22,7 +22,7 @@ import tool.math.Maths;
 public abstract class GUIButtonBase extends GUIObject implements IGUIButton {
 
 	protected IGUIGroup guiGroup;
-	protected boolean isSelected = false;
+	protected volatile boolean isSelected = false;
 	protected IAction useAction;
 	protected IAction selectedAction;
 	protected IAction deselectedAction;
@@ -109,9 +109,10 @@ public abstract class GUIButtonBase extends GUIObject implements IGUIButton {
 	@Override
 	public void use() {
 		try {
-			this.deselect().join();
+			if(this.isSelected) {
+				this.deselect().join();
+			}
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		if(useAction != null) {new Thread(this.useAction).start();}
