@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import core.settings.EngineSettings;
 import object.camera.ICamera;
 import object.entity.entity.IEntity;
 import renderer.viewCulling.frustum.Frustum;
@@ -94,6 +95,7 @@ public class EntityManager extends AbstractManager<IEntity> implements IEntityMa
 	public void updateWithFrustum(Frustum frustum, ICamera camera) {
 		this.frustumEntities.clear();
 		this.frustumEntities.putAll(this.getAll().stream()
+				.filter(entity -> checkOnDistance(entity, camera))
 				.filter(entity -> checkOnFrustum(entity, frustum))
 				.map(entity -> new EDPair(entity, Maths.distanceFromCameraWithRadius(entity, camera)))
 				.collect(Collectors.groupingBy(
@@ -139,6 +141,20 @@ public class EntityManager extends AbstractManager<IEntity> implements IEntityMa
 	
 	private boolean checkOnFrustum(IEntity entity, Frustum frustum) {
 		return frustum.sphereInFrustum(entity.getPosition(), entity.getSphereRadius());
+	}
+	
+	private boolean checkOnDistance(IEntity entity, ICamera camera) {
+		float distance = Maths.distance2Points(entity.getPosition(), camera.getPosition());
+		switch(entity.getType()) {
+			case EngineSettings.ENTITY_TYPE_SIMPLE:
+				return distance <= EngineSettings.RENDERING_VIEW_DISTANCE;
+			case EngineSettings.ENTITY_TYPE_NORMAL:
+				return distance <= EngineSettings.RENDERING_VIEW_DISTANCE;
+			case EngineSettings.ENTITY_TYPE_DECORATE:
+				return distance <= EngineSettings.RENDERING_VIEW_DISTANCE/4;
+			default:
+				return false;
+		}
 	}
 
 

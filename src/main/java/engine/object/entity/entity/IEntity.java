@@ -13,7 +13,11 @@ import object.model.textured.TexturedModel;
  * @see NormalMappedEntity
  */
 public interface IEntity extends Nameable {
-
+	
+	public String getBaseName();
+	
+	public void setBaseName(String name);
+	
 	/**
 	 * Gets entity "visible" flag.
 	 * 

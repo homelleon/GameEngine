@@ -7,13 +7,14 @@ import java.util.Random;
 import org.lwjgl.util.vector.Vector3f;
 
 import core.settings.EngineSettings;
+import object.entity.entity.DecorEntity;
 import object.entity.entity.IEntity;
 import object.entity.entity.TexturedEntity;
 import object.model.raw.RawModel;
 import object.model.textured.TexturedModel;
+import object.terrain.terrain.ITerrain;
 import object.terrain.terrain.MappedTerrain;
 import object.terrain.terrain.ProceduredTerrain;
-import object.terrain.terrain.ITerrain;
 import object.texture.model.ModelTexture;
 import object.texture.terrain.pack.TerrainTexturePack;
 import object.texture.terrain.texture.TerrainTexture;
@@ -104,11 +105,13 @@ public class EngineUtils {
 		for (Integer j = 0; j < r; j++) {
 			for (Integer i = 0; i < r; i++) {
 				sizeNoise = 1 + 2 * (float) random.nextDouble();
-				IEntity grassEntity = new TexturedEntity("Grass" + String.valueOf(i) + "/" + String.valueOf(j), grass, texIndex,
+				IEntity grassEntity = new DecorEntity("Grass" + String.valueOf(i) + "/" + String.valueOf(j), grass, texIndex,
 						new Vector3f(x + density * i, 0, z + density * j), new Vector3f(0, 0, 0), sizeNoise);
+				grassEntity.setBaseName("grassEntity");
 				grasses.add(grassEntity);
-				IEntity grassEntity1 = new TexturedEntity("Grass" + String.valueOf(i) + "/" + String.valueOf(j), grass, texIndex,
+				IEntity grassEntity1 = new DecorEntity("Grass" + String.valueOf(i) + "/" + String.valueOf(j), grass, texIndex,
 						new Vector3f(x + density * i, 0, z + density * j), new Vector3f(0, 100, 0), sizeNoise);
+				grassEntity1.setBaseName("grassEntity");
 				grasses.add(grassEntity1);
 
 			}

@@ -11,6 +11,7 @@ public abstract class BaseEntity {
 	
 	protected TexturedModel model; // текстурная модель
 	protected String name; // имя
+	protected String baseName;
 	protected Vector3f position; // позиция
 	protected Vector3f rotation; // повороты
 	protected float scale = 1f; // масштаб
@@ -34,9 +35,9 @@ public abstract class BaseEntity {
 	 */
 	public BaseEntity(String name, int typeID, TexturedModel model, Vector3f position, Vector3f rotation, float scale) {
 		this.name = name;
+		this.typeID = typeID;
 		this.model = model;
 		this.radius = model.getRawModel().getBSphere().getRadius() * scale;
-		this.typeID = typeID;
 		this.position = position;
 		this.rotation = rotation;
 		this.scale = scale;
@@ -56,6 +57,7 @@ public abstract class BaseEntity {
 	 */
 	public BaseEntity(String name, int typeID, TexturedModel model, int textureIndex, Vector3f position, Vector3f rotation, float scale) {
 		this.name = name;
+		this.typeID = typeID;
 		this.textureIndex = textureIndex;
 		this.model = model;
 		this.radius = model.getRawModel().getBSphere().getRadius() * scale;
@@ -110,6 +112,14 @@ public abstract class BaseEntity {
 
 	public String getName() {
 		return name;
+	}
+	
+	public String getBaseName() {
+		return this.baseName;
+	}
+	
+	public void setBaseName(String name) {
+		this.baseName = name;
 	}
 
 	public int getType() {

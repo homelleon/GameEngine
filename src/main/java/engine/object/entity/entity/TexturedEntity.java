@@ -49,7 +49,8 @@ public class TexturedEntity extends BaseEntity implements IEntity {
 	
 	@Override
 	public IEntity clone(String name) {
-		IEntity entity = new TexturedEntity(name, this.model, this.position, this.rotation, this.scale);
+		IEntity entity = new TexturedEntity(name, this.model, this.textureIndex, this.position, this.rotation, this.scale);
+		entity.setBaseName(this.getName());
 		return entity;
 	}
 

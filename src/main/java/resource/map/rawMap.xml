@@ -3,27 +3,39 @@
 		<model_texture
 			id="1"
 			name="diceTexture"
-			file="model/Cube1" />
+			file="model/Cube1"
+			rows="1"
+			transparency="false" />
 		<model_texture
 			id="2"
 			name="barrelTexture"
-			file="model/barrel" />
+			file="model/barrel"
+			rows="1" 
+			transparency="false" />
 		<model_texture
 			id="3"
 			name="barrelNormalTexture"
-			file="normalMap/barrelNormal" />
+			file="normalMap/barrelNormal"
+			rows="1"
+			transparency="false" />
 		<model_texture
 			id="4"
 			name="barrelSpecularTexture"
-			file="specularMap/barrelS" />
+			file="specularMap/barrelS" 
+			rows="1"
+			transparency="false" />
 		<model_texture
 			id="5"
 			name="grassTexture"
-			file="model/grassObject" />
+			file="model/grassObjAtlas"
+			rows="2" 
+			transparency="true" />
 		<model_texture
 			id="6"
 			name="stallTexture"
-			file="model/stallTexture" />
+			file="model/stallTexture"
+			rows="1"
+			transparency="false" />
 	</model_textures>
 	<terrain_textures>
 		<terrain_texture
@@ -69,7 +81,7 @@
 		<raw_model 
 			id="2"
 			name="grassRawModel"
-			file="grass"
+			file="grassObject"
 			type="simple" />
 		<raw_model 
 			id="3"
@@ -84,40 +96,42 @@
 	</models>
 	<textured_models>
 		<simple>
-			<textured_model
-				id="1"
+			<textured_model id="1" 
 				name="diceModel"
-				raw_model="cubeRawModel"
-				base_texture = "diceTexture"
+				raw_model="cubeRawModel" 
+				base_texture="diceTexture" 
 				isNormal="false"
-				isSpecular="false" />
-			<textured_model
-				id="2"
+				isSpecular="false"
+				shine_damper="0" 
+				reflectivity="0" />
+			<textured_model id="2" 
 				name="grassModel"
-				raw_model="grassRawModel"
-				base_texture = "grassTexture"
-				isNormal="false"
-				isSpecular="false" />
-			<textured_model
-				id="3"
+				raw_model="grassRawModel" 
+				base_texture="grassTexture"
+				isNormal="false" 
+				isSpecular="false"
+				shine_damper="0" 
+				reflectivity="0" />
+			<textured_model id="3" 
 				name="stallModel"
-				raw_model="stallRawModel"
-				base_texture = "stallTexture"
-				isNormal="false"
-				isSpecular="false" />
+				raw_model="stallRawModel" 
+				base_texture="stallTexture"
+				isNormal="false" 
+				isSpecular="false"
+				shine_damper="0" 
+				reflectivity="0" />
 		</simple>
 		<normal>
-			<textured_model 
-				id="1"
-				name="barrelModel"
-				raw_model="barrelRawModel"
+			<textured_model id="1" name="barrelModel"
+				raw_model="barrelRawModel" 
 				base_texture="barrelTexture"
-				isNormal="true"
+				isNormal="true" 
 				isSpecular="true"
+				transparency="false"
 				normal_texture="barrelNormalTexture"
-				specular_texture="barrelSpecularTexture"
+				specular_texture="barrelSpecularTexture" 
 				shine_damper="10.0"
-				reflectivity="0.5"/>
+				reflectivity="0.5" />
 		</normal>		
 	</textured_models>
 </raw_map>

@@ -49,7 +49,8 @@ public class NormalMappedEntity extends BaseEntity implements IEntity {
 	
 	@Override
 	public IEntity clone(String name) {
-		IEntity entity = new NormalMappedEntity(name, this.model, this.position, this.rotation, this.scale);
+		IEntity entity = new NormalMappedEntity(name, this.model, this.textureIndex, this.position, this.rotation, this.scale);
+		entity.setBaseName(this.getName());
 		return entity;
 	}
 

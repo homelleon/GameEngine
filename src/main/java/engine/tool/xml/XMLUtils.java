@@ -98,6 +98,8 @@ public class XMLUtils {
 	public final static String LINE = "line";
 	public final static String MAX_LENGTH = "max_length";
 	public final static String FONT = "font";
+	public final static String ROWS = "rows";
+	public final static String TEXTURE_INDEX = "texture_index";
 	public final static String SHINE_DAMPER = "shine_damper";
 	public final static String REFLECTIVITY = "reflectivity";
 	public final static String AMPLITUDE = "amplitude";
@@ -109,6 +111,7 @@ public class XMLUtils {
 	public final static String SIMPLE = "simple";
 	public final static String NORMAL = "normal";
 	public final static String SPECULAR = "specular";
+	public final static String TRANSPARENCY = "transparency";
 	public final static String CENTERED = "centered";	
 	public final static String PROCEDURE_GENERATED = "procedure_generated";
 

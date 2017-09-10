@@ -13,7 +13,7 @@ import object.entity.entity.IEntity;
 import object.terrain.terrain.ITerrain;
 import renderer.loader.Loader;
 
-public class ModelMapTXTWriter implements IModelMapWriter {
+public class ModelMapTXTWriter implements ILevelMapWriter {
 
 	@Override
 	public void write(IObjectManager map) {

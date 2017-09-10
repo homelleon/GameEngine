@@ -9,6 +9,7 @@ import core.debug.EngineDebug;
 import manager.scene.IObjectManager;
 import map.objectMap.ObjectMapManager;
 import map.raw.IRawManager;
+import object.entity.entity.IEntity;
 import object.entity.entity.builder.EntityBuilder;
 import object.entity.entity.builder.IEntityBuilder;
 import object.model.textured.TexturedModel;
@@ -69,10 +70,12 @@ public class ModelMapXMLParser extends XMLParser implements IObjectParser<IObjec
 				String name = XMLUtils.getAttributeValue(entityEl, XMLUtils.NAME);
 				String modelName = XMLUtils.getAttributeValue(entityEl, XMLUtils.TEXTURED_MODEL);
 				float scale = Float.valueOf(XMLUtils.getAttributeValue(entityEl, XMLUtils.SCALE));
+				int textureIndex = Integer.valueOf(XMLUtils.getAttributeValue(entityEl, XMLUtils.TEXTURE_INDEX));
 				TexturedModel model = rawMap.getTexturedModel(modelName);
-				IEntityBuilder builder =  new EntityBuilder();
-				builder.setModel(model);
-				builder.setScale(scale);
+				IEntityBuilder builder =  new EntityBuilder()
+						.setModel(model)
+						.setScale(scale)
+						.setTextureIndex(textureIndex);
 				map.getEntities().add(builder.build(name));
 				if (EngineDebug.hasDebugPermission()) {
 					System.out.println(">> " + map.getEntities().get(name).getName());

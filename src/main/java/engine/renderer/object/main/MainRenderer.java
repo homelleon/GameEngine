@@ -96,19 +96,22 @@ public class MainRenderer implements IMainRenderer {
 		
 		//TODO: Use distance from camera to entity not from frustum plane.
 		frustumEntities.keySet().stream()
-	 	 .filter(distance -> distance <= EngineSettings.RENDERING_VIEW_DISTANCE)
-	 	 .map(distance -> frustumEntities.get(distance))
-		 .flatMap(list -> list.stream())
-		 .forEach(entity -> {
-			 switch(entity.getType()) {
-			 	case EngineSettings.ENTITY_TYPE_SIMPLE:
-			 		processor.processEntity(entity, entities, frustum);
-			 		break;
-			 	case EngineSettings.ENTITY_TYPE_NORMAL:
-			 		processor.processNormalMapEntity(entity, normalMapEntities, frustum);
-			 		break;
-			 }
-		 });
+		 	 .filter(distance -> distance <= EngineSettings.RENDERING_VIEW_DISTANCE)
+		 	 .map(distance -> frustumEntities.get(distance))
+			 .flatMap(list -> list.stream())
+			 .forEach(entity -> {
+				 switch(entity.getType()) {
+				 	case EngineSettings.ENTITY_TYPE_SIMPLE:
+				 		processor.processEntity(entity, entities, frustum);
+				 		break;
+				 	case EngineSettings.ENTITY_TYPE_DECORATE:
+				 		processor.processEntity(entity, entities, frustum);
+				 		break;
+				 	case EngineSettings.ENTITY_TYPE_NORMAL:
+				 		processor.processNormalMapEntity(entity, normalMapEntities, frustum);
+				 		break;
+				 }
+			 });
 		if (this.environmentDinamic) {
 			environmentRendered = false;
 		}

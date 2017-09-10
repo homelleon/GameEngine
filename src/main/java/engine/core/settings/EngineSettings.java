@@ -160,7 +160,7 @@ public class EngineSettings {
 	/* entity type */
 	public final static int ENTITY_TYPE_SIMPLE = 0;
 	public final static int ENTITY_TYPE_NORMAL = 1;
-	public final static int ENTITY_TYPE_DETAIL = 2;
+	public final static int ENTITY_TYPE_DECORATE = 2;
 
 	/* bounding box type */
 	public final static int BOUNDING_BOX_MIN_MAX = 0;

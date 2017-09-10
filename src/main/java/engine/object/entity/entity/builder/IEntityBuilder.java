@@ -14,6 +14,8 @@ public interface IEntityBuilder {
 	public IEntityBuilder setPosition(Vector3f position);
 
 	public IEntityBuilder setRotation(Vector3f rotation);
+	
+	public IEntityBuilder setTextureIndex(int index);
 
 	public IEntity build(String name);
 

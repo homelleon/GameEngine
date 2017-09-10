@@ -21,7 +21,6 @@ import object.model.raw.RawModel;
 import object.model.textured.TexturedModel;
 import object.texture.Texture;
 import object.texture.model.ModelTexture;
-import renderer.object.bounding.EntityModelPair;
 import renderer.object.main.IMainRenderer;
 import shader.entity.EntityShader;
 import tool.math.Maths;

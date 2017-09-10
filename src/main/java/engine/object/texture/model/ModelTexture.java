@@ -120,5 +120,70 @@ public class ModelTexture {
 	public void setReflectivity(float reflectivity) {
 		this.reflectivity = reflectivity;
 	}
+	
+	public ModelTexture clone(String name) {
+		ModelTexture texture = new ModelTexture(name, this.textureID);
+		texture.setSpecularMap(this.specularMap);
+		texture.setNormalMap(normalMap);
+		texture.setShineDamper(shineDamper);
+		texture.setReflectivity(reflectivity);
+		texture.setReflectiveFactor(reflectiveFactor);
+		texture.setRefractiveFactor(refractiveFactor);
+		texture.setRefractiveIndex(refractiveIndex);
+		texture.setHasTransparency(hasTransparency);
+		texture.setUseFakeLighting(useFakeLighting);
+		texture.setNumberOfRows(numberOfRows);
+		return texture;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(obj.hashCode() != this.hashCode()) {
+			return false;
+		}
+		if(obj == this) {
+			return true;
+		}
+		if(obj == null || obj.getClass() != this.getClass()) {
+			return false;
+		}
+		ModelTexture modelTexture = (ModelTexture) obj;
+		if(modelTexture.getID() == this.getID() &&
+				modelTexture.getNormalMap() == this.getNormalMap() &&
+				modelTexture.getSpecularMap() == this.getSpecularMap() &&
+				modelTexture.getShineDamper() == this.getShineDamper() &&
+				modelTexture.getReflectivity() == this.getReflectivity() &&
+				modelTexture.getReflectiveFactor() == this.getReflectiveFactor() &&
+				modelTexture.getRefractiveFactor() == this.getRefractiveFactor() &&
+				modelTexture.getRefractiveIndex() == this.getRefractiveIndex() &&
+				modelTexture.isHasTransparency() == this.isHasTransparency() &&
+				modelTexture.isUseFakeLighting() == this.isUseFakeLighting() &&
+				modelTexture.hasSpecularMap() == this.hasSpecularMap() &&
+				modelTexture.getNumberOfRows() == this.getNumberOfRows())
+		{
+			return true;
+		} else {
+			return false;
+		} 
+	}
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + textureID;
+		result = prime * result + normalMap;
+		result = prime * result + specularMap;
+		result = prime * result + (int) shineDamper;
+		result = prime * result + (int) reflectivity;
+		result = prime * result + (int) reflectiveFactor;
+		result = prime * result + (int) refractiveFactor;
+		result = prime * result + (int) refractiveIndex;
+		result = prime * result + (hasTransparency ? 1 : 0);
+		result = prime * result + (useFakeLighting ? 1 : 0);
+		result = prime * result + (hasSpecularMap ? 1 : 0);
+		result = prime * result + numberOfRows;
+		return result;
+	}
 
 }

@@ -59,5 +59,43 @@ public class RawModel {
 	public BoundingBox getBBox() {
 		return this.box;
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(obj.hashCode() != this.hashCode()) {
+			return false;
+		}
+		if(obj == this) {
+			return true;
+		}
+		if(obj == null || obj.getClass() != this.getClass()) {
+			return false;
+		}
+		RawModel rawModel = (RawModel) obj;
+		if(rawModel.getVaoID() == this.getVaoID() &&
+				rawModel.getVertexCount() == this.getVertexCount() &&
+				rawModel.getBBox() == this.getBBox() &&
+				rawModel.getBSphere() == this.getBSphere()) 
+		{
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	@Override
+	public int hashCode() {
+		final int prime = 33;
+		int result = 1;
+		result = prime * result + vaoID;
+		result = prime * result + vertexCount;
+		result = prime * result + sphere.hashCode();
+		result = prime * result + box.hashCode();
+		return result;
+	}
+	
+	public RawModel clone(String name) {
+		return new RawModel(name, this.vaoID, this.vertexCount, this.sphere, this.box);
+	}
 
 }

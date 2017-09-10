@@ -110,8 +110,15 @@ public class RawMapXMLParser extends XMLParser implements IObjectParser<IRawMana
 				String ID = XMLUtils.getAttributeValue(textureNode, XMLUtils.ID);
 				String name = XMLUtils.getAttributeValue(textureElement, XMLUtils.NAME);
 				String file = XMLUtils.getAttributeValue(textureElement, XMLUtils.FILE);
+				int numberOfRows = Integer.valueOf(XMLUtils.getAttributeValue(textureElement, XMLUtils.ROWS));
+				boolean transparency = Boolean.valueOf(XMLUtils.getAttributeValue(textureElement, XMLUtils.TRANSPARENCY));
 				int bufferId = Loader.getInstance().getTextureLoader().loadTexture(EngineSettings.TEXTURE_PATH, file);
 				ModelTexture texture = new ModelTexture(name, bufferId);
+				texture.setNumberOfRows(numberOfRows);
+				if(transparency) {
+					texture.setHasTransparency(true);
+					texture.setUseFakeLighting(true);
+				}
 				map.addModelTexture(texture);
 				if (EngineDebug.hasDebugPermission()) {
 					System.out.println(">> " + map.getModelTexture(name).getName());
@@ -207,8 +214,8 @@ public class RawMapXMLParser extends XMLParser implements IObjectParser<IRawMana
 				String name = XMLUtils.getAttributeValue(texturedModelElement, XMLUtils.NAME);
 				String rawModelName = XMLUtils.getAttributeValue(texturedModelElement, XMLUtils.RAW_MODEL);
 				String baseTextureName = XMLUtils.getAttributeValue(texturedModelElement, XMLUtils.BASE_TEXTURE);
-				RawModel rawModel = map.getRawModel(rawModelName);
-				ModelTexture texture = map.getModelTexture(baseTextureName);
+				RawModel rawModel = map.getRawModel(rawModelName).clone(rawModelName);
+				ModelTexture texture = map.getModelTexture(baseTextureName).clone(baseTextureName);
 				TexturedModel model = new TexturedModel(name, rawModel, texture);
 				map.addTexturedModel(model);
 				if (EngineDebug.hasDebugPermission()) {

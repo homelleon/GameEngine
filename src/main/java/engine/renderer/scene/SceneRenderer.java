@@ -14,8 +14,8 @@ import core.display.DisplayManager;
 import core.settings.EngineSettings;
 import manager.scene.IObjectManager;
 import map.objectMap.ObjectMapManager;
-import map.writer.IModelMapWriter;
-import map.writer.ModelMapXMLWriter;
+import map.writer.ILevelMapWriter;
+import map.writer.LevelMapXMLWriter;
 import object.gui.gui.GUI;
 import object.gui.gui.IGUI;
 import object.gui.pattern.object.GUIObject;
@@ -92,12 +92,11 @@ public class SceneRenderer {
 		
 		if (KeyboardGame.isKeyPressed(Keyboard.KEY_T)) {
 			EngineMain.pauseEngine(true);
-			IModelMapWriter mapWriter = new ModelMapXMLWriter();
+			ILevelMapWriter mapWriter = new LevelMapXMLWriter();
 			IObjectManager map = new ObjectMapManager();
 			map.getEntities().addAll(scene.getEntities().getAll());
 			map.getTerrains().addAll(scene.getTerrains().getAll());
 			mapWriter.write(map);
-			System.out.println("save");
 			EngineMain.pauseEngine(false);
 		}
 
