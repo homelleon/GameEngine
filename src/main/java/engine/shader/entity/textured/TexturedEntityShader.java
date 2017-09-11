@@ -1,4 +1,4 @@
-package shader.entity;
+package shader.entity.textured;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -20,10 +20,10 @@ import tool.math.Maths;
  * ------------
  */
 
-public class EntityShader extends ShaderProgram {
+public class TexturedEntityShader extends ShaderProgram {
 
-	public static final String VERTEX_FILE = EngineSettings.SHADERS_ENTITY_PATH + "entityVertexShader.glsl";
-	public static final String FRAGMENT_FILE = EngineSettings.SHADERS_ENTITY_PATH + "entityFragmentShader.glsl";
+	public static final String VERTEX_FILE = EngineSettings.SHADERS_ENTITY_TEXTURED_PATH + "texturedEntityVertexShader.glsl";
+	public static final String FRAGMENT_FILE = EngineSettings.SHADERS_ENTITY_TEXTURED_PATH + "texturedEntityFragmentShader.glsl";
 
 	private int location_transformationMatrix; // матрица трансформации
 	private int location_projectionMatrix; // проективная матрица
@@ -57,7 +57,7 @@ public class EntityShader extends ShaderProgram {
 	private int location_modelTexture; // текстура модели
 	private int location_isChosen; // Выбранный объект
 
-	public EntityShader() {
+	public TexturedEntityShader() {
 		super(VERTEX_FILE, FRAGMENT_FILE);
 	}
 

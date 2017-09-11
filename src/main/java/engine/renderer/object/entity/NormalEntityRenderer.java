@@ -19,16 +19,16 @@ import object.light.ILight;
 import object.model.raw.RawModel;
 import object.model.textured.TexturedModel;
 import object.texture.model.ModelTexture;
-import shader.entity.NormalMappingShader;
+import shader.entity.normal.NormalMappedEntityShader;
 import tool.math.Maths;
 import tool.openGL.OGLUtils;
 
-public class NormalMappingRenderer {
+public class NormalEntityRenderer {
 
-	private NormalMappingShader shader;
+	private NormalMappedEntityShader shader;
 
-	public NormalMappingRenderer(Matrix4f projectionMatrix) {
-		this.shader = new NormalMappingShader();
+	public NormalEntityRenderer(Matrix4f projectionMatrix) {
+		this.shader = new NormalMappedEntityShader();
 		shader.start();
 		shader.loadProjectionMatrix(projectionMatrix);
 		shader.connectTextureUnits();

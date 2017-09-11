@@ -9,8 +9,11 @@ import tool.math.Maths;
 public class Frustum {
 
 	private float[][] plane = new float[6][4];
+	
+	private ICamera camera;
 
 	public void extractFrustum(ICamera camera, Matrix4f projectionMatrix) {
+		this.camera = camera;
 		Matrix4f clip;
 		float t;
 
@@ -123,6 +126,21 @@ public class Frustum {
 			}
 		}
 		return isInFrustum;
+	}
+	
+	public boolean sphereInFrustumAndDsitance(Vector3f position, float radius, 
+			float startClipDistance, float endClipDistance) {
+		float distance = Maths.distance2Points(position, this.camera.getPosition());
+		if(distance < startClipDistance || distance > endClipDistance) {
+			return false;
+		}
+		for (int p = 0; p < 6; p++) {
+			if (plane[p][0] * position.x + plane[p][1] * position.y + plane[p][2] * position.z
+					+ plane[p][3] <= -radius) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	public float distanceSphereInFrustum(Vector3f position, float radius) {

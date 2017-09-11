@@ -18,14 +18,10 @@ public interface ISceneProcessor {
 
 	public void processTerrain(ITerrain terrain, Collection<ITerrain> terrains);
 
-	public void processEntity(IEntity entity, Map<TexturedModel, List<IEntity>> entities, Frustum frustum);
+	public void processEntity(IEntity entity, Map<TexturedModel, List<IEntity>> entities);
 
-	public void processNormalMapEntity(IEntity entity, Map<TexturedModel, List<IEntity>> normalMapEntities,
-			Frustum frustum);
+	public void processShadowEntity(IEntity entity, Map<TexturedModel, List<IEntity>> entities);
 
-	public void processShadowEntity(IEntity entity, Map<TexturedModel, List<IEntity>> entities, Frustum frustum);
-
-	public void processShadowNormalMapEntity(IEntity entity, Map<TexturedModel, List<IEntity>> normalMapEntities,
-			Frustum frustum);
+	public void processShadowNormalMapEntity(IEntity entity, Map<TexturedModel, List<IEntity>> normalMapEntities);
 
 }

@@ -14,8 +14,8 @@ import org.lwjgl.util.vector.Vector4f;
 public class EngineSettings {
 
 	/* display settings */
-	public static final int DISPLAY_WIDTH = 800; // 1920;
-	public static final int DISPLAY_HEIGHT = 600; // 1080;
+	public static final int DISPLAY_WIDTH = 1920; // 1920;
+	public static final int DISPLAY_HEIGHT = 1080; // 1080;
 	public static final int FAR_PLANE = 10000;
 	public static final float NEAR_PLANE = 0.5f;
 	public static final int FPS_CAP = 120;
@@ -122,7 +122,9 @@ public class EngineSettings {
 	/* shaders */
 	public final static String SHADERS_PATH = "/shader/";
 	public final static String SHADERS_ENTITY_PATH = SHADERS_PATH + "entity/";
-	public final static String SHADERS_NORMAL_MAP_PATH = SHADERS_ENTITY_PATH;
+	public final static String SHADERS_ENTITY_TEXTURED_PATH = SHADERS_ENTITY_PATH + "textured/";
+	public final static String SHADERS_ENTITY_NORMAL_PATH = SHADERS_ENTITY_PATH + "normal/";
+	public final static String SHADERS_ENTITY_DECOR_PATH = SHADERS_ENTITY_PATH + "decor/";
 	public final static String SHADERS_BOUNDING_PATH = SHADERS_PATH + "bounding/";
 	public final static String SHADERS_TERRAIN_PATH = SHADERS_PATH + "terrain/";
 	public final static String SHADERS_VOXEL_PATH = SHADERS_PATH + "voxel/";

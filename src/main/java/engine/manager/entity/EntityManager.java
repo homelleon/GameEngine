@@ -2,18 +2,14 @@ package manager.entity;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import core.settings.EngineSettings;
 import object.camera.ICamera;
 import object.entity.entity.IEntity;
 import renderer.viewCulling.frustum.Frustum;
 import tool.manager.AbstractManager;
-import tool.math.Maths;
 
 /**
  * Manages entities in the game engine.
@@ -33,18 +29,16 @@ import tool.math.Maths;
  */
 public class EntityManager extends AbstractManager<IEntity> implements IEntityManager {
 
-	private Map<Float, List<IEntity>> frustumEntities = new HashMap<Float, List<IEntity>>();
+	private List<IEntity> frustumEntities = new ArrayList<IEntity>();
 	private List<IEntity> pointedEntities = new ArrayList<IEntity>();
 	private List<IEntity> editorEntities = new ArrayList<IEntity>();
 
 	@Override
 	public void addPointedList(Collection<IEntity> pointedList) {
-		if ((pointedList != null) && (!pointedList.isEmpty())) {
-			pointedList.forEach(entity -> {
-				entity.setIsChosen(true);
-				this.pointedEntities.add(entity);
-			});
-		}
+		pointedList.forEach(entity -> {
+			entity.setIsChosen(true);
+			this.pointedEntities.add(entity);
+		});
 	}
 
 	@Override
@@ -53,13 +47,6 @@ public class EntityManager extends AbstractManager<IEntity> implements IEntityMa
 			this.editorEntities = editorList;
 		}
 
-	}
-
-	@Override
-	public void addFrustumMap(Map<Float, List<IEntity>> frustumMap) {
-		if ((frustumMap != null) && (!frustumMap.isEmpty())) {
-			this.frustumEntities.putAll(frustumMap);
-		}
 	}
 
 
@@ -77,36 +64,22 @@ public class EntityManager extends AbstractManager<IEntity> implements IEntityMa
 	}
 
 	@Override
-	public void addInFrustum(float distance, IEntity entity) {
-		if (entity != null) {
-			if (this.frustumEntities.containsKey(distance)) {
-				this.frustumEntities.get(distance).add(entity);
-			} else {
-				this.frustumEntities.put(
-						distance, 
-						Stream.of(entity)
-							  .collect(Collectors.toList())
-				); 
-			}
-		}
+	public void addInFrustum(IEntity entity) {
+		this.frustumEntities.add(entity);
 	}
 
 	@Override
-	public void updateWithFrustum(Frustum frustum, ICamera camera) {
+	public List<IEntity> updateWithFrustum(Frustum frustum, ICamera camera) {
 		this.frustumEntities.clear();
-		this.frustumEntities.putAll(this.getAll().stream()
-				.filter(entity -> checkOnDistance(entity, camera))
-				.filter(entity -> checkOnFrustum(entity, frustum))
-				.map(entity -> new EDPair(entity, Maths.distanceFromCameraWithRadius(entity, camera)))
-				.collect(Collectors.groupingBy(
-						EDPair::getDistance,
-						Collectors.mapping(
-								EDPair::getEntity, Collectors.toList()))));
+		this.frustumEntities.addAll(this.getAll().stream()
+				.filter(entity -> checkVisibility(entity, frustum))
+				.collect(Collectors.toList()));
+		return this.frustumEntities;
 	}
 
 
 	@Override
-	public Map<Float, List<IEntity>> getFromFrustum() {
+	public List<IEntity> getFromFrustum() {
 		return this.frustumEntities;
 	}
 
@@ -139,22 +112,24 @@ public class EntityManager extends AbstractManager<IEntity> implements IEntityMa
 		this.frustumEntities.clear();		
 	}
 	
-	private boolean checkOnFrustum(IEntity entity, Frustum frustum) {
-		return frustum.sphereInFrustum(entity.getPosition(), entity.getSphereRadius());
-	}
-	
-	private boolean checkOnDistance(IEntity entity, ICamera camera) {
-		float distance = Maths.distance2Points(entity.getPosition(), camera.getPosition());
+	private boolean checkVisibility(IEntity entity, Frustum frustum) {
+		float distance1 = 0;
+		float distance2 = 0;
 		switch(entity.getType()) {
-			case EngineSettings.ENTITY_TYPE_SIMPLE:
-				return distance <= EngineSettings.RENDERING_VIEW_DISTANCE;
-			case EngineSettings.ENTITY_TYPE_NORMAL:
-				return distance <= EngineSettings.RENDERING_VIEW_DISTANCE;
-			case EngineSettings.ENTITY_TYPE_DECORATE:
-				return distance <= EngineSettings.RENDERING_VIEW_DISTANCE/4;
-			default:
-				return false;
+		case EngineSettings.ENTITY_TYPE_SIMPLE:
+			distance2 = EngineSettings.RENDERING_VIEW_DISTANCE;
+			break;
+		case EngineSettings.ENTITY_TYPE_NORMAL:
+			distance2 = EngineSettings.RENDERING_VIEW_DISTANCE;
+			break;
+		case EngineSettings.ENTITY_TYPE_DECORATE:
+			distance2 = EngineSettings.RENDERING_VIEW_DISTANCE/6;
+			break;
+		default:
+			return false;
 		}
+		return frustum.sphereInFrustumAndDsitance(
+				entity.getPosition(), entity.getSphereRadius(), distance1, distance2);	
 	}
 
 

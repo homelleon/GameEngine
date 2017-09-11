@@ -13,7 +13,7 @@ import object.light.ILight;
 import object.model.textured.TexturedModel;
 import object.scene.IScene;
 import object.terrain.terrain.ITerrain;
-import renderer.object.entity.EntityRenderer;
+import renderer.object.entity.TexturedEntityRenderer;
 import renderer.viewCulling.frustum.Frustum;
 
 /**
@@ -69,7 +69,7 @@ public interface IMainRenderer {
 	 * 
 	 * @return
 	 */
-	public EntityRenderer getEntityRenderer();
+	public TexturedEntityRenderer getEntityRenderer();
 
 	/**
 	 * 
@@ -98,13 +98,6 @@ public interface IMainRenderer {
 	 * @return
 	 */
 	Matrix4f getProjectionMatrix();
-
-	/**
-	 * 
-	 * @param scene
-	 * @return
-	 */
-	Collection<IEntity> createFrustumEntities(IScene scene);
 
 	/**
 	 * 

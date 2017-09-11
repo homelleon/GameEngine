@@ -24,8 +24,9 @@ import object.shadow.renderer.ShadowMapMasterRenderer;
 import object.terrain.terrain.ITerrain;
 import object.texture.Texture;
 import renderer.object.bounding.BoundingRenderer;
-import renderer.object.entity.EntityRenderer;
-import renderer.object.entity.NormalMappingRenderer;
+import renderer.object.entity.DecorEntityRenderer;
+import renderer.object.entity.NormalEntityRenderer;
+import renderer.object.entity.TexturedEntityRenderer;
 import renderer.object.environment.EnvironmentMapRenderer;
 import renderer.object.skybox.SkyboxRenderer;
 import renderer.object.terrain.TerrainRenderer;
@@ -40,9 +41,10 @@ public class MainRenderer implements IMainRenderer {
 	private Matrix4f projectionMatrix;
 	private Matrix4f normalDistProjectionMatrix;
 	private Matrix4f lowDistProjectionMatrix;
-	private EntityRenderer entityRenderer;
-	private TerrainRenderer terrainRenderer;
-	private NormalMappingRenderer normalMapRenderer;
+	private TexturedEntityRenderer texturedEntityRenderer;
+	private NormalEntityRenderer normalEntityRenderer;
+	private DecorEntityRenderer decorEntityRenderer;
+	private TerrainRenderer terrainRenderer;	
 	private SkyboxRenderer skyboxRenderer;
 	private VoxelRenderer voxelRenderer;
 	private BoundingRenderer boundingRenderer;
@@ -56,11 +58,12 @@ public class MainRenderer implements IMainRenderer {
 
 	private boolean terrainWiredFrame = false;
 	private boolean entitiyWiredFrame = false;
-	private boolean environmentDinamic = false;
+	private boolean environmentDynamic = false;
 	private boolean environmentRendered = false;
 
-	private Map<TexturedModel, List<IEntity>> entities = new HashMap<TexturedModel, List<IEntity>>();
-	private Map<TexturedModel, List<IEntity>> normalMapEntities = new HashMap<TexturedModel, List<IEntity>>();
+	private Map<TexturedModel, List<IEntity>> texturedEntities = new HashMap<TexturedModel, List<IEntity>>();
+	private Map<TexturedModel, List<IEntity>> normalEntities = new HashMap<TexturedModel, List<IEntity>>();
+	private Map<TexturedModel, List<IEntity>> decorEntities = new HashMap<TexturedModel, List<IEntity>>();
 	private Collection<ITerrain> terrains = new ArrayList<ITerrain>();
 
 	public MainRenderer(ICamera camera) {
@@ -68,10 +71,11 @@ public class MainRenderer implements IMainRenderer {
 		createProjectionMatrix();
 		createLowDistProjectionMatrix();
 		projectionMatrix = normalDistProjectionMatrix;
-		this.entityRenderer = new EntityRenderer(projectionMatrix);
+		this.texturedEntityRenderer = new TexturedEntityRenderer(projectionMatrix);
+		this.normalEntityRenderer = new NormalEntityRenderer(projectionMatrix);
+		this.decorEntityRenderer = new DecorEntityRenderer(projectionMatrix);
 		this.terrainRenderer = new TerrainRenderer(projectionMatrix);
 		this.skyboxRenderer = new SkyboxRenderer(projectionMatrix);
-		this.normalMapRenderer = new NormalMappingRenderer(projectionMatrix);
 		this.voxelRenderer = new VoxelRenderer(projectionMatrix);
 		this.boundingRenderer = new BoundingRenderer(projectionMatrix);
 		this.shadowMapRenderer = new ShadowMapMasterRenderer(camera);
@@ -86,33 +90,24 @@ public class MainRenderer implements IMainRenderer {
 
 	@Override
 	public void renderScene(IScene scene, Vector4f clipPlane, boolean isLowDistance) {
-		this.frustum.extractFrustum(scene.getCamera(), projectionMatrix);
-		scene.getEntities().updateWithFrustum(this.frustum, scene.getCamera());
+		scene.getTerrains().getAll().forEach(terrain -> processor.processTerrain(terrain, terrains));
 		this.environmentMap = scene.getEnvironmentMap();
-		scene.getTerrains().getAll()
-			 .forEach(terrain -> processor.processTerrain(terrain, terrains));
-		
-		Map<Float, List<IEntity>> frustumEntities = scene.getEntities().getFromFrustum();
-		
-		//TODO: Use distance from camera to entity not from frustum plane.
-		frustumEntities.keySet().stream()
-		 	 .filter(distance -> distance <= EngineSettings.RENDERING_VIEW_DISTANCE)
-		 	 .map(distance -> frustumEntities.get(distance))
-			 .flatMap(list -> list.stream())
+		this.frustum.extractFrustum(scene.getCamera(), projectionMatrix);
+		scene.getEntities().updateWithFrustum(this.frustum, scene.getCamera()).stream()
 			 .forEach(entity -> {
 				 switch(entity.getType()) {
 				 	case EngineSettings.ENTITY_TYPE_SIMPLE:
-				 		processor.processEntity(entity, entities, frustum);
+				 		processor.processEntity(entity, texturedEntities);
 				 		break;
 				 	case EngineSettings.ENTITY_TYPE_DECORATE:
-				 		processor.processEntity(entity, entities, frustum);
+				 		processor.processEntity(entity, decorEntities);
 				 		break;
 				 	case EngineSettings.ENTITY_TYPE_NORMAL:
-				 		processor.processNormalMapEntity(entity, normalMapEntities, frustum);
+				 		processor.processEntity(entity, normalEntities);
 				 		break;
 				 }
 			 });
-		if (this.environmentDinamic) {
+		if (this.environmentDynamic) {
 			environmentRendered = false;
 		}
 		if (!environmentRendered) {
@@ -127,13 +122,14 @@ public class MainRenderer implements IMainRenderer {
 			Vector4f clipPlane, boolean isLowDistance) {
 		prepare();
 		checkWiredFrameOn(entitiyWiredFrame);
-		entityRenderer.renderHigh(entities, clipPlane, lights, camera, shadowMapRenderer.getToShadowMapSpaceMatrix(),
-				environmentMap);
 		if (EngineDebug.boundingMode != EngineDebug.BOUNDING_NONE) {
-			boundingRenderer.render(entities, normalMapEntities, camera);
+			boundingRenderer.render(texturedEntities, normalEntities, camera);
 		}
-		normalMapRenderer.render(normalMapEntities, clipPlane, lights, camera,
+		texturedEntityRenderer.renderHigh(texturedEntities, clipPlane, lights, camera, shadowMapRenderer.getToShadowMapSpaceMatrix(),
+				environmentMap);
+		normalEntityRenderer.render(normalEntities, clipPlane, lights, camera,
 				shadowMapRenderer.getToShadowMapSpaceMatrix());
+		decorEntityRenderer.renderHigh(decorEntities, clipPlane, lights, camera, shadowMapRenderer.getToShadowMapSpaceMatrix());
 		checkWiredFrameOff(entitiyWiredFrame);
 
 		checkWiredFrameOn(terrainWiredFrame);
@@ -145,14 +141,15 @@ public class MainRenderer implements IMainRenderer {
 		skyboxRenderer.render(camera);
 
 		terrains.clear();
-		entities.clear();
-		normalMapEntities.clear();
+		texturedEntities.clear();
+		normalEntities.clear();
+		decorEntities.clear();
 	}
 
 	@Override
 	public void renderLowQualityScene(Map<TexturedModel, List<IEntity>> entities, Collection<ITerrain> terrains,
 			Collection<ILight> lights, ICamera camera) {
-		entityRenderer.renderLow(entities, lights, camera);
+		texturedEntityRenderer.renderLow(entities, lights, camera);
 		terrainRenderer.renderLow(terrains, lights, camera);
 		skyboxRenderer.render(camera);
 	}
@@ -163,16 +160,19 @@ public class MainRenderer implements IMainRenderer {
 			.forEach(entity -> { 
 				 switch(entity.getType()) {
 				 	case EngineSettings.ENTITY_TYPE_SIMPLE:
-				 		processor.processShadowEntity(entity, entities, frustum);
+				 		processor.processShadowEntity(entity, texturedEntities);
 				 		break;
 				 	case EngineSettings.ENTITY_TYPE_NORMAL:
-				 		processor.processShadowNormalMapEntity(entity, normalMapEntities, frustum);
+				 		processor.processShadowNormalMapEntity(entity, normalEntities);
+				 		break;
+				 	case EngineSettings.ENTITY_TYPE_DECORATE:
+				 		processor.processShadowEntity(entity, texturedEntities);
 				 		break;
 				 }
 			 });
-		shadowMapRenderer.render(entities, terrains, normalMapEntities, scene.getSun(), scene.getCamera());
-		entities.clear();
-		normalMapEntities.clear();
+		shadowMapRenderer.render(texturedEntities, terrains, normalEntities, scene.getSun(), scene.getCamera());
+		texturedEntities.clear();
+		normalEntities.clear();
 		terrains.clear();
 	}
 
@@ -182,8 +182,8 @@ public class MainRenderer implements IMainRenderer {
 
 	@Override
 	public void clean() {
-		entityRenderer.clean();
-		normalMapRenderer.clean();
+		texturedEntityRenderer.clean();
+		normalEntityRenderer.clean();
 		terrainRenderer.clean();
 		shadowMapRenderer.clean();
 	}
@@ -234,18 +234,8 @@ public class MainRenderer implements IMainRenderer {
 	}
 
 	@Override
-	public Collection<IEntity> createFrustumEntities(IScene scene) {
-		frustum.extractFrustum(scene.getCamera(), projectionMatrix);
-		List<IEntity> frustumEntities = new ArrayList<IEntity>();
-		scene.getEntities().getAll().stream()
-			 .filter(entity -> frustum.sphereInFrustum(entity.getPosition(), entity.getSphereRadius()))
-			 .forEach(entity -> frustumEntities.add(entity));
-		return frustumEntities;
-	}
-
-	@Override
-	public EntityRenderer getEntityRenderer() {
-		return this.entityRenderer;
+	public TexturedEntityRenderer getEntityRenderer() {
+		return this.texturedEntityRenderer;
 	}
 
 	@Override
@@ -264,15 +254,11 @@ public class MainRenderer implements IMainRenderer {
 	}
 
 	private void checkWiredFrameOn(boolean value) {
-		if (value) {
-			OGLUtils.doWiredFrame(true);
-		}
+		OGLUtils.doWiredFrame(value);
 	}
 
 	private void checkWiredFrameOff(boolean value) {
-		if (value) {
-			OGLUtils.doWiredFrame(false);
-		}
+		OGLUtils.doWiredFrame(value);
 	}
 
 }

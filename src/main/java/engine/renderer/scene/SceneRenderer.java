@@ -11,7 +11,6 @@ import org.lwjgl.util.vector.Vector4f;
 
 import core.EngineMain;
 import core.display.DisplayManager;
-import core.settings.EngineSettings;
 import manager.scene.IObjectManager;
 import map.objectMap.ObjectMapManager;
 import map.writer.ILevelMapWriter;
@@ -57,7 +56,6 @@ public class SceneRenderer {
 
 	public void initialize(IScene scene) {
 		this.scene = scene;
-		this.scene.setMousePicker(mousePicker);
 		this.masterRenderer = new MainRenderer(scene.getCamera());
 		ParticleMaster.init(masterRenderer.getProjectionMatrix());
 		this.multisampleFbo = new Fbo(Display.getWidth(), Display.getHeight());
@@ -72,7 +70,7 @@ public class SceneRenderer {
 		this.waterRenderer = new WaterRenderer(waterShader, masterRenderer.getProjectionMatrix(), waterFBOs);
 
 		this.mousePicker = new MousePicker(scene.getCamera(), masterRenderer.getProjectionMatrix());
-		scene.setMousePicker(mousePicker);
+		this.scene.setMousePicker(mousePicker);
 		this.controls = new Controls();
 	}
 
@@ -87,9 +85,7 @@ public class SceneRenderer {
 		renderToScreen();
 	}
 
-	private void checkInputs() {
-		
-		
+	private void checkInputs() {		
 		if (KeyboardGame.isKeyPressed(Keyboard.KEY_T)) {
 			EngineMain.pauseEngine(true);
 			ILevelMapWriter mapWriter = new LevelMapXMLWriter();

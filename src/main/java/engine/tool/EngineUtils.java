@@ -104,15 +104,19 @@ public class EngineUtils {
 		List<IEntity> grasses = new ArrayList<IEntity>();
 		for (Integer j = 0; j < r; j++) {
 			for (Integer i = 0; i < r; i++) {
-				sizeNoise = 1 + 2 * (float) random.nextDouble();
-				IEntity grassEntity = new DecorEntity("Grass" + String.valueOf(i) + "/" + String.valueOf(j), grass, texIndex,
-						new Vector3f(x + density * i, 0, z + density * j), new Vector3f(0, 0, 0), sizeNoise);
+				int xSeed = random.nextInt(20);
+				int ySeed = random.nextInt(180);
+				int zSeed = random.nextInt(20);
+				int textIndexSeed = random.nextInt(4);
+				sizeNoise = random.nextInt(10)/5;
+				IEntity grassEntity = new DecorEntity("Grass" + String.valueOf(i) + "-" + String.valueOf(j), grass, textIndexSeed,
+						new Vector3f(x + density * i, 0, z + density * j), new Vector3f(xSeed, ySeed, zSeed), sizeNoise);
 				grassEntity.setBaseName("grassEntity");
 				grasses.add(grassEntity);
-				IEntity grassEntity1 = new DecorEntity("Grass" + String.valueOf(i) + "/" + String.valueOf(j), grass, texIndex,
-						new Vector3f(x + density * i, 0, z + density * j), new Vector3f(0, 100, 0), sizeNoise);
-				grassEntity1.setBaseName("grassEntity");
-				grasses.add(grassEntity1);
+//				IEntity grassEntity1 = new DecorEntity("Grass" + String.valueOf(i) + "/" + String.valueOf(j), grass, texIndex,
+//						new Vector3f(x + density * i, 0, z + density * j), new Vector3f(0, 100, 0), sizeNoise);
+//				grassEntity1.setBaseName("grassEntity");
+//				grasses.add(grassEntity1);
 
 			}
 		}

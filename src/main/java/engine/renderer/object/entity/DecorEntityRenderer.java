@@ -22,7 +22,8 @@ import object.model.textured.TexturedModel;
 import object.texture.Texture;
 import object.texture.model.ModelTexture;
 import renderer.object.main.IMainRenderer;
-import shader.entity.EntityShader;
+import shader.entity.decor.DecorEntityShader;
+import shader.entity.textured.TexturedEntityShader;
 import tool.math.Maths;
 import tool.openGL.OGLUtils;
 
@@ -39,10 +40,9 @@ import tool.openGL.OGLUtils;
  * @see IEntity
  * @see IMainRenderer
  */
-public class EntityRenderer {
+public class DecorEntityRenderer {
 
-	private EntityShader shader;
-	private Texture environmentMap;
+	private DecorEntityShader shader;
 
 	/**
 	 * Entity render engine constructor.
@@ -55,8 +55,8 @@ public class EntityRenderer {
 	 *            its projection in the game world space
 	 */
 
-	public EntityRenderer(Matrix4f projectionMatrix) {
-		this.shader = new EntityShader();
+	public DecorEntityRenderer(Matrix4f projectionMatrix) {
+		this.shader = new DecorEntityShader();
 		shader.start();
 		shader.loadProjectionMatrix(projectionMatrix);
 		shader.connectTextureUnits();
@@ -88,8 +88,7 @@ public class EntityRenderer {
 	 * @see Texture
 	 */
 	public void renderHigh(Map<TexturedModel, List<IEntity>> entities, Vector4f clipPlane, Collection<ILight> lights,
-			ICamera camera, Matrix4f toShadowMapSpace, Texture environmentMap) {
-		this.environmentMap = environmentMap;
+			ICamera camera, Matrix4f toShadowMapSpace) {
 		shader.start();
 		shader.loadClipPlane(clipPlane);
 		shader.loadSkyColour(EngineSettings.DISPLAY_RED, EngineSettings.DISPLAY_GREEN, EngineSettings.DISPLAY_BLUE);
@@ -136,8 +135,6 @@ public class EntityRenderer {
 		shader.loadFogDensity(EngineSettings.FOG_DENSITY);
 		shader.loadLights(lights);
 		shader.loadCamera(camera);
-		shader.loadShadowVariables(EngineSettings.SHADOW_DISTANCE, EngineSettings.SHADOW_MAP_SIZE,
-				EngineSettings.SHADOW_TRANSITION_DISTANCE, EngineSettings.SHADOW_PCF);
 		entities.keySet()
 			.forEach(model -> {
 				prepareLowTexturedModel(model);
@@ -196,17 +193,12 @@ public class EntityRenderer {
 		shader.loadFakeLightingVariable(texture.isUseFakeLighting());
 		shader.loadShineVariables(texture.getShineDamper(), texture.getReflectivity());
 		shader.loadReflectiveFactor(texture.getReflectiveFactor());
-		shader.loadRefractVariables(texture.getRefractiveIndex(), texture.getRefractiveFactor());
 		GL13.glActiveTexture(GL13.GL_TEXTURE0);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, model.getTexture().getID());
 		shader.loadUsesSpecularMap(texture.hasSpecularMap());
 		if (texture.hasSpecularMap()) {
 			GL13.glActiveTexture(GL13.GL_TEXTURE1);
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture.getSpecularMap());
-		}
-		if ((texture.getReflectiveFactor() > 0) || (texture.getRefractiveFactor() > 0)) {
-			GL13.glActiveTexture(GL13.GL_TEXTURE3);
-			GL11.glBindTexture(GL13.GL_TEXTURE_CUBE_MAP, environmentMap.textureId);
 		}
 	}
 
@@ -235,15 +227,6 @@ public class EntityRenderer {
 		Vector2f textureOffset = entity.getTextureOffset();
 		shader.loadOffset(textureOffset.x, textureOffset.y);
 		shader.loadManipulateVariables(entity.getIsChosen());
-	}
-
-	/**
-	 * Returns environment map used to attach at reflecting surfaces.
-	 * 
-	 * @return Texture value of environment map
-	 */
-	public Texture getEnvironmentMap() {
-		return environmentMap;
 	}
 
 }

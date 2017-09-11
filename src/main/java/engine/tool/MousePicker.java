@@ -284,29 +284,26 @@ public class MousePicker {
 	public IEntity chooseObjectByRay(IScene scene) {
 		IEntity pickedEntity = null;
 		List<IEntity> pointedEntities = new ArrayList<IEntity>();
-		for (List<IEntity> frustumList : scene.getEntities().getFromFrustum().values()) {
-			for (IEntity entity : frustumList) {
-				if (intersects(entity.getPosition(), entity.getSphereRadius())) {
-					Vector3f min = entity.getModel().getRawModel().getBBox().getMin();
-					Vector3f max = entity.getModel().getRawModel().getBBox().getMax();
-					Vector3f position = entity.getPosition();
-					min = Vector3f.add(min, position, null);
-					max = Vector3f.add(max, position, null);
-					float scale = entity.getScale();
-					min.x *= scale;
-					min.y *= scale;
-					min.z *= scale;
-					max.x *= scale;
-					max.y *= scale;
-					max.z *= scale;
-					System.out.println(min);
-					System.out.println(max);
-					// only sphere intersection
-					if (intersects(min, max)) {
-						pointedEntities.add(entity);
-					}
+		for (IEntity entity : scene.getEntities().getFromFrustum()) {
+			if (intersects(entity.getPosition(), entity.getSphereRadius())) {
+				Vector3f min = entity.getModel().getRawModel().getBBox().getMin();
+				Vector3f max = entity.getModel().getRawModel().getBBox().getMax();
+				Vector3f position = entity.getPosition();
+				min = Vector3f.add(min, position, null);
+				max = Vector3f.add(max, position, null);
+				float scale = entity.getScale();
+				min.x *= scale;
+				min.y *= scale;
+				min.z *= scale;
+				max.x *= scale;
+				max.y *= scale;
+				max.z *= scale;
+				System.out.println(min);
+				System.out.println(max);
+				// only sphere intersection
+				if (intersects(min, max)) {
+					pointedEntities.add(entity);
 				}
-
 			}
 		}
 		float distance = EngineSettings.RENDERING_VIEW_DISTANCE + 1;
