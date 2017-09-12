@@ -252,6 +252,9 @@ public class MainRenderer implements IMainRenderer {
 			case EngineSettings.ENTITY_TYPE_SIMPLE:
 		 		processor.processShadowEntity(entity, texturedEntities);
 		 		break;
+			case EngineSettings.ENTITY_TYPE_DECORATE:
+		 		processor.processShadowEntity(entity, texturedEntities);
+		 		break;
 		 	case EngineSettings.ENTITY_TYPE_NORMAL:
 		 		processor.processShadowNormalMapEntity(entity, normalEntities);
 		 		break;
