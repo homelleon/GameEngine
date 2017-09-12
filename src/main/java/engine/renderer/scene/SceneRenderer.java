@@ -44,7 +44,7 @@ import tool.openGL.OGLUtils;
  */
 public class SceneRenderer {
 
-	private MainRenderer masterRenderer;
+	private MainRenderer mainRenderer;
 	private WaterRenderer waterRenderer;
 	private WaterFrameBuffers waterFBOs;
 	private Fbo multisampleFbo;
@@ -56,8 +56,8 @@ public class SceneRenderer {
 
 	public void initialize(IScene scene) {
 		this.scene = scene;
-		this.masterRenderer = new MainRenderer(scene.getCamera());
-		ParticleMaster.init(masterRenderer.getProjectionMatrix());
+		this.mainRenderer = new MainRenderer(scene);
+		ParticleMaster.init(mainRenderer.getProjectionMatrix());
 		this.multisampleFbo = new Fbo(Display.getWidth(), Display.getHeight());
 		this.outputFbo = new Fbo(Display.getWidth(), Display.getHeight(), Fbo.DEPTH_TEXTURE);
 		this.outputFbo2 = new Fbo(Display.getWidth(), Display.getHeight(), Fbo.DEPTH_TEXTURE);
@@ -67,9 +67,9 @@ public class SceneRenderer {
 
 		this.waterFBOs = new WaterFrameBuffers();
 		WaterShader waterShader = new WaterShader();
-		this.waterRenderer = new WaterRenderer(waterShader, masterRenderer.getProjectionMatrix(), waterFBOs);
+		this.waterRenderer = new WaterRenderer(waterShader, mainRenderer.getProjectionMatrix(), waterFBOs);
 
-		this.mousePicker = new MousePicker(scene.getCamera(), masterRenderer.getProjectionMatrix());
+		this.mousePicker = new MousePicker(scene.getCamera(), mainRenderer.getProjectionMatrix());
 		this.scene.setMousePicker(mousePicker);
 		this.controls = new Controls();
 	}
@@ -79,7 +79,7 @@ public class SceneRenderer {
 		if (!isPaused) {
 			move();
 		}
-		masterRenderer.renderShadowMap(scene);
+		mainRenderer.renderShadowMap(scene);
 		renderParticles();
 		renderWaterSurface();
 		renderToScreen();
@@ -101,7 +101,7 @@ public class SceneRenderer {
 	private void renderToScreen() {
 		waterFBOs.unbindCurrentFrameBuffer();
 		multisampleFbo.bindFrameBuffer();
-		masterRenderer.renderScene(scene, new Vector4f(0, -1, 0, 15));
+		mainRenderer.renderScene(scene, new Vector4f(0, -1, 0, 15));
 		waterRenderer.render(scene.getWaters().getAll(), scene.getCamera(), scene.getSun());
 		ParticleMaster.renderParticles(scene.getCamera());
 		multisampleFbo.unbindFrameBuffer();
@@ -124,7 +124,7 @@ public class SceneRenderer {
 		float distance = 2 * (scene.getCamera().getPosition().y - scene.getWaters().getByName("Water").getHeight());
 		scene.getCamera().getPosition().y -= distance;
 		scene.getCamera().invertPitch();
-		masterRenderer.renderScene(scene, new Vector4f(0, 1, 0, -scene.getWaters().getByName("Water").getHeight()),
+		mainRenderer.renderScene(scene, new Vector4f(0, 1, 0, -scene.getWaters().getByName("Water").getHeight()),
 				true);
 		scene.getCamera().getPosition().y += distance;
 		scene.getCamera().invertPitch();
@@ -132,7 +132,7 @@ public class SceneRenderer {
 
 	private void renderWaterRefraction() {
 		waterFBOs.bindRefractionFrameBuffer();
-		masterRenderer.renderScene(scene, new Vector4f(0, -1, 0, scene.getWaters().getByName("Water").getHeight() + 1f),
+		mainRenderer.renderScene(scene, new Vector4f(0, -1, 0, scene.getWaters().getByName("Water").getHeight() + 1f),
 				true);
 	}
 
@@ -182,7 +182,7 @@ public class SceneRenderer {
 	}
 
 	public MainRenderer getMasterRenderer() {
-		return this.masterRenderer;
+		return this.mainRenderer;
 	}
 
 	public void clean() {
@@ -192,7 +192,7 @@ public class SceneRenderer {
 		outputFbo2.clean();
 		multisampleFbo.clean();
 		waterFBOs.clean();
-		masterRenderer.clean();
+		mainRenderer.clean();
 	}
 
 }

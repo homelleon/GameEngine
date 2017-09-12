@@ -24,6 +24,7 @@ import object.light.Light;
 import object.particle.ParticleSystem;
 import object.terrain.terrain.ITerrain;
 import object.texture.Texture;
+import renderer.viewCulling.frustum.Frustum;
 import tool.MousePicker;
 
 public class Scene extends AObjectManager implements IScene {
@@ -32,6 +33,7 @@ public class Scene extends AObjectManager implements IScene {
 	private IPlayer player;
 	private ICamera camera;
 	private Light sun;
+	private Frustum frustum;
 
 	private Texture environmentMap = Texture.newEmptyCubeMap(128);
 	private MousePicker mousePicker;
@@ -173,6 +175,16 @@ public class Scene extends AObjectManager implements IScene {
 	@Override
 	public void setMousePicker(MousePicker mousePicker) {
 		this.mousePicker = mousePicker;
+	}
+	
+	@Override
+	public void setFrustum(Frustum frustum) {
+		this.frustum = frustum;
+	}
+
+	@Override
+	public Frustum getFrustum() {
+		return this.frustum;
 	}
 
 	private Vector3f spreadPointOnHeights(Vector3f position) {

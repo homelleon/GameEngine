@@ -66,7 +66,7 @@ public class MainRenderer implements IMainRenderer {
 	private Map<TexturedModel, List<IEntity>> decorEntities = new HashMap<TexturedModel, List<IEntity>>();
 	private Collection<ITerrain> terrains = new ArrayList<ITerrain>();
 
-	public MainRenderer(ICamera camera) {
+	public MainRenderer(IScene scene) {
 		OGLUtils.cullBackFaces(true);
 		createProjectionMatrix();
 		createLowDistProjectionMatrix();
@@ -78,7 +78,8 @@ public class MainRenderer implements IMainRenderer {
 		this.skyboxRenderer = new SkyboxRenderer(projectionMatrix);
 		this.voxelRenderer = new VoxelRenderer(projectionMatrix);
 		this.boundingRenderer = new BoundingRenderer(projectionMatrix);
-		this.shadowMapRenderer = new ShadowMapMasterRenderer(camera);
+		this.shadowMapRenderer = new ShadowMapMasterRenderer(scene.getCamera());
+		scene.setFrustum(this.frustum);
 		this.enviroRenderer = new EnvironmentMapRenderer();
 		this.processor = new SceneProcessor();
 	}
@@ -90,23 +91,13 @@ public class MainRenderer implements IMainRenderer {
 
 	@Override
 	public void renderScene(IScene scene, Vector4f clipPlane, boolean isLowDistance) {
+		this.frustum.extractFrustum(scene.getCamera(), this.getProjectionMatrix());
 		scene.getTerrains().getAll().forEach(terrain -> processor.processTerrain(terrain, terrains));
 		this.environmentMap = scene.getEnvironmentMap();
-		this.frustum.extractFrustum(scene.getCamera(), projectionMatrix);
-		scene.getEntities().updateWithFrustum(this.frustum, scene.getCamera()).stream()
-			 .forEach(entity -> {
-				 switch(entity.getType()) {
-				 	case EngineSettings.ENTITY_TYPE_SIMPLE:
-				 		processor.processEntity(entity, texturedEntities);
-				 		break;
-				 	case EngineSettings.ENTITY_TYPE_DECORATE:
-				 		processor.processEntity(entity, decorEntities);
-				 		break;
-				 	case EngineSettings.ENTITY_TYPE_NORMAL:
-				 		processor.processEntity(entity, normalEntities);
-				 		break;
-				 }
-			 });
+		scene.getEntities().updateWithFrustum(this.frustum, scene.getCamera())
+			.forEach((type, list) -> 
+				list.parallelStream().forEach(entity -> 
+					processEntityByType(type, entity)));
 		if (this.environmentDynamic) {
 			environmentRendered = false;
 		}
@@ -115,7 +106,6 @@ public class MainRenderer implements IMainRenderer {
 			this.environmentRendered = true;
 		}
 		render(scene.getChunks(), scene.getLights().getAll(), scene.getCamera(), clipPlane, isLowDistance);
-
 	}
 
 	private void render(IChunkManager chunkManager, Collection<ILight> lights, ICamera camera,
@@ -156,20 +146,10 @@ public class MainRenderer implements IMainRenderer {
 
 	@Override
 	public void renderShadowMap(IScene scene) {
-		scene.getEntities().getAll().stream()
-			.forEach(entity -> { 
-				 switch(entity.getType()) {
-				 	case EngineSettings.ENTITY_TYPE_SIMPLE:
-				 		processor.processShadowEntity(entity, texturedEntities);
-				 		break;
-				 	case EngineSettings.ENTITY_TYPE_NORMAL:
-				 		processor.processShadowNormalMapEntity(entity, normalEntities);
-				 		break;
-				 	case EngineSettings.ENTITY_TYPE_DECORATE:
-				 		processor.processShadowEntity(entity, texturedEntities);
-				 		break;
-				 }
-			 });
+		this.frustum.extractFrustum(scene.getCamera(), this.getProjectionMatrix());
+		scene.getEntities().updateWithFrustum(frustum, scene.getCamera())
+			.forEach((type, list) -> 
+				list.parallelStream().forEach(entity -> processShadowEntityByType(type, entity)));
 		shadowMapRenderer.render(texturedEntities, terrains, normalEntities, scene.getSun(), scene.getCamera());
 		texturedEntities.clear();
 		normalEntities.clear();
@@ -252,13 +232,42 @@ public class MainRenderer implements IMainRenderer {
 	public void setTerrainWiredFrame(boolean terrainWiredFrame) {
 		this.terrainWiredFrame = terrainWiredFrame;
 	}
+	
+	private synchronized void processEntityByType(int type, IEntity entity) {
+		switch(type) {
+		 	case EngineSettings.ENTITY_TYPE_SIMPLE:
+		 		processor.processEntity(entity, texturedEntities);
+		 		break;
+		 	case EngineSettings.ENTITY_TYPE_DECORATE:
+		 		processor.processEntity(entity, decorEntities);
+		 		break;
+		 	case EngineSettings.ENTITY_TYPE_NORMAL:
+		 		processor.processEntity(entity, normalEntities);
+		 		break;
+		}
+	}
+
+	private synchronized void processShadowEntityByType(int type, IEntity entity) {
+		switch(type) {
+			case EngineSettings.ENTITY_TYPE_SIMPLE:
+		 		processor.processShadowEntity(entity, texturedEntities);
+		 		break;
+		 	case EngineSettings.ENTITY_TYPE_NORMAL:
+		 		processor.processShadowNormalMapEntity(entity, normalEntities);
+		 		break;
+		}
+	}
 
 	private void checkWiredFrameOn(boolean value) {
-		OGLUtils.doWiredFrame(value);
+		if(value) {
+			OGLUtils.doWiredFrame(true);
+		}
 	}
 
 	private void checkWiredFrameOff(boolean value) {
-		OGLUtils.doWiredFrame(value);
+		if(value) {
+			OGLUtils.doWiredFrame(false);
+		}
 	}
 
 }

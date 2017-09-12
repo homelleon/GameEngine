@@ -2,6 +2,7 @@ package manager.entity;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import object.camera.ICamera;
 import object.entity.entity.IEntity;
@@ -60,31 +61,12 @@ public interface IEntityManager extends IManager<IEntity> {
 	void addForEditor(IEntity entity);
 
 	/**
-	 * Add one entity into the entity array chosen by frustum culling.
-	 * 
-	 * @param distance
-	 *            {@link Float} value of distance from camera to entity
-	 * @param entity
-	 *            {@link IEntity} value
-	 */
-	void addInFrustum(IEntity entity);
-
-	/**
 	 * Update entity array using frustum culling technic.
 	 * 
 	 * @param frustum
 	 *            {@link Frustum} value of frustum pyramid
 	 */
-	List<IEntity> updateWithFrustum(Frustum frustum, ICamera camera);
-
-
-	/**
-	 * Returns map of entities chosen by frustum culling.
-	 * 
-	 * @return {@link List}<{@link IEntity}> value of
-	 *         entities chosen by frustum culling.
-	 */
-	List<IEntity> getFromFrustum();
+	Map<Integer, List<IEntity>> updateWithFrustum(Frustum frustum, ICamera camera);
 
 	/**
 	 * Returns list of entities chosen by player.

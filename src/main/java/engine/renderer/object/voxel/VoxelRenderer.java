@@ -142,28 +142,31 @@ public class VoxelRenderer {
 			.flatMap(index -> IntStream.range(0, EngineSettings.VOXEL_CHUNK_SIZE + 1)
 					.mapToObj(z -> new ChunkIndex(index.getI())
 							.setX(index.getX()).setY(index.getY()).setZ(z)))
-			.peek(index -> index.setFCD(isNeedBlockCulling(
+			.map(index -> index.setFCD(isNeedBlockCulling(
 					chunkManager.getChunk(
 							index.getI()),index.getX(), index.getY(), index.getZ())))
 			.filter(index -> !isAllFaceCulled(index.getFCD()))
 			.filter(index -> chunkManager.getChunk(
 					index.getI()).getBlock(index.getX(), index.getY(), index.getZ())
 					.getIsActive())
-			.forEach(index -> {
-				prepareInstance(chunkManager.getBlockPosition(
-						index.getI(), new Vector3i(
-								index.getX(), index.getY(), index.getZ())));
+			.map(index -> {
+					prepareInstance(chunkManager.getBlockPosition(
+							index.getI(), new Vector3i(
+									index.getX(), index.getY(), index.getZ())));
+					return index;
+				})
+			.forEach(index -> 
 				IntStream.range(0, 6)
 					.filter(face -> !index.getFCD().getFace(face))
-					.forEachOrdered(face -> GL12.glDrawRangeElements(
-									GL11.GL_TRIANGLES, 
-									0, 6, 6, 
-									GL11.GL_UNSIGNED_INT, 
-									24 * face));
-				}
-			);		
+					.forEachOrdered(this::drawElements)			
+			);
 		unbindTexturedModel();
 		shader.stop();
+	}
+	
+	private synchronized void drawElements(int face) {
+		GL12.glDrawRangeElements(GL11.GL_TRIANGLES,0, 6, 6,
+				GL11.GL_UNSIGNED_INT, 24 * face);
 	}
 
 	private boolean checkVisibility(Frustum frustum, Vector3f position, float radius) {
@@ -175,7 +178,7 @@ public class VoxelRenderer {
 		return isVisible;
 	}
 
-	private void prepareInstance(Vector3f position) {
+	private synchronized void prepareInstance(Vector3f position) {
 		Matrix4f transformationMatrix = Maths.createTransformationMatrix(position, 0, 0, 0, 1);
 		shader.loadTranformationMatrix(transformationMatrix);
 	}

@@ -3,6 +3,7 @@ package manager.entity;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import core.settings.EngineSettings;
@@ -29,7 +30,6 @@ import tool.manager.AbstractManager;
  */
 public class EntityManager extends AbstractManager<IEntity> implements IEntityManager {
 
-	private List<IEntity> frustumEntities = new ArrayList<IEntity>();
 	private List<IEntity> pointedEntities = new ArrayList<IEntity>();
 	private List<IEntity> editorEntities = new ArrayList<IEntity>();
 
@@ -64,23 +64,10 @@ public class EntityManager extends AbstractManager<IEntity> implements IEntityMa
 	}
 
 	@Override
-	public void addInFrustum(IEntity entity) {
-		this.frustumEntities.add(entity);
-	}
-
-	@Override
-	public List<IEntity> updateWithFrustum(Frustum frustum, ICamera camera) {
-		this.frustumEntities.clear();
-		this.frustumEntities.addAll(this.getAll().stream()
+	public Map<Integer, List<IEntity>> updateWithFrustum(Frustum frustum, ICamera camera) {
+		return this.getAll().parallelStream()
 				.filter(entity -> checkVisibility(entity, frustum))
-				.collect(Collectors.toList()));
-		return this.frustumEntities;
-	}
-
-
-	@Override
-	public List<IEntity> getFromFrustum() {
-		return this.frustumEntities;
+				.collect(Collectors.groupingBy(IEntity::getType));
 	}
 
 	@Override
@@ -108,8 +95,7 @@ public class EntityManager extends AbstractManager<IEntity> implements IEntityMa
 	@Override
 	public void clean() {
 		super.clean();
-		this.pointedEntities.clear();
-		this.frustumEntities.clear();		
+		this.pointedEntities.clear();		
 	}
 	
 	private boolean checkVisibility(IEntity entity, Frustum frustum) {

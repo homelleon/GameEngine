@@ -12,7 +12,7 @@ public class Frustum {
 	
 	private ICamera camera;
 
-	public void extractFrustum(ICamera camera, Matrix4f projectionMatrix) {
+	public Frustum extractFrustum(ICamera camera, Matrix4f projectionMatrix) {
 		this.camera = camera;
 		Matrix4f clip;
 		float t;
@@ -103,6 +103,8 @@ public class Frustum {
 		plane[5][1] /= t;
 		plane[5][2] /= t;
 		plane[5][3] /= t;
+		
+		return this;
 	}
 
 	public boolean pointInFrustum(Vector3f position) {

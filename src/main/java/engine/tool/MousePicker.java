@@ -2,6 +2,7 @@ package tool;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
@@ -284,8 +285,11 @@ public class MousePicker {
 	public IEntity chooseObjectByRay(IScene scene) {
 		IEntity pickedEntity = null;
 		List<IEntity> pointedEntities = new ArrayList<IEntity>();
-		for (IEntity entity : scene.getEntities().getFromFrustum()) {
-			if (intersects(entity.getPosition(), entity.getSphereRadius())) {
+		pointedEntities.addAll(
+			scene.getEntities().updateWithFrustum(scene.getFrustum(), camera).values().stream()
+			.flatMap(list -> list.stream())
+			.filter(entity -> intersects(entity.getPosition(), entity.getSphereRadius()))
+			.filter(entity -> {
 				Vector3f min = entity.getModel().getRawModel().getBBox().getMin();
 				Vector3f max = entity.getModel().getRawModel().getBBox().getMax();
 				Vector3f position = entity.getPosition();
@@ -298,14 +302,10 @@ public class MousePicker {
 				max.x *= scale;
 				max.y *= scale;
 				max.z *= scale;
-				System.out.println(min);
-				System.out.println(max);
-				// only sphere intersection
-				if (intersects(min, max)) {
-					pointedEntities.add(entity);
-				}
-			}
-		}
+				return intersects(min, max); 
+			})
+			.collect(Collectors.toList())
+		);
 		float distance = EngineSettings.RENDERING_VIEW_DISTANCE + 1;
 		float midDist = 0;
 		int index = -1;

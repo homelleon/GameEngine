@@ -113,6 +113,10 @@ public interface IScene extends IObjectManager {
 	 *            {@link MousePicker} value
 	 */
 	void setMousePicker(MousePicker picker);
+	
+	void setFrustum(Frustum frustum);
+	
+	Frustum getFrustum();
 
 	/**
 	 * Spreads all entities on the surface of terrain's height.

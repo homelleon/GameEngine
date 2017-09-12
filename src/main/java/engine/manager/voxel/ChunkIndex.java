@@ -8,13 +8,13 @@ import object.voxel.data.FaceCullingData;
  * @author homelleon
  *
  */
-public class ChunkIndex {
+public final class ChunkIndex {
 	
-	private int i;
-	private int x;
-	private int y;
-	private int z;
-	private FaceCullingData fcd;
+	private volatile int i;
+	private volatile int x;
+	private volatile int y;
+	private volatile int z;
+	private volatile FaceCullingData fcd;
 	
 	public ChunkIndex(int i) {
 		this.i = i;
