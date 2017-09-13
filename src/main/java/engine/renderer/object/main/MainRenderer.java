@@ -25,6 +25,9 @@ import object.terrain.terrain.ITerrain;
 import object.texture.Texture;
 import renderer.object.bounding.BoundingRenderer;
 import renderer.object.entity.DecorEntityRenderer;
+import renderer.object.entity.EntityRendererManager;
+import renderer.object.entity.IEntityRenderer;
+import renderer.object.entity.IEntityRendererManager;
 import renderer.object.entity.NormalEntityRenderer;
 import renderer.object.entity.TexturedEntityRenderer;
 import renderer.object.environment.EnvironmentMapRenderer;
@@ -41,16 +44,15 @@ public class MainRenderer implements IMainRenderer {
 	private Matrix4f projectionMatrix;
 	private Matrix4f normalDistProjectionMatrix;
 	private Matrix4f lowDistProjectionMatrix;
-	private TexturedEntityRenderer texturedEntityRenderer;
-	private NormalEntityRenderer normalEntityRenderer;
-	private DecorEntityRenderer decorEntityRenderer;
 	private TerrainRenderer terrainRenderer;	
 	private SkyboxRenderer skyboxRenderer;
 	private VoxelRenderer voxelRenderer;
 	private BoundingRenderer boundingRenderer;
 	private ShadowMapMasterRenderer shadowMapRenderer;
 	private EnvironmentMapRenderer enviroRenderer;
-
+	
+	IEntityRendererManager entityRendererManager; 
+	
 	private ISceneProcessor processor;
 
 	private Texture environmentMap;
@@ -71,9 +73,15 @@ public class MainRenderer implements IMainRenderer {
 		createProjectionMatrix();
 		createLowDistProjectionMatrix();
 		projectionMatrix = normalDistProjectionMatrix;
-		this.texturedEntityRenderer = new TexturedEntityRenderer(projectionMatrix);
-		this.normalEntityRenderer = new NormalEntityRenderer(projectionMatrix);
-		this.decorEntityRenderer = new DecorEntityRenderer(projectionMatrix);
+		
+		IEntityRenderer texturedEntityRenderer = new TexturedEntityRenderer(projectionMatrix);
+		IEntityRenderer normalEntityRenderer = new NormalEntityRenderer(projectionMatrix);
+		IEntityRenderer decorEntityRenderer = new DecorEntityRenderer(projectionMatrix);
+		this.entityRendererManager = new EntityRendererManager();
+		this.entityRendererManager.addPair(texturedEntityRenderer, texturedEntities);
+		this.entityRendererManager.addPair(normalEntityRenderer, normalEntities);
+		this.entityRendererManager.addPair(decorEntityRenderer, decorEntities);
+		
 		this.terrainRenderer = new TerrainRenderer(projectionMatrix);
 		this.skyboxRenderer = new SkyboxRenderer(projectionMatrix);
 		this.voxelRenderer = new VoxelRenderer(projectionMatrix);
@@ -115,12 +123,9 @@ public class MainRenderer implements IMainRenderer {
 		if (EngineDebug.boundingMode != EngineDebug.BOUNDING_NONE) {
 			boundingRenderer.render(texturedEntities, normalEntities, camera);
 		}
-		texturedEntityRenderer.renderHigh(texturedEntities, clipPlane, lights, camera, shadowMapRenderer.getToShadowMapSpaceMatrix(),
-				environmentMap);
-		normalEntityRenderer.render(normalEntities, clipPlane, lights, camera,
-				shadowMapRenderer.getToShadowMapSpaceMatrix());
-		decorEntityRenderer.renderHigh(decorEntities, clipPlane, lights, camera, shadowMapRenderer.getToShadowMapSpaceMatrix());
-		checkWiredFrameOff(entitiyWiredFrame);
+		
+		Matrix4f shadowMapSpaceMatrix = shadowMapRenderer.getToShadowMapSpaceMatrix();
+		this.entityRendererManager.render(clipPlane, lights, camera, shadowMapSpaceMatrix, environmentMap, false);
 
 		checkWiredFrameOn(terrainWiredFrame);
 		voxelRenderer.render(chunkManager, clipPlane, lights, camera, shadowMapRenderer.getToShadowMapSpaceMatrix(),
@@ -129,7 +134,7 @@ public class MainRenderer implements IMainRenderer {
 		checkWiredFrameOff(terrainWiredFrame);
 
 		skyboxRenderer.render(camera);
-
+		
 		terrains.clear();
 		texturedEntities.clear();
 		normalEntities.clear();
@@ -139,7 +144,7 @@ public class MainRenderer implements IMainRenderer {
 	@Override
 	public void renderLowQualityScene(Map<TexturedModel, List<IEntity>> entities, Collection<ITerrain> terrains,
 			Collection<ILight> lights, ICamera camera) {
-		texturedEntityRenderer.renderLow(entities, lights, camera);
+		this.entityRendererManager.render(null, lights, camera, null, null, true);
 		terrainRenderer.renderLow(terrains, lights, camera);
 		skyboxRenderer.render(camera);
 	}
@@ -148,11 +153,13 @@ public class MainRenderer implements IMainRenderer {
 	public void renderShadowMap(IScene scene) {
 		this.frustum.extractFrustum(scene.getCamera(), this.getProjectionMatrix());
 		scene.getEntities().updateWithFrustum(frustum, scene.getCamera())
-			.forEach((type, list) -> 
-				list.parallelStream().forEach(entity -> processShadowEntityByType(type, entity)));
+			.forEach((type, list) -> list.parallelStream()
+					.forEach(entity -> 
+						processShadowEntityByType(type, entity)));
 		shadowMapRenderer.render(texturedEntities, terrains, normalEntities, scene.getSun(), scene.getCamera());
 		texturedEntities.clear();
 		normalEntities.clear();
+		decorEntities.clear();
 		terrains.clear();
 	}
 
@@ -162,8 +169,7 @@ public class MainRenderer implements IMainRenderer {
 
 	@Override
 	public void clean() {
-		texturedEntityRenderer.clean();
-		normalEntityRenderer.clean();
+		this.entityRendererManager.clean();
 		terrainRenderer.clean();
 		shadowMapRenderer.clean();
 	}
@@ -214,11 +220,6 @@ public class MainRenderer implements IMainRenderer {
 	}
 
 	@Override
-	public TexturedEntityRenderer getEntityRenderer() {
-		return this.texturedEntityRenderer;
-	}
-
-	@Override
 	public Frustum getFrustum() {
 		return this.frustum;
 	}
@@ -256,7 +257,7 @@ public class MainRenderer implements IMainRenderer {
 		 		processor.processShadowEntity(entity, texturedEntities);
 		 		break;
 		 	case EngineSettings.ENTITY_TYPE_NORMAL:
-		 		processor.processShadowNormalMapEntity(entity, normalEntities);
+		 		processor.processShadowEntity(entity, normalEntities);
 		 		break;
 		}
 	}

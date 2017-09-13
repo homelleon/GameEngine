@@ -1,7 +1,9 @@
 package renderer.object.voxel;
 
 import java.util.Collection;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
@@ -163,6 +165,7 @@ public class VoxelRenderer {
 		unbindTexturedModel();
 		shader.stop();
 	}
+
 	
 	private synchronized void drawElements(int face) {
 		GL12.glDrawRangeElements(GL11.GL_TRIANGLES,0, 6, 6,

@@ -8,6 +8,7 @@ import java.util.stream.IntStream;
 import org.lwjgl.util.vector.Vector3f;
 
 import core.settings.EngineSettings;
+import object.voxel.Block;
 import object.voxel.Chunk;
 import tool.math.Maths;
 import tool.math.vector.IVectorBuilder3;
@@ -36,29 +37,31 @@ public class ChunkManager implements IChunkManager {
 	public ChunkManager(int size, Vector3f position) {
 		this.size = size;
 		this.position = position;
-		chunks = IntStream.range(0, size+1)
-			.flatMap(x -> IntStream.range(0, size+1))
-			.flatMap(y -> IntStream.range(0, size+1))
+		chunks = IntStream.range(0, size + 1)
+			.flatMap(x -> IntStream.range(0, size + 1))
+			.flatMap(y -> IntStream.range(0, size + 1))
 			.mapToObj(z -> new Chunk())
 			.collect(Collectors.toList());
 		this.createVoxels();
 	}
 	
 	private void createVoxels() {
-		IntStream.range(0, size * size * size)
-		.mapToObj(ChunkIndex::new)
-		.flatMap(index -> IntStream.range(0, EngineSettings.VOXEL_CHUNK_SIZE + 1)
-				.mapToObj(x -> new ChunkIndex(index.getI())
-						.setX(x)))
-		.flatMap(index -> IntStream.range(0, EngineSettings.VOXEL_CHUNK_SIZE + 1)
-				.mapToObj(y -> new ChunkIndex(index.getI())
-						.setX(index.getX()).setY(y)))
-		.flatMap(index -> IntStream.range(0, EngineSettings.VOXEL_CHUNK_SIZE + 1)
-				.mapToObj(z -> new ChunkIndex(index.getI())
-						.setX(index.getX()).setY(index.getY()).setZ(z)))
-		.forEach(index -> getChunk(index.getI())
-				.getBlock(index.getX(), index.getY(), index.getZ())
-				.setIsActive(true));
+		IntStream.range(0, Maths.cube(size) * Maths.cube(Maths.cube(EngineSettings.VOXEL_CHUNK_SIZE + 1)))
+		.forEach(index -> getBlock(index).setIsActive(true));
+//		IntStream.range(0, Maths.cube(size)).parallel()
+//		.mapToObj(ChunkIndex::new)
+//		.flatMap(index -> IntStream.range(0, EngineSettings.VOXEL_CHUNK_SIZE + 1).parallel()
+//				.mapToObj(x -> new ChunkIndex(index.getI())
+//						.setX(x)))
+//		.flatMap(index -> IntStream.range(0, EngineSettings.VOXEL_CHUNK_SIZE + 1).parallel()
+//				.mapToObj(y -> new ChunkIndex(index.getI())
+//						.setX(index.getX()).setY(y)))
+//		.flatMap(index -> IntStream.range(0, EngineSettings.VOXEL_CHUNK_SIZE + 1).parallel()
+//				.mapToObj(z -> new ChunkIndex(index.getI())
+//						.setX(index.getX()).setY(index.getY()).setZ(z)))
+//		.forEach(index -> getChunk(index.getI())
+//				.getBlock(index.getX(), index.getY(), index.getZ())
+//				.setIsActive(true));
 	}
 
 	@Override
@@ -106,6 +109,23 @@ public class ChunkManager implements IChunkManager {
 					.setY(chunkPosition.y + indexPosition.y * step)
 					.setZ(chunkPosition.z + indexPosition.z * step)
 					.build();
+	}	
+
+	@Override
+	public Vector3f getBlockPosition(int chunkIndex, int blockIndex) {
+		return getBlockPosition(chunkIndex, getBlockIndexPosition(blockIndex));
+	}
+	
+	private Vector3i getBlockIndexPosition(int index) {
+		int x = (int) Math.floor(index / Maths.sqr(EngineSettings.VOXEL_CHUNK_SIZE));
+		int y = (int) Math.floor(index / EngineSettings.VOXEL_CHUNK_SIZE);
+		int z = index;
+		IVectorBuilder3<Integer, Vector3i> vecBuilder = new VectorBuilder3i();
+		return vecBuilder
+				.setX(x)
+				.setY(y)
+				.setZ(z)
+				.build();
 	}
 
 	@Override
@@ -140,6 +160,18 @@ public class ChunkManager implements IChunkManager {
 	@Override
 	public Chunk getChunk(int index) {
 		return chunks.get(index);
+	}
+	
+	public Block getBlock(int index) {
+		int chunkIndex = (int) Math.floor(index / Maths.sqr(EngineSettings.VOXEL_CHUNK_SIZE) * Maths.sqr(size));
+		int x = (int) Math.floor(index / Maths.sqr(EngineSettings.VOXEL_CHUNK_SIZE) * Maths.sqr(size));
+		int y = (int) Math.floor(index / EngineSettings.VOXEL_CHUNK_SIZE * Maths.sqr(size));
+		int z = (int) Math.floor(index / Maths.sqr(size));
+		chunkIndex = Maths.tailOfDivisionNoReminder(chunkIndex, EngineSettings.VOXEL_CHUNK_SIZE * Maths.sqr(size));
+		x = Maths.tailOfDivisionNoReminder(x, EngineSettings.VOXEL_CHUNK_SIZE * Maths.sqr(size));
+		y = Maths.tailOfDivisionNoReminder(y, EngineSettings.VOXEL_CHUNK_SIZE * Maths.sqr(size));
+		z = Maths.tailOfDivisionNoReminder(z, EngineSettings.VOXEL_CHUNK_SIZE * Maths.sqr(size));
+		return getChunk(chunkIndex).getBlock(x,y,z);
 	}
 
 	@Override

@@ -3,6 +3,8 @@ package tool;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import org.lwjgl.util.vector.Vector3f;
 
@@ -89,7 +91,6 @@ public class EngineUtils {
 	public static List<IEntity> createGrassField(float x, float z, float r, float sizeNoise, float density) {
 		// TODO: Noise - better using
 		TexturedModel grass = loadStaticModel("grassObject", "grassObjAtlas");
-		int texIndex = 4;
 		grass.getTexture().setNumberOfRows(2);
 		grass.getTexture().setShineDamper(1);
 		grass.getTexture().setReflectivity(0);
@@ -98,29 +99,25 @@ public class EngineUtils {
 		if (density == 0) {
 			density = (float) 0.01;
 		}
-		r = r * density;
-		density = 1 / density;
+		int radius = (int) (r * density);
+		float invDensity = 1 / density;
 		Random random = new Random();
-		List<IEntity> grasses = new ArrayList<IEntity>();
-		for (Integer j = 0; j < r; j++) {
-			for (Integer i = 0; i < r; i++) {
-				int xSeed = random.nextInt(20);
-				int ySeed = random.nextInt(180);
-				int zSeed = random.nextInt(20);
-				int textIndexSeed = random.nextInt(4);
-				sizeNoise = random.nextInt(10)/5;
-				IEntity grassEntity = new DecorEntity("Grass" + String.valueOf(i) + "-" + String.valueOf(j), grass, textIndexSeed,
-						new Vector3f(x + density * i, 0, z + density * j), new Vector3f(xSeed, ySeed, zSeed), sizeNoise);
-				grassEntity.setBaseName("grassEntity");
-				grasses.add(grassEntity);
-//				IEntity grassEntity1 = new DecorEntity("Grass" + String.valueOf(i) + "/" + String.valueOf(j), grass, texIndex,
-//						new Vector3f(x + density * i, 0, z + density * j), new Vector3f(0, 100, 0), sizeNoise);
-//				grassEntity1.setBaseName("grassEntity");
-//				grasses.add(grassEntity1);
-
-			}
-		}
-		return grasses;
+		
+		return IntStream.range(0, radius).parallel()
+				.mapToObj(j -> IntStream.range(0, radius).parallel()
+						.mapToObj(i -> {
+							int xSeed = random.nextInt(20);
+							int ySeed = random.nextInt(180);
+							int zSeed = random.nextInt(20);
+							int textIndexSeed = random.nextInt(4);
+							float noise = random.nextInt(10)/5;
+							IEntity grassEntity = new DecorEntity("Grass" + String.valueOf(i) + "-" + String.valueOf(j), grass, textIndexSeed,
+									new Vector3f(x + invDensity * i, 0, z + invDensity * j), new Vector3f(xSeed, ySeed, zSeed), noise);
+							grassEntity.setBaseName("grassEntity");
+							return grassEntity;
+						}))
+				.flatMap(entity -> entity)
+				.collect(Collectors.toList());
 	}
 
 	public static List<WaterTile> createWaterSurfce(Vector3f position, int size) {

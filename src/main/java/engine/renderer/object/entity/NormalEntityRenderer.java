@@ -18,14 +18,16 @@ import object.entity.entity.IEntity;
 import object.light.ILight;
 import object.model.raw.RawModel;
 import object.model.textured.TexturedModel;
+import object.texture.Texture;
 import object.texture.model.ModelTexture;
 import shader.entity.normal.NormalMappedEntityShader;
 import tool.math.Maths;
 import tool.openGL.OGLUtils;
 
-public class NormalEntityRenderer {
+public class NormalEntityRenderer implements IEntityRenderer {
 
 	private NormalMappedEntityShader shader;
+	private Texture environmentMap;
 
 	public NormalEntityRenderer(Matrix4f projectionMatrix) {
 		this.shader = new NormalMappedEntityShader();
@@ -35,8 +37,9 @@ public class NormalEntityRenderer {
 		shader.stop();
 	}
 
-	public void render(Map<TexturedModel, List<IEntity>> entities, Vector4f clipPlane, Collection<ILight> lights,
-			ICamera camera, Matrix4f toShadowMapSpace) {
+	@Override
+	public void renderHigh(Map<TexturedModel, List<IEntity>> entities, Vector4f clipPlane, Collection<ILight> lights,
+			ICamera camera, Matrix4f toShadowMapSpace, Texture environmentMap) {
 		shader.start();
 		shader.loadFogDensity(EngineSettings.FOG_DENSITY);
 		shader.loadToShadowSpaceMatrix(toShadowMapSpace);
@@ -53,9 +56,34 @@ public class NormalEntityRenderer {
 		});
 		shader.stop();
 	}
+	
+	@Override
+	public void renderLow(Map<TexturedModel, List<IEntity>> entities, Collection<ILight> lights, ICamera camera) {
+		GL11.glClearColor(1, 1, 1, 1);
+		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+		shader.start();
+		shader.loadClipPlane(EngineSettings.NO_CLIP);
+		shader.loadSkyColour(EngineSettings.DISPLAY_RED, EngineSettings.DISPLAY_GREEN, EngineSettings.DISPLAY_BLUE);
+		shader.loadFogDensity(EngineSettings.FOG_DENSITY);
+		entities.keySet()
+			.forEach(model -> {
+				prepareLowTexturedModel(model);
+				entities.get(model)
+					.forEach(entity -> {
+						prepareInstance(entity);
+						GL11.glDrawElements(GL11.GL_TRIANGLES, model.getRawModel().getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
+					});
+					unbindTexturedModel();
+			});
+		shader.stop();
+	}	
 
 	public void clean() {
 		shader.clean();
+	}
+	
+	private void prepareLowTexturedModel(TexturedModel model) {
+		prepareTexturedModel(model);
 	}
 
 	private void prepareTexturedModel(TexturedModel model) {

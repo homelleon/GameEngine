@@ -39,7 +39,7 @@ import tool.openGL.OGLUtils;
  * @see IEntity
  * @see IMainRenderer
  */
-public class TexturedEntityRenderer {
+public class TexturedEntityRenderer implements IEntityRenderer {
 
 	private TexturedEntityShader shader;
 	private Texture environmentMap;

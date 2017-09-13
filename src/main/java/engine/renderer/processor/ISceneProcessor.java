@@ -21,6 +21,4 @@ public interface ISceneProcessor {
 
 	public void processShadowEntity(IEntity entity, Map<TexturedModel, List<IEntity>> entities);
 
-	public void processShadowNormalMapEntity(IEntity entity, Map<TexturedModel, List<IEntity>> normalMapEntities);
-
 }

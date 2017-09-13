@@ -54,6 +54,18 @@ public class Maths {
 	public static float sqr(float a) {
 		return a * a;
 	}
+	
+	public static int sqr(int a) {
+		return a * a;
+	}
+	
+	public static float cube(float a) {
+		return a * a * a;
+	}
+	
+	public static int cube(int a) {
+		return a * a * a;
+	}
 
 	public static void swapFloat(float a, float b) {
 		float c = a;

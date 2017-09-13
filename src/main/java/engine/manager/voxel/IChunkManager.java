@@ -60,6 +60,8 @@ public interface IChunkManager {
 	 *         space
 	 */
 	public Vector3f getBlockPosition(int index, Vector3i indexPosition);
+	
+	public Vector3f getBlockPosition(int chunkIndex, int blockIndex);
 
 	/**
 	 * Returns 3d index position of chunk in the chunk manager by its index

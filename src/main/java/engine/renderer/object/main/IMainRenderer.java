@@ -13,7 +13,6 @@ import object.light.ILight;
 import object.model.textured.TexturedModel;
 import object.scene.IScene;
 import object.terrain.terrain.ITerrain;
-import renderer.object.entity.TexturedEntityRenderer;
 import renderer.viewCulling.frustum.Frustum;
 
 /**
@@ -64,12 +63,6 @@ public interface IMainRenderer {
 	 * Method cleans all shaders and rendering objects.
 	 */
 	public void clean();
-
-	/**
-	 * 
-	 * @return
-	 */
-	public TexturedEntityRenderer getEntityRenderer();
 
 	/**
 	 * 

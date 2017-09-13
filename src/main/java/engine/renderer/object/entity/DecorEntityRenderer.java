@@ -23,7 +23,6 @@ import object.texture.Texture;
 import object.texture.model.ModelTexture;
 import renderer.object.main.IMainRenderer;
 import shader.entity.decor.DecorEntityShader;
-import shader.entity.textured.TexturedEntityShader;
 import tool.math.Maths;
 import tool.openGL.OGLUtils;
 
@@ -40,9 +39,10 @@ import tool.openGL.OGLUtils;
  * @see IEntity
  * @see IMainRenderer
  */
-public class DecorEntityRenderer {
+public class DecorEntityRenderer implements IEntityRenderer {
 
 	private DecorEntityShader shader;
+	private Texture environmentMap;
 
 	/**
 	 * Entity render engine constructor.
@@ -88,7 +88,7 @@ public class DecorEntityRenderer {
 	 * @see Texture
 	 */
 	public void renderHigh(Map<TexturedModel, List<IEntity>> entities, Vector4f clipPlane, Collection<ILight> lights,
-			ICamera camera, Matrix4f toShadowMapSpace) {
+			ICamera camera, Matrix4f toShadowMapSpace, Texture environmentMap) {
 		shader.start();
 		shader.loadClipPlane(clipPlane);
 		shader.loadSkyColour(EngineSettings.DISPLAY_RED, EngineSettings.DISPLAY_GREEN, EngineSettings.DISPLAY_BLUE);
