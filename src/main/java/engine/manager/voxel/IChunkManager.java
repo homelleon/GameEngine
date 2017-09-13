@@ -2,6 +2,7 @@ package manager.voxel;
 
 import org.lwjgl.util.vector.Vector3f;
 
+import object.voxel.Block;
 import object.voxel.Chunk;
 import tool.math.vector.Vector3i;
 
@@ -62,6 +63,8 @@ public interface IChunkManager {
 	public Vector3f getBlockPosition(int index, Vector3i indexPosition);
 	
 	public Vector3f getBlockPosition(int chunkIndex, int blockIndex);
+	
+	public Vector3f getBlockPosition(int index);
 
 	/**
 	 * Returns 3d index position of chunk in the chunk manager by its index
@@ -111,6 +114,8 @@ public interface IChunkManager {
 	 * @return {@link Chunk} value
 	 */
 	public Chunk getChunk(int index);
+	
+	public Block getBlock(int index);
 
 	/**
 	 * Returns size of chunks array.

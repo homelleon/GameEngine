@@ -37,16 +37,17 @@ public class ChunkManager implements IChunkManager {
 	public ChunkManager(int size, Vector3f position) {
 		this.size = size;
 		this.position = position;
-		chunks = IntStream.range(0, size + 1)
-			.flatMap(x -> IntStream.range(0, size + 1))
-			.flatMap(y -> IntStream.range(0, size + 1))
+		chunks = IntStream.range(0, size)
+			.flatMap(x -> IntStream.range(0, size))
+			.flatMap(y -> IntStream.range(0, size))
 			.mapToObj(z -> new Chunk())
 			.collect(Collectors.toList());
 		this.createVoxels();
 	}
 	
 	private void createVoxels() {
-		IntStream.range(0, Maths.cube(size) * Maths.cube(Maths.cube(EngineSettings.VOXEL_CHUNK_SIZE + 1)))
+		IntStream.range(0, (int) (Math.pow(EngineSettings.VOXEL_CHUNK_SIZE, 3) * (Math.pow(size, 3))))
+		.peek(index -> System.out.println(index))
 		.forEach(index -> getBlock(index).setIsActive(true));
 //		IntStream.range(0, Maths.cube(size)).parallel()
 //		.mapToObj(ChunkIndex::new)
@@ -109,8 +110,41 @@ public class ChunkManager implements IChunkManager {
 					.setY(chunkPosition.y + indexPosition.y * step)
 					.setZ(chunkPosition.z + indexPosition.z * step)
 					.build();
-	}	
-
+	}
+	
+	@Override
+	public Vector3f getBlockPosition(int index) {
+		int chX = (int) Math.floor(index / (Math.pow(EngineSettings.VOXEL_CHUNK_SIZE, 3) *  Math.pow(size,2)));
+		int chY = (int) Math.floor(index / (Math.pow(EngineSettings.VOXEL_CHUNK_SIZE, 3) * size));
+		int chZ = (int) Math.floor(index / Math.pow(EngineSettings.VOXEL_CHUNK_SIZE, 3));
+		int x = (int) Math.floor(index / Math.pow(EngineSettings.VOXEL_CHUNK_SIZE, 2));
+		int y = (int) Math.floor(index / EngineSettings.VOXEL_CHUNK_SIZE);
+		int z = index;
+		x = Maths.tailOfDivisionNoReminder(x, EngineSettings.VOXEL_CHUNK_SIZE);
+		y = Maths.tailOfDivisionNoReminder(y, EngineSettings.VOXEL_CHUNK_SIZE);
+		z = Maths.tailOfDivisionNoReminder(z, EngineSettings.VOXEL_CHUNK_SIZE);
+		chX = Maths.tailOfDivisionNoReminder(chX, size);
+		chY = Maths.tailOfDivisionNoReminder(chY, size);
+		chZ = Maths.tailOfDivisionNoReminder(chZ, size);
+		IVectorBuilder3<Integer, Vector3i> vecBuilder = new VectorBuilder3i();
+		Vector3i chunkVector = vecBuilder
+				.setX(chX)
+				.setY(chY)
+				.setZ(chZ)
+				.build();
+		Vector3i blockVector = vecBuilder
+				.setX(x)
+				.setY(y)
+				.setZ(z)
+				.build();
+		Vector3f chunkPosition = getChunkPosition(chunkVector);
+		float step = EngineSettings.VOXEL_BLOCK_SIZE;
+		return new VectorBuilder3f()
+				.setX(chunkPosition.x + blockVector.x * step)
+				.setY(chunkPosition.y + blockVector.y * step)
+				.setZ(chunkPosition.z + blockVector.z * step)
+				.build();
+	}
 	@Override
 	public Vector3f getBlockPosition(int chunkIndex, int blockIndex) {
 		return getBlockPosition(chunkIndex, getBlockIndexPosition(blockIndex));
@@ -162,16 +196,27 @@ public class ChunkManager implements IChunkManager {
 		return chunks.get(index);
 	}
 	
+	@Override
 	public Block getBlock(int index) {
-		int chunkIndex = (int) Math.floor(index / Maths.sqr(EngineSettings.VOXEL_CHUNK_SIZE) * Maths.sqr(size));
-		int x = (int) Math.floor(index / Maths.sqr(EngineSettings.VOXEL_CHUNK_SIZE) * Maths.sqr(size));
-		int y = (int) Math.floor(index / EngineSettings.VOXEL_CHUNK_SIZE * Maths.sqr(size));
-		int z = (int) Math.floor(index / Maths.sqr(size));
-		chunkIndex = Maths.tailOfDivisionNoReminder(chunkIndex, EngineSettings.VOXEL_CHUNK_SIZE * Maths.sqr(size));
-		x = Maths.tailOfDivisionNoReminder(x, EngineSettings.VOXEL_CHUNK_SIZE * Maths.sqr(size));
-		y = Maths.tailOfDivisionNoReminder(y, EngineSettings.VOXEL_CHUNK_SIZE * Maths.sqr(size));
-		z = Maths.tailOfDivisionNoReminder(z, EngineSettings.VOXEL_CHUNK_SIZE * Maths.sqr(size));
-		return getChunk(chunkIndex).getBlock(x,y,z);
+		int chX = (int) Math.floor(index / (Math.pow(EngineSettings.VOXEL_CHUNK_SIZE, 3) *  Math.pow(size,2)));
+		int chY = (int) Math.floor(index / (Math.pow(EngineSettings.VOXEL_CHUNK_SIZE, 3) * size));
+		int chZ = (int) Math.floor(index / Math.pow(EngineSettings.VOXEL_CHUNK_SIZE, 3));
+		int x = (int) Math.floor(index / Math.pow(EngineSettings.VOXEL_CHUNK_SIZE, 2));
+		int y = (int) Math.floor(index / EngineSettings.VOXEL_CHUNK_SIZE);
+		int z = index;
+		x = Maths.tailOfDivisionNoReminder(x, EngineSettings.VOXEL_CHUNK_SIZE);
+		y = Maths.tailOfDivisionNoReminder(y, EngineSettings.VOXEL_CHUNK_SIZE);
+		z = Maths.tailOfDivisionNoReminder(z, EngineSettings.VOXEL_CHUNK_SIZE);
+		chX = Maths.tailOfDivisionNoReminder(chX, size);
+		chY = Maths.tailOfDivisionNoReminder(chY, size);
+		chZ = Maths.tailOfDivisionNoReminder(chZ, size);
+		IVectorBuilder3<Integer, Vector3i> chunkVecBuilder = new VectorBuilder3i();
+		Vector3i chunkVector = chunkVecBuilder
+				.setX(chX)
+				.setY(chY)
+				.setZ(chZ)
+				.build();
+		return getChunk(chunkVector).getBlock(x,y,z);
 	}
 
 	@Override

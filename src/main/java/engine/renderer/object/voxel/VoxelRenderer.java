@@ -1,9 +1,8 @@
 package renderer.object.voxel;
 
+import java.util.AbstractMap.SimpleEntry;
 import java.util.Collection;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
@@ -15,7 +14,6 @@ import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 
 import core.settings.EngineSettings;
-import manager.voxel.ChunkIndex;
 import manager.voxel.IChunkManager;
 import object.camera.ICamera;
 import object.light.ILight;
@@ -130,38 +128,48 @@ public class VoxelRenderer {
 				EngineSettings.SHADOW_TRANSITION_DISTANCE, EngineSettings.SHADOW_PCF);
 		prepareModel(cube.getRawModel());
 		bindTexture(texture);
+		IntStream.range(0, (int) Math.pow(chunkManager.getSize(), 3))
+		.filter(index -> checkVisibility(frustum, chunkManager.getChunkPosition(index), CHUNK_RADIUS))
+		.filter(index -> chunkManager.getChunk(index).getIsAcitve())
+		.mapToObj(index -> new SimpleEntry<Integer, IntStream>(index, (int) (Math.pow(chunkManager.getSize(),3) * Math.pow(EngineSettings.VOXEL_CHUNK_SIZE, 3))));
 		
-		IntStream.range(0, chunkManager.getSize())
-			.filter(i -> checkVisibility(frustum, chunkManager.getChunkPosition(i), CHUNK_RADIUS))
-			.filter(i -> chunkManager.getChunk(i).getIsAcitve())
-			.mapToObj(ChunkIndex::new)
-			.flatMap(index -> IntStream.range(0, EngineSettings.VOXEL_CHUNK_SIZE + 1)
-					.mapToObj(x -> new ChunkIndex(index.getI())
-							.setX(x)))
-			.flatMap(index -> IntStream.range(0, EngineSettings.VOXEL_CHUNK_SIZE + 1)
-					.mapToObj(y -> new ChunkIndex(index.getI())
-							.setX(index.getX()).setY(y)))
-			.flatMap(index -> IntStream.range(0, EngineSettings.VOXEL_CHUNK_SIZE + 1)
-					.mapToObj(z -> new ChunkIndex(index.getI())
-							.setX(index.getX()).setY(index.getY()).setZ(z)))
-			.map(index -> index.setFCD(isNeedBlockCulling(
-					chunkManager.getChunk(
-							index.getI()),index.getX(), index.getY(), index.getZ())))
-			.filter(index -> !isAllFaceCulled(index.getFCD()))
-			.filter(index -> chunkManager.getChunk(
-					index.getI()).getBlock(index.getX(), index.getY(), index.getZ())
-					.getIsActive())
-			.map(index -> {
-					prepareInstance(chunkManager.getBlockPosition(
-							index.getI(), new Vector3i(
-									index.getX(), index.getY(), index.getZ())));
-					return index;
-				})
-			.forEach(index -> 
-				IntStream.range(0, 6)
-					.filter(face -> !index.getFCD().getFace(face))
-					.forEachOrdered(this::drawElements)			
-			);
+		
+//		IntStream.range(0, (int) (Math.pow(chunkManager.getSize(),3) * Math.pow(EngineSettings.VOXEL_CHUNK_SIZE, 3)))
+//			.forEach(index -> {
+//				prepareInstance(chunkManager.getBlockPosition(index));
+//				IntStream.range(0, 6).forEach(this::drawElements);
+//			});
+//		IntStream.range(0, chunkManager.getSize())
+//			.filter(i -> checkVisibility(frustum, chunkManager.getChunkPosition(i), CHUNK_RADIUS))
+//			.filter(i -> chunkManager.getChunk(i).getIsAcitve())
+//			.mapToObj(ChunkIndex::new)
+//			.flatMap(index -> IntStream.range(0, EngineSettings.VOXEL_CHUNK_SIZE + 1)
+//					.mapToObj(x -> new ChunkIndex(index.getI())
+//							.setX(x)))
+//			.flatMap(index -> IntStream.range(0, EngineSettings.VOXEL_CHUNK_SIZE + 1)
+//					.mapToObj(y -> new ChunkIndex(index.getI())
+//							.setX(index.getX()).setY(y)))
+//			.flatMap(index -> IntStream.range(0, EngineSettings.VOXEL_CHUNK_SIZE + 1)
+//					.mapToObj(z -> new ChunkIndex(index.getI())
+//							.setX(index.getX()).setY(index.getY()).setZ(z)))
+//			.map(index -> index.setFCD(isNeedBlockCulling(
+//					chunkManager.getChunk(
+//							index.getI()),index.getX(), index.getY(), index.getZ())))
+//			.filter(index -> !isAllFaceCulled(index.getFCD()))
+//			.filter(index -> chunkManager.getChunk(
+//					index.getI()).getBlock(index.getX(), index.getY(), index.getZ())
+//					.getIsActive())
+//			.map(index -> {
+//					prepareInstance(chunkManager.getBlockPosition(
+//							index.getI(), new Vector3i(
+//									index.getX(), index.getY(), index.getZ())));
+//					return index;
+//				})
+//			.forEach(index -> 
+//				IntStream.range(0, 6)
+//					.filter(face -> !index.getFCD().getFace(face))
+//					.forEachOrdered(this::drawElements)			
+//			);
 		unbindTexturedModel();
 		shader.stop();
 	}
