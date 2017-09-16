@@ -13,6 +13,13 @@ import object.light.ILight;
 import object.model.textured.TexturedModel;
 import object.texture.Texture;
 
+/**
+ * 
+ * @author homelleon
+ * @see TexturedEntityRenderer
+ * @see NormalEntityRenderer
+ * @see DecorEntityRenderer
+ */
 public interface IEntityRenderer {
 	
 	void renderHigh(Map<TexturedModel, List<IEntity>> entities, 
@@ -20,7 +27,7 @@ public interface IEntityRenderer {
 			ICamera camera, Matrix4f toShadowMapSpace, Texture environmentMap);
 	
 	void renderLow(Map<TexturedModel, List<IEntity>> entities, 
-			Collection<ILight> lights, ICamera camera);
+			Collection<ILight> lights, ICamera camera, Matrix4f toShadowMapSpace);
 	
 	void clean();
 

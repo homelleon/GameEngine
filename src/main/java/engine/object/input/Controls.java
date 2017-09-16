@@ -4,9 +4,11 @@ import org.lwjgl.input.Keyboard;
 
 import core.EngineMain;
 import core.debug.EngineDebug;
+import core.loop.Loop;
 import core.settings.EngineSettings;
 import object.entity.entity.IEntity;
 import object.scene.IScene;
+import tool.dataEditor.DataEditorMain;
 
 public class Controls implements IControls {
 
@@ -25,7 +27,9 @@ public class Controls implements IControls {
 
 	private void sceneControls() {
 		if(KeyboardGame.isKeyPressed(Keyboard.KEY_ESCAPE)) {
-			EngineMain.exit();
+			if(!Loop.getInstance().getEditMode()) {
+				EngineMain.exit();
+			}
 		}
 		if (KeyboardGame.isKeyPressed(EngineSettings.KEY_PAUSE)) {
 			EngineMain.pauseEngine(!EngineMain.getIsEnginePaused());
@@ -42,9 +46,11 @@ public class Controls implements IControls {
 		/* intersection of entities with mouse ray */
 		// TODO: make class for control
 		if (MouseGame.isOncePressed(MouseGame.LEFT_CLICK)) {
-			IEntity pointedEntity = scene.getMousePicker().chooseObjectByRay(scene);
-			if (pointedEntity != null) {
-				scene.getEntities().addPointed(pointedEntity);
+			if(!Loop.getInstance().getEditMode()) {
+				IEntity pointedEntity = scene.getMousePicker().chooseObjectByRay(scene);
+				if (pointedEntity != null) {
+					scene.getEntities().addPointed(pointedEntity);
+				}
 			}
 		}
 

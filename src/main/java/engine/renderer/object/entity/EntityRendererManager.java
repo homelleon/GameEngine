@@ -29,7 +29,7 @@ public class EntityRendererManager implements IEntityRendererManager {
 			Texture environmentMap, boolean isLowDetailed) {
 		if(isLowDetailed) {
 			entityRenderers.forEach((renderer, entities) -> 
-				renderer.renderLow(entities, lights, camera));
+				renderer.renderLow(entities, lights, camera, toShadowMapSpace));
 		} else {
 			entityRenderers.forEach((renderer, entities) -> 
 				renderer.renderHigh(entities, clipPlane, lights, camera, 

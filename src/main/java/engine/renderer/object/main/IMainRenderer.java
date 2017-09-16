@@ -25,6 +25,8 @@ import renderer.viewCulling.frustum.Frustum;
  *
  */
 public interface IMainRenderer {
+	
+	public void renderScene(IScene scene);
 
 	/**
 	 * Rendering all objects of scene.

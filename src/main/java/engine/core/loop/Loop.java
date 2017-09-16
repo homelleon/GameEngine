@@ -2,7 +2,6 @@ package core.loop;
 
 import java.io.File;
 
-import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 
 import core.GameCore;
@@ -26,7 +25,10 @@ import object.scene.IScene;
 import object.scene.Scene;
 import renderer.loader.Loader;
 import renderer.object.main.MainRenderer;
-import renderer.scene.SceneRenderer;
+import renderer.scene.EditorSceneRenderer;
+import renderer.scene.GameSceneRenderer;
+import renderer.scene.ISceneRenderer;
+import tool.dataEditor.menu.DataEditorFrame;
 import tool.xml.loader.IXMLLoader;
 import tool.xml.loader.XMLFileLoader;
 import tool.xml.parser.IObjectParser;
@@ -40,13 +42,16 @@ import tool.xml.parser.IObjectParser;
  * @see ILoop
  */
 public class Loop implements ILoop {
+	
+	private boolean isEditMode = false;
+	private DataEditorFrame frame;
 
 	private static Loop instance;
 	private static final String SETTINGS_NAME = "settings";
 
 	private Loader loader;
 	private MainRenderer renderer;
-	private SceneRenderer sceneRenderer;
+	private ISceneRenderer sceneRenderer;
 
 	private ISceneManager sceneManager;
 
@@ -61,8 +66,7 @@ public class Loop implements ILoop {
 	private boolean isPaused = false;
 	private boolean isExit = false;
 
-	private Loop() {
-	}
+	private Loop() {}
 
 	public static Loop getInstance() {
 		if (instance == null) {
@@ -70,26 +74,51 @@ public class Loop implements ILoop {
 		}
 		return instance;
 	}
+	
+	@Override
+	public void setEditMode(boolean value) {
+		this.isEditMode = value;
+	}
+	
+	@Override
+	public boolean getEditMode() {
+		return this.isEditMode;
+	}
+	
+	@Override
+	public void setDisplayFrame(DataEditorFrame frame) {
+		this.frame = frame;
+	}
 
 	/**
 	 * Initilize display, load game settings and setup scene objects.
 	 * 
 	 * @see #prepare()
 	 */
-	private void initialize() {
+	private void initializeGameMode() {
 		DisplayManager.createDisplay();
 		/*--------------PRE LOAD TOOLS-------------*/
 		this.loader = Loader.getInstance();
-
 		loadGameSettings();
 		if (!this.mapIsLoaded) {
 			loadModelMap("defaultModelMap");
 		}
 		IAudioMaster audioMaster = new AudioMaster();
 		this.scene = new Scene(levelMap, audioMaster);
-		this.sceneRenderer = new SceneRenderer();
+		this.sceneRenderer = new GameSceneRenderer();
 		this.sceneManager = new SceneManager();
-		sceneManager.init(scene, loader);
+		sceneManager.init(scene, EngineSettings.ENGINE_MODE_GAME);
+	}
+	
+	private void initializeEditorMode() {
+		DisplayManager.createDisplay(frame);
+		frame.pack();
+		/*--------------PRE LOAD TOOLS-------------*/
+		this.loader = Loader.getInstance();
+		this.scene = new Scene();
+		this.sceneRenderer = new EditorSceneRenderer();
+		this.sceneManager = new SceneManager();
+		sceneManager.init(scene, EngineSettings.ENGINE_MODE_EDITOR);
 	}
 
 	@Override
@@ -114,23 +143,31 @@ public class Loop implements ILoop {
 	 * start.
 	 */
 	private void prepare() {
-		initialize();
+		if(isEditMode) {
+			initializeEditorMode();
+		} else {
+			initializeGameMode();
+		}
 		sceneRenderer.initialize(scene);
-		MouseGame.initilize(10);
-		MouseGame.switchCoursorVisibility();
-		this.game = GameCore.loadGame();
-		game.__onStart();
+		MouseGame.initilize(3);
+		if(!isEditMode) {
+			MouseGame.switchCoursorVisibility();
+			this.game = GameCore.loadGame();
+			game.__onStart();
+		}
 	}
 
 	/**
 	 * Updates game events, mouse settings, display and render scene.
 	 */
 	private void update() {
-		game.__onUpdateWithPause();
-		if (!this.isPaused) {
-			game.__onUpdate();
+		if(!isEditMode) {
+			game.__onUpdateWithPause();
+			if (!this.isPaused) {
+				game.__onUpdate();
+			}
 		}
-		sceneRenderer.render(loader, isPaused);
+		sceneRenderer.render(isPaused);
 		MouseGame.update();
 		DisplayManager.updateDisplay();
 	}
@@ -143,9 +180,11 @@ public class Loop implements ILoop {
 		this.scene.clean();
 		this.loader.clean();
 		this.sceneRenderer.clean();
-		this.levelMap.clean();
-		this.modelMap.clean();
-		this.rawMap.clean();
+		if(!isEditMode) {
+			this.levelMap.clean();
+			this.modelMap.clean();
+			this.rawMap.clean();
+		}
 		DisplayManager.closeDisplay();
 	}
 

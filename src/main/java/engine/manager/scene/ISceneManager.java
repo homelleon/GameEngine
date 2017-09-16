@@ -20,6 +20,6 @@ public interface ISceneManager {
 	 * @param loader
 	 *            {@link Loader} value
 	 */
-	public void init(IScene scene, Loader loader);
+	public void init(IScene scene, int mode);
 
 }

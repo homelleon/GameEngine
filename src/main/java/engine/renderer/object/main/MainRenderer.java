@@ -96,6 +96,13 @@ public class MainRenderer implements IMainRenderer {
 	public void renderScene(IScene scene, Vector4f clipPlane) {
 		renderScene(scene, clipPlane, false);
 	}
+	
+	@Override
+	public void renderScene(IScene scene) {
+		scene.getEntities().getAll()
+			.forEach(entity -> processEntityByType(entity.getType(), entity));
+		renderEditorScene(scene);
+	}
 
 	@Override
 	public void renderScene(IScene scene, Vector4f clipPlane, boolean isLowDistance) {
@@ -113,29 +120,37 @@ public class MainRenderer implements IMainRenderer {
 			enviroRenderer.render(scene, this, scene.getEntities().get("Cuby4"));
 			this.environmentRendered = true;
 		}
-		render(scene.getChunks(), scene.getLights().getAll(), scene.getCamera(), clipPlane, isLowDistance);
+		render(scene, clipPlane, isLowDistance);
 	}
 
-	private void render(IChunkManager chunkManager, Collection<ILight> lights, ICamera camera,
-			Vector4f clipPlane, boolean isLowDistance) {
+	private void render(IScene scene, Vector4f clipPlane, boolean isLowDistance) {
 		prepare();
 		checkWiredFrameOn(entitiyWiredFrame);
 		if (EngineDebug.boundingMode != EngineDebug.BOUNDING_NONE) {
-			boundingRenderer.render(texturedEntities, normalEntities, camera);
+			boundingRenderer.render(texturedEntities, normalEntities, scene.getCamera());
 		}
 		
 		Matrix4f shadowMapSpaceMatrix = shadowMapRenderer.getToShadowMapSpaceMatrix();
-		this.entityRendererManager.render(clipPlane, lights, camera, shadowMapSpaceMatrix, environmentMap, false);
+		this.entityRendererManager.render(clipPlane, scene.getLights().getAll(), scene.getCamera(), shadowMapSpaceMatrix, environmentMap, false);
 
 		checkWiredFrameOn(terrainWiredFrame);
-		voxelRenderer.render(chunkManager, clipPlane, lights, camera, shadowMapRenderer.getToShadowMapSpaceMatrix(),
+		voxelRenderer.render(scene.getChunks(), clipPlane, scene.getLights().getAll(), scene.getCamera(), shadowMapRenderer.getToShadowMapSpaceMatrix(),
 				frustum);
-		terrainRenderer.render(terrains, clipPlane, lights, camera, shadowMapRenderer.getToShadowMapSpaceMatrix());
+		terrainRenderer.render(terrains, clipPlane, scene.getLights().getAll(), scene.getCamera(), shadowMapRenderer.getToShadowMapSpaceMatrix());
 		checkWiredFrameOff(terrainWiredFrame);
 
-		skyboxRenderer.render(camera);
+		skyboxRenderer.render(scene.getCamera());
 		
 		terrains.clear();
+		texturedEntities.clear();
+		normalEntities.clear();
+		decorEntities.clear();
+	}
+	
+	private void renderEditorScene(IScene scene) {
+		prepare();
+		Matrix4f shadowMapSpaceMatrix = shadowMapRenderer.getToShadowMapSpaceMatrix();
+		this.entityRendererManager.render(EngineSettings.NO_CLIP, scene.getLights().getAll(), scene.getCamera(), shadowMapSpaceMatrix, null, false);
 		texturedEntities.clear();
 		normalEntities.clear();
 		decorEntities.clear();

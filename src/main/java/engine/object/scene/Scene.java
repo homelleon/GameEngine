@@ -40,6 +40,10 @@ public class Scene extends AObjectManager implements IScene {
 
 	private IChunkManager chunkManager;
 	private IGUIManager uiManager = new GUIManager();
+	
+	public Scene() {
+		super();
+	}
 
 	public Scene(IAudioMaster audioMaster) {
 		super(audioMaster);
@@ -227,8 +231,12 @@ public class Scene extends AObjectManager implements IScene {
 	public void clean() {
 		super.clean();
 		this.environmentMap.delete();
-		this.chunkManager.clearAll();
-		this.uiManager.cleanAll();
+		if(this.chunkManager != null) {
+			this.chunkManager.clearAll();
+		}
+		if(this.uiManager != null) {
+			this.uiManager.cleanAll();
+		}
 	}
 
 }

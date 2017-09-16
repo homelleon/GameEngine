@@ -1,6 +1,7 @@
 package core.loop;
 
 import object.scene.IScene;
+import tool.dataEditor.menu.DataEditorFrame;
 
 /**
  * Runnable looping interaface for main game initialization and external
@@ -13,7 +14,14 @@ import object.scene.IScene;
  *
  */
 public interface ILoop extends Runnable {
-
+	
+	
+	public void setEditMode(boolean value);
+	
+	public boolean getEditMode();
+	
+	public void setDisplayFrame(DataEditorFrame frame);
+	
 	/**
 	 * Method to start main looping process.
 	 * <p>

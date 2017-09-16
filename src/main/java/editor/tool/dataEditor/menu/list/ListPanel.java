@@ -57,6 +57,10 @@ public class ListPanel extends JPanel {
 		this.cameraTable = new JTable(terrainData, columnNames);
 		this.entityTable.setShowVerticalLines(false);
 	}
+	
+	public void loadData(String fileName) {
+		
+	}
 
 }
 

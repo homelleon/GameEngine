@@ -33,7 +33,9 @@ public class OBJFileLoader {
 		try {
 			while (true) {
 				line = reader.readLine();
-				if (line.startsWith("v ")) {
+				if(line == null) {
+					break;
+				} else if (line.startsWith("v ")) {
 					String[] currentLine = line.split(" ");
 					try {
 						Vector3f vertex = new Vector3f(Float.valueOf(currentLine[1]),
@@ -56,21 +58,15 @@ public class OBJFileLoader {
 							Float.valueOf(currentLine[2]), Float.valueOf(currentLine[3]));
 					normals.add(normal);
 				} else if (line.startsWith("f ")) {
-					break;
+					String[] currentLine = line.split(" ");
+					int length = currentLine.length;
+					for(int i = 1; i < length; i++) {
+						String[] vertex = currentLine[i].split("/");
+						processVertex(vertex, vertices, indices);
+					}
 				}
 			}
-			Integer i = 0;
-			while (line != null && line.startsWith("f ")) {
-				i = i + 1;
-				String[] currentLine = line.split(" ");
-				String[] vertex1 = currentLine[1].split("/");
-				String[] vertex2 = currentLine[2].split("/");
-				String[] vertex3 = currentLine[3].split("/");
-				processVertex(vertex1, vertices, indices);
-				processVertex(vertex2, vertices, indices);
-				processVertex(vertex3, vertices, indices);
-				line = reader.readLine();
-			}
+			
 			reader.close();
 		} catch (IOException e) {
 			System.err.println("Error reading the file");

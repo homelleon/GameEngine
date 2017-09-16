@@ -26,7 +26,6 @@ import object.input.KeyboardGame;
 import object.particle.master.ParticleMaster;
 import object.scene.IScene;
 import object.water.WaterFrameBuffers;
-import renderer.loader.Loader;
 import renderer.object.main.MainRenderer;
 import renderer.object.water.WaterRenderer;
 import shader.postProcessing.Fbo;
@@ -42,7 +41,7 @@ import tool.openGL.OGLUtils;
  * @version 1.0
  *
  */
-public class SceneRenderer {
+public class GameSceneRenderer implements ISceneRenderer {
 
 	private MainRenderer mainRenderer;
 	private WaterRenderer waterRenderer;
@@ -54,6 +53,7 @@ public class SceneRenderer {
 	private IScene scene;
 	private IControls controls;
 
+	@Override
 	public void initialize(IScene scene) {
 		this.scene = scene;
 		this.mainRenderer = new MainRenderer(scene);
@@ -74,7 +74,8 @@ public class SceneRenderer {
 		this.controls = new Controls();
 	}
 
-	public void render(Loader loader, boolean isPaused) {
+	@Override
+	public void render(boolean isPaused) {
 		checkInputs();
 		if (!isPaused) {
 			move();
@@ -136,13 +137,13 @@ public class SceneRenderer {
 				true);
 	}
 
-	protected void renderParticles() {
+	private void renderParticles() {
 		scene.getParticles().get("Cosmic").generateParticles();
 		scene.getParticles().get("Star").generateParticles();
 		ParticleMaster.update(scene.getCamera());
 	}
 
-	protected void renderGUI() {
+	private void renderGUI() {
 		String fontName = "candara";
 		GUIText fpsText = createFPSText(Math.round(1 / DisplayManager.getFrameTimeSeconds()), fontName);
 		fpsText.setColor(1, 0, 0);
@@ -160,14 +161,14 @@ public class SceneRenderer {
 		// scene.getUserInterface().deleteGUIGroup("statusGroup");
 	}
 
-	protected GUIText createFPSText(float FPS, String fontName) {
+	private GUIText createFPSText(float FPS, String fontName) {
 		GUIText guiText = new GUIText("FPS", "FPS: " + String.valueOf((int) FPS), 2f, fontName, new Vector2f(0.65f, 0.9f),
 				0.5f, true);
 		scene.getUserInterface().getComponent().getTexts().add(guiText);
 		return guiText;
 	}
 
-	protected GUIText createPickerCoordsText(MousePicker picker, String fontName) {
+	private GUIText createPickerCoordsText(MousePicker picker, String fontName) {
 		String text = String.valueOf(picker.getCurrentRay());
 		GUIText guiText = new GUIText("Coords", text, 1, fontName, new Vector2f(0.3f, 0.8f), 1f, true);
 		scene.getUserInterface().getComponent().getTexts().add(guiText);
@@ -181,10 +182,12 @@ public class SceneRenderer {
 		scene.getAudioSources().getMaster().setListenerData(scene.getCamera().getPosition());
 	}
 
+	@Override
 	public MainRenderer getMasterRenderer() {
 		return this.mainRenderer;
 	}
 
+	@Override
 	public void clean() {
 		scene.clean();
 		PostProcessing.clean();

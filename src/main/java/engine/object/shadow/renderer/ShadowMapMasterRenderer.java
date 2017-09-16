@@ -39,8 +39,8 @@ public class ShadowMapMasterRenderer {
 	private Matrix4f projectionViewMatrix = new Matrix4f();
 	private Matrix4f offset = createOffset();
 
-	private ShadowMapEntityRenderer entityRenderer;
-	private ShadowMapTerrainRenderer terrainRenderer;
+	private ShadowMapEntityRenderer shadowEntityRenderer;
+	private ShadowMapTerrainRenderer shadowTerrainRenderer;
 
 	/**
 	 * Creates instances of the important objects needed for rendering the scene
@@ -57,8 +57,8 @@ public class ShadowMapMasterRenderer {
 		shader = new ShadowShader();
 		shadowBox = new ShadowBox(lightViewMatrix, camera);
 		shadowFbo = new ShadowFrameBuffer(EngineSettings.SHADOW_MAP_SIZE, EngineSettings.SHADOW_MAP_SIZE);
-		entityRenderer = new ShadowMapEntityRenderer(shader, projectionViewMatrix);
-		terrainRenderer = new ShadowMapTerrainRenderer(shader, projectionViewMatrix);
+		shadowEntityRenderer = new ShadowMapEntityRenderer(shader, projectionViewMatrix);
+		shadowTerrainRenderer = new ShadowMapTerrainRenderer(shader, projectionViewMatrix);
 	}
 
 	/**
@@ -83,8 +83,8 @@ public class ShadowMapMasterRenderer {
 		Vector3f lightDirection = new Vector3f(-sunPosition.x, -sunPosition.y, -sunPosition.z);
 		prepare(lightDirection, shadowBox);
 		entities.putAll(normalMapEntities);
-		entityRenderer.render(entities, camera);
-		terrainRenderer.render(terrains, camera);
+		shadowEntityRenderer.render(entities, camera);
+		shadowTerrainRenderer.render(terrains, camera);
 		finish();
 	}
 

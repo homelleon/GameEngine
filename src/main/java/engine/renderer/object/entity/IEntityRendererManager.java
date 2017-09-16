@@ -13,6 +13,11 @@ import object.light.ILight;
 import object.model.textured.TexturedModel;
 import object.texture.Texture;
 
+/**
+ * 
+ * @author homelleon
+ * @see EntityRendererManager
+ */
 public interface IEntityRendererManager {
 	
 	void addPair(IEntityRenderer renderer, Map<TexturedModel, List<IEntity>> enitties);

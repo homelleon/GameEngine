@@ -53,8 +53,12 @@ public class GUIManager implements IGUIManager {
 
 	@Override
 	public void cleanAll() {
-		this.menuSystem.clean();
-		this.groupManager.clean();
+		if(this.menuSystem != null) {
+			this.menuSystem.clean();
+		}
+		if(this.groupManager != null) {
+			this.groupManager.clean();
+		}
 	}
 
 }

@@ -168,5 +168,8 @@ public class EngineSettings {
 	public final static int BOUNDING_BOX_MIN_MAX = 0;
 	public final static int BOUNDING_BOX_DIAM = 1;
 	public final static int BOUNDING_BOX_RADIUS = 2;
+	
+	public final static int ENGINE_MODE_GAME = 0;
+	public final static int ENGINE_MODE_EDITOR = 1;
 
 }

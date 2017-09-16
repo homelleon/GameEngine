@@ -2,21 +2,14 @@ package object.scene;
 
 import java.util.Collection;
 
-import manager.audio.IAudioManager;
-import manager.entity.IEntityManager;
 import manager.gui.IGUIManager;
-import manager.light.ILightManager;
-import manager.particle.IParticleManager;
 import manager.scene.IObjectManager;
-import manager.terrain.ITerrainManager;
 import manager.voxel.IChunkManager;
-import manager.water.IWaterManager;
 import object.camera.ICamera;
 import object.entity.entity.IEntity;
 import object.entity.player.IPlayer;
 import object.light.Light;
 import object.particle.ParticleSystem;
-import object.particle.master.ParticleMaster;
 import object.texture.Texture;
 import renderer.viewCulling.frustum.Frustum;
 import tool.MousePicker;

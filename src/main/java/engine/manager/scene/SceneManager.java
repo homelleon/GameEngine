@@ -7,6 +7,7 @@ import org.lwjgl.openal.AL10;
 import org.lwjgl.openal.AL11;
 import org.lwjgl.util.vector.Vector3f;
 
+import core.settings.EngineSettings;
 import manager.particle.ParticleManager;
 import object.audio.source.AudioSource;
 import object.audio.source.IAudioSource;
@@ -17,7 +18,6 @@ import object.light.Light;
 import object.model.textured.TexturedModel;
 import object.scene.IScene;
 import object.water.WaterTile;
-import renderer.loader.Loader;
 import tool.EngineUtils;
 
 /**
@@ -32,7 +32,38 @@ public class SceneManager implements ISceneManager {
 	private String cameraName = "cameraMain";
 
 	@Override
-	public void init(IScene scene, Loader loader) {
+	public void init(IScene scene, int mode) {
+		switch(mode) {
+			case EngineSettings.ENGINE_MODE_GAME:
+				initializeGame(scene);
+				break;
+			case EngineSettings.ENGINE_MODE_EDITOR:
+				initializeEditor(scene);
+				break;
+		}
+	}
+	
+	private void initializeEditor(IScene scene) {
+		TexturedModel cubeModel = EngineUtils.loadStaticModel("stall", "stallTexture");
+		IPlayer player1 = new Player(
+				playerName, 
+				cubeModel, 
+				new Vector3f(0, 0, 0), 
+				new Vector3f(0, 0, 0), 
+				1
+		);
+		player1.setBaseName("cubeEntity1");
+		player1.getModel().getTexture().setShineDamper(5.0f);
+		scene.setPlayer(player1);
+		scene.getEntities().add(player1);
+		scene.setCamera(new TargetCamera(player1, cameraName));
+		scene.setSun(new Light("Sun", 
+				new Vector3f(-1000000, 500000, -1000000), 
+				new Vector3f(1.3f, 1.3f, 1.3f)));
+		scene.getLights().add(scene.getSun());
+	}
+	
+	private void initializeGame(IScene scene) {
 		/*------------------PLAYER-----------------*/
 		TexturedModel cubeModel = EngineUtils.loadStaticModel("cube", "cube1");
 		IPlayer player1 = new Player(
@@ -92,11 +123,10 @@ public class SceneManager implements ISceneManager {
 						new Vector3f(1, 0.01f, 0.002f)));
 		scene.getAudioSources().add(ambientSource);
 		scene.getWaters().addAll(waterList);
-		scene.getParticles().addAll(ParticleManager.createParticleSystem(loader));
+		scene.getParticles().addAll(ParticleManager.createParticleSystem());
 
 		scene.spreadEntitiesOnHeights(scene.getEntities().getAll());
 		//scene.getEntities().get("Cuby4").getModel().getTexture().setReflectiveFactor(1.2f);
-
 	}
 
 }

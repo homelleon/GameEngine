@@ -40,25 +40,27 @@ public class NormalEntityRenderer implements IEntityRenderer {
 	@Override
 	public void renderHigh(Map<TexturedModel, List<IEntity>> entities, Vector4f clipPlane, Collection<ILight> lights,
 			ICamera camera, Matrix4f toShadowMapSpace, Texture environmentMap) {
-		shader.start();
-		shader.loadFogDensity(EngineSettings.FOG_DENSITY);
-		shader.loadToShadowSpaceMatrix(toShadowMapSpace);
-		shader.loadShadowVariables(EngineSettings.SHADOW_DISTANCE, EngineSettings.SHADOW_MAP_SIZE,
-				EngineSettings.SHADOW_TRANSITION_DISTANCE, EngineSettings.SHADOW_PCF);
-		prepare(clipPlane, lights, camera);
-		entities.keySet().forEach(model -> {
-			prepareTexturedModel(model);
-			entities.get(model).forEach(entity -> {
-				prepareInstance(entity);
-				GL11.glDrawElements(GL11.GL_TRIANGLES, model.getRawModel().getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
+		if(!entities.isEmpty()) {
+			shader.start();
+			shader.loadFogDensity(EngineSettings.FOG_DENSITY);
+			shader.loadToShadowSpaceMatrix(toShadowMapSpace);
+			shader.loadShadowVariables(EngineSettings.SHADOW_DISTANCE, EngineSettings.SHADOW_MAP_SIZE,
+					EngineSettings.SHADOW_TRANSITION_DISTANCE, EngineSettings.SHADOW_PCF);
+			prepare(clipPlane, lights, camera);
+			entities.keySet().forEach(model -> {
+				prepareTexturedModel(model);
+				entities.get(model).forEach(entity -> {
+					prepareInstance(entity);
+					GL11.glDrawElements(GL11.GL_TRIANGLES, model.getRawModel().getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
+				});
+				unbindTexturedModel();
 			});
-			unbindTexturedModel();
-		});
-		shader.stop();
+			shader.stop();
+		}
 	}
 	
 	@Override
-	public void renderLow(Map<TexturedModel, List<IEntity>> entities, Collection<ILight> lights, ICamera camera) {
+	public void renderLow(Map<TexturedModel, List<IEntity>> entities, Collection<ILight> lights, ICamera camera, Matrix4f toShadowMapSpace) {
 		GL11.glClearColor(1, 1, 1, 1);
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 		shader.start();

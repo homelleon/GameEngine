@@ -14,7 +14,8 @@ import tool.manager.AbstractManager;
 
 public class ParticleManager extends AbstractManager<IParticleSystem> implements IParticleManager {
 
-	public static List<IParticleSystem> createParticleSystem(Loader loader) {
+	public static List<IParticleSystem> createParticleSystem() {
+		Loader loader = Loader.getInstance();
 		List<IParticleSystem> pSystem = new ArrayList<IParticleSystem>();
 		ParticleTexture cosmicPTexture = new ParticleTexture(
 				loader.getTextureLoader().loadTexture(EngineSettings.TEXTURE_PARTICLE_PATH, "cosmic"), 4, true);

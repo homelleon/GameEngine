@@ -13,9 +13,8 @@ import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.PixelFormat;
 
 import core.settings.EngineSettings;
-import frame.IFrame;
-import frame.FrameEditor;
 import object.input.KeyboardGame;
+import tool.dataEditor.menu.DataEditorFrame;
 
 /*
  *  Display Manager - Менеджер дисплея приложения
@@ -31,15 +30,14 @@ public class DisplayManager {
 	private static int width; // ширина окна
 
 	public static void createDisplay() {
-		createDisplay(EngineSettings.DISPLAY_GAME_MODE);
+		createDisplay(null);
 	}
 
 	// конструктор с указанием режима приложения
-	public static void createDisplay(int mode) {
-
-		if (mode == EngineSettings.DISPLAY_EDIT_MODE) {
+	public static void createDisplay(DataEditorFrame frame) {
+		
+		if (frame != null) {
 			// режим редактирования
-			IFrame frame = new FrameEditor("Editor");
 			width = frame.getWidth() / 2;
 			height = frame.getHeight() / 2;
 			Canvas canvas = new Canvas();
@@ -56,7 +54,7 @@ public class DisplayManager {
 				Display.setDisplayMode(new DisplayMode(width, height));
 				Display.create(new PixelFormat().withDepthBits(24), attribs);
 
-				frame.getDisplayPanel().add(canvas);
+				frame.getScreenPanel().add(canvas);
 
 				Display.setParent(canvas);
 				Display.setTitle("EditMode");
@@ -64,7 +62,7 @@ public class DisplayManager {
 				e.printStackTrace();
 			}
 
-		} else if (mode == EngineSettings.DISPLAY_GAME_MODE) {
+		} else if (frame == null) {
 			// режим игры
 			width = EngineSettings.DISPLAY_WIDTH;
 			height = EngineSettings.DISPLAY_HEIGHT;
