@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 import org.lwjgl.util.vector.Vector3f;
 
@@ -47,23 +46,8 @@ public class ChunkManager implements IChunkManager {
 	}
 	
 	private void createVoxels() {
-		IntStream.range(0, (int) (Math.pow(EngineSettings.VOXEL_CHUNK_SIZE + 1, 3) * (Math.pow(size, 3))))
-		.peek(index -> System.out.println(index))
-		.forEach(index -> getBlockByBlockIndex(index).setIsActive(true));
-//		IntStream.range(0, Maths.cube(size)).parallel()
-//		.mapToObj(ChunkIndex::new)
-//		.flatMap(index -> IntStream.range(0, EngineSettings.VOXEL_CHUNK_SIZE + 1).parallel()
-//				.mapToObj(x -> new ChunkIndex(index.getI())
-//						.setX(x)))
-//		.flatMap(index -> IntStream.range(0, EngineSettings.VOXEL_CHUNK_SIZE + 1).parallel()
-//				.mapToObj(y -> new ChunkIndex(index.getI())
-//						.setX(index.getX()).setY(y)))
-//		.flatMap(index -> IntStream.range(0, EngineSettings.VOXEL_CHUNK_SIZE + 1).parallel()
-//				.mapToObj(z -> new ChunkIndex(index.getI())
-//						.setX(index.getX()).setY(index.getY()).setZ(z)))
-//		.forEach(index -> getChunk(index.getI())
-//				.getBlock(index.getX(), index.getY(), index.getZ())
-//				.setIsActive(true));
+		IntStream.rangeClosed(0, (int) (Math.pow(EngineSettings.VOXEL_CHUNK_SIZE, 3) * (Math.pow(size, 3))))
+		.forEach(blockIndex -> getBlockByBlockIndex(blockIndex).setIsActive(true));
 	}
 
 	@Override
@@ -162,6 +146,9 @@ public class ChunkManager implements IChunkManager {
 		int x = (int) Math.floor(blockIndex / Maths.sqr(EngineSettings.VOXEL_CHUNK_SIZE));
 		int y = (int) Math.floor(blockIndex / EngineSettings.VOXEL_CHUNK_SIZE);
 		int z = blockIndex;
+		x = Maths.tailOfDivisionNoReminder(x, EngineSettings.VOXEL_CHUNK_SIZE);
+		y = Maths.tailOfDivisionNoReminder(y, EngineSettings.VOXEL_CHUNK_SIZE);
+		z = Maths.tailOfDivisionNoReminder(z, EngineSettings.VOXEL_CHUNK_SIZE);
 		IVectorBuilder3<Integer, Vector3i> vecBuilder = new VectorBuilder3i();
 		return vecBuilder
 				.setX(x)
@@ -259,7 +246,7 @@ public class ChunkManager implements IChunkManager {
 
 	@Override
 	public int getSize() {
-		return chunks.size();
+		return size;
 	}
 
 	@Override

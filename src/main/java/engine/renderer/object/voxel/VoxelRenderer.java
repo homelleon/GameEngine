@@ -1,6 +1,10 @@
 package renderer.object.voxel;
 
+import java.util.AbstractMap.SimpleEntry;
+import java.util.function.Function;
 import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import org.lwjgl.opengl.GL11;
@@ -13,7 +17,6 @@ import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 
 import core.settings.EngineSettings;
-import manager.voxel.ChunkIndex;
 import manager.voxel.IChunkManager;
 import object.camera.ICamera;
 import object.light.ILight;
@@ -129,61 +132,39 @@ public class VoxelRenderer {
 		prepareModel(cube.getRawModel());
 		bindTexture(texture);
 		
-		IntStream.range(0, chunkManager.getSize())
-			.filter(i -> checkVisibility(frustum, chunkManager.getChunkPositionByChunkIndex(i), CHUNK_RADIUS))
-			.filter(i -> chunkManager.getChunk(i).getIsAcitve())
-			.mapToObj(ChunkIndex::new)
-			.flatMap(index -> IntStream.range(0, EngineSettings.VOXEL_CHUNK_SIZE + 1)
-					.mapToObj(x -> new ChunkIndex(index.getI())
-							.setX(x)))
-			.flatMap(index -> IntStream.range(0, EngineSettings.VOXEL_CHUNK_SIZE + 1)
-					.mapToObj(y -> new ChunkIndex(index.getI())
-							.setX(index.getX()).setY(y)))
-			.flatMap(index -> IntStream.range(0, EngineSettings.VOXEL_CHUNK_SIZE + 1)
-					.mapToObj(z -> new ChunkIndex(index.getI())
-							.setX(index.getX()).setY(index.getY()).setZ(z)))
-			.map(index -> index.setFCD(isNeedBlockCulling(
-					chunkManager.getChunk(
-							index.getI()),index.getX(), index.getY(), index.getZ())))
-			.filter(index -> !isAllFaceCulled(index.getFCD()))
-			.filter(index -> chunkManager.getChunk(
-					index.getI()).getBlock(index.getX(), index.getY(), index.getZ())
-					.getIsActive())
-			.map(index -> {
-					prepareInstance(chunkManager.getBlockPosition(
-							index.getI(), new Vector3i(
-									index.getX(), index.getY(), index.getZ())));
-					return index;
-				})
-			.forEach(index -> 
-				IntStream.range(0, 6)
-					.filter(face -> !index.getFCD().getFace(face))
-					.forEachOrdered(this::drawElements)			
-			);
+		getAllBlocks(chunkManager, frustum).stream()
+		.peek(i -> prepareInstance(chunkManager.getBlockPositionByBlockIndex(i)))
+		.map(i -> new SimpleEntry<Integer, FaceCullingData>(i, isNeedBlockCulling(chunkManager, i)))
+		.filter(entry -> !isAllFaceCulled(entry.getValue()))
+		.flatMap(entry -> IntStream.range(0, 6)
+				.filter(face -> !entry.getValue().getFace(face))
+				.boxed()
+				)
+		.forEach(this::drawElements);
+		
 		unbindTexturedModel();
 		shader.stop();
 	}
 	
-	private IntStream getChunkStream(IChunkManager chunkManager, Frustum frustum) {
-		return IntStream.range(0, (int) chunkManager.getSize())
-				.filter(index -> chunkManager.getChunkByBlockIndex(index).getIsAcitve())
-				.filter(index -> checkVisibility(frustum, chunkManager.getChunkPositionByChunkIndex(index), CHUNK_RADIUS));
-		
+	private List<Integer> getAllBlocks(IChunkManager chunkManager, Frustum frustum) {
+		return IntStream.range(0, (int) Math.pow(chunkManager.getSize(), 3))		
+				.filter(i -> checkVisibility(frustum, chunkManager.getChunkPositionByChunkIndex(i), CHUNK_RADIUS))
+				.filter(i -> chunkManager.getChunk(i).getIsAcitve())
+				.mapToObj(i -> new SimpleEntry<Integer, IntStream>(i, IntStream.rangeClosed(0, (int) Math.pow(EngineSettings.VOXEL_CHUNK_SIZE, 3))
+						.map(a -> i * (int) Math.pow(EngineSettings.VOXEL_CHUNK_SIZE, 3) + a)
+						))
+				.flatMap(i -> i.getValue().boxed())
+				.collect(Collectors.toList());
 	}
 
 	
 	private synchronized void drawElements(int face) {
-		GL12.glDrawRangeElements(GL11.GL_TRIANGLES,0, 6, 6,
+		GL12.glDrawRangeElements(GL11.GL_TRIANGLES, 0, 6, 6,
 				GL11.GL_UNSIGNED_INT, 24 * face);
 	}
 
 	private boolean checkVisibility(Frustum frustum, Vector3f position, float radius) {
-		boolean isVisible = false;
-		float distance = frustum.distanceSphereInFrustum(position, radius);
-		if (distance > 0 && distance <= EngineSettings.RENDERING_VIEW_DISTANCE) {
-			isVisible = true;
-		}
-		return isVisible;
+		return frustum.sphereInFrustumAndDsitance(position, radius, 0, EngineSettings.RENDERING_VIEW_DISTANCE);
 	}
 
 	private synchronized void prepareInstance(Vector3f position) {
@@ -236,10 +217,10 @@ public class VoxelRenderer {
 		return fcData;
 	}
 
-	private FaceCullingData isNeedChunkCulling(IChunkManager chunker, int index) {
+	private FaceCullingData isNeedChunkCulling(IChunkManager chunkManager, int index) {
 		FaceCullingData fcData = new FaceCullingData();
 		for (int face = 0; face < 6; face++) {
-			if (isFaceCovered(chunker, index, face)) {
+			if (isFaceCovered(chunkManager, index, face)) {
 				fcData.setFaceRendering(face, true);
 			}
 		}
