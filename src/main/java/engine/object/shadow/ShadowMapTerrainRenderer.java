@@ -5,14 +5,14 @@ import java.util.Collection;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
-import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector3f;
 
 import object.camera.ICamera;
 import object.model.raw.RawModel;
 import object.terrain.terrain.ITerrain;
 import shader.shadow.ShadowShader;
 import tool.math.Maths;
+import tool.math.Matrix4f;
+import tool.math.vector.Vec3f;
 
 public class ShadowMapTerrainRenderer {
 
@@ -85,9 +85,9 @@ public class ShadowMapTerrainRenderer {
 	}
 
 	private void prepareInstance(ITerrain terrain) {
-		Matrix4f modelMatrix = Maths.createTransformationMatrix(new Vector3f(terrain.getX(), 0, terrain.getZ()), 0, 0,
+		Matrix4f modelMatrix = Maths.createTransformationMatrix(new Vec3f(terrain.getX(), 0, terrain.getZ()), 0, 0,
 				0, 1);
-		Matrix4f mvpMatrix = Matrix4f.mul(projectionViewMatrix, modelMatrix, null);
+		Matrix4f mvpMatrix = Matrix4f.mul(projectionViewMatrix, modelMatrix);
 		shader.loadMvpMatrix(mvpMatrix);
 	}
 

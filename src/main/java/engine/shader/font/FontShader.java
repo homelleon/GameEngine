@@ -11,29 +11,11 @@ public class FontShader extends ShaderProgram {
 	private static final String VERTEX_FILE = EngineSettings.SHADERS_FONT_PATH + "fontVertexShader.glsl";
 	private static final String FRAGMENT_FILE = EngineSettings.SHADERS_FONT_PATH + "fontFragmentShader.glsl";
 
-	private int location_colour;
-	private int location_translation;
-	private int location_width;
-	private int location_edge;
-	private int location_borderWidth;
-	private int location_borderEdge;
-	private int location_offset;
-	private int location_outlineColour;
-
 	public FontShader() {
-		super(VERTEX_FILE, FRAGMENT_FILE);
-	}
-
-	@Override
-	protected void getAllUniformLocations() {
-		location_colour = super.getUniformLocation("colour");
-		location_translation = super.getUniformLocation("translation");
-		location_width = super.getUniformLocation("width");
-		location_edge = super.getUniformLocation("edge");
-		location_borderWidth = super.getUniformLocation("borderWidth");
-		location_borderEdge = super.getUniformLocation("borderEdge");
-		location_offset = super.getUniformLocation("offset");
-		location_outlineColour = super.getUniformLocation("outlineColour");
+		super();
+		addVertexShader(VERTEX_FILE);
+		addFragmentShader(FRAGMENT_FILE);
+		compileShader();
 	}
 
 	@Override
@@ -42,30 +24,42 @@ public class FontShader extends ShaderProgram {
 		super.bindAttribute(1, "textureCoords");
 	}
 
+	@Override
+	protected void loadUniformLocations() {
+		super.addUniform("colour");
+		super.addUniform("translation");
+		super.addUniform("width");
+		super.addUniform("edge");
+		super.addUniform("borderWidth");
+		super.addUniform("borderEdge");
+		super.addUniform("offset");
+		super.addUniform("outlineColour");
+	}
+
 	public void loadWidthAndEdge(float width, float edge) {
-		super.loadFloat(location_width, width);
-		super.loadFloat(location_edge, edge);
+		super.loadFloat("width", width);
+		super.loadFloat("edge", edge);
 	}
 
 	public void loadBorderWidthAndEdge(float width, float edge) {
-		super.loadFloat(location_borderWidth, width);
-		super.loadFloat(location_borderEdge, edge);
+		super.loadFloat("borderWidth", width);
+		super.loadFloat("borderEdge", edge);
 	}
 
 	public void loadOffset(Vector2f offset) {
-		super.load2DVector(location_offset, offset);
+		super.load2DVector("offset", offset);
 	}
 
 	public void loadOutLineColour(Vector3f colour) {
-		super.loadVector(location_outlineColour, colour);
+		super.loadVector("outlineColour", colour);
 	}
 
 	public void loadColour(Vector3f colour) {
-		super.loadVector(location_colour, colour);
+		super.loadVector("colour", colour);
 	}
 
 	public void loadTranslation(Vector2f translation) {
-		super.load2DVector(location_translation, translation);
+		super.load2DVector("translation", translation);
 	}
 
 }

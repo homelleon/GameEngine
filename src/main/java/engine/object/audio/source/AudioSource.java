@@ -1,9 +1,9 @@
 package object.audio.source;
 
 import org.lwjgl.openal.AL10;
-import org.lwjgl.util.vector.Vector3f;
 
 import object.audio.master.IAudioMaster;
+import tool.math.vector.Vec3f;
 
 /**
  * Simple type of Audio Source using name, sourceId, fileName to represent the
@@ -20,7 +20,7 @@ public class AudioSource implements IAudioSource {
 	private int sourceId; // ID аудио
 	private String fileName; // расположение файла
 	private IAudioMaster master; // аудио-мастер
-	private Vector3f position; // позиция аудио-источника
+	private Vec3f position; // позиция аудио-источника
 
 	/**
 	 * Constructor of AudioSource object without changing position value.
@@ -36,7 +36,7 @@ public class AudioSource implements IAudioSource {
 	 *            audio source with same audio track in the same list of auido
 	 *            buffer map
 	 * @see IAudioSource
-	 * @see #AudioSourceSimple(String, String, int, Vector3f,
+	 * @see #AudioSourceSimple(String, String, int, Vec3f,
 	 *      IAudioMaster)
 	 */
 	public AudioSource(String name, String file, int maxDistance, IAudioMaster master) {
@@ -62,7 +62,7 @@ public class AudioSource implements IAudioSource {
 	 * @param maxDistance
 	 *            int value of maximum distance that audio source has effect
 	 * @param position
-	 *            Vector3f value of audio source position in 3 dimentional space
+	 *            Vec3f value of audio source position in 3 dimentional space
 	 * @param master
 	 *            AudioMaster object needed to check same audio files and store
 	 *            audio source with same audio track in the same list of auido
@@ -70,7 +70,7 @@ public class AudioSource implements IAudioSource {
 	 * @see IAudioSource
 	 * @see #AudioSourceSimple(String, String, int, IAudioMaster)
 	 */
-	public AudioSource(String name, String file, int maxDistance, Vector3f position, IAudioMaster master) {
+	public AudioSource(String name, String file, int maxDistance, Vec3f position, IAudioMaster master) {
 		sourceId = AL10.alGenSources();
 		AL10.alSourcef(sourceId, AL10.AL_ROLLOFF_FACTOR, 1);
 		AL10.alSourcef(sourceId, AL10.AL_REFERENCE_DISTANCE, 6);
@@ -119,7 +119,7 @@ public class AudioSource implements IAudioSource {
 	}
 
 	@Override
-	public void setVelocity(Vector3f speed) {
+	public void setVelocity(Vec3f speed) {
 		AL10.alSource3f(sourceId, AL10.AL_VELOCITY, speed.x, speed.y, speed.z);
 	}
 
@@ -144,13 +144,13 @@ public class AudioSource implements IAudioSource {
 	}
 
 	@Override
-	public void setPosition(Vector3f position) {
+	public void setPosition(Vec3f position) {
 		this.position = position;
 		AL10.alSource3f(sourceId, AL10.AL_POSITION, position.x, position.y, position.z);
 	}
 
 	@Override
-	public Vector3f getPosition() {
+	public Vec3f getPosition() {
 		return this.position;
 	}
 

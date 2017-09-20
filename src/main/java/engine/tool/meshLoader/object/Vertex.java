@@ -1,4 +1,4 @@
-package tool.converter.object;
+package tool.meshLoader.object;
 
 import org.lwjgl.util.vector.Vector3f;
 

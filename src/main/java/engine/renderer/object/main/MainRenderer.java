@@ -9,12 +9,10 @@ import java.util.Map;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
-import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector4f;
 
 import core.debug.EngineDebug;
 import core.settings.EngineSettings;
-import manager.voxel.IChunkManager;
 import object.camera.ICamera;
 import object.entity.entity.IEntity;
 import object.light.ILight;
@@ -37,6 +35,7 @@ import renderer.object.voxel.VoxelRenderer;
 import renderer.processor.ISceneProcessor;
 import renderer.processor.SceneProcessor;
 import renderer.viewCulling.frustum.Frustum;
+import tool.math.Matrix4f;
 import tool.openGL.OGLUtils;
 
 public class MainRenderer implements IMainRenderer {
@@ -204,13 +203,13 @@ public class MainRenderer implements IMainRenderer {
 		float x_scale = y_scale / aspectRatio;
 		float frustrum_length = EngineSettings.FAR_PLANE - EngineSettings.NEAR_PLANE;
 
-		normalDistProjectionMatrix.m00 = x_scale;
-		normalDistProjectionMatrix.m11 = y_scale;
-		normalDistProjectionMatrix.m22 = -((EngineSettings.FAR_PLANE + EngineSettings.NEAR_PLANE) / frustrum_length);
-		normalDistProjectionMatrix.m23 = -1;
-		normalDistProjectionMatrix.m32 = -((2 * EngineSettings.NEAR_PLANE * EngineSettings.FAR_PLANE)
+		normalDistProjectionMatrix.m[0][0] = x_scale;
+		normalDistProjectionMatrix.m[1][1] = y_scale;
+		normalDistProjectionMatrix.m[2][2] = -((EngineSettings.FAR_PLANE + EngineSettings.NEAR_PLANE) / frustrum_length);
+		normalDistProjectionMatrix.m[2][3] = -1;
+		normalDistProjectionMatrix.m[3][2] = -((2 * EngineSettings.NEAR_PLANE * EngineSettings.FAR_PLANE)
 				/ frustrum_length);
-		normalDistProjectionMatrix.m33 = 0;
+		normalDistProjectionMatrix.m[3][3] = 0;
 	}
 
 	private void createLowDistProjectionMatrix() {
@@ -221,12 +220,12 @@ public class MainRenderer implements IMainRenderer {
 		float x_scale = y_scale / aspectRatio;
 		float frustrum_length = farPlane - EngineSettings.NEAR_PLANE;
 
-		lowDistProjectionMatrix.m00 = x_scale;
-		lowDistProjectionMatrix.m11 = y_scale;
-		lowDistProjectionMatrix.m22 = -((farPlane + EngineSettings.NEAR_PLANE) / frustrum_length);
-		lowDistProjectionMatrix.m23 = -1;
-		lowDistProjectionMatrix.m32 = -((2 * EngineSettings.NEAR_PLANE * farPlane) / frustrum_length);
-		lowDistProjectionMatrix.m33 = 0;
+		lowDistProjectionMatrix.m[0][0] = x_scale;
+		lowDistProjectionMatrix.m[1][1] = y_scale;
+		lowDistProjectionMatrix.m[2][2] = -((farPlane + EngineSettings.NEAR_PLANE) / frustrum_length);
+		lowDistProjectionMatrix.m[2][3] = -1;
+		lowDistProjectionMatrix.m[3][2] = -((2 * EngineSettings.NEAR_PLANE * farPlane) / frustrum_length);
+		lowDistProjectionMatrix.m[3][3] = 0;
 	}
 
 	@Override

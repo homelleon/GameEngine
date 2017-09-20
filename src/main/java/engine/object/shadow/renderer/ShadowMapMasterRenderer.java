@@ -5,9 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector2f;
-import org.lwjgl.util.vector.Vector3f;
 
 import core.settings.EngineSettings;
 import object.camera.ICamera;
@@ -19,6 +16,9 @@ import object.shadow.ShadowFrameBuffer;
 import object.shadow.ShadowMapTerrainRenderer;
 import object.terrain.terrain.ITerrain;
 import shader.shadow.ShadowShader;
+import tool.math.Matrix4f;
+import tool.math.vector.Vec2f;
+import tool.math.vector.Vec3f;
 
 /**
  * This class is in charge of using all of the classes in the shadows package to
@@ -79,8 +79,8 @@ public class ShadowMapMasterRenderer {
 	public void render(Map<TexturedModel, List<IEntity>> entities, Collection<ITerrain> terrains,
 			Map<TexturedModel, List<IEntity>> normalMapEntities, Light sun, ICamera camera) {
 		shadowBox.update();
-		Vector3f sunPosition = sun.getPosition();
-		Vector3f lightDirection = new Vector3f(-sunPosition.x, -sunPosition.y, -sunPosition.z);
+		Vec3f sunPosition = sun.getPosition();
+		Vec3f lightDirection = new Vec3f(-sunPosition.x, -sunPosition.y, -sunPosition.z);
 		prepare(lightDirection, shadowBox);
 		entities.putAll(normalMapEntities);
 		shadowEntityRenderer.render(entities, camera);
@@ -97,7 +97,7 @@ public class ShadowMapMasterRenderer {
 	 * @return The to-shadow-map-space matrix.
 	 */
 	public Matrix4f getToShadowMapSpaceMatrix() {
-		return Matrix4f.mul(offset, projectionViewMatrix, null);
+		return Matrix4f.mul(offset, projectionViewMatrix);
 	}
 
 	/**
@@ -144,10 +144,10 @@ public class ShadowMapMasterRenderer {
 	 *            - the shadow box, which contains all the info about the "view
 	 *            cuboid".
 	 */
-	private void prepare(Vector3f lightDirection, ShadowBox box) {
+	private void prepare(Vec3f lightDirection, ShadowBox box) {
 		updateOrthoProjectionMatrix(box.getWidth(), box.getHeight(), box.getLength());
 		updateLightViewMatrix(lightDirection, box.getCenter());
-		Matrix4f.mul(projectionMatrix, lightViewMatrix, projectionViewMatrix);
+		projectionViewMatrix.mul(lightViewMatrix);
 		shadowFbo.bindFrameBuffer();
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
 		GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT);
@@ -178,16 +178,16 @@ public class ShadowMapMasterRenderer {
 	 * @param center
 	 *            - the center of the "view cuboid" in world space.
 	 */
-	private void updateLightViewMatrix(Vector3f direction, Vector3f center) {
-		direction.normalise();
+	private void updateLightViewMatrix(Vec3f direction, Vec3f center) {
+		direction.normalize();
 		center.negate();
 		lightViewMatrix.setIdentity();
-		float pitch = (float) Math.acos(new Vector2f(direction.x, direction.z).length());
-		Matrix4f.rotate(pitch, new Vector3f(1, 0, 0), lightViewMatrix, lightViewMatrix);
+		float pitch = (float) Math.acos(new Vec2f(direction.x, direction.z).length());
+		lightViewMatrix.rotate(new Vec3f(pitch, 0, 0));
 		float yaw = (float) Math.toDegrees(((float) Math.atan(direction.x / direction.z)));
 		yaw = direction.z > 0 ? yaw - 180 : yaw;
-		Matrix4f.rotate((float) -Math.toRadians(yaw), new Vector3f(0, 1, 0), lightViewMatrix, lightViewMatrix);
-		Matrix4f.translate(center, lightViewMatrix, lightViewMatrix);
+		lightViewMatrix.rotate(new Vec3f(0, -yaw, 0));
+		lightViewMatrix.translate(center);
 	}
 
 	/**
@@ -204,10 +204,10 @@ public class ShadowMapMasterRenderer {
 	 */
 	private void updateOrthoProjectionMatrix(float width, float height, float length) {
 		projectionMatrix.setIdentity();
-		projectionMatrix.m00 = 2f / width;
-		projectionMatrix.m11 = 2f / height;
-		projectionMatrix.m22 = -2f / length;
-		projectionMatrix.m33 = 1;
+		projectionMatrix.m[0][0] = 2f / width;
+		projectionMatrix.m[1][1] = 2f / height;
+		projectionMatrix.m[2][2] = -2f / length;
+		projectionMatrix.m[3][3] = 1;
 	}
 
 	/**
@@ -220,8 +220,8 @@ public class ShadowMapMasterRenderer {
 	 */
 	private static Matrix4f createOffset() {
 		Matrix4f offset = new Matrix4f();
-		offset.translate(new Vector3f(0.5f, 0.5f, 0.5f));
-		offset.scale(new Vector3f(0.5f, 0.5f, 0.5f));
+		offset.translate(new Vec3f(0.5f, 0.5f, 0.5f));
+		offset.scale(new Vec3f(0.5f, 0.5f, 0.5f));
 		return offset;
 	}
 }

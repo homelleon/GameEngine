@@ -14,12 +14,6 @@ import object.light.ILight;
 import shader.ShaderProgram;
 import tool.math.Maths;
 
-/*
- * EntityShader - шейдер объектов
- * 03.02.17
- * ------------
- */
-
 public class TexturedEntityShader extends ShaderProgram {
 
 	public static final String VERTEX_FILE = EngineSettings.SHADERS_ENTITY_TEXTURED_PATH + "texturedEntityVertexShader.glsl";
@@ -32,7 +26,6 @@ public class TexturedEntityShader extends ShaderProgram {
 		compileShader();
 	}
 
-	// связать атрибуты
 	@Override
 	protected void bindAttributes() {
 		super.bindFragOutput(0, "out_Color");
@@ -41,20 +34,9 @@ public class TexturedEntityShader extends ShaderProgram {
 		super.bindAttribute(1, "textureCoordinates");
 		super.bindAttribute(2, "normal");
 	}
-
-	public void connectTextureUnits() {
-		super.loadInt("modelTexture", 0);
-		super.loadInt("specularMap", 1);
-		super.loadInt("enviroMap", 3);
-		super.loadInt("shadowMap", 5);
-	}
-
-	public void loadUsesSpecularMap(boolean useMap) {
-		super.loadBoolean("usesSpecularMap", useMap);
-	}
-
+	
 	@Override
-	protected void getAllUniformLocations() {
+	protected void loadUniformLocations() {
 		super.addUniform("transformationMatrix");
 		super.addUniform("projectionMatrix");
 		super.addUniform("viewMatrix");
@@ -82,12 +64,23 @@ public class TexturedEntityShader extends ShaderProgram {
 		super.addUniform("enviroMap");
 		super.addUniform("isChosen");
 
-		super.getUniformLocation("lightCount");
+		super.addUniform("lightCount");
 		for (int i = 0; i < EngineSettings.MAX_LIGHTS; i++) {
 			super.addUniform("lightPosition[" + i + "]");
 			super.addUniform("lightColour[" + i + "]");
 			super.addUniform("attenuation[" + i + "]");
 		}
+	}
+
+	public void connectTextureUnits() {
+		super.loadInt("modelTexture", 0);
+		super.loadInt("specularMap", 1);
+		super.loadInt("enviroMap", 3);
+		super.loadInt("shadowMap", 5);
+	}
+
+	public void loadUsesSpecularMap(boolean useMap) {
+		super.loadBoolean("usesSpecularMap", useMap);
 	}
 
 	public void loadToShadowSpaceMatrix(Matrix4f matrix) {

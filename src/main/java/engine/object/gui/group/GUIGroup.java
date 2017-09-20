@@ -5,10 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.lwjgl.util.vector.Vector2f;
-
 import object.gui.gui.IGUI;
 import object.gui.pattern.object.GUIObject;
+import tool.math.vector.Vec2f;
 
 public class GUIGroup extends GUIObject implements IGUIGroup {
 
@@ -67,7 +66,7 @@ public class GUIGroup extends GUIObject implements IGUIGroup {
 	}
 
 	@Override
-	public void move(Vector2f position) {
+	public void move(Vec2f position) {
 		this.guis.values().forEach(gui -> gui.move(position));		
 	}
 

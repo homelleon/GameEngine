@@ -3,11 +3,10 @@ package object.gui.group;
 import java.util.Collection;
 import java.util.List;
 
-import org.lwjgl.util.vector.Vector2f;
-
 import object.Moveable;
 import object.gui.Hideable;
 import object.gui.gui.IGUI;
+import tool.math.vector.Vec2f;
 
 /**
  * Group of user interface objects to solve the same task.
@@ -16,7 +15,7 @@ import object.gui.gui.IGUI;
  * @see GUIGroup
  *
  */
-public interface IGUIGroup extends Hideable, Moveable<Vector2f> {
+public interface IGUIGroup extends Hideable, Moveable<Vec2f> {
 
 	/**
 	 * Returns name of the user interface group.

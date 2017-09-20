@@ -2,11 +2,10 @@ package object.gui.gui;
 
 import java.util.List;
 
-import org.lwjgl.util.vector.Vector2f;
-
 import object.gui.pattern.object.GUIObject;
 import object.gui.text.GUIText;
 import object.gui.texture.GUITexture;
+import tool.math.vector.Vec2f;
 
 /**
  * Stores {@link GUITexture} and {@link GUIText} objects to control them
@@ -65,14 +64,14 @@ public class GUI extends GUIObject implements IGUI {
 	}
 
 	@Override
-	public void move(Vector2f position) {
+	public void move(Vec2f position) {
 		for (GUITexture texture : this.guiTextures) {
-			Vector2f newPosition = Vector2f.add(texture.getPosition(), position, null);
+			Vec2f newPosition = Vec2f.add(texture.getPosition(), position, null);
 			texture.setPosition(newPosition);
 		}
 
 		for (GUIText text : this.guiTexts) {
-			Vector2f newPosition = Vector2f.add(text.getPosition(), position, null);
+			Vec2f newPosition = Vec2f.add(text.getPosition(), position, null);
 			text.setPosition(newPosition);
 		}
 	}

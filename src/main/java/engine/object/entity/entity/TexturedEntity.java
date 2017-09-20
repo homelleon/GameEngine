@@ -1,10 +1,9 @@
 package object.entity.entity;
 
-import org.lwjgl.util.vector.Vector3f;
-
 import core.settings.EngineSettings;
 import object.entity.BaseEntity;
 import object.model.textured.TexturedModel;
+import tool.math.vector.Vec3f;
 
 /*
  * EntityTextured - объект с текстурой
@@ -30,7 +29,7 @@ public class TexturedEntity extends BaseEntity implements IEntity {
 	 * @param rotZ
 	 * @param scale
 	 */
-	public TexturedEntity(String name, TexturedModel model, Vector3f position, Vector3f rotation, float scale) {
+	public TexturedEntity(String name, TexturedModel model, Vec3f position, Vec3f rotation, float scale) {
 		super(name, EngineSettings.ENTITY_TYPE_SIMPLE, model, position, rotation, scale);
 	}
 	
@@ -43,7 +42,7 @@ public class TexturedEntity extends BaseEntity implements IEntity {
 	 * @param rotation
 	 * @param scale
 	 */
-	public TexturedEntity(String name, TexturedModel model, int textureIndex, Vector3f position, Vector3f rotation, float scale) {
+	public TexturedEntity(String name, TexturedModel model, int textureIndex, Vec3f position, Vec3f rotation, float scale) {
 		super(name, EngineSettings.ENTITY_TYPE_SIMPLE, model, textureIndex, position, rotation, scale);
 	} 
 	

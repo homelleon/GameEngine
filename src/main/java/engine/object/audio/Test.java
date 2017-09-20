@@ -4,12 +4,12 @@ import java.io.IOException;
 
 import org.lwjgl.openal.AL10;
 import org.lwjgl.openal.AL11;
-import org.lwjgl.util.vector.Vector3f;
 
 import object.audio.master.AudioMaster;
 import object.audio.master.IAudioMaster;
 import object.audio.source.AudioSource;
 import object.audio.source.IAudioSource;
+import tool.math.vector.Vec3f;
 
 /**
  * Runnable test class for Audio Engine.
@@ -26,7 +26,7 @@ public class Test {
 	public static void main(String[] args) throws IOException, InterruptedException {
 		IAudioMaster master = new AudioMaster();
 		master.init();
-		master.setListenerData(new Vector3f(0, 0, 0));
+		master.setListenerData(new Vec3f(0, 0, 0));
 		AL10.alDistanceModel(AL11.AL_LINEAR_DISTANCE_CLAMPED);
 		IAudioSource source = new AudioSource("audio1", "forest.wav", 20, master);
 		source.setLooping(true);
@@ -36,7 +36,7 @@ public class Test {
 
 		while (xPos > -50) {
 			xPos -= 0.0002f;
-			source.setPosition(new Vector3f(xPos, 0, 2));
+			source.setPosition(new Vec3f(xPos, 0, 2));
 			System.out.println(xPos);
 		}
 

@@ -1,16 +1,16 @@
 package object.gui.texture;
 
-import org.lwjgl.util.vector.Vector2f;
 import org.newdawn.slick.opengl.Texture;
 
 import core.settings.EngineSettings;
 import renderer.loader.Loader;
+import tool.math.vector.Vec2f;
 
 public class GUITextureBuilder implements IGUITextureBuilder {
 
 	private String textureName;
-	private Vector2f position;
-	private Vector2f scale;
+	private Vec2f position;
+	private Vec2f scale;
 
 	@Override
 	public IGUITextureBuilder setTextureName(String textureName) {
@@ -19,13 +19,13 @@ public class GUITextureBuilder implements IGUITextureBuilder {
 	}
 
 	@Override
-	public IGUITextureBuilder setPosition(Vector2f position) {
+	public IGUITextureBuilder setPosition(Vec2f position) {
 		this.position = position;
 		return this;
 	}
 
 	@Override
-	public IGUITextureBuilder setScale(Vector2f scale) {
+	public IGUITextureBuilder setScale(Vec2f scale) {
 		this.scale = scale;
 		return this;
 	}

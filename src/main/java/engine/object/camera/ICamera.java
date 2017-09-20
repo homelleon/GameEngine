@@ -1,7 +1,7 @@
 package object.camera;
 
-import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector3f;
+import tool.math.Matrix4f;
+import tool.math.vector.Vec3f;
 
 /**
  * Class that allows to set a world camera.
@@ -61,9 +61,9 @@ import org.lwjgl.util.vector.Vector3f;
 	/**
 	 * Method returns current position of camera in 3 dimentional space.
 	 * 
-	 * @return Vector3f value of current position
+	 * @return Vec3f value of current position
 	 */
-	 Vector3f getPosition(); // вернуть позицию камеры
+	 Vec3f getPosition(); // вернуть позицию камеры
 
 	/**
 	 * Method returns current pitch angle of the camera.

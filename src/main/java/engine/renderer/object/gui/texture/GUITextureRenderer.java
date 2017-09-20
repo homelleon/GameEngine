@@ -6,15 +6,14 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
-import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector2f;
 
-import core.display.DisplayManager;
 import object.gui.texture.GUITexture;
 import object.model.raw.RawModel;
 import renderer.loader.Loader;
 import shader.guiTexture.GUITextureShader;
 import tool.math.Maths;
+import tool.math.Matrix4f;
+import tool.math.vector.Vec2f;
 import tool.openGL.OGLUtils;
 
 public class GUITextureRenderer {
@@ -40,9 +39,9 @@ public class GUITextureRenderer {
 			if (guiTexture.getIsVisible()) {
 				GL13.glActiveTexture(GL13.GL_TEXTURE0);
 				GL11.glBindTexture(GL11.GL_TEXTURE_2D, guiTexture.getTexture().getTextureID());
-				Vector2f size = new Vector2f(guiTexture.getTexture().getWidth(), 
+				Vec2f size = new Vec2f(guiTexture.getTexture().getWidth(), 
 						 guiTexture.getTexture().getHeight());
-				Vector2f scale = new Vector2f(size.x * guiTexture.getScale().x, size.y * guiTexture.getScale().y);
+				Vec2f scale = new Vec2f(size.x * guiTexture.getScale().x, size.y * guiTexture.getScale().y);
 				Matrix4f matrix = Maths.createTransformationMatrix(guiTexture.getPosition(), scale);
 				this.shader.loadTransformation(matrix);
 				this.shader.loadMixColorVariables(guiTexture.isMixColored(), guiTexture.getMixColor());

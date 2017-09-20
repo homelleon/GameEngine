@@ -11,12 +11,12 @@ import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.opengl.GL33;
-import org.lwjgl.util.vector.Vector3f;
 
 import object.bounding.BoundingBox;
 import object.bounding.BoundingSphere;
 import object.model.raw.RawModel;
 import tool.math.Maths;
+import tool.math.vector.Vec3f;
 
 public class VertexBufferLoader {
 
@@ -80,7 +80,7 @@ public class VertexBufferLoader {
 	 * @param textureCoords
 	 *            - float array of 2d texture coordinates
 	 * @param normals
-	 *            - flaot array normal vectors coordinates
+	 *            - flaot array normal Vecs coordinates
 	 * @param indices
 	 *            - integer array of vertices order indices
 	 * 
@@ -126,7 +126,7 @@ public class VertexBufferLoader {
 	 * @param textureCoords
 	 *            {@link Float} array of model texture 2d coordinates
 	 * @param normals
-	 *            {@link Float} array of model points normal vectors
+	 *            {@link Float} array of model points normal Vecs
 	 * @param tangents
 	 * @param indices
 	 *            {@link Integer} array of model points order
@@ -305,10 +305,10 @@ public class VertexBufferLoader {
 	 */
 	private float getDistFarVertToCenter(float[] positions) {
 		float distance = 0;
-		Vector3f center = new Vector3f(0, 0, 0);
-		Vector3f point;
+		Vec3f center = new Vec3f(0, 0, 0);
+		Vec3f point;
 		for (int i = 1; i < positions.length / 3; i++) {
-			point = new Vector3f(positions[3 * i - 3], positions[3 * i - 2], positions[3 * i - 1]);
+			point = new Vec3f(positions[3 * i - 3], positions[3 * i - 2], positions[3 * i - 1]);
 			float length = Maths.distance2Points(point, center);
 			if (length > distance) {
 				distance = length;

@@ -1,8 +1,8 @@
 package object;
 
-import org.lwjgl.util.vector.Vector;
+import tool.math.vector.Vec;
 
-public interface Moveable<T extends Vector> {
+public interface Moveable<T extends Vec> {
 	
 	void move(T position);
 }

@@ -3,7 +3,6 @@ package object.gui.texture.parser;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.lwjgl.util.vector.Vector2f;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -12,6 +11,7 @@ import org.w3c.dom.NodeList;
 import core.debug.EngineDebug;
 import object.gui.texture.GUITexture;
 import object.gui.texture.GUITextureBuilder;
+import tool.math.vector.Vec2f;
 import tool.xml.XMLUtils;
 import tool.xml.parser.IListParser;
 import tool.xml.parser.XMLParser;
@@ -57,11 +57,11 @@ public class GUITextureXMLParser extends XMLParser implements IListParser<GUITex
 				Element positionEl = XMLUtils.getChildElementByTag(guiTextEl, XMLUtils.POSITION);
 				float x = Float.valueOf(XMLUtils.getTagValue(positionEl, XMLUtils.X));
 				float y = Float.valueOf(XMLUtils.getTagValue(positionEl, XMLUtils.Y));
-				Vector2f position = new Vector2f(x, y);
+				Vec2f position = new Vec2f(x, y);
 				Element scaleEl = XMLUtils.getChildElementByTag(guiTextEl, XMLUtils.SCALE);
 				float scaleX = Float.valueOf(XMLUtils.getTagValue(scaleEl, XMLUtils.X));
 				float scaleY = Float.valueOf(XMLUtils.getTagValue(scaleEl, XMLUtils.Y));
-				Vector2f scale = new Vector2f(scaleX, scaleY);
+				Vec2f scale = new Vec2f(scaleX, scaleY);
 				count++;
 				if (EngineDebug.hasDebugPermission()) {
 					if (count != Integer.valueOf(id)) {

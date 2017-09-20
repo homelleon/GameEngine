@@ -42,11 +42,15 @@ public abstract class ShaderProgram {
 	public ShaderProgram() {
 		this.unfiroms = new HashMap<String, Integer>();
 		programID = GL20.glCreateProgram();
+		if (programID == 0)
+		{
+			System.err.println("Shader creation failed");
+			System.exit(1);
+		}
 	}
 	
 	public void start() {
 		GL20.glUseProgram(programID);
-		bindAttributes();
 	}
 
 	public void stop() {
@@ -54,6 +58,7 @@ public abstract class ShaderProgram {
 	}
 	
 	public void compileShader()	{
+		bindAttributes();
 		glLinkProgram(programID);
 
 		if(glGetProgrami(programID, GL_LINK_STATUS) == 0)
@@ -69,6 +74,7 @@ public abstract class ShaderProgram {
 			System.err.println(this.getClass().getName() +  " " + glGetProgramInfoLog(programID, 1024));
 			System.exit(1);
 		}
+		loadUniformLocations();
 	}
 	
 	protected void addVertexShader(String text) {
@@ -120,17 +126,16 @@ public abstract class ShaderProgram {
 
 	}
 
-	protected abstract void getAllUniformLocations();
+	protected abstract void loadUniformLocations();
 	
 	protected void addUniform(String name) {		
 		int uniformLocation = this.getUniformLocation(name);
 		
-		if (uniformLocation == 0xFFFFFFFF)
-		{
-			System.err.println(this.getClass().getName() + " Error: Could not find uniform: " + name);
-			new Exception().printStackTrace();
-			System.exit(1);
-		}
+//		if (uniformLocation == 0xFFFFFFFF) {
+//			System.err.println(this.getClass().getName() + " Error: Could not find uniform: " + name);
+//			new Exception().printStackTrace();
+//			System.exit(1);
+//		}
 		
 		this.unfiroms.put(name, uniformLocation);
 	}

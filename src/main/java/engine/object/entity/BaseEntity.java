@@ -1,19 +1,18 @@
 package object.entity;
 
-import org.lwjgl.util.vector.Vector2f;
-import org.lwjgl.util.vector.Vector3f;
-
 import core.settings.EngineSettings;
 import object.entity.entity.IEntity;
 import object.model.textured.TexturedModel;
+import tool.math.vector.Vec2f;
+import tool.math.vector.Vec3f;
 
 public abstract class BaseEntity {
 	
 	protected TexturedModel model; // текстурная модель
 	protected String name; // имя
 	protected String baseName;
-	protected Vector3f position; // позиция
-	protected Vector3f rotation; // повороты
+	protected Vec3f position; // позиция
+	protected Vec3f rotation; // повороты
 	protected float scale = 1f; // масштаб
 	protected float radius; // радицс
 	protected boolean isVisible = true; // видимый
@@ -34,7 +33,7 @@ public abstract class BaseEntity {
 	 * @param rotZ
 	 * @param scale
 	 */
-	public BaseEntity(String name, int typeID, TexturedModel model, Vector3f position, Vector3f rotation, float scale) {
+	public BaseEntity(String name, int typeID, TexturedModel model, Vec3f position, Vec3f rotation, float scale) {
 		this.name = name;
 		this.typeID = typeID;
 		this.model = model;
@@ -56,7 +55,7 @@ public abstract class BaseEntity {
 	 * @param rotZ
 	 * @param scale
 	 */
-	public BaseEntity(String name, int typeID, TexturedModel model, int textureIndex, Vector3f position, Vector3f rotation, float scale) {
+	public BaseEntity(String name, int typeID, TexturedModel model, int textureIndex, Vec3f position, Vec3f rotation, float scale) {
 		this.name = name;
 		this.typeID = typeID;
 		this.textureIndex = textureIndex;
@@ -83,12 +82,12 @@ public abstract class BaseEntity {
 		this.isVisible = isVisible;
 	}
 	
-	public Vector2f getTextureOffset() {		
+	public Vec2f getTextureOffset() {		
 		int row = textureIndex / model.getTexture().getNumberOfRows();
 		int column = textureIndex % model.getTexture().getNumberOfRows();		
 		float xOffset = (float) row / (float) model.getTexture().getNumberOfRows();
 		float yOffset = (float) column / (float) model.getTexture().getNumberOfRows();
-		return new Vector2f(xOffset, yOffset);
+		return new Vec2f(xOffset, yOffset);
 	}
 
 	public synchronized void increasePosition(float dx, float dy, float dz) {
@@ -139,20 +138,20 @@ public abstract class BaseEntity {
 		this.model = model;
 	}
 
-	public Vector3f getPosition() {
+	public Vec3f getPosition() {
 		return position;
 	}
 
-	public synchronized void setPosition(Vector3f position) {
+	public synchronized void setPosition(Vec3f position) {
 		this.position = position;
 	}
 
-	public synchronized void setRotation(Vector3f rotation) {
+	public synchronized void setRotation(Vec3f rotation) {
 		this.rotation = rotation;
 		
 	}
 
-	public Vector3f getRotation() {
+	public Vec3f getRotation() {
 		return this.rotation;
 	}
 

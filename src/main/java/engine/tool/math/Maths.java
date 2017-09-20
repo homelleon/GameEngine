@@ -1,26 +1,22 @@
 package tool.math;
 
-import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector2f;
-import org.lwjgl.util.vector.Vector3f;
-
 import object.camera.ICamera;
 import object.entity.entity.IEntity;
 import object.terrain.terrain.ITerrain;
-import tool.math.vector.IVectorBuilder3;
-import tool.math.vector.VectorBuilder3f;
+import tool.math.vector.Vec2f;
+import tool.math.vector.Vec3f;
 
 public class Maths {
 
-	public static Matrix4f createTransformationMatrix(Vector2f translation, Vector2f scale) {
+	public static Matrix4f createTransformationMatrix(Vec2f translation, Vec2f scale) {
 		Matrix4f matrix = new Matrix4f();
 		matrix.setIdentity();
-		Matrix4f.translate(translation, matrix, matrix);
-		Matrix4f.scale(new Vector3f(scale.x, scale.y, 1f), matrix, matrix);
+		matrix.translate(translation);
+		matrix.scale(new Vec3f(scale.x, scale.y, 1f));
 		return matrix;
 	}
 
-	public static float barryCentric(Vector3f p1, Vector3f p2, Vector3f p3, Vector2f pos) {
+	public static float barryCentric(Vec3f p1, Vec3f p2, Vec3f p3, Vec2f pos) {
 		float det = (p2.z - p3.z) * (p1.x - p3.x) + (p3.x - p2.x) * (p1.z - p3.z);
 		float l1 = ((p2.z - p3.z) * (pos.x - p3.x) + (p3.x - p2.x) * (pos.y - p3.z)) / det;
 		float l2 = ((p3.z - p1.z) * (pos.x - p3.x) + (p1.x - p3.x) * (pos.y - p3.z)) / det;
@@ -28,26 +24,26 @@ public class Maths {
 		return l1 * p1.y + l2 * p2.y + l3 * p3.y;
 	}
 
-	public static Matrix4f createTransformationMatrix(Vector3f translation, float rx, float ry, float rz, float scale) {
+	public static Matrix4f createTransformationMatrix(Vec3f translation, float rx, float ry, float rz, float scale) {
 		Matrix4f matrix = new Matrix4f();
 		matrix.setIdentity();
-		Matrix4f.translate(translation, matrix, matrix);
-		Matrix4f.rotate((float) Math.toRadians(rx), new Vector3f(1, 0, 0), matrix, matrix);
-		Matrix4f.rotate((float) Math.toRadians(ry), new Vector3f(0, 1, 0), matrix, matrix);
-		Matrix4f.rotate((float) Math.toRadians(rz), new Vector3f(0, 0, 1), matrix, matrix);
-		Matrix4f.scale(new Vector3f(scale, scale, scale), matrix, matrix);
+		matrix.translate(translation);
+		matrix.rotate(new Vec3f(rx, 0, 0));
+		matrix.rotate(new Vec3f(0, ry, 0));
+		matrix.rotate(new Vec3f(0, 0, rz));
+		matrix.scale(new Vec3f(scale, scale, scale));
 		return matrix;
 	}
 
 	public static Matrix4f createViewMatrix(ICamera camera) {
 		Matrix4f viewMatrix = new Matrix4f();
 		viewMatrix.setIdentity();
-		Matrix4f.rotate((float) Math.toRadians(camera.getPitch()), new Vector3f(1, 0, 0), viewMatrix, viewMatrix);
-		Matrix4f.rotate((float) Math.toRadians(camera.getYaw()), new Vector3f(0, 1, 0), viewMatrix, viewMatrix);
-		Matrix4f.rotate((float) Math.toRadians(camera.getRoll()), new Vector3f(0, 0, 1), viewMatrix, viewMatrix);
-		Vector3f cameraPos = camera.getPosition();
-		Vector3f negativeCameraPos = new Vector3f(-cameraPos.x, -cameraPos.y, -cameraPos.z);
-		Matrix4f.translate(negativeCameraPos, viewMatrix, viewMatrix);
+		viewMatrix.rotate(new Vec3f(camera.getPitch(), 0, 0));
+		viewMatrix.rotate(new Vec3f(0, camera.getYaw(), 0));
+		viewMatrix.rotate(new Vec3f(0, 0, camera.getRoll()));
+		Vec3f cameraPos = camera.getPosition();
+		Vec3f negativeCameraPos = new Vec3f(-cameraPos.x, -cameraPos.y, -cameraPos.z);
+		viewMatrix.translate(negativeCameraPos);
 		return viewMatrix;
 	}
 
@@ -74,7 +70,7 @@ public class Maths {
 	}
 
 	/* distance between 2 points in 3D */
-	public static float distance2Points(Vector3f point1, Vector3f point2) {
+	public static float distance2Points(Vec3f point1, Vec3f point2) {
 		float distance = 0;
 		distance = Maths.sqr(point1.x - point2.x);
 		distance += Maths.sqr(point1.y - point2.y);
@@ -84,7 +80,7 @@ public class Maths {
 	}
 
 	/* distance between 2 points in 2D */
-	public static float distance2Points(Vector2f point1, Vector2f point2) {
+	public static float distance2Points(Vec2f point1, Vec2f point2) {
 		float distance = 0;
 		distance = Maths.sqr(point1.x - point2.x);
 		distance += Maths.sqr(point1.y - point2.y);
@@ -93,7 +89,7 @@ public class Maths {
 	}
 
 	/* distance between line and point in 2D */
-	public static float distanceLineAndPoint(Vector2f point, Vector2f linePoint1, Vector2f linePoint2) {
+	public static float distanceLineAndPoint(Vec2f point, Vec2f linePoint1, Vec2f linePoint2) {
 		float x = point.x;
 		float y = point.y;
 
@@ -115,7 +111,7 @@ public class Maths {
 		float xH = (y * k + x - b * k) / (sqr(k) + 1);
 		float yH = k * xH + b;
 
-		Vector2f vecH = new Vector2f(xH, yH);
+		Vec2f vecH = new Vec2f(xH, yH);
 
 		return distance2Points(point, vecH);
 	}
@@ -141,45 +137,45 @@ public class Maths {
 		float tX = terrain.getX();
 		float tZ = terrain.getZ();
 
-		Vector2f terrainPoint;
-		Vector2f terrainSideP1;
-		Vector2f terrainSideP2;
-		Vector2f camVec = new Vector2f(cX, cZ);
+		Vec2f terrainPoint;
+		Vec2f terrainSideP1;
+		Vec2f terrainSideP2;
+		Vec2f camVec = new Vec2f(cX, cZ);
 
 		if (cX > tX1) {
 			if (cZ < tZ) {
-				terrainPoint = new Vector2f(tX1, tZ);
+				terrainPoint = new Vec2f(tX1, tZ);
 				distance = sqr(distance2Points(camVec, terrainPoint));
 			} else if (cZ > tZ1) {
-				terrainPoint = new Vector2f(tX1, tZ1);
+				terrainPoint = new Vec2f(tX1, tZ1);
 				distance = sqr(distance2Points(camVec, terrainPoint));
 			} else {
-				terrainSideP1 = new Vector2f(tX1, tZ);
-				terrainSideP2 = new Vector2f(tX1, tZ1);
+				terrainSideP1 = new Vec2f(tX1, tZ);
+				terrainSideP2 = new Vec2f(tX1, tZ1);
 				distance = sqr(distanceLineAndPoint(camVec, terrainSideP1, terrainSideP2));
 			}
 
 		} else if (cX < tX) {
 			if (cZ < tZ) {
-				terrainPoint = new Vector2f(tX, tZ);
+				terrainPoint = new Vec2f(tX, tZ);
 				distance = sqr(distance2Points(camVec, terrainPoint));
 			} else if (cZ > tZ1) {
-				terrainPoint = new Vector2f(tX, tZ1);
+				terrainPoint = new Vec2f(tX, tZ1);
 				distance = sqr(distance2Points(camVec, terrainPoint));
 			} else {
-				terrainSideP1 = new Vector2f(tX, tZ);
-				terrainSideP2 = new Vector2f(tX, tZ1);
+				terrainSideP1 = new Vec2f(tX, tZ);
+				terrainSideP2 = new Vec2f(tX, tZ1);
 				distance = sqr(distanceLineAndPoint(camVec, terrainSideP1, terrainSideP2));
 			}
 
 		} else if (cZ < tZ) {
-			terrainSideP1 = new Vector2f(tX, tZ);
-			terrainSideP2 = new Vector2f(tX1, tZ);
+			terrainSideP1 = new Vec2f(tX, tZ);
+			terrainSideP2 = new Vec2f(tX1, tZ);
 			distance = sqr(distanceLineAndPoint(camVec, terrainSideP1, terrainSideP2));
 			;
 		} else if (cZ > tZ1) {
-			terrainSideP1 = new Vector2f(tX, tZ1);
-			terrainSideP2 = new Vector2f(tX1, tZ1);
+			terrainSideP1 = new Vec2f(tX, tZ1);
+			terrainSideP2 = new Vec2f(tX1, tZ1);
 			distance = sqr(distanceLineAndPoint(camVec, terrainSideP1, terrainSideP2));
 		}
 
@@ -199,7 +195,7 @@ public class Maths {
 		return value1 - (int) Math.floor(value1 / value2) * value2;
 	}
 
-	public static boolean pointIsOnRay(Vector3f point, Vector3f ray) {
+	public static boolean pointIsOnRay(Vec3f point, Vec3f ray) {
 		boolean isOnRay = false;
 
 		float x = point.x;
@@ -222,7 +218,7 @@ public class Maths {
 		return isOnRay;
 	}
 
-	public static boolean pointIsInQuad(Vector2f point, Vector2f quadPoint1, Vector2f quadPoint2) {
+	public static boolean pointIsInQuad(Vec2f point, Vec2f quadPoint1, Vec2f quadPoint2) {
 		return ((point.x >= quadPoint1.x) &&
 				(point.x <= quadPoint2.x) &&
 				(point.y >= quadPoint1.y) &&
@@ -230,7 +226,7 @@ public class Maths {
 		
 	}
 	
-	public static int compareTo(Vector2f a, Vector2f b) {
+	public static int compareTo(Vec2f a, Vec2f b) {
 		if(a == b) {
 			return 0;
 		} else if(a.x == b.x) {

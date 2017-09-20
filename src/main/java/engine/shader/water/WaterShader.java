@@ -13,26 +13,12 @@ public class WaterShader extends ShaderProgram {
 
 	private final static String VERTEX_FILE = EngineSettings.SHADERS_WATER_PATH + "waterVertexShader.glsl";
 	private final static String FRAGMENT_FILE = EngineSettings.SHADERS_WATER_PATH + "waterFragmentShader.glsl";
-
-	private int location_modelMatrix;
-	private int location_viewMatrix;
-	private int location_projectionMatrix;
-	private int location_reflectionTexture;
-	private int location_refractionTexture;
-	private int location_dudvMap;
-	private int location_moveFactor;
-	private int location_cameraPosition;
-	private int location_normalMap;
-	private int location_lightColour;
-	private int location_lightPosition;
-	private int location_depthMap;
-	private int location_tiling;
-	private int location_skyColour;
-	private int location_fogDenstity;
-	private int location_waveStrength;
-
+	
 	public WaterShader() {
-		super(VERTEX_FILE, FRAGMENT_FILE);
+		super();
+		addVertexShader(VERTEX_FILE);
+		addFragmentShader(FRAGMENT_FILE);
+		compileShader();
 	}
 
 	@Override
@@ -43,70 +29,70 @@ public class WaterShader extends ShaderProgram {
 	}
 
 	@Override
-	protected void getAllUniformLocations() {
-		location_projectionMatrix = getUniformLocation("projectionMatrix");
-		location_viewMatrix = getUniformLocation("viewMatrix");
-		location_modelMatrix = getUniformLocation("modelMatrix");
-		location_reflectionTexture = getUniformLocation("reflectionTexture");
-		location_refractionTexture = getUniformLocation("refractionTexture");
-		location_dudvMap = getUniformLocation("dudvMap");
-		location_moveFactor = getUniformLocation("moveFactor");
-		location_cameraPosition = getUniformLocation("cameraPosition");
-		location_normalMap = getUniformLocation("normalMap");
-		location_lightColour = getUniformLocation("lightColour");
-		location_lightPosition = getUniformLocation("lightPosition");
-		location_depthMap = getUniformLocation("depthMap");
-		location_tiling = getUniformLocation("tiling");
-		location_skyColour = getUniformLocation("skyColour");
-		location_fogDenstity = getUniformLocation("fogDensity");
-		location_waveStrength = getUniformLocation("waveStrength");
+	protected void loadUniformLocations() {
+		addUniform("projectionMatrix");
+		addUniform("viewMatrix");
+		addUniform("modelMatrix");
+		addUniform("reflectionTexture");
+		addUniform("refractionTexture");
+		addUniform("dudvMap");
+		addUniform("moveFactor");
+		addUniform("cameraPosition");
+		addUniform("normalMap");
+		addUniform("lightColour");
+		addUniform("lightPosition");
+		addUniform("depthMap");
+		addUniform("tiling");
+		addUniform("skyColour");
+		addUniform("fogDensity");
+		addUniform("waveStrength");
 	}
 
 	public void connectTextureUnits() {
-		super.loadInt(location_reflectionTexture, 0);
-		super.loadInt(location_refractionTexture, 1);
-		super.loadInt(location_dudvMap, 2);
-		super.loadInt(location_normalMap, 3);
-		super.loadInt(location_depthMap, 4);
+		super.loadInt("reflectionTexture", 0);
+		super.loadInt("refractionTexture", 1);
+		super.loadInt("dudvMap", 2);
+		super.loadInt("normalMap", 3);
+		super.loadInt("depthMap", 4);
 	}
 
 	public void loadLight(Light sun) {
-		super.loadVector(location_lightColour, sun.getColour());
-		super.loadVector(location_lightPosition, sun.getPosition());
+		super.loadVector("lightColour", sun.getColour());
+		super.loadVector("lightPosition", sun.getPosition());
 	}
 
 	public void loadMoveFactor(float factor) {
-		super.loadFloat(location_moveFactor, factor);
+		super.loadFloat("moveFactor", factor);
 	}
 
 	public void loadTilingSize(float size) {
-		super.loadFloat(location_tiling, size);
+		super.loadFloat("tiling", size);
 	}
 
 	public void loadWaveStrength(float strength) {
-		super.loadFloat(location_waveStrength, strength);
+		super.loadFloat("waveStrength", strength);
 	}
 
 	public void loadSkyColour(float r, float g, float b) {
-		super.loadVector(location_skyColour, new Vector3f(r, g, b));
+		super.loadVector("skyColour", new Vector3f(r, g, b));
 	}
 
 	public void loadFogDensity(float density) {
-		super.loadFloat(location_fogDenstity, density);
+		super.loadFloat("fogDensity", density);
 	}
 
 	public void loadProjectionMatrix(Matrix4f projection) {
-		loadMatrix(location_projectionMatrix, projection);
+		loadMatrix("projectionMatrix", projection);
 	}
 
 	public void loadViewMatrix(ICamera camera) {
 		Matrix4f viewMatrix = Maths.createViewMatrix(camera);
-		loadMatrix(location_viewMatrix, viewMatrix);
-		super.loadVector(location_cameraPosition, camera.getPosition());
+		loadMatrix("viewMatrix", viewMatrix);
+		super.loadVector("cameraPosition", camera.getPosition());
 	}
 
 	public void loadModelMatrix(Matrix4f modelMatrix) {
-		loadMatrix(location_modelMatrix, modelMatrix);
+		loadMatrix("modelMatrix", modelMatrix);
 	}
 
 }

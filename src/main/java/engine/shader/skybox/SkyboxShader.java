@@ -17,21 +17,37 @@ public class SkyboxShader extends ShaderProgram {
 
 	private static final float ROTATE_SPEED = 1f;
 
-	private int location_projectionMatrix;
-	private int location_viewMatrix;
-	private int location_fogColour;
-	private int location_cubeMap;
-	private int location_cubeMap2;
-	private int location_blendFactor;
-
 	private float rotation = 0;
 
 	public SkyboxShader() {
-		super(VERTEX_FILE, FRAGMENT_FILE);
+		super();
+		addVertexShader(VERTEX_FILE);
+		addFragmentShader(FRAGMENT_FILE);
+		compileShader();
+	}
+
+	@Override
+	protected void bindAttributes() {
+		super.bindAttribute(0, "position");
+	}
+
+	@Override
+	protected void loadUniformLocations() {
+		super.addUniform("projectionMatrix");
+		super.addUniform("viewMatrix");
+		super.addUniform("fogColour");
+		super.addUniform("blendFactor");
+		super.addUniform("cubeMap");
+		super.addUniform("cubeMap2");
+	}
+
+	public void connectTextureUnits() {
+		super.loadInt("cubeMap", 0);
+		super.loadInt("cubeMap2", 1);
 	}
 
 	public void loadProjectionMatrix(Matrix4f matrix) {
-		super.loadMatrix(location_projectionMatrix, matrix);
+		super.loadMatrix("projectionMatrix", matrix);
 	}
 
 	public void loadViewMatrix(ICamera camera) {
@@ -43,35 +59,15 @@ public class SkyboxShader extends ShaderProgram {
 			rotation += ROTATE_SPEED * DisplayManager.getFrameTimeSeconds();
 		}
 		Matrix4f.rotate((float) Math.toRadians(rotation), new Vector3f(0, 1, 0), matrix, matrix);
-		super.loadMatrix(location_viewMatrix, matrix);
+		super.loadMatrix("viewMatrix", matrix);
 	}
 
 	public void loadFogColour(float r, float g, float b) {
-		super.loadVector(location_fogColour, new Vector3f(r, g, b));
-	}
-
-	public void connectTextureUnits() {
-		super.loadInt(location_cubeMap, 0);
-		super.loadInt(location_cubeMap2, 1);
+		super.loadVector("fogColour", new Vector3f(r, g, b));
 	}
 
 	public void loadBlendFactor(float blend) {
-		super.loadFloat(location_blendFactor, blend);
-	}
-
-	@Override
-	protected void getAllUniformLocations() {
-		location_projectionMatrix = super.getUniformLocation("projectionMatrix");
-		location_viewMatrix = super.getUniformLocation("viewMatrix");
-		location_fogColour = super.getUniformLocation("fogColour");
-		location_blendFactor = super.getUniformLocation("blendFactor");
-		location_cubeMap = super.getUniformLocation("cubeMap");
-		location_cubeMap2 = super.getUniformLocation("cubeMap2");
-	}
-
-	@Override
-	protected void bindAttributes() {
-		super.bindAttribute(0, "position");
+		super.loadFloat("blendFactor", blend);
 	}
 
 }

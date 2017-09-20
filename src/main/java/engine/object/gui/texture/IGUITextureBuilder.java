@@ -1,14 +1,14 @@
 package object.gui.texture;
 
-import org.lwjgl.util.vector.Vector2f;
+import tool.math.vector.Vec2f;
 
 public interface IGUITextureBuilder {
 
 	IGUITextureBuilder setTextureName(String textureName);
 
-	IGUITextureBuilder setPosition(Vector2f position);
+	IGUITextureBuilder setPosition(Vec2f position);
 
-	IGUITextureBuilder setScale(Vector2f scale);
+	IGUITextureBuilder setScale(Vec2f scale);
 
 	GUITexture build(String name);
 

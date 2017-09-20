@@ -2,15 +2,15 @@ package object.camera;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
-import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector3f;
 
 import core.display.DisplayManager;
 import core.settings.EngineSettings;
+import tool.math.Matrix4f;
+import tool.math.vector.Vec3f;
 
 public class FreeCamera extends BaseCamera implements ICamera {
 
-	public FreeCamera(String name, Vector3f position) {
+	public FreeCamera(String name, Vec3f position) {
 		super(name, position);
 		this.setPosition(position);
 		this.name = name;

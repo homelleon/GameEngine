@@ -1,10 +1,9 @@
 package object.audio.source;
 
-import org.lwjgl.util.vector.Vector3f;
-
 import object.Nameable;
 import object.audio.master.AudioMaster;
 import object.audio.master.IAudioMaster;
+import tool.math.vector.Vec3f;
 
 /**
  * Interface of sound or music source in 3 dimentional space.
@@ -78,10 +77,10 @@ public interface IAudioSource extends Nameable {
 	 * change in all 3 directions.
 	 * 
 	 * @param speed
-	 *            Vector3f - 3 dimentional speed value
-	 * @see #setPosition(Vector3f)
+	 *            Vec3f - 3 dimentional speed value
+	 * @see #setPosition(Vec3f)
 	 */
-	public void setVelocity(Vector3f speed); // установить скорость аудио
+	public void setVelocity(Vec3f speed); // установить скорость аудио
 
 	/**
 	 * Method that defines if sound will be repeating after it was played till
@@ -126,16 +125,16 @@ public interface IAudioSource extends Nameable {
 	 * Change position of audio source in 3 dimentional space.
 	 * 
 	 * @param position
-	 *            Vector3f representation of value to set
-	 * @see #setVelocity(Vector3f)
+	 *            Vec3f representation of value to set
+	 * @see #setVelocity(Vec3f)
 	 */
-	public void setPosition(Vector3f position); // установить позицию звука
+	public void setPosition(Vec3f position); // установить позицию звука
 
 	/**
 	 * Returns position of sound source in 3 dimentional space.
 	 * 
 	 * @return 3 dimentional value of sound source position
 	 */
-	public Vector3f getPosition();
+	public Vec3f getPosition();
 
 }

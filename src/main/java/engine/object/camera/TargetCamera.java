@@ -2,14 +2,14 @@ package object.camera;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
-import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector3f;
 
 import core.loop.Loop;
 import core.settings.EngineSettings;
 import object.entity.player.IPlayer;
 import object.input.KeyboardGame;
 import object.input.MouseGame;
+import tool.math.Matrix4f;
+import tool.math.vector.Vec3f;
 
 public class TargetCamera extends BaseCamera implements ICamera {
 
@@ -38,7 +38,7 @@ public class TargetCamera extends BaseCamera implements ICamera {
 	private IPlayer player;
 
 	public TargetCamera(String name, IPlayer player) {
-		super(name, new Vector3f(0,0,0));
+		super(name, new Vec3f(0,0,0));
 		this.player = player;
 		this.name = name;
 		if(Loop.getInstance().getEditMode()) {

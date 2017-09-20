@@ -12,19 +12,18 @@ public class BoundingShader extends ShaderProgram {
 	public static final String VERTEX_FILE = EngineSettings.SHADERS_BOUNDING_PATH + "boundVertexShader.glsl";
 	public static final String FRAGMENT_FILE = EngineSettings.SHADERS_BOUNDING_PATH + "boundFragmentShader.glsl";
 
-	private int location_transformationMatrix; // матрица трансформации
-	private int location_projectionMatrix; // проективная матрица
-	private int location_viewMatrix; // видовая матрица
-
 	public BoundingShader() {
-		super(VERTEX_FILE, FRAGMENT_FILE);
+		super();
+		addVertexShader(VERTEX_FILE);
+		addFragmentShader(FRAGMENT_FILE);
+		compileShader();
 	}
 
 	@Override
-	protected void getAllUniformLocations() {
-		location_transformationMatrix = super.getUniformLocation("transformationMatrix");
-		location_projectionMatrix = super.getUniformLocation("projectionMatrix");
-		location_viewMatrix = super.getUniformLocation("viewMatrix");
+	protected void loadUniformLocations() {
+		super.addUniform("transformationMatrix");
+		super.addUniform("projectionMatrix");
+		super.addUniform("viewMatrix");
 	}
 
 	@Override
@@ -36,16 +35,16 @@ public class BoundingShader extends ShaderProgram {
 	}
 
 	public void loadTranformationMatrix(Matrix4f matrix) {
-		super.loadMatrix(location_transformationMatrix, matrix);
+		super.loadMatrix("transformationMatrix", matrix);
 	}
 
 	public void loadViewMatrix(ICamera camera) {
 		Matrix4f viewMatrix = Maths.createViewMatrix(camera);
-		super.loadMatrix(location_viewMatrix, viewMatrix);
+		super.loadMatrix("viewMatrix", viewMatrix);
 	}
 
 	public void loadProjectionMatrix(Matrix4f projection) {
-		super.loadMatrix(location_projectionMatrix, projection);
+		super.loadMatrix("projectionMatrix", projection);
 	}
 
 }

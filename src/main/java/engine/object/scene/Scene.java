@@ -2,8 +2,6 @@ package object.scene;
 
 import java.util.Collection;
 
-import org.lwjgl.util.vector.Vector3f;
-
 import manager.audio.IAudioManager;
 import manager.entity.IEntityManager;
 import manager.gui.GUIManager;
@@ -26,6 +24,7 @@ import object.terrain.terrain.ITerrain;
 import object.texture.Texture;
 import renderer.viewCulling.frustum.Frustum;
 import tool.MousePicker;
+import tool.math.vector.Vec3f;
 
 public class Scene extends AObjectManager implements IScene {
 
@@ -62,7 +61,7 @@ public class Scene extends AObjectManager implements IScene {
 		this.getLights().addAll(levelMap.getLights().getAll());
 		this.getAudioSources().getMaster().init();
 		this.getAudioSources().addAll(levelMap.getAudioSources().getAll());
-		Vector3f voxelGridPosition = this.spreadPointOnHeights(new Vector3f(0,0,0));
+		Vec3f voxelGridPosition = this.spreadPointOnHeights(new Vec3f(0,0,0));
 		this.chunkManager = new ChunkManager(CHUNK_WORLD_SIZE, voxelGridPosition);		
 		chunkManager.getChunk(2).getBlock(0,5,5).setIsActive(false);
 		chunkManager.getChunk(2).getBlock(0,4,5).setIsActive(false);
@@ -191,7 +190,7 @@ public class Scene extends AObjectManager implements IScene {
 		return this.frustum;
 	}
 
-	private Vector3f spreadPointOnHeights(Vector3f position) {
+	private Vec3f spreadPointOnHeights(Vec3f position) {
 		float terrainHeight = 0;
 		for (ITerrain terrain : this.terrainManager.getAll()) {
 			terrainHeight += terrain.getHeightOfTerrain(position.x, position.z);
@@ -208,7 +207,7 @@ public class Scene extends AObjectManager implements IScene {
 				for (ITerrain terrain : this.terrainManager.getAll()) {
 					terrainHeight += terrain.getHeightOfTerrain(entity.getPosition().x, entity.getPosition().z);
 				}
-				entity.setPosition(new Vector3f(entity.getPosition().x, terrainHeight, entity.getPosition().z));
+				entity.setPosition(new Vec3f(entity.getPosition().x, terrainHeight, entity.getPosition().z));
 			}
 		}
 	}
@@ -222,7 +221,7 @@ public class Scene extends AObjectManager implements IScene {
 				for (ITerrain terrain : this.terrainManager.getAll()) {
 					terrainHeight += terrain.getHeightOfTerrain(system.getPosition().x, system.getPosition().z);
 				}
-				system.setPosition(new Vector3f(system.getPosition().x, terrainHeight, system.getPosition().z));
+				system.setPosition(new Vec3f(system.getPosition().x, terrainHeight, system.getPosition().z));
 			}
 		}
 	}

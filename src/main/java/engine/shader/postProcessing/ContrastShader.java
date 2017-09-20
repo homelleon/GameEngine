@@ -8,15 +8,11 @@ public class ContrastShader extends ShaderProgram {
 	private static final String VERTEX_FILE = EngineSettings.SHADERS_POST_PROCESSING_PATH + "contrastVertex.glsl";
 	private static final String FRAGMENT_FILE = EngineSettings.SHADERS_POST_PROCESSING_PATH + "contrastFragment.glsl";
 
-	private int location_contrast;
-
 	public ContrastShader() {
-		super(VERTEX_FILE, FRAGMENT_FILE);
-	}
-
-	@Override
-	protected void getAllUniformLocations() {
-		location_contrast = super.getUniformLocation("contrast");
+		super();
+		addVertexShader(VERTEX_FILE);
+		addFragmentShader(FRAGMENT_FILE);
+		compileShader();
 	}
 
 	@Override
@@ -24,8 +20,13 @@ public class ContrastShader extends ShaderProgram {
 		super.bindAttribute(0, "position");
 	}
 
+	@Override
+	protected void loadUniformLocations() {
+		super.addUniform("contrast");
+	}
+
 	public void loadDisplayContrast(float value) {
-		super.loadFloat(location_contrast, value);
+		super.loadFloat("contrast", value);
 	}
 
 }

@@ -19,7 +19,6 @@ out vec4 shadowCoords;
 uniform mat4 transformationMatrix;
 uniform mat4 projectionMatrix;
 uniform mat4 viewMatrix;
-
 uniform vec3 cameraPosition;
 uniform vec4 plane;
 

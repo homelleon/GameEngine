@@ -1,4 +1,4 @@
-package tool.converter.normalMapObject;
+package tool.meshLoader.normalMapObject;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -12,7 +12,7 @@ import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
 import core.settings.EngineSettings;
-import tool.converter.object.ModelData;
+import tool.meshLoader.object.ModelData;
 
 public class NormalMappedObjLoader {
 

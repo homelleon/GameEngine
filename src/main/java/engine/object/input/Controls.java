@@ -8,7 +8,6 @@ import core.loop.Loop;
 import core.settings.EngineSettings;
 import object.entity.entity.IEntity;
 import object.scene.IScene;
-import tool.dataEditor.DataEditorMain;
 
 public class Controls implements IControls {
 

@@ -1,13 +1,13 @@
 package object.gui.text;
 
-import org.lwjgl.util.vector.Vector2f;
+import tool.math.vector.Vec2f;
 
 public class GUITextBuilder implements IGUITextBuilder {
 	
 	private String text;
 	private String fontName;
 	private float fontSize;
-	private Vector2f position;
+	private Vec2f position;
 	private float lineSize;
 	private boolean isCentered;
 
@@ -30,7 +30,7 @@ public class GUITextBuilder implements IGUITextBuilder {
 	}
 
 	@Override
-	public IGUITextBuilder setPosition(Vector2f position) {
+	public IGUITextBuilder setPosition(Vec2f position) {
 		this.position = position;
 		return this;
 	}

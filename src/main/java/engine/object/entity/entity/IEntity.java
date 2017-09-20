@@ -1,10 +1,9 @@
 package object.entity.entity;
 
-import org.lwjgl.util.vector.Vector2f;
-import org.lwjgl.util.vector.Vector3f;
-
 import object.Nameable;
 import object.model.textured.TexturedModel;
+import tool.math.vector.Vec2f;
+import tool.math.vector.Vec3f;
 
 /**
  * 
@@ -48,7 +47,7 @@ import object.model.textured.TexturedModel;
 	 */
 	 void setChosen(boolean isChosen);
 	
-	 Vector2f getTextureOffset();
+	 Vec2f getTextureOffset();
 
 	/**
 	 * Increses entity position value in 3 dimentional space.
@@ -100,25 +99,25 @@ import object.model.textured.TexturedModel;
 	/**
 	 * Gets entity current position in 3 dimentional space coordinates.
 	 *  
-	 * @return {@link Vector3f} value of current position
+	 * @return {@link Vec3f} value of current position
 	 */
-	 Vector3f getPosition();
+	 Vec3f getPosition();
 
 	/**
 	 * Sets entity position in 3 dimentional space.
 	 * 
-	 * @param position {@link Vector3f} value in 3 dimentions
+	 * @param position {@link Vec3f} value in 3 dimentions
 	 */
-	 void setPosition(Vector3f position);
+	 void setPosition(Vec3f position);
 	
 	/**
 	 * Sets entity rotation scale in 3 dimentions.
 	 * 
-	 * @param rotation {@link Vector3f} value in 3 dimentions
+	 * @param rotation {@link Vec3f} value in 3 dimentions
 	 */
-	 void setRotation(Vector3f rotation);
+	 void setRotation(Vec3f rotation);
 	
-	 Vector3f getRotation();
+	 Vec3f getRotation();
 
 	/**
 	 * Gets entity size scale value.

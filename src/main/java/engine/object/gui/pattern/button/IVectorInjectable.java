@@ -1,10 +1,10 @@
 package object.gui.pattern.button;
 
-import org.lwjgl.util.vector.Vector2f;
+import tool.math.vector.Vec2f;
 
 @FunctionalInterface
-public interface IVectorInjectable {	
+public interface IVecInjectable {	
 	
-	void inject(Vector2f vector);
+	void inject(Vec2f Vec);
 	
 }

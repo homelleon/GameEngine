@@ -1,8 +1,7 @@
 package object.bounding;
 
-import org.lwjgl.util.vector.Vector3f;
-
 import tool.math.Maths;
+import tool.math.vector.Vec3f;
 
 public class BoundingSphere {
 
@@ -11,12 +10,12 @@ public class BoundingSphere {
 
 	public BoundingSphere(float[] vertecies) {
 		float maxRadius = 0;
-		Vector3f center = new Vector3f(0, 0, 0);
+		Vec3f center = new Vec3f(0, 0, 0);
 		for (int i = 0; i < vertecies.length / 3; i++) {
 			float x = vertecies[3 * i];
 			float y = vertecies[3 * i + 1];
 			float z = vertecies[3 * i + 2];
-			Vector3f point = new Vector3f(x, y, z);
+			Vec3f point = new Vec3f(x, y, z);
 			float pointRadius = Maths.distance2Points(center, point);
 			if (pointRadius > maxRadius) {
 				maxRadius = pointRadius;

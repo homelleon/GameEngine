@@ -1,14 +1,14 @@
 package object.camera;
 
-import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector3f;
+import tool.math.Matrix4f;
+import tool.math.vector.Vec3f;
 
 public abstract class BaseCamera {
 	
 	protected static float speed = 100;
 	protected static float runSpeed = 4;
 
-	protected Vector3f position = new Vector3f(0, 0, 0);
+	protected Vec3f position = new Vec3f(0, 0, 0);
 
 	protected float pitch = 20;
 	protected float yaw = 0;
@@ -25,7 +25,7 @@ public abstract class BaseCamera {
 	protected boolean isMoved = false;
 	protected boolean isAngleChanged = false;
 
-	protected BaseCamera(String name, Vector3f position) {
+	protected BaseCamera(String name, Vec3f position) {
 		this.setPosition(position);
 		this.name = name;
 	}
@@ -41,7 +41,7 @@ public abstract class BaseCamera {
 		this.position.z = posZ;
 	}
 	
-	public void setPosition(Vector3f position) {
+	public void setPosition(Vec3f position) {
 		this.position = position;
 	} 
 
@@ -71,7 +71,7 @@ public abstract class BaseCamera {
 		this.isMoved = false;
 	}
 
-	public Vector3f getPosition() {
+	public Vec3f getPosition() {
 		return position;
 	}
 

@@ -2,12 +2,10 @@ package renderer.object.bounding;
 
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
-import org.lwjgl.util.vector.Matrix4f;
 
 import object.camera.ICamera;
 import object.entity.entity.IEntity;
@@ -15,6 +13,7 @@ import object.model.raw.RawModel;
 import object.model.textured.TexturedModel;
 import shader.bounding.BoundingShader;
 import tool.math.Maths;
+import tool.math.Matrix4f;
 import tool.openGL.OGLUtils;
 
 public class BoundingRenderer {

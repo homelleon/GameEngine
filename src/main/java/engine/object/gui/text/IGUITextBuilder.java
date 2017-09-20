@@ -1,6 +1,6 @@
 package object.gui.text;
 
-import org.lwjgl.util.vector.Vector2f;
+import tool.math.vector.Vec2f;
 
 public interface IGUITextBuilder {
 
@@ -10,7 +10,7 @@ public interface IGUITextBuilder {
 
 	IGUITextBuilder setFontSize(float fontSize);
 
-	IGUITextBuilder setPosition(Vector2f position);
+	IGUITextBuilder setPosition(Vec2f position);
 
 	IGUITextBuilder setLineMaxSize(float lineSize);
 

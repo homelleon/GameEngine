@@ -22,9 +22,9 @@ import object.texture.terrain.pack.TerrainTexturePack;
 import object.texture.terrain.texture.TerrainTexture;
 import object.water.WaterTile;
 import renderer.loader.Loader;
-import tool.converter.normalMapObject.NormalMappedObjLoader;
-import tool.converter.object.ModelData;
-import tool.converter.object.OBJFileLoader;
+import tool.meshLoader.normalMapObject.NormalMappedObjLoader;
+import tool.meshLoader.object.ModelData;
+import tool.meshLoader.object.OBJFileLoader;
 
 public class EngineUtils {
 
@@ -90,8 +90,8 @@ public class EngineUtils {
 
 	public static List<IEntity> createGrassField(float x, float z, float r, float sizeNoise, float density) {
 		// TODO: Noise - better using
-		TexturedModel grass = loadStaticModel("grassObject", "grassObjAtlas");
-		grass.getTexture().setNumberOfRows(2);
+		TexturedModel grass = loadStaticModel("tree", "bark");
+		grass.getTexture().setNumberOfRows(1);
 		grass.getTexture().setShineDamper(1);
 		grass.getTexture().setReflectivity(0);
 		grass.getTexture().setHasTransparency(true);
@@ -109,10 +109,10 @@ public class EngineUtils {
 							int xSeed = random.nextInt(20);
 							int ySeed = random.nextInt(180);
 							int zSeed = random.nextInt(20);
-							int textIndexSeed = random.nextInt(4);
+							int textIndexSeed = random.nextInt(1);
 							float noise = random.nextInt(10)/5;
 							IEntity grassEntity = new DecorEntity("Grass" + String.valueOf(i) + "-" + String.valueOf(j), grass, textIndexSeed,
-									new Vector3f(x + invDensity * i, 0, z + invDensity * j), new Vector3f(xSeed, ySeed, zSeed), noise);
+									new Vector3f(x + invDensity * i, 0, z + invDensity * j), new Vector3f(-90, 0, -45), noise);
 							grassEntity.setBaseName("grassEntity");
 							return grassEntity;
 						}))

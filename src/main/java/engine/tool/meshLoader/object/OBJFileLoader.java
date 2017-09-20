@@ -1,4 +1,4 @@
-package tool.converter.object;
+package tool.meshLoader.object;
 
 import java.io.BufferedReader;
 import java.io.File;

@@ -1,7 +1,7 @@
 package object.camera;
 
-import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector3f;
+import tool.math.Matrix4f;
+import tool.math.vector.Vec3f;
 
 public class CubeMapCamera extends BaseCamera implements ICamera {
 
@@ -19,7 +19,7 @@ public class CubeMapCamera extends BaseCamera implements ICamera {
 	private Matrix4f viewMatrix = new Matrix4f();
 	private Matrix4f projectionViewMatrix = new Matrix4f();
 
-	public CubeMapCamera(String name, Vector3f position) {
+	public CubeMapCamera(String name, Vec3f position) {
 		super(name, position);
 		this.pitch = 0;
 		this.position = position;
@@ -86,12 +86,12 @@ public class CubeMapCamera extends BaseCamera implements ICamera {
 		float x_scale = y_scale / ASPECT_RATIO;
 		float frustum_length = FAR_PLANE - NEAR_PLANE;
 
-		projectionMatrix.m00 = x_scale;
-		projectionMatrix.m11 = y_scale;
-		projectionMatrix.m22 = -((FAR_PLANE + NEAR_PLANE) / frustum_length);
-		projectionMatrix.m23 = -1;
-		projectionMatrix.m32 = -((2 * NEAR_PLANE * FAR_PLANE) / frustum_length);
-		projectionMatrix.m33 = 0;
+		projectionMatrix.m[0][0] = x_scale;
+		projectionMatrix.m[1][1] = y_scale;
+		projectionMatrix.m[2][2] = -((FAR_PLANE + NEAR_PLANE) / frustum_length);
+		projectionMatrix.m[2][3] = -1;
+		projectionMatrix.m[3][2] = -((2 * NEAR_PLANE * FAR_PLANE) / frustum_length);
+		projectionMatrix.m[3][3] = 0;
 	}
 
 	/**
@@ -100,13 +100,13 @@ public class CubeMapCamera extends BaseCamera implements ICamera {
 	 */
 	private void updateViewMatrix() {
 		viewMatrix.setIdentity();
-		Matrix4f.rotate((float) Math.toRadians(180), new Vector3f(0, 0, 1), viewMatrix, viewMatrix);
-		Matrix4f.rotate((float) Math.toRadians(pitch), new Vector3f(1, 0, 0), viewMatrix, viewMatrix);
-		Matrix4f.rotate((float) Math.toRadians(yaw), new Vector3f(0, 1, 0), viewMatrix, viewMatrix);
-		Vector3f negativeCameraPos = new Vector3f(-position.x, -position.y, -position.z);
-		Matrix4f.translate(negativeCameraPos, viewMatrix, viewMatrix);
+		viewMatrix.rotate(new Vec3f(0, 0, 180));
+		viewMatrix.rotate(new Vec3f(pitch, 0, 0));
+		viewMatrix.rotate(new Vec3f(0, yaw, 0));
+		Vec3f negativeCameraPos = new Vec3f(-position.x, -position.y, -position.z);
+		viewMatrix.translate(negativeCameraPos);
 
-		Matrix4f.mul(projectionMatrix, viewMatrix, projectionViewMatrix);
+		projectionMatrix.mul(viewMatrix);
 	}
 
 }

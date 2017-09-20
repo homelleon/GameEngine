@@ -4,7 +4,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector4f;
 
 import object.camera.ICamera;
@@ -14,6 +13,7 @@ import object.model.textured.TexturedModel;
 import object.scene.IScene;
 import object.terrain.terrain.ITerrain;
 import renderer.viewCulling.frustum.Frustum;
+import tool.math.Matrix4f;
 
 /**
  * Main interface of render Engine that contatins scene, environment and shadow

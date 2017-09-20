@@ -8,24 +8,25 @@ public class HorizontalBlurShader extends ShaderProgram {
 	private static final String VERTEX_FILE = EngineSettings.SHADERS_BLUR_PATH + "horizontalBlurVertexShader.glsl";
 	private static final String FRAGMENT_FILE = EngineSettings.SHADERS_BLUR_PATH + "blurFragmentShader.glsl";
 
-	private int location_targetWidth;
-
 	protected HorizontalBlurShader() {
-		super(VERTEX_FILE, FRAGMENT_FILE);
-	}
-
-	protected void loadTargetWidth(float width) {
-		super.loadFloat(location_targetWidth, width);
-	}
-
-	@Override
-	protected void getAllUniformLocations() {
-		location_targetWidth = super.getUniformLocation("targetWidth");
+		super();
+		addVertexShader(VERTEX_FILE);
+		addFragmentShader(FRAGMENT_FILE);
+		compileShader();
 	}
 
 	@Override
 	protected void bindAttributes() {
 		super.bindAttribute(0, "position");
+	}
+
+	@Override
+	protected void loadUniformLocations() {
+		super.addUniform("targetWidth");
+	}
+
+	protected void loadTargetWidth(float width) {
+		super.loadFloat("targetWidth", width);
 	}
 
 }

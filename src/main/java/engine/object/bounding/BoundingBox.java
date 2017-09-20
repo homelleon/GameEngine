@@ -1,19 +1,18 @@
 package object.bounding;
 
-import org.lwjgl.util.vector.Vector3f;
-
 import object.model.raw.RawModel;
 import renderer.loader.Loader;
+import tool.math.vector.Vec3f;
 
 public class BoundingBox {
 
-	Vector3f min;
-	Vector3f max;
+	Vec3f min;
+	Vec3f max;
 	RawModel model;
 
 	public BoundingBox(float[] positions) {
-		Vector3f minPoint = new Vector3f(0, 0, 0);
-		Vector3f maxPoint = new Vector3f(0, 0, 0);
+		Vec3f minPoint = new Vec3f(0, 0, 0);
+		Vec3f maxPoint = new Vec3f(0, 0, 0);
 		for (int i = 0; i < positions.length / 3; i++) {
 			float x = positions[3 * i];
 			float y = positions[3 * i + 1];
@@ -79,11 +78,11 @@ public class BoundingBox {
 		this.model = Loader.getInstance().getVertexLoader().loadToVao(boundPositions, boundNormals, boundIndices);
 	}
 
-	public Vector3f getMin() {
+	public Vec3f getMin() {
 		return this.min;
 	}
 
-	public Vector3f getMax() {
+	public Vec3f getMax() {
 		return this.max;
 	}
 

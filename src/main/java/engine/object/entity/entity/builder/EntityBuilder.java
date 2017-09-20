@@ -1,18 +1,17 @@
 package object.entity.entity.builder;
 
-import org.lwjgl.util.vector.Vector3f;
-
 import object.entity.entity.IEntity;
 import object.entity.entity.NormalMappedEntity;
 import object.entity.entity.TexturedEntity;
 import object.model.textured.TexturedModel;
+import tool.math.vector.Vec3f;
 
 public class EntityBuilder implements IEntityBuilder {
 	
 	private TexturedModel model;
 	private float scale = 1.0f;
-	private Vector3f position = new Vector3f(0,0,0);
-	private Vector3f rotation = new Vector3f(0,0,0);
+	private Vec3f position = new Vec3f(0,0,0);
+	private Vec3f rotation = new Vec3f(0,0,0);
 	private int textureIndex = 0;
 	
 	@Override
@@ -28,13 +27,13 @@ public class EntityBuilder implements IEntityBuilder {
 	}
 
 	@Override
-	public IEntityBuilder setPosition(Vector3f position) {
+	public IEntityBuilder setPosition(Vec3f position) {
 		this.position = position;
 		return this;
 	}
 
 	@Override
-	public IEntityBuilder setRotation(Vector3f rotation) {
+	public IEntityBuilder setRotation(Vec3f rotation) {
 		this.rotation = rotation;
 		return this;
 	}

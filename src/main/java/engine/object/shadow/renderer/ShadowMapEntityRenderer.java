@@ -7,8 +7,6 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
-import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector2f;
 
 import object.camera.ICamera;
 import object.entity.entity.IEntity;
@@ -16,6 +14,8 @@ import object.model.raw.RawModel;
 import object.model.textured.TexturedModel;
 import shader.shadow.ShadowShader;
 import tool.math.Maths;
+import tool.math.Matrix4f;
+import tool.math.vector.Vec2f;
 import tool.openGL.OGLUtils;
 
 public class ShadowMapEntityRenderer {
@@ -91,9 +91,9 @@ public class ShadowMapEntityRenderer {
 	private void prepareInstance(IEntity entity) {
 		Matrix4f modelMatrix = Maths.createTransformationMatrix(entity.getPosition(), entity.getRotation().getX(),
 				entity.getRotation().getY(), entity.getRotation().getZ(), entity.getScale());
-		Matrix4f mvpMatrix = Matrix4f.mul(projectionViewMatrix, modelMatrix, null);
+		Matrix4f mvpMatrix = Matrix4f.mul(projectionViewMatrix, modelMatrix);
 		shader.loadMvpMatrix(mvpMatrix);
-		Vector2f textureOffset = entity.getTextureOffset();
+		Vec2f textureOffset = entity.getTextureOffset();
 		shader.loadOffset(textureOffset.x, textureOffset.y);
 		shader.loadNumberOfRows(entity.getModel().getTexture().getNumberOfRows());
 	}

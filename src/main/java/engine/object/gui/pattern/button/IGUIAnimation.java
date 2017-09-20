@@ -1,10 +1,10 @@
 package object.gui.pattern.button;
 
-import org.lwjgl.util.vector.Vector2f;
+import tool.math.vector.Vec2f;
 
 @FunctionalInterface
 public interface IGUIAnimation<T> {
 	
-	void start(T button, int time, Vector2f value);
+	void start(T button, int time, Vec2f value);
 
 }

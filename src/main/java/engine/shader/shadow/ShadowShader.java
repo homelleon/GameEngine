@@ -11,38 +11,37 @@ public class ShadowShader extends ShaderProgram {
 	private static final String VERTEX_FILE = EngineSettings.SHADERS_SHADOW_PATH + "shadowVertexShader.glsl";
 	private static final String FRAGMENT_FILE = EngineSettings.SHADERS_SHADOW_PATH + "shadowFragmentShader.glsl";
 
-	private int location_mvpMatrix;
-	private int location_offset;
-	private int location_numberOfRows;
-
 	public ShadowShader() {
-		super(VERTEX_FILE, FRAGMENT_FILE);
-	}
-
-	@Override
-	protected void getAllUniformLocations() {
-		location_mvpMatrix = super.getUniformLocation("mvpMatrix");
-		location_offset = super.getUniformLocation("offset");
-		location_numberOfRows = super.getUniformLocation("numberOfRows");
-
-	}
-
-	public void loadMvpMatrix(Matrix4f mvpMatrix) {
-		super.loadMatrix(location_mvpMatrix, mvpMatrix);
-	}
-
-	public void loadNumberOfRows(int numberOfRows) {
-		super.loadFloat(location_numberOfRows, numberOfRows);
-	}
-
-	public void loadOffset(float x, float y) {
-		super.load2DVector(location_offset, new Vector2f(x, y));
+		super();
+		addVertexShader(VERTEX_FILE);
+		addFragmentShader(FRAGMENT_FILE);
+		compileShader();
 	}
 
 	@Override
 	protected void bindAttributes() {
 		super.bindAttribute(0, "in_position");
 		super.bindAttribute(1, "in_textureCoords");
+	}
+
+	@Override
+	protected void loadUniformLocations() {
+		super.addUniform("mvpMatrix");
+		super.addUniform("offset");
+		super.addUniform("numberOfRows");
+
+	}
+
+	public void loadMvpMatrix(Matrix4f mvpMatrix) {
+		super.loadMatrix("mvpMatrix", mvpMatrix);
+	}
+
+	public void loadNumberOfRows(int numberOfRows) {
+		super.loadFloat("numberOfRows", numberOfRows);
+	}
+
+	public void loadOffset(float x, float y) {
+		super.load2DVector("offset", new Vector2f(x, y));
 	}
 
 }

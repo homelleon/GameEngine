@@ -1,11 +1,11 @@
 package renderer.object.animation;
 
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.util.vector.Vector3f;
 
 import object.animatedModel.AnimatedModel;
 import object.camera.ICamera;
 import shader.animation.AnimatedModelShader;
+import tool.math.vector.Vec3f;
 import tool.openGL.OGLUtils;
 
 /**
@@ -41,7 +41,7 @@ public class AnimatedModelRenderer {
 	 * @param lightDir
 	 *            - the direction of the light in the scene.
 	 */
-	public void render(AnimatedModel entity, ICamera camera, Vector3f lightDir) {
+	public void render(AnimatedModel entity, ICamera camera, Vec3f lightDir) {
 		prepare(camera, lightDir);
 		entity.getTexture().bindToUnit(0);
 		entity.getModel().bind(0, 1, 2, 3, 4);
@@ -68,7 +68,7 @@ public class AnimatedModelRenderer {
 	 * @param lightDir
 	 *            - the direction of the light in the scene.
 	 */
-	private void prepare(ICamera camera, Vector3f lightDir) {
+	private void prepare(ICamera camera, Vec3f lightDir) {
 		shader.start();
 		shader.loadprojectionViewMatrix(camera.getProjectionViewMatrix());
 		shader.loadLightDirection(lightDir);

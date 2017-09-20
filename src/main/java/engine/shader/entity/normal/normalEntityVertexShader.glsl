@@ -68,7 +68,7 @@ void main(void) {
 	visibility = exp(-pow((distance*fogDensity),fogGradient));
 	visibility = clamp(visibility,0.0,1.0);
 
-	//distance = distance - (shadowDistance - shadowTransitionDistance);
+	distance = distance - (shadowDistance - shadowTransitionDistance);
     distance = distance / shadowTransitionDistance;
     shadowCoords.w = clamp(1.0 - distance, 0.0, 1.0);
     

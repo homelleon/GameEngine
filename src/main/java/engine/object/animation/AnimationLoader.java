@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector3f;
 
 import tool.MyFile;
 import tool.colladaParser.colladaLoader.ColladaLoader;
@@ -12,6 +11,7 @@ import tool.colladaParser.dataStructures.AnimationData;
 import tool.colladaParser.dataStructures.JointTransformData;
 import tool.colladaParser.dataStructures.KeyFrameData;
 import tool.math.Quaternion;
+import tool.math.vector.Vec3f;
 
 /**
  * This class loads up an animation collada file, gets the information from it,
@@ -66,7 +66,7 @@ public class AnimationLoader {
 	 */
 	private static JointTransform createTransform(JointTransformData data) {
 		Matrix4f mat = data.jointLocalTransform;
-		Vector3f translation = new Vector3f(mat.m30, mat.m31, mat.m32);
+		Vec3f translation = new Vec3f(mat.m30, mat.m31, mat.m32);
 		Quaternion rotation = Quaternion.fromMatrix(mat);
 		return new JointTransform(translation, rotation);
 	}

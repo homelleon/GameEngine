@@ -27,10 +27,11 @@ public class AnimatedModelShader extends ShaderProgram {
 		addVertexShader(VERTEX_SHADER);
 		addFragmentShader(FRAGMENT_SHADER);
 		compileShader();
+		connectTextureUnits();
 	}
 
 	@Override
-	public void getAllUniformLocations() {
+	public void loadUniformLocations() {
 		super.addUniform("projectionViewMatrix");
 		super.addUniform("lightDirection");
 		super.addUniform("diffuseMap");

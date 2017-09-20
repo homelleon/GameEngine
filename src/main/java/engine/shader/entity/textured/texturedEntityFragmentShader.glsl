@@ -19,7 +19,7 @@ out vec4 out_Color;
 out vec4 out_BrightColor;
 
 /*== uniforms ==*/
-uniform sampler2D textureSampler;
+uniform sampler2D modelTexture;
 uniform sampler2D specularMap;
 uniform samplerCube enviroMap;
 
@@ -86,7 +86,7 @@ void main(void) {
 	}
 	totalDiffuse = max(totalDiffuse * lightFactor, 0.4);
 
-	vec4 textureColour = texture(textureSampler,pass_textureCoords);
+	vec4 textureColour = texture(modelTexture,pass_textureCoords);
 	if(textureColour.a < 0.5) {
 		discard;
 	}
