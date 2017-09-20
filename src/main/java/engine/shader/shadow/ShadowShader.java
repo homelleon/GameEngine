@@ -1,10 +1,9 @@
 package shader.shadow;
 
-import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector2f;
-
 import core.settings.EngineSettings;
 import shader.ShaderProgram;
+import tool.math.Matrix4f;
+import tool.math.vector.Vec2f;
 
 public class ShadowShader extends ShaderProgram {
 
@@ -41,7 +40,7 @@ public class ShadowShader extends ShaderProgram {
 	}
 
 	public void loadOffset(float x, float y) {
-		super.load2DVector("offset", new Vector2f(x, y));
+		super.load2DVector("offset", new Vec2f(x, y));
 	}
 
 }

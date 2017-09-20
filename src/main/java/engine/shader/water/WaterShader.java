@@ -1,13 +1,13 @@
 package shader.water;
 
-import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector3f;
 
 import core.settings.EngineSettings;
 import object.camera.ICamera;
 import object.light.Light;
 import shader.ShaderProgram;
 import tool.math.Maths;
+import tool.math.Matrix4f;
+import tool.math.vector.Vec3f;
 
 public class WaterShader extends ShaderProgram {
 
@@ -74,7 +74,7 @@ public class WaterShader extends ShaderProgram {
 	}
 
 	public void loadSkyColour(float r, float g, float b) {
-		super.loadVector("skyColour", new Vector3f(r, g, b));
+		super.loadVector("skyColour", new Vec3f(r, g, b));
 	}
 
 	public void loadFogDensity(float density) {

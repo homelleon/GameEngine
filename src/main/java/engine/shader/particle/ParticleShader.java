@@ -1,9 +1,9 @@
 package shader.particle;
 
-import org.lwjgl.util.vector.Matrix4f;
 
 import core.settings.EngineSettings;
 import shader.ShaderProgram;
+import tool.math.Matrix4f;
 
 public class ParticleShader extends ShaderProgram {
 

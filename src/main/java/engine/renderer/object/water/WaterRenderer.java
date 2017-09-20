@@ -6,8 +6,6 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
-import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector3f;
 
 import core.display.DisplayManager;
 import core.settings.EngineSettings;
@@ -16,10 +14,12 @@ import object.light.Light;
 import object.model.raw.RawModel;
 import object.water.WaterFrameBuffers;
 import object.water.WaterTile;
-import renderer.loader.TextureBufferLoader;
 import renderer.loader.Loader;
+import renderer.loader.TextureBufferLoader;
 import shader.water.WaterShader;
 import tool.math.Maths;
+import tool.math.Matrix4f;
+import tool.math.vector.Vec3f;
 
 public class WaterRenderer {
 
@@ -55,7 +55,7 @@ public class WaterRenderer {
 		prepareRender(camera, sun);
 		for (WaterTile tile : water) {
 			Matrix4f modelMatrix = Maths.createTransformationMatrix(
-					new Vector3f(tile.getX(), tile.getHeight(), tile.getZ()), 0, 0, 0, tile.getSize());
+					new Vec3f(tile.getX(), tile.getHeight(), tile.getZ()), 0, 0, 0, tile.getSize());
 			shader.loadModelMatrix(modelMatrix);
 			shader.loadTilingSize(tile.getTilingSize());
 			shader.loadWaveStrength(tile.getWaveStrength());

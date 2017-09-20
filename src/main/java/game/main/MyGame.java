@@ -4,8 +4,6 @@ import java.util.stream.IntStream;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
-import org.lwjgl.util.vector.Vector2f;
-import org.lwjgl.util.vector.Vector3f;
 
 import core.EngineMain;
 import game.game.Game;
@@ -28,6 +26,8 @@ import object.gui.pattern.object.GUIObject;
 import object.gui.system.IGUIMenuSystem;
 import object.input.KeyboardGame;
 import object.input.MouseGame;
+import tool.math.vector.Vec2f;
+import tool.math.vector.Vec3f;
 
 public class MyGame extends Game {
 	
@@ -48,7 +48,7 @@ public class MyGame extends Game {
 	public void __onStart() {
 		super.__onStart();
 		//PE10.initialize();
-		//world1 = PE10.peCreateWorld(new Vector3f(0,0,0), new Vector3f(0,0,0));
+		//world1 = PE10.peCreateWorld(new Vec3f(0,0,0), new Vec3f(0,0,0));
 		
 		//--------help hints GUI-------------//
 		IGUIBuilder helpGUIBuilder = new GUIBuilder(this.gameManager.getScene().getUserInterface().getComponent());
@@ -108,19 +108,19 @@ public class MyGame extends Game {
 		buttonGroup3.add(buttonGUIBuilder.build("button3GUI"));
 		mainMenu.add((GUIObject) buttonGroup3);
 		
-		BoundingQuad bQuad = new BoundingQuad(new Vector2f(-0.41f,-0.05f), new Vector2f(0.45f,0.2f)); 
+		BoundingQuad bQuad = new BoundingQuad(new Vec2f(-0.41f,-0.05f), new Vec2f(0.45f,0.2f)); 
 		
 		IGUIButton button1 = new GUIButton("menuButton1", buttonGroup1);
 		button1.setBoundingArea(bQuad, true);
 		
-		button1.move(new Vector2f(0,0.4f));
+		button1.move(new Vec2f(0,0.4f));
 		
 		IGUIButton button2 = new GUIButton("menuButton2", buttonGroup2);
 		button2.setBoundingArea(bQuad, false);
 		
 		IGUIButton button3 = new GUIButton("menuButton3", buttonGroup3);
 		button3.setBoundingArea(bQuad, true);
-		button3.move(new Vector2f(0,-0.4f));
+		button3.move(new Vec2f(0,-0.4f));
 		
 		mainMenu.add((GUIObject) button1);
 		mainMenu.add((GUIObject) button2);
@@ -144,10 +144,10 @@ public class MyGame extends Game {
 				.flatMap(gui -> gui.getTextures().stream())
 				.forEach(texture -> {
 					texture.setMixColored(true);
-					texture.setMixColor(new Vector3f(1,0,0));
+					texture.setMixColor(new Vec3f(1,0,0));
 				});
 			injection.inject(vector);
-			injection.inject(new Vector2f(-vector.x, -vector.y));
+			injection.inject(new Vec2f(-vector.x, -vector.y));
 			this.buttonScale = false;
 			button.getGroup().getAll().stream()
 			.flatMap(gui -> gui.getTextures().stream())
@@ -170,7 +170,7 @@ public class MyGame extends Game {
 				.flatMap(gui -> gui.getTextures().stream())
 				.forEach(texture -> {
 					texture.setMixColored(true);
-					texture.setMixColor(new Vector3f(0,0,1));
+					texture.setMixColor(new Vec3f(0,0,1));
 				});
 			injection.inject(vector);
 		};
@@ -188,14 +188,14 @@ public class MyGame extends Game {
 						((GUIButton)btn).increaseScale(vec);
 					});
 			};
-			injection.inject(new Vector2f(-vector.x, -vector.y));
+			injection.inject(new Vec2f(-vector.x, -vector.y));
 			button.getGroup().getAll().stream()
 			.flatMap(gui -> gui.getTextures().stream())
 			.forEach(texture -> texture.setMixColored(false));
 		};
 		
 		int time = 1;
-		Vector2f changeVector = new Vector2f(0.05f,0.05f); 
+		Vec2f changeVector = new Vec2f(0.05f,0.05f); 
 		IAction action1 = () -> {
 			buttonAnimation.start(button1, time, changeVector);
 			EngineMain.pauseEngine(false);
@@ -211,7 +211,7 @@ public class MyGame extends Game {
 		
 		IAction action2 = () -> {
 			buttonAnimation.start(button2, time, changeVector);
-			this.gameManager.getScene().getPlayer().setPosition(new Vector3f(0,0,0));
+			this.gameManager.getScene().getPlayer().setPosition(new Vec3f(0,0,0));
 		};
 		
 

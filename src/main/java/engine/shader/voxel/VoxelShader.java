@@ -3,9 +3,6 @@ package shader.voxel;
 import java.util.Collection;
 import java.util.Iterator;
 
-import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector2f;
-import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 
 import core.settings.EngineSettings;
@@ -13,6 +10,9 @@ import object.camera.ICamera;
 import object.light.ILight;
 import shader.ShaderProgram;
 import tool.math.Maths;
+import tool.math.Matrix4f;
+import tool.math.vector.Vec2f;
+import tool.math.vector.Vec3f;
 
 public class VoxelShader extends ShaderProgram {
 
@@ -92,7 +92,7 @@ public class VoxelShader extends ShaderProgram {
 	}
 
 	public void loadSkyColour(float r, float g, float b) {
-		super.loadVector("skyColour", new Vector3f(r, g, b));
+		super.loadVector("skyColour", new Vec3f(r, g, b));
 	}
 
 	public void loadFakeLightingVariable(boolean useFake) {
@@ -126,7 +126,7 @@ public class VoxelShader extends ShaderProgram {
 	}
 
 	public void loadOffset(float x, float y) {
-		super.load2DVector("offset", new Vector2f(x, y));
+		super.load2DVector("offset", new Vec2f(x, y));
 	}
 
 	public void loadLights(Collection<ILight> lights) {
@@ -139,9 +139,9 @@ public class VoxelShader extends ShaderProgram {
 				super.loadVector("lightColour[" + i + "]", light.getColour());
 				super.loadVector("attenuation[" + i + "]", light.getAttenuation());
 			} else {
-				super.loadVector("lightPosition[" + i + "]", new Vector3f(0, 0, 0));
-				super.loadVector("lightColour[" + i + "]", new Vector3f(0, 0, 0));
-				super.loadVector("attenuation[" + i + "]", new Vector3f(1, 0, 0));
+				super.loadVector("lightPosition[" + i + "]", new Vec3f(0, 0, 0));
+				super.loadVector("lightColour[" + i + "]", new Vec3f(0, 0, 0));
+				super.loadVector("attenuation[" + i + "]", new Vec3f(1, 0, 0));
 			}
 		}
 

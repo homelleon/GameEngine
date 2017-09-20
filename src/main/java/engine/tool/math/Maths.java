@@ -28,9 +28,9 @@ public class Maths {
 		Matrix4f matrix = new Matrix4f();
 		matrix.setIdentity();
 		matrix.translate(translation);
-		matrix.rotate(new Vec3f(rx, 0, 0));
-		matrix.rotate(new Vec3f(0, ry, 0));
-		matrix.rotate(new Vec3f(0, 0, rz));
+		matrix.rotate((float) Math.toRadians(rx), new Vec3f(1, 0, 0));
+		matrix.rotate((float) Math.toRadians(ry), new Vec3f(0, 1, 0));
+		matrix.rotate((float) Math.toRadians(rz), new Vec3f(0, 0, 1));
 		matrix.scale(new Vec3f(scale, scale, scale));
 		return matrix;
 	}
@@ -38,9 +38,9 @@ public class Maths {
 	public static Matrix4f createViewMatrix(ICamera camera) {
 		Matrix4f viewMatrix = new Matrix4f();
 		viewMatrix.setIdentity();
-		viewMatrix.rotate(new Vec3f(camera.getPitch(), 0, 0));
-		viewMatrix.rotate(new Vec3f(0, camera.getYaw(), 0));
-		viewMatrix.rotate(new Vec3f(0, 0, camera.getRoll()));
+		viewMatrix.rotate((float) Math.toRadians(camera.getPitch()), new Vec3f(1, 0, 0));
+		viewMatrix.rotate((float) Math.toRadians(camera.getYaw()), new Vec3f(0, 1, 0));
+		viewMatrix.rotate((float) Math.toRadians(camera.getRoll()), new Vec3f(0, 0, 1));
 		Vec3f cameraPos = camera.getPosition();
 		Vec3f negativeCameraPos = new Vec3f(-cameraPos.x, -cameraPos.y, -cameraPos.z);
 		viewMatrix.translate(negativeCameraPos);

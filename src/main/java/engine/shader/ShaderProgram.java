@@ -21,10 +21,11 @@ import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.opengl.GL32;
 import org.lwjgl.opengl.GL40;
-import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector2f;
-import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
+
+import tool.math.Matrix4f;
+import tool.math.vector.Vec2f;
+import tool.math.vector.Vec3f;
 
 public abstract class ShaderProgram {
 
@@ -154,12 +155,12 @@ public abstract class ShaderProgram {
 		GL20.glUniform1f(uniformLocation, value);
 	}
 
-	protected void loadVector(String name, Vector3f vector) {
+	protected void loadVector(String name, Vec3f vector) {
 		int uniformLocation = this.unfiroms.get(name);
 		GL20.glUniform3f(uniformLocation, vector.x, vector.y, vector.z);
 	}
 
-	protected void load2DVector(String name, Vector2f vector) {
+	protected void load2DVector(String name, Vec2f vector) {
 		int uniformLocation = this.unfiroms.get(name);
 		GL20.glUniform2f(uniformLocation, vector.x, vector.y);
 	}

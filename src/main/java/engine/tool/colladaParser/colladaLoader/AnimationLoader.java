@@ -4,18 +4,18 @@ import java.nio.FloatBuffer;
 import java.util.List;
 
 import org.lwjgl.BufferUtils;
-import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector3f;
 
 import tool.colladaParser.dataStructures.AnimationData;
 import tool.colladaParser.dataStructures.JointTransformData;
 import tool.colladaParser.dataStructures.KeyFrameData;
 import tool.colladaParser.xmlParser.XmlNode;
+import tool.math.Matrix4f;
+import tool.math.vector.Vec3f;
 
 public class AnimationLoader {
 
 	private static final Matrix4f CORRECTION = new Matrix4f().rotate((float) Math.toRadians(-90),
-			new Vector3f(1, 0, 0));
+			new Vec3f(1, 0, 0));
 
 	private XmlNode animationData;
 	private XmlNode jointHierarchy;
@@ -89,7 +89,7 @@ public class AnimationLoader {
 			transform.transpose();
 			if (root) {
 				// because up axis in Blender is different to up axis in game
-				Matrix4f.mul(CORRECTION, transform, transform);
+				transform.mul(CORRECTION);
 			}
 			keyFrames[i].addJointTransform(new JointTransformData(jointName, transform));
 		}

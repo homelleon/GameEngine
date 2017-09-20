@@ -1,9 +1,8 @@
 package bodies;
 
-import org.lwjgl.util.vector.Vector3f;
-
 import intersects.IntersectData;
 import object.entity.entity.IEntity;
+import tool.math.vector.Vec3f;
 
 public abstract class BodyBasic {
 	
@@ -11,29 +10,29 @@ public abstract class BodyBasic {
 	protected float mass = 0;
 	protected float size;
 	protected float vertex [][][];
-	protected Vector3f position;
-	protected Vector3f speed;
+	protected Vec3f position;
+	protected Vec3f speed;
 	protected IEntity entity;
 	protected boolean entityAttached = false;
 	
-	protected BodyBasic(Vector3f position, float size) {
+	protected BodyBasic(Vec3f position, float size) {
 		this.position = position;
 		this.size = size;
 	}
 	
 	protected BodyBasic() {}
 	
-	protected BodyBasic(int id, Vector3f position, float[][][] vertex) {
+	protected BodyBasic(int id, Vec3f position, float[][][] vertex) {
 		this.typeID = id;
 		this.position = position;
 		this.vertex = vertex;
 	}
 	
-	protected void setPosition(Vector3f position) {
+	protected void setPosition(Vec3f position) {
 		this.position = position;
 	}
 	
-	protected Vector3f getPosition() {
+	protected Vec3f getPosition() {
 		return this.position;
 	}
 		
@@ -67,7 +66,7 @@ public abstract class BodyBasic {
 		return entity;
 	}
 	
-	protected void doAcceleration(float value, Vector3f direction) {
+	protected void doAcceleration(float value, Vec3f direction) {
 		
 	}
 	

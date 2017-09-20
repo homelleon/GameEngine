@@ -1,7 +1,7 @@
 package object.animation;
 
-import org.lwjgl.util.vector.Matrix4f;
 
+import tool.math.Matrix4f;
 import tool.math.Quaternion;
 import tool.math.vector.Vec3f;
 
@@ -17,8 +17,8 @@ public class JointTransform {
 
 	protected Matrix4f getLocalTransform() {
 		Matrix4f matrix = new Matrix4f();
-		matrix.translate(this.position.getVector3f());
-		Matrix4f.mul(matrix, rotation.toRotationMatrix(), matrix);
+		matrix.translate(this.position);
+		matrix.mul(matrix, rotation.toRotationMatrix());
 		return matrix;
 	}
 

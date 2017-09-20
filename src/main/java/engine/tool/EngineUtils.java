@@ -22,6 +22,7 @@ import object.texture.terrain.pack.TerrainTexturePack;
 import object.texture.terrain.texture.TerrainTexture;
 import object.water.WaterTile;
 import renderer.loader.Loader;
+import tool.math.vector.Vec3f;
 import tool.meshLoader.normalMapObject.NormalMappedObjLoader;
 import tool.meshLoader.object.ModelData;
 import tool.meshLoader.object.OBJFileLoader;
@@ -112,7 +113,7 @@ public class EngineUtils {
 							int textIndexSeed = random.nextInt(1);
 							float noise = random.nextInt(10)/5;
 							IEntity grassEntity = new DecorEntity("Grass" + String.valueOf(i) + "-" + String.valueOf(j), grass, textIndexSeed,
-									new Vector3f(x + invDensity * i, 0, z + invDensity * j), new Vector3f(-90, 0, -45), noise);
+									new Vec3f(x + invDensity * i, 0, z + invDensity * j), new Vec3f(-90, 0, -45), noise);
 							grassEntity.setBaseName("grassEntity");
 							return grassEntity;
 						}))

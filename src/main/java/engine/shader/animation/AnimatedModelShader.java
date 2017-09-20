@@ -1,11 +1,10 @@
 package shader.animation;
 
-import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector3f;
-
 import core.settings.EngineSettings;
 import renderer.object.animation.AnimatedModelRenderer;
 import shader.ShaderProgram;
+import tool.math.Matrix4f;
+import tool.math.vector.Vec3f;
 
 public class AnimatedModelShader extends ShaderProgram {
 
@@ -53,7 +52,7 @@ public class AnimatedModelShader extends ShaderProgram {
 		super.loadMatrix("projectionViewMatrix", projectionViewMatrix);
 	}
 
-	public void loadLightDirection(Vector3f direction) {
+	public void loadLightDirection(Vec3f direction) {
 		super.loadVector("lightDirection", direction);
 	}
 

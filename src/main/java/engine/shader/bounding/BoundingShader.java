@@ -1,11 +1,11 @@
 package shader.bounding;
 
-import org.lwjgl.util.vector.Matrix4f;
 
 import core.settings.EngineSettings;
 import object.camera.ICamera;
 import shader.ShaderProgram;
 import tool.math.Maths;
+import tool.math.Matrix4f;
 
 public class BoundingShader extends ShaderProgram {
 

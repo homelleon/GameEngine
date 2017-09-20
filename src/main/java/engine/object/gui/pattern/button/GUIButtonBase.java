@@ -135,7 +135,7 @@ public abstract class GUIButtonBase extends GUIObject implements IGUIButton {
 				.flatMap(list -> list.getTextures().stream())
 				.map(texture -> texture.getPosition())
 				.reduce((tPosition1, tPosition2) -> {
-					Vec2f summ = Vec2f.add(tPosition1, tPosition2, null);
+					Vec2f summ = Vec2f.add(tPosition1, tPosition2);
 					return new Vec2f(summ.x/2,summ.y/2);
 				}).orElse(null);
 			this.quad.move(center);

@@ -3,11 +3,10 @@ package object.animation;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.lwjgl.util.vector.Matrix4f;
-
 import core.display.DisplayManager;
 import object.animatedModel.AnimatedModel;
 import object.animatedModel.Joint;
+import tool.math.Matrix4f;
 
 public class Animator {
 
@@ -49,7 +48,7 @@ public class Animator {
 
 	private void applyPoseToJoints(Map<String, Matrix4f> currentPose, Joint joint, Matrix4f parentTransform) {
 		Matrix4f currentLocalTransform = currentPose.get(joint.name);
-		Matrix4f currentTransform = Matrix4f.mul(parentTransform, currentLocalTransform, null);
+		Matrix4f currentTransform = Matrix4f.mul(parentTransform, currentLocalTransform);
 		for (Joint childJoint : joint.children) {
 			applyPoseToJoints(currentPose, childJoint, currentTransform);
 			joint.setAnimationTransform(currentTransform);

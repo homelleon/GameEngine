@@ -1,10 +1,10 @@
 package shader.guiTexture;
 
-import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector3f;
 
 import core.settings.EngineSettings;
 import shader.ShaderProgram;
+import tool.math.Matrix4f;
+import tool.math.vector.Vec3f;
 
 public class GUITextureShader extends ShaderProgram {
 
@@ -34,7 +34,7 @@ public class GUITextureShader extends ShaderProgram {
 		super.loadMatrix("transformationMatrix", matrix);
 	}
 	
-	public void loadMixColorVariables(boolean isMixColored, Vector3f color) {
+	public void loadMixColorVariables(boolean isMixColored, Vec3f color) {
 		super.loadBoolean("isMixColored", isMixColored);
 		super.loadVector("mixColor", color);
 	}

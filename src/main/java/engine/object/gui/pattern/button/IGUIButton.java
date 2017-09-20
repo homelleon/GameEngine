@@ -1,11 +1,11 @@
 package object.gui.pattern.button;
 
-import org.lwjgl.util.vector.Vector2f;
-
 import object.Moveable;
 import object.Nameable;
 import object.bounding.BoundingQuad;
+import object.gui.group.GUIGroup;
 import object.gui.group.IGUIGroup;
+import tool.math.vector.Vec2f;
 
 /**
  * Represent Interface of graphic user interface button unit.
@@ -14,7 +14,7 @@ import object.gui.group.IGUIGroup;
  * @see GUIButton
  *
  */
-public interface IGUIButton extends Nameable, Moveable<Vector2f> {
+public interface IGUIButton extends Nameable, Moveable<Vec2f> {
 
 	/**
 	 * Does selection for current button.<br>
@@ -112,14 +112,14 @@ public interface IGUIButton extends Nameable, Moveable<Vector2f> {
 	 * @return true if mouse is over the current button<br>
 	 *         false if button is out of the current button
 	 */
-	boolean getIsMouseOver(Vector2f cursorPosition);
+	boolean getIsMouseOver(Vec2f cursorPosition);
 	
 	/**
 	 * Sets scale for all GUI objects of current button.
 	 * 
-	 * @param scale {@link Vector2f} value of scale
+	 * @param scale {@link Vec2f} value of scale
 	 */
-	void increaseScale(Vector2f scale);
+	void increaseScale(Vec2f scale);
 
 	/**
 	 * Checks if the current button is selected or not.

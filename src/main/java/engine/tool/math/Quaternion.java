@@ -1,6 +1,5 @@
 package tool.math;
 
-import org.lwjgl.util.vector.Matrix4f;
 
 import tool.math.vector.Vec3f;
 
@@ -96,51 +95,51 @@ public class Quaternion {
 		final float xSquared = x * x;
 		final float ySquared = y * y;
 		final float zSquared = z * z;
-		matrix.m00 = 1 - 2 * (ySquared + zSquared);
-		matrix.m01 = 2 * (xy - zw);
-		matrix.m02 = 2 * (yz + xw);
-		matrix.m03 = 0;
-		matrix.m10 = 2 * (xy + zw);
-		matrix.m11 = 1 - 2 * (xSquared + zSquared);
-		matrix.m12 = 2 * (yz - xw);
-		matrix.m13 = 0;
-		matrix.m20 = 2 * (xz - yw);
-		matrix.m21 = 2 * (yz + xw);
-		matrix.m22 = 1 - 2 * (xSquared + ySquared);
-		matrix.m23 = 0;
-		matrix.m30 = 0;
-		matrix.m31 = 0;
-		matrix.m32 = 0;
-		matrix.m33 = 1;
+		matrix.m[0][0] = 1 - 2 * (ySquared + zSquared);
+		matrix.m[0][1] = 2 * (xy - zw);
+		matrix.m[0][2] = 2 * (yz + xw);
+		matrix.m[0][3] = 0;
+		matrix.m[1][0] = 2 * (xy + zw);
+		matrix.m[1][1] = 1 - 2 * (xSquared + zSquared);
+		matrix.m[1][2] = 2 * (yz - xw);
+		matrix.m[1][3] = 0;
+		matrix.m[2][0] = 2 * (xz - yw);
+		matrix.m[2][1] = 2 * (yz + xw);
+		matrix.m[2][2] = 1 - 2 * (xSquared + ySquared);
+		matrix.m[2][3] = 0;
+		matrix.m[3][0] = 0;
+		matrix.m[3][1] = 0;
+		matrix.m[3][2] = 0;
+		matrix.m[3][3] = 1;
 		return matrix;
 	}
 
 	public static Quaternion fromMatrix(Matrix4f matrix) {
 		float w, x, y, z;
-		float diagonal = matrix.m00 + matrix.m11 + matrix.m22;
+		float diagonal = matrix.m[0][0] + matrix.m[1][1] + matrix.m[2][2];
 		if (diagonal > 0) {
 			float w4 = (float) (Math.sqrt(diagonal + 1f) * 2f);
 			w = w4 / 4f;
-			x = (matrix.m21 - matrix.m12) / w4;
-			y = (matrix.m02 - matrix.m20) / w4;
-			z = (matrix.m10 - matrix.m01) / w4;
-		} else if ((matrix.m00 > matrix.m11) && (matrix.m00 > matrix.m22)) {
-			float x4 = (float) (Math.sqrt(1f + matrix.m00 - matrix.m11 - matrix.m22) * 2f);
-			w = (matrix.m21 - matrix.m12) / x4;
+			x = (matrix.m[2][1] - matrix.m[1][2]) / w4;
+			y = (matrix.m[0][2] - matrix.m[2][0]) / w4;
+			z = (matrix.m[1][0] - matrix.m[0][1]) / w4;
+		} else if ((matrix.m[0][0] > matrix.m[1][1]) && (matrix.m[0][0] > matrix.m[2][2])) {
+			float x4 = (float) (Math.sqrt(1f + matrix.m[0][0] - matrix.m[1][1] - matrix.m[2][2]) * 2f);
+			w = (matrix.m[2][1] - matrix.m[1][2]) / x4;
 			x = x4 / 4f;
-			y = (matrix.m01 + matrix.m10) / x4;
-			z = (matrix.m02 + matrix.m20) / x4;
-		} else if (matrix.m11 > matrix.m22) {
-			float y4 = (float) (Math.sqrt(1f + matrix.m11 - matrix.m00 - matrix.m22) * 2f);
-			w = (matrix.m02 - matrix.m20) / y4;
-			x = (matrix.m01 + matrix.m10) / y4;
+			y = (matrix.m[0][1] + matrix.m[1][0]) / x4;
+			z = (matrix.m[0][2] + matrix.m[2][0]) / x4;
+		} else if (matrix.m[1][1] > matrix.m[2][2]) {
+			float y4 = (float) (Math.sqrt(1f + matrix.m[1][1] - matrix.m[0][0] - matrix.m[2][2]) * 2f);
+			w = (matrix.m[0][2] - matrix.m[2][0]) / y4;
+			x = (matrix.m[0][1] + matrix.m[1][0]) / y4;
 			y = y4 / 4f;
-			z = (matrix.m12 + matrix.m21) / y4;
+			z = (matrix.m[1][2] + matrix.m[2][1]) / y4;
 		} else {
-			float z4 = (float) (Math.sqrt(1f + matrix.m22 - matrix.m00 - matrix.m11) * 2f);
-			w = (matrix.m10 - matrix.m01) / z4;
-			x = (matrix.m02 - matrix.m20) / z4;
-			y = (matrix.m12 - matrix.m21) / z4;
+			float z4 = (float) (Math.sqrt(1f + matrix.m[2][2] - matrix.m[0][0] - matrix.m[1][1]) * 2f);
+			w = (matrix.m[1][0] - matrix.m[0][1]) / z4;
+			x = (matrix.m[0][2] - matrix.m[2][0]) / z4;
+			y = (matrix.m[1][2] - matrix.m[2][1]) / z4;
 			z = z4 / 4f;
 		}
 		return new Quaternion(x, y, z, w);

@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.lwjgl.openal.AL10;
 import org.lwjgl.openal.AL11;
-import org.lwjgl.util.vector.Vector3f;
 
 import core.settings.EngineSettings;
 import manager.particle.ParticleManager;
@@ -19,6 +18,7 @@ import object.model.textured.TexturedModel;
 import object.scene.IScene;
 import object.water.WaterTile;
 import tool.EngineUtils;
+import tool.math.vector.Vec3f;
 
 /**
  * Manager of default test objects of the scene.
@@ -48,8 +48,8 @@ public class SceneManager implements ISceneManager {
 		IPlayer player1 = new Player(
 				playerName, 
 				cubeModel, 
-				new Vector3f(0, 0, 0), 
-				new Vector3f(0, 0, 0), 
+				new Vec3f(0, 0, 0), 
+				new Vec3f(0, 0, 0), 
 				1
 		);
 		player1.setBaseName("cubeEntity1");
@@ -58,8 +58,8 @@ public class SceneManager implements ISceneManager {
 		scene.getEntities().add(player1);
 		scene.setCamera(new TargetCamera(cameraName, player1));
 		scene.setSun(new Light("Sun", 
-				new Vector3f(-1000000, 500000, -1000000), 
-				new Vector3f(1.3f, 1.3f, 1.3f)));
+				new Vec3f(-1000000, 500000, -1000000), 
+				new Vec3f(1.3f, 1.3f, 1.3f)));
 		scene.getLights().add(scene.getSun());
 	}
 	
@@ -69,8 +69,8 @@ public class SceneManager implements ISceneManager {
 		IPlayer player1 = new Player(
 				playerName, 
 				cubeModel, 
-				new Vector3f(100, 0, 10), 
-				new Vector3f(0, 0, 0), 
+				new Vec3f(100, 0, 10), 
+				new Vec3f(0, 0, 0), 
 				1
 		);
 		player1.setBaseName("cubeEntity1");
@@ -90,7 +90,7 @@ public class SceneManager implements ISceneManager {
 		ambientSource.setLooping(true);
 		ambientSource.setVolume(0.3f);
 		ambientSource.play();
-		ambientSource.setPosition(new Vector3f(400, 50, 400));
+		ambientSource.setPosition(new Vec3f(400, 50, 400));
 
 		/*--------------WATER----------------*/
 		List<WaterTile> waterList = new ArrayList<WaterTile>();
@@ -111,16 +111,16 @@ public class SceneManager implements ISceneManager {
 		scene.getEntities().addAll(EngineUtils.createGrassField(500, 500, 8000, 4, 0.02f));
 		scene.setCamera(new TargetCamera(cameraName, player1));
 		scene.setSun(new Light("Sun", 
-				new Vector3f(-1000000, 500000, -1000000), 
-				new Vector3f(1.3f, 1.3f, 1.3f)));
+				new Vec3f(-1000000, 500000, -1000000), 
+				new Vec3f(1.3f, 1.3f, 1.3f)));
 		scene.getLights().add(scene.getSun());
-		scene.getLights().add(new Light("Light1", new Vector3f(200, 2, 200), new Vector3f(10, 0, 0),
-				new Vector3f(1.1f, 0.01f, 0.002f)));
+		scene.getLights().add(new Light("Light1", new Vec3f(200, 2, 200), new Vec3f(10, 0, 0),
+				new Vec3f(1.1f, 0.01f, 0.002f)));
 		scene.getLights().add(
 				new Light("Light2", 
-						new Vector3f(20, 2, 20), 
-						new Vector3f(0, 5, 0), 
-						new Vector3f(1, 0.01f, 0.002f)));
+						new Vec3f(20, 2, 20), 
+						new Vec3f(0, 5, 0), 
+						new Vec3f(1, 0.01f, 0.002f)));
 		scene.getAudioSources().add(ambientSource);
 		scene.getWaters().addAll(waterList);
 		scene.getParticles().addAll(ParticleManager.createParticleSystem());

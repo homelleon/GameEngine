@@ -7,13 +7,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.lwjgl.util.vector.Matrix4f;
-
 import object.camera.ICamera;
 import object.particle.InsertionSort;
 import object.particle.particle.Particle;
 import object.texture.particle.ParticleTexture;
 import renderer.object.particle.ParticleRenderer;
+import tool.math.Matrix4f;
 
 public class ParticleMaster {
 

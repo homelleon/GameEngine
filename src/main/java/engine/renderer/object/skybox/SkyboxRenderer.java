@@ -4,7 +4,6 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
-import org.lwjgl.util.vector.Matrix4f;
 
 import core.EngineMain;
 import core.display.DisplayManager;
@@ -13,6 +12,7 @@ import object.camera.ICamera;
 import object.model.raw.RawModel;
 import renderer.loader.Loader;
 import shader.skybox.SkyboxShader;
+import tool.math.Matrix4f;
 
 public class SkyboxRenderer {
 

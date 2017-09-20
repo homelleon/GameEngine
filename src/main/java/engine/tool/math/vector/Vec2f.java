@@ -59,6 +59,10 @@ public class Vec2f extends Vec{
 		return new Vec2f(this.x + r, this.y + r);
 	}
 	
+	public static Vec2f add(Vec2f l, Vec2f r) {
+		return new Vec2f(l.x + r.x, l.y + r.y);
+	}
+	
 	public Vec2f sub(Vec2f r)
 	{
 		return new Vec2f(this.x - r.getX(), this.y - r.getY());

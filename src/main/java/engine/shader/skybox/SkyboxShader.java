@@ -1,7 +1,5 @@
 package shader.skybox;
 
-import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector3f;
 
 import core.EngineMain;
 import core.display.DisplayManager;
@@ -9,6 +7,8 @@ import core.settings.EngineSettings;
 import object.camera.ICamera;
 import shader.ShaderProgram;
 import tool.math.Maths;
+import tool.math.Matrix4f;
+import tool.math.vector.Vec3f;
 
 public class SkyboxShader extends ShaderProgram {
 
@@ -52,18 +52,18 @@ public class SkyboxShader extends ShaderProgram {
 
 	public void loadViewMatrix(ICamera camera) {
 		Matrix4f matrix = Maths.createViewMatrix(camera);
-		matrix.m30 = 0;
-		matrix.m31 = 0;
-		matrix.m32 = 0;
+		matrix.m[3][0] = 0;
+		matrix.m[3][1] = 0;
+		matrix.m[3][2] = 0;
 		if (!EngineMain.getIsEnginePaused()) {
 			rotation += ROTATE_SPEED * DisplayManager.getFrameTimeSeconds();
 		}
-		Matrix4f.rotate((float) Math.toRadians(rotation), new Vector3f(0, 1, 0), matrix, matrix);
+		matrix.rotate(new Vec3f(0, rotation, 0));
 		super.loadMatrix("viewMatrix", matrix);
 	}
 
 	public void loadFogColour(float r, float g, float b) {
-		super.loadVector("fogColour", new Vector3f(r, g, b));
+		super.loadVector("fogColour", new Vec3f(r, g, b));
 	}
 
 	public void loadBlendFactor(float blend) {

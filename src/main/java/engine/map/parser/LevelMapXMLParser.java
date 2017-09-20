@@ -1,6 +1,5 @@
 package map.parser;
 
-import org.lwjgl.util.vector.Vector3f;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -10,6 +9,7 @@ import core.debug.EngineDebug;
 import manager.scene.IObjectManager;
 import map.objectMap.ObjectMapManager;
 import object.entity.entity.IEntity;
+import tool.math.vector.Vec3f;
 import tool.xml.XMLUtils;
 import tool.xml.parser.IObjectParser;
 import tool.xml.parser.XMLParser;
@@ -63,7 +63,7 @@ public class LevelMapXMLParser extends XMLParser implements IObjectParser<IObjec
 				float x = Float.valueOf(XMLUtils.getAttributeValue(positionElement, XMLUtils.X));
 				float y = Float.valueOf(XMLUtils.getAttributeValue(positionElement, XMLUtils.Y));
 				float z = Float.valueOf(XMLUtils.getAttributeValue(positionElement, XMLUtils.Z));
-				Vector3f position = new Vector3f(x, y, z);
+				Vec3f position = new Vec3f(x, y, z);
 				IEntity entityBase = modelMap.getEntities().get(model);
 				IEntity entityClone = entityBase.clone(name);
 				entityClone.setPosition(position);

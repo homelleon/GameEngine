@@ -1,14 +1,13 @@
 package bodies;
 
-import org.lwjgl.util.vector.Vector3f;
-
 import intersects.IntersectData;
 import object.entity.entity.IEntity;
 import physicMain.PE10;
+import tool.math.vector.Vec3f;
 
 public class Body2DPlane extends BodyBasic implements IBody {
 
-	public Body2DPlane(Vector3f position, float size) {
+	public Body2DPlane(Vec3f position, float size) {
 		super(position, size);
 		typeID = PE10.BODY_2D_PLANE;
 	}
@@ -19,12 +18,12 @@ public class Body2DPlane extends BodyBasic implements IBody {
 	}
 
 	@Override
-	public Vector3f getPosition() {
+	public Vec3f getPosition() {
 		return super.getPosition();
 	}
 	
 	@Override
-	public void setPosition(Vector3f position) {
+	public void setPosition(Vec3f position) {
 		super.setPosition(position);
 	}
 	
@@ -43,7 +42,7 @@ public class Body2DPlane extends BodyBasic implements IBody {
 	}
 	
 	@Override
-	public void doAcceleration(float value, Vector3f direction) {
+	public void doAcceleration(float value, Vec3f direction) {
 		
 	}
 	

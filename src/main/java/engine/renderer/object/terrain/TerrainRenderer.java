@@ -6,8 +6,6 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
-import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 
 import core.settings.EngineSettings;
@@ -18,6 +16,8 @@ import object.terrain.terrain.ITerrain;
 import object.texture.terrain.pack.TerrainTexturePack;
 import shader.terrain.TerrainShader;
 import tool.math.Maths;
+import tool.math.Matrix4f;
+import tool.math.vector.Vec3f;
 
 public class TerrainRenderer {
 
@@ -114,7 +114,7 @@ public class TerrainRenderer {
 
 	private void loadModelMatrix(ITerrain terrain) {
 		Matrix4f transformationMatrix = Maths
-				.createTransformationMatrix(new Vector3f(terrain.getX(), 0, terrain.getZ()), 0, 0, 0, 1);
+				.createTransformationMatrix(new Vec3f(terrain.getX(), 0, terrain.getZ()), 0, 0, 0, 1);
 		shader.loadTranformationMatrix(transformationMatrix);
 	}
 

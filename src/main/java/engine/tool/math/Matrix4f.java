@@ -1,5 +1,7 @@
 package tool.math;
 
+import java.nio.FloatBuffer;
+
 import org.lwjgl.util.vector.Vector4f;
 
 import tool.math.vector.Vec2f;
@@ -12,7 +14,7 @@ public class Matrix4f {
 	
 	public Matrix4f()
 	{
-		setM(new float[4][4]);
+		load(new float[4][4]);
 	}
 	
 	public Matrix4f Zero()
@@ -388,9 +390,64 @@ public class Matrix4f {
 	public float [][] getM() {
 		return m;
 	}
+	
+	/**
+	 * Load from a float buffer. The buffer stores the matrix in column major
+	 * (OpenGL) order.
+	 *
+	 * @param buf A float buffer to read from
+	 * @return this
+	 */
+	public Matrix4f load(FloatBuffer buf) {
 
-	public void setM(float [][] m) {
+		m[0][0] = buf.get();
+		m[0][1] = buf.get();
+		m[0][2] = buf.get();
+		m[0][3] = buf.get();
+		m[1][0] = buf.get();
+		m[1][1] = buf.get();
+		m[1][2] = buf.get();
+		m[1][3] = buf.get();
+		m[2][0] = buf.get();
+		m[2][1] = buf.get();
+		m[2][2] = buf.get();
+		m[2][3] = buf.get();
+		m[3][0] = buf.get();
+		m[3][1] = buf.get();
+		m[3][2] = buf.get();
+		m[3][3] = buf.get();
+
+		return this;
+	}
+	
+	public void load(float [][] m) {
 		this.m = m;
+	}
+	
+	/**
+	 * Store this matrix in a float buffer. The matrix is stored in column
+	 * major (openGL) order.
+	 * @param buf The buffer to store this matrix in
+	 */
+	public Matrix4f store(FloatBuffer buf) {
+		buf.put(m[0][0]);
+		buf.put(m[0][1]);
+		buf.put(m[0][2]);
+		buf.put(m[0][3]);
+		buf.put(m[1][0]);
+		buf.put(m[1][1]);
+		buf.put(m[1][2]);
+		buf.put(m[1][3]);
+		buf.put(m[2][0]);
+		buf.put(m[2][1]);
+		buf.put(m[2][2]);
+		buf.put(m[2][3]);
+		buf.put(m[3][0]);
+		buf.put(m[3][1]);
+		buf.put(m[3][2]);
+		buf.put(m[3][3]);
+		
+		return this;
 	}
 	
 	public String toString() {

@@ -1,11 +1,11 @@
 package object.animatedModel;
 
-import org.lwjgl.util.vector.Matrix4f;
 
 import object.animation.Animation;
 import object.animation.Animator;
 import object.openglObject.Vao;
 import object.texture.Texture;
+import tool.math.Matrix4f;
 
 /**
  * 
