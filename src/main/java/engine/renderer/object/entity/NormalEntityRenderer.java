@@ -127,7 +127,7 @@ public class NormalEntityRenderer implements IEntityRenderer {
 		shader.loadTransformationMatrix(transformationMatrix);
 		Vector2f textureOffset = entity.getTextureOffset();
 		shader.loadOffset(textureOffset.x, textureOffset.y);
-		shader.loadManipulationVariables(entity.getIsChosen());
+		shader.loadManipulationVariables(entity.isChosen());
 	}
 
 	private void prepare(Vector4f clipPlane, Collection<ILight> lights, ICamera camera) {

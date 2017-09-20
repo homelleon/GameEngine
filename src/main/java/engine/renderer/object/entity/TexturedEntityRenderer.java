@@ -58,8 +58,9 @@ public class TexturedEntityRenderer implements IEntityRenderer {
 	public TexturedEntityRenderer(Matrix4f projectionMatrix) {
 		this.shader = new TexturedEntityShader();
 		shader.start();
-		shader.loadProjectionMatrix(projectionMatrix);
 		shader.connectTextureUnits();
+		shader.loadProjectionMatrix(projectionMatrix);
+		shader.getL
 		shader.stop();
 	}
 
@@ -237,7 +238,7 @@ public class TexturedEntityRenderer implements IEntityRenderer {
 		shader.loadTranformationMatrix(transformationMatrix);
 		Vector2f textureOffset = entity.getTextureOffset();
 		shader.loadOffset(textureOffset.x, textureOffset.y);
-		shader.loadManipulateVariables(entity.getIsChosen());
+		shader.loadManipulateVariables(entity.isChosen());
 	}
 
 	/**

@@ -18,6 +18,7 @@ public abstract class BaseEntity {
 	protected float radius; // радицс
 	protected boolean isVisible = true; // видимый
 	protected boolean isChosen = false; // выбранный
+	protected boolean isMoved = false;
 
 	protected int textureIndex = 0; // индекс текстуры
 	protected int typeID = EngineSettings.ENTITY_TYPE_SIMPLE; // тип объекта
@@ -66,19 +67,19 @@ public abstract class BaseEntity {
 		this.scale = scale;
 	}
 
-	public synchronized void setIsChosen(boolean isChosen) {
+	public synchronized void setChosen(boolean isChosen) {
 		this.isChosen = isChosen;
 	}
 
-	public boolean getIsChosen() {
+	public boolean isChosen() {
 		return this.isChosen;
 	}
 
-	public boolean getIsVisible() {
+	public boolean isVisible() {
 		return isVisible;
 	}
 
-	public synchronized void setIsVisible(boolean isVisible) {
+	public synchronized void setVisible(boolean isVisible) {
 		this.isVisible = isVisible;
 	}
 	
@@ -97,6 +98,10 @@ public abstract class BaseEntity {
 	}
 
 	public synchronized void move(float forwardSpeed, float strafeSpeed) {
+		this.isMoved = false;
+		if(forwardSpeed >0 || strafeSpeed > 0) {
+			this.isMoved = true;
+		}
 		float dx = (float) (forwardSpeed * Math.sin(Math.toRadians(this.rotation.getY()))
 				+ (strafeSpeed * Math.sin(Math.toRadians(this.rotation.getY() + 90))));
 		float dz = (float) (forwardSpeed * Math.cos(Math.toRadians(this.rotation.getY()))
@@ -165,5 +170,13 @@ public abstract class BaseEntity {
 	}
 	
 	public abstract IEntity clone(String name);
+
+	public boolean isMoved() {
+		return isMoved;
+	}
+
+	public void setMoved(boolean isMoved) {
+		this.isMoved = isMoved;
+	}
 
 }

@@ -1,15 +1,26 @@
 package shader;
 
+import static org.lwjgl.opengl.GL20.GL_LINK_STATUS;
+import static org.lwjgl.opengl.GL20.GL_VALIDATE_STATUS;
+import static org.lwjgl.opengl.GL20.glGetProgramInfoLog;
+import static org.lwjgl.opengl.GL20.glGetProgrami;
+import static org.lwjgl.opengl.GL20.glLinkProgram;
+import static org.lwjgl.opengl.GL20.glValidateProgram;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.FloatBuffer;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
+import org.lwjgl.opengl.GL32;
+import org.lwjgl.opengl.GL40;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
@@ -20,94 +31,67 @@ public abstract class ShaderProgram {
 	private int programID;
 	private int vertexShaderID;
 	private int fragmentShaderID;
+	private int geometryShaderID;
+	private int tessControlShaderID;
+	private int tessEvaluationShaderID;
+	
+	private Map<String, Integer> unfiroms;
 
 	private static FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer(16);
 
-	public ShaderProgram(String vertexFile, String fragmentFile) {
-		vertexShaderID = loadShader(vertexFile, GL20.GL_VERTEX_SHADER);
-		fragmentShaderID = loadShader(fragmentFile, GL20.GL_FRAGMENT_SHADER);
+	public ShaderProgram() {
+		this.unfiroms = new HashMap<String, Integer>();
 		programID = GL20.glCreateProgram();
-		GL20.glAttachShader(programID, vertexShaderID);
-		GL20.glAttachShader(programID, fragmentShaderID);
-		bindAttributes();
-		GL20.glLinkProgram(programID);
-		GL20.glValidateProgram(programID);
-		getAllUniformLocations();
-
 	}
-
-	protected abstract void getAllUniformLocations();
-
-	protected int getUniformLocation(String uniformName) {
-		return GL20.glGetUniformLocation(programID, uniformName);
-	}
-
-	protected void loadInt(int location, int value) {
-		GL20.glUniform1i(location, value);
-	}
-
-	protected void loadFloat(int location, float value) {
-		GL20.glUniform1f(location, value);
-	}
-
-	protected void loadVector(int location, Vector3f vector) {
-		GL20.glUniform3f(location, vector.x, vector.y, vector.z);
-	}
-
-	protected void load2DVector(int location, Vector2f vector) {
-		GL20.glUniform2f(location, vector.x, vector.y);
-	}
-
-	protected void load4DVector(int location, Vector4f vector) {
-		GL20.glUniform4f(location, vector.x, vector.y, vector.z, vector.w);
-	}
-
-	protected void loadBoolean(int location, boolean value) {
-		float toLoad = 0;
-		if (value) {
-			toLoad = 1;
-		}
-		GL20.glUniform1f(location, toLoad);
-	}
-
-	protected void loadMatrix(int location, Matrix4f matrix) {
-		matrix.store(matrixBuffer);
-		matrixBuffer.flip();
-		GL20.glUniformMatrix4(location, false, matrixBuffer);
-	}
-
+	
 	public void start() {
-
 		GL20.glUseProgram(programID);
-
+		bindAttributes();
 	}
 
 	public void stop() {
-
 		GL20.glUseProgram(0);
-
 	}
+	
+	public void compileShader()	{
+		glLinkProgram(programID);
 
-	public void clean() {
-		stop();
-		GL20.glDetachShader(programID, vertexShaderID);
-		GL20.glDetachShader(programID, fragmentShaderID);
-		GL20.glDeleteShader(vertexShaderID);
-		GL20.glDeleteShader(fragmentShaderID);
-		GL20.glDeleteProgram(programID);
+		if(glGetProgrami(programID, GL_LINK_STATUS) == 0)
+		{
+			System.out.println(this.getClass().getName() + " " + glGetProgramInfoLog(programID, 1024));
+			System.exit(1);
+		}
+		
+		glValidateProgram(programID);
+		
+		if(glGetProgrami(programID, GL_VALIDATE_STATUS) == 0)
+		{
+			System.err.println(this.getClass().getName() +  " " + glGetProgramInfoLog(programID, 1024));
+			System.exit(1);
+		}
 	}
-
-	protected abstract void bindAttributes();
-
-	protected void bindAttribute(int attribue, String variableName) {
-		GL20.glBindAttribLocation(programID, attribue, variableName);
+	
+	protected void addVertexShader(String text) {
+		vertexShaderID = loadShader(text, GL20.GL_VERTEX_SHADER);
 	}
-
-	protected void bindFragOutput(int attachment, String variableName) {
-		GL30.glBindFragDataLocation(programID, attachment, variableName);
+	
+	protected void addFragmentShader(String text) {
+		fragmentShaderID = loadShader(text, GL20.GL_FRAGMENT_SHADER);
 	}
-
-	private static int loadShader(String file, int type) {
+	
+	protected void addGeometryShader(String text) {
+		geometryShaderID = loadShader(text, GL32.GL_GEOMETRY_SHADER);
+	}
+	
+	protected void addTessellationControlShader(String text) {
+		tessControlShaderID = loadShader(text, GL40.GL_TESS_CONTROL_SHADER);
+	}
+	
+	protected void addTessellationEvaluationShader(String text) {
+		tessEvaluationShaderID = loadShader(text, GL40.GL_TESS_EVALUATION_SHADER);
+	}
+	
+	private int loadShader(String file, int type) {
 		StringBuilder shaderSource = new StringBuilder();
 		try {
 			InputStream in = Class.class.getResourceAsStream(file);
@@ -131,8 +115,95 @@ public abstract class ShaderProgram {
 			System.err.println("Couldn't compile shader!");
 			System.exit(-1);
 		}
+		GL20.glAttachShader(programID, shaderID);
 		return shaderID;
 
+	}
+
+	protected abstract void getAllUniformLocations();
+	
+	protected void addUniform(String name) {		
+		int uniformLocation = this.getUniformLocation(name);
+		
+		if (uniformLocation == 0xFFFFFFFF)
+		{
+			System.err.println(this.getClass().getName() + " Error: Could not find uniform: " + name);
+			new Exception().printStackTrace();
+			System.exit(1);
+		}
+		
+		this.unfiroms.put(name, uniformLocation);
+	}
+
+	protected int getUniformLocation(String uniformName) {
+		return GL20.glGetUniformLocation(programID, uniformName);
+	}
+
+	protected void loadInt(String name, int value) {
+		int uniformLocation = this.unfiroms.get(name);
+		GL20.glUniform1i(uniformLocation, value);
+	}
+
+	protected void loadFloat(String name, float value) {
+		int uniformLocation = this.unfiroms.get(name);
+		GL20.glUniform1f(uniformLocation, value);
+	}
+
+	protected void loadVector(String name, Vector3f vector) {
+		int uniformLocation = this.unfiroms.get(name);
+		GL20.glUniform3f(uniformLocation, vector.x, vector.y, vector.z);
+	}
+
+	protected void load2DVector(String name, Vector2f vector) {
+		int uniformLocation = this.unfiroms.get(name);
+		GL20.glUniform2f(uniformLocation, vector.x, vector.y);
+	}
+
+	protected void load4DVector(String name, Vector4f vector) {
+		int uniformLocation = this.unfiroms.get(name);
+		GL20.glUniform4f(uniformLocation, vector.x, vector.y, vector.z, vector.w);
+	}
+
+	protected void loadBoolean(String name, boolean value) {
+		int uniformLocation = this.unfiroms.get(name);
+		float toLoad = 0;
+		if (value) {
+			toLoad = 1;
+		}
+		GL20.glUniform1f(uniformLocation, toLoad);
+	}
+
+	protected void loadMatrix(String name, Matrix4f matrix) {
+		int uniformLocation = this.unfiroms.get(name);
+		matrix.store(matrixBuffer);
+		matrixBuffer.flip();
+		GL20.glUniformMatrix4(uniformLocation, false, matrixBuffer);
+	}
+	
+	protected abstract void bindAttributes();
+
+	protected void bindAttribute(int attribue, String variableName) {
+		GL20.glBindAttribLocation(programID, attribue, variableName);
+	}
+
+	protected void bindFragOutput(int attachment, String variableName) {
+		GL30.glBindFragDataLocation(programID, attachment, variableName);
+	}
+
+
+	public void clean() {
+		stop();
+		GL20.glDetachShader(programID, vertexShaderID);
+		GL20.glDetachShader(programID, fragmentShaderID);
+		GL20.glDetachShader(programID, geometryShaderID);
+		GL20.glDetachShader(programID, tessControlShaderID);
+		GL20.glDetachShader(programID, tessEvaluationShaderID);
+		GL20.glDeleteShader(vertexShaderID);
+		GL20.glDeleteShader(fragmentShaderID);
+		GL20.glDeleteShader(geometryShaderID);
+		GL20.glDeleteShader(tessControlShaderID);
+		GL20.glDeleteShader(tessEvaluationShaderID);
+		GL20.glDeleteProgram(programID);
 	}
 
 }

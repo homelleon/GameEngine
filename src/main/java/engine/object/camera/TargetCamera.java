@@ -11,7 +11,7 @@ import object.entity.player.IPlayer;
 import object.input.KeyboardGame;
 import object.input.MouseGame;
 
-public class TargetCamera implements ICamera {
+public class TargetCamera extends BaseCamera implements ICamera {
 
 	/*
 	 * CameraPlayer - камера для игрока
@@ -31,28 +31,14 @@ public class TargetCamera implements ICamera {
 
 	private float distanceFromPlayer = 50;
 	private float angleAroundPlayer = 0;
-
-	private Vector3f position = new Vector3f(0, 0, 0);
-
-	private float pitch = 20;
-	private float yaw = 0;
-	private float roll;
 	
-	private float moveOffsetY = 0;
+	private float moveOffsetY = 5;
 	private float moveOffsetX = 0;
-
-	private String name;
 
 	private IPlayer player;
 
-	public boolean isUnderWater = false;
-
-	@Override
-	public String getName() {
-		return name;
-	}
-
-	public TargetCamera(IPlayer player, String name) {
+	public TargetCamera(String name, IPlayer player) {
+		super(name, new Vector3f(0,0,0));
 		this.player = player;
 		this.name = name;
 		if(Loop.getInstance().getEditMode()) {
@@ -61,26 +47,11 @@ public class TargetCamera implements ICamera {
 	}
 
 	@Override
-	public void setPosition(float posX, float posY, float posZ) {
-		this.position.x = posX;
-		this.position.y = posY;
-		this.position.z = posZ;
-	}
-
-	// установить тангаж
-	@Override
-	public void setPitch(float anglePitch) {
-		this.pitch = anglePitch;
-	}
-
-	// установить рысканье
-	@Override
-	public void setYaw(float angleYaw) {
-		this.yaw = angleYaw;
-	}
-
-	@Override
 	public void move() {
+		super.move();
+		if(player.isMoved()) {
+			this.isMoved = true;
+		}
 		calculateZoom();
 		calculatePitchAndAngle();
 		calculateOffset();
@@ -88,35 +59,6 @@ public class TargetCamera implements ICamera {
 		float verticalDistance = calculateVerticalDistance();
 		calculateCameraPosition(horizontalDistance, verticalDistance);
 		this.yaw = 180 - (player.getRotation().getY() + angleAroundPlayer);
-	}
-
-	@Override
-	public Vector3f getPosition() {
-		return position;
-	}
-
-	// вернуть тангаж
-	@Override
-	public float getPitch() {
-		return pitch;
-	}
-
-	// инвертировать тангаж
-	@Override
-	public void invertPitch() {
-		this.pitch = -pitch;
-	}
-
-	// вернуть рысканье
-	@Override
-	public float getYaw() {
-		return yaw;
-	}
-
-	// вернуть крен
-	@Override
-	public float getRoll() {
-		return roll;
 	}
 
 	// вычислить позицию камеры относительно игрока
@@ -147,15 +89,19 @@ public class TargetCamera implements ICamera {
 			}
 			if(KeyboardGame.isKeyDown(Keyboard.KEY_UP) && this.moveOffsetY < maxYOffset) {
 				this.moveOffsetY += this.offsetSpeed;
+				this.isMoved = true;
 			}
 			if(KeyboardGame.isKeyDown(Keyboard.KEY_DOWN) && this.moveOffsetY > minYOffset) {
 				this.moveOffsetY -= this.offsetSpeed;
+				this.isMoved = true;
 			}
 			if(KeyboardGame.isKeyDown(Keyboard.KEY_LEFT) && this.moveOffsetX > minXOffset) {
 				this.moveOffsetX -= this.offsetSpeed;
+				this.isMoved = true;
 			}
 			if(KeyboardGame.isKeyDown(Keyboard.KEY_RIGHT) && this.moveOffsetX < maxXOffset) {
 				this.moveOffsetX += this.offsetSpeed;
+				this.isMoved = true;
 			}
 		}
 	}
@@ -196,37 +142,6 @@ public class TargetCamera implements ICamera {
 		}
 	}
 
-	// переключить повороты камеры
-	@Override
-	public void switchToFace(int faceIndex) {
-		switch (faceIndex) {
-		case 0:
-			pitch = 0;
-			yaw = 90;
-			break;
-		case 1:
-			pitch = 0;
-			yaw = -90;
-			break;
-		case 2:
-			pitch = -90;
-			yaw = 180;
-			break;
-		case 3:
-			pitch = 90;
-			yaw = 180;
-			break;
-		case 4:
-			pitch = 0;
-			yaw = 180;
-			break;
-		case 5:
-			pitch = 0;
-			yaw = 0;
-			break;
-		}
-	}
-
 	@Override
 	public Matrix4f getViewMatrix() {
 		return null;
@@ -240,6 +155,12 @@ public class TargetCamera implements ICamera {
 	@Override
 	public Matrix4f getProjectionViewMatrix() {
 		return null;
+	}
+
+	@Override
+	public void switchToFace(int faceIndex) {
+		// do nothing
+		
 	}
 
 }

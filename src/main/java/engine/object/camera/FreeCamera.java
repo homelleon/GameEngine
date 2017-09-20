@@ -8,81 +8,17 @@ import org.lwjgl.util.vector.Vector3f;
 import core.display.DisplayManager;
 import core.settings.EngineSettings;
 
-public class FreeCamera implements ICamera {
+public class FreeCamera extends BaseCamera implements ICamera {
 
-	/*
-	 * CameraFree - свободная камера
-	 * 
-	 */
-
-	private static final float SPEED = 100;
-	private static final float RUN_SPEED = 4;
-
-	private Vector3f position = new Vector3f(0, 0, 0);
-
-	private float pitch = 20;
-	private float yaw = 0;
-	private float roll;
-
-	private float currentForwardSpeed = 0;
-	private float currentStrafeSpeed = 0;
-	private float currentTurnSpeed = 0;
-	private float currentPitchSpeed = 0;
-
-	private String name;
-
-	public boolean perspectiveMode = false;
-	public boolean isUnderWater = false;
-
-	@Override
-	public String getName() {
-		return name;
-	}
-
-	public FreeCamera(float posX, float posY, float posZ) {
-		this.setPosition(posX, posY, posZ);
-		this.name = "FreeCamera";
-	}
-
-	public FreeCamera(String name, float posX, float posY, float posZ) {
-		this.setPosition(posX, posY, posZ);
+	public FreeCamera(String name, Vector3f position) {
+		super(name, position);
+		this.setPosition(position);
 		this.name = name;
 	}
-
-	// установить позицию камеры
-	@Override
-	public void setPosition(float posX, float posY, float posZ) {
-		this.position.x = posX;
-		this.position.y = posY;
-		this.position.z = posZ;
-	}
-
-	// установить тангаж
-	@Override
-	public void setPitch(float anglePitch) {
-		this.pitch = anglePitch;
-	}
-
-	// установить рысканье
-	@Override
-	public void setYaw(float angleYaw) {
-		this.yaw = angleYaw;
-	}
-
-	public void increaseRotation(float dx, float dy, float dz) {
-		this.roll += dx;
-		this.yaw += dy;
-		this.pitch += dz;
-	}
-
-	public void increasePosition(float dx, float dy, float dz) {
-		this.position.x += dx;
-		this.position.y += dy;
-		this.position.z += dz;
-	}
-
+	
 	@Override
 	public void move() {
+		super.move();
 		chekInputs();
 		float yawAngle = currentTurnSpeed * DisplayManager.getFrameTimeSeconds();
 		float pitchAngle = currentPitchSpeed * DisplayManager.getFrameTimeSeconds();
@@ -99,115 +35,56 @@ public class FreeCamera implements ICamera {
 				+ strafeDistance * Math.cos(Math.toRadians(-yaw + 90)));
 
 		increasePosition(dx, dy, dz);
-
 	}
-
-	// проверка ввода с клавиатуры
-	private void chekInputs() {
-		if (Keyboard.isKeyDown(EngineSettings.KEY_EDITOR_CENTER_VIEW)) {
-			roll = 0;
-			pitch = 0;
-		}
-
-		float runSpeed = 1;
+	
+	
+	protected void chekInputs() {
+		float startRunSpeed = 1;
 
 		if (Keyboard.isKeyDown(EngineSettings.KEY_EDITOR_ACCELERATE)) {
-			runSpeed = RUN_SPEED;
+			runSpeed = startRunSpeed;
+			isMoved = true;
 		}
 
 		if (Keyboard.isKeyDown(EngineSettings.KEY_EDITOR_MOVE_FORWARD)) {
-			currentForwardSpeed = -SPEED * runSpeed;
+			currentForwardSpeed = -speed * runSpeed;
+			isMoved = true;
 		} else if (Keyboard.isKeyDown(EngineSettings.KEY_EDITOR_MOVE_BACKWARD)) {
-			currentForwardSpeed = SPEED * runSpeed;
-			;
+			currentForwardSpeed = speed * runSpeed;
+			isMoved = true;
 		} else {
 			currentForwardSpeed = 0;
 		}
 
 		if (Keyboard.isKeyDown(EngineSettings.KEY_EDITOR_MOVE_LEFT)) {
-			currentStrafeSpeed = -SPEED * runSpeed;
+			currentStrafeSpeed = -speed * runSpeed;
+			isMoved = true;
 		} else if (Keyboard.isKeyDown(EngineSettings.KEY_EDITOR_MOVE_RIGHT)) {
-			currentStrafeSpeed = SPEED * runSpeed;
+			currentStrafeSpeed = speed * runSpeed;
+			isMoved = true;
 		} else {
 			currentStrafeSpeed = 0;
 		}
 
 		if (Keyboard.isKeyDown(EngineSettings.KEY_EDITOR_MOVE_UP)) {
 			position.y += 0.5f;
+			isMoved = true;
 		}
 
 		if (Keyboard.isKeyDown(EngineSettings.KEY_EDITOR_MOVE_DOWN)) {
 			position.y -= 0.5f;
+			isMoved = true;
 		}
-
+		
 		if (Mouse.isButtonDown(2)) {
-			this.currentTurnSpeed = SPEED * Mouse.getDX() * EngineSettings.MOUSE_X_SPEED * runSpeed;
-			this.currentPitchSpeed = -SPEED * Mouse.getDY() * EngineSettings.MOUSE_Y_SPEED * runSpeed;
+			this.currentTurnSpeed = speed * Mouse.getDX() * EngineSettings.MOUSE_X_SPEED * runSpeed;
+			this.currentPitchSpeed = -speed * Mouse.getDY() * EngineSettings.MOUSE_Y_SPEED * runSpeed;
 		} else {
 			currentTurnSpeed = 0;
 			currentPitchSpeed = 0;
 		}
 	}
 
-	@Override
-	public Vector3f getPosition() {
-		return position;
-	}
-
-	// вернуть тангаж
-	@Override
-	public float getPitch() {
-		return pitch;
-	}
-
-	// инвертировать тангаж
-	@Override
-	public void invertPitch() {
-		this.pitch = -pitch;
-	}
-
-	// вернуть рысканье
-	@Override
-	public float getYaw() {
-		return yaw;
-	}
-
-	// вернуть крен
-	@Override
-	public float getRoll() {
-		return roll;
-	}
-
-	// переключить между поворотами камеры
-	@Override
-	public void switchToFace(int faceIndex) {
-		switch (faceIndex) {
-		case 0:
-			pitch = 0;
-			yaw = 90;
-			break;
-		case 1:
-			pitch = 0;
-			yaw = -90;
-			break;
-		case 2:
-			pitch = -90;
-			yaw = 180;
-			break;
-		case 3:
-			pitch = 90;
-			yaw = 180;
-			break;
-		case 4:
-			pitch = 0;
-			yaw = 180;
-			break;
-		case 5:
-			pitch = 0;
-			yaw = 0;
-			break;
-		}
-	}
 
 	@Override
 	public Matrix4f getViewMatrix() {
@@ -222,6 +99,11 @@ public class FreeCamera implements ICamera {
 	@Override
 	public Matrix4f getProjectionViewMatrix() {
 		return null;
+	}
+
+	@Override
+	public void switchToFace(int faceIndex) {
+		//do nothing		
 	}
 
 }

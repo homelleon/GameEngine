@@ -34,6 +34,7 @@ public class Player extends TexturedEntity implements IPlayer {
 
 	@Override
 	public synchronized void move(Collection<ITerrain> terrains) {
+		this.isMoved = false;
 		checkInputs();
 		super.increaseRotation(0, currentTurnSpeed * DisplayManager.getFrameTimeSeconds(), 0);
 		float fowardDistance = currentForwardSpeed * DisplayManager.getFrameTimeSeconds();
@@ -77,10 +78,13 @@ public class Player extends TexturedEntity implements IPlayer {
 					&& (KeyboardGame.isKeyDown(EngineSettings.KEY_PLAYER_ACCELERATE)
 							|| Keyboard.isKeyDown(Keyboard.KEY_RSHIFT))) {
 				this.currentForwardSpeed = RUN_SPEED;
+				this.isMoved = true;
 			} else if (KeyboardGame.isKeyDown(EngineSettings.KEY_PLAYER_MOVE_FORWARD)) {
 				this.currentForwardSpeed = MOVE_SPEED;
+				this.isMoved = true;
 			} else if (KeyboardGame.isKeyDown(EngineSettings.KEY_PLAYER_MOVE_BACKWARD)) {
 				this.currentForwardSpeed = -MOVE_SPEED;
+				this.isMoved = true;
 			} else {
 				this.currentForwardSpeed = 0;
 			}
@@ -89,20 +93,25 @@ public class Player extends TexturedEntity implements IPlayer {
 					&& (KeyboardGame.isKeyDown(EngineSettings.KEY_PLAYER_ACCELERATE)
 							|| Keyboard.isKeyDown(Keyboard.KEY_RSHIFT))) {
 				this.currentStrafeSpeed = RUN_SPEED;
+				this.isMoved = true;
 			} else if ((KeyboardGame.isKeyDown(EngineSettings.KEY_PLAYER_MOVE_RIGHT))
 					&& (KeyboardGame.isKeyDown(EngineSettings.KEY_PLAYER_ACCELERATE)
 							|| Keyboard.isKeyDown(Keyboard.KEY_RSHIFT))) {
 				this.currentStrafeSpeed = -RUN_SPEED;
+				this.isMoved = true;
 			} else if (KeyboardGame.isKeyDown(EngineSettings.KEY_PLAYER_MOVE_LEFT)) {
 				this.currentStrafeSpeed = MOVE_SPEED;
+				this.isMoved = true;
 			} else if (KeyboardGame.isKeyDown(EngineSettings.KEY_PLAYER_MOVE_RIGHT)) {
 				this.currentStrafeSpeed = -MOVE_SPEED;
+				this.isMoved = true;
 			} else {
 				this.currentStrafeSpeed = 0;
 			}
 
 			if (KeyboardGame.isKeyDown(EngineSettings.KEY_PLAYER_JUMP)) {
 				jump();
+				this.isMoved = true;
 			}
 		}
 

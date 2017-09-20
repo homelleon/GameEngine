@@ -16,11 +16,6 @@ public class AnimatedModelShader extends ShaderProgram {
 	private static final String VERTEX_SHADER = EngineSettings.SHADERS_ANIMATION_PATH + "animatedEntityVertexShader.glsl";
 	private static final String FRAGMENT_SHADER = EngineSettings.SHADERS_ANIMATION_PATH + "animatedEntityFragmentShader.glsl";
 
-	private int location_projectionViewMatrix;
-	private int location_lightDirection;
-	private int location_jointTransforms[];
-	private int location_diffuseMap;
-
 	/**
 	 * Creates the shader program for the {@link AnimatedModelRenderer} by
 	 * loading up the vertex and fragment shader code files. It also gets the
@@ -28,17 +23,19 @@ public class AnimatedModelShader extends ShaderProgram {
 	 * the diffuse texture will be sampled from texture unit 0.
 	 */
 	public AnimatedModelShader() {
-		super(VERTEX_SHADER, FRAGMENT_SHADER);
-		connectTextureUnits();
+		super();
+		addVertexShader(VERTEX_SHADER);
+		addFragmentShader(FRAGMENT_SHADER);
+		compileShader();
 	}
 
 	@Override
-	protected void getAllUniformLocations() {
-		this.location_projectionViewMatrix = super.getUniformLocation("projectionViewMatrix");
-		this.location_lightDirection = super.getUniformLocation("lightDirection");
-		this.location_diffuseMap = super.getUniformLocation("diffuseMap");
+	public void getAllUniformLocations() {
+		super.addUniform("projectionViewMatrix");
+		super.addUniform("lightDirection");
+		super.addUniform("diffuseMap");
 		for (int i = 0; i < EngineSettings.MAX_LIGHTS; i++) {
-			this.location_jointTransforms[i] = super.getUniformLocation("jointTransforms[" + i + "]");
+			super.addUniform("jointTransforms[" + i + "]");
 		}
 	}
 
@@ -52,20 +49,20 @@ public class AnimatedModelShader extends ShaderProgram {
 	}
 
 	public void loadprojectionViewMatrix(Matrix4f projectionViewMatrix) {
-		super.loadMatrix(location_projectionViewMatrix, projectionViewMatrix);
+		super.loadMatrix("projectionViewMatrix", projectionViewMatrix);
 	}
 
 	public void loadLightDirection(Vector3f direction) {
-		super.loadVector(location_lightDirection, direction);
+		super.loadVector("lightDirection", direction);
 	}
 
 	private void loadDisffuseMap() {
-		super.loadInt(location_diffuseMap, DIFFUSE_TEX_UNIT);
+		super.loadInt("diffuseMap", DIFFUSE_TEX_UNIT);
 	}
 
 	public void loadJointTransforms(Matrix4f[] jointTransforms) {
 		for (int i = 0; i < MAX_JOINTS; i++) {
-			super.loadMatrix(location_jointTransforms[i], jointTransforms[i]);
+			super.loadMatrix("jointTransforms["+i+"]", jointTransforms[i]);
 		}
 	}
 

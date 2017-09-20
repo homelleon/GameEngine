@@ -36,7 +36,7 @@ public class EntityManager extends AbstractManager<IEntity> implements IEntityMa
 	@Override
 	public void addPointedList(Collection<IEntity> pointedList) {
 		pointedList.forEach(entity -> {
-			entity.setIsChosen(true);
+			entity.setChosen(true);
 			this.pointedEntities.add(entity);
 		});
 	}
@@ -53,7 +53,7 @@ public class EntityManager extends AbstractManager<IEntity> implements IEntityMa
 	@Override
 	public void addPointed(IEntity entity) {
 		if (entity != null) {
-			entity.setIsChosen(true);
+			entity.setChosen(true);
 			this.pointedEntities.add(entity);
 		}
 	}
@@ -88,7 +88,7 @@ public class EntityManager extends AbstractManager<IEntity> implements IEntityMa
 	@Override
 	public void clearPointed() {
 		this.pointedEntities
-			.forEach(entity -> entity.setIsChosen(false));
+			.forEach(entity -> entity.setChosen(false));
 		this.pointedEntities.clear();
 	}
 

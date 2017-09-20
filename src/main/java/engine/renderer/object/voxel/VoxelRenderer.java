@@ -1,7 +1,6 @@
 package renderer.object.voxel;
 
 import java.util.AbstractMap.SimpleEntry;
-import java.util.function.Function;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;

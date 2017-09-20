@@ -3,7 +3,7 @@ package object.camera;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 
-public class CubeMapCamera implements ICamera {
+public class CubeMapCamera extends BaseCamera implements ICamera {
 
 	/*
 	 * CameraCubeMap - камера для записи кубической текстуры окружения
@@ -19,29 +19,16 @@ public class CubeMapCamera implements ICamera {
 	private Matrix4f viewMatrix = new Matrix4f();
 	private Matrix4f projectionViewMatrix = new Matrix4f();
 
-	private Vector3f position = new Vector3f(0, 0, 0);
-
-	private float pitch = 0;
-	private float yaw;
-	private float roll = 0;
-
-	private String name = "CubeCamera";
-
-	public CubeMapCamera(Vector3f position) {
+	public CubeMapCamera(String name, Vector3f position) {
+		super(name, position);
+		this.pitch = 0;
 		this.position = position;
 		createProjectionMatrix();
 	}
-
+	
 	@Override
-	public void setPosition(float posX, float posY, float posZ) {
-		this.position.x = posX;
-		this.position.y = posY;
-		this.position.z = posZ;
-	}
-
-	@Override
-	public Vector3f getPosition() {
-		return position;
+	public void move() {
+		// nothing
 	}
 
 	@Override
@@ -120,52 +107,6 @@ public class CubeMapCamera implements ICamera {
 		Matrix4f.translate(negativeCameraPos, viewMatrix, viewMatrix);
 
 		Matrix4f.mul(projectionMatrix, viewMatrix, projectionViewMatrix);
-	}
-
-	@Override
-	public String getName() {
-		return this.name;
-	}
-
-	// установить тангаж
-	@Override
-	public void setPitch(float anglePitch) {
-		this.pitch = anglePitch;
-	}
-
-	// установить рысканье
-	@Override
-	public void setYaw(float angleYaw) {
-		this.yaw = angleYaw;
-	}
-
-	@Override
-	public void move() {
-		// nothing
-	}
-
-	// вернуть тангаж
-	@Override
-	public float getPitch() {
-		return pitch;
-	}
-
-	// инвертировать тангаж
-	@Override
-	public void invertPitch() {
-		this.pitch = -pitch;
-	}
-
-	// вернуть рыскание
-	@Override
-	public float getYaw() {
-		return yaw;
-	}
-
-	// вернуть крен
-	@Override
-	public float getRoll() {
-		return roll;
 	}
 
 }

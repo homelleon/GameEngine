@@ -228,7 +228,7 @@ public class DecorEntityRenderer implements IEntityRenderer {
 		shader.loadTranformationMatrix(transformationMatrix);
 		Vector2f textureOffset = entity.getTextureOffset();
 		shader.loadOffset(textureOffset.x, textureOffset.y);
-		shader.loadManipulateVariables(entity.getIsChosen());
+		shader.loadManipulateVariables(entity.isChosen());
 	}
 
 }
