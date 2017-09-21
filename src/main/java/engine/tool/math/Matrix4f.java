@@ -49,19 +49,19 @@ public class Matrix4f {
 	
 	public Matrix4f translate(Vec3f translation)
 	{
-		m[0][0] = 1; m[0][1] = 0; m[0][2] = 0; m[0][3] = translation.getX();
-		m[1][0] = 0; m[1][1] = 1; m[1][2] = 0; m[1][3] = translation.getY();
-		m[2][0] = 0; m[2][1] = 0; m[2][2] = 1; m[2][3] = translation.getZ();
-		m[3][0] = 0; m[3][1] = 0; m[3][2] = 0; m[3][3] = 1;
+		m[3][0] += m[0][0] * translation.x + m[1][0] * translation.y + m[2][0] * translation.z;
+		m[3][1] += m[0][1] * translation.x + m[1][1] * translation.y + m[2][1] * translation.z;
+		m[3][2] += m[0][2] * translation.x + m[1][2] * translation.y + m[2][2] * translation.z;
+		m[3][3] += m[0][3] * translation.x + m[1][3] * translation.y + m[2][3] * translation.z;
 	
 		return this;
 	}
 	
-	public Matrix4f translate(Vec2f translation) {
-		m[0][0] = 1; m[0][1] = 0; m[0][2] = 0; m[0][3] = translation.getX();
-		m[1][0] = 0; m[1][1] = 1; m[1][2] = 0; m[1][3] = translation.getY();
-		m[2][0] = 0; m[2][1] = 0; m[2][2] = 1; m[2][3] = 0;
-		m[3][0] = 0; m[3][1] = 0; m[3][2] = 0; m[3][3] = 1;
+	public Matrix4f translate(Vec2f translation) {		
+		m[3][0] += m[0][0] * translation.x + m[1][0] * translation.y;
+		m[3][1] += m[0][1] * translation.x + m[1][1] * translation.y;
+		m[3][2] += m[0][2] * translation.x + m[1][2] * translation.y;
+		m[3][3] += m[0][3] * translation.x + m[1][3] * translation.y;
 		
 		return this;
 	}
@@ -163,11 +163,19 @@ public class Matrix4f {
 	
 	public Matrix4f scale(Vec3f scaling)
 	{
-		m[0][0] = scaling.getX(); 	m[0][1] = 0; 				m[0][2] = 0; 				m[0][3] = 0;
-		m[1][0] = 0; 			 	m[1][1] = scaling.getY();	m[1][2] = 0; 				m[1][3] = 0;
-		m[2][0] = 0; 				m[2][1] = 0; 				m[2][2] = scaling.getZ(); 	m[2][3] = 0;
-		m[3][0] = 0; 				m[3][1] = 0; 				m[3][2] = 0; 				m[3][3] = 1;
-	
+		m[0][0] = m[0][0] * scaling.x;
+		m[0][1] = m[0][1] * scaling.x;
+		m[0][2] = m[0][2] * scaling.x;
+		m[0][3] = m[0][3] * scaling.x;
+		m[1][0] = m[1][0] * scaling.y;
+		m[1][1] = m[1][1] * scaling.y;
+		m[1][2] = m[1][2] * scaling.y;
+		m[1][3] = m[1][3] * scaling.y;
+		m[2][0] = m[2][0] * scaling.z;
+		m[2][1] = m[2][1] * scaling.z;
+		m[2][2] = m[2][2] * scaling.z;
+		m[2][3] = m[2][3] * scaling.z;
+		
 		return this;
 	}
 	
@@ -228,21 +236,25 @@ public class Matrix4f {
 	}
 	
 	public static Matrix4f mul(Matrix4f l, Matrix4f r){
-		
-		Matrix4f res = new Matrix4f();
-		
-		for (int i=0; i<4; i++)
-		{
-			for (int j=0; j<4; j++)
-			{
-				res.set(i, j, l.m[i][0] * r.get(0, j) + 
-							  l.m[i][1] * r.get(1, j) +
-							  l.m[i][2] * r.get(2, j) +
-							  l.m[i][3] * r.get(3, j));
-			}
-		}
-		
-		return res;
+		Matrix4f m = new Matrix4f();
+		m.m[0][0] = l.m[0][0] * r.m[0][0] + l.m[1][0] * r.m[0][1] + l.m[2][0] * r.m[0][2] + l.m[3][0] * r.m[0][3];
+		m.m[0][1] = l.m[0][1] * r.m[0][0] + l.m[1][1] * r.m[0][1] + l.m[2][1] * r.m[0][2] + l.m[3][1] * r.m[0][3];
+		m.m[0][2] = l.m[0][2] * r.m[0][0] + l.m[1][2] * r.m[0][1] + l.m[2][2] * r.m[0][2] + l.m[3][2] * r.m[0][3];
+		m.m[0][3] = l.m[0][3] * r.m[0][0] + l.m[1][3] * r.m[0][1] + l.m[2][3] * r.m[0][2] + l.m[3][3] * r.m[0][3];
+		m.m[1][0] = l.m[0][0] * r.m[1][0] + l.m[1][0] * r.m[1][1] + l.m[2][0] * r.m[1][2] + l.m[3][0] * r.m[1][3];
+		m.m[1][1] = l.m[0][1] * r.m[1][0] + l.m[1][1] * r.m[1][1] + l.m[2][1] * r.m[1][2] + l.m[3][1] * r.m[1][3];
+		m.m[1][2] = l.m[0][2] * r.m[1][0] + l.m[1][2] * r.m[1][1] + l.m[2][2] * r.m[1][2] + l.m[3][2] * r.m[1][3];
+		m.m[1][3] = l.m[0][3] * r.m[1][0] + l.m[1][3] * r.m[1][1] + l.m[2][3] * r.m[1][2] + l.m[3][3] * r.m[1][3];
+		m.m[2][0] = l.m[0][0] * r.m[2][0] + l.m[1][0] * r.m[2][1] + l.m[2][0] * r.m[2][2] + l.m[3][0] * r.m[2][3];
+		m.m[2][1] = l.m[0][1] * r.m[2][0] + l.m[1][1] * r.m[2][1] + l.m[2][1] * r.m[2][2] + l.m[3][1] * r.m[2][3];
+		m.m[2][2] = l.m[0][2] * r.m[2][0] + l.m[1][2] * r.m[2][1] + l.m[2][2] * r.m[2][2] + l.m[3][2] * r.m[2][3];
+		m.m[2][3] = l.m[0][3] * r.m[2][0] + l.m[1][3] * r.m[2][1] + l.m[2][3] * r.m[2][2] + l.m[3][3] * r.m[2][3];
+		m.m[3][0] = l.m[0][0] * r.m[3][0] + l.m[1][0] * r.m[3][1] + l.m[2][0] * r.m[3][2] + l.m[3][0] * r.m[3][3];
+		m.m[3][1] = l.m[0][1] * r.m[3][0] + l.m[1][1] * r.m[3][1] + l.m[2][1] * r.m[3][2] + l.m[3][1] * r.m[3][3];
+		m.m[3][2] = l.m[0][2] * r.m[3][0] + l.m[1][2] * r.m[3][1] + l.m[2][2] * r.m[3][2] + l.m[3][2] * r.m[3][3];
+		m.m[3][3] = l.m[0][3] * r.m[3][0] + l.m[1][3] * r.m[3][1] + l.m[2][3] * r.m[3][2] + l.m[3][3] * r.m[3][3];
+
+		return m;
 	}
 	
 	public Quaternion mul(Quaternion v)

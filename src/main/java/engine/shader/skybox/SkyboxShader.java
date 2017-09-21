@@ -58,7 +58,7 @@ public class SkyboxShader extends ShaderProgram {
 		if (!EngineMain.getIsEnginePaused()) {
 			rotation += ROTATE_SPEED * DisplayManager.getFrameTimeSeconds();
 		}
-		matrix.rotate(new Vec3f(0, rotation, 0));
+		matrix.rotate((float) Math.toRadians(rotation), new Vec3f(0, 1, 0));
 		super.loadMatrix("viewMatrix", matrix);
 	}
 

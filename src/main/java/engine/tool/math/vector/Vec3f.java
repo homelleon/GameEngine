@@ -110,6 +110,17 @@ public class Vec3f extends Vec{
 		return this;
 	}
 	
+	public static Vec3f normalize(Vec3f vec)
+	{
+		float length = vec.length();
+		
+		vec.x /= length;
+		vec.y /= length;
+		vec.z /= length;
+		
+		return vec;
+	}
+	
 	public Vec3f rotate(float angle, Vec3f axis)
 	{
 		float sinHalfAngle = (float)Math.sin(Math.toRadians(angle / 2));
@@ -160,7 +171,7 @@ public class Vec3f extends Vec{
 	
 	public static Vec3f sub(Vec3f l, Vec3f r)
 	{
-		return new Vec3f(l.x - r.getX(), l.y - r.getY(), l.z - r.getZ());
+		return new Vec3f(l.x - r.x, l.y - r.y, l.z - r.z);
 	}
 	
 	public Vec3f mul(Vec3f r)

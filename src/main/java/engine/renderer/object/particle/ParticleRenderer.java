@@ -10,6 +10,7 @@ import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.opengl.GL31;
+import org.lwjgl.util.vector.Vector3f;
 
 import object.camera.ICamera;
 import object.model.raw.RawModel;
@@ -33,7 +34,6 @@ public class ParticleRenderer {
 	private RawModel quad;
 	private ParticleShader shader;
 
-	private Loader loader;
 	private int vbo;
 	private int pointer = 0;
 
@@ -109,7 +109,7 @@ public class ParticleRenderer {
 		modelMatrix.m[2][1] = viewMatrix.m[1][2];
 		modelMatrix.m[2][2] = viewMatrix.m[2][2];
 		Matrix4f modelViewMatrix = Matrix4f.mul(viewMatrix, modelMatrix);
-		modelViewMatrix.rotate(new Vec3f(0, 0, rotation));
+		modelViewMatrix.rotate((float) Math.toRadians(rotation), new Vec3f(0, 0, 1));
 		modelViewMatrix.scale(new Vec3f(scale, scale, scale));
 		storeMatrixData(modelViewMatrix, vboData);
 	}
