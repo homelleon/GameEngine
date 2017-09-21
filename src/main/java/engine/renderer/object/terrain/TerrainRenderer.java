@@ -17,7 +17,7 @@ import object.texture.terrain.pack.TerrainTexturePack;
 import shader.terrain.TerrainShader;
 import tool.math.Maths;
 import tool.math.Matrix4f;
-import tool.math.vector.Vec3f;
+import tool.math.vector.Vector3f;
 
 public class TerrainRenderer {
 
@@ -114,7 +114,7 @@ public class TerrainRenderer {
 
 	private void loadModelMatrix(ITerrain terrain) {
 		Matrix4f transformationMatrix = Maths
-				.createTransformationMatrix(new Vec3f(terrain.getX(), 0, terrain.getZ()), 0, 0, 0, 1);
+				.createTransformationMatrix(new Vector3f(terrain.getX(), 0, terrain.getZ()), 0, 0, 0, 1);
 		shader.loadTranformationMatrix(transformationMatrix);
 	}
 

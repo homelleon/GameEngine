@@ -6,7 +6,7 @@ import java.util.List;
 import object.Moveable;
 import object.gui.Hideable;
 import object.gui.gui.IGUI;
-import tool.math.vector.Vec2f;
+import tool.math.vector.Vector2f;
 
 /**
  * Group of user interface objects to solve the same task.
@@ -15,7 +15,7 @@ import tool.math.vector.Vec2f;
  * @see GUIGroup
  *
  */
-public interface IGUIGroup extends Hideable, Moveable<Vec2f> {
+public interface IGUIGroup extends Hideable, Moveable<Vector2f> {
 
 	/**
 	 * Returns name of the user interface group.

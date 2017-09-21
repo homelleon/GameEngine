@@ -2,7 +2,7 @@ package manager.voxel;
 
 import object.voxel.Block;
 import object.voxel.Chunk;
-import tool.math.vector.Vec3f;
+import tool.math.vector.Vector3f;
 import tool.math.vector.Vector3i;
 
 /**
@@ -55,21 +55,21 @@ public interface IChunkManager {
 	 * @param indexPosition
 	 *            {@link Vector3i} value of index position in the chunk manager 
 	 *            position
-	 * @return {@link Vec3f} value of chunk world coordinate position
+	 * @return {@link Vector3f} value of chunk world coordinate position
 	 */
-	Vec3f getChunkPosition(Vector3i indexPosition);
+	Vector3f getChunkPosition(Vector3i indexPosition);
 
 	/**
 	 * Returns chunk world position by its index in array.
 	 * 
 	 * @param index
 	 *            {@link Integer} value of index in array
-	 * @return {@link Vec3f} value of chunk position in world coordinate
+	 * @return {@link Vector3f} value of chunk position in world coordinate
 	 *         space
 	 */
-	Vec3f getChunkPositionByChunkIndex(int index);
+	Vector3f getChunkPositionByChunkIndex(int index);
 	
-	Vec3f getChunkPositionByBlockIndex(int index);
+	Vector3f getChunkPositionByBlockIndex(int index);
 	
 
 	/**
@@ -91,14 +91,14 @@ public interface IChunkManager {
 	 *            {@link Integer} value of chunk array index
 	 * @param indexPosition
 	 *            {@link Vector3i} value of block 3d index position in chunk
-	 * @return {@link Vec3f} value of block position in world coordinates
+	 * @return {@link Vector3f} value of block position in world coordinates
 	 *         space
 	 */
-	Vec3f getBlockPosition(int chunkIndex, Vector3i indexPosition);
+	Vector3f getBlockPosition(int chunkIndex, Vector3i indexPosition);
 	
-	Vec3f getBlockPosition(int chunkIndex, int blockIndex);
+	Vector3f getBlockPosition(int chunkIndex, int blockIndex);
 	
-	Vec3f getBlockPositionByBlockIndex(int index);	
+	Vector3f getBlockPositionByBlockIndex(int index);	
 	
 	Vector3i getBlockIndexVector(int index);	
 

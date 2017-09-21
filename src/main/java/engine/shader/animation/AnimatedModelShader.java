@@ -4,7 +4,7 @@ import core.settings.EngineSettings;
 import renderer.object.animation.AnimatedModelRenderer;
 import shader.ShaderProgram;
 import tool.math.Matrix4f;
-import tool.math.vector.Vec3f;
+import tool.math.vector.Vector3f;
 
 public class AnimatedModelShader extends ShaderProgram {
 
@@ -52,7 +52,7 @@ public class AnimatedModelShader extends ShaderProgram {
 		super.loadMatrix("projectionViewMatrix", projectionViewMatrix);
 	}
 
-	public void loadLightDirection(Vec3f direction) {
+	public void loadLightDirection(Vector3f direction) {
 		super.loadVector("lightDirection", direction);
 	}
 

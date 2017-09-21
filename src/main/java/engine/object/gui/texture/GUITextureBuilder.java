@@ -4,13 +4,13 @@ import org.newdawn.slick.opengl.Texture;
 
 import core.settings.EngineSettings;
 import renderer.loader.Loader;
-import tool.math.vector.Vec2f;
+import tool.math.vector.Vector2f;
 
 public class GUITextureBuilder implements IGUITextureBuilder {
 
 	private String textureName;
-	private Vec2f position;
-	private Vec2f scale;
+	private Vector2f position;
+	private Vector2f scale;
 
 	@Override
 	public IGUITextureBuilder setTextureName(String textureName) {
@@ -19,13 +19,13 @@ public class GUITextureBuilder implements IGUITextureBuilder {
 	}
 
 	@Override
-	public IGUITextureBuilder setPosition(Vec2f position) {
+	public IGUITextureBuilder setPosition(Vector2f position) {
 		this.position = position;
 		return this;
 	}
 
 	@Override
-	public IGUITextureBuilder setScale(Vec2f scale) {
+	public IGUITextureBuilder setScale(Vector2f scale) {
 		this.scale = scale;
 		return this;
 	}

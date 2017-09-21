@@ -1,8 +1,8 @@
 package object;
 
-import tool.math.vector.Vec;
+import tool.math.vector.Vector;
 
-public interface Moveable<T extends Vec> {
+public interface Moveable<T extends Vector> {
 	
 	void move(T position);
 }

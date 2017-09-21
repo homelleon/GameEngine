@@ -1,10 +1,10 @@
 package object.gui.pattern.button;
 
-import tool.math.vector.Vec2f;
+import tool.math.vector.Vector2f;
 
 @FunctionalInterface
 public interface IVectorInjectable {	
 	
-	void inject(Vec2f Vec);
+	void inject(Vector2f Vec);
 	
 }

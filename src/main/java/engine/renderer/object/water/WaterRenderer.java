@@ -19,7 +19,7 @@ import renderer.loader.TextureBufferLoader;
 import shader.water.WaterShader;
 import tool.math.Maths;
 import tool.math.Matrix4f;
-import tool.math.vector.Vec3f;
+import tool.math.vector.Vector3f;
 
 public class WaterRenderer {
 
@@ -55,7 +55,7 @@ public class WaterRenderer {
 		prepareRender(camera, sun);
 		for (WaterTile tile : water) {
 			Matrix4f modelMatrix = Maths.createTransformationMatrix(
-					new Vec3f(tile.getX(), tile.getHeight(), tile.getZ()), 0, 0, 0, tile.getSize());
+					new Vector3f(tile.getX(), tile.getHeight(), tile.getZ()), 0, 0, 0, tile.getSize());
 			shader.loadModelMatrix(modelMatrix);
 			shader.loadTilingSize(tile.getTilingSize());
 			shader.loadWaveStrength(tile.getWaveStrength());

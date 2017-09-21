@@ -1,15 +1,15 @@
 package object.light;
 
 import object.Nameable;
-import tool.math.vector.Vec3f;
+import tool.math.vector.Vector3f;
 
 public interface ILight extends Nameable {
 	
 	// вернуть затухание
-	public Vec3f getAttenuation();
-	public Vec3f getPosition();
-	public void setPosition(Vec3f position);
-	public Vec3f getColour();
-	public void setColour(Vec3f colour);
+	public Vector3f getAttenuation();
+	public Vector3f getPosition();
+	public void setPosition(Vector3f position);
+	public Vector3f getColour();
+	public void setColour(Vector3f colour);
 
 }

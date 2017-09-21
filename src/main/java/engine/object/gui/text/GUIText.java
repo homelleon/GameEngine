@@ -1,7 +1,7 @@
 package object.gui.text;
 
-import tool.math.vector.Vec2f;
-import tool.math.vector.Vec3f;
+import tool.math.vector.Vector2f;
+import tool.math.vector.Vector3f;
 
 /**
  * Represents a piece of text in the game.
@@ -19,9 +19,9 @@ public class GUIText {
 
 	private int textMeshVao;
 	private int vertexCount;
-	private Vec3f color = new Vec3f(0f, 0f, 0f);
+	private Vector3f color = new Vector3f(0f, 0f, 0f);
 
-	private Vec2f position;
+	private Vector2f position;
 	private float maxLineLength;
 	private int numberOfLines;
 
@@ -34,8 +34,8 @@ public class GUIText {
 	private float borderWidth = 0.0f;
 	private float borderEdge = 0.4f;
 
-	private Vec2f offset = new Vec2f(0f, 0f);
-	private Vec3f outlineColor = new Vec3f(0f, 0f, 0f);
+	private Vector2f offset = new Vector2f(0f, 0f);
+	private Vector3f outlineColor = new Vector3f(0f, 0f, 0f);
 	
 	private float transparency = 0;
 	private volatile boolean isVisible = false;
@@ -65,7 +65,7 @@ public class GUIText {
 	 * @param centered
 	 *            - whether the text should be centered or not.
 	 */
-	public GUIText(String name, String text, float fontSize, String fontName, Vec2f position, float maxLineLength,
+	public GUIText(String name, String text, float fontSize, String fontName, Vector2f position, float maxLineLength,
 			boolean centered) {
 		this.name = name;
 		this.textString = text;
@@ -119,19 +119,19 @@ public class GUIText {
 		this.borderEdge = borderEdge;
 	}
 
-	public Vec2f getOffset() {
+	public Vector2f getOffset() {
 		return offset;
 	}
 
-	public synchronized void setOffset(Vec2f offset) {
+	public synchronized void setOffset(Vector2f offset) {
 		this.offset = offset;
 	}
 
-	public Vec3f getOutlineColor() {
+	public Vector3f getOutlineColor() {
 		return this.outlineColor;
 	}
 
-	public synchronized void setOutlineColor(Vec3f outlineColor) {
+	public synchronized void setOutlineColor(Vector3f outlineColor) {
 		this.outlineColor = outlineColor;
 	}
 
@@ -162,7 +162,7 @@ public class GUIText {
 	 *            - blue value, between 0 and 1.
 	 */
 	public synchronized void setColor(float r, float g, float b) {
-		setColor(new Vec3f(r,g,b));
+		setColor(new Vector3f(r,g,b));
 	}
 
 	/**
@@ -171,14 +171,14 @@ public class GUIText {
 	 * @param color
 	 *            {@link Vecotr3f} value
 	 */
-	public synchronized void setColor(Vec3f color) {
+	public synchronized void setColor(Vector3f color) {
 		this.color = color;
 	}
 
 	/**
 	 * @return the colour of the text.
 	 */
-	public Vec3f getColor() {
+	public Vector3f getColor() {
 		return this.color;
 	}
 
@@ -196,19 +196,19 @@ public class GUIText {
 	 * (0, 0) is the top left corner of the screen, (1, 1) is the bottom right.
 	 * 
 	 * @param position
-	 *            {@link Vec2f} value
+	 *            {@link Vector2f} value
 	 */
-	public synchronized void setPosition(Vec2f position) {
+	public synchronized void setPosition(Vector2f position) {
 		this.position = position;
 	}
 
 	/**
-	 * @return {@link Vec2f} value of the position of the top-left corner of
+	 * @return {@link Vector2f} value of the position of the top-left corner of
 	 *         the text in screen-space.<br>
 	 * 		(0, 0) is the top left corner of the screen, (1, 1) is the bottom
 	 *         right.
 	 */
-	public Vec2f getPosition() {
+	public Vector2f getPosition() {
 		return position;
 	}
 

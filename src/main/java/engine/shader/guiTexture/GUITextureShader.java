@@ -4,7 +4,7 @@ package shader.guiTexture;
 import core.settings.EngineSettings;
 import shader.ShaderProgram;
 import tool.math.Matrix4f;
-import tool.math.vector.Vec3f;
+import tool.math.vector.Vector3f;
 
 public class GUITextureShader extends ShaderProgram {
 
@@ -34,7 +34,7 @@ public class GUITextureShader extends ShaderProgram {
 		super.loadMatrix("transformationMatrix", matrix);
 	}
 	
-	public void loadMixColorVariables(boolean isMixColored, Vec3f color) {
+	public void loadMixColorVariables(boolean isMixColored, Vector3f color) {
 		super.loadBoolean("isMixColored", isMixColored);
 		super.loadVector("mixColor", color);
 	}

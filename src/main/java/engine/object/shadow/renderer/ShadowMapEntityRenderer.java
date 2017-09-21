@@ -15,7 +15,7 @@ import object.model.textured.TexturedModel;
 import shader.shadow.ShadowShader;
 import tool.math.Maths;
 import tool.math.Matrix4f;
-import tool.math.vector.Vec2f;
+import tool.math.vector.Vector2f;
 import tool.openGL.OGLUtils;
 
 public class ShadowMapEntityRenderer {
@@ -93,7 +93,7 @@ public class ShadowMapEntityRenderer {
 				entity.getRotation().getY(), entity.getRotation().getZ(), entity.getScale());
 		Matrix4f mvpMatrix = Matrix4f.mul(projectionViewMatrix, modelMatrix);
 		shader.loadMvpMatrix(mvpMatrix);
-		Vec2f textureOffset = entity.getTextureOffset();
+		Vector2f textureOffset = entity.getTextureOffset();
 		shader.loadOffset(textureOffset.x, textureOffset.y);
 		shader.loadNumberOfRows(entity.getModel().getTexture().getNumberOfRows());
 	}

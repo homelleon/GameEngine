@@ -7,11 +7,11 @@ import intersects.IntersectData;
 import object.entity.entity.IEntity;
 import physicMain.PE10;
 import tool.math.Maths;
-import tool.math.vector.Vec3f;
+import tool.math.vector.Vector3f;
 
 public class Body3DSphere extends BodyBasic implements IBody {
 
-	public Body3DSphere(Vec3f position, float size) {
+	public Body3DSphere(Vector3f position, float size) {
 		super(position, size);
 		typeID = PE10.BODY_3D_SPHERE;
 	}
@@ -22,12 +22,12 @@ public class Body3DSphere extends BodyBasic implements IBody {
 	}
 
 	@Override
-	public Vec3f getPosition() {
+	public Vector3f getPosition() {
 		return super.getPosition();
 	}
 	
 	@Override
-	public void setPosition(Vec3f position) {
+	public void setPosition(Vector3f position) {
 		super.setPosition(position);
 	}
 	
@@ -37,7 +37,7 @@ public class Body3DSphere extends BodyBasic implements IBody {
 	}
 	
 	@Override
-	public void doAcceleration(float value, Vec3f direction) {
+	public void doAcceleration(float value, Vector3f direction) {
 		
 	}
 	
@@ -70,17 +70,17 @@ public class Body3DSphere extends BodyBasic implements IBody {
 		System.out.println(body.getPosition());
 		System.out.println(distance);
 		float intersectDistance = distance - (this.getSize() + body.getSize());
-		List<Vec3f> points = new ArrayList<Vec3f>();
+		List<Vector3f> points = new ArrayList<Vector3f>();
 		int type = PE10.DATA_IS_OUT;
 		
 		if (intersectDistance < 0) {
-			Vec3f point1 = new Vec3f(0,0,0); //to calculate
-			Vec3f point2 = new Vec3f(0,0,0); //to calculate
+			Vector3f point1 = new Vector3f(0,0,0); //to calculate
+			Vector3f point2 = new Vector3f(0,0,0); //to calculate
 			points.add(point1);
 			points.add(point2);	
 			
 		} else if (intersectDistance == 0) {
-			Vec3f point = new Vec3f(0,0,0); //to calculate (center of points)
+			Vector3f point = new Vector3f(0,0,0); //to calculate (center of points)
 			points.add(point);
 		}
 		return new IntersectData(type, distance, points);

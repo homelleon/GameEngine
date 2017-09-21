@@ -26,8 +26,8 @@ import object.gui.pattern.object.GUIObject;
 import object.gui.system.IGUIMenuSystem;
 import object.input.KeyboardGame;
 import object.input.MouseGame;
-import tool.math.vector.Vec2f;
-import tool.math.vector.Vec3f;
+import tool.math.vector.Vector2f;
+import tool.math.vector.Vector3f;
 
 public class MyGame extends Game {
 	
@@ -108,19 +108,19 @@ public class MyGame extends Game {
 		buttonGroup3.add(buttonGUIBuilder.build("button3GUI"));
 		mainMenu.add((GUIObject) buttonGroup3);
 		
-		BoundingQuad bQuad = new BoundingQuad(new Vec2f(-0.41f,-0.05f), new Vec2f(0.45f,0.2f)); 
+		BoundingQuad bQuad = new BoundingQuad(new Vector2f(-0.41f,-0.05f), new Vector2f(0.45f,0.2f)); 
 		
 		IGUIButton button1 = new GUIButton("menuButton1", buttonGroup1);
-		button1.setBoundingArea(bQuad, true);
+		button1.setBoundingArea(bQuad.clone(), false);
 		
-		button1.move(new Vec2f(0,0.4f));
+		button1.move(new Vector2f(0,0.4f));
 		
 		IGUIButton button2 = new GUIButton("menuButton2", buttonGroup2);
-		button2.setBoundingArea(bQuad, false);
+		button2.setBoundingArea(bQuad.clone(), false);
 		
 		IGUIButton button3 = new GUIButton("menuButton3", buttonGroup3);
-		button3.setBoundingArea(bQuad, true);
-		button3.move(new Vec2f(0,-0.4f));
+		button3.setBoundingArea(bQuad.clone(), false);
+		button3.move(new Vector2f(0,-0.4f));
 		
 		mainMenu.add((GUIObject) button1);
 		mainMenu.add((GUIObject) button2);
@@ -144,10 +144,10 @@ public class MyGame extends Game {
 				.flatMap(gui -> gui.getTextures().stream())
 				.forEach(texture -> {
 					texture.setMixColored(true);
-					texture.setMixColor(new Vec3f(1,0,0));
+					texture.setMixColor(new Vector3f(1,0,0));
 				});
 			injection.inject(vector);
-			injection.inject(new Vec2f(-vector.x, -vector.y));
+			injection.inject(new Vector2f(-vector.x, -vector.y));
 			this.buttonScale = false;
 			button.getGroup().getAll().stream()
 			.flatMap(gui -> gui.getTextures().stream())
@@ -170,7 +170,7 @@ public class MyGame extends Game {
 				.flatMap(gui -> gui.getTextures().stream())
 				.forEach(texture -> {
 					texture.setMixColored(true);
-					texture.setMixColor(new Vec3f(0,0,1));
+					texture.setMixColor(new Vector3f(0,0,1));
 				});
 			injection.inject(vector);
 		};
@@ -188,14 +188,14 @@ public class MyGame extends Game {
 						((GUIButton)btn).increaseScale(vec);
 					});
 			};
-			injection.inject(new Vec2f(-vector.x, -vector.y));
+			injection.inject(new Vector2f(-vector.x, -vector.y));
 			button.getGroup().getAll().stream()
 			.flatMap(gui -> gui.getTextures().stream())
 			.forEach(texture -> texture.setMixColored(false));
 		};
 		
 		int time = 1;
-		Vec2f changeVector = new Vec2f(0.05f,0.05f); 
+		Vector2f changeVector = new Vector2f(0.05f,0.05f); 
 		IAction action1 = () -> {
 			buttonAnimation.start(button1, time, changeVector);
 			EngineMain.pauseEngine(false);
@@ -211,7 +211,7 @@ public class MyGame extends Game {
 		
 		IAction action2 = () -> {
 			buttonAnimation.start(button2, time, changeVector);
-			this.gameManager.getScene().getPlayer().setPosition(new Vec3f(0,0,0));
+			this.gameManager.getScene().getPlayer().setPosition(new Vector3f(0,0,0));
 		};
 		
 
@@ -289,19 +289,19 @@ public class MyGame extends Game {
 			if(!this.buttonScale && !this.keyboardUsed) {
 				menuSystem.getActivated().getAllButtons().stream()
 				.filter(button -> button.getIsMouseOver(
-						this.gameManager.getScene().getMousePicker().getCurrentScreanPoint()))
+						this.gameManager.getScene().getMousePicker().getCurrentScreenPoint()))
 				.filter(button -> !button.getIsSelected())
 				.forEach(button -> button.select());
 				
 				menuSystem.getActivated().getAllButtons().stream()
 				.filter(button -> !button.getIsMouseOver(
-						this.gameManager.getScene().getMousePicker().getCurrentScreanPoint()))
+						this.gameManager.getScene().getMousePicker().getCurrentScreenPoint()))
 				.filter(button -> button.getIsSelected())
 				.forEach(button -> button.deselect());
 				if(MouseGame.isOncePressed(MouseGame.LEFT_CLICK)) {
 					menuSystem.getActivated().getAllButtons().stream()
 						.filter(button -> button.getIsMouseOver(
-								this.gameManager.getScene().getMousePicker().getCurrentScreanPoint()))
+								this.gameManager.getScene().getMousePicker().getCurrentScreenPoint()))
 						.forEach(button -> {
 							button.use();
 							this.buttonScale = true;

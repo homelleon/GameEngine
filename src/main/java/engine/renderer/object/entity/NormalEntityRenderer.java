@@ -21,7 +21,7 @@ import object.texture.model.ModelTexture;
 import shader.entity.normal.NormalMappedEntityShader;
 import tool.math.Maths;
 import tool.math.Matrix4f;
-import tool.math.vector.Vec2f;
+import tool.math.vector.Vector2f;
 import tool.openGL.OGLUtils;
 
 public class NormalEntityRenderer implements IEntityRenderer {
@@ -125,7 +125,7 @@ public class NormalEntityRenderer implements IEntityRenderer {
 		Matrix4f transformationMatrix = Maths.createTransformationMatrix(entity.getPosition(), entity.getRotation().getX(),
 				entity.getRotation().getY(), entity.getRotation().getZ(), entity.getScale());
 		shader.loadTransformationMatrix(transformationMatrix);
-		Vec2f textureOffset = entity.getTextureOffset();
+		Vector2f textureOffset = entity.getTextureOffset();
 		shader.loadOffset(textureOffset.x, textureOffset.y);
 		shader.loadManipulationVariables(entity.isChosen());
 	}

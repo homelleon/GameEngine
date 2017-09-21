@@ -1,7 +1,7 @@
 package tool.math;
 
 
-import tool.math.vector.Vec3f;
+import tool.math.vector.Vector3f;
 
 public class Quaternion {
 
@@ -38,7 +38,7 @@ public class Quaternion {
 		return new Quaternion(x_, y_, z_, w_);
 	}
 
-	public Quaternion mul(Vec3f r)
+	public Quaternion mul(Vector3f r)
 	{
 		float w_ = -x * r.x - y * r.y - z * r.z;
 		float x_ =  w * r.x + y * r.z - z * r.y;

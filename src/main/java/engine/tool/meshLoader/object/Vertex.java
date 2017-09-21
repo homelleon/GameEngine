@@ -1,6 +1,6 @@
 package tool.meshLoader.object;
 
-import org.lwjgl.util.vector.Vector3f;
+import tool.math.vector.Vector3f;
 
 public class Vertex {
 

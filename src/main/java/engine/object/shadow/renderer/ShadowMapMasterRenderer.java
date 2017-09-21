@@ -13,12 +13,11 @@ import object.light.Light;
 import object.model.textured.TexturedModel;
 import object.shadow.ShadowBox;
 import object.shadow.ShadowFrameBuffer;
-import object.shadow.ShadowMapTerrainRenderer;
 import object.terrain.terrain.ITerrain;
 import shader.shadow.ShadowShader;
 import tool.math.Matrix4f;
-import tool.math.vector.Vec2f;
-import tool.math.vector.Vec3f;
+import tool.math.vector.Vector2f;
+import tool.math.vector.Vector3f;
 
 /**
  * This class is in charge of using all of the classes in the shadows package to
@@ -79,8 +78,8 @@ public class ShadowMapMasterRenderer {
 	public void render(Map<TexturedModel, List<IEntity>> entities, Collection<ITerrain> terrains,
 			Map<TexturedModel, List<IEntity>> normalMapEntities, Light sun, ICamera camera) {
 		shadowBox.update();
-		Vec3f sunPosition = sun.getPosition();
-		Vec3f lightDirection = new Vec3f(-sunPosition.x, -sunPosition.y, -sunPosition.z);
+		Vector3f sunPosition = sun.getPosition();
+		Vector3f lightDirection = new Vector3f(-sunPosition.x, -sunPosition.y, -sunPosition.z);
 		prepare(lightDirection, shadowBox);
 		entities.putAll(normalMapEntities);
 		shadowEntityRenderer.render(entities, camera);
@@ -144,10 +143,10 @@ public class ShadowMapMasterRenderer {
 	 *            - the shadow box, which contains all the info about the "view
 	 *            cuboid".
 	 */
-	private void prepare(Vec3f lightDirection, ShadowBox box) {
+	private void prepare(Vector3f lightDirection, ShadowBox box) {
 		updateOrthoProjectionMatrix(box.getWidth(), box.getHeight(), box.getLength());
 		updateLightViewMatrix(lightDirection, box.getCenter());
-		projectionViewMatrix.mul(lightViewMatrix);
+		projectionViewMatrix = Matrix4f.mul(projectionMatrix, lightViewMatrix);
 		shadowFbo.bindFrameBuffer();
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
 		GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT);
@@ -178,15 +177,15 @@ public class ShadowMapMasterRenderer {
 	 * @param center
 	 *            - the center of the "view cuboid" in world space.
 	 */
-	private void updateLightViewMatrix(Vec3f direction, Vec3f center) {
+	private void updateLightViewMatrix(Vector3f direction, Vector3f center) {
 		direction.normalize();
 		center.negate();
 		lightViewMatrix.setIdentity();
-		float pitch = (float) Math.acos(new Vec2f(direction.x, direction.z).length());
-		lightViewMatrix.rotate(new Vec3f(pitch, 0, 0));
+		float pitch = (float) Math.acos(new Vector2f(direction.x, direction.z).length());
+		lightViewMatrix.rotate(pitch, new Vector3f(1, 0, 0));
 		float yaw = (float) Math.toDegrees(((float) Math.atan(direction.x / direction.z)));
 		yaw = direction.z > 0 ? yaw - 180 : yaw;
-		lightViewMatrix.rotate(new Vec3f(0, -yaw, 0));
+		lightViewMatrix.rotate((float) -Math.toRadians(yaw), new Vector3f(0, 1, 0));
 		lightViewMatrix.translate(center);
 	}
 
@@ -220,8 +219,8 @@ public class ShadowMapMasterRenderer {
 	 */
 	private static Matrix4f createOffset() {
 		Matrix4f offset = new Matrix4f();
-		offset.translate(new Vec3f(0.5f, 0.5f, 0.5f));
-		offset.scale(new Vec3f(0.5f, 0.5f, 0.5f));
+		offset.translate(new Vector3f(0.5f, 0.5f, 0.5f));
+		offset.scale(new Vector3f(0.5f, 0.5f, 0.5f));
 		return offset;
 	}
 }

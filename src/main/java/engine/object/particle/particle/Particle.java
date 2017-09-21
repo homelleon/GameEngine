@@ -5,13 +5,13 @@ import core.settings.EngineSettings;
 import object.camera.ICamera;
 import object.particle.master.ParticleMaster;
 import object.texture.particle.ParticleTexture;
-import tool.math.vector.Vec2f;
-import tool.math.vector.Vec3f;
+import tool.math.vector.Vector2f;
+import tool.math.vector.Vector3f;
 
 public class Particle {
 
-	private Vec3f position;
-	private Vec3f velocity;
+	private Vector3f position;
+	private Vector3f velocity;
 	private float gravityEffect;
 	private float lifeLength;
 	private float rotation;
@@ -21,12 +21,12 @@ public class Particle {
 
 	private ParticleTexture texture;
 
-	private Vec2f texOffset1 = new Vec2f();
-	private Vec2f texOffset2 = new Vec2f();
+	private Vector2f texOffset1 = new Vector2f();
+	private Vector2f texOffset2 = new Vector2f();
 	private float blend;
 	private float distance;
 
-	public Particle(ParticleTexture texture, Vec3f position, Vec3f velocity, float gravityEffect,
+	public Particle(ParticleTexture texture, Vector3f position, Vector3f velocity, float gravityEffect,
 			float lifeLength, float rotation, float scale) {
 		this.position = position;
 		this.velocity = velocity;
@@ -42,11 +42,11 @@ public class Particle {
 		return distance;
 	}
 
-	public Vec2f getTexOffset1() {
+	public Vector2f getTexOffset1() {
 		return texOffset1;
 	}
 
-	public Vec2f getTexOffset2() {
+	public Vector2f getTexOffset2() {
 		return texOffset2;
 	}
 
@@ -58,7 +58,7 @@ public class Particle {
 		return texture;
 	}
 
-	public Vec3f getPosition() {
+	public Vector3f getPosition() {
 		return position;
 	}
 
@@ -72,11 +72,11 @@ public class Particle {
 
 	public boolean update(ICamera camera) {
 		velocity.y += EngineSettings.GRAVITY * gravityEffect * DisplayManager.getFrameTimeSeconds();
-		Vec3f change = new Vec3f(velocity);
+		Vector3f change = new Vector3f(velocity);
 		change.scale(DisplayManager.getFrameTimeSeconds());
 		position.add(change);
 		updateTextureCoordInfo();
-		distance = Vec3f.sub(camera.getPosition(), position).lengthSquared();
+		distance = Vector3f.sub(camera.getPosition(), position).lengthSquared();
 		elapsedTime += DisplayManager.getFrameTimeSeconds();
 		return elapsedTime < lifeLength;
 	}
@@ -93,7 +93,7 @@ public class Particle {
 
 	}
 
-	private void setTextureOffset(Vec2f offset, int index) {
+	private void setTextureOffset(Vector2f offset, int index) {
 		int column = index % texture.getNumberOfRows();
 		int row = index / texture.getNumberOfRows();
 		offset.x = (float) column / texture.getNumberOfRows();

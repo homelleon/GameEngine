@@ -3,11 +3,11 @@ package bodies;
 import intersects.IntersectData;
 import object.entity.entity.IEntity;
 import physicMain.PE10;
-import tool.math.vector.Vec3f;
+import tool.math.vector.Vector3f;
 
 public class Body2DCircle extends BodyBasic implements IBody {
 
-	public Body2DCircle(Vec3f position, float size) {
+	public Body2DCircle(Vector3f position, float size) {
 		super(position, size);
 		typeID = PE10.BODY_2D_CIRCLE;
 	}
@@ -18,12 +18,12 @@ public class Body2DCircle extends BodyBasic implements IBody {
 	}
 
 	@Override
-	public Vec3f getPosition() {
+	public Vector3f getPosition() {
 		return super.getPosition();
 	}
 	
 	@Override
-	public void setPosition(Vec3f position) {
+	public void setPosition(Vector3f position) {
 		super.setPosition(position);
 	}
 	
@@ -42,7 +42,7 @@ public class Body2DCircle extends BodyBasic implements IBody {
 	}
 	
 	@Override
-	public void doAcceleration(float value, Vec3f direction) {
+	public void doAcceleration(float value, Vector3f direction) {
 		
 	}
 	

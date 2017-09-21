@@ -1,13 +1,15 @@
 package object.bounding;
 
-import tool.math.vector.Vec2f;
+import tool.math.vector.Vector2f;
 
-public class BoundingQuad {
+public class BoundingQuad 
+{
 	
-	private Vec2f leftPoint;
-	private Vec2f rightPoint;
+	private Vector2f leftPoint = new Vector2f(0,0);
+	private Vector2f rightPoint = new Vector2f(0,0);
 	
-	public BoundingQuad(Vec2f leftPoint, Vec2f rightPoint) {
+	public BoundingQuad(Vector2f leftPoint, Vector2f rightPoint) 
+	{
 		this.leftPoint = leftPoint;
 		this.rightPoint = rightPoint;
 	}
@@ -15,34 +17,38 @@ public class BoundingQuad {
 	/**
 	 * Gets left-down point for the bounding quad.
 	 *  
-	 * @return {@link Vec2f} leftPoint value
+	 * @return {@link Vector2f} leftPoint value
 	 */
-	public Vec2f getLeftPoint() {
+	public Vector2f getLeftPoint() 
+	{
 		return this.leftPoint;
 	}
 	
 	/**
 	 * Gets right-up point for the bounding quad.
 	 *  
-	 * @return {@link Vec2f} rightPoint value
+	 * @return {@link Vector2f} rightPoint value
 	 */
-	public Vec2f getRightPoint() {
+	public Vector2f getRightPoint()
+	{
 		return this.rightPoint;
 	}
 
 	/**
 	 * Changes position of bounding quad intersection points.
 	 * 
-	 * @param position {@link Vec2f} value that indicates in what direction
+	 * @param position {@link Vector2f} value that indicates in what direction
 	 * and at what length the bounding quad intersection point should be moved
 	 */
-	public void move(Vec2f position) {
-		this.leftPoint = this.leftPoint.add(position);
-		this.rightPoint = this.rightPoint.add(position);
+	public void move(Vector2f position) 
+	{
+		this.leftPoint.add(position);
+		this.rightPoint.add(position);
 	}
 	
-	public BoundingQuad clone() {
-		return new BoundingQuad(this.leftPoint, this.rightPoint);
+	public BoundingQuad clone()
+	{
+		return new BoundingQuad(new Vector2f(this.leftPoint), new Vector2f(this.rightPoint));
 	}
 
 }

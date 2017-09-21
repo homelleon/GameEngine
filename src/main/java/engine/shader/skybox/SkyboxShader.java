@@ -8,7 +8,7 @@ import object.camera.ICamera;
 import shader.ShaderProgram;
 import tool.math.Maths;
 import tool.math.Matrix4f;
-import tool.math.vector.Vec3f;
+import tool.math.vector.Vector3f;
 
 public class SkyboxShader extends ShaderProgram {
 
@@ -58,12 +58,12 @@ public class SkyboxShader extends ShaderProgram {
 		if (!EngineMain.getIsEnginePaused()) {
 			rotation += ROTATE_SPEED * DisplayManager.getFrameTimeSeconds();
 		}
-		matrix.rotate((float) Math.toRadians(rotation), new Vec3f(0, 1, 0));
+		matrix.rotate((float) Math.toRadians(rotation), new Vector3f(0, 1, 0));
 		super.loadMatrix("viewMatrix", matrix);
 	}
 
 	public void loadFogColour(float r, float g, float b) {
-		super.loadVector("fogColour", new Vec3f(r, g, b));
+		super.loadVector("fogColour", new Vector3f(r, g, b));
 	}
 
 	public void loadBlendFactor(float blend) {

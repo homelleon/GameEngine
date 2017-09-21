@@ -1,7 +1,7 @@
 package object.model;
 
 import object.texture.Texture2D;
-import tool.math.vector.Vec3f;
+import tool.math.vector.Vector3f;
 
 public class Material{
 	
@@ -12,7 +12,7 @@ public class Material{
 	private Texture2D ambientmap;
 	private Texture2D specularmap;
 	private Texture2D alphamap;
-	private Vec3f color;
+	private Vector3f color;
 	private float alpha;
 	private float displaceScale;
 	private float emission;
@@ -54,10 +54,10 @@ public class Material{
 	public void setAlphamap(Texture2D alphamap) {
 		this.alphamap = alphamap;
 	}
-	public Vec3f getColor() {
+	public Vector3f getColor() {
 		return color;
 	}
-	public void setColor(Vec3f color) {
+	public void setColor(Vector3f color) {
 		this.color = color;
 	}
 	public float getAlpha() {

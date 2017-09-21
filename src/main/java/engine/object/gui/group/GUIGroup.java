@@ -7,7 +7,7 @@ import java.util.Map;
 
 import object.gui.gui.IGUI;
 import object.gui.pattern.object.GUIObject;
-import tool.math.vector.Vec2f;
+import tool.math.vector.Vector2f;
 
 public class GUIGroup extends GUIObject implements IGUIGroup {
 
@@ -66,7 +66,7 @@ public class GUIGroup extends GUIObject implements IGUIGroup {
 	}
 
 	@Override
-	public void move(Vec2f position) {
+	public void move(Vector2f position) {
 		this.guis.values().forEach(gui -> gui.move(position));		
 	}
 

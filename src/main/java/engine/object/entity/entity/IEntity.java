@@ -2,8 +2,8 @@ package object.entity.entity;
 
 import object.Nameable;
 import object.model.textured.TexturedModel;
-import tool.math.vector.Vec2f;
-import tool.math.vector.Vec3f;
+import tool.math.vector.Vector2f;
+import tool.math.vector.Vector3f;
 
 /**
  * 
@@ -47,7 +47,7 @@ import tool.math.vector.Vec3f;
 	 */
 	 void setChosen(boolean isChosen);
 	
-	 Vec2f getTextureOffset();
+	 Vector2f getTextureOffset();
 
 	/**
 	 * Increses entity position value in 3 dimentional space.
@@ -99,25 +99,25 @@ import tool.math.vector.Vec3f;
 	/**
 	 * Gets entity current position in 3 dimentional space coordinates.
 	 *  
-	 * @return {@link Vec3f} value of current position
+	 * @return {@link Vector3f} value of current position
 	 */
-	 Vec3f getPosition();
+	 Vector3f getPosition();
 
 	/**
 	 * Sets entity position in 3 dimentional space.
 	 * 
-	 * @param position {@link Vec3f} value in 3 dimentions
+	 * @param position {@link Vector3f} value in 3 dimentions
 	 */
-	 void setPosition(Vec3f position);
+	 void setPosition(Vector3f position);
 	
 	/**
 	 * Sets entity rotation scale in 3 dimentions.
 	 * 
-	 * @param rotation {@link Vec3f} value in 3 dimentions
+	 * @param rotation {@link Vector3f} value in 3 dimentions
 	 */
-	 void setRotation(Vec3f rotation);
+	 void setRotation(Vector3f rotation);
 	
-	 Vec3f getRotation();
+	 Vector3f getRotation();
 
 	/**
 	 * Gets entity size scale value.

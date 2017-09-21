@@ -13,8 +13,8 @@ import core.settings.EngineSettings;
 import object.gui.text.GUIText;
 import object.gui.text.GUITextBuilder;
 import object.gui.text.IGUITextBuilder;
-import tool.math.vector.Vec2f;
-import tool.math.vector.Vec3f;
+import tool.math.vector.Vector2f;
+import tool.math.vector.Vector3f;
 import tool.xml.XMLUtils;
 import tool.xml.loader.IXMLLoader;
 import tool.xml.loader.XMLFileLoader;
@@ -86,7 +86,7 @@ public class GUITextXMLParser extends XMLParser implements IListParser<GUIText> 
 				Element positionEl = XMLUtils.getChildElementByTag(guiTextEl, XMLUtils.POSITION);
 				float x = Float.valueOf(XMLUtils.getTagValue(positionEl, XMLUtils.X));
 				float y = Float.valueOf(XMLUtils.getTagValue(positionEl, XMLUtils.Y));
-				Vec2f position = new Vec2f(x, y);
+				Vector2f position = new Vector2f(x, y);
 				float maxLength = Float.valueOf(XMLUtils.getTagValue(guiTextEl, XMLUtils.MAX_LENGTH));
 				boolean isCentered = Boolean.valueOf(XMLUtils.getTagValue(guiTextEl, XMLUtils.CENTERED));
 				float r = 0;
@@ -103,7 +103,7 @@ public class GUITextXMLParser extends XMLParser implements IListParser<GUIText> 
 						b = Float.valueOf(colorNode.getChildNodes().item(0).getNodeValue());
 					}
 				}
-				Vec3f color = new Vec3f(r, g, b);
+				Vector3f color = new Vector3f(r, g, b);
 				IXMLLoader xmlLoader = new XMLFileLoader(
 						EngineSettings.TEXT_PATH + path + EngineSettings.EXTENSION_XML);
 				IObjectParser<String> textParser = new TextXMLParser(xmlLoader.load());

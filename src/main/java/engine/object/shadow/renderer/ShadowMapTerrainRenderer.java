@@ -1,4 +1,4 @@
-package object.shadow;
+package object.shadow.renderer;
 
 import java.util.Collection;
 
@@ -12,7 +12,7 @@ import object.terrain.terrain.ITerrain;
 import shader.shadow.ShadowShader;
 import tool.math.Maths;
 import tool.math.Matrix4f;
-import tool.math.vector.Vec3f;
+import tool.math.vector.Vector3f;
 
 public class ShadowMapTerrainRenderer {
 
@@ -43,12 +43,8 @@ public class ShadowMapTerrainRenderer {
 		for (ITerrain terrain : terrains) {
 			RawModel rawModel = terrain.getModel();
 			bindModel(rawModel);
-			// GL13.glActiveTexture(GL13.GL_TEXTURE0);
-			// GL11.glBindTexture(GL11.GL_TEXTURE_2D,
-			// terrain.getTexturePack().getBackgroundTexture().getTextureID());
 			prepareInstance(terrain);
 			GL11.glDrawElements(GL11.GL_TRIANGLES, terrain.getModel().getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
-			// unbindTexturedModel();
 		}
 	}
 
@@ -85,7 +81,7 @@ public class ShadowMapTerrainRenderer {
 	}
 
 	private void prepareInstance(ITerrain terrain) {
-		Matrix4f modelMatrix = Maths.createTransformationMatrix(new Vec3f(terrain.getX(), 0, terrain.getZ()), 0, 0,
+		Matrix4f modelMatrix = Maths.createTransformationMatrix(new Vector3f(terrain.getX(), 0, terrain.getZ()), 0, 0,
 				0, 1);
 		Matrix4f mvpMatrix = Matrix4f.mul(projectionViewMatrix, modelMatrix);
 		shader.loadMvpMatrix(mvpMatrix);

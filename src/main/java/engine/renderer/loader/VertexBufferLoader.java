@@ -16,7 +16,7 @@ import object.bounding.BoundingBox;
 import object.bounding.BoundingSphere;
 import object.model.raw.RawModel;
 import tool.math.Maths;
-import tool.math.vector.Vec3f;
+import tool.math.vector.Vector3f;
 
 public class VertexBufferLoader {
 
@@ -141,7 +141,6 @@ public class VertexBufferLoader {
 		storeDataInAttributeList(2, 3, normals);
 		storeDataInAttributeList(3, 3, tangents);
 		unbindVAO();
-		float radius = getDistFarVertToCenter(positions);
 		BoundingSphere sphere = new BoundingSphere(positions);
 		BoundingBox box = new BoundingBox(positions);
 		return new RawModel(vaoID, indices.length, sphere, box);
@@ -189,7 +188,6 @@ public class VertexBufferLoader {
 		int vaoID = createVAO();
 		this.storeDataInAttributeList(0, dimensions, positions);
 		unbindVAO();
-		float radius = getDistFarVertToCenter(positions);
 		BoundingSphere sphere = new BoundingSphere(positions);
 		BoundingBox box = new BoundingBox(positions);
 		return new RawModel(vaoID, positions.length / dimensions, sphere, box);
@@ -305,10 +303,10 @@ public class VertexBufferLoader {
 	 */
 	private float getDistFarVertToCenter(float[] positions) {
 		float distance = 0;
-		Vec3f center = new Vec3f(0, 0, 0);
-		Vec3f point;
+		Vector3f center = new Vector3f(0, 0, 0);
+		Vector3f point;
 		for (int i = 1; i < positions.length / 3; i++) {
-			point = new Vec3f(positions[3 * i - 3], positions[3 * i - 2], positions[3 * i - 1]);
+			point = new Vector3f(positions[3 * i - 3], positions[3 * i - 2], positions[3 * i - 1]);
 			float length = Maths.distance2Points(point, center);
 			if (length > distance) {
 				distance = length;

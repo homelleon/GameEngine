@@ -10,7 +10,6 @@ import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.opengl.GL31;
-import org.lwjgl.util.vector.Vector3f;
 
 import object.camera.ICamera;
 import object.model.raw.RawModel;
@@ -21,7 +20,7 @@ import renderer.loader.VertexBufferLoader;
 import shader.particle.ParticleShader;
 import tool.math.Maths;
 import tool.math.Matrix4f;
-import tool.math.vector.Vec3f;
+import tool.math.vector.Vector3f;
 
 public class ParticleRenderer {
 
@@ -95,7 +94,7 @@ public class ParticleRenderer {
 		shader.loadNumberOfRows(texture.getNumberOfRows());
 	}
 
-	private void updateModelViewMatrix(Vec3f position, float rotation, float scale, Matrix4f viewMatrix,
+	private void updateModelViewMatrix(Vector3f position, float rotation, float scale, Matrix4f viewMatrix,
 			float[] vboData) {
 		Matrix4f modelMatrix = new Matrix4f();
 		modelMatrix.translate(position);
@@ -108,9 +107,10 @@ public class ParticleRenderer {
 		modelMatrix.m[2][0] = viewMatrix.m[0][2];
 		modelMatrix.m[2][1] = viewMatrix.m[1][2];
 		modelMatrix.m[2][2] = viewMatrix.m[2][2];
+
 		Matrix4f modelViewMatrix = Matrix4f.mul(viewMatrix, modelMatrix);
-		modelViewMatrix.rotate((float) Math.toRadians(rotation), new Vec3f(0, 0, 1));
-		modelViewMatrix.scale(new Vec3f(scale, scale, scale));
+		modelViewMatrix.rotate((float) Math.toRadians(rotation), new Vector3f(0, 0, 1));
+		modelViewMatrix.scale(new Vector3f(scale, scale, scale));
 		storeMatrixData(modelViewMatrix, vboData);
 	}
 

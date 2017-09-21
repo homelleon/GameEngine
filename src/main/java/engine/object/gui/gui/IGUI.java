@@ -6,7 +6,7 @@ import object.Moveable;
 import object.gui.Hideable;
 import object.gui.text.GUIText;
 import object.gui.texture.GUITexture;
-import tool.math.vector.Vec2f;
+import tool.math.vector.Vector2f;
 
 /**
  * User interafce to represent connection between enigine and user.
@@ -16,7 +16,7 @@ import tool.math.vector.Vec2f;
  * @see GUI
  *
  */
-public interface IGUI extends Hideable, Moveable<Vec2f> {
+public interface IGUI extends Hideable, Moveable<Vector2f> {
 
 	/**
 	 * Returns name of user interface object.

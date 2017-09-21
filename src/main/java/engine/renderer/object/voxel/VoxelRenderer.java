@@ -27,7 +27,7 @@ import renderer.viewCulling.frustum.Frustum;
 import shader.voxel.VoxelShader;
 import tool.math.Maths;
 import tool.math.Matrix4f;
-import tool.math.vector.Vec3f;
+import tool.math.vector.Vector3f;
 import tool.math.vector.Vector3i;
 import tool.openGL.OGLUtils;
 
@@ -162,11 +162,11 @@ public class VoxelRenderer {
 				GL11.GL_UNSIGNED_INT, 24 * face);
 	}
 
-	private boolean checkVisibility(Frustum frustum, Vec3f position, float radius) {
+	private boolean checkVisibility(Frustum frustum, Vector3f position, float radius) {
 		return frustum.sphereInFrustumAndDsitance(position, radius, 0, EngineSettings.RENDERING_VIEW_DISTANCE);
 	}
 
-	private synchronized void prepareInstance(Vec3f position) {
+	private synchronized void prepareInstance(Vector3f position) {
 		Matrix4f transformationMatrix = Maths.createTransformationMatrix(position, 0, 0, 0, 1);
 		shader.loadTranformationMatrix(transformationMatrix);
 	}

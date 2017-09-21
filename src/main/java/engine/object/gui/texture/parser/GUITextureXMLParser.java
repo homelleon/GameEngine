@@ -11,7 +11,7 @@ import org.w3c.dom.NodeList;
 import core.debug.EngineDebug;
 import object.gui.texture.GUITexture;
 import object.gui.texture.GUITextureBuilder;
-import tool.math.vector.Vec2f;
+import tool.math.vector.Vector2f;
 import tool.xml.XMLUtils;
 import tool.xml.parser.IListParser;
 import tool.xml.parser.XMLParser;
@@ -57,11 +57,11 @@ public class GUITextureXMLParser extends XMLParser implements IListParser<GUITex
 				Element positionEl = XMLUtils.getChildElementByTag(guiTextEl, XMLUtils.POSITION);
 				float x = Float.valueOf(XMLUtils.getTagValue(positionEl, XMLUtils.X));
 				float y = Float.valueOf(XMLUtils.getTagValue(positionEl, XMLUtils.Y));
-				Vec2f position = new Vec2f(x, y);
+				Vector2f position = new Vector2f(x, y);
 				Element scaleEl = XMLUtils.getChildElementByTag(guiTextEl, XMLUtils.SCALE);
 				float scaleX = Float.valueOf(XMLUtils.getTagValue(scaleEl, XMLUtils.X));
 				float scaleY = Float.valueOf(XMLUtils.getTagValue(scaleEl, XMLUtils.Y));
-				Vec2f scale = new Vec2f(scaleX, scaleY);
+				Vector2f scale = new Vector2f(scaleX, scaleY);
 				count++;
 				if (EngineDebug.hasDebugPermission()) {
 					if (count != Integer.valueOf(id)) {

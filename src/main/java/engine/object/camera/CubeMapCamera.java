@@ -1,7 +1,7 @@
 package object.camera;
 
 import tool.math.Matrix4f;
-import tool.math.vector.Vec3f;
+import tool.math.vector.Vector3f;
 
 public class CubeMapCamera extends BaseCamera implements ICamera {
 
@@ -19,7 +19,7 @@ public class CubeMapCamera extends BaseCamera implements ICamera {
 	private Matrix4f viewMatrix = new Matrix4f();
 	private Matrix4f projectionViewMatrix = new Matrix4f();
 
-	public CubeMapCamera(String name, Vec3f position) {
+	public CubeMapCamera(String name, Vector3f position) {
 		super(name, position);
 		this.pitch = 0;
 		this.position = position;
@@ -100,10 +100,10 @@ public class CubeMapCamera extends BaseCamera implements ICamera {
 	 */
 	private void updateViewMatrix() {
 		viewMatrix.setIdentity();
-		viewMatrix.rotate(new Vec3f(0, 0, 180));
-		viewMatrix.rotate(new Vec3f(pitch, 0, 0));
-		viewMatrix.rotate(new Vec3f(0, yaw, 0));
-		Vec3f negativeCameraPos = new Vec3f(-position.x, -position.y, -position.z);
+		viewMatrix.rotate(new Vector3f(0, 0, 180));
+		viewMatrix.rotate(new Vector3f(pitch, 0, 0));
+		viewMatrix.rotate(new Vector3f(0, yaw, 0));
+		Vector3f negativeCameraPos = new Vector3f(-position.x, -position.y, -position.z);
 		viewMatrix.translate(negativeCameraPos);
 
 		projectionMatrix.mul(viewMatrix);

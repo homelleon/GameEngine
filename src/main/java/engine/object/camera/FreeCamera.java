@@ -6,11 +6,11 @@ import org.lwjgl.input.Mouse;
 import core.display.DisplayManager;
 import core.settings.EngineSettings;
 import tool.math.Matrix4f;
-import tool.math.vector.Vec3f;
+import tool.math.vector.Vector3f;
 
 public class FreeCamera extends BaseCamera implements ICamera {
 
-	public FreeCamera(String name, Vec3f position) {
+	public FreeCamera(String name, Vector3f position) {
 		super(name, position);
 		this.setPosition(position);
 		this.name = name;

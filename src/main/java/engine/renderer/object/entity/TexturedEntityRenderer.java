@@ -23,7 +23,7 @@ import renderer.object.main.IMainRenderer;
 import shader.entity.textured.TexturedEntityShader;
 import tool.math.Maths;
 import tool.math.Matrix4f;
-import tool.math.vector.Vec2f;
+import tool.math.vector.Vector2f;
 import tool.openGL.OGLUtils;
 
 /**
@@ -235,7 +235,7 @@ public class TexturedEntityRenderer implements IEntityRenderer {
 		Matrix4f transformationMatrix = Maths.createTransformationMatrix(entity.getPosition(), entity.getRotation().getX(),
 				entity.getRotation().getY(), entity.getRotation().getZ(), entity.getScale());
 		shader.loadTranformationMatrix(transformationMatrix);
-		Vec2f textureOffset = entity.getTextureOffset();
+		Vector2f textureOffset = entity.getTextureOffset();
 		shader.loadOffset(textureOffset.x, textureOffset.y);
 		shader.loadManipulateVariables(entity.isChosen());
 	}

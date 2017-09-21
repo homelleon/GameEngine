@@ -2,8 +2,8 @@ package shader.font;
 
 import core.settings.EngineSettings;
 import shader.ShaderProgram;
-import tool.math.vector.Vec2f;
-import tool.math.vector.Vec3f;
+import tool.math.vector.Vector2f;
+import tool.math.vector.Vector3f;
 
 public class FontShader extends ShaderProgram {
 
@@ -45,19 +45,19 @@ public class FontShader extends ShaderProgram {
 		super.loadFloat("borderEdge", edge);
 	}
 
-	public void loadOffset(Vec2f offset) {
+	public void loadOffset(Vector2f offset) {
 		super.load2DVector("offset", offset);
 	}
 
-	public void loadOutLineColour(Vec3f colour) {
+	public void loadOutLineColour(Vector3f colour) {
 		super.loadVector("outlineColour", colour);
 	}
 
-	public void loadColour(Vec3f colour) {
+	public void loadColour(Vector3f colour) {
 		super.loadVector("colour", colour);
 	}
 
-	public void loadTranslation(Vec2f translation) {
+	public void loadTranslation(Vector2f translation) {
 		super.load2DVector("translation", translation);
 	}
 

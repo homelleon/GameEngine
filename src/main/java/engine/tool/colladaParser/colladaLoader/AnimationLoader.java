@@ -10,12 +10,12 @@ import tool.colladaParser.dataStructures.JointTransformData;
 import tool.colladaParser.dataStructures.KeyFrameData;
 import tool.colladaParser.xmlParser.XmlNode;
 import tool.math.Matrix4f;
-import tool.math.vector.Vec3f;
+import tool.math.vector.Vector3f;
 
 public class AnimationLoader {
 
 	private static final Matrix4f CORRECTION = new Matrix4f().rotate((float) Math.toRadians(-90),
-			new Vec3f(1, 0, 0));
+			new Vector3f(1, 0, 0));
 
 	private XmlNode animationData;
 	private XmlNode jointHierarchy;

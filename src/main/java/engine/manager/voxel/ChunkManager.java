@@ -10,7 +10,7 @@ import object.voxel.Block;
 import object.voxel.Chunk;
 import tool.math.Maths;
 import tool.math.vector.IVectorBuilder3;
-import tool.math.vector.Vec3f;
+import tool.math.vector.Vector3f;
 import tool.math.vector.Vector3i;
 import tool.math.vector.VectorBuilder3f;
 import tool.math.vector.VectorBuilder3i;
@@ -31,9 +31,9 @@ public class ChunkManager implements IChunkManager {
 
 	private List<Chunk> chunks = new ArrayList<Chunk>();
 	private int size;
-	private Vec3f position;
+	private Vector3f position;
 
-	public ChunkManager(int size, Vec3f position) {
+	public ChunkManager(int size, Vector3f position) {
 		this.size = size;
 		this.position = position;
 		chunks = IntStream.range(0, size)
@@ -60,9 +60,9 @@ public class ChunkManager implements IChunkManager {
 	}
 
 	@Override
-	public Vec3f getChunkPosition(Vector3i indexPosition) {
+	public Vector3f getChunkPosition(Vector3i indexPosition) {
 		float step = EngineSettings.VOXEL_CHUNK_SIZE * EngineSettings.VOXEL_BLOCK_SIZE;
-		IVectorBuilder3<Float, Vec3f> vecBuilder = new VectorBuilder3f();
+		IVectorBuilder3<Float, Vector3f> vecBuilder = new VectorBuilder3f();
 		return vecBuilder
 					.setX(position.x + indexPosition.x * step)
 					.setY(position.y + indexPosition.y * step)
@@ -71,12 +71,12 @@ public class ChunkManager implements IChunkManager {
 	}
 
 	@Override
-	public Vec3f getChunkPositionByChunkIndex(int chunkIndex) {
+	public Vector3f getChunkPositionByChunkIndex(int chunkIndex) {
 		float step = EngineSettings.VOXEL_CHUNK_SIZE * EngineSettings.VOXEL_BLOCK_SIZE;
 		int x = (int) Math.floor(chunkIndex / Maths.sqr(size));
 		int y = (int) Math.floor(chunkIndex / size);
 		int z = chunkIndex;
-		IVectorBuilder3<Float, Vec3f> vecBuilder = new VectorBuilder3f();
+		IVectorBuilder3<Float, Vector3f> vecBuilder = new VectorBuilder3f();
 		return vecBuilder
 					.setX(position.x + Maths.tailOfDivisionNoReminder(x, size) * step)
 					.setY(position.y + Maths.tailOfDivisionNoReminder(y, size) * step)
@@ -85,7 +85,7 @@ public class ChunkManager implements IChunkManager {
 	}
 	
 	@Override
-	public Vec3f getChunkPositionByBlockIndex(int blockIndex) {
+	public Vector3f getChunkPositionByBlockIndex(int blockIndex) {
 		float step = EngineSettings.VOXEL_CHUNK_SIZE * EngineSettings.VOXEL_BLOCK_SIZE;
 		int x = (int) Math.floor(blockIndex / (Math.pow(EngineSettings.VOXEL_CHUNK_SIZE, 3) *  Math.pow(size,2)));
 		int y = (int) Math.floor(blockIndex / (Math.pow(EngineSettings.VOXEL_CHUNK_SIZE, 3) * size));
@@ -93,7 +93,7 @@ public class ChunkManager implements IChunkManager {
 		x = Maths.tailOfDivisionNoReminder(x, size);
 		y = Maths.tailOfDivisionNoReminder(y, size);
 		z = Maths.tailOfDivisionNoReminder(z, size);
-		IVectorBuilder3<Float, Vec3f> positionVecBuilder = new VectorBuilder3f();
+		IVectorBuilder3<Float, Vector3f> positionVecBuilder = new VectorBuilder3f();
 		return positionVecBuilder
 				.setX(position.x + x * step)
 				.setY(position.y + y * step)
@@ -102,10 +102,10 @@ public class ChunkManager implements IChunkManager {
 	}
 
 	@Override
-	public Vec3f getBlockPosition(int chunkIndex, Vector3i indexPosition) {
+	public Vector3f getBlockPosition(int chunkIndex, Vector3i indexPosition) {
 		float step = EngineSettings.VOXEL_BLOCK_SIZE;
-		Vec3f chunkPosition = getChunkPositionByChunkIndex(chunkIndex);
-		IVectorBuilder3<Float, Vec3f> vecBuilder = new VectorBuilder3f();
+		Vector3f chunkPosition = getChunkPositionByChunkIndex(chunkIndex);
+		IVectorBuilder3<Float, Vector3f> vecBuilder = new VectorBuilder3f();
 		return vecBuilder
 					.setX(chunkPosition.x + indexPosition.x * step)
 					.setY(chunkPosition.y + indexPosition.y * step)
@@ -114,7 +114,7 @@ public class ChunkManager implements IChunkManager {
 	}
 	
 	@Override
-	public Vec3f getBlockPositionByBlockIndex(int blockIndex) {
+	public Vector3f getBlockPositionByBlockIndex(int blockIndex) {
 		int x = (int) Math.floor(blockIndex / Math.pow(EngineSettings.VOXEL_CHUNK_SIZE, 2));
 		int y = (int) Math.floor(blockIndex / EngineSettings.VOXEL_CHUNK_SIZE);
 		int z = blockIndex;
@@ -122,7 +122,7 @@ public class ChunkManager implements IChunkManager {
 		y = Maths.tailOfDivisionNoReminder(y, EngineSettings.VOXEL_CHUNK_SIZE);
 		z = Maths.tailOfDivisionNoReminder(z, EngineSettings.VOXEL_CHUNK_SIZE);
 		IVectorBuilder3<Integer, Vector3i> vecBuilder = new VectorBuilder3i();
-		Vec3f chunkPosition = getChunkPositionByBlockIndex(blockIndex);
+		Vector3f chunkPosition = getChunkPositionByBlockIndex(blockIndex);
 		Vector3i blockVector = vecBuilder
 				.setX(x)
 				.setY(y)
@@ -137,7 +137,7 @@ public class ChunkManager implements IChunkManager {
 	}
 	
 	@Override
-	public Vec3f getBlockPosition(int chunkIndex, int blockIndex) {
+	public Vector3f getBlockPosition(int chunkIndex, int blockIndex) {
 		return getBlockPosition(chunkIndex, getBlockIndexPosition(blockIndex));
 	}
 	

@@ -8,7 +8,7 @@ import object.gui.group.IGUIGroup;
 import object.gui.pattern.object.GUIObject;
 import object.gui.texture.GUITexture;
 import tool.math.Maths;
-import tool.math.vector.Vec2f;
+import tool.math.vector.Vector2f;
 
 /**
  * Base abstract class of GUI button. Can be extended by any other class.<br>
@@ -27,13 +27,13 @@ public abstract class GUIButtonBase extends GUIObject implements IGUIButton {
 	protected IAction selectedAction;
 	protected IAction deselectedAction;
 	protected BoundingQuad quad; 
-	protected Vec2f position = new Vec2f(0,0);
+	protected Vector2f position = new Vector2f(0,0);
 
 	protected GUIButtonBase(String name, IGUIGroup guiGroup) {
 		super(name);
 		this.guiGroup = guiGroup;
-		Vec2f point1 = calculateFirstPoint();
-		Vec2f point2 = calculateSecondPoint();
+		Vector2f point1 = calculateFirstPoint();
+		Vector2f point2 = calculateSecondPoint();
 		this.quad = new BoundingQuad(point1, point2);		
 	}
 	
@@ -128,15 +128,15 @@ public abstract class GUIButtonBase extends GUIObject implements IGUIButton {
 	
 	@Override
 	public void setBoundingArea(BoundingQuad quad, boolean centered) {
-		this.quad = quad.clone();
+		this.quad = quad;
 		if(centered) {
-			Vec2f center = 
+			Vector2f center = 
 			this.guiGroup.getAll().stream()
 				.flatMap(list -> list.getTextures().stream())
 				.map(texture -> texture.getPosition())
 				.reduce((tPosition1, tPosition2) -> {
-					Vec2f summ = Vec2f.add(tPosition1, tPosition2);
-					return new Vec2f(summ.x/2,summ.y/2);
+					Vector2f summ = Vector2f.add(tPosition1, tPosition2);
+					return new Vector2f(summ.x/2,summ.y/2);
 				}).orElse(null);
 			this.quad.move(center);
 		}		
@@ -175,13 +175,13 @@ public abstract class GUIButtonBase extends GUIObject implements IGUIButton {
 	}
 	
 	@Override
-	public void move(Vec2f position) {
+	public void move(Vector2f position) {
 		this.guiGroup.move(position);
 		this.quad.move(position);
 	}
 	
 	@Override
-	public void increaseScale(Vec2f scale) {
+	public void increaseScale(Vector2f scale) {
 		this.guiGroup.getAll().stream()
 			.flatMap(gui -> gui.getTextures().stream())
 			.forEach(texture -> texture.increaseScale(scale));
@@ -194,7 +194,7 @@ public abstract class GUIButtonBase extends GUIObject implements IGUIButton {
 	 *         false if button is out of the current button
 	 */
 	@Override
-	public boolean getIsMouseOver(Vec2f cursorPosition) {
+	public boolean getIsMouseOver(Vector2f cursorPosition) {
 		return Maths.pointIsInQuad(cursorPosition,
 				quad.getLeftPoint(), quad.getRightPoint());
 	}
@@ -214,13 +214,13 @@ public abstract class GUIButtonBase extends GUIObject implements IGUIButton {
 	 * points and selecting the lowest one.
 	 * <p>Works correctly only for squared textures.
 	 * 
-	 * @return {@link Vec2f} left-bottom point
+	 * @return {@link Vector2f} left-bottom point
 	 */
-	private Vec2f calculateFirstPoint() {
+	private Vector2f calculateFirstPoint() {
 		return this.guiGroup.getAll().stream()
 					.flatMap(gui -> gui.getTextures().stream())
 					.map(texture -> this.getTextureFirstPoint(texture))
-					.min((a,b) -> Maths.compareTo(a,b))
+					.min((a,b) -> Maths.compare(a,b))
 					.get();
 	}
 	
@@ -229,30 +229,30 @@ public abstract class GUIButtonBase extends GUIObject implements IGUIButton {
 	 * points and selecting the highest one.
 	 * <p>Works correctly only for squared textures.
 	 * 
-	 * @return {@link Vec2f} right-up point
+	 * @return {@link Vector2f} right-up point
 	 */
-	private Vec2f calculateSecondPoint() {
+	private Vector2f calculateSecondPoint() {
 		return this.guiGroup.getAll().stream()
 					.flatMap(gui -> gui.getTextures().stream())
 					.map(texture -> this.getTextureSecondPoint(texture))
-					.max((a,b) -> Maths.compareTo(a,b))
+					.max((a,b) -> Maths.compare(a,b))
 					.get();
 	}
 	
-	private Vec2f getTextureFirstPoint(GUITexture texture) {
+	private Vector2f getTextureFirstPoint(GUITexture texture) {
 		float width = texture.getTexture().getTextureWidth()/(float)Display.getWidth();
 		float height = texture.getTexture().getTextureHeight()/(float)Display.getHeight();
 		float x = texture.getPosition().x - width*texture.getScale().x/2;
 		float y = texture.getPosition().y - height*texture.getScale().y/2;
-		return new Vec2f(x, y); 
+		return new Vector2f(x, y); 
 	}
 	
-	public Vec2f getTextureSecondPoint(GUITexture texture) {
+	public Vector2f getTextureSecondPoint(GUITexture texture) {
 		float width = texture.getTexture().getTextureWidth()/(float)Display.getWidth();
 		float height = texture.getTexture().getTextureHeight()/(float)Display.getHeight();
 		float x = texture.getPosition().x + width*texture.getScale().x/2;
 		float y = texture.getPosition().y + height*texture.getScale().y/2;
-		return new Vec2f(x, y); 
+		return new Vector2f(x, y); 
 	}
 
 }

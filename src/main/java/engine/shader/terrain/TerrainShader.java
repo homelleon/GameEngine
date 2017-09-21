@@ -11,7 +11,7 @@ import object.light.ILight;
 import shader.ShaderProgram;
 import tool.math.Maths;
 import tool.math.Matrix4f;
-import tool.math.vector.Vec3f;
+import tool.math.vector.Vector3f;
 
 public class TerrainShader extends ShaderProgram {
 
@@ -89,7 +89,7 @@ public class TerrainShader extends ShaderProgram {
 	}
 
 	public void loadSkyColour(float r, float g, float b) {
-		super.loadVector("skyColour", new Vec3f(r, g, b));
+		super.loadVector("skyColour", new Vector3f(r, g, b));
 	}
 
 	public void loadShineVariables(float damper, float reflectivity) {
@@ -115,9 +115,9 @@ public class TerrainShader extends ShaderProgram {
 				super.loadVector("lightColour[" + i + "]", light.getColour());
 				super.loadVector("attenuation[" + i + "]", light.getAttenuation());
 			} else {
-				super.loadVector("lightPosition[" + i + "]", new Vec3f(0, 0, 0));
-				super.loadVector("lightColour[" + i + "]", new Vec3f(0, 0, 0));
-				super.loadVector("attenuation[" + i + "]", new Vec3f(1, 0, 0));
+				super.loadVector("lightPosition[" + i + "]", new Vector3f(0, 0, 0));
+				super.loadVector("lightColour[" + i + "]", new Vector3f(0, 0, 0));
+				super.loadVector("attenuation[" + i + "]", new Vector3f(1, 0, 0));
 			}
 		}
 	}

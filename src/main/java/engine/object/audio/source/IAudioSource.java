@@ -3,7 +3,7 @@ package object.audio.source;
 import object.Nameable;
 import object.audio.master.AudioMaster;
 import object.audio.master.IAudioMaster;
-import tool.math.vector.Vec3f;
+import tool.math.vector.Vector3f;
 
 /**
  * Interface of sound or music source in 3 dimentional space.
@@ -78,9 +78,9 @@ public interface IAudioSource extends Nameable {
 	 * 
 	 * @param speed
 	 *            Vec3f - 3 dimentional speed value
-	 * @see #setPosition(Vec3f)
+	 * @see #setPosition(Vector3f)
 	 */
-	public void setVelocity(Vec3f speed); // установить скорость аудио
+	public void setVelocity(Vector3f speed); // установить скорость аудио
 
 	/**
 	 * Method that defines if sound will be repeating after it was played till
@@ -126,15 +126,15 @@ public interface IAudioSource extends Nameable {
 	 * 
 	 * @param position
 	 *            Vec3f representation of value to set
-	 * @see #setVelocity(Vec3f)
+	 * @see #setVelocity(Vector3f)
 	 */
-	public void setPosition(Vec3f position); // установить позицию звука
+	public void setPosition(Vector3f position); // установить позицию звука
 
 	/**
 	 * Returns position of sound source in 3 dimentional space.
 	 * 
 	 * @return 3 dimentional value of sound source position
 	 */
-	public Vec3f getPosition();
+	public Vector3f getPosition();
 
 }

@@ -4,8 +4,8 @@ import java.nio.FloatBuffer;
 
 import org.lwjgl.util.vector.Vector4f;
 
-import tool.math.vector.Vec2f;
-import tool.math.vector.Vec3f;
+import tool.math.vector.Vector2f;
+import tool.math.vector.Vector3f;
 
 
 public class Matrix4f {
@@ -47,7 +47,7 @@ public class Matrix4f {
 		return this;
 	}
 	
-	public Matrix4f translate(Vec3f translation)
+	public Matrix4f translate(Vector3f translation)
 	{
 		m[3][0] += m[0][0] * translation.x + m[1][0] * translation.y + m[2][0] * translation.z;
 		m[3][1] += m[0][1] * translation.x + m[1][1] * translation.y + m[2][1] * translation.z;
@@ -57,7 +57,7 @@ public class Matrix4f {
 		return this;
 	}
 	
-	public Matrix4f translate(Vec2f translation) {		
+	public Matrix4f translate(Vector2f translation) {		
 		m[3][0] += m[0][0] * translation.x + m[1][0] * translation.y;
 		m[3][1] += m[0][1] * translation.x + m[1][1] * translation.y;
 		m[3][2] += m[0][2] * translation.x + m[1][2] * translation.y;
@@ -84,7 +84,7 @@ public class Matrix4f {
 		return new Vector4f(x,y,z,w);
 	}
 	
-	public Matrix4f rotate(Vec3f rotation)
+	public Matrix4f rotate(Vector3f rotation)
 	{
 		Matrix4f rx = new Matrix4f();
 		Matrix4f ry = new Matrix4f();
@@ -114,7 +114,7 @@ public class Matrix4f {
 		return this;
 	}
 	
-	public Matrix4f rotate(float angle, Vec3f axis) {
+	public Matrix4f rotate(float angle, Vector3f axis) {
 		
 		float c = (float) Math.cos(angle);
 		float s = (float) Math.sin(angle);
@@ -146,22 +146,25 @@ public class Matrix4f {
 		float t11 = this.m[0][1] * f10 + this.m[1][1] * f11 + this.m[2][1] * f12;
 		float t12 = this.m[0][2] * f10 + this.m[1][2] * f11 + this.m[2][2] * f12;
 		float t13 = this.m[0][3] * f10 + this.m[1][3] * f11 + this.m[2][3] * f12;
-		this.m[2][0] = this.m[0][0] * f20 + this.m[1][0] * f21 + this.m[2][0] * f22;
-		this.m[2][1] = this.m[0][1] * f20 + this.m[1][1] * f21 + this.m[2][1] * f22;
-		this.m[2][2] = this.m[0][2] * f20 + this.m[1][2] * f21 + this.m[2][2] * f22;
-		this.m[2][3] = this.m[0][3] * f20 + this.m[1][3] * f21 + this.m[2][3] * f22;
-		this.m[0][0] = t00;
-		this.m[0][1] = t01;
-		this.m[0][2] = t02;
-		this.m[0][3] = t03;
-		this.m[1][0] = t10;
-		this.m[1][1] = t11;
-		this.m[1][2] = t12;
-		this.m[1][3] = t13;
+		
+		
+		m[2][0] = this.m[0][0] * f20 + this.m[1][0] * f21 + this.m[2][0] * f22;
+		m[2][1] = this.m[0][1] * f20 + this.m[1][1] * f21 + this.m[2][1] * f22;
+		m[2][2] = this.m[0][2] * f20 + this.m[1][2] * f21 + this.m[2][2] * f22;
+		m[2][3] = this.m[0][3] * f20 + this.m[1][3] * f21 + this.m[2][3] * f22;
+		m[0][0] = t00;
+		m[0][1] = t01;
+		m[0][2] = t02;
+		m[0][3] = t03;
+		m[1][0] = t10;
+		m[1][1] = t11;
+		m[1][2] = t12;
+		m[1][3] = t13;
+		
 		return this;
 	}
 	
-	public Matrix4f scale(Vec3f scaling)
+	public Matrix4f scale(Vector3f scaling)
 	{
 		m[0][0] = m[0][0] * scaling.x;
 		m[0][1] = m[0][1] * scaling.x;
@@ -202,11 +205,11 @@ public class Matrix4f {
 		return this;
 	}
 	
-	public Matrix4f View(Vec3f forward, Vec3f up)
+	public Matrix4f View(Vector3f forward, Vector3f up)
 	{
-		Vec3f f = forward;
-		Vec3f u = up;
-		Vec3f r = u.cross(f);
+		Vector3f f = forward;
+		Vector3f u = up;
+		Vector3f r = u.cross(f);
 		
 		m[0][0] = r.getX(); m[0][1] = r.getY(); m[0][2] = r.getZ(); m[0][3] = 0;
 		m[1][0] = u.getX(); m[1][1] = u.getY(); m[1][2] = u.getZ(); m[1][3] = 0;
@@ -219,20 +222,7 @@ public class Matrix4f {
 	
 	public Matrix4f mul(Matrix4f r){
 		
-		Matrix4f res = new Matrix4f();
-		
-		for (int i=0; i<4; i++)
-		{
-			for (int j=0; j<4; j++)
-			{
-				res.set(i, j, m[i][0] * r.get(0, j) + 
-							  m[i][1] * r.get(1, j) +
-							  m[i][2] * r.get(2, j) +
-							  m[i][3] * r.get(3, j));
-			}
-		}
-		
-		return res;
+		return clone(mul(this, r));
 	}
 	
 	public static Matrix4f mul(Matrix4f l, Matrix4f r){
@@ -299,31 +289,76 @@ public class Matrix4f {
 		
 		
 		float div = (s0 * c5 - s1 * c4 + s2 * c3 + s3 * c2 - s4 * c1 + s5 * c0);
-		if (div == 0) System.err.println("not invertible");
+		if (div == 0) return null;
+		
+	    float invdet = 1.0f / div;
+	    
+	    r.set(0, 0, (l.get(1, 1) * c5 - l.get(1, 2) * c4 + l.get(1, 3) * c3) * invdet);
+	    r.set(0, 1, (-l.get(0, 1) * c5 + l.get(0, 2) * c4 - l.get(0, 3) * c3) * invdet);
+	    r.set(0, 2, (l.get(3, 1) * s5 - l.get(3, 2) * s4 + l.get(3, 3) * s3) * invdet);
+	    r.set(0, 3, (-l.get(2, 1) * s5 + l.get(2, 2) * s4 - l.get(2, 3) * s3) * invdet);
+
+	    r.set(1, 0, (-l.get(1, 0) * c5 + l.get(1, 2) * c2 - l.get(1, 3) * c1) * invdet);
+	    r.set(1, 1, (l.get(0, 0) * c5 - l.get(0, 2) * c2 + l.get(0, 3) * c1) * invdet);
+	    r.set(1, 2, (-l.get(3, 0) * s5 + l.get(3, 2) * s2 - l.get(3, 3) * s1) * invdet);
+	    r.set(1, 3, (l.get(2, 0) * s5 - l.get(2, 2) * s2 + l.get(2, 3) * s1) * invdet);
+
+	    r.set(2, 0, (l.get(1, 0) * c4 - l.get(1, 1) * c2 + l.get(1, 3) * c0) * invdet);
+	    r.set(2, 1, (-l.get(0, 0) * c4 + l.get(0, 1) * c2 - l.get(0, 3) * c0) * invdet);
+	    r.set(2, 2, (l.get(3, 0) * s4 - l.get(3, 1) * s2 + l.get(3, 3) * s0) * invdet);
+	    r.set(2, 3, (-l.get(2, 0) * s4 + l.get(2, 1) * s2 - l.get(2, 3) * s0) * invdet);
+
+	    r.set(3, 0, (-l.get(1, 0) * c3 + l.get(1, 1) * c1 - l.get(1, 2) * c0) * invdet);
+	    r.set(3, 1, (l.get(0, 0) * c3 - l.get(0, 1) * c1 + l.get(0, 2) * c0) * invdet);
+	    r.set(3, 2, (-l.get(3, 0) * s3 + l.get(3, 1) * s1 - l.get(3, 2) * s0) * invdet);
+	    r.set(3, 3, (l.get(2, 0) * s3 - l.get(2, 1) * s1 + l.get(2, 2) * s0) * invdet);
+		
+		return r;
+	}
+	
+	public static Matrix4f invert(Matrix4f r)
+	{
+		float s0 = r.get(0, 0) * r.get(1, 1) - r.get(1, 0) * r.get(0, 1);
+		float s1 = r.get(0, 0) * r.get(1, 2) - r.get(1, 0) * r.get(0, 2);
+		float s2 = r.get(0, 0) * r.get(1, 3) - r.get(1, 0) * r.get(0, 3);
+		float s3 = r.get(0, 1) * r.get(1, 2) - r.get(1, 1) * r.get(0, 2);
+		float s4 = r.get(0, 1) * r.get(1, 3) - r.get(1, 1) * r.get(0, 3);
+		float s5 = r.get(0, 2) * r.get(1, 3) - r.get(1, 2) * r.get(0, 3);
+
+		float c5 = r.get(2, 2) * r.get(3, 3) - r.get(3, 2) * r.get(2, 3);
+		float c4 = r.get(2, 1) * r.get(3, 3) - r.get(3, 1) * r.get(2, 3);
+		float c3 = r.get(2, 1) * r.get(3, 2) - r.get(3, 1) * r.get(2, 2);
+		float c2 = r.get(2, 0) * r.get(3, 3) - r.get(3, 0) * r.get(2, 3);
+		float c1 = r.get(2, 0) * r.get(3, 2) - r.get(3, 0) * r.get(2, 2);
+		float c0 = r.get(2, 0) * r.get(3, 1) - r.get(3, 0) * r.get(2, 1);
+		
+		
+		float div = (s0 * c5 - s1 * c4 + s2 * c3 + s3 * c2 - s4 * c1 + s5 * c0);
+		if (div == 0) return null;
 		
 	    float invdet = 1.0f / div;
 	    
 	    Matrix4f invM = new Matrix4f();
 	    
-	    invM.set(0, 0, (l.get(1, 1) * c5 - l.get(1, 2) * c4 + l.get(1, 3) * c3) * invdet);
-	    invM.set(0, 1, (-l.get(0, 1) * c5 + l.get(0, 2) * c4 - l.get(0, 3) * c3) * invdet);
-	    invM.set(0, 2, (l.get(3, 1) * s5 - l.get(3, 2) * s4 + l.get(3, 3) * s3) * invdet);
-	    invM.set(0, 3, (-l.get(2, 1) * s5 + l.get(2, 2) * s4 - l.get(2, 3) * s3) * invdet);
+	    invM.set(0, 0, (r.get(1, 1) * c5 - r.get(1, 2) * c4 + r.get(1, 3) * c3) * invdet);
+	    invM.set(0, 1, (-r.get(0, 1) * c5 + r.get(0, 2) * c4 - r.get(0, 3) * c3) * invdet);
+	    invM.set(0, 2, (r.get(3, 1) * s5 - r.get(3, 2) * s4 + r.get(3, 3) * s3) * invdet);
+	    invM.set(0, 3, (-r.get(2, 1) * s5 + r.get(2, 2) * s4 - r.get(2, 3) * s3) * invdet);
 
-	    invM.set(1, 0, (-l.get(1, 0) * c5 + l.get(1, 2) * c2 - l.get(1, 3) * c1) * invdet);
-	    invM.set(1, 1, (l.get(0, 0) * c5 - l.get(0, 2) * c2 + l.get(0, 3) * c1) * invdet);
-	    invM.set(1, 2, (-l.get(3, 0) * s5 + l.get(3, 2) * s2 - l.get(3, 3) * s1) * invdet);
-	    invM.set(1, 3, (l.get(2, 0) * s5 - l.get(2, 2) * s2 + l.get(2, 3) * s1) * invdet);
+	    invM.set(1, 0, (-r.get(1, 0) * c5 + r.get(1, 2) * c2 - r.get(1, 3) * c1) * invdet);
+	    invM.set(1, 1, (r.get(0, 0) * c5 - r.get(0, 2) * c2 + r.get(0, 3) * c1) * invdet);
+	    invM.set(1, 2, (-r.get(3, 0) * s5 + r.get(3, 2) * s2 - r.get(3, 3) * s1) * invdet);
+	    invM.set(1, 3, (r.get(2, 0) * s5 - r.get(2, 2) * s2 + r.get(2, 3) * s1) * invdet);
 
-	    invM.set(2, 0, (l.get(1, 0) * c4 - l.get(1, 1) * c2 + l.get(1, 3) * c0) * invdet);
-	    invM.set(2, 1, (-l.get(0, 0) * c4 + l.get(0, 1) * c2 - l.get(0, 3) * c0) * invdet);
-	    invM.set(2, 2, (l.get(3, 0) * s4 - l.get(3, 1) * s2 + l.get(3, 3) * s0) * invdet);
-	    invM.set(2, 3, (-l.get(2, 0) * s4 + l.get(2, 1) * s2 - l.get(2, 3) * s0) * invdet);
+	    invM.set(2, 0, (r.get(1, 0) * c4 - r.get(1, 1) * c2 + r.get(1, 3) * c0) * invdet);
+	    invM.set(2, 1, (-r.get(0, 0) * c4 + r.get(0, 1) * c2 - r.get(0, 3) * c0) * invdet);
+	    invM.set(2, 2, (r.get(3, 0) * s4 - r.get(3, 1) * s2 + r.get(3, 3) * s0) * invdet);
+	    invM.set(2, 3, (-r.get(2, 0) * s4 + r.get(2, 1) * s2 - r.get(2, 3) * s0) * invdet);
 
-	    invM.set(3, 0, (-l.get(1, 0) * c3 + l.get(1, 1) * c1 - l.get(1, 2) * c0) * invdet);
-	    invM.set(3, 1, (l.get(0, 0) * c3 - l.get(0, 1) * c1 + l.get(0, 2) * c0) * invdet);
-	    invM.set(3, 2, (-l.get(3, 0) * s3 + l.get(3, 1) * s1 - l.get(3, 2) * s0) * invdet);
-	    invM.set(3, 3, (l.get(2, 0) * s3 - l.get(2, 1) * s1 + l.get(2, 2) * s0) * invdet);
+	    invM.set(3, 0, (-r.get(1, 0) * c3 + r.get(1, 1) * c1 - r.get(1, 2) * c0) * invdet);
+	    invM.set(3, 1, (r.get(0, 0) * c3 - r.get(0, 1) * c1 + r.get(0, 2) * c0) * invdet);
+	    invM.set(3, 2, (-r.get(3, 0) * s3 + r.get(3, 1) * s1 - r.get(3, 2) * s0) * invdet);
+	    invM.set(3, 3, (r.get(2, 0) * s3 - r.get(2, 1) * s1 + r.get(2, 2) * s0) * invdet);
 		
 		return invM;
 	}
@@ -346,7 +381,7 @@ public class Matrix4f {
 		
 		
 		float div = (s0 * c5 - s1 * c4 + s2 * c3 + s3 * c2 - s4 * c1 + s5 * c0);
-		if (div == 0) System.err.println("not invertible");
+		if (div == 0) return null;
 		
 	    float invdet = 1.0f / div;
 	    
@@ -468,5 +503,26 @@ public class Matrix4f {
 				"|" + m[1][0] + " " + m[1][1] + " " + m[1][2] + " " + m[1][3] + "|\n" +
 				"|" + m[2][0] + " " + m[2][1] + " " + m[2][2] + " " + m[2][3] + "|\n" +
 				"|" + m[3][0] + " " + m[3][1] + " " + m[3][2] + " " + m[3][3] + "|";
+	}
+	
+	public Matrix4f clone(Matrix4f m) {
+		this.m[0][0] = m.m[0][0];
+		this.m[0][1] = m.m[0][1];
+		this.m[0][2] = m.m[0][2];
+		this.m[0][3] = m.m[0][3];
+		this.m[1][0] = m.m[1][0];
+		this.m[1][1] = m.m[1][1];
+		this.m[1][2] = m.m[1][2];
+		this.m[1][3] = m.m[1][3];
+		this.m[2][0] = m.m[2][0];
+		this.m[2][1] = m.m[2][1];
+		this.m[2][2] = m.m[2][2];
+		this.m[2][3] = m.m[2][3];
+		this.m[3][0] = m.m[3][0];
+		this.m[3][1] = m.m[3][1];
+		this.m[3][2] = m.m[3][2];
+		this.m[3][3] = m.m[3][3];
+		
+		return this;
 	}
 }

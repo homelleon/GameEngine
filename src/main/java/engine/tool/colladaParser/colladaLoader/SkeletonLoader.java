@@ -9,7 +9,7 @@ import tool.colladaParser.dataStructures.JointData;
 import tool.colladaParser.dataStructures.SkeletonData;
 import tool.colladaParser.xmlParser.XmlNode;
 import tool.math.Matrix4f;
-import tool.math.vector.Vec3f;
+import tool.math.vector.Vector3f;
 
 public class SkeletonLoader {
 
@@ -20,7 +20,7 @@ public class SkeletonLoader {
 	private int jointCount = 0;
 
 	private static final Matrix4f CORRECTION = new Matrix4f().rotate((float) Math.toRadians(-90),
-			new Vec3f(1, 0, 0));
+			new Vector3f(1, 0, 0));
 
 	public SkeletonLoader(XmlNode visualSceneNode, List<String> boneOrder) {
 		this.armatureData = visualSceneNode.getChild("visual_scene").getChildWithAttribute("node", "id", "Armature");

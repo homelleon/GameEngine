@@ -11,8 +11,8 @@ import object.light.ILight;
 import shader.ShaderProgram;
 import tool.math.Maths;
 import tool.math.Matrix4f;
-import tool.math.vector.Vec2f;
-import tool.math.vector.Vec3f;
+import tool.math.vector.Vector2f;
+import tool.math.vector.Vector3f;
 
 public class TexturedEntityShader extends ShaderProgram {
 
@@ -107,11 +107,11 @@ public class TexturedEntityShader extends ShaderProgram {
 	}
 
 	public void loadOffset(float x, float y) {
-		super.load2DVector("offset", new Vec2f(x, y));
+		super.load2DVector("offset", new Vector2f(x, y));
 	}
 
 	public void loadSkyColour(float r, float g, float b) {
-		super.loadVector("skyColour", new Vec3f(r, g, b));
+		super.loadVector("skyColour", new Vector3f(r, g, b));
 	}
 
 	public void loadFakeLightingVariable(boolean useFake) {
@@ -156,9 +156,9 @@ public class TexturedEntityShader extends ShaderProgram {
 				super.loadVector("lightColour[" + i + "]", light.getColour());
 				super.loadVector("attenuation[" + i + "]", light.getAttenuation());
 			} else {
-				super.loadVector("lightPosition[" + i + "]", new Vec3f(0, 0, 0));
-				super.loadVector("lightColour[" + i + "]", new Vec3f(0, 0, 0));
-				super.loadVector("attenuation[" + i + "]", new Vec3f(1, 0, 0));
+				super.loadVector("lightPosition[" + i + "]", new Vector3f(0, 0, 0));
+				super.loadVector("lightColour[" + i + "]", new Vector3f(0, 0, 0));
+				super.loadVector("attenuation[" + i + "]", new Vector3f(1, 0, 0));
 			}
 		}
 

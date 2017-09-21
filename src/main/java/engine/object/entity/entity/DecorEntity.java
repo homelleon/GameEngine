@@ -3,17 +3,17 @@ package object.entity.entity;
 import core.settings.EngineSettings;
 import object.entity.BaseEntity;
 import object.model.textured.TexturedModel;
-import tool.math.vector.Vec3f;
+import tool.math.vector.Vector3f;
 
 public class DecorEntity extends BaseEntity implements IEntity {
 
-	public DecorEntity(String name, TexturedModel model, int textureIndex, Vec3f position,
-			Vec3f rotation, float scale) {
+	public DecorEntity(String name, TexturedModel model, int textureIndex, Vector3f position,
+			Vector3f rotation, float scale) {
 		super(name, EngineSettings.ENTITY_TYPE_DECORATE, model, textureIndex, position, rotation, scale);
 	}
 	
-	public DecorEntity(String name, TexturedModel model, Vec3f position,
-			Vec3f rotation, float scale) {
+	public DecorEntity(String name, TexturedModel model, Vector3f position,
+			Vector3f rotation, float scale) {
 		super(name, EngineSettings.ENTITY_TYPE_DECORATE, model, position, rotation, scale);
 	}
 

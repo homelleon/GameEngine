@@ -1,38 +1,37 @@
 package tool.math.vector;
 
-import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 
 import tool.math.Quaternion;
 
-public class Vec3f extends Vec{
+public class Vector3f extends Vector{
 	
 	public float x;
 	public float y;
 	public float z;
 	
-	public Vec3f()
+	public Vector3f()
 	{
 		this.setX(0);
 		this.setY(0);
 		this.setZ(0);
 	}
 	
-	public Vec3f(float x, float y, float z)
+	public Vector3f(float x, float y, float z)
 	{
 		this.setX(x);
 		this.setY(y);
 		this.setZ(z);
 	}
 	
-	public Vec3f(Vec3f v)
+	public Vector3f(Vector3f v)
 	{
 		this.x = v.getX();
 		this.y = v.getY();
 		this.z = v.getZ();
 	}
 	
-	public Vec3f(Vector4f plane) {
+	public Vector3f(Vector4f plane) {
 		this.x = plane.x;
 		this.y = plane.y;
 		this.z = plane.z;
@@ -51,45 +50,45 @@ public class Vec3f extends Vec{
 	 * Negate a vector
 	 * @return this
 	 */
-	public Vec3f negate() {
-		x = -x;
-		y = -y;
-		z = -z;
+	public Vector3f negate() {
+		setX(-x);
+		setY(-y);
+		setZ(-z);
+		
 		return this;
 	}
 	
-	public Vector3f getVector3f() {
-		return new Vector3f(this.x, this.y, this.z);
-	}
-	
-	public float dot(Vec3f r)
+	public float dot(Vector3f r)
 	{
 		return x * r.getX() + y * r.getY() + z * r.getZ();
 	}
 	
-	public static float dot(Vec3f vec, Vec3f r)
+	public static float dot(Vector3f vec, Vector3f r)
 	{
 		return vec.x * r.getX() + vec.y * r.getY() + vec.z * r.getZ();
 	}
 	
-	public Vec3f cross(Vec3f r)
+	public Vector3f cross(Vector3f r)
 	{
 		float x = this.y * r.getZ() - this.z * r.getY();
 		float y = this.z * r.getX() - this.x * r.getZ();
 		float z = this.x * r.getY() - this.y * r.getX();
+		setX(x);
+		setY(y);
+		setZ(z);
 		
-		return new Vec3f(x,y,z);
+		return this;
 	}
 	
-	public static Vec3f cross(Vec3f vec, Vec3f r) {
+	public static Vector3f cross(Vector3f vec, Vector3f r) {
 		float x = vec.y * r.z - vec.z * r.y;
 		float y = vec.z * r.x - vec.x * r.z;
 		float z = vec.x * r.y - vec.y * r.x;
 		
-		return new Vec3f(x,y,z);
+		return new Vector3f(x,y,z);
 	}
 	
-	public Vec3f scale(float scale) {
+	public Vector3f scale(float scale) {
 
 		x *= scale;
 		y *= scale;
@@ -99,7 +98,7 @@ public class Vec3f extends Vec{
 
 	}
 	
-	public Vec3f normalize()
+	public Vector3f normalize()
 	{
 		float length = this.length();
 		
@@ -110,7 +109,7 @@ public class Vec3f extends Vec{
 		return this;
 	}
 	
-	public static Vec3f normalize(Vec3f vec)
+	public static Vector3f normalize(Vector3f vec)
 	{
 		float length = vec.length();
 		
@@ -121,7 +120,7 @@ public class Vec3f extends Vec{
 		return vec;
 	}
 	
-	public Vec3f rotate(float angle, Vec3f axis)
+	public Vector3f rotate(float angle, Vector3f axis)
 	{
 		float sinHalfAngle = (float)Math.sin(Math.toRadians(angle / 2));
 		float cosHalfAngle = (float)Math.cos(Math.toRadians(angle / 2));
@@ -136,75 +135,95 @@ public class Vec3f extends Vec{
 		
 		Quaternion w = rotation.mul(this).mul(conjugate);
 		
-		x = w.x;
-		y = w.y;
-		z = w.z;
+		this.x = w.x;
+		this.y = w.y;
+		this.z = w.z;
 		
 		return this;
 	}
 	
-	public Vec3f add(Vec3f r)
+	public Vector3f add(Vector3f r)
 	{
-		return new Vec3f(this.x + r.getX(), this.y + r.getY(), this.z + r.getZ());
+		this.x = this.x + r.x;
+		this.y = this.y + r.y;
+		this.z = this.z + r.z;
+		
+		return this;
 	}
 	
-	public static Vec3f add(Vec3f l, Vec3f r)
+	public static Vector3f add(Vector3f l, Vector3f r)
 	{
-		return new Vec3f(l.x + r.getX(), l.y + r.getY(), l.z + r.getZ());
+		return new Vector3f(l.x + r.x, l.y + r.y, l.z + r.z);
 	}
 	
-	public Vec3f add(float r)
+	public Vector3f add(float r)
 	{
-		return new Vec3f(this.x + r, this.y + r, this.z + r);
+		this.x = this.x + r;
+		this.y = this.y + r;
+		this.z = this.z + r;
+		
+		return this;
 	}
 	
 	
-	public Vec3f sub(Vec3f r)
+	public Vector3f sub(Vector3f r)
 	{
-		return new Vec3f(this.x - r.getX(), this.y - r.getY(), this.z - r.getZ());
+		this.x = this.x - r.x;
+		this.y = this.y - r.y;
+		this.z = this.z - r.z;
+		
+		return this;
 	}
 	
-	public Vec3f sub(float r)
+	public Vector3f sub(float r)
 	{
-		return new Vec3f(this.x - r, this.y - r, this.z - r);
+		this.x = this.x - r;
+		this.y = this.y - r;
+		this.z = this.z - r;
+		
+		return this;
 	}
 	
-	public static Vec3f sub(Vec3f l, Vec3f r)
+	public static Vector3f sub(Vector3f l, Vector3f r)
 	{
-		return new Vec3f(l.x - r.x, l.y - r.y, l.z - r.z);
+		return new Vector3f(l.x - r.x, l.y - r.y, l.z - r.z);
 	}
 	
-	public Vec3f mul(Vec3f r)
+	public Vector3f mul(Vector3f r)
 	{
-		return new Vec3f(this.x * r.getX(), this.y * r.getY(), this.z * r.getZ());
+		this.x = this.x * r.x;
+		this.y = this.y * r.y;
+		this.z = this.z * r.z;
+		
+		return this;
 	}
 	
-	public Vec3f mul(float x, float y, float z)
+	public Vector3f mul(float x, float y, float z)
 	{
-		return new Vec3f(this.x * x, this.y * y, this.z * z);
+		return new Vector3f(this.x * x, this.y * y, this.z * z);
 	}
 	
-	public Vec3f mul(float r)
+	public Vector3f mul(float r)
 	{
-		return new Vec3f(this.x * r, this.y * r, this.z * r);
+		return new Vector3f(this.x * r, this.y * r, this.z * r);
 	}
 	
-	public Vec3f div(Vec3f r)
+	public Vector3f div(Vector3f r)
 	{
-		return new Vec3f(this.x / r.getX(), this.y / r.getY(), this.getZ() / r.getZ());
+		return new Vector3f(this.x / r.getX(), this.y / r.getY(), this.getZ() / r.getZ());
 	}
 	
-	public Vec3f div(float r)
+	public Vector3f div(float r)
 	{
-		return new Vec3f(this.x / r, this.y / r, this.z / r);
+		return new Vector3f(this.x / r, this.y / r, this.z / r);
 	}
 	
-	public Vec3f abs()
+	public Vector3f abs()
 	{
-		return new Vec3f(Math.abs(x), Math.abs(y), Math.abs(z));
+		return new Vector3f(Math.abs(x), Math.abs(y), Math.abs(z));
 	}
 	
-	public boolean equals(Vec3f v)
+	public boolean equals(Vector3f v)
 	{
 		if (x == v.getX() && y == v.getY() && z == v.getZ())
 			return true;

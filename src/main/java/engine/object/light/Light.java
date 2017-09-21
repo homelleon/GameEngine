@@ -1,6 +1,6 @@
 package object.light;
 
-import tool.math.vector.Vec3f;
+import tool.math.vector.Vector3f;
 
 /*
  * Light - источник света
@@ -10,19 +10,19 @@ import tool.math.vector.Vec3f;
 
 public class Light implements ILight {
 
-	private Vec3f position; // позиция
-	private Vec3f colour; // цвеь
-	private Vec3f attenuation = new Vec3f(1, 0, 0); // затухание
+	private Vector3f position; // позиция
+	private Vector3f colour; // цвеь
+	private Vector3f attenuation = new Vector3f(1, 0, 0); // затухание
 
 	private String name;
 
-	public Light(String name, Vec3f position, Vec3f colour) {
+	public Light(String name, Vector3f position, Vector3f colour) {
 		this.position = position;
 		this.colour = colour;
 		this.name = name;
 	}
 
-	public Light(String name, Vec3f position, Vec3f colour, Vec3f attenuation) {
+	public Light(String name, Vector3f position, Vector3f colour, Vector3f attenuation) {
 		this.position = position;
 		this.colour = colour;
 		this.attenuation = attenuation;
@@ -35,23 +35,23 @@ public class Light implements ILight {
 	}
 
 	// вернуть затухание
-	public Vec3f getAttenuation() {
+	public Vector3f getAttenuation() {
 		return attenuation;
 	}
 
-	public Vec3f getPosition() {
+	public Vector3f getPosition() {
 		return position;
 	}
 
-	public void setPosition(Vec3f position) {
+	public void setPosition(Vector3f position) {
 		this.position = position;
 	}
 
-	public Vec3f getColour() {
+	public Vector3f getColour() {
 		return colour;
 	}
 
-	public void setColour(Vec3f colour) {
+	public void setColour(Vector3f colour) {
 		this.colour = colour;
 	}
 

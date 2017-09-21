@@ -9,8 +9,8 @@ import core.settings.EngineSettings;
 import object.light.ILight;
 import shader.ShaderProgram;
 import tool.math.Matrix4f;
-import tool.math.vector.Vec2f;
-import tool.math.vector.Vec3f;
+import tool.math.vector.Vector2f;
+import tool.math.vector.Vector3f;
 
 public class NormalMappedEntityShader extends ShaderProgram {
 
@@ -105,11 +105,11 @@ public class NormalMappedEntityShader extends ShaderProgram {
 	}
 
 	public void loadOffset(float x, float y) {
-		super.load2DVector("offset", new Vec2f(x, y));
+		super.load2DVector("offset", new Vector2f(x, y));
 	}
 
 	public void loadSkyColour(float r, float g, float b) {
-		super.loadVector("skyColour", new Vec3f(r, g, b));
+		super.loadVector("skyColour", new Vector3f(r, g, b));
 	}
 
 	public void loadShineVariables(float damper, float reflectivity) {
@@ -131,9 +131,9 @@ public class NormalMappedEntityShader extends ShaderProgram {
 				super.loadVector("lightColour[" + i + "]", light.getColour());
 				super.loadVector("attenuation[" + i + "]", light.getAttenuation());
 			} else {
-				super.loadVector("lightPositionEyeSpace[" + i + "]", new Vec3f(0, 0, 0));
-				super.loadVector("lightColour[" + i + "]", new Vec3f(0, 0, 0));
-				super.loadVector("attenuation[" + i + "]", new Vec3f(1, 0, 0));
+				super.loadVector("lightPositionEyeSpace[" + i + "]", new Vector3f(0, 0, 0));
+				super.loadVector("lightColour[" + i + "]", new Vector3f(0, 0, 0));
+				super.loadVector("attenuation[" + i + "]", new Vector3f(1, 0, 0));
 			}
 		}
 	}
@@ -146,11 +146,11 @@ public class NormalMappedEntityShader extends ShaderProgram {
 		super.loadMatrix("projectionMatrix", projection);
 	}
 
-	private Vec3f getEyeSpacePosition(ILight light, Matrix4f viewMatrix) {
-		Vec3f position = light.getPosition();
+	private Vector3f getEyeSpacePosition(ILight light, Matrix4f viewMatrix) {
+		Vector3f position = light.getPosition();
 		Vector4f eyeSpacePos = new Vector4f(position.x, position.y, position.z, 1f);
 		eyeSpacePos = viewMatrix.transform(eyeSpacePos);
-		return new Vec3f(eyeSpacePos);
+		return new Vector3f(eyeSpacePos);
 	}
 
 }
