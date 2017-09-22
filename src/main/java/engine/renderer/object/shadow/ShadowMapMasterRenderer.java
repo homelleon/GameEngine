@@ -10,10 +10,10 @@ import core.settings.EngineSettings;
 import object.camera.ICamera;
 import object.entity.entity.IEntity;
 import object.light.Light;
-import object.model.textured.TexturedModel;
 import object.shadow.ShadowBox;
 import object.shadow.ShadowFrameBuffer;
 import object.terrain.terrain.ITerrain;
+import primitive.model.Model;
 import shader.shadow.ShadowShader;
 import tool.math.Matrix4f;
 import tool.math.vector.Vector2f;
@@ -70,13 +70,13 @@ public class ShadowMapMasterRenderer {
 	 * 
 	 * @param entities
 	 *            - the lists of entities to be rendered. Each list is
-	 *            associated with the {@link TexturedModel} that all of the
+	 *            associated with the {@link Model} that all of the
 	 *            entities in that list use.
 	 * @param sun
 	 *            - the light acting as the sun in the scene.
 	 */
-	public void render(Map<TexturedModel, List<IEntity>> entities, Collection<ITerrain> terrains,
-			Map<TexturedModel, List<IEntity>> normalMapEntities, Light sun, ICamera camera) {
+	public void render(Map<Model, List<IEntity>> entities, Collection<ITerrain> terrains,
+			Map<Model, List<IEntity>> normalMapEntities, Light sun, ICamera camera) {
 		shadowBox.update();
 		Vector3f sunPosition = sun.getPosition();
 		Vector3f lightDirection = new Vector3f(-sunPosition.x, -sunPosition.y, -sunPosition.z);

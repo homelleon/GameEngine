@@ -8,20 +8,19 @@ import java.util.stream.IntStream;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
-import org.lwjgl.opengl.GL13;
 import org.lwjgl.util.vector.Vector4f;
 
 import core.settings.EngineSettings;
 import manager.voxel.IChunkManager;
 import object.camera.ICamera;
 import object.light.ILight;
-import object.model.raw.RawModel;
-import object.model.textured.TexturedModel;
-import object.openglObject.VAO;
-import object.texture.model.ModelTexture;
+import object.texture.model.Material;
 import object.voxel.Chunk;
 import object.voxel.data.FaceCullingData;
-import renderer.loader.Loader;
+import primitive.buffer.Loader;
+import primitive.buffer.VAO;
+import primitive.model.Mesh;
+import primitive.model.Model;
 import renderer.viewCulling.frustum.Frustum;
 import shader.voxel.VoxelShader;
 import tool.math.Maths;
@@ -96,8 +95,8 @@ public class VoxelRenderer {
 
 	private static String[] TEXTURE_FILES = { "right", "left", "top", "bottom", "back", "front" };
 
-	private TexturedModel cube;
-	private ModelTexture texture;
+	private Model cube;
+	private Material texture;
 	private VoxelShader shader;
 
 	Matrix4f projectionMatrix;
@@ -109,11 +108,11 @@ public class VoxelRenderer {
 		this.shader.loadProjectionMatrix(projectionMatrix);
 		this.shader.connectTextureUnits();
 		this.shader.stop();
-		RawModel rawModel = loader.getVertexLoader().loadToVAO(VERTICES, TEXTURES, NORMALS, INDICES);
-		this.cube = new TexturedModel("cube", rawModel,
-				new ModelTexture("bark", loader.getTextureLoader().loadTexture(EngineSettings.TEXTURE_MODEL_PATH, "crate")));
-		this.texture = cube.getTexture();
-		texture.setNumberOfRows(1);
+		Mesh rawModel = loader.getVertexLoader().loadToVAO(VERTICES, TEXTURES, NORMALS, INDICES);
+		this.cube = new Model("cube", rawModel,
+				new Material("bark", loader.getTextureLoader().loadTexture(EngineSettings.TEXTURE_MODEL_PATH, "crate")));
+		this.texture = cube.getMaterial();
+		texture.getDiffuseMap().setNumberOfRows(1);
 	}
 
 	public void render(IChunkManager chunkManager, Vector4f clipPlane, Collection<ILight> lights,
@@ -127,8 +126,8 @@ public class VoxelRenderer {
 		shader.loadToShadowSpaceMatrix(toShadowMapSpace);
 		shader.loadShadowVariables(EngineSettings.SHADOW_DISTANCE, EngineSettings.SHADOW_MAP_SIZE,
 				EngineSettings.SHADOW_TRANSITION_DISTANCE, EngineSettings.SHADOW_PCF);
-		prepareModel(cube.getRawModel());
-		bindTexture(texture);
+		prepareModel(cube.getMesh());
+		bindMaterial(texture);
 		
 		getAllBlocks(chunkManager, frustum).stream()
 		.peek(i -> prepareInstance(chunkManager.getBlockPositionByBlockIndex(i)))
@@ -170,27 +169,26 @@ public class VoxelRenderer {
 		shader.loadTranformationMatrix(transformationMatrix);
 	}
 
-	private void prepareModel(RawModel rawModel) {
+	private void prepareModel(Mesh rawModel) {
 		VAO vao = rawModel.getVAO();
-		vao.bind(0,1,2);
+		vao.bind(0, 1, 2);
 
 	}
 
-	private void bindTexture(ModelTexture texture) {
-		shader.loadFakeLightingVariable(texture.isUseFakeLighting());
-		shader.loadNumberOfRows(texture.getNumberOfRows());
+	private void bindMaterial(Material material) {
+		shader.loadFakeLightingVariable(material.isUseFakeLighting());
+		shader.loadNumberOfRows(material.getDiffuseMap().getNumberOfRows());
 		shader.loadOffset(0.0f, 0.0f);
-		if (texture.isHasTransparency()) {
+		if (material.getDiffuseMap().isHasTransparency()) {
 			OGLUtils.cullBackFaces(false);
 		}
-		shader.loadShineVariables(texture.getShineDamper(), texture.getReflectivity());
-		GL13.glActiveTexture(GL13.GL_TEXTURE0);
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture.getID());
+		shader.loadShineVariables(material.getShininess(), material.getReflectivity());
+		material.getDiffuseMap().bind(0);
 	}
 
 	private void unbindTexturedModel() {
 		OGLUtils.cullBackFaces(true);
-		VAO.unbind(0,1,2);
+		VAO.unbind(0, 1, 2);
 	}
 	
 	private FaceCullingData isNeedBlockCulling(IChunkManager chunkManager, int index) {

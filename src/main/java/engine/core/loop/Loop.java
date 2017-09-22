@@ -23,7 +23,7 @@ import object.audio.master.IAudioMaster;
 import object.input.MouseGame;
 import object.scene.IScene;
 import object.scene.Scene;
-import renderer.loader.Loader;
+import primitive.buffer.Loader;
 import renderer.object.main.MainRenderer;
 import renderer.scene.EditorSceneRenderer;
 import renderer.scene.GameSceneRenderer;

@@ -1,6 +1,6 @@
 package manager.texture.model;
 
-import object.texture.model.ModelTexture;
+import object.texture.model.Material;
 import tool.manager.IManager;
 
-public interface IModelTextureManager extends IManager<ModelTexture>{}
+public interface IModelTextureManager extends IManager<Material>{}

@@ -1,4 +1,4 @@
-package object.openglObject;
+package primitive.buffer;
 
 import java.util.ArrayList;
 import java.util.List;

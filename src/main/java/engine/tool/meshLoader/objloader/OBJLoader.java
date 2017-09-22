@@ -7,10 +7,9 @@ import java.util.ArrayList;
 import java.util.Deque;
 import java.util.HashMap;
 
-import object.model.Material;
-import object.model.Mesh;
-import object.model.Model;
 import object.texture.Texture2D;
+import object.texture.model.Material;
+import primitive.model.importClasses.Model;
 import tool.math.vector.Vector2f;
 import tool.math.vector.Vector3f;
 
@@ -54,8 +53,7 @@ public class OBJLoader {
 							if(tokens.length == 0)
 								continue;
 							if(tokens[0].equals("newmtl")){
-								Material material = new Material();
-								material.setName(tokens[1]);
+								Material material = new Material(tokens[1]);
 								materials.put(tokens[1], material);
 								currentMtl = tokens[1];
 							}
@@ -67,17 +65,17 @@ public class OBJLoader {
 							}
 							if(tokens[0].equals("map_Kd")){
 								if (tokens.length > 1){
-									materials.get(currentMtl).setDiffusemap(new Texture2D(path + "/" + tokens[1]));
+									materials.get(currentMtl).setDiffuseMap(new Texture2D("diffuseMap", path + "/" + tokens[1]));
 								}
 							}
 							if(tokens[0].equals("map_Ks")){
 								if (tokens.length > 1){
-									materials.get(currentMtl).setSpecularmap(new Texture2D(path + "/" + tokens[1]));
+									materials.get(currentMtl).setSpecularMap(new Texture2D("specularMap", path + "/" + tokens[1]));
 								}
 							}
 							if(tokens[0].equals("map_bump")){
 								if (tokens.length > 1){
-									materials.get(currentMtl).setNormalmap(new Texture2D(path + "/" + tokens[1]));
+									materials.get(currentMtl).setNormalMap(new Texture2D("normalMap", path + "/" + tokens[1]));
 								}
 							}
 							if(tokens[0].equals("illum")){
@@ -504,7 +502,7 @@ public class OBJLoader {
 		polygon.getIndices().toArray(objectArray);
 		int[] indexData = Util.toIntArray(objectArray);
 	
-		Model model = new Model(new Mesh(vertexData, indexData));
+		Model model = new Model(new MeshData(vertexData, indexData));
 		model.setMaterial(materials.get(polygon.getMaterial()));
 		
 		return model;

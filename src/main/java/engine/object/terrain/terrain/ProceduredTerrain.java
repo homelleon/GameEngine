@@ -1,10 +1,10 @@
 package object.terrain.terrain;
 
-import object.model.raw.RawModel;
 import object.terrain.generator.HeightsGenerator;
-import object.texture.terrain.pack.TerrainTexturePack;
-import object.texture.terrain.texture.TerrainTexture;
-import renderer.loader.Loader;
+import object.texture.Texture2D;
+import object.texture.terrain.TerrainTexturePack;
+import primitive.buffer.Loader;
+import primitive.model.Mesh;
 import tool.math.Maths;
 import tool.math.vector.Vector2f;
 import tool.math.vector.Vector3f;
@@ -19,9 +19,9 @@ public class ProceduredTerrain implements ITerrain {
 
 	private float x;
 	private float z;
-	private RawModel model;
+	private Mesh model;
 	private TerrainTexturePack texturePack;
-	private TerrainTexture blendMap;
+	private Texture2D blendMap;
 	private String heightMapName;
 	private boolean isProcedureGenerated = true;
 	private String name;
@@ -63,7 +63,7 @@ public class ProceduredTerrain implements ITerrain {
 	 *      TerrainTexture, String)
 	 */
 	public ProceduredTerrain(String name, int gridX, int gridZ, TerrainTexturePack texturePack,
-			TerrainTexture blendMap, float amplitude, int octaves, float roughness) {
+			Texture2D blendMap, float amplitude, int octaves, float roughness) {
 		this.texturePack = texturePack;
 		this.blendMap = blendMap;
 		this.x = gridX * ITerrain.TERRAIN_SIZE;
@@ -76,7 +76,7 @@ public class ProceduredTerrain implements ITerrain {
 	}
 	
 	public ProceduredTerrain(String name, int seed, int gridX, int gridZ, TerrainTexturePack texturePack,
-			TerrainTexture blendMap, float amplitude, int octaves, float roughness) {
+			Texture2D blendMap, float amplitude, int octaves, float roughness) {
 		this.texturePack = texturePack;
 		this.blendMap = blendMap;
 		this.x = gridX * ITerrain.TERRAIN_SIZE;
@@ -89,7 +89,7 @@ public class ProceduredTerrain implements ITerrain {
 	}
 	
 	public ProceduredTerrain(String name, int gridX, int gridZ, TerrainTexturePack texturePack,
-			TerrainTexture blendMap, float amplitude, int octaves, float roughness, float[][] heights, RawModel model) {
+			Texture2D blendMap, float amplitude, int octaves, float roughness, float[][] heights, Mesh model) {
 		this.texturePack = texturePack;
 		this.blendMap = blendMap;
 		this.x = gridX * ITerrain.TERRAIN_SIZE;
@@ -128,7 +128,7 @@ public class ProceduredTerrain implements ITerrain {
 	}
 
 	@Override
-	public RawModel getModel() {
+	public Mesh getModel() {
 		return model;
 	}
 
@@ -153,7 +153,7 @@ public class ProceduredTerrain implements ITerrain {
 	}
 
 	@Override
-	public TerrainTexture getBlendMap() {
+	public Texture2D getBlendMap() {
 		return blendMap;
 	}
 
@@ -222,7 +222,7 @@ public class ProceduredTerrain implements ITerrain {
 				this.octaves, this.roughness, this.heights, this.model);
 	}
 
-	private RawModel generateWithProcedure(float amp, int oct, float rough) {
+	private Mesh generateWithProcedure(float amp, int oct, float rough) {
 		this.generator = new HeightsGenerator(amp, oct, rough);
 		int VERTEX_COUNT = ITerrain.TERRAIN_VERTEX_COUNT;
 		heights = new float[VERTEX_COUNT][VERTEX_COUNT];
@@ -266,7 +266,7 @@ public class ProceduredTerrain implements ITerrain {
 		return Loader.getInstance().getVertexLoader().loadToVAO(vertices, textureCoords, normals, indices);
 	}
 	
-	private RawModel generateWithProcedure(float amp, int oct, float rough, int seed) {
+	private Mesh generateWithProcedure(float amp, int oct, float rough, int seed) {
 		this.generator = new HeightsGenerator(amp, oct, rough, seed);
 		int VERTEX_COUNT = 128;
 		heights = new float[VERTEX_COUNT][VERTEX_COUNT];

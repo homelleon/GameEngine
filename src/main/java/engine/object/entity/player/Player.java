@@ -10,8 +10,8 @@ import core.settings.EngineSettings;
 import object.entity.entity.TexturedEntity;
 import object.input.KeyboardGame;
 import object.input.MouseGame;
-import object.model.textured.TexturedModel;
 import object.terrain.terrain.ITerrain;
+import primitive.model.Model;
 import tool.math.vector.Vector3f;
 
 public class Player extends TexturedEntity implements IPlayer {
@@ -28,7 +28,7 @@ public class Player extends TexturedEntity implements IPlayer {
 
 	public volatile boolean isInAir = false;
 
-	public Player(String name, TexturedModel model, Vector3f position, Vector3f rotation, float scale) {
+	public Player(String name, Model model, Vector3f position, Vector3f rotation, float scale) {
 		super(name, model, position, rotation, scale);
 	}
 

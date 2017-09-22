@@ -1,8 +1,6 @@
-package object.model;
+package tool.meshLoader.objloader;
 
-import tool.meshLoader.objloader.Vertex;
-
-public class Mesh{
+public class MeshData{
 
 	private Vertex[] vertices;
 	private int[] indices;
@@ -10,7 +8,7 @@ public class Mesh{
 	private boolean isTangentSpace;
 	private boolean isInstanced;
 	
-	public Mesh(Vertex[] vertices, int[] indices)
+	public MeshData(Vertex[] vertices, int[] indices)
 	{
 		this.vertices = vertices;
 		this.indices = indices;

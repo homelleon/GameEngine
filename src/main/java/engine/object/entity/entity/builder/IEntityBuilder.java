@@ -1,12 +1,12 @@
 package object.entity.entity.builder;
 
 import object.entity.entity.IEntity;
-import object.model.textured.TexturedModel;
+import primitive.model.Model;
 import tool.math.vector.Vector3f;
 
 public interface IEntityBuilder {
 	
-	public IEntityBuilder setModel(TexturedModel model);
+	public IEntityBuilder setModel(Model model);
 
 	public IEntityBuilder setScale(float scale);
 

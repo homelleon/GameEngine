@@ -6,7 +6,7 @@ import java.util.Map;
 
 import core.settings.EngineSettings;
 import object.gui.font.FontType;
-import renderer.loader.Loader;
+import primitive.buffer.Loader;
 
 public class FontManager implements IFontManager {
 

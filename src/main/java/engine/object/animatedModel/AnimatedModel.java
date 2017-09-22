@@ -3,8 +3,8 @@ package object.animatedModel;
 
 import object.animation.Animation;
 import object.animation.Animator;
-import object.openglObject.VAO;
 import object.texture.Texture;
+import primitive.buffer.VAO;
 import tool.math.Matrix4f;
 
 /**
@@ -65,7 +65,7 @@ public class AnimatedModel {
 	/**
 	 * @return The VAO containing all the mesh data for this entity.
 	 */
-	public VAO getModel() {
+	public VAO getVAO() {
 		return model;
 	}
 

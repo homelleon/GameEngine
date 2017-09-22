@@ -1,4 +1,4 @@
-package renderer.loader;
+package primitive.buffer;
 
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
@@ -11,21 +11,25 @@ import org.lwjgl.opengl.GL33;
 
 import object.bounding.BoundingBox;
 import object.bounding.BoundingSphere;
-import object.model.raw.RawModel;
-import object.openglObject.VAO;
-import object.openglObject.VBO;
+import primitive.model.Mesh;
 import tool.math.Maths;
 import tool.math.vector.Vector3f;
 
-public class VertexBufferLoader {
+/**
+ * Vertex buffer and vertex array loader.
+ * 
+ * @author homelleon
+ * @version 1.0
+ */
+public class BufferLoader {
 
 	/**
-	 * List of vertex arrays objects indices.
+	 * List of vertex arrays objects.
 	 */
 	private List<VAO> vaos = new ArrayList<VAO>();
 
 	/**
-	 * List of vertex buffer objects indices.
+	 * List of vertex buffer objects.
 	 */
 	private List<VBO> vbos = new ArrayList<VBO>();
 	
@@ -40,16 +44,16 @@ public class VertexBufferLoader {
 	 * @param indices
 	 *            - integer array of vertices order indices
 	 * 
-	 * @return {@link RawModel} value
+	 * @return {@link Mesh} value
 	 */
-	public RawModel loadToVao(float[] positions, float[] normals, int[] indices) {
+	public Mesh loadToVao(float[] positions, float[] normals, int[] indices) {
 		VAO vao = VAO.create();
 		this.vaos.add(vao);
 		vao.bind();
 		vao.createAttribute(0, 3, positions);
 		vao.createAttribute(2, 3, normals);
 		VAO.unbind();
-		return new RawModel(vao, indices.length);
+		return new Mesh(vao, indices.length);
 	}
 
 	/**
@@ -85,10 +89,10 @@ public class VertexBufferLoader {
 	 *            - flaot array normal Vecs coordinates
 	 * @param indices
 	 *            - integer array of vertices order indices
-	 * 
-	 * @return {@link RawModel} value
+	 *            
+	 * @return {@link Mesh} value
 	 */
-	public RawModel loadToVAO(float[] positions, float[] textureCoords, float[] normals, int[] indices) {
+	public Mesh loadToVAO(float[] positions, float[] textureCoords, float[] normals, int[] indices) {
 		VAO vao = VAO.create();
 		this.vaos.add(vao);
 		vao.bind();
@@ -99,7 +103,7 @@ public class VertexBufferLoader {
 		VAO.unbind();
 		BoundingSphere sphere = new BoundingSphere(positions);
 		BoundingBox box = new BoundingBox(positions);
-		return new RawModel(vao, indices.length, sphere, box);
+		return new Mesh(vao, indices.length, sphere, box);
 	}
 
 	/**
@@ -135,7 +139,7 @@ public class VertexBufferLoader {
 	 *            {@link Integer} array of model points order
 	 * @return
 	 */
-	public RawModel loadToVAO(float[] positions, float[] textureCoords, float[] normals, float[] tangents,
+	public Mesh loadToVAO(float[] positions, float[] textureCoords, float[] normals, float[] tangents,
 			int[] indices) {
 		VAO vao = VAO.create();
 		this.vaos.add(vao);
@@ -148,7 +152,7 @@ public class VertexBufferLoader {
 		VAO.unbind();
 		BoundingSphere sphere = new BoundingSphere(positions);
 		BoundingBox box = new BoundingBox(positions);
-		return new RawModel(vao, indices.length, sphere, box);
+		return new Mesh(vao, indices.length, sphere, box);
 
 	}
 
@@ -169,6 +173,16 @@ public class VertexBufferLoader {
 		return vbo;
 	}
 
+	/**
+	 * Adds instaced attributes in vertex buffer object.
+	 * 
+	 * @param vao vertex array object
+	 * @param vbo 
+	 * @param attribute
+	 * @param dataSize
+	 * @param instancedDataLength
+	 * @param offset
+	 */
 	public void addInstacedAttribute(VAO vao, VBO vbo, int attribute, int dataSize, int instancedDataLength,
 			int offset) {
 		vao.bind();
@@ -189,7 +203,7 @@ public class VertexBufferLoader {
 	 *            {@link Integer} value of object dimensions
 	 * @return
 	 */
-	public RawModel loadToVAO(float[] positions, int dimensions) {
+	public Mesh loadToVAO(float[] positions, int dimensions) {
 		VAO vao = VAO.create();
 		this.vaos.add(vao);
 		vao.bind();
@@ -198,7 +212,7 @@ public class VertexBufferLoader {
 		
 		BoundingSphere sphere = new BoundingSphere(positions);
 		BoundingBox box = new BoundingBox(positions);
-		return new RawModel(vao, positions.length / dimensions, sphere, box);
+		return new Mesh(vao, positions.length / dimensions, sphere, box);
 
 	}
 	
@@ -207,13 +221,12 @@ public class VertexBufferLoader {
 	 * Cleans all verticies array and buffer objects video buffer.
 	 */
 	public void clean() {
-
-		for (VAO vao : vaos) {
-			vao.delete();
+		if(!vaos.isEmpty()) {
+			vaos.forEach(VAO::delete);
 		}
-
-		for (VBO vbo : vbos) {
-			vbo.delete();
+		
+		if(!vbos.isEmpty()) {
+			vbos.forEach(VBO::delete);
 		}
 	}
 

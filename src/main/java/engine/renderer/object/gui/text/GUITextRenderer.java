@@ -7,12 +7,11 @@ import java.util.List;
 import java.util.Map;
 
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL13;
 
 import manager.gui.font.IFontManager;
 import object.gui.font.FontType;
 import object.gui.text.GUIText;
-import object.openglObject.VAO;
+import primitive.buffer.VAO;
 import shader.font.FontShader;
 import tool.openGL.OGLUtils;
 
@@ -35,8 +34,7 @@ public class GUITextRenderer {
 		processText(textList);
 		prepare();
 		this.texts.keySet().forEach(font -> {
-			GL13.glActiveTexture(GL13.GL_TEXTURE0);
-			GL11.glBindTexture(GL11.GL_TEXTURE_2D, font.getTextureAtlas());
+			font.getTextureAtlas().bind(0);
 			this.texts.get(font).forEach(text -> renderText(text));
 		});
 		endRendering();

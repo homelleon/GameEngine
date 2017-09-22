@@ -9,8 +9,8 @@ import manager.gui.font.FontManager;
 import manager.gui.font.IFontManager;
 import object.gui.font.TextMeshData;
 import object.gui.text.GUIText;
-import object.openglObject.VAO;
-import renderer.loader.Loader;
+import primitive.buffer.Loader;
+import primitive.buffer.VAO;
 
 /**
  * Manager for text that rendered in the screen.

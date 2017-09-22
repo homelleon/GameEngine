@@ -1,6 +1,6 @@
 package manager.model.raw;
 
-import object.model.raw.RawModel;
+import primitive.model.Mesh;
 import tool.manager.IManager;
 
-public interface IRawModelManager extends IManager<RawModel> {}
+public interface IRawModelManager extends IManager<Mesh> {}

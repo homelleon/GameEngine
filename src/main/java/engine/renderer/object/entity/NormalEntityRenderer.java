@@ -5,18 +5,17 @@ import java.util.List;
 import java.util.Map;
 
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL13;
 import org.lwjgl.util.vector.Vector4f;
 
 import core.settings.EngineSettings;
 import object.camera.ICamera;
 import object.entity.entity.IEntity;
 import object.light.ILight;
-import object.model.raw.RawModel;
-import object.model.textured.TexturedModel;
-import object.openglObject.VAO;
 import object.texture.Texture;
-import object.texture.model.ModelTexture;
+import object.texture.model.Material;
+import primitive.buffer.VAO;
+import primitive.model.Mesh;
+import primitive.model.Model;
 import shader.entity.normal.NormalMappedEntityShader;
 import tool.math.Maths;
 import tool.math.Matrix4f;
@@ -37,7 +36,7 @@ public class NormalEntityRenderer implements IEntityRenderer {
 	}
 
 	@Override
-	public void renderHigh(Map<TexturedModel, List<IEntity>> entities, Vector4f clipPlane, Collection<ILight> lights,
+	public void renderHigh(Map<Model, List<IEntity>> entities, Vector4f clipPlane, Collection<ILight> lights,
 			ICamera camera, Matrix4f toShadowMapSpace, Texture environmentMap) {
 		if(!entities.isEmpty()) {
 			shader.start();
@@ -50,7 +49,7 @@ public class NormalEntityRenderer implements IEntityRenderer {
 				prepareTexturedModel(model);
 				entities.get(model).forEach(entity -> {
 					prepareInstance(entity);
-					GL11.glDrawElements(GL11.GL_TRIANGLES, model.getRawModel().getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
+					GL11.glDrawElements(GL11.GL_TRIANGLES, model.getMesh().getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
 				});
 				unbindTexturedModel();
 			});
@@ -59,7 +58,7 @@ public class NormalEntityRenderer implements IEntityRenderer {
 	}
 	
 	@Override
-	public void renderLow(Map<TexturedModel, List<IEntity>> entities, Collection<ILight> lights, ICamera camera, Matrix4f toShadowMapSpace) {
+	public void renderLow(Map<Model, List<IEntity>> entities, Collection<ILight> lights, ICamera camera, Matrix4f toShadowMapSpace) {
 		GL11.glClearColor(1, 1, 1, 1);
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 		shader.start();
@@ -72,7 +71,7 @@ public class NormalEntityRenderer implements IEntityRenderer {
 				entities.get(model)
 					.forEach(entity -> {
 						prepareInstance(entity);
-						GL11.glDrawElements(GL11.GL_TRIANGLES, model.getRawModel().getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
+						GL11.glDrawElements(GL11.GL_TRIANGLES, model.getMesh().getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
 					});
 					unbindTexturedModel();
 			});
@@ -83,34 +82,31 @@ public class NormalEntityRenderer implements IEntityRenderer {
 		shader.clean();
 	}
 	
-	private void prepareLowTexturedModel(TexturedModel model) {
+	private void prepareLowTexturedModel(Model model) {
 		prepareTexturedModel(model);
 	}
 
-	private void prepareTexturedModel(TexturedModel model) {
-		RawModel rawModel = model.getRawModel();
+	private void prepareTexturedModel(Model model) {
+		Mesh rawModel = model.getMesh();
 		VAO vao = rawModel.getVAO();
-		vao.bind(0,1,2,3);
-		ModelTexture texture = model.getTexture();
-		shader.loadNumberOfRows(texture.getNumberOfRows());
-		if (texture.isHasTransparency()) {
+		vao.bind(0, 1, 2, 3);
+		Material texture = model.getMaterial();
+		shader.loadNumberOfRows(texture.getDiffuseMap().getNumberOfRows());
+		if (texture.getDiffuseMap().isHasTransparency()) {
 			OGLUtils.cullBackFaces(false);
 		}
-		shader.loadShineVariables(texture.getShineDamper(), texture.getReflectivity());
-		GL13.glActiveTexture(GL13.GL_TEXTURE0);
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, model.getTexture().getID());
-		GL13.glActiveTexture(GL13.GL_TEXTURE2);
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, model.getTexture().getNormalMap());
-		shader.loadUseSpecularMap(texture.hasSpecularMap());
-		if (texture.hasSpecularMap()) {
-			GL13.glActiveTexture(GL13.GL_TEXTURE1);
-			GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture.getSpecularMap());
+		shader.loadShineVariables(texture.getShininess(), texture.getReflectivity());
+		model.getMaterial().getDiffuseMap().bind(0);
+		model.getMaterial().getNormalMap().bind(2);
+		shader.loadUseSpecularMap(texture.getSpecularMap() !=null);
+		if (texture.getSpecularMap() !=null) {
+			model.getMaterial().getSpecularMap().bind(1);
 		}
 	}
 
 	private void unbindTexturedModel() {
 		OGLUtils.cullBackFaces(true);
-		VAO.unbind(0,1,2,3);
+		VAO.unbind(0, 1, 2, 3);
 	}
 
 	private void prepareInstance(IEntity entity) {

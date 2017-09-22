@@ -1,4 +1,4 @@
-package renderer.loader;
+package primitive.buffer;
 
 /**
  * Class to load vertices information and textures into video buffer.
@@ -26,14 +26,14 @@ public class Loader {
 	}
 	
 	private TextureBufferLoader textureLoader = new TextureBufferLoader();
-	private VertexBufferLoader vertexLoader = new VertexBufferLoader();
+	private BufferLoader vertexLoader = new BufferLoader();
 
 	
 	public TextureBufferLoader getTextureLoader() {
 		return this.textureLoader;
 	}
 	
-	public VertexBufferLoader getVertexLoader() {
+	public BufferLoader getVertexLoader() {
 		return this.vertexLoader;		
 	}
 	

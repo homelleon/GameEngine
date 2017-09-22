@@ -14,9 +14,9 @@ import object.camera.TargetCamera;
 import object.entity.player.IPlayer;
 import object.entity.player.Player;
 import object.light.Light;
-import object.model.textured.TexturedModel;
 import object.scene.IScene;
 import object.water.WaterTile;
+import primitive.model.Model;
 import tool.EngineUtils;
 import tool.math.vector.Vector3f;
 
@@ -44,7 +44,7 @@ public class SceneManager implements ISceneManager {
 	}
 	
 	private void initializeEditor(IScene scene) {
-		TexturedModel cubeModel = EngineUtils.loadStaticModel("stall", "stallTexture");
+		Model cubeModel = EngineUtils.loadStaticModel("stall", "stallTexture");
 		IPlayer player1 = new Player(
 				playerName, 
 				cubeModel, 
@@ -53,7 +53,7 @@ public class SceneManager implements ISceneManager {
 				1
 		);
 		player1.setBaseName("cubeEntity1");
-		player1.getModel().getTexture().setShineDamper(5.0f);
+		player1.getModel().getMaterial().setShininess(5.0f);
 		scene.setPlayer(player1);
 		scene.getEntities().add(player1);
 		scene.setCamera(new TargetCamera(cameraName, player1));
@@ -65,7 +65,7 @@ public class SceneManager implements ISceneManager {
 	
 	private void initializeGame(IScene scene) {
 		/*------------------PLAYER-----------------*/
-		TexturedModel cubeModel = EngineUtils.loadStaticModel("cube", "cube1");
+		Model cubeModel = EngineUtils.loadStaticModel("cube", "cube1");
 		IPlayer player1 = new Player(
 				playerName, 
 				cubeModel, 
@@ -74,10 +74,10 @@ public class SceneManager implements ISceneManager {
 				1
 		);
 		player1.setBaseName("cubeEntity1");
-		player1.getModel().getTexture().setReflectiveFactor(1.0f);
-		player1.getModel().getTexture().setRefractiveFactor(1.0f);
-		player1.getModel().getTexture().setRefractiveIndex(1.33f);
-		player1.getModel().getTexture().setShineDamper(5.0f);
+		player1.getModel().getMaterial().setReflectiveFactor(1.0f);
+		player1.getModel().getMaterial().setRefractiveFactor(1.0f);
+		player1.getModel().getMaterial().setRefractiveIndex(1.33f);
+		player1.getModel().getMaterial().setShininess(5.0f);
 
 		/*--------------UI-------------------*/
 		scene.getUserInterface().initialize();

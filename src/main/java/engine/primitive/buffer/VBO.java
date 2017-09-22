@@ -1,4 +1,4 @@
-package object.openglObject;
+package primitive.buffer;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;

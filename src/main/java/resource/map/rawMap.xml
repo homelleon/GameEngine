@@ -1,68 +1,72 @@
 <raw_map>
-	<model_textures>
-		<model_texture
+	<textures>
+		<texture
 			id="1"
 			name="diceTexture"
 			file="model/Cube1"
 			rows="1"
 			transparency="false" />
-		<model_texture
+		<texture
 			id="2"
 			name="barrelTexture"
 			file="model/barrel"
 			rows="1" 
 			transparency="false" />
-		<model_texture
+		<texture
 			id="3"
 			name="barrelNormalTexture"
 			file="normalMap/barrelNormal"
 			rows="1"
 			transparency="false" />
-		<model_texture
+		<texture
 			id="4"
 			name="barrelSpecularTexture"
 			file="specularMap/barrelS" 
 			rows="1"
 			transparency="false" />
-		<model_texture
+		<texture
 			id="5"
 			name="grassTexture"
 			file="model/grassObjAtlas"
 			rows="2" 
 			transparency="true" />
-		<model_texture
+		<texture
 			id="6"
 			name="stallTexture"
 			file="model/stallTexture"
 			rows="1"
 			transparency="false" />
-	</model_textures>
-	<terrain_textures>
-		<terrain_texture
-			id="1"
+		<texture
+			id="7"
 			name="grassTerrainTexture"
-			file="terrain/grass" />
-		<terrain_texture
-			id="2"
+			file="terrain/grass"
+			transparency="false" />
+		<texture
+			id="8"
 			name="groundTerrainTexture"
-			file="terrain/ground" />
-		<terrain_texture
-			id="3"
+			file="terrain/ground"
+			transparency="false" />
+		<texture
+			id="9"
 			name="flowerTerrainTexture"
-			file="terrain/floweredGrass" />
-		<terrain_texture
-			id="4"
+			file="terrain/floweredGrass"
+			transparency="false" />
+		<texture
+			id="10"
 			name="plateTerrainTexture"
-			file="terrain/plate" />
-		<terrain_texture
-			id="5"
+			file="terrain/plate"
+			transparency="false" />
+		<texture
+			id="11"
 			name="roadTerrainTexture"
-			file="terrain/road" />
-		<terrain_texture 
-			id="6"
+			file="terrain/road"
+			transparency="false" />
+		<texture 
+			id="12"
 			name="terrainBlendMap"
-			file="blendMap/blendMap" />
-	</terrain_textures>
+			file="blendMap/blendMap"
+			transparency="false" />
+	</textures>
 	<terrain_packs>
 		<terrain_pack
 			id="1"
@@ -72,66 +76,130 @@
 			green_texture="flowerTerrainTexture"
 			blue_texture="groundTerrainTexture" />
 	</terrain_packs>
-	<models>
-		<raw_model
+	<materials>
+		<material
+			id="1"
+			name="diceMaterial"
+			diffuseMap="diceTexture"
+			normalMap="null"
+			displaceMap="null"
+			ambientMap="null"
+			specularMap="null"
+			alphaMap="null" 
+			shininess="0"
+			reflectivity="0" 
+			reflectiveFactor="0"
+			refractiveFactor="0"
+			refractiveIndex="0"
+			emission="0">
+				<color
+					r="0"
+					g="0"
+					b="0"/>
+		</material>
+		<material
+			id="2"
+			name="grassMaterial"
+			diffuseMap="grassTexture"
+			normalMap="null"
+			displaceMap="null"
+			ambientMap="null"
+			specularMap="null"
+			alphaMap="null" 
+			shininess="0"
+			reflectivity="0" 
+			reflectiveFactor="0"
+			refractiveFactor="0"
+			refractiveIndex="0"
+			emission="0">
+				<color
+					r="0"
+					g="0"
+					b="0"/>
+		</material>
+		<material
+			id="3"
+			name="stallMaterial"
+			diffuseMap="stallTexture"
+			normalMap="null"
+			displaceMap="null"
+			ambientMap="null"
+			specularMap="null"
+			alphaMap="null" 
+			shininess="0"
+			reflectivity="0" 
+			reflectiveFactor="0"
+			refractiveFactor="0"
+			refractiveIndex="0"
+			emission="0">
+				<color
+					r="0"
+					g="0"
+					b="0"/>
+		</material>
+		<material
+			id="4"
+			name="barrelMaterial"
+			diffuseMap="barellTexture"
+			normalMap="barrelNormalTexture"
+			displaceMap="null"
+			ambientMap="null"
+			specularMap="barrelSpecularTexture"
+			alphaMap="null" 
+			shininess="10.0"
+			reflectivity="0.5" 
+			reflectiveFactor="0"
+			refractiveFactor="0"
+			refractiveIndex="0"
+			emission="0">
+				<color
+					r="0"
+					g="0"
+					b="0"/>
+		</material>
+	</materials>
+	<meshes>
+		<mesh
 			id="1"
 			name="cubeRawModel"
 			file="cube" 
 			type="simple"/>			
-		<raw_model 
+		<mesh 
 			id="2"
 			name="grassRawModel"
 			file="grassObject"
 			type="simple" />
-		<raw_model 
+		<mesh 
 			id="3"
 			name="stallRawModel"
 			file="stall"
 			type="simple" />
-		<raw_model 
+		<mesh 
 			id="4"
 			name="barrelRawModel"
 			file="barrel" 
 			type="normal" />
+	</meshes>
+	<models>
+		<model id="1" 
+			name="diceModel"
+			mesh="cubeRawModel" 
+			material="diceMaterial" 
+			isNormal="false" />
+		<model id="2" 
+			name="grassModel"
+			mesh="grassRawModel" 
+			material="grassMaterial"
+			isSpecular="false" />
+		<model id="3" 
+			name="stallModel"
+			mesh="stallRawModel" 
+			material="stallMaterial"
+			isNormal="false" />
+		<model id="4" 
+			name="barrelModel"
+			mesh="barrelRawModel"
+			material="barrelMaterial"
+			isNormal="true" />	
 	</models>
-	<textured_models>
-		<simple>
-			<textured_model id="1" 
-				name="diceModel"
-				raw_model="cubeRawModel" 
-				base_texture="diceTexture" 
-				isNormal="false"
-				isSpecular="false"
-				shine_damper="0" 
-				reflectivity="0" />
-			<textured_model id="2" 
-				name="grassModel"
-				raw_model="grassRawModel" 
-				base_texture="grassTexture"
-				isNormal="false" 
-				isSpecular="false"
-				shine_damper="0" 
-				reflectivity="0" />
-			<textured_model id="3" 
-				name="stallModel"
-				raw_model="stallRawModel" 
-				base_texture="stallTexture"
-				isNormal="false" 
-				isSpecular="false"
-				shine_damper="0" 
-				reflectivity="0" />
-		</simple>
-		<normal>
-			<textured_model id="1" name="barrelModel"
-				raw_model="barrelRawModel" 
-				base_texture="barrelTexture"
-				isNormal="true" 
-				isSpecular="true"
-				transparency="false"
-				normal_texture="barrelNormalTexture"
-				specular_texture="barrelSpecularTexture" 
-				shine_damper="10.0"
-				reflectivity="0.5" />
-		</normal>		
-	</textured_models>
 </raw_map>

@@ -240,16 +240,16 @@ public abstract class GUIButtonBase extends GUIObject implements IGUIButton {
 	}
 	
 	private Vector2f getTextureFirstPoint(GUITexture texture) {
-		float width = texture.getTexture().getTextureWidth()/(float)Display.getWidth();
-		float height = texture.getTexture().getTextureHeight()/(float)Display.getHeight();
+		float width = texture.getTexture().getWidth()/(float)Display.getWidth();
+		float height = texture.getTexture().getHeight()/(float)Display.getHeight();
 		float x = texture.getPosition().x - width*texture.getScale().x/2;
 		float y = texture.getPosition().y - height*texture.getScale().y/2;
 		return new Vector2f(x, y); 
 	}
 	
 	public Vector2f getTextureSecondPoint(GUITexture texture) {
-		float width = texture.getTexture().getTextureWidth()/(float)Display.getWidth();
-		float height = texture.getTexture().getTextureHeight()/(float)Display.getHeight();
+		float width = texture.getTexture().getWidth()/(float)Display.getWidth();
+		float height = texture.getTexture().getHeight()/(float)Display.getHeight();
 		float x = texture.getPosition().x + width*texture.getScale().x/2;
 		float y = texture.getPosition().y + height*texture.getScale().y/2;
 		return new Vector2f(x, y); 

@@ -3,19 +3,19 @@ package object.entity.entity.builder;
 import object.entity.entity.IEntity;
 import object.entity.entity.NormalMappedEntity;
 import object.entity.entity.TexturedEntity;
-import object.model.textured.TexturedModel;
+import primitive.model.Model;
 import tool.math.vector.Vector3f;
 
 public class EntityBuilder implements IEntityBuilder {
 	
-	private TexturedModel model;
+	private Model model;
 	private float scale = 1.0f;
 	private Vector3f position = new Vector3f(0,0,0);
 	private Vector3f rotation = new Vector3f(0,0,0);
 	private int textureIndex = 0;
 	
 	@Override
-	public IEntityBuilder setModel(TexturedModel model) {
+	public IEntityBuilder setModel(Model model) {
 		this.model = model;
 		return this;
 	}
@@ -47,7 +47,7 @@ public class EntityBuilder implements IEntityBuilder {
 	@Override
 	public IEntity build(String name) {
 		if(model!= null) {
-			if(model.getTexture().getNormalMap()!= 0) {
+			if(model.getMaterial().getNormalMap()!= null) {
 				return new NormalMappedEntity(name, model, textureIndex, position, rotation, scale);
 			} else {
 				return new TexturedEntity(name, model, textureIndex, position, rotation, scale);

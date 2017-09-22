@@ -16,10 +16,10 @@ import core.settings.EngineSettings;
 import object.camera.ICamera;
 import object.entity.entity.IEntity;
 import object.light.ILight;
-import object.model.textured.TexturedModel;
 import object.scene.IScene;
 import object.terrain.terrain.ITerrain;
 import object.texture.Texture;
+import primitive.model.Model;
 import renderer.object.bounding.BoundingRenderer;
 import renderer.object.entity.DecorEntityRenderer;
 import renderer.object.entity.EntityRendererManager;
@@ -62,9 +62,9 @@ public class MainRenderer implements IMainRenderer {
 	private boolean environmentDynamic = false;
 	private boolean environmentRendered = false;
 
-	private Map<TexturedModel, List<IEntity>> texturedEntities = new HashMap<TexturedModel, List<IEntity>>();
-	private Map<TexturedModel, List<IEntity>> normalEntities = new HashMap<TexturedModel, List<IEntity>>();
-	private Map<TexturedModel, List<IEntity>> decorEntities = new HashMap<TexturedModel, List<IEntity>>();
+	private Map<Model, List<IEntity>> texturedEntities = new HashMap<Model, List<IEntity>>();
+	private Map<Model, List<IEntity>> normalEntities = new HashMap<Model, List<IEntity>>();
+	private Map<Model, List<IEntity>> decorEntities = new HashMap<Model, List<IEntity>>();
 	private Collection<ITerrain> terrains = new ArrayList<ITerrain>();
 
 	public MainRenderer(IScene scene) {
@@ -156,7 +156,7 @@ public class MainRenderer implements IMainRenderer {
 	}
 
 	@Override
-	public void renderLowQualityScene(Map<TexturedModel, List<IEntity>> entities, Collection<ITerrain> terrains,
+	public void renderLowQualityScene(Map<Model, List<IEntity>> entities, Collection<ITerrain> terrains,
 			Collection<ILight> lights, ICamera camera) {
 		this.entityRendererManager.render(null, lights, camera, null, null, true);
 		terrainRenderer.renderLow(terrains, lights, camera);

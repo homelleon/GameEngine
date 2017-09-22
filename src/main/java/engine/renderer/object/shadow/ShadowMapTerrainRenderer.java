@@ -5,9 +5,9 @@ import java.util.Collection;
 import org.lwjgl.opengl.GL11;
 
 import object.camera.ICamera;
-import object.model.raw.RawModel;
-import object.openglObject.VAO;
 import object.terrain.terrain.ITerrain;
+import primitive.buffer.VAO;
+import primitive.model.Mesh;
 import shader.shadow.ShadowShader;
 import tool.math.Maths;
 import tool.math.Matrix4f;
@@ -40,8 +40,8 @@ public class ShadowMapTerrainRenderer {
 	 */
 	public void render(Collection<ITerrain> terrains, ICamera camera) {
 		for (ITerrain terrain : terrains) {
-			RawModel rawModel = terrain.getModel();
-			bindModel(rawModel);
+			Mesh mesh = terrain.getModel();
+			bindMesh(mesh);
 			prepareInstance(terrain);
 			GL11.glDrawElements(GL11.GL_TRIANGLES, terrain.getModel().getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
 		}
@@ -56,9 +56,9 @@ public class ShadowMapTerrainRenderer {
 	 * @param rawModel
 	 *            - the model to be bound.
 	 */
-	private void bindModel(RawModel rawModel) {
+	private void bindMesh(Mesh rawModel) {
 		VAO modelVao = rawModel.getVAO();
-		modelVao.bind(0,1,2);
+		modelVao.bind(0, 1, 2);
 	}
 
 	/**
@@ -72,7 +72,7 @@ public class ShadowMapTerrainRenderer {
 	 */
 
 	private void unbindTexturedModel() {
-		VAO.unbind(0,1,2);
+		VAO.unbind(0, 1, 2);
 	}
 
 	private void prepareInstance(ITerrain terrain) {

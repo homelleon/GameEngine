@@ -10,13 +10,13 @@ import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL31;
 
 import object.camera.ICamera;
-import object.model.raw.RawModel;
-import object.openglObject.VAO;
-import object.openglObject.VBO;
 import object.particle.particle.Particle;
-import object.texture.particle.ParticleTexture;
-import renderer.loader.Loader;
-import renderer.loader.VertexBufferLoader;
+import object.texture.particle.ParticleMaterial;
+import primitive.buffer.BufferLoader;
+import primitive.buffer.Loader;
+import primitive.buffer.VAO;
+import primitive.buffer.VBO;
+import primitive.model.Mesh;
 import shader.particle.ParticleShader;
 import tool.math.Maths;
 import tool.math.Matrix4f;
@@ -30,14 +30,14 @@ public class ParticleRenderer {
 
 	private static final FloatBuffer buffer = BufferUtils.createFloatBuffer(MAX_INSTANCES * INSTANCE_DATA_LENGTH);
 
-	private RawModel quad;
+	private Mesh quad;
 	private ParticleShader shader;
 
 	private VBO vbo;
 	private int pointer = 0;
 
 	public ParticleRenderer(Matrix4f projectionMatrix) {
-		VertexBufferLoader vertexLoader = Loader.getInstance().getVertexLoader();
+		BufferLoader vertexLoader = Loader.getInstance().getVertexLoader();
 		this.vbo = vertexLoader.createEmptyVbo(INSTANCE_DATA_LENGTH * MAX_INSTANCES);
 		quad = vertexLoader.loadToVAO(VERTICES, 2);		
 		vertexLoader.addInstacedAttribute(quad.getVAO(), vbo, 1, 4, INSTANCE_DATA_LENGTH, 0);
@@ -52,10 +52,10 @@ public class ParticleRenderer {
 		shader.stop();
 	}
 
-	public void render(Map<ParticleTexture, List<Particle>> particles, ICamera camera) {
+	public void render(Map<ParticleMaterial, List<Particle>> particles, ICamera camera) {
 		Matrix4f viewMatrix = Maths.createViewMatrix(camera);
 		prepare();
-		for (ParticleTexture texture : particles.keySet()) {
+		for (ParticleMaterial texture : particles.keySet()) {
 			bindTexture(texture);
 			List<Particle> particleList = particles.get(texture);
 			pointer = 0;
@@ -83,15 +83,14 @@ public class ParticleRenderer {
 		data[pointer++] = particle.getBlend();
 	}
 
-	private void bindTexture(ParticleTexture texture) {
-		if (texture.isAdditive()) {
+	private void bindTexture(ParticleMaterial material) {
+		if (material.isAdditive()) {
 			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
 		} else {
 			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		}
-		GL13.glActiveTexture(GL13.GL_TEXTURE0);
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture.getTextureID());
-		shader.loadNumberOfRows(texture.getNumberOfRows());
+		material.getTexture().bind(0);
+		shader.loadNumberOfRows(material.getTexture().getNumberOfRows());
 	}
 
 	private void updateModelViewMatrix(Vector3f position, float rotation, float scale, Matrix4f viewMatrix,
@@ -136,7 +135,7 @@ public class ParticleRenderer {
 	private void prepare() {
 		shader.start();
 		VAO vao = quad.getVAO();
-		vao.bind(0,1,2,3,4,5,6);
+		vao.bind(0, 1, 2, 3, 4, 5, 6);
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glDepthMask(false);
 	}
@@ -144,7 +143,7 @@ public class ParticleRenderer {
 	private void finishRendering() {
 		GL11.glDepthMask(true);
 		GL11.glDisable(GL11.GL_BLEND);
-		VAO.unbind(0,1,2,3,4,5,6);
+		VAO.unbind(0, 1, 2, 3, 4, 5, 6);
 		shader.stop();
 	}
 

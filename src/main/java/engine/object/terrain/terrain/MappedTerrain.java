@@ -7,11 +7,11 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import core.settings.EngineSettings;
-import object.model.raw.RawModel;
 import object.terrain.generator.HeightsGenerator;
-import object.texture.terrain.pack.TerrainTexturePack;
-import object.texture.terrain.texture.TerrainTexture;
-import renderer.loader.Loader;
+import object.texture.Texture2D;
+import object.texture.terrain.TerrainTexturePack;
+import primitive.buffer.Loader;
+import primitive.model.Mesh;
 import tool.math.Maths;
 import tool.math.vector.Vector2f;
 import tool.math.vector.Vector3f;
@@ -29,9 +29,9 @@ public class MappedTerrain implements ITerrain {
 
 	private float x;
 	private float z;
-	private RawModel model;
+	private Mesh model;
 	private TerrainTexturePack texturePack;
-	private TerrainTexture blendMap;
+	private Texture2D blendMap;
 	private String heightMapName;
 	private boolean isProcedureGenerated = false;
 	private String name;
@@ -65,7 +65,7 @@ public class MappedTerrain implements ITerrain {
 	 *      TerrainTexture, float, int, float)
 	 */
 	public MappedTerrain(String name, int gridX, int gridZ, TerrainTexturePack texturePack,
-			TerrainTexture blendMap, String heightMap) {
+			Texture2D blendMap, String heightMap) {
 		this.texturePack = texturePack;
 		this.blendMap = blendMap;
 		this.x = gridX * ITerrain.TERRAIN_SIZE;
@@ -100,7 +100,7 @@ public class MappedTerrain implements ITerrain {
 	}
 
 	@Override
-	public RawModel getModel() {
+	public Mesh getModel() {
 		return model;
 	}
 
@@ -125,7 +125,7 @@ public class MappedTerrain implements ITerrain {
 	}
 
 	@Override
-	public TerrainTexture getBlendMap() {
+	public Texture2D getBlendMap() {
 		return blendMap;
 	}
 
@@ -191,7 +191,7 @@ public class MappedTerrain implements ITerrain {
 		return new MappedTerrain(name, gridX, gridZ, this.texturePack,this.blendMap,this.heightMapName);
 	}
 
-	private RawModel generateTerrain(String heightMap) {
+	private Mesh generateTerrain(String heightMap) {
 
 		BufferedImage image = null;
 		try {

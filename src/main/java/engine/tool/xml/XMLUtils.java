@@ -35,9 +35,9 @@ public class XMLUtils {
 	public static final String RAW_MAP = "raw_map";
 	
 	public static final String MODELS = "models";
-	public static final String TEXTURED_MODELS = "textured_models";
-	public static final String TEXTURED_MODEL = "textured_model";
-	public static final String RAW_MODEL = "raw_model";
+	public static final String MODEL = "model";
+	public static final String MESHES = "meshes";
+	public static final String MESH = "mesh";
 	
 	public static final String ENTITIES = "entities";
 	public static final String ENTITY = "entity";
@@ -72,12 +72,19 @@ public class XMLUtils {
 	/* directory names */
 	public final static String PATH = "path";
 	public final static String FILE = "file";
-	public final static String MODEL = "model";	
 	
 	public static final String TEXTURES = "textures";
 	public final static String TEXTURE = "texture";
-	public static final String MODEL_TEXTURES = "model_textures";
-	public static final String MODEL_TEXTURE = "model_texture";
+	public final static String MATERIAL = "material";
+	public final static String MATERIALS = "materials";
+	
+	public final static String DIFFUSE_MAP = "diffuse_map";
+	public final static String NORMAL_MAP = "normal_map";
+	public final static String DISPLACE_MAP = "displace_map";
+	public final static String AMBIENT_MAP = "ambient_map";
+	public final static String SPECULAR_MAP = "specular_map";
+	public final static String ALPHA_MAP = "alpha_map";
+
 	public static final String TERRAIN_TEXTURES = "terrain_textures";
 	public static final String TERRAIN_TEXTURE = "terrain_texture";
 	public static final String TERRAIN_PACKS = "terrain_packs";
@@ -100,7 +107,7 @@ public class XMLUtils {
 	public final static String FONT = "font";
 	public final static String ROWS = "rows";
 	public final static String TEXTURE_INDEX = "texture_index";
-	public final static String SHINE_DAMPER = "shine_damper";
+	public final static String SHINISESS = "shinisess";
 	public final static String REFLECTIVITY = "reflectivity";
 	public final static String AMPLITUDE = "amplitude";
 	public final static String OCTAVE = "octave";

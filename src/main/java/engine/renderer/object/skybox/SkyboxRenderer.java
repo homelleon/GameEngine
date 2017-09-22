@@ -7,9 +7,9 @@ import core.EngineMain;
 import core.display.DisplayManager;
 import core.settings.EngineSettings;
 import object.camera.ICamera;
-import object.model.raw.RawModel;
-import object.openglObject.VAO;
-import renderer.loader.Loader;
+import primitive.buffer.Loader;
+import primitive.buffer.VAO;
+import primitive.model.Mesh;
 import shader.skybox.SkyboxShader;
 import tool.math.Matrix4f;
 
@@ -70,7 +70,7 @@ public class SkyboxRenderer {
 			"nightRight", "nightLeft", "nightTop", 
 			"nightBottom", "nightBack", "nightFront" };
 
-	private RawModel cube;
+	private Mesh cube;
 	private int dayTexture;
 	private int nightTexture;
 	private SkyboxShader shader;

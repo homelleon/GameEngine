@@ -1,7 +1,6 @@
 package object.gui.texture;
 
-import org.newdawn.slick.opengl.Texture;
-
+import object.texture.Texture2D;
 import tool.math.vector.Vector2f;
 import tool.math.vector.Vector3f;
 
@@ -10,14 +9,14 @@ public class GUITexture {
 	private String name;
 	private boolean isVisible = false;
 
-	private Texture texture;
+	private Texture2D texture;
 	private Vector2f position;
 	private Vector2f scale;
 	private Vector3f mixColor = new Vector3f(1,0,0);
 	private boolean isMixColored = false;
 	private float transparency = 0;
 
-	public GUITexture(String name, Texture texture, Vector2f position, Vector2f scale) {
+	public GUITexture(String name, Texture2D texture, Vector2f position, Vector2f scale) {
 		this.name = name;
 		this.texture = texture;
 		this.position = position;
@@ -28,7 +27,7 @@ public class GUITexture {
 		return name;
 	}
 
-	public Texture getTexture() {
+	public Texture2D getTexture() {
 		return this.texture;
 	}
 

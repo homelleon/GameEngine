@@ -1,6 +1,6 @@
 package object.gui.text;
 
-import object.openglObject.VAO;
+import primitive.buffer.VAO;
 import tool.math.vector.Vector2f;
 import tool.math.vector.Vector3f;
 

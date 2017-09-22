@@ -1,10 +1,10 @@
 package object.terrain.terrain;
 
 import object.Nameable;
-import object.model.raw.RawModel;
 import object.terrain.generator.HeightsGenerator;
-import object.texture.terrain.pack.TerrainTexturePack;
-import object.texture.terrain.texture.TerrainTexture;
+import object.texture.Texture2D;
+import object.texture.terrain.TerrainTexturePack;
+import primitive.model.Mesh;
 
 /**
  * Terrain interface represents common landscape terrain methods.
@@ -12,6 +12,7 @@ import object.texture.terrain.texture.TerrainTexture;
  * @author homelleon
  * 
  * @see MappedTerrain
+ * @see ProceduredTerrain
  */
 public interface ITerrain extends Nameable {
 	
@@ -46,9 +47,9 @@ public interface ITerrain extends Nameable {
 	/**
 	 * Gets terrain raw model with all vertices.
 	 * 
-	 * @return {@link RawModel} value of terrain raw model
+	 * @return {@link Mesh} value of terrain raw model
 	 */
-	public RawModel getModel();
+	public Mesh getModel();
 
 	/**
 	 * Returns if terrain is visible.
@@ -79,7 +80,7 @@ public interface ITerrain extends Nameable {
 	 * 
 	 * @return {@link TerrainTexture} value of blending texture.
 	 */
-	public TerrainTexture getBlendMap();
+	public Texture2D getBlendMap();
 
 	/**
 	 * Gets terrain height texture-map name.

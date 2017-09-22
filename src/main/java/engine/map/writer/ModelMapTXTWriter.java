@@ -11,7 +11,7 @@ import core.settings.EngineSettings;
 import manager.scene.IObjectManager;
 import object.entity.entity.IEntity;
 import object.terrain.terrain.ITerrain;
-import renderer.loader.Loader;
+import primitive.buffer.Loader;
 
 public class ModelMapTXTWriter implements ILevelMapWriter {
 
@@ -38,11 +38,11 @@ public class ModelMapTXTWriter implements ILevelMapWriter {
 					line += " ";
 					line += String.valueOf(terrain.getTexturePack().getBackgroundTexture().getName());
 					line += " ";
-					line += String.valueOf(terrain.getTexturePack().getrTexture().getName());
+					line += String.valueOf(terrain.getTexturePack().getRTexture().getName());
 					line += " ";
-					line += String.valueOf(terrain.getTexturePack().getgTexture().getName());
+					line += String.valueOf(terrain.getTexturePack().getGTexture().getName());
 					line += " ";
-					line += String.valueOf(terrain.getTexturePack().getbTexture().getName());
+					line += String.valueOf(terrain.getTexturePack().getBTexture().getName());
 					line += " ";
 					line += String.valueOf(terrain.getBlendMap().getName());
 					line += " ";
@@ -74,7 +74,7 @@ public class ModelMapTXTWriter implements ILevelMapWriter {
 					line += String.valueOf(entity.getModel().getName());
 					line += " ";
 					// TODO: find out why it returns null texture
-					String texture = Loader.getInstance().getTextureLoader().getTextureByID(entity.getModel().getTexture().getID());
+					String texture = entity.getModel().getMaterial().getDiffuseMap().getName();
 					System.out.println(texture);
 					line += String.valueOf(texture);
 					line += " ";
@@ -92,15 +92,15 @@ public class ModelMapTXTWriter implements ILevelMapWriter {
 						Loader loader = Loader.getInstance();
 						line += String.valueOf(true);
 						line += " ";						
-						String normal = loader.getTextureLoader().getTextureByID(entity.getModel().getTexture().getNormalMap());
+						String normal = entity.getModel().getMaterial().getNormalMap().getName();
 						line += normal;
 						line += " ";
-						String specular = loader.getTextureLoader().getTextureByID(entity.getModel().getTexture().getSpecularMap());
+						String specular = entity.getModel().getMaterial().getSpecularMap().getName();
 						line += specular;
 						line += " ";
-						line += entity.getModel().getTexture().getShineDamper();
+						line += entity.getModel().getMaterial().getShininess();
 						line += " ";
-						line += entity.getModel().getTexture().getReflectivity();
+						line += entity.getModel().getMaterial().getReflectivity();
 					}
 					lines.add(line);
 				}

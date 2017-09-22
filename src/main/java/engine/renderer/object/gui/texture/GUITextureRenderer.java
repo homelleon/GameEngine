@@ -3,12 +3,11 @@ package renderer.object.gui.texture;
 import java.util.Collection;
 
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL13;
 
 import object.gui.texture.GUITexture;
-import object.model.raw.RawModel;
-import object.openglObject.VAO;
-import renderer.loader.Loader;
+import primitive.buffer.Loader;
+import primitive.buffer.VAO;
+import primitive.model.Mesh;
 import shader.guiTexture.GUITextureShader;
 import tool.math.Maths;
 import tool.math.Matrix4f;
@@ -17,7 +16,7 @@ import tool.openGL.OGLUtils;
 
 public class GUITextureRenderer {
 
-	private final RawModel quad;
+	private final Mesh quad;
 	private GUITextureShader shader;
 
 	public GUITextureRenderer() {
@@ -36,8 +35,7 @@ public class GUITextureRenderer {
 
 		for (GUITexture guiTexture : textureList) {
 			if (guiTexture.getIsVisible()) {
-				GL13.glActiveTexture(GL13.GL_TEXTURE0);
-				GL11.glBindTexture(GL11.GL_TEXTURE_2D, guiTexture.getTexture().getTextureID());
+				guiTexture.getTexture().bind(0);
 				Vector2f size = new Vector2f(guiTexture.getTexture().getWidth(), 
 						 guiTexture.getTexture().getHeight());
 				Vector2f scale = new Vector2f(size.x * guiTexture.getScale().x, size.y * guiTexture.getScale().y);

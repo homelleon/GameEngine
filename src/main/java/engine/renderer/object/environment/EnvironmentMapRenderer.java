@@ -14,13 +14,13 @@ import org.lwjgl.opengl.GL30;
 import object.camera.CubeMapCamera;
 import object.camera.ICamera;
 import object.entity.entity.IEntity;
-import object.model.textured.TexturedModel;
 import object.scene.IScene;
+import primitive.model.Model;
 import renderer.object.main.MainRenderer;
 
 public class EnvironmentMapRenderer {
 
-	Map<TexturedModel, List<IEntity>> entities = new HashMap<TexturedModel, List<IEntity>>();
+	Map<Model, List<IEntity>> entities = new HashMap<Model, List<IEntity>>();
 
 	public void render(IScene scene, MainRenderer renderer, IEntity shinyEntity) {
 		ICamera cubeCamera = new CubeMapCamera("shinyCubeMap", shinyEntity.getPosition());
@@ -57,7 +57,7 @@ public class EnvironmentMapRenderer {
 	}
 
 	public void processEntity(IEntity entity) {
-		TexturedModel entityModel = entity.getModel();
+		Model entityModel = entity.getModel();
 		List<IEntity> batch = entities.get(entityModel);
 		if (batch != null) {
 			batch.add(entity);

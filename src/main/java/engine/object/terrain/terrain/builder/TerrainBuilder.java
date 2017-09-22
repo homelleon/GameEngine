@@ -1,15 +1,15 @@
 package object.terrain.terrain.builder;
 
 import object.terrain.terrain.ITerrain;
-import object.texture.terrain.pack.TerrainTexturePack;
-import object.texture.terrain.texture.TerrainTexture;
+import object.texture.Texture2D;
+import object.texture.terrain.TerrainTexturePack;
 
 public abstract class TerrainBuilder {
 	
 	protected int gridX = 0;
 	protected int gridZ = 0;
 	protected TerrainTexturePack texturePack;
-	protected TerrainTexture blendTexture;
+	protected Texture2D blendTexture;
 	protected String heightTextureName;
 	protected float amplitude = 0;
 	protected int octaves = 0;
@@ -31,7 +31,7 @@ public abstract class TerrainBuilder {
 		return (ITerrainBuilder) this;
 	}
 	
-	public ITerrainBuilder setBlendTexture(TerrainTexture texture) {
+	public ITerrainBuilder setBlendTexture(Texture2D texture) {
 		this.blendTexture = texture;
 		return (ITerrainBuilder) this;
 	}

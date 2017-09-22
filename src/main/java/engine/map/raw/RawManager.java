@@ -5,37 +5,37 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import object.model.raw.RawModel;
-import object.model.textured.TexturedModel;
-import object.texture.model.ModelTexture;
-import object.texture.terrain.pack.TerrainTexturePack;
-import object.texture.terrain.texture.TerrainTexture;
+import object.texture.Texture2D;
+import object.texture.model.Material;
+import object.texture.terrain.TerrainTexturePack;
+import primitive.model.Mesh;
+import primitive.model.Model;
 
 public class RawManager implements IRawManager {
 	
-	private Map<String, RawModel> models = new HashMap<String, RawModel>();
-	private Map<String, ModelTexture> modelTextures = new HashMap<String, ModelTexture>();
-	private Map<String, TerrainTexture> terrainTextures = new HashMap<String, TerrainTexture>();
+	private Map<String, Mesh> meshes = new HashMap<String, Mesh>();
+	private Map<String, Texture2D> textures = new HashMap<String, Texture2D>();
+	private Map<String, Material> materials = new HashMap<String, Material>();
 	private Map<String, TerrainTexturePack> terrainTexturePacks = new HashMap<String, TerrainTexturePack>();
-	private Map<String, TexturedModel> texturedModels = new HashMap<String, TexturedModel>();
+	private Map<String, Model> models = new HashMap<String, Model>();
 
 	@Override
-	public void addRawModel(RawModel model) {
-		this.models.put(model.getName(), model);		
+	public void addMesh(Mesh mesh) {
+		this.meshes.put(mesh.getName(), mesh);		
 	}
 
 	@Override
-	public List<RawModel> getRawModels() {
-		List<RawModel> list = new ArrayList<RawModel>();
-		list.addAll(this.models.values());
+	public List<Mesh> getMeshes() {
+		List<Mesh> list = new ArrayList<Mesh>();
+		list.addAll(this.meshes.values());
 		return list;
 	}
 	
 
 	@Override
-	public RawModel getRawModel(String name) {
-		if(this.models.containsKey(name)) {
-		return this.models.get(name);
+	public Mesh getMesh(String name) {
+		if(this.meshes.containsKey(name)) {
+		return this.meshes.get(name);
 		} else {
 			throw new NullPointerException("There is no model with name " + name + " in model array!");
 		}
@@ -43,21 +43,21 @@ public class RawManager implements IRawManager {
 
 
 	@Override
-	public void addModelTexture(ModelTexture texture) {
-		this.modelTextures.put(texture.getName(), texture);		
+	public void addMaterial(Material texture) {
+		this.materials.put(texture.getName(), texture);		
 	}
 
 	@Override
-	public List<ModelTexture> getModelTextures() {
-		List<ModelTexture> list = new ArrayList<ModelTexture>();
-		list.addAll(this.modelTextures.values());
+	public List<Material> getMaterials() {
+		List<Material> list = new ArrayList<Material>();
+		list.addAll(this.materials.values());
 		return list;
 	}
 
 	@Override
-	public ModelTexture getModelTexture(String name) {
-		if(this.modelTextures.containsKey(name)) {
-			return this.modelTextures.get(name);
+	public Material getMaterial(String name) {
+		if(this.materials.containsKey(name)) {
+			return this.materials.get(name);
 		} else {
 			throw new NullPointerException("There is no texture with name " + name + " in texture array!");
 		}
@@ -83,46 +83,23 @@ public class RawManager implements IRawManager {
 			throw new NullPointerException("There is no texture pack with name " + name + " in terrain texture pack array!");
 		}
 	}
-	
+
 	@Override
-	public void addTerrainTexture(TerrainTexture terrainTexture) {
-		this.terrainTextures.put(terrainTexture.getName(), terrainTexture);
+	public void addModel(Model model) {
+		this.models.put(model.getName(), model);		
 	}
 
 	@Override
-	public List<TerrainTexture> getTerrainTextures() {
-		List<TerrainTexture> list = new ArrayList<TerrainTexture>();
-		list.addAll(this.terrainTextures.values());
+	public List<Model> getModels() {
+		List<Model> list = new ArrayList<Model>();
+		list.addAll(this.models.values());
 		return list;
 	}
 
 	@Override
-	public TerrainTexture getTerrainTexture(String name) {
-		if(this.terrainTextures.containsKey(name)) {
-			return this.terrainTextures.get(name);
-		} else {
-			throw new NullPointerException("There is no terrain texture with name " + name + " in terrain texture array!");
-		}
-	}
-	
-
-
-	@Override
-	public void addTexturedModel(TexturedModel model) {
-		this.texturedModels.put(model.getName(), model);		
-	}
-
-	@Override
-	public List<TexturedModel> getTexturedModels() {
-		List<TexturedModel> list = new ArrayList<TexturedModel>();
-		list.addAll(this.texturedModels.values());
-		return list;
-	}
-
-	@Override
-	public TexturedModel getTexturedModel(String name) {
-		if(this.texturedModels.containsKey(name)) {
-			return this.texturedModels.get(name);
+	public Model getModel(String name) {
+		if(this.models.containsKey(name)) {
+			return this.models.get(name);
 		} else {
 			throw new NullPointerException("There is no textured model with name " + name + " in textured model array!");
 		}
@@ -130,11 +107,31 @@ public class RawManager implements IRawManager {
 
 	@Override
 	public void clean() {
-		this.models.clear();
-		this.modelTextures.clear();
+		this.meshes.clear();
+		this.materials.clear();
 		this.terrainTexturePacks.clear();
-		this.terrainTextures.clear();
-		this.texturedModels.clear();
+		this.models.clear();
+	}
+
+	@Override
+	public void addTexture(Texture2D texture) {
+		
+	}
+
+	@Override
+	public List<Texture2D> getTextures() {
+		List<Texture2D> list = new ArrayList<Texture2D>();
+		list.addAll(textures.values());
+		return list;
+	}
+
+	@Override
+	public Texture2D getTexture(String name) {
+		if(this.textures.containsKey(name)) {
+			return this.textures.get(name);
+		} else {
+			throw new NullPointerException("There is no texture with name " + name + " in texture array!");
+		}
 	}
 
 

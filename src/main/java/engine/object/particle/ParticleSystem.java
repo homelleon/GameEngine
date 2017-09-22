@@ -6,7 +6,7 @@ import org.lwjgl.util.vector.Vector4f;
 
 import core.display.DisplayManager;
 import object.particle.particle.Particle;
-import object.texture.particle.ParticleTexture;
+import object.texture.particle.ParticleMaterial;
 import tool.math.Matrix4f;
 import tool.math.vector.Vector3f;
 
@@ -22,11 +22,11 @@ public class ParticleSystem implements IParticleSystem {
 	private Vector3f position;
 	private float directionDeviation = 0;
 
-	private ParticleTexture texture;
+	private ParticleMaterial texture;
 
 	private Random random = new Random();
 
-	public ParticleSystem(String name, ParticleTexture texture, float pps, float speed, float gravityComplient,
+	public ParticleSystem(String name, ParticleMaterial texture, float pps, float speed, float gravityComplient,
 			float lifeLength, float scale) {
 		this.name = name;
 		this.pps = pps;

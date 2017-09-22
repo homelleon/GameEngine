@@ -1,14 +1,14 @@
 package renderer.object.bounding;
 
 import object.entity.entity.IEntity;
-import object.model.raw.RawModel;
+import primitive.model.Mesh;
 
 public class EntityModelPair {
 	
 	private IEntity entity;
-	private RawModel model;
+	private Mesh model;
 	
-	public EntityModelPair(RawModel model) {
+	public EntityModelPair(Mesh model) {
 		this.model = model;
 	}
 	
@@ -16,7 +16,7 @@ public class EntityModelPair {
 		return this.entity;
 	}
 	
-	public RawModel getModel() {
+	public Mesh getModel() {
 		return this.model;
 	}
 	

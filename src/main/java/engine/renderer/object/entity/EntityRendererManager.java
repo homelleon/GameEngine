@@ -10,17 +10,17 @@ import org.lwjgl.util.vector.Vector4f;
 import object.camera.ICamera;
 import object.entity.entity.IEntity;
 import object.light.ILight;
-import object.model.textured.TexturedModel;
 import object.texture.Texture;
+import primitive.model.Model;
 import tool.math.Matrix4f;
 
 public class EntityRendererManager implements IEntityRendererManager {
 	
-	private Map<IEntityRenderer, Map<TexturedModel, List<IEntity>>> entityRenderers = 
-			new HashMap<IEntityRenderer, Map<TexturedModel, List<IEntity>>>();
+	private Map<IEntityRenderer, Map<Model, List<IEntity>>> entityRenderers = 
+			new HashMap<IEntityRenderer, Map<Model, List<IEntity>>>();
 	
 	@Override
-	public void addPair(IEntityRenderer renderer, Map<TexturedModel, List<IEntity>> enitties) {
+	public void addPair(IEntityRenderer renderer, Map<Model, List<IEntity>> enitties) {
 		this.entityRenderers.put(renderer, enitties);
 	}
 	

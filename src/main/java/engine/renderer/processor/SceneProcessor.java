@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 import object.entity.entity.IEntity;
-import object.model.textured.TexturedModel;
 import object.terrain.terrain.ITerrain;
+import primitive.model.Model;
 
 public class SceneProcessor implements ISceneProcessor {
 
@@ -18,8 +18,8 @@ public class SceneProcessor implements ISceneProcessor {
 	}
 
 	@Override
-	public void processEntity(IEntity entity, Map<TexturedModel, List<IEntity>> entities) {
-		TexturedModel entityModel = entity.getModel();
+	public void processEntity(IEntity entity, Map<Model, List<IEntity>> entities) {
+		Model entityModel = entity.getModel();
 		List<IEntity> batch = entities.get(entityModel);
 		if (batch != null) {
 			batch.add(entity);
@@ -31,8 +31,8 @@ public class SceneProcessor implements ISceneProcessor {
 	}
 
 	@Override
-	public void processShadowEntity(IEntity entity, Map<TexturedModel, List<IEntity>> entities) {
-		TexturedModel entityModel = entity.getModel();
+	public void processShadowEntity(IEntity entity, Map<Model, List<IEntity>> entities) {
+		Model entityModel = entity.getModel();
 		List<IEntity> batch = entities.get(entityModel);
 		if (batch != null) {
 			batch.add(entity);

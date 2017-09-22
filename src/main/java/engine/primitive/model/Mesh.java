@@ -1,10 +1,10 @@
-package object.model.raw;
+package primitive.model;
 
 import object.bounding.BoundingBox;
 import object.bounding.BoundingSphere;
-import object.openglObject.VAO;
+import primitive.buffer.VAO;
 
-public class RawModel {
+public class Mesh {
 
 	private int vertexCount;
 	private BoundingSphere sphere;
@@ -12,7 +12,7 @@ public class RawModel {
 	private String name;
 	private VAO vao;
 
-	public RawModel(String name, VAO vao, int vertexCount, BoundingSphere sphere, BoundingBox box) {
+	public Mesh(String name, VAO vao, int vertexCount, BoundingSphere sphere, BoundingBox box) {
 		this.vao = vao;
 		this.vertexCount = vertexCount;
 		this.sphere = sphere;
@@ -20,15 +20,15 @@ public class RawModel {
 		this.name = name;
 	}
 	
-	public RawModel(String name, RawModel model) {
-		this.vao = model.getVAO();
-		this.vertexCount = model.getVertexCount();
-		this.sphere = model.getBSphere();
-		this.box = model.getBBox();
+	public Mesh(String name, Mesh mesh) {
+		this.vao = mesh.getVAO();
+		this.vertexCount = mesh.getVertexCount();
+		this.sphere = mesh.getBSphere();
+		this.box = mesh.getBBox();
 		this.name = name;
 	}
 
-	public RawModel(VAO vao, int vertexCount, BoundingSphere sphere, BoundingBox box) {
+	public Mesh(VAO vao, int vertexCount, BoundingSphere sphere, BoundingBox box) {
 		this.vao = vao;
 		this.vertexCount = vertexCount;
 		this.sphere = sphere;
@@ -36,7 +36,7 @@ public class RawModel {
 		this.name = "NoName";
 	}
 
-	public RawModel(VAO vao, int vertexCount) {
+	public Mesh(VAO vao, int vertexCount) {
 		this.vao = vao;
 		this.vertexCount = vertexCount;
 	}
@@ -68,7 +68,7 @@ public class RawModel {
 		if(obj == null || obj.getClass() != this.getClass()) {
 			return false;
 		}
-		RawModel rawModel = (RawModel) obj;
+		Mesh rawModel = (Mesh) obj;
 		if(rawModel.getVAO() == this.getVAO() &&
 				rawModel.getVertexCount() == this.getVertexCount() &&
 				rawModel.getBBox() == this.getBBox() &&
@@ -91,8 +91,8 @@ public class RawModel {
 		return result;
 	}
 	
-	public RawModel clone(String name) {
-		return new RawModel(name, this.vao, this.vertexCount, this.sphere, this.box);
+	public Mesh clone(String name) {
+		return new Mesh(name, this.vao, this.vertexCount, this.sphere, this.box);
 	}
 
 	public VAO getVAO() {

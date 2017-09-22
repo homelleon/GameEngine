@@ -1,6 +1,6 @@
 package manager.model.textured;
 
-import object.model.textured.TexturedModel;
+import primitive.model.Model;
 import tool.manager.IManager;
 
-public interface ITexturedModelManager extends IManager<TexturedModel> {}
+public interface ITexturedModelManager extends IManager<Model> {}

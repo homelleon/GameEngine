@@ -1,11 +1,14 @@
-package object.model;
+package primitive.model.importClasses;
+
+import object.texture.model.Material;
+import tool.meshLoader.objloader.MeshData;
 
 public class Model {
 
-	private Mesh mesh;
+	private MeshData mesh;
 	private Material material;
 	
-	public Model(Mesh mesh)
+	public Model(MeshData mesh)
 	{
 		this.mesh = mesh;
 	}
@@ -13,10 +16,10 @@ public class Model {
 	public Model() {
 	}
 
-	public Mesh getMesh() {
+	public MeshData getMesh() {
 		return mesh;
 	}
-	public void setMesh(Mesh mesh) {
+	public void setMesh(MeshData mesh) {
 		this.mesh = mesh;
 	}
 

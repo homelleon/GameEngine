@@ -4,7 +4,8 @@ import java.io.File;
 
 import core.settings.EngineSettings;
 import object.gui.text.GUIText;
-import renderer.loader.Loader;
+import object.texture.Texture2D;
+import primitive.buffer.Loader;
 
 /**
  * Represents a font. It holds the font's texture atlas as well as having the
@@ -16,7 +17,7 @@ import renderer.loader.Loader;
 public class FontType {
 
 	private String name;
-	private int textureAtlas;
+	private Texture2D textureAtlas;
 	private TextMeshCreator meshCreator;
 
 	/**
@@ -29,7 +30,7 @@ public class FontType {
 	 *            - the font file containing information about each character in
 	 *            the texture atlas.
 	 */
-	public FontType(String name, int textureAtlas, File fontFile) {
+	public FontType(String name, Texture2D textureAtlas, File fontFile) {
 		this.name = name;
 		this.textureAtlas = textureAtlas;
 		this.meshCreator = new TextMeshCreator(fontFile);
@@ -52,7 +53,7 @@ public class FontType {
 	/**
 	 * @return The font texture atlas.
 	 */
-	public int getTextureAtlas() {
+	public Texture2D getTextureAtlas() {
 		return textureAtlas;
 	}
 

@@ -3,7 +3,6 @@ package tool.meshLoader.objloader;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
 
-import object.model.Mesh;
 import tool.math.Quaternion;
 import tool.math.vector.Vector2f;
 import tool.math.vector.Vector3f;
@@ -197,7 +196,7 @@ public class Util {
 	}
 	
 	
-	public static void generateTangentsBitangents(Mesh mesh)
+	public static void generateTangentsBitangents(MeshData mesh)
 	{
 		for ( int i = 0; i < mesh.getIndices().length; i += 3 )
 		{

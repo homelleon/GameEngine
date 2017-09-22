@@ -4,13 +4,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL13;
 
 import object.camera.ICamera;
 import object.entity.entity.IEntity;
-import object.model.raw.RawModel;
-import object.model.textured.TexturedModel;
-import object.openglObject.VAO;
+import primitive.buffer.VAO;
+import primitive.model.Mesh;
+import primitive.model.Model;
 import shader.shadow.ShadowShader;
 import tool.math.Maths;
 import tool.math.Matrix4f;
@@ -42,20 +41,19 @@ public class ShadowMapEntityRenderer {
 	 * @param entities
 	 *            - the entities to be rendered to the shadow map.
 	 */
-	protected void render(Map<TexturedModel, List<IEntity>> entities, ICamera camera) {
-		for (TexturedModel model : entities.keySet()) {
-			RawModel rawModel = model.getRawModel();
-			bindModel(rawModel);
-			GL13.glActiveTexture(GL13.GL_TEXTURE0);
-			GL11.glBindTexture(GL11.GL_TEXTURE_2D, model.getTexture().getID());
-			if (model.getTexture().isHasTransparency()) {
+	protected void render(Map<Model, List<IEntity>> entities, ICamera camera) {
+		for (Model model : entities.keySet()) {
+			Mesh mesh = model.getMesh();
+			bindModel(mesh);
+			model.getMaterial().getDiffuseMap().bind(0);
+			if (model.getMaterial().getDiffuseMap().isHasTransparency()) {
 				OGLUtils.cullBackFaces(false);
 			}
 			for (IEntity entity : entities.get(model)) {
 				prepareInstance(entity);
-				GL11.glDrawElements(GL11.GL_TRIANGLES, rawModel.getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
+				GL11.glDrawElements(GL11.GL_TRIANGLES, mesh.getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
 			}
-			if (model.getTexture().isHasTransparency()) {
+			if (model.getMaterial().getDiffuseMap().isHasTransparency()) {
 				OGLUtils.cullBackFaces(true);
 			}
 		}
@@ -67,16 +65,16 @@ public class ShadowMapEntityRenderer {
 	 * because that is where the positions are stored in the VAO, and only the
 	 * positions are required in the vertex shader.
 	 * 
-	 * @param rawModel
+	 * @param mesh
 	 *            - the model to be bound.
 	 */
-	private void bindModel(RawModel rawModel) {
-		VAO modelVao = rawModel.getVAO();
-		modelVao.bind(0,1);
+	private void bindModel(Mesh mesh) {
+		VAO modelVao = mesh.getVAO();
+		modelVao.bind(0, 1);
 	}
 	
 	private void unbindModel() {
-		VAO.unbind(0,1);
+		VAO.unbind(0, 1);
 	}
 
 	/**
@@ -95,7 +93,7 @@ public class ShadowMapEntityRenderer {
 		shader.loadMvpMatrix(mvpMatrix);
 		Vector2f textureOffset = entity.getTextureOffset();
 		shader.loadOffset(textureOffset.x, textureOffset.y);
-		shader.loadNumberOfRows(entity.getModel().getTexture().getNumberOfRows());
+		shader.loadNumberOfRows(entity.getModel().getMaterial().getDiffuseMap().getNumberOfRows());
 	}
 
 }

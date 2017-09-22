@@ -10,13 +10,13 @@ import java.util.Map.Entry;
 import object.camera.ICamera;
 import object.particle.InsertionSort;
 import object.particle.particle.Particle;
-import object.texture.particle.ParticleTexture;
+import object.texture.particle.ParticleMaterial;
 import renderer.object.particle.ParticleRenderer;
 import tool.math.Matrix4f;
 
 public class ParticleMaster {
 
-	private static Map<ParticleTexture, List<Particle>> particles = new HashMap<ParticleTexture, List<Particle>>();
+	private static Map<ParticleMaterial, List<Particle>> particles = new HashMap<ParticleMaterial, List<Particle>>();
 	private static ParticleRenderer renderer;
 
 	public static void init(Matrix4f projectionMatrix) {
@@ -24,7 +24,7 @@ public class ParticleMaster {
 	}
 
 	public static void update(ICamera camera) {
-		Iterator<Entry<ParticleTexture, List<Particle>>> mapIterator = particles.entrySet().iterator();
+		Iterator<Entry<ParticleMaterial, List<Particle>>> mapIterator = particles.entrySet().iterator();
 		while (mapIterator.hasNext()) {
 			List<Particle> list = mapIterator.next().getValue();
 			Iterator<Particle> iterator = list.iterator();

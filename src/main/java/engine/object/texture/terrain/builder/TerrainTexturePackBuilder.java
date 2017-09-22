@@ -1,9 +1,9 @@
-package object.texture.terrain.pack.builder;
+package object.texture.terrain.builder;
 
 import core.settings.EngineSettings;
-import object.texture.terrain.pack.TerrainTexturePack;
-import object.texture.terrain.texture.TerrainTexture;
-import renderer.loader.Loader;
+import object.texture.Texture2D;
+import object.texture.terrain.TerrainTexturePack;
+import primitive.buffer.Loader;
 
 public class TerrainTexturePackBuilder implements ITerrainTexturePackBuilder {
 	
@@ -38,13 +38,13 @@ public class TerrainTexturePackBuilder implements ITerrainTexturePackBuilder {
 
 	@Override
 	public TerrainTexturePack create(String name) {
-		return new TerrainTexturePack(getTerrainTexture(this.backgroundTextureName), getTerrainTexture(this.rTextureName),
-				getTerrainTexture(this.gTextureName), getTerrainTexture(this.bTextureName));
+		return new TerrainTexturePack(getTexture(this.backgroundTextureName), getTexture(this.rTextureName),
+				getTexture(this.gTextureName), getTexture(this.bTextureName));
 	}
 	
-	private TerrainTexture getTerrainTexture(String name) {
-		return new TerrainTexture(name, Loader.getInstance().getTextureLoader()
-				.loadTexture(EngineSettings.TEXTURE_TERRAIN_PATH, name));
+	private Texture2D getTexture(String name) {
+		return Loader.getInstance().getTextureLoader()
+				.loadTexture(EngineSettings.TEXTURE_TERRAIN_PATH, name);
 	}
 
 }

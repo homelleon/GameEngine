@@ -1,9 +1,9 @@
-package object.model;
+package primitive.model.importClasses;
 
 import object.texture.Texture2D;
 import tool.math.vector.Vector3f;
 
-public class Material{
+public class MaterialO{
 	
 	private String name;
 	private Texture2D diffusemap;

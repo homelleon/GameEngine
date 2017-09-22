@@ -4,7 +4,7 @@ import core.display.DisplayManager;
 import core.settings.EngineSettings;
 import object.camera.ICamera;
 import object.particle.master.ParticleMaster;
-import object.texture.particle.ParticleTexture;
+import object.texture.particle.ParticleMaterial;
 import tool.math.vector.Vector2f;
 import tool.math.vector.Vector3f;
 
@@ -19,14 +19,14 @@ public class Particle {
 
 	private float elapsedTime = 0;
 
-	private ParticleTexture texture;
+	private ParticleMaterial material;
 
 	private Vector2f texOffset1 = new Vector2f();
 	private Vector2f texOffset2 = new Vector2f();
 	private float blend;
 	private float distance;
 
-	public Particle(ParticleTexture texture, Vector3f position, Vector3f velocity, float gravityEffect,
+	public Particle(ParticleMaterial material, Vector3f position, Vector3f velocity, float gravityEffect,
 			float lifeLength, float rotation, float scale) {
 		this.position = position;
 		this.velocity = velocity;
@@ -34,7 +34,7 @@ public class Particle {
 		this.lifeLength = lifeLength;
 		this.rotation = rotation;
 		this.scale = scale;
-		this.texture = texture;
+		this.material = material;
 		ParticleMaster.addParticle(this);
 	}
 
@@ -54,8 +54,8 @@ public class Particle {
 		return blend;
 	}
 
-	public ParticleTexture getTexture() {
-		return texture;
+	public ParticleMaterial getTexture() {
+		return material;
 	}
 
 	public Vector3f getPosition() {
@@ -83,7 +83,7 @@ public class Particle {
 
 	private void updateTextureCoordInfo() {
 		float lifeFactor = elapsedTime / lifeLength;
-		int stageCount = texture.getNumberOfRows() * texture.getNumberOfRows();
+		int stageCount = material.getTexture().getNumberOfRows() * material.getTexture().getNumberOfRows();
 		float atlasProgression = lifeFactor * stageCount;
 		int index1 = (int) Math.floor(atlasProgression);
 		int index2 = index1 < stageCount - 1 ? index1 + 1 : index1;
@@ -94,10 +94,10 @@ public class Particle {
 	}
 
 	private void setTextureOffset(Vector2f offset, int index) {
-		int column = index % texture.getNumberOfRows();
-		int row = index / texture.getNumberOfRows();
-		offset.x = (float) column / texture.getNumberOfRows();
-		offset.y = (float) row / texture.getNumberOfRows();
+		int column = index % material.getTexture().getNumberOfRows();
+		int row = index / material.getTexture().getNumberOfRows();
+		offset.x = (float) column / material.getTexture().getNumberOfRows();
+		offset.y = (float) row / material.getTexture().getNumberOfRows();
 	}
 
 }

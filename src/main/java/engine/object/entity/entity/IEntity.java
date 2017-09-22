@@ -1,7 +1,7 @@
 package object.entity.entity;
 
 import object.Nameable;
-import object.model.textured.TexturedModel;
+import primitive.model.Model;
 import tool.math.vector.Vector2f;
 import tool.math.vector.Vector3f;
 
@@ -85,16 +85,16 @@ import tool.math.vector.Vector3f;
 	/**
 	 * Gets entity textured model object.
 	 * 
-	 * @return {@link TexturedModel} object
+	 * @return {@link Model} object
 	 */
-	 TexturedModel getModel();
+	 Model getModel();
 
 	/**
 	 * Sets enitity textured model object.
 	 * 
-	 * @param model {@link TexturedModel} object
+	 * @param model {@link Model} object
 	 */
-	 void setModel(TexturedModel model);
+	 void setModel(Model model);
 
 	/**
 	 * Gets entity current position in 3 dimentional space coordinates.

@@ -9,12 +9,13 @@ import core.display.DisplayManager;
 import core.settings.EngineSettings;
 import object.camera.ICamera;
 import object.light.Light;
-import object.model.raw.RawModel;
-import object.openglObject.VAO;
+import object.texture.Texture2D;
 import object.water.WaterFrameBuffers;
 import object.water.WaterTile;
-import renderer.loader.Loader;
-import renderer.loader.TextureBufferLoader;
+import primitive.buffer.Loader;
+import primitive.buffer.TextureBufferLoader;
+import primitive.buffer.VAO;
+import primitive.model.Mesh;
 import shader.water.WaterShader;
 import tool.math.Maths;
 import tool.math.Matrix4f;
@@ -26,12 +27,12 @@ public class WaterRenderer {
 	private static final String NORMAL_MAP = "waterNormalMap";
 	private static final float WAVE_SPEED = 0.01f;
 
-	private RawModel quad;
+	private Mesh quad;
 	private WaterShader shader;
 	private WaterFrameBuffers fbos;
 
-	private int dudvTexture;
-	private int normalMap;
+	private Texture2D dudvTexture;
+	private Texture2D normalMap;
 
 	private float moveFactor = 0;
 
@@ -76,10 +77,8 @@ public class WaterRenderer {
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, fbos.getReflectionTexture());
 		GL13.glActiveTexture(GL13.GL_TEXTURE1);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, fbos.getRefractionTexture());
-		GL13.glActiveTexture(GL13.GL_TEXTURE2);
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, dudvTexture);
-		GL13.glActiveTexture(GL13.GL_TEXTURE3);
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, normalMap);
+		dudvTexture.bind(2);
+		normalMap.bind(3);
 		GL13.glActiveTexture(GL13.GL_TEXTURE4);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, fbos.getRefractionDepthTexture());
 

@@ -3,16 +3,15 @@ package renderer.object.terrain;
 import java.util.Collection;
 
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL13;
 import org.lwjgl.util.vector.Vector4f;
 
 import core.settings.EngineSettings;
 import object.camera.ICamera;
 import object.light.ILight;
-import object.model.raw.RawModel;
-import object.openglObject.VAO;
 import object.terrain.terrain.ITerrain;
-import object.texture.terrain.pack.TerrainTexturePack;
+import object.texture.terrain.TerrainTexturePack;
+import primitive.buffer.VAO;
+import primitive.model.Mesh;
 import shader.terrain.TerrainShader;
 import tool.math.Maths;
 import tool.math.Matrix4f;
@@ -78,9 +77,9 @@ public class TerrainRenderer {
 	}
 
 	private void prepareTerrain(ITerrain terrain) {
-		RawModel rawModel = terrain.getModel();
-		VAO vao = rawModel.getVAO();
-		vao.bind(0,1,2);
+		Mesh mesh = terrain.getModel();
+		VAO vao = mesh.getVAO();
+		vao.bind(0, 1, 2);
 		bindTexture(terrain);
 		shader.loadShineVariables(1, 0);
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
@@ -89,20 +88,15 @@ public class TerrainRenderer {
 
 	private void bindTexture(ITerrain terrain) {
 		TerrainTexturePack texturePack = terrain.getTexturePack();
-		GL13.glActiveTexture(GL13.GL_TEXTURE0);
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, texturePack.getBackgroundTexture().getTextureID());
-		GL13.glActiveTexture(GL13.GL_TEXTURE1);
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, texturePack.getrTexture().getTextureID());
-		GL13.glActiveTexture(GL13.GL_TEXTURE2);
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, texturePack.getgTexture().getTextureID());
-		GL13.glActiveTexture(GL13.GL_TEXTURE3);
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, texturePack.getbTexture().getTextureID());
-		GL13.glActiveTexture(GL13.GL_TEXTURE4);
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, terrain.getBlendMap().getTextureID());
+		texturePack.getBackgroundTexture().bind(0);
+		texturePack.getRTexture().bind(1);
+		texturePack.getGTexture().bind(2);
+		texturePack.getBTexture().bind(3);
+		terrain.getBlendMap().bind(4);
 	}
 
 	private void unbindTexture() {
-		VAO.unbind(0,1,2);
+		VAO.unbind(0, 1, 2);
 	}
 
 	private void loadModelMatrix(ITerrain terrain) {

@@ -10,16 +10,16 @@ import core.settings.EngineSettings;
 import object.entity.entity.DecorEntity;
 import object.entity.entity.IEntity;
 import object.entity.entity.TexturedEntity;
-import object.model.raw.RawModel;
-import object.model.textured.TexturedModel;
 import object.terrain.terrain.ITerrain;
 import object.terrain.terrain.MappedTerrain;
 import object.terrain.terrain.ProceduredTerrain;
-import object.texture.model.ModelTexture;
-import object.texture.terrain.pack.TerrainTexturePack;
-import object.texture.terrain.texture.TerrainTexture;
+import object.texture.Texture2D;
+import object.texture.model.Material;
+import object.texture.terrain.TerrainTexturePack;
 import object.water.WaterTile;
-import renderer.loader.Loader;
+import primitive.buffer.Loader;
+import primitive.model.Mesh;
+import primitive.model.Model;
 import tool.math.vector.Vector3f;
 import tool.meshLoader.normalMapObject.NormalMappedObjLoader;
 import tool.meshLoader.object.ModelData;
@@ -27,74 +27,76 @@ import tool.meshLoader.object.OBJFileLoader;
 
 public class EngineUtils {
 
-	public static TexturedModel loadStaticModel(String objFile, String textureName) {
+	public static Model loadStaticModel(String objFile, String textureName) {
 		ModelData data = OBJFileLoader.loadOBJ(objFile);
 		Loader loader = Loader.getInstance();
-		RawModel rawModel = loader.getVertexLoader().loadToVAO(data.getVertices(), data.getTextureCoords(), data.getNormals(),
+		Mesh rawModel = loader.getVertexLoader().loadToVAO(data.getVertices(), data.getTextureCoords(), data.getNormals(),
 				data.getIndices());
-		TexturedModel staticModel = new TexturedModel(objFile, rawModel,
-				new ModelTexture(textureName, loader.getTextureLoader().loadTexture(EngineSettings.TEXTURE_MODEL_PATH, textureName)));
+		Model staticModel = new Model(objFile, rawModel,
+				new Material(textureName, loader.getTextureLoader().loadTexture(EngineSettings.TEXTURE_MODEL_PATH, textureName)));
 		return staticModel;
 	}
 	
-	public static TexturedModel loadStaticModel(String objFile, ModelTexture texture) {
+	public static Model loadStaticModel(String objFile, Material texture) {
 		ModelData data = OBJFileLoader.loadOBJ(objFile);
 		Loader loader = Loader.getInstance();
-		RawModel rawModel = loader.getVertexLoader().loadToVAO(data.getVertices(), data.getTextureCoords(), data.getNormals(),
+		Mesh rawModel = loader.getVertexLoader().loadToVAO(data.getVertices(), data.getTextureCoords(), data.getNormals(),
 				data.getIndices());
-		TexturedModel staticModel = new TexturedModel(objFile, rawModel, texture);
+		Model staticModel = new Model(objFile, rawModel, texture);
 		return staticModel;
 	}
 	
-	public static TexturedModel loadStaticModel(String name, RawModel rawModel, String textureName) {
+	public static Model loadStaticModel(String name, Mesh rawModel, String textureName) {
 		Loader loader = Loader.getInstance();
-		TexturedModel staticModel = new TexturedModel(name, rawModel,
-				new ModelTexture(textureName, loader.getTextureLoader().loadTexture(EngineSettings.TEXTURE_MODEL_PATH, textureName)));
+		Model staticModel = new Model(name, rawModel,
+				new Material(textureName, loader.getTextureLoader().loadTexture(EngineSettings.TEXTURE_MODEL_PATH, textureName)));
 		return staticModel;
 	}
 	
-	public static TexturedModel loadStaticModel(String name, RawModel rawModel, ModelTexture texture) {
-		TexturedModel staticModel = new TexturedModel(name, rawModel, texture);
+	public static Model loadStaticModel(String name, Mesh rawModel, Material texture) {
+		Model staticModel = new Model(name, rawModel, texture);
 		return staticModel;
 	}
 
-	public static TexturedModel loadStaticModel(String objFile, String textureName, String normalTexture,
+	public static Model loadStaticModel(String objFile, String textureName, String normalTexture,
 			String specularTexture) {
 		Loader loader = Loader.getInstance();
 		ModelData data = NormalMappedObjLoader.loadOBJ(objFile);
-		RawModel rawModel = new RawModel(objFile, Loader.getInstance().getVertexLoader()
+		Mesh rawModel = new Mesh(objFile, Loader.getInstance().getVertexLoader()
 				.loadToVAO(data.getVertices(), data.getTextureCoords(), data.getNormals(),
 				data.getIndices()));
-		ModelTexture texture = new ModelTexture(loader.getTextureLoader().loadTexture(EngineSettings.TEXTURE_MODEL_PATH, "barrel"));
-		TexturedModel model = new TexturedModel(objFile, rawModel, texture);
-		int normaMap = loader.getTextureLoader().loadTexture(EngineSettings.TEXTURE_NORMAL_MAP_PATH, normalTexture);
-		model.getTexture().setNormalMap(normaMap);
+		Material texture = new Material(objFile + "Material", loader.getTextureLoader().loadTexture(EngineSettings.TEXTURE_MODEL_PATH, "barrel"));
+		Model model = new Model(objFile, rawModel, texture);
+		Texture2D normaMap = loader.getTextureLoader().loadTexture(EngineSettings.TEXTURE_NORMAL_MAP_PATH, normalTexture);
+		model.getMaterial().setNormalMap(normaMap);
 		// TODO: настроить проверку на нуль
 		if (specularTexture != null) {
-			int specularMap = loader.getTextureLoader().loadTexture(EngineSettings.TEXTURE_SPECULAR_MAP_PATH, specularTexture);
-			model.getTexture().setSpecularMap(specularMap);
+			Texture2D specularMap = loader.getTextureLoader().loadTexture(EngineSettings.TEXTURE_SPECULAR_MAP_PATH, specularTexture);
+			model.getMaterial().setSpecularMap(specularMap);
 		}
 		return model;
 	}
 	
-	public static TexturedModel loadStaticModel(String name, RawModel rawModel, ModelTexture texture, ModelTexture normalTexture,
-			ModelTexture specularTexture) {
-		TexturedModel model = new TexturedModel(name, rawModel, texture);
-		model.getTexture().setNormalMap(normalTexture.getID());
+	public static Model loadStaticModel(String name, Mesh mesh, Texture2D texture, Texture2D normalTexture,
+			Texture2D specularTexture) {
+		Material material = new Material(name + "Material");
+		material.setNormalMap(normalTexture);
 		if(specularTexture!= null) {
-			model.getTexture().setSpecularMap(specularTexture.getID());
+			material.setSpecularMap(specularTexture);
 		}
+		Model model = new Model(name, mesh, material);
+		
 		return model;
 	}
 
 	public static List<IEntity> createGrassField(float x, float z, float r, float sizeNoise, float density) {
 		// TODO: Noise - better using
-		TexturedModel grass = loadStaticModel("tree", "bark");
-		grass.getTexture().setNumberOfRows(1);
-		grass.getTexture().setShineDamper(1);
-		grass.getTexture().setReflectivity(0);
-		grass.getTexture().setHasTransparency(true);
-		grass.getTexture().setUseFakeLighting(true);
+		Model grass = loadStaticModel("tree", "bark");
+		grass.getMaterial().getDiffuseMap().setNumberOfRows(1);
+		grass.getMaterial().setShininess(1);
+		grass.getMaterial().setReflectivity(0);
+		grass.getMaterial().getDiffuseMap().setHasTransparency(true);
+		grass.getMaterial().setUseFakeLighting(true);
 		if (density == 0) {
 			density = (float) 0.01;
 		}
@@ -133,19 +135,14 @@ public class EngineUtils {
 
 	public static MappedTerrain createMultiTexTerrain(String name, int x, int y, String basicTexture, String redTexture,
 			String greenTexture, String blueTexture, String blendTexture, String heightTexture, Loader loader) {
-		TerrainTexture backgroundTexture = new TerrainTexture(basicTexture,
-				loader.getTextureLoader().loadTexture(EngineSettings.TEXTURE_TERRAIN_PATH, basicTexture));
-		TerrainTexture rTexture = new TerrainTexture(redTexture,
-				loader.getTextureLoader().loadTexture(EngineSettings.TEXTURE_TERRAIN_PATH, redTexture));
-		TerrainTexture gTexture = new TerrainTexture(greenTexture,
-				loader.getTextureLoader().loadTexture(EngineSettings.TEXTURE_TERRAIN_PATH, greenTexture));
-		TerrainTexture bTexture = new TerrainTexture(blueTexture,
-				loader.getTextureLoader().loadTexture(EngineSettings.TEXTURE_TERRAIN_PATH, blueTexture));
+		Texture2D backgroundTexture = loader.getTextureLoader().loadTexture(EngineSettings.TEXTURE_TERRAIN_PATH, basicTexture);
+		Texture2D rTexture = loader.getTextureLoader().loadTexture(EngineSettings.TEXTURE_TERRAIN_PATH, redTexture);
+		Texture2D gTexture = loader.getTextureLoader().loadTexture(EngineSettings.TEXTURE_TERRAIN_PATH, greenTexture);
+		Texture2D bTexture = loader.getTextureLoader().loadTexture(EngineSettings.TEXTURE_TERRAIN_PATH, blueTexture);
 
 		TerrainTexturePack texturePack = new TerrainTexturePack(backgroundTexture + "Pack", backgroundTexture, rTexture,
 				gTexture, bTexture);
-		TerrainTexture blendMap = new TerrainTexture(blendTexture,
-				loader.getTextureLoader().loadTexture(EngineSettings.TEXTURE_BLEND_MAP_PATH, blendTexture));
+		Texture2D blendMap = loader.getTextureLoader().loadTexture(EngineSettings.TEXTURE_BLEND_MAP_PATH, blendTexture);
 		MappedTerrain terrain = new MappedTerrain(name, x, y, texturePack, blendMap, heightTexture);
 		return terrain;
 	}
@@ -153,19 +150,14 @@ public class EngineUtils {
 	public static ITerrain createMultiTexTerrain(String name, int x, int y, String basicTexture, String redTexture,
 			String greenTexture, String blueTexture, String blendTexture, float amplitude, int octaves, float roughness) {
 		Loader loader = Loader.getInstance();
-		TerrainTexture backgroundTexture = new TerrainTexture(basicTexture,
-				loader.getTextureLoader().loadTexture(EngineSettings.TEXTURE_TERRAIN_PATH, basicTexture));
-		TerrainTexture rTexture = new TerrainTexture(redTexture,
-				loader.getTextureLoader().loadTexture(EngineSettings.TEXTURE_TERRAIN_PATH, redTexture));
-		TerrainTexture gTexture = new TerrainTexture(greenTexture,
-				loader.getTextureLoader().loadTexture(EngineSettings.TEXTURE_TERRAIN_PATH, greenTexture));
-		TerrainTexture bTexture = new TerrainTexture(blueTexture,
-				loader.getTextureLoader().loadTexture(EngineSettings.TEXTURE_TERRAIN_PATH, blueTexture));
+		Texture2D backgroundTexture = loader.getTextureLoader().loadTexture(EngineSettings.TEXTURE_TERRAIN_PATH, basicTexture);
+		Texture2D rTexture = loader.getTextureLoader().loadTexture(EngineSettings.TEXTURE_TERRAIN_PATH, redTexture);
+		Texture2D gTexture = loader.getTextureLoader().loadTexture(EngineSettings.TEXTURE_TERRAIN_PATH, greenTexture);
+		Texture2D bTexture = loader.getTextureLoader().loadTexture(EngineSettings.TEXTURE_TERRAIN_PATH, blueTexture);
 
 		TerrainTexturePack texturePack = new TerrainTexturePack(basicTexture + "Pack", backgroundTexture, rTexture,
 				gTexture, bTexture);
-		TerrainTexture blendMap = new TerrainTexture(blendTexture,
-				loader.getTextureLoader().loadTexture(EngineSettings.TEXTURE_BLEND_MAP_PATH, blendTexture));
+		Texture2D blendMap = loader.getTextureLoader().loadTexture(EngineSettings.TEXTURE_BLEND_MAP_PATH, blendTexture);
 		ITerrain terrain = new ProceduredTerrain(name, x, y, texturePack, blendMap, amplitude, octaves, roughness);
 		return terrain;
 	}

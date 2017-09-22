@@ -7,9 +7,9 @@ import org.lwjgl.opengl.GL11;
 
 import object.camera.ICamera;
 import object.entity.entity.IEntity;
-import object.model.raw.RawModel;
-import object.model.textured.TexturedModel;
-import object.openglObject.VAO;
+import primitive.buffer.VAO;
+import primitive.model.Mesh;
+import primitive.model.Model;
 import shader.bounding.BoundingShader;
 import tool.math.Maths;
 import tool.math.Matrix4f;
@@ -27,14 +27,14 @@ public class BoundingRenderer {
 		shader.stop();
 	}
 
-	public void render(Map<TexturedModel, List<IEntity>> entities, Map<TexturedModel, List<IEntity>> normalEntities,
+	public void render(Map<Model, List<IEntity>> entities, Map<Model, List<IEntity>> normalEntities,
 			ICamera camera) {
 		checkWiredFrameOn(boundingWiredFrame);
 		shader.start();
 		shader.loadViewMatrix(camera);
 		
-		for (TexturedModel model : entities.keySet()) {
-			RawModel bModel = model.getRawModel().getBBox().getModel();
+		for (Model model : entities.keySet()) {
+			Mesh bModel = model.getMesh().getBBox().getModel();
 			prepareModel(bModel);
 			entities.get(model).forEach(entity -> {
 				prepareInstance(entity);
@@ -44,8 +44,8 @@ public class BoundingRenderer {
 			unbindModel();
 		}
 		
-		for (TexturedModel model : normalEntities.keySet()) {
-			RawModel bModel = model.getRawModel().getBBox().getModel();
+		for (Model model : normalEntities.keySet()) {
+			Mesh bModel = model.getMesh().getBBox().getModel();
 			prepareModel(bModel);
 			for (IEntity entity : normalEntities.get(model)) {
 				prepareInstance(entity);
@@ -58,14 +58,14 @@ public class BoundingRenderer {
 		checkWiredFrameOff(boundingWiredFrame);
 	}
 
-	public RawModel prepareModel(RawModel model) {
+	public Mesh prepareModel(Mesh model) {
 		VAO vao = model.getVAO();
-		vao.bind(0,1,2);
+		vao.bind(0, 1, 2);
 		return model;
 	}
 
 	private void unbindModel() {
-		VAO.unbind(0,1,2);
+		VAO.unbind(0, 1, 2);
 	}
 
 	public void prepareInstance(IEntity entity) {

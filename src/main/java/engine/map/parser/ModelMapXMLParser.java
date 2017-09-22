@@ -9,14 +9,13 @@ import core.debug.EngineDebug;
 import manager.scene.IObjectManager;
 import map.objectMap.ObjectMapManager;
 import map.raw.IRawManager;
-import object.entity.entity.IEntity;
 import object.entity.entity.builder.EntityBuilder;
 import object.entity.entity.builder.IEntityBuilder;
-import object.model.textured.TexturedModel;
 import object.terrain.terrain.builder.ITerrainBuilder;
 import object.terrain.terrain.builder.ProceduredTerrainBuilder;
-import object.texture.terrain.pack.TerrainTexturePack;
-import object.texture.terrain.texture.TerrainTexture;
+import object.texture.Texture2D;
+import object.texture.terrain.TerrainTexturePack;
+import primitive.model.Model;
 import tool.xml.XMLUtils;
 import tool.xml.parser.IObjectParser;
 import tool.xml.parser.XMLParser;
@@ -68,10 +67,10 @@ public class ModelMapXMLParser extends XMLParser implements IObjectParser<IObjec
 				Element entityEl = (Element) entityNode;
 				String ID = XMLUtils.getAttributeValue(entityNode, XMLUtils.ID);
 				String name = XMLUtils.getAttributeValue(entityEl, XMLUtils.NAME);
-				String modelName = XMLUtils.getAttributeValue(entityEl, XMLUtils.TEXTURED_MODEL);
+				String modelName = XMLUtils.getAttributeValue(entityEl, XMLUtils.MODEL);
 				float scale = Float.valueOf(XMLUtils.getAttributeValue(entityEl, XMLUtils.SCALE));
 				int textureIndex = Integer.valueOf(XMLUtils.getAttributeValue(entityEl, XMLUtils.TEXTURE_INDEX));
-				TexturedModel model = rawMap.getTexturedModel(modelName);
+				Model model = rawMap.getModel(modelName);
 				IEntityBuilder builder =  new EntityBuilder()
 						.setModel(model)
 						.setScale(scale)
@@ -111,7 +110,7 @@ public class ModelMapXMLParser extends XMLParser implements IObjectParser<IObjec
 						int x = Integer.valueOf(XMLUtils.getAttributeValue(positionElement, XMLUtils.X));
 						int z = Integer.valueOf(XMLUtils.getAttributeValue(positionElement, XMLUtils.Z));
 						TerrainTexturePack terrainPack = this.rawMap.getTerrainTexturePack(terrainPackName);
-						TerrainTexture blendTexture = this.rawMap.getTerrainTexture(blendTextureName);
+						Texture2D blendTexture = this.rawMap.getTexture(blendTextureName);
 						ITerrainBuilder terrainBuilder = new ProceduredTerrainBuilder();
 						terrainBuilder
 							.setXPosition(x)

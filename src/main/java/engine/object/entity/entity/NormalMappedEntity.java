@@ -2,7 +2,7 @@ package object.entity.entity;
 
 import core.settings.EngineSettings;
 import object.entity.BaseEntity;
-import object.model.textured.TexturedModel;
+import primitive.model.Model;
 import tool.math.vector.Vector3f;
 
 /*
@@ -29,7 +29,7 @@ public class NormalMappedEntity extends BaseEntity implements IEntity {
 	 * @param rotZ
 	 * @param scale
 	 */
-	public NormalMappedEntity(String name, TexturedModel model, Vector3f position, Vector3f rotation, float scale) {
+	public NormalMappedEntity(String name, Model model, Vector3f position, Vector3f rotation, float scale) {
 		super(name, EngineSettings.ENTITY_TYPE_NORMAL, model, position, rotation, scale);
 	}
 	
@@ -42,7 +42,7 @@ public class NormalMappedEntity extends BaseEntity implements IEntity {
 	 * @param rotation
 	 * @param scale
 	 */
-	public NormalMappedEntity(String name, TexturedModel model, int textureIndex, Vector3f position, Vector3f rotation, float scale) {
+	public NormalMappedEntity(String name, Model model, int textureIndex, Vector3f position, Vector3f rotation, float scale) {
 		super(name, EngineSettings.ENTITY_TYPE_NORMAL, model, textureIndex, position, rotation, scale);
 	} 
 	

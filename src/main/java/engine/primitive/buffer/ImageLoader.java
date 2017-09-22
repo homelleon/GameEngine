@@ -1,4 +1,4 @@
-package renderer.loader;
+package primitive.buffer;
 
 import static org.lwjgl.opengl.GL11.GL_RGB;
 import static org.lwjgl.opengl.GL11.GL_RGBA;
