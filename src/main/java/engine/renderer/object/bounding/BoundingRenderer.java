@@ -4,13 +4,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL20;
-import org.lwjgl.opengl.GL30;
 
 import object.camera.ICamera;
 import object.entity.entity.IEntity;
 import object.model.raw.RawModel;
 import object.model.textured.TexturedModel;
+import object.openglObject.VAO;
 import shader.bounding.BoundingShader;
 import tool.math.Maths;
 import tool.math.Matrix4f;
@@ -60,18 +59,13 @@ public class BoundingRenderer {
 	}
 
 	public RawModel prepareModel(RawModel model) {
-		GL30.glBindVertexArray(model.getVaoID());
-		GL20.glEnableVertexAttribArray(0);
-		GL20.glEnableVertexAttribArray(1);
-		GL20.glEnableVertexAttribArray(2);
+		VAO vao = model.getVAO();
+		vao.bind(0,1,2);
 		return model;
 	}
 
 	private void unbindModel() {
-		GL20.glDisableVertexAttribArray(0);
-		GL20.glDisableVertexAttribArray(1);
-		GL20.glDisableVertexAttribArray(2);
-		GL30.glBindVertexArray(0);
+		VAO.unbind(0,1,2);
 	}
 
 	public void prepareInstance(IEntity entity) {

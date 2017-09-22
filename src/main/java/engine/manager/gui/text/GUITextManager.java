@@ -9,6 +9,7 @@ import manager.gui.font.FontManager;
 import manager.gui.font.IFontManager;
 import object.gui.font.TextMeshData;
 import object.gui.text.GUIText;
+import object.openglObject.VAO;
 import renderer.loader.Loader;
 
 /**
@@ -51,7 +52,7 @@ public class GUITextManager implements IGUITextManager {
 			String font = text.getFont();
 			this.fontManager.create(font);
 			TextMeshData data = fontManager.get(font).loadText(text);
-			int vao = Loader.getInstance().getVertexLoader().loadToVAO(data.getVertexPositions(), data.getTextureCoords());
+			VAO vao = Loader.getInstance().getVertexLoader().loadToVAO(data.getVertexPositions(), data.getTextureCoords());
 			text.setMeshInfo(vao, data.getVertexCount());
 		} else {
 			if(EngineDebug.hasDebugPermission()) {

@@ -6,8 +6,6 @@ import java.util.Map;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
-import org.lwjgl.opengl.GL20;
-import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Vector4f;
 
 import core.settings.EngineSettings;
@@ -17,6 +15,7 @@ import object.light.ILight;
 import object.light.Light;
 import object.model.raw.RawModel;
 import object.model.textured.TexturedModel;
+import object.openglObject.VAO;
 import object.texture.Texture;
 import object.texture.model.ModelTexture;
 import renderer.object.main.IMainRenderer;
@@ -42,7 +41,6 @@ import tool.openGL.OGLUtils;
 public class DecorEntityRenderer implements IEntityRenderer {
 
 	private DecorEntityShader shader;
-	private Texture environmentMap;
 
 	/**
 	 * Entity render engine constructor.
@@ -162,10 +160,8 @@ public class DecorEntityRenderer implements IEntityRenderer {
 	 */
 	private void prepareLowTexturedModel(TexturedModel model) {
 		RawModel rawModel = model.getRawModel();
-		GL30.glBindVertexArray(rawModel.getVaoID());
-		GL20.glEnableVertexAttribArray(0);
-		GL20.glEnableVertexAttribArray(1);
-		GL20.glEnableVertexAttribArray(2);
+		VAO vao = rawModel.getVAO();
+		vao.bind(0,1,2);
 		ModelTexture texture = model.getTexture();
 		shader.loadNumberOfRows(texture.getNumberOfRows());
 		if (texture.isHasTransparency()) {
@@ -183,10 +179,8 @@ public class DecorEntityRenderer implements IEntityRenderer {
 	 */
 	private void prepareTexturedModel(TexturedModel model) {
 		RawModel rawModel = model.getRawModel();
-		GL30.glBindVertexArray(rawModel.getVaoID());
-		GL20.glEnableVertexAttribArray(0);
-		GL20.glEnableVertexAttribArray(1);
-		GL20.glEnableVertexAttribArray(2);
+		VAO vao = rawModel.getVAO();
+		vao.bind(0,1,2);
 		ModelTexture texture = model.getTexture();
 		shader.loadNumberOfRows(texture.getNumberOfRows());
 		if (texture.isHasTransparency()) {
@@ -209,10 +203,7 @@ public class DecorEntityRenderer implements IEntityRenderer {
 	 */
 	private void unbindTexturedModel() {
 		OGLUtils.cullBackFaces(true);
-		GL20.glDisableVertexAttribArray(0);
-		GL20.glDisableVertexAttribArray(1);
-		GL20.glDisableVertexAttribArray(2);
-		GL30.glBindVertexArray(0);
+		VAO.unbind(0,1,2);
 	}
 
 	/**

@@ -9,8 +9,6 @@ import java.util.stream.IntStream;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 import org.lwjgl.opengl.GL13;
-import org.lwjgl.opengl.GL20;
-import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Vector4f;
 
 import core.settings.EngineSettings;
@@ -19,6 +17,7 @@ import object.camera.ICamera;
 import object.light.ILight;
 import object.model.raw.RawModel;
 import object.model.textured.TexturedModel;
+import object.openglObject.VAO;
 import object.texture.model.ModelTexture;
 import object.voxel.Chunk;
 import object.voxel.data.FaceCullingData;
@@ -172,10 +171,8 @@ public class VoxelRenderer {
 	}
 
 	private void prepareModel(RawModel rawModel) {
-		GL30.glBindVertexArray(rawModel.getVaoID());
-		GL20.glEnableVertexAttribArray(0);
-		GL20.glEnableVertexAttribArray(1);
-		GL20.glEnableVertexAttribArray(2);
+		VAO vao = rawModel.getVAO();
+		vao.bind(0,1,2);
 
 	}
 
@@ -193,10 +190,7 @@ public class VoxelRenderer {
 
 	private void unbindTexturedModel() {
 		OGLUtils.cullBackFaces(true);
-		GL20.glDisableVertexAttribArray(0);
-		GL20.glDisableVertexAttribArray(1);
-		GL20.glDisableVertexAttribArray(2);
-		GL30.glBindVertexArray(0);
+		VAO.unbind(0,1,2);
 	}
 	
 	private FaceCullingData isNeedBlockCulling(IChunkManager chunkManager, int index) {

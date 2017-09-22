@@ -7,12 +7,12 @@ import java.util.Map;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
-import org.lwjgl.opengl.GL20;
-import org.lwjgl.opengl.GL30;
 import org.lwjgl.opengl.GL31;
 
 import object.camera.ICamera;
 import object.model.raw.RawModel;
+import object.openglObject.VAO;
+import object.openglObject.VBO;
 import object.particle.particle.Particle;
 import object.texture.particle.ParticleTexture;
 import renderer.loader.Loader;
@@ -33,19 +33,19 @@ public class ParticleRenderer {
 	private RawModel quad;
 	private ParticleShader shader;
 
-	private int vbo;
+	private VBO vbo;
 	private int pointer = 0;
 
 	public ParticleRenderer(Matrix4f projectionMatrix) {
 		VertexBufferLoader vertexLoader = Loader.getInstance().getVertexLoader();
 		this.vbo = vertexLoader.createEmptyVbo(INSTANCE_DATA_LENGTH * MAX_INSTANCES);
-		quad = vertexLoader.loadToVAO(VERTICES, 2);
-		vertexLoader.addInstacedAttribute(quad.getVaoID(), vbo, 1, 4, INSTANCE_DATA_LENGTH, 0);
-		vertexLoader.addInstacedAttribute(quad.getVaoID(), vbo, 2, 4, INSTANCE_DATA_LENGTH, 4);
-		vertexLoader.addInstacedAttribute(quad.getVaoID(), vbo, 3, 4, INSTANCE_DATA_LENGTH, 8);
-		vertexLoader.addInstacedAttribute(quad.getVaoID(), vbo, 4, 4, INSTANCE_DATA_LENGTH, 12);
-		vertexLoader.addInstacedAttribute(quad.getVaoID(), vbo, 5, 4, INSTANCE_DATA_LENGTH, 16);
-		vertexLoader.addInstacedAttribute(quad.getVaoID(), vbo, 6, 1, INSTANCE_DATA_LENGTH, 20);
+		quad = vertexLoader.loadToVAO(VERTICES, 2);		
+		vertexLoader.addInstacedAttribute(quad.getVAO(), vbo, 1, 4, INSTANCE_DATA_LENGTH, 0);
+		vertexLoader.addInstacedAttribute(quad.getVAO(), vbo, 2, 4, INSTANCE_DATA_LENGTH, 4);
+		vertexLoader.addInstacedAttribute(quad.getVAO(), vbo, 3, 4, INSTANCE_DATA_LENGTH, 8);
+		vertexLoader.addInstacedAttribute(quad.getVAO(), vbo, 4, 4, INSTANCE_DATA_LENGTH, 12);
+		vertexLoader.addInstacedAttribute(quad.getVAO(), vbo, 5, 4, INSTANCE_DATA_LENGTH, 16);
+		vertexLoader.addInstacedAttribute(quad.getVAO(), vbo, 6, 1, INSTANCE_DATA_LENGTH, 20);
 		shader = new ParticleShader();
 		shader.start();
 		shader.loadProjectionMatrix(projectionMatrix);
@@ -135,14 +135,8 @@ public class ParticleRenderer {
 
 	private void prepare() {
 		shader.start();
-		GL30.glBindVertexArray(quad.getVaoID());
-		GL20.glEnableVertexAttribArray(0);
-		GL20.glEnableVertexAttribArray(1);
-		GL20.glEnableVertexAttribArray(2);
-		GL20.glEnableVertexAttribArray(3);
-		GL20.glEnableVertexAttribArray(4);
-		GL20.glEnableVertexAttribArray(5);
-		GL20.glEnableVertexAttribArray(6);
+		VAO vao = quad.getVAO();
+		vao.bind(0,1,2,3,4,5,6);
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glDepthMask(false);
 	}
@@ -150,14 +144,7 @@ public class ParticleRenderer {
 	private void finishRendering() {
 		GL11.glDepthMask(true);
 		GL11.glDisable(GL11.GL_BLEND);
-		GL20.glDisableVertexAttribArray(0);
-		GL20.glDisableVertexAttribArray(1);
-		GL20.glDisableVertexAttribArray(2);
-		GL20.glDisableVertexAttribArray(3);
-		GL20.glDisableVertexAttribArray(4);
-		GL20.glDisableVertexAttribArray(5);
-		GL20.glDisableVertexAttribArray(6);
-		GL30.glBindVertexArray(0);
+		VAO.unbind(0,1,2,3,4,5,6);
 		shader.stop();
 	}
 

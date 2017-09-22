@@ -1,5 +1,6 @@
 package object.gui.text;
 
+import object.openglObject.VAO;
 import tool.math.vector.Vector2f;
 import tool.math.vector.Vector3f;
 
@@ -17,7 +18,7 @@ public class GUIText {
 	private String textString;
 	private float fontSize;
 
-	private int textMeshVao;
+	private VAO textMeshVao;
 	private int vertexCount;
 	private Vector3f color = new Vector3f(0f, 0f, 0f);
 
@@ -216,7 +217,7 @@ public class GUIText {
 	 * @return the ID of the text's VAO, which contains all the vertex data for
 	 *         the quads on which the text will be rendered.
 	 */
-	public int getMesh() {
+	public VAO getMesh() {
 		return textMeshVao;
 	}
 
@@ -229,7 +230,7 @@ public class GUIText {
 	 * @param verticesCount
 	 *            - the total number of vertices in all of the quads.
 	 */
-	public synchronized void setMeshInfo(int vao, int verticesCount) {
+	public synchronized void setMeshInfo(VAO vao, int verticesCount) {
 		this.textMeshVao = vao;
 		this.vertexCount = verticesCount;
 	}

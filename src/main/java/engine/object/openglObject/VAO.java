@@ -8,21 +8,21 @@ import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 
-public class Vao {
+public class VAO {
 
 	private static final int BYTES_PER_FLOAT = 4;
 	private static final int BYTES_PER_INT = 4;
 	public final int id;
-	private List<Vbo> dataVbos = new ArrayList<Vbo>();
-	private Vbo indexVbo;
+	private List<VBO> dataVbos = new ArrayList<VBO>();
+	private VBO indexVbo;
 	private int indexCount;
 
-	public static Vao create() {
+	public static VAO create() {
 		int id = GL30.glGenVertexArrays();
-		return new Vao(id);
+		return new VAO(id);
 	}
 
-	private Vao(int id) {
+	private VAO(int id) {
 		this.id = id;
 	}
 
@@ -37,7 +37,7 @@ public class Vao {
 		}
 	}
 
-	public void unbind(int... attributes) {
+	public static void unbind(int... attributes) {
 		for (int i : attributes) {
 			GL20.glDisableVertexAttribArray(i);
 		}
@@ -45,14 +45,14 @@ public class Vao {
 	}
 
 	public void createIndexBuffer(int[] indices) {
-		this.indexVbo = Vbo.create(GL15.GL_ELEMENT_ARRAY_BUFFER);
+		this.indexVbo = VBO.create(GL15.GL_ELEMENT_ARRAY_BUFFER);
 		indexVbo.bind();
 		indexVbo.storeData(indices);
 		this.indexCount = indices.length;
 	}
 
-	public void createAttribute(int attribute, float[] data, int attrSize) {
-		Vbo dataVbo = Vbo.create(GL15.GL_ARRAY_BUFFER);
+	public void createAttribute(int attribute, int attrSize, float[] data) {
+		VBO dataVbo = VBO.create(GL15.GL_ARRAY_BUFFER);
 		dataVbo.bind();
 		dataVbo.storeData(data);
 		GL20.glVertexAttribPointer(attribute, attrSize, GL11.GL_FLOAT, false, attrSize * BYTES_PER_FLOAT, 0);
@@ -60,8 +60,8 @@ public class Vao {
 		dataVbos.add(dataVbo);
 	}
 
-	public void createIntAttribute(int attribute, int[] data, int attrSize) {
-		Vbo dataVbo = Vbo.create(GL15.GL_ARRAY_BUFFER);
+	public void createIntAttribute(int attribute, int attrSize, int[] data) {
+		VBO dataVbo = VBO.create(GL15.GL_ARRAY_BUFFER);
 		dataVbo.bind();
 		dataVbo.storeData(data);
 		GL30.glVertexAttribIPointer(attribute, attrSize, GL11.GL_INT, attrSize * BYTES_PER_INT, 0);
@@ -71,7 +71,7 @@ public class Vao {
 
 	public void delete() {
 		GL30.glDeleteVertexArrays(id);
-		for (Vbo vbo : dataVbos) {
+		for (VBO vbo : dataVbos) {
 			vbo.delete();
 		}
 		indexVbo.delete();
@@ -81,7 +81,7 @@ public class Vao {
 		GL30.glBindVertexArray(id);
 	}
 
-	private void unbind() {
+	private static void unbind() {
 		GL30.glBindVertexArray(0);
 	}
 

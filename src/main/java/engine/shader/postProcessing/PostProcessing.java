@@ -2,10 +2,9 @@ package shader.postProcessing;
 
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL20;
-import org.lwjgl.opengl.GL30;
 
 import object.model.raw.RawModel;
+import object.openglObject.VAO;
 import renderer.loader.Loader;
 import shader.postProcessing.bloom.BrightFilter;
 import shader.postProcessing.bloom.CombineFilter;
@@ -90,15 +89,14 @@ public class PostProcessing {
 	}
 
 	private static void start() {
-		GL30.glBindVertexArray(quad.getVaoID());
-		GL20.glEnableVertexAttribArray(0);
+		VAO vao = quad.getVAO();
+		vao.bind(0);
 		GL11.glDisable(GL11.GL_DEPTH_TEST);
 	}
 
 	private static void end() {
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
-		GL20.glDisableVertexAttribArray(0);
-		GL30.glBindVertexArray(0);
+		VAO.unbind(0);
 	}
 
 }

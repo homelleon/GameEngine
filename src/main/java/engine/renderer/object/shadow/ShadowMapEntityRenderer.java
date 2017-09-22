@@ -1,17 +1,16 @@
-package object.shadow.renderer;
+package renderer.object.shadow;
 
 import java.util.List;
 import java.util.Map;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
-import org.lwjgl.opengl.GL20;
-import org.lwjgl.opengl.GL30;
 
 import object.camera.ICamera;
 import object.entity.entity.IEntity;
 import object.model.raw.RawModel;
 import object.model.textured.TexturedModel;
+import object.openglObject.VAO;
 import shader.shadow.ShadowShader;
 import tool.math.Maths;
 import tool.math.Matrix4f;
@@ -60,9 +59,7 @@ public class ShadowMapEntityRenderer {
 				OGLUtils.cullBackFaces(true);
 			}
 		}
-		GL20.glDisableVertexAttribArray(0);
-		GL20.glDisableVertexAttribArray(1);
-		GL30.glBindVertexArray(0);
+		unbindModel();
 	}
 
 	/**
@@ -74,9 +71,12 @@ public class ShadowMapEntityRenderer {
 	 *            - the model to be bound.
 	 */
 	private void bindModel(RawModel rawModel) {
-		GL30.glBindVertexArray(rawModel.getVaoID());
-		GL20.glEnableVertexAttribArray(0);
-		GL20.glEnableVertexAttribArray(1);
+		VAO modelVao = rawModel.getVAO();
+		modelVao.bind(0,1);
+	}
+	
+	private void unbindModel() {
+		VAO.unbind(0,1);
 	}
 
 	/**

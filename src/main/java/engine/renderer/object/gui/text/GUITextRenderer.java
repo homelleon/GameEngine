@@ -8,12 +8,11 @@ import java.util.Map;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
-import org.lwjgl.opengl.GL20;
-import org.lwjgl.opengl.GL30;
 
 import manager.gui.font.IFontManager;
 import object.gui.font.FontType;
 import object.gui.text.GUIText;
+import object.openglObject.VAO;
 import shader.font.FontShader;
 import tool.openGL.OGLUtils;
 
@@ -70,9 +69,8 @@ public class GUITextRenderer {
 	}
 
 	private void renderText(GUIText text) {
-		GL30.glBindVertexArray(text.getMesh());
-		GL20.glEnableVertexAttribArray(0);
-		GL20.glEnableVertexAttribArray(1);
+		VAO textMeshVao = text.getMesh();
+		textMeshVao.bind(0,1);
 		this.shader.loadColour(text.getColor());
 		this.shader.loadTranslation(text.getPosition());
 		this.shader.loadWidthAndEdge(text.getWidth(), text.getEdge());
@@ -80,9 +78,7 @@ public class GUITextRenderer {
 		this.shader.loadOffset(text.getOffset());
 		this.shader.loadOutLineColour(text.getOutlineColor());
 		GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, text.getVertexCount());
-		GL20.glDisableVertexAttribArray(0);
-		GL20.glDisableVertexAttribArray(1);
-		GL30.glBindVertexArray(0);
+		VAO.unbind(0,1);
 	}
 
 	private void endRendering() {

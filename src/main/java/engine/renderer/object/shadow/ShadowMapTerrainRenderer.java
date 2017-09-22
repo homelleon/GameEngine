@@ -1,13 +1,12 @@
-package object.shadow.renderer;
+package renderer.object.shadow;
 
 import java.util.Collection;
 
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL20;
-import org.lwjgl.opengl.GL30;
 
 import object.camera.ICamera;
 import object.model.raw.RawModel;
+import object.openglObject.VAO;
 import object.terrain.terrain.ITerrain;
 import shader.shadow.ShadowShader;
 import tool.math.Maths;
@@ -46,6 +45,7 @@ public class ShadowMapTerrainRenderer {
 			prepareInstance(terrain);
 			GL11.glDrawElements(GL11.GL_TRIANGLES, terrain.getModel().getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
 		}
+		unbindTexturedModel();
 	}
 
 	/**
@@ -57,10 +57,8 @@ public class ShadowMapTerrainRenderer {
 	 *            - the model to be bound.
 	 */
 	private void bindModel(RawModel rawModel) {
-		GL30.glBindVertexArray(rawModel.getVaoID());
-		GL20.glEnableVertexAttribArray(0);
-		GL20.glEnableVertexAttribArray(1);
-		GL20.glEnableVertexAttribArray(2);
+		VAO modelVao = rawModel.getVAO();
+		modelVao.bind(0,1,2);
 	}
 
 	/**
@@ -74,10 +72,7 @@ public class ShadowMapTerrainRenderer {
 	 */
 
 	private void unbindTexturedModel() {
-		GL20.glDisableVertexAttribArray(0);
-		GL20.glDisableVertexAttribArray(1);
-		GL20.glDisableVertexAttribArray(2);
-		GL30.glBindVertexArray(0);
+		VAO.unbind(0,1,2);
 	}
 
 	private void prepareInstance(ITerrain terrain) {

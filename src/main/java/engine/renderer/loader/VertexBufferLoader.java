@@ -1,20 +1,19 @@
 package renderer.loader;
 
 import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
-import org.lwjgl.opengl.GL30;
 import org.lwjgl.opengl.GL33;
 
 import object.bounding.BoundingBox;
 import object.bounding.BoundingSphere;
 import object.model.raw.RawModel;
+import object.openglObject.VAO;
+import object.openglObject.VBO;
 import tool.math.Maths;
 import tool.math.vector.Vector3f;
 
@@ -23,12 +22,12 @@ public class VertexBufferLoader {
 	/**
 	 * List of vertex arrays objects indices.
 	 */
-	private List<Integer> vaos = new ArrayList<Integer>();
+	private List<VAO> vaos = new ArrayList<VAO>();
 
 	/**
 	 * List of vertex buffer objects indices.
 	 */
-	private List<Integer> vbos = new ArrayList<Integer>();
+	private List<VBO> vbos = new ArrayList<VBO>();
 	
 	/**
 	 * Loads vertex positions, normals and indices attributes into the new
@@ -44,12 +43,13 @@ public class VertexBufferLoader {
 	 * @return {@link RawModel} value
 	 */
 	public RawModel loadToVao(float[] positions, float[] normals, int[] indices) {
-		int vaoID = createVAO();
-		bindIndicesBuffer(indices);
-		storeDataInAttributeList(0, 3, positions);
-		storeDataInAttributeList(2, 3, normals);
-		unbindVAO();
-		return new RawModel(vaoID, indices.length);
+		VAO vao = VAO.create();
+		this.vaos.add(vao);
+		vao.bind();
+		vao.createAttribute(0, 3, positions);
+		vao.createAttribute(2, 3, normals);
+		VAO.unbind();
+		return new RawModel(vao, indices.length);
 	}
 
 	/**
@@ -63,12 +63,14 @@ public class VertexBufferLoader {
 	 * 
 	 * @return integer value of vao identification number
 	 */
-	public int loadToVAO(float[] positions, float[] textureCoords) {
-		int vaoID = createVAO();
-		storeDataInAttributeList(0, 2, positions);
-		storeDataInAttributeList(1, 2, textureCoords);
-		unbindVAO();
-		return vaoID;
+	public VAO loadToVAO(float[] positions, float[] textureCoords) {
+		VAO vao = VAO.create();
+		this.vaos.add(vao);
+		vao.bind();
+		vao.createAttribute(0, 2, positions);
+		vao.createAttribute(1, 2, textureCoords);
+		VAO.unbind();
+		return vao;
 	}
 
 	/**
@@ -87,15 +89,17 @@ public class VertexBufferLoader {
 	 * @return {@link RawModel} value
 	 */
 	public RawModel loadToVAO(float[] positions, float[] textureCoords, float[] normals, int[] indices) {
-		int vaoID = createVAO();
-		bindIndicesBuffer(indices);
-		storeDataInAttributeList(0, 3, positions);
-		storeDataInAttributeList(1, 2, textureCoords);
-		storeDataInAttributeList(2, 3, normals);
-		unbindVAO();
+		VAO vao = VAO.create();
+		this.vaos.add(vao);
+		vao.bind();
+		vao.createIndexBuffer(indices);
+		vao.createAttribute(0, 3, positions);
+		vao.createAttribute(1, 2, textureCoords);
+		vao.createAttribute(2, 3, normals);
+		VAO.unbind();
 		BoundingSphere sphere = new BoundingSphere(positions);
 		BoundingBox box = new BoundingBox(positions);
-		return new RawModel(vaoID, indices.length, sphere, box);
+		return new RawModel(vao, indices.length, sphere, box);
 	}
 
 	/**
@@ -108,14 +112,13 @@ public class VertexBufferLoader {
 	 *            {@link Float} array value of data to update in video buffer
 	 * @param buffer
 	 */
-	public void updateVbo(int vbo, float[] data, FloatBuffer buffer) {
+	public void updateVbo(VBO vbo, float[] data, FloatBuffer buffer) {
 		buffer.clear();
 		buffer.put(data);
 		buffer.flip();
-		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vbo);
-		GL15.glBufferData(GL15.GL_ARRAY_BUFFER, buffer.capacity() * 4, GL15.GL_STREAM_DRAW);
-		GL15.glBufferSubData(GL15.GL_ARRAY_BUFFER, 0, buffer);
-		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
+		vbo.bind();
+		vbo.storeSubData(buffer, data);
+		vbo.unbind();
 	}
 
 	/**
@@ -134,16 +137,18 @@ public class VertexBufferLoader {
 	 */
 	public RawModel loadToVAO(float[] positions, float[] textureCoords, float[] normals, float[] tangents,
 			int[] indices) {
-		int vaoID = createVAO();
-		bindIndicesBuffer(indices);
-		storeDataInAttributeList(0, 3, positions);
-		storeDataInAttributeList(1, 2, textureCoords);
-		storeDataInAttributeList(2, 3, normals);
-		storeDataInAttributeList(3, 3, tangents);
-		unbindVAO();
+		VAO vao = VAO.create();
+		this.vaos.add(vao);
+		vao.bind();
+		vao.createIndexBuffer(indices);
+		vao.createAttribute(0, 3, positions);
+		vao.createAttribute(1, 2, textureCoords);
+		vao.createAttribute(2, 3, normals);
+		vao.createAttribute(3, 3, tangents);
+		VAO.unbind();
 		BoundingSphere sphere = new BoundingSphere(positions);
 		BoundingBox box = new BoundingBox(positions);
-		return new RawModel(vaoID, indices.length, sphere, box);
+		return new RawModel(vao, indices.length, sphere, box);
 
 	}
 
@@ -155,23 +160,23 @@ public class VertexBufferLoader {
 	 * 
 	 * @return {@link Integer} ordinal number of vbo in video buffer
 	 */
-	public int createEmptyVbo(int floatCount) {
-		int vbo = GL15.glGenBuffers();
+	public VBO createEmptyVbo(int floatCount) {
+		VBO vbo = VBO.create(GL15.GL_ARRAY_BUFFER);
 		vbos.add(vbo);
-		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vbo);
-		GL15.glBufferData(GL15.GL_ARRAY_BUFFER, floatCount * 4, GL15.GL_STREAM_DRAW);
-		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
+		vbo.bind();
+		vbo.storeData(floatCount * 4);
+		vbo.unbind();
 		return vbo;
 	}
 
-	public void addInstacedAttribute(int vao, int vbo, int attribute, int dataSize, int instancedDataLength,
+	public void addInstacedAttribute(VAO vao, VBO vbo, int attribute, int dataSize, int instancedDataLength,
 			int offset) {
-		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vbo);
-		GL30.glBindVertexArray(vao);
+		vao.bind();
+		vbo.bind();
 		GL20.glVertexAttribPointer(attribute, dataSize, GL11.GL_FLOAT, false, instancedDataLength * 4, offset * 4);
 		GL33.glVertexAttribDivisor(attribute, 1);
-		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
-		GL30.glBindVertexArray(0);
+		vbo.unbind();
+		VAO.unbind();
 	}
 
 	/**
@@ -185,12 +190,15 @@ public class VertexBufferLoader {
 	 * @return
 	 */
 	public RawModel loadToVAO(float[] positions, int dimensions) {
-		int vaoID = createVAO();
-		this.storeDataInAttributeList(0, dimensions, positions);
-		unbindVAO();
+		VAO vao = VAO.create();
+		this.vaos.add(vao);
+		vao.bind();
+		vao.createAttribute(0, dimensions, positions);
+		VAO.unbind();
+		
 		BoundingSphere sphere = new BoundingSphere(positions);
 		BoundingBox box = new BoundingBox(positions);
-		return new RawModel(vaoID, positions.length / dimensions, sphere, box);
+		return new RawModel(vao, positions.length / dimensions, sphere, box);
 
 	}
 	
@@ -200,99 +208,13 @@ public class VertexBufferLoader {
 	 */
 	public void clean() {
 
-		for (int vao : vaos) {
-			GL30.glDeleteVertexArrays(vao);
+		for (VAO vao : vaos) {
+			vao.delete();
 		}
 
-		for (int vbo : vbos) {
-			GL15.glDeleteBuffers(vbo);
+		for (VBO vbo : vbos) {
+			vbo.delete();
 		}
-	}
-
-	/**
-	 * Creates vertex array object for video buffer.
-	 * <p>
-	 * After created need to add verticies buffer objects and unbind verticies
-	 * array object.
-	 * 
-	 * @return {@link Integer} ordered number of verticies array object from
-	 *         video buffer
-	 */
-	private int createVAO() {
-		int vaoID = GL30.glGenVertexArrays();
-		vaos.add(vaoID);
-		GL30.glBindVertexArray(vaoID);
-		return vaoID;
-	}
-
-	/**
-	 * Stores data into attribute list to prepare rendering.
-	 * 
-	 * @param attributeNumber
-	 *            - integer
-	 * @param coordinateSize
-	 *            - integer size of coordinates
-	 * @param data
-	 *            - float array of data to store into video buffer
-	 */
-	private void storeDataInAttributeList(int attributeNumber, int coordinateSize, float[] data) {
-		int vboID = GL15.glGenBuffers();
-		vbos.add(vboID);
-		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboID);
-		FloatBuffer buffer = storeDataInFloatBuffer(data);
-		GL15.glBufferData(GL15.GL_ARRAY_BUFFER, buffer, GL15.GL_STATIC_DRAW);
-		GL20.glVertexAttribPointer(attributeNumber, coordinateSize, GL11.GL_FLOAT, false, 0, 0);
-		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
-	}
-
-	/**
-	 * Unbinds vertex array object to stop storing vertex buffer objects in it.
-	 */
-	private void unbindVAO() {
-		GL30.glBindVertexArray(0);
-	}
-
-	/**
-	 * Binds indicies buffer object to prepare indicies for video buffer.
-	 * 
-	 * @param indices
-	 *            {@link Integer} array of ordered number of model points
-	 */
-	private void bindIndicesBuffer(int[] indices) {
-		int vboID = GL15.glGenBuffers();
-		vbos.add(vboID);
-		GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, vboID);
-		IntBuffer buffer = storeDataInIntBuffer(indices);
-		GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, buffer, GL15.GL_STATIC_DRAW);
-	}
-
-	/**
-	 * Stores integer data into buffer.
-	 * 
-	 * @param data
-	 *            - integer array of data
-	 * @return {@link IntBuffer} object
-	 */
-	private IntBuffer storeDataInIntBuffer(int[] data) {
-		IntBuffer buffer = BufferUtils.createIntBuffer(data.length);
-		buffer.put(data);
-		buffer.flip();
-		return buffer;
-
-	}
-
-	/**
-	 * Stores float data into buffer.
-	 * 
-	 * @param data
-	 *            - float array of data
-	 * @return {@link FloatBuffer} object
-	 */
-	private FloatBuffer storeDataInFloatBuffer(float[] data) {
-		FloatBuffer buffer = BufferUtils.createFloatBuffer(data.length);
-		buffer.put(data);
-		buffer.flip();
-		return buffer;
 	}
 
 	/**

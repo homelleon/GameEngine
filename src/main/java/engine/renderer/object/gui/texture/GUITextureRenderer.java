@@ -4,11 +4,10 @@ import java.util.Collection;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
-import org.lwjgl.opengl.GL20;
-import org.lwjgl.opengl.GL30;
 
 import object.gui.texture.GUITexture;
 import object.model.raw.RawModel;
+import object.openglObject.VAO;
 import renderer.loader.Loader;
 import shader.guiTexture.GUITextureShader;
 import tool.math.Maths;
@@ -29,8 +28,8 @@ public class GUITextureRenderer {
 
 	public void render(Collection<GUITexture> textureList) {
 		this.shader.start();
-		GL30.glBindVertexArray(this.quad.getVaoID());
-		GL20.glEnableVertexAttribArray(0);
+		VAO vao = this.quad.getVAO();
+		vao.bind(0);
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		OGLUtils.depthTest(false);
@@ -51,8 +50,7 @@ public class GUITextureRenderer {
 
 		OGLUtils.depthTest(true);
 		GL11.glDisable(GL11.GL_BLEND);
-		GL20.glDisableVertexAttribArray(0);
-		GL30.glBindVertexArray(0);
+		VAO.unbind(0);
 		this.shader.stop();
 	}
 

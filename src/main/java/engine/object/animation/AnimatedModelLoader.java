@@ -2,7 +2,7 @@ package object.animation;
 
 import object.animatedModel.AnimatedModel;
 import object.animatedModel.Joint;
-import object.openglObject.Vao;
+import object.openglObject.VAO;
 import object.texture.Texture;
 import tool.MyFile;
 import tool.colladaParser.colladaLoader.ColladaLoader;
@@ -24,7 +24,7 @@ public class AnimatedModelLoader {
 	 */
 	public static AnimatedModel loadEntity(MyFile modelFile, MyFile textureFile) {
 		AnimatedModelData entityData = ColladaLoader.loadColladaModel(modelFile, 50);
-		Vao model = createVao(entityData.getMeshData());
+		VAO model = createVao(entityData.getMeshData());
 		Texture texture = loadTexture(textureFile);
 		SkeletonData skeletonData = entityData.getJointsData();
 		Joint headJoint = createJoints(skeletonData.headJoint);
@@ -67,16 +67,16 @@ public class AnimatedModelLoader {
 	 *            VAO.
 	 * @return The VAO containing all the mesh data for the model.
 	 */
-	private static Vao createVao(MeshData data) {
-		Vao vao = Vao.create();
+	private static VAO createVao(MeshData data) {
+		VAO vao = VAO.create();
 		vao.bind();
 		vao.createIndexBuffer(data.getIndices());
-		vao.createAttribute(0, data.getVertices(), 3);
-		vao.createAttribute(1, data.getTextureCoords(), 2);
-		vao.createAttribute(2, data.getNormals(), 3);
-		vao.createIntAttribute(3, data.getJointIds(), 3);
-		vao.createAttribute(4, data.getVertexWeights(), 3);
-		vao.unbind();
+		vao.createAttribute(0, 3, data.getVertices());
+		vao.createAttribute(1, 2, data.getTextureCoords());
+		vao.createAttribute(2, 3, data.getNormals());
+		vao.createIntAttribute(3, 3, data.getJointIds());
+		vao.createAttribute(4, 3, data.getVertexWeights());
+		VAO.unbind();
 		return vao;
 	}
 

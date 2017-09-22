@@ -4,14 +4,13 @@ import java.util.Collection;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
-import org.lwjgl.opengl.GL20;
-import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Vector4f;
 
 import core.settings.EngineSettings;
 import object.camera.ICamera;
 import object.light.ILight;
 import object.model.raw.RawModel;
+import object.openglObject.VAO;
 import object.terrain.terrain.ITerrain;
 import object.texture.terrain.pack.TerrainTexturePack;
 import shader.terrain.TerrainShader;
@@ -48,7 +47,6 @@ public class TerrainRenderer {
 			loadModelMatrix(terrain);
 			GL11.glDrawElements(GL11.GL_TRIANGLES, terrain.getModel().getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
 			unbindTexture();
-
 		}
 
 		shader.stop();
@@ -81,10 +79,8 @@ public class TerrainRenderer {
 
 	private void prepareTerrain(ITerrain terrain) {
 		RawModel rawModel = terrain.getModel();
-		GL30.glBindVertexArray(rawModel.getVaoID());
-		GL20.glEnableVertexAttribArray(0);
-		GL20.glEnableVertexAttribArray(1);
-		GL20.glEnableVertexAttribArray(2);
+		VAO vao = rawModel.getVAO();
+		vao.bind(0,1,2);
 		bindTexture(terrain);
 		shader.loadShineVariables(1, 0);
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
@@ -106,10 +102,7 @@ public class TerrainRenderer {
 	}
 
 	private void unbindTexture() {
-		GL20.glDisableVertexAttribArray(0);
-		GL20.glDisableVertexAttribArray(1);
-		GL20.glDisableVertexAttribArray(2);
-		GL30.glBindVertexArray(0);
+		VAO.unbind(0,1,2);
 	}
 
 	private void loadModelMatrix(ITerrain terrain) {

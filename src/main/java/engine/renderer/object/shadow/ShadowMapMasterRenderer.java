@@ -1,4 +1,4 @@
-package object.shadow.renderer;
+package renderer.object.shadow;
 
 import java.util.Collection;
 import java.util.List;

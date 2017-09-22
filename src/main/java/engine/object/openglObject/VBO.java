@@ -6,19 +6,19 @@ import java.nio.IntBuffer;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL15;
 
-public class Vbo {
+public class VBO {
 
 	private final int vboId;
 	private final int type;
 
-	private Vbo(int vboId, int type) {
+	private VBO(int vboId, int type) {
 		this.vboId = vboId;
 		this.type = type;
 	}
 
-	public static Vbo create(int type) {
+	public static VBO create(int type) {
 		int id = GL15.glGenBuffers();
-		return new Vbo(id, type);
+		return new VBO(id, type);
 	}
 
 	public void bind() {
@@ -27,6 +27,14 @@ public class Vbo {
 
 	public void unbind() {
 		GL15.glBindBuffer(type, 0);
+	}
+	
+	public void storeSubData(FloatBuffer buffer, float[] data) {
+		buffer.clear();
+		buffer.put(data);
+		buffer.flip();
+		GL15.glBufferData(type, buffer.capacity() * 4, GL15.GL_STATIC_DRAW);
+		GL15.glBufferSubData(GL15.GL_ARRAY_BUFFER, 0, buffer);		
 	}
 
 	public void storeData(float[] data) {
@@ -41,6 +49,10 @@ public class Vbo {
 		buffer.put(data);
 		buffer.flip();
 		storeData(buffer);
+	}
+	
+	public void storeData(int data) {
+		GL15.glBufferData(type, data, GL15.GL_STATIC_DRAW);
 	}
 
 	public void storeData(IntBuffer data) {

@@ -2,14 +2,13 @@ package renderer.object.skybox;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
-import org.lwjgl.opengl.GL20;
-import org.lwjgl.opengl.GL30;
 
 import core.EngineMain;
 import core.display.DisplayManager;
 import core.settings.EngineSettings;
 import object.camera.ICamera;
 import object.model.raw.RawModel;
+import object.openglObject.VAO;
 import renderer.loader.Loader;
 import shader.skybox.SkyboxShader;
 import tool.math.Matrix4f;
@@ -93,12 +92,11 @@ public class SkyboxRenderer {
 		shader.start();
 		shader.loadViewMatrix(camera);
 		shader.loadFogColour(EngineSettings.DISPLAY_RED, EngineSettings.DISPLAY_GREEN, EngineSettings.DISPLAY_BLUE);
-		GL30.glBindVertexArray(cube.getVaoID());
-		GL20.glEnableVertexAttribArray(0);
+		VAO vao = cube.getVAO();
+		vao.bind(0);
 		bindTextures();
 		GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, cube.getVertexCount());
-		GL20.glDisableVertexAttribArray(0);
-		GL30.glBindVertexArray(0);
+		VAO.unbind(0);
 		shader.stop();
 
 	}

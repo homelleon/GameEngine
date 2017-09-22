@@ -4,14 +4,13 @@ import java.util.Collection;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
-import org.lwjgl.opengl.GL20;
-import org.lwjgl.opengl.GL30;
 
 import core.display.DisplayManager;
 import core.settings.EngineSettings;
 import object.camera.ICamera;
 import object.light.Light;
 import object.model.raw.RawModel;
+import object.openglObject.VAO;
 import object.water.WaterFrameBuffers;
 import object.water.WaterTile;
 import renderer.loader.Loader;
@@ -71,8 +70,8 @@ public class WaterRenderer {
 		moveFactor %= 1;
 		shader.loadMoveFactor(moveFactor);
 		shader.loadLight(sun);
-		GL30.glBindVertexArray(quad.getVaoID());
-		GL20.glEnableVertexAttribArray(0);
+		VAO vao = quad.getVAO();
+		vao.bind(0);
 		GL13.glActiveTexture(GL13.GL_TEXTURE0);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, fbos.getReflectionTexture());
 		GL13.glActiveTexture(GL13.GL_TEXTURE1);
@@ -91,8 +90,7 @@ public class WaterRenderer {
 
 	private void unbind() {
 		GL11.glDisable(GL11.GL_BLEND);
-		GL20.glDisableVertexAttribArray(0);
-		GL30.glBindVertexArray(0);
+		VAO.unbind(0);
 		shader.stop();
 	}
 
