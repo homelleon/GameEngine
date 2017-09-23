@@ -1,8 +1,12 @@
 package renderer.object.gui.texture;
 
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
+import static org.lwjgl.opengl.GL11.glBindTexture;
+
 import java.util.Collection;
 
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL13;
 
 import object.gui.texture.GUITexture;
 import primitive.buffer.Loader;

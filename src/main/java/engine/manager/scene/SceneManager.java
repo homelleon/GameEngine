@@ -58,7 +58,7 @@ public class SceneManager implements ISceneManager {
 		scene.getEntities().add(player1);
 		scene.setCamera(new TargetCamera(cameraName, player1));
 		scene.setSun(new Light("Sun", 
-				new Vector3f(-1000000, 500000, -1000000), 
+				new Vector3f(-1000, 5000, -1000), 
 				new Vector3f(1.3f, 1.3f, 1.3f)));
 		scene.getLights().add(scene.getSun());
 	}

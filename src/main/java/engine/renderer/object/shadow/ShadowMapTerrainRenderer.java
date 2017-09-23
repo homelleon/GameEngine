@@ -3,6 +3,7 @@ package renderer.object.shadow;
 import java.util.Collection;
 
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL13;
 
 import object.camera.ICamera;
 import object.terrain.terrain.ITerrain;
@@ -45,7 +46,7 @@ public class ShadowMapTerrainRenderer {
 			prepareInstance(terrain);
 			GL11.glDrawElements(GL11.GL_TRIANGLES, terrain.getModel().getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
 		}
-		unbindTexturedModel();
+		unbindMesh();
 	}
 
 	/**
@@ -71,7 +72,7 @@ public class ShadowMapTerrainRenderer {
 	 *            - the entity to be prepared for rendering.
 	 */
 
-	private void unbindTexturedModel() {
+	private void unbindMesh() {
 		VAO.unbind(0, 1, 2);
 	}
 

@@ -4,13 +4,16 @@ import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 import static org.lwjgl.opengl.GL11.glBindTexture;
 import static org.lwjgl.opengl.GL11.glDeleteTextures;
 import static org.lwjgl.opengl.GL11.glGenTextures;
+
+import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.opengl.Texture;
 
 import org.lwjgl.opengl.GL13;
 
 import primitive.buffer.TextureBufferLoader;
 
-public class Texture2D {
+public class Texture2D 
+{
 	
 	private String name;
 	private int id;
@@ -19,7 +22,19 @@ public class Texture2D {
 	private int numberOfRows = 1;
 	private boolean hasTransparency = false;
 	
-	public Texture2D(){}
+	public static Texture2D create(int width, int height, int numberOfRows, boolean hasTransparency) 
+	{
+		Texture2D texture = new Texture2D();
+		texture.id = GL11.glGenTextures();
+		texture.width = width;
+		texture.height = height;
+		texture.numberOfRows = numberOfRows;
+		texture.hasTransparency = hasTransparency;
+		return texture;
+	}
+	
+	private Texture2D(){}
+	
 	
 	public Texture2D(String name, String file)
 	{
@@ -37,7 +52,7 @@ public class Texture2D {
 	
 	public void bind(int location)
 	{
-		activeTexture(location);
+		active(location);
 		glBindTexture(GL_TEXTURE_2D, id);
 	}
 	
@@ -56,78 +71,53 @@ public class Texture2D {
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 	
-	public int getId() {
+	public int getId() 
+	{
 		return id;
 	}
 
-	public String getName() {
+	public String getName() 
+	{
 		return name;
 	}
 
-	public int getWidth() {
+	public int getWidth() 
+	{
 		return width;
 	}
 
-	public int getHeight() {
+	public int getHeight() 
+	{
 		return height;
 	}
 
-	public int getNumberOfRows() {
+	public int getNumberOfRows() 
+	{
 		return numberOfRows;
 	}
 
-	public void setNumberOfRows(int numberOfRows) {
+	public void setNumberOfRows(int numberOfRows) 
+	{
 		this.numberOfRows = numberOfRows;
 	}
 
-	public boolean isHasTransparency() {
+	public boolean isHasTransparency() 
+	{
 		return hasTransparency;
 	}
 
-	public void setHasTransparency(boolean hasTransparency) {
+	public void setHasTransparency(boolean hasTransparency) 
+	{
 		this.hasTransparency = hasTransparency;
 	}
 	
-	private void activeTexture(int location) {
-		switch(location) {
-			case 0:
-				GL13.glActiveTexture(GL13.GL_TEXTURE0);
-				break;
-			case 1:
-				GL13.glActiveTexture(GL13.GL_TEXTURE1);
-				break;
-			case 2:
-				GL13.glActiveTexture(GL13.GL_TEXTURE2);
-				break;
-			case 3:
-				GL13.glActiveTexture(GL13.GL_TEXTURE3);
-				break;
-			case 4:
-				GL13.glActiveTexture(GL13.GL_TEXTURE4);
-				break;
-			case 5:
-				GL13.glActiveTexture(GL13.GL_TEXTURE5);
-				break;
-			case 6:
-				GL13.glActiveTexture(GL13.GL_TEXTURE6);
-				break;
-			case 7:
-				GL13.glActiveTexture(GL13.GL_TEXTURE7);
-				break;
-			case 8:
-				GL13.glActiveTexture(GL13.GL_TEXTURE8);
-				break;
-			case 9:
-				GL13.glActiveTexture(GL13.GL_TEXTURE9);
-				break;
-			case 10:
-				GL13.glActiveTexture(GL13.GL_TEXTURE10);
-				break;
-			case 11:
-				GL13.glActiveTexture(GL13.GL_TEXTURE11);
-				break;
-			default:
-				throw new NullPointerException("Try to active incorrect texture location!");
+	private void active(int location) 
+	{
+		if(location >= 0 && location < 31) {
+			GL13.glActiveTexture(GL13.GL_TEXTURE0 + location);
+		} else {
+			throw new IndexOutOfBoundsException("Incorrect location at texture activation!");
 		}
+			
 	}
 }

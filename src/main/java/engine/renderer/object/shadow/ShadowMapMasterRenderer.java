@@ -13,6 +13,7 @@ import object.light.Light;
 import object.shadow.ShadowBox;
 import object.shadow.ShadowFrameBuffer;
 import object.terrain.terrain.ITerrain;
+import object.texture.Texture2D;
 import primitive.model.Model;
 import shader.shadow.ShadowShader;
 import tool.math.Matrix4f;
@@ -112,7 +113,7 @@ public class ShadowMapMasterRenderer {
 	 *         same, even when the contents of the shadow map texture change
 	 *         each frame.
 	 */
-	public int getShadowMap() {
+	public Texture2D getShadowMap() {
 		return shadowFbo.getShadowMap();
 	}
 

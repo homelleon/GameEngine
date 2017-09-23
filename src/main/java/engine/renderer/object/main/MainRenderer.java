@@ -8,7 +8,6 @@ import java.util.Map;
 
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL13;
 import org.lwjgl.util.vector.Vector4f;
 
 import core.debug.EngineDebug;
@@ -19,6 +18,7 @@ import object.light.ILight;
 import object.scene.IScene;
 import object.terrain.terrain.ITerrain;
 import object.texture.Texture;
+import object.texture.Texture2D;
 import primitive.model.Model;
 import renderer.object.bounding.BoundingRenderer;
 import renderer.object.entity.DecorEntityRenderer;
@@ -133,9 +133,9 @@ public class MainRenderer implements IMainRenderer {
 		this.entityRendererManager.render(clipPlane, scene.getLights().getAll(), scene.getCamera(), shadowMapSpaceMatrix, environmentMap, false);
 
 		checkWiredFrameOn(terrainWiredFrame);
-		voxelRenderer.render(scene.getChunks(), clipPlane, scene.getLights().getAll(), scene.getCamera(), shadowMapRenderer.getToShadowMapSpaceMatrix(),
+		voxelRenderer.render(scene.getChunks(), clipPlane, scene.getLights().getAll(), scene.getCamera(), shadowMapSpaceMatrix,
 				frustum);
-		terrainRenderer.render(terrains, clipPlane, scene.getLights().getAll(), scene.getCamera(), shadowMapRenderer.getToShadowMapSpaceMatrix());
+		terrainRenderer.render(terrains, clipPlane, scene.getLights().getAll(), scene.getCamera(), shadowMapSpaceMatrix);
 		checkWiredFrameOff(terrainWiredFrame);
 
 		skyboxRenderer.render(scene.getCamera());
@@ -177,7 +177,7 @@ public class MainRenderer implements IMainRenderer {
 		terrains.clear();
 	}
 
-	private int getShadowMapTexture() {
+	private Texture2D getShadowMapTexture() {
 		return shadowMapRenderer.getShadowMap();
 	}
 
@@ -192,8 +192,7 @@ public class MainRenderer implements IMainRenderer {
 		OGLUtils.depthTest(true);
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 		GL11.glClearColor(EngineSettings.DISPLAY_RED, EngineSettings.DISPLAY_GREEN, EngineSettings.DISPLAY_BLUE, 1);
-		GL13.glActiveTexture(GL13.GL_TEXTURE5);
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, getShadowMapTexture());
+		getShadowMapTexture().bind(5);
 	}
 
 	private void createProjectionMatrix() {
