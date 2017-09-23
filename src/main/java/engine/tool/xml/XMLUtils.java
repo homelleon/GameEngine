@@ -107,7 +107,7 @@ public class XMLUtils {
 	public final static String FONT = "font";
 	public final static String ROWS = "rows";
 	public final static String TEXTURE_INDEX = "texture_index";
-	public final static String SHINISESS = "shinisess";
+	public final static String SHININESS = "shininess";
 	public final static String REFLECTIVITY = "reflectivity";
 	public final static String AMPLITUDE = "amplitude";
 	public final static String OCTAVE = "octave";

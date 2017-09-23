@@ -15,6 +15,7 @@ public class Matrix4f {
 	public Matrix4f()
 	{
 		load(new float[4][4]);
+		setIdentity();
 	}
 	
 	public Matrix4f Zero()

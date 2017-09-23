@@ -89,11 +89,6 @@ public class MyGame extends Game {
 		buttonGUIBuilder.setTexture("button2Texture", gameManager.getScene().getUserInterface()
 				.getComponent().getTextures().get("Button").clone("btnTexture2"));
 		
-		System.out.println(gameManager.getScene().getUserInterface()
-		.getComponent().getTextures().get("Button").getTexture().getHeight());
-		System.out.println(gameManager.getScene().getUserInterface()
-				.getComponent().getTextures().get("Button").getTexture().getWidth());
-		
 		buttonGUIBuilder.setText("button2Text", gameManager.getScene().getUserInterface()
 				.getComponent().getTexts().get("menu").clone("startText", "Start"));
 		IGUIGroup buttonGroup2 = this.gameManager.getScene().getUserInterface().getGroups().createEmpty("button2");

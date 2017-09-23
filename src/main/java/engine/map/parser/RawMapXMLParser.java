@@ -62,12 +62,12 @@ public class RawMapXMLParser extends XMLParser implements IObjectParser<IRawMana
 	private void parseMeshes(Node node, IRawManager map) {
 		//TODO separate normal and simple instead of models
 		if (EngineDebug.hasDebugPermission()) {
-			System.out.println("> Loading raw models...");
+			System.out.println("> Loading meshes...");
 		}
 		NodeList meshList = node.getChildNodes();
 		for (int j = 0; j < meshList.getLength(); j++) {
 			Node meshNode = meshList.item(j);
-			if (XMLUtils.ifNodeIsElement(meshNode, XMLUtils.MODEL)) {
+			if (XMLUtils.ifNodeIsElement(meshNode, XMLUtils.MESH)) {
 				Element meshElement = (Element) meshNode;
 				String ID = XMLUtils.getAttributeValue(meshNode, XMLUtils.ID);
 				String name = XMLUtils.getAttributeValue(meshElement, XMLUtils.NAME);
@@ -113,7 +113,7 @@ public class RawMapXMLParser extends XMLParser implements IObjectParser<IRawMana
 				String name = XMLUtils.getAttributeValue(textureElement, XMLUtils.NAME);
 				String file = XMLUtils.getAttributeValue(textureElement, XMLUtils.FILE);
 				int numberOfRows = Integer.valueOf(XMLUtils.getAttributeValue(textureElement, XMLUtils.ROWS));
-				Texture2D texture = Loader.getInstance().getTextureLoader().loadTexture(EngineSettings.TEXTURE_PATH, file);
+				Texture2D texture = new Texture2D(name, EngineSettings.TEXTURE_PATH + file + ".png");
 				texture.setNumberOfRows(numberOfRows);
 				map.addTexture(texture);
 				if (EngineDebug.hasDebugPermission()) {
@@ -134,7 +134,7 @@ public class RawMapXMLParser extends XMLParser implements IObjectParser<IRawMana
 		NodeList materialList = node.getChildNodes();
 		for (int k = 0; k < materialList.getLength(); k++) {
 			Node materialNode = materialList.item(k);
-			if (XMLUtils.ifNodeIsElement(materialNode, XMLUtils.TERRAIN_TEXTURE)) {
+			if (XMLUtils.ifNodeIsElement(materialNode, XMLUtils.MATERIAL)) {
 				Element materialElement = (Element) materialNode;
 				String ID = XMLUtils.getAttributeValue(materialNode, XMLUtils.ID);
 				String name = XMLUtils.getAttributeValue(materialElement, XMLUtils.NAME);
@@ -148,15 +148,27 @@ public class RawMapXMLParser extends XMLParser implements IObjectParser<IRawMana
 				int r = Integer.valueOf(XMLUtils.getAttributeValue(colorElement, XMLUtils.RED));
 				int g = Integer.valueOf(XMLUtils.getAttributeValue(colorElement, XMLUtils.GREEN));
 				int b = Integer.valueOf(XMLUtils.getAttributeValue(colorElement, XMLUtils.BLUE));
-				float shininess = Float.valueOf(XMLUtils.getAttributeValue(materialElement, XMLUtils.SHINISESS));
+				float shininess = Float.valueOf(XMLUtils.getAttributeValue(materialElement, XMLUtils.SHININESS));
 				float reflectivity = Float.valueOf(XMLUtils.getAttributeValue(materialElement, XMLUtils.REFLECTIVITY));
+				Texture2D diffuseMap = null;
+				Texture2D normalMap = null;
+				Texture2D displaceMap = null;
+				Texture2D ambientMap = null;
+				Texture2D specularMap = null;
+				Texture2D alphaMap = null;
+				if(!diffuseMapName.equals("null"))
+					diffuseMap = map.getTexture(diffuseMapName);
+				if(!normalMapName.equals("null"))
+					normalMap = map.getTexture(normalMapName);
+				if(!displaceMapName.equals("null"))
+					displaceMap = map.getTexture(displaceMapName);
+				if(!ambientMapName.equals("null"))
+					ambientMap = map.getTexture(ambientMapName);
+				if(!specularMapName.equals("null"))
+					specularMap = map.getTexture(specularMapName);
+				if(!alphaMapName.equals("null"))
+					alphaMap = map.getTexture(alphaMapName);
 				
-				Texture2D diffuseMap = map.getTexture(diffuseMapName);
-				Texture2D normalMap = map.getTexture(normalMapName);
-				Texture2D displaceMap = map.getTexture(displaceMapName);
-				Texture2D ambientMap = map.getTexture(ambientMapName);
-				Texture2D specularMap = map.getTexture(specularMapName);
-				Texture2D alphaMap = map.getTexture(alphaMapName);
 				
 				Material material = new Material(name, diffuseMap);
 				material.setNormalMap(normalMap);

@@ -40,31 +40,37 @@
 			id="7"
 			name="grassTerrainTexture"
 			file="terrain/grass"
+			rows="1"
 			transparency="false" />
 		<texture
 			id="8"
 			name="groundTerrainTexture"
 			file="terrain/ground"
+			rows="1"
 			transparency="false" />
 		<texture
 			id="9"
 			name="flowerTerrainTexture"
 			file="terrain/floweredGrass"
+			rows="1"
 			transparency="false" />
 		<texture
 			id="10"
 			name="plateTerrainTexture"
 			file="terrain/plate"
+			rows="1"
 			transparency="false" />
 		<texture
 			id="11"
 			name="roadTerrainTexture"
 			file="terrain/road"
+			rows="1"
 			transparency="false" />
 		<texture 
 			id="12"
 			name="terrainBlendMap"
 			file="blendMap/blendMap"
+			rows="1"
 			transparency="false" />
 	</textures>
 	<terrain_packs>
@@ -80,13 +86,13 @@
 		<material
 			id="1"
 			name="diceMaterial"
-			diffuseMap="diceTexture"
-			normalMap="null"
-			displaceMap="null"
-			ambientMap="null"
-			specularMap="null"
-			alphaMap="null" 
-			shininess="0"
+			diffuse_map="diceTexture"
+			normal_map="null"
+			displace_map="null"
+			ambient_map="null"
+			specular_map="null"
+			alpha_map="null" 
+			shininess="1"
 			reflectivity="0" 
 			reflectiveFactor="0"
 			refractiveFactor="0"
@@ -100,13 +106,13 @@
 		<material
 			id="2"
 			name="grassMaterial"
-			diffuseMap="grassTexture"
-			normalMap="null"
-			displaceMap="null"
-			ambientMap="null"
-			specularMap="null"
-			alphaMap="null" 
-			shininess="0"
+			diffuse_map="grassTexture"
+			normal_map="null"
+			displace_map="null"
+			ambient_map="null"
+			specular_map="null"
+			alpha_map="null" 
+			shininess="1"
 			reflectivity="0" 
 			reflectiveFactor="0"
 			refractiveFactor="0"
@@ -120,13 +126,13 @@
 		<material
 			id="3"
 			name="stallMaterial"
-			diffuseMap="stallTexture"
-			normalMap="null"
-			displaceMap="null"
-			ambientMap="null"
-			specularMap="null"
-			alphaMap="null" 
-			shininess="0"
+			diffuse_map="stallTexture"
+			normal_map="null"
+			displace_map="null"
+			ambient_map="null"
+			specular_map="null"
+			alpha_map="null" 
+			shininess="1"
 			reflectivity="0" 
 			reflectiveFactor="0"
 			refractiveFactor="0"
@@ -140,12 +146,12 @@
 		<material
 			id="4"
 			name="barrelMaterial"
-			diffuseMap="barellTexture"
-			normalMap="barrelNormalTexture"
-			displaceMap="null"
-			ambientMap="null"
-			specularMap="barrelSpecularTexture"
-			alphaMap="null" 
+			diffuse_map="barrelTexture"
+			normal_map="barrelNormalTexture"
+			displace_map="null"
+			ambient_map="null"
+			specular_map="barrelSpecularTexture"
+			alpha_map="null" 
 			shininess="10.0"
 			reflectivity="0.5" 
 			reflectiveFactor="0"
@@ -161,45 +167,41 @@
 	<meshes>
 		<mesh
 			id="1"
-			name="cubeRawModel"
+			name="cubeMesh"
 			file="cube" 
 			type="simple"/>			
 		<mesh 
 			id="2"
-			name="grassRawModel"
+			name="grassMesh"
 			file="grassObject"
 			type="simple" />
 		<mesh 
 			id="3"
-			name="stallRawModel"
+			name="stallMesh"
 			file="stall"
 			type="simple" />
 		<mesh 
 			id="4"
-			name="barrelRawModel"
+			name="barrelMesh"
 			file="barrel" 
 			type="normal" />
 	</meshes>
 	<models>
 		<model id="1" 
 			name="diceModel"
-			mesh="cubeRawModel" 
-			material="diceMaterial" 
-			isNormal="false" />
+			mesh="cubeMesh" 
+			material="diceMaterial" />
 		<model id="2" 
 			name="grassModel"
-			mesh="grassRawModel" 
-			material="grassMaterial"
-			isSpecular="false" />
+			mesh="grassMesh" 
+			material="grassMaterial" />
 		<model id="3" 
 			name="stallModel"
-			mesh="stallRawModel" 
-			material="stallMaterial"
-			isNormal="false" />
+			mesh="stallMesh" 
+			material="stallMaterial" />
 		<model id="4" 
 			name="barrelModel"
-			mesh="barrelRawModel"
-			material="barrelMaterial"
-			isNormal="true" />	
+			mesh="barrelMesh"
+			material="barrelMaterial" />	
 	</models>
 </raw_map>

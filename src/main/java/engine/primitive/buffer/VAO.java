@@ -74,7 +74,9 @@ public class VAO {
 		for (VBO vbo : dataVbos) {
 			vbo.delete();
 		}
-		indexVbo.delete();
+		if(indexVbo!=null) {
+			indexVbo.delete();
+		}
 	}
 
 	private void bind() {

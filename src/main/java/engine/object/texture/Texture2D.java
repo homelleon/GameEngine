@@ -4,10 +4,11 @@ import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 import static org.lwjgl.opengl.GL11.glBindTexture;
 import static org.lwjgl.opengl.GL11.glDeleteTextures;
 import static org.lwjgl.opengl.GL11.glGenTextures;
+import org.newdawn.slick.opengl.Texture;
 
 import org.lwjgl.opengl.GL13;
 
-import primitive.buffer.ImageLoader;
+import primitive.buffer.TextureBufferLoader;
 
 public class Texture2D {
 	
@@ -15,14 +16,18 @@ public class Texture2D {
 	private int id;
 	private int width;
 	private int height;
-	private int numberOfRows = 0;
+	private int numberOfRows = 1;
 	private boolean hasTransparency = false;
 	
 	public Texture2D(){}
 	
 	public Texture2D(String name, String file)
 	{
-		id = ImageLoader.loadImage(file);
+		Texture texture = TextureBufferLoader.load2DTexture(file);
+		this.name = name;
+		this.height = texture.getTextureHeight();
+		this.width = texture.getTextureWidth();
+		this.id = texture.getTextureID();
 	}
 	
 	public void bind()

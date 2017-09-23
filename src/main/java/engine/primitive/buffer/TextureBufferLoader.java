@@ -11,6 +11,8 @@ import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL14;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.opengl.GLContext;
+import org.newdawn.slick.opengl.Texture;
+import org.newdawn.slick.opengl.TextureLoader;
 
 import core.settings.EngineSettings;
 import de.matthiasmann.twl.utils.PNGDecoder;
@@ -213,6 +215,23 @@ public class TextureBufferLoader {
 	public void clean() {
 		textures2D.values().forEach(Texture2D::delete);
 		textures3D.values().forEach(texture -> GL11.glDeleteTextures(texture));
+	}
+	
+	//TODO: need to be deleted and refactored (temper function)
+	public static Texture load2DTexture(String path) {
+		Texture texture = null;
+		try {
+			FileInputStream in = new FileInputStream(path);
+			texture = TextureLoader.getTexture("PNG", in);;
+			in.close();
+			return texture;
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.err.println("Tried to load texture " + path + ", didn't work");
+			System.exit(-1);
+		}
+		return texture;
+		
 	}
 
 

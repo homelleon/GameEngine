@@ -37,7 +37,7 @@ public class RawManager implements IRawManager {
 		if(this.meshes.containsKey(name)) {
 		return this.meshes.get(name);
 		} else {
-			throw new NullPointerException("There is no model with name " + name + " in model array!");
+			throw new NullPointerException("There is no mesh with name " + name + " in mesh array!");
 		}
 	}
 
@@ -115,7 +115,7 @@ public class RawManager implements IRawManager {
 
 	@Override
 	public void addTexture(Texture2D texture) {
-		
+		this.textures.put(texture.getName(), texture);
 	}
 
 	@Override

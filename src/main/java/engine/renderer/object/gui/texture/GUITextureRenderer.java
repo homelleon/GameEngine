@@ -36,9 +36,7 @@ public class GUITextureRenderer {
 		for (GUITexture guiTexture : textureList) {
 			if (guiTexture.getIsVisible()) {
 				guiTexture.getTexture().bind(0);
-				Vector2f size = new Vector2f(guiTexture.getTexture().getWidth(), 
-						 guiTexture.getTexture().getHeight());
-				Vector2f scale = new Vector2f(size.x * guiTexture.getScale().x, size.y * guiTexture.getScale().y);
+				Vector2f scale = new Vector2f(guiTexture.getScale().x, guiTexture.getScale().y);
 				Matrix4f matrix = Maths.createTransformationMatrix(guiTexture.getPosition(), scale);
 				this.shader.loadTransformation(matrix);
 				this.shader.loadMixColorVariables(guiTexture.isMixColored(), guiTexture.getMixColor());

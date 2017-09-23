@@ -3,49 +3,49 @@
     <entity 
 		id="1"
 		name="barrelEntity"
-		textured_model="barrelModel"
+		model="barrelModel"
 		scale="1.0"
 		texture_index="0" />
     <entity 
 		id="2"
 		name="cubeEntity1"
-		textured_model="diceModel"
+		model="diceModel"
 		scale="1.0"
 		texture_index="0" />
     <entity 
 		id="3"
 		name="cubeEntity2"
-		textured_model="diceModel"
+		model="diceModel"
 		scale="1.0"
 		texture_index="0" />
     <entity 
 		id="4"
 		name="grassEntity"
-		textured_model="grassModel"
+		model="grassModel"
 		scale="1.2"
 		texture_index="1" />
     <entity 
 		id="4"
 		name="grassEntity1"
-		textured_model="grassModel"
+		model="grassModel"
 		scale="1.2"
 		texture_index="2" />		
     <entity
 		id="4"
 		name="grassEntity2"
-		textured_model="grassModel"
+		model="grassModel"
 		scale="1.2"
 		texture_index="3" />
     <entity
 		id="4"
 		name="grassEntity3"
-		textured_model="grassModel"
+		model="grassModel"
 		scale="1.2"
 		texture_index="4" />
     <entity 
 		id="5"
 		name="stallEntity"
-		textured_model="stallModel"
+		model="stallModel"
 		scale="4.0"
 		texture_index="0" />
   </entities>
