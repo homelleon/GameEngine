@@ -19,6 +19,4 @@ public interface ISceneProcessor {
 
 	public void processEntity(IEntity entity, Map<Model, List<IEntity>> entities);
 
-	public void processShadowEntity(IEntity entity, Map<Model, List<IEntity>> entities);
-
 }

@@ -84,5 +84,9 @@ public class EngineDebug {
 		}
 		return isPermitted;
 	}
+	
+	public static void printDebug(Object obj) {
+		System.out.println(obj);
+	}
 
 }

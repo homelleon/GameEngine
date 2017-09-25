@@ -16,7 +16,7 @@ public class EngineSettings {
 	/* display settings */
 	public static final int DISPLAY_WIDTH = 800; // 1920;
 	public static final int DISPLAY_HEIGHT = 600; // 1080;
-	public static final int FAR_PLANE = 10000;
+	public static final int FAR_PLANE = 10000000;
 	public static final float NEAR_PLANE = 0.5f;
 	public static final int FPS_CAP = 120;
 	public static final float FOV = 70;
@@ -77,7 +77,7 @@ public class EngineSettings {
 	public static final float GRAVITY = -50;
 	public static final float TIME_LENGTH = 1;
 	public static final float FOG_DENSITY = 0.0022f;
-	public static final float SHADOW_DISTANCE = 150;
+	public static final float SHADOW_DISTANCE = 500;
 	public static final int SHADOW_MAP_SIZE = 16384;
 	public static final float SHADOW_TRANSITION_DISTANCE = SHADOW_DISTANCE;
 	public static final int SHADOW_PCF = 2;

@@ -169,7 +169,7 @@ public class MainRenderer implements IMainRenderer {
 		scene.getEntities().updateWithFrustum(frustum, scene.getCamera())
 			.forEach((type, list) -> list.parallelStream()
 					.forEach(entity -> 
-						processShadowEntityByType(type, entity)));
+						processEntityByType(type, entity)));
 		shadowMapRenderer.render(texturedEntities, terrains, normalEntities, scene.getSun(), scene.getCamera());
 		texturedEntities.clear();
 		normalEntities.clear();
@@ -198,7 +198,7 @@ public class MainRenderer implements IMainRenderer {
 	private void createProjectionMatrix() {
 		normalDistProjectionMatrix = new Matrix4f();
 		float aspectRatio = (float) Display.getWidth() / (float) Display.getHeight();
-		float y_scale = (float) (1f / Math.tan(Math.toRadians(EngineSettings.FOV / 2f)) * aspectRatio);
+		float y_scale = (float) (1f / Math.tan(Math.toRadians(EngineSettings.FOV / 2f)));
 		float x_scale = y_scale / aspectRatio;
 		float frustrum_length = EngineSettings.FAR_PLANE - EngineSettings.NEAR_PLANE;
 
@@ -215,7 +215,7 @@ public class MainRenderer implements IMainRenderer {
 		lowDistProjectionMatrix = new Matrix4f();
 		float farPlane = 100;
 		float aspectRatio = (float) Display.getWidth() / (float) Display.getHeight();
-		float y_scale = (float) (1f / Math.tan(Math.toRadians(EngineSettings.FOV / 2f)) * aspectRatio);
+		float y_scale = (float) (1f / Math.tan(Math.toRadians(EngineSettings.FOV / 2f)));
 		float x_scale = y_scale / aspectRatio;
 		float frustrum_length = farPlane - EngineSettings.NEAR_PLANE;
 
@@ -257,20 +257,6 @@ public class MainRenderer implements IMainRenderer {
 		 		break;
 		 	case EngineSettings.ENTITY_TYPE_NORMAL:
 		 		processor.processEntity(entity, normalEntities);
-		 		break;
-		}
-	}
-
-	private synchronized void processShadowEntityByType(int type, IEntity entity) {
-		switch(type) {
-			case EngineSettings.ENTITY_TYPE_SIMPLE:
-		 		processor.processShadowEntity(entity, texturedEntities);
-		 		break;
-			case EngineSettings.ENTITY_TYPE_DECORATE:
-		 		processor.processShadowEntity(entity, texturedEntities);
-		 		break;
-		 	case EngineSettings.ENTITY_TYPE_NORMAL:
-		 		processor.processShadowEntity(entity, normalEntities);
 		 		break;
 		}
 	}

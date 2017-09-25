@@ -111,7 +111,7 @@ public class SceneManager implements ISceneManager {
 		scene.getEntities().addAll(EngineUtils.createGrassField(500, 500, 8000, 4, 0.02f));
 		scene.setCamera(new TargetCamera(cameraName, player1));
 		scene.setSun(new Light("Sun", 
-				new Vector3f(-1000000, 500000, -1000000), 
+				new Vector3f(-10000, 5000, -10000), 
 				new Vector3f(1.3f, 1.3f, 1.3f)));
 		scene.getLights().add(scene.getSun());
 		scene.getLights().add(new Light("Light1", new Vector3f(200, 2, 200), new Vector3f(10, 0, 0),

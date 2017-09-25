@@ -30,17 +30,4 @@ public class SceneProcessor implements ISceneProcessor {
 		}
 	}
 
-	@Override
-	public void processShadowEntity(IEntity entity, Map<Model, List<IEntity>> entities) {
-		Model entityModel = entity.getModel();
-		List<IEntity> batch = entities.get(entityModel);
-		if (batch != null) {
-			batch.add(entity);
-		} else {
-			List<IEntity> newBatch = new ArrayList<IEntity>();
-			newBatch.add(entity);
-			entities.put(entityModel, newBatch);
-		}
-	}
-
 }
