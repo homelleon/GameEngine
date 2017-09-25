@@ -14,7 +14,7 @@ import core.settings.EngineSettings;
 import manager.voxel.IChunkManager;
 import object.camera.ICamera;
 import object.light.ILight;
-import object.texture.model.Material;
+import object.texture.material.Material;
 import object.voxel.Chunk;
 import object.voxel.data.FaceCullingData;
 import primitive.buffer.Loader;

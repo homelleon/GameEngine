@@ -14,7 +14,7 @@ import object.terrain.terrain.ITerrain;
 import object.terrain.terrain.MappedTerrain;
 import object.terrain.terrain.ProceduredTerrain;
 import object.texture.Texture2D;
-import object.texture.model.Material;
+import object.texture.material.Material;
 import object.texture.terrain.TerrainTexturePack;
 import object.water.WaterTile;
 import primitive.buffer.Loader;

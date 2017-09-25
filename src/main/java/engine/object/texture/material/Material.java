@@ -1,4 +1,4 @@
-package object.texture.model;
+package object.texture.material;
 
 import object.texture.Texture2D;
 import tool.math.vector.Vector3f;

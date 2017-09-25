@@ -13,7 +13,7 @@ import object.entity.entity.IEntity;
 import object.light.ILight;
 import object.light.Light;
 import object.texture.Texture;
-import object.texture.model.Material;
+import object.texture.material.Material;
 import primitive.buffer.VAO;
 import primitive.model.Mesh;
 import primitive.model.Model;

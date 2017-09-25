@@ -14,7 +14,7 @@ import object.entity.entity.IEntity;
 import object.light.ILight;
 import object.light.Light;
 import object.texture.Texture;
-import object.texture.model.Material;
+import object.texture.material.Material;
 import primitive.buffer.VAO;
 import primitive.model.Mesh;
 import primitive.model.Model;
@@ -86,7 +86,7 @@ public class TexturedEntityRenderer implements IEntityRenderer {
 	 * @see ICamera
 	 * @see Texture
 	 */
-	public void renderHigh(Map<Model, List<IEntity>> entities, Vector4f clipPlane, Collection<ILight> lights,
+	public void renderHigh(Map<Mesh, Map<Model, List<IEntity>>> entities, Vector4f clipPlane, Collection<ILight> lights,
 			ICamera camera, Matrix4f toShadowMapSpace, Texture environmentMap) {
 		if(!entities.isEmpty()) {
 			this.environmentMap = environmentMap;
@@ -99,14 +99,24 @@ public class TexturedEntityRenderer implements IEntityRenderer {
 			shader.loadToShadowSpaceMatrix(toShadowMapSpace);
 			shader.loadShadowVariables(EngineSettings.SHADOW_DISTANCE, EngineSettings.SHADOW_MAP_SIZE,
 					EngineSettings.SHADOW_TRANSITION_DISTANCE, EngineSettings.SHADOW_PCF);
-			entities.forEach((model, entityList) -> {
-				prepareTexturedModel(model);
-				entityList.forEach(entity -> {
-						prepareInstance(entity);
-						GL11.glDrawElements(GL11.GL_TRIANGLES, model.getMesh().getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
-				});
-				unbindTexturedModel();
-			});
+			for(Mesh mesh : entities.keySet()) {
+				this.prepareMesh(mesh);
+				for(Model model : entities.get(mesh).keySet()) {
+					this.prepareModel(model);
+					for(IEntity entity : entities.get(mesh).get(model)) {
+						
+					}
+				}
+			}
+			
+//			entities.forEach((model, entityList) -> {
+//				prepareTexturedModel(model);
+//				entityList.forEach(entity -> {
+//						prepareInstance(entity);
+//						GL11.glDrawElements(GL11.GL_TRIANGLES, model.getMesh().getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
+//				});
+//				unbindTexturedModel();
+//			});
 			shader.stop();
 		}
 	}
@@ -156,7 +166,21 @@ public class TexturedEntityRenderer implements IEntityRenderer {
 	public void clean() {
 		shader.clean();
 	}
-
+	
+	private void prepareMesh(Mesh mesh) {
+		VAO vao = mesh.getVAO();
+		vao.bind(0, 1, 2);
+	}
+	
+	private void prepareModel(Model model) {
+		Material material = model.getMaterial();
+		shader.loadNumberOfRows(material.getDiffuseMap().getNumberOfRows());
+		if (material.getDiffuseMap().isHasTransparency()) {
+			OGLUtils.cullBackFaces(false);
+		}
+		model.getMaterial().getDiffuseMap().bind(0);
+	}
+ 
 	/**
 	 * Prepare low quality TexturedModel for using in shader program
 	 * 

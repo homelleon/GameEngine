@@ -1,6 +1,6 @@
 package primitive.model.importClasses;
 
-import object.texture.model.Material;
+import object.texture.material.Material;
 import tool.meshLoader.objloader.MeshData;
 
 public class Model {

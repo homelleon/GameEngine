@@ -10,7 +10,7 @@ import core.settings.EngineSettings;
 import map.raw.IRawManager;
 import map.raw.RawManager;
 import object.texture.Texture2D;
-import object.texture.model.Material;
+import object.texture.material.Material;
 import object.texture.terrain.TerrainTexturePack;
 import primitive.buffer.Loader;
 import primitive.model.Mesh;

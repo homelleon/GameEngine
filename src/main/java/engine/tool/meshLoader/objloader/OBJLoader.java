@@ -8,7 +8,7 @@ import java.util.Deque;
 import java.util.HashMap;
 
 import object.texture.Texture2D;
-import object.texture.model.Material;
+import object.texture.material.Material;
 import primitive.model.importClasses.Model;
 import tool.math.vector.Vector2f;
 import tool.math.vector.Vector3f;

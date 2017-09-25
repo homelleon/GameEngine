@@ -1,6 +1,6 @@
 package primitive.model;
 
-import object.texture.model.Material;
+import object.texture.material.Material;
 
 public class Model {
 
