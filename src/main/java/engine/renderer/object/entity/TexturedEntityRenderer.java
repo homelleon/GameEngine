@@ -1,8 +1,11 @@
 package renderer.object.entity;
 
+import java.util.AbstractMap.SimpleEntry;
+import java.util.function.Function;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
@@ -86,7 +89,7 @@ public class TexturedEntityRenderer implements IEntityRenderer {
 	 * @see ICamera
 	 * @see Texture
 	 */
-	public void renderHigh(Map<Mesh, Map<Model, List<IEntity>>> entities, Vector4f clipPlane, Collection<ILight> lights,
+	public void renderHigh(Map<Model, List<IEntity>> entities, Vector4f clipPlane, Collection<ILight> lights,
 			ICamera camera, Matrix4f toShadowMapSpace, Texture environmentMap) {
 		if(!entities.isEmpty()) {
 			this.environmentMap = environmentMap;
@@ -99,15 +102,15 @@ public class TexturedEntityRenderer implements IEntityRenderer {
 			shader.loadToShadowSpaceMatrix(toShadowMapSpace);
 			shader.loadShadowVariables(EngineSettings.SHADOW_DISTANCE, EngineSettings.SHADOW_MAP_SIZE,
 					EngineSettings.SHADOW_TRANSITION_DISTANCE, EngineSettings.SHADOW_PCF);
-			for(Mesh mesh : entities.keySet()) {
-				this.prepareMesh(mesh);
-				for(Model model : entities.get(mesh).keySet()) {
-					this.prepareModel(model);
-					for(IEntity entity : entities.get(mesh).get(model)) {
-						
-					}
-				}
-			}
+			Map<Mesh, Model> meshModel = entities.keySet().stream()
+					.collect(Collectors.toMap(Model::getMesh, Function.identity()));
+			Map<Material, Model> materialModel = entities.keySet().stream()
+					.collect(Collectors.toMap(Model::getMaterial, Function.identity()));
+			
+			Map<Mesh, Long> meshCount = entities.keySet().stream()
+					.collect(Collectors.groupingBy(model -> model.getMesh(), Collectors.counting()));
+			Map<Mesh, Model> sameMeshMap = meshCount 			
+			
 			
 //			entities.forEach((model, entityList) -> {
 //				prepareTexturedModel(model);
