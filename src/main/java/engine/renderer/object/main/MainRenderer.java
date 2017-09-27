@@ -28,6 +28,7 @@ import renderer.object.entity.IEntityRendererManager;
 import renderer.object.entity.NormalEntityRenderer;
 import renderer.object.entity.TexturedEntityRenderer;
 import renderer.object.environment.EnvironmentMapRenderer;
+import renderer.object.shadow.ShadowMapEntityRenderer;
 import renderer.object.shadow.ShadowMapMasterRenderer;
 import renderer.object.skybox.SkyboxRenderer;
 import renderer.object.terrain.TerrainRenderer;
@@ -35,6 +36,7 @@ import renderer.object.voxel.VoxelRenderer;
 import renderer.processor.ISceneProcessor;
 import renderer.processor.SceneProcessor;
 import renderer.viewCulling.frustum.Frustum;
+import shader.shadow.ShadowShader;
 import tool.math.VMatrix4f;
 import tool.openGL.OGLUtils;
 
@@ -48,6 +50,7 @@ public class MainRenderer implements IMainRenderer {
 	private VoxelRenderer voxelRenderer;
 	private BoundingRenderer boundingRenderer;
 	private ShadowMapMasterRenderer shadowMapRenderer;
+	private ShadowMapEntityRenderer shadowEntityRenderer;
 	private EnvironmentMapRenderer enviroRenderer;
 	
 	IEntityRendererManager entityRendererManager; 
@@ -86,6 +89,7 @@ public class MainRenderer implements IMainRenderer {
 		this.voxelRenderer = new VoxelRenderer(projectionMatrix);
 		this.boundingRenderer = new BoundingRenderer(projectionMatrix);
 		this.shadowMapRenderer = new ShadowMapMasterRenderer(scene.getCamera());
+		shadowEntityRenderer = new ShadowMapEntityRenderer(new ShadowShader(), projectionMatrix);
 		scene.setFrustum(this.frustum);
 		this.enviroRenderer = new EnvironmentMapRenderer();
 		this.processor = new SceneProcessor();
@@ -131,7 +135,7 @@ public class MainRenderer implements IMainRenderer {
 		
 		VMatrix4f shadowMapSpaceMatrix = shadowMapRenderer.getToShadowMapSpaceMatrix();
 		this.entityRendererManager.render(clipPlane, scene.getLights().getAll(), scene.getCamera(), shadowMapSpaceMatrix, environmentMap, false);
-
+		shadowEntityRenderer.render(texturedEntities);
 		checkWiredFrameOn(terrainWiredFrame);
 		voxelRenderer.render(scene.getChunks(), clipPlane, scene.getLights().getAll(), scene.getCamera(), shadowMapSpaceMatrix,
 				frustum);

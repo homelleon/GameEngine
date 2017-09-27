@@ -38,7 +38,7 @@ public class ShadowMapTerrainRenderer {
 	 * @param terrains
 	 *            - the terrains to be rendered to the shadow map.
 	 */
-	public void render(Collection<ITerrain> terrains, ICamera camera) {
+	public void render(Collection<ITerrain> terrains) {
 		for (ITerrain terrain : terrains) {
 			Mesh mesh = terrain.getModel();
 			bindMesh(mesh);
@@ -58,7 +58,7 @@ public class ShadowMapTerrainRenderer {
 	 */
 	private void bindMesh(Mesh rawModel) {
 		VAO modelVao = rawModel.getVAO();
-		modelVao.bind(0, 1, 2);
+		modelVao.bind(0, 1);
 	}
 
 	/**
@@ -72,7 +72,7 @@ public class ShadowMapTerrainRenderer {
 	 */
 
 	private void unbindMesh() {
-		VAO.unbind(0, 1, 2);
+		VAO.unbind(0, 1);
 	}
 
 	private void prepareInstance(ITerrain terrain) {

@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.util.vector.Vector3f;
+import org.lwjgl.util.vector.Matrix4f;
 
 import core.settings.EngineSettings;
 import object.camera.ICamera;
@@ -84,8 +84,8 @@ public class ShadowMapMasterRenderer {
 		Vector3fF lightDirection = new Vector3fF(-sunPosition.x, -sunPosition.y, -sunPosition.z);
 		prepare(lightDirection, shadowBox);
 		entities.putAll(normalMapEntities);
-		shadowEntityRenderer.render(entities, camera);
-		//shadowTerrainRenderer.render(terrains, camera);
+		shadowEntityRenderer.render(entities);
+		shadowTerrainRenderer.render(terrains);
 		finish();
 	}
 

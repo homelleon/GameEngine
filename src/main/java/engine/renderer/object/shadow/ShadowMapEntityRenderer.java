@@ -30,7 +30,7 @@ public class ShadowMapEntityRenderer {
 	 *            - the orthographic projection matrix multiplied by the light's
 	 *            "view" matrix.
 	 */
-	protected ShadowMapEntityRenderer(ShadowShader shader, VMatrix4f projectionViewMatrix) {
+	public ShadowMapEntityRenderer(ShadowShader shader, VMatrix4f projectionViewMatrix) {
 		this.shader = shader;
 		this.projectionViewMatrix = projectionViewMatrix;
 	}
@@ -42,7 +42,8 @@ public class ShadowMapEntityRenderer {
 	 * @param entities
 	 *            - the entities to be rendered to the shadow map.
 	 */
-	protected void render(Map<Model, List<IEntity>> entities, ICamera camera) {
+	public void render(Map<Model, List<IEntity>> entities) {
+		shader.start();
 		entities.forEach((model, entityList) -> {
 			Mesh mesh = model.getMesh();
 			bindModel(mesh);
@@ -61,6 +62,7 @@ public class ShadowMapEntityRenderer {
 			}
 			unbindModel();
 		});
+		shader.stop();
 	}
 
 	/**

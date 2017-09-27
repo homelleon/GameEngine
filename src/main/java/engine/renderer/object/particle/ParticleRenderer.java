@@ -6,7 +6,6 @@ import java.util.Map;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL31;
 
 import object.camera.ICamera;
