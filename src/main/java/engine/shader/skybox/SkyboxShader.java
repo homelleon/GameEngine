@@ -7,8 +7,8 @@ import core.settings.EngineSettings;
 import object.camera.ICamera;
 import shader.ShaderProgram;
 import tool.math.Maths;
-import tool.math.Matrix4f;
-import tool.math.vector.Vector3f;
+import tool.math.VMatrix4f;
+import tool.math.vector.Vector3fF;
 
 public class SkyboxShader extends ShaderProgram {
 
@@ -46,24 +46,24 @@ public class SkyboxShader extends ShaderProgram {
 		super.loadInt("cubeMap2", 1);
 	}
 
-	public void loadProjectionMatrix(Matrix4f matrix) {
+	public void loadProjectionMatrix(VMatrix4f matrix) {
 		super.loadMatrix("projectionMatrix", matrix);
 	}
 
 	public void loadViewMatrix(ICamera camera) {
-		Matrix4f matrix = Maths.createViewMatrix(camera);
+		VMatrix4f matrix = Maths.createViewMatrix(camera);
 		matrix.m[3][0] = 0;
 		matrix.m[3][1] = 0;
 		matrix.m[3][2] = 0;
 		if (!EngineMain.getIsEnginePaused()) {
 			rotation += ROTATE_SPEED * DisplayManager.getFrameTimeSeconds();
 		}
-		matrix.rotate((float) Math.toRadians(rotation), new Vector3f(0, 1, 0));
+		matrix.rotate((float) Math.toRadians(rotation), new Vector3fF(0, 1, 0));
 		super.loadMatrix("viewMatrix", matrix);
 	}
 
 	public void loadFogColour(float r, float g, float b) {
-		super.loadVector("fogColour", new Vector3f(r, g, b));
+		super.loadVector("fogColour", new Vector3fF(r, g, b));
 	}
 
 	public void loadBlendFactor(float blend) {

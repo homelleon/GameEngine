@@ -2,17 +2,17 @@ package object.bounding;
 
 import primitive.buffer.Loader;
 import primitive.model.Mesh;
-import tool.math.vector.Vector3f;
+import tool.math.vector.Vector3fF;
 
 public class BoundingBox {
 
-	Vector3f min;
-	Vector3f max;
+	Vector3fF min;
+	Vector3fF max;
 	Mesh model;
 
 	public BoundingBox(float[] positions) {
-		Vector3f minPoint = new Vector3f(0, 0, 0);
-		Vector3f maxPoint = new Vector3f(0, 0, 0);
+		Vector3fF minPoint = new Vector3fF(0, 0, 0);
+		Vector3fF maxPoint = new Vector3fF(0, 0, 0);
 		for (int i = 0; i < positions.length / 3; i++) {
 			float x = positions[3 * i];
 			float y = positions[3 * i + 1];
@@ -78,11 +78,11 @@ public class BoundingBox {
 		this.model = Loader.getInstance().getVertexLoader().loadToVao(boundPositions, boundNormals, boundIndices);
 	}
 
-	public Vector3f getMin() {
+	public Vector3fF getMin() {
 		return this.min;
 	}
 
-	public Vector3f getMax() {
+	public Vector3fF getMax() {
 		return this.max;
 	}
 

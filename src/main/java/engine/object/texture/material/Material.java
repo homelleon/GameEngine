@@ -1,7 +1,7 @@
 package object.texture.material;
 
 import object.texture.Texture2D;
-import tool.math.vector.Vector3f;
+import tool.math.vector.Vector3fF;
 
 public class Material 
 {
@@ -12,7 +12,7 @@ public class Material
 	private Texture2D ambientMap;
 	private Texture2D specularMap;
 	private Texture2D alphaMap;
-	private Vector3f color;
+	private Vector3fF color;
 	
 	private String name;
 
@@ -170,7 +170,7 @@ public class Material
 		texture.setAmbientMap(ambientMap);
 		texture.setSpecularMap(this.specularMap);
 		texture.setAlphaMap(alphaMap);
-		texture.setColor(new Vector3f(color.x,color.y,color.z));		
+		texture.setColor(new Vector3fF(color.x,color.y,color.z));		
 		texture.setShininess(shininess);
 		texture.setReflectivity(reflectivity);
 		texture.setReflectiveFactor(reflectiveFactor);
@@ -180,12 +180,12 @@ public class Material
 		return texture;
 	}
 
-	public Vector3f getColor() 
+	public Vector3fF getColor() 
 	{
 		return color;
 	}
 
-	public void setColor(Vector3f color) 
+	public void setColor(Vector3fF color) 
 	{
 		this.color = color;
 	}

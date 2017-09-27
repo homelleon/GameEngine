@@ -11,7 +11,7 @@ import object.entity.entity.IEntity;
 import object.light.ILight;
 import object.texture.Texture;
 import primitive.model.Model;
-import tool.math.Matrix4f;
+import tool.math.VMatrix4f;
 
 /**
  * 
@@ -24,10 +24,10 @@ public interface IEntityRenderer {
 	
 	void renderHigh(Map<Model, List<IEntity>> entities, 
 			Vector4f clipPlane, Collection<ILight> lights,
-			ICamera camera, Matrix4f toShadowMapSpace, Texture environmentMap);
+			ICamera camera, VMatrix4f toShadowMapSpace, Texture environmentMap);
 	
 	void renderLow(Map<Model, List<IEntity>> entities, 
-			Collection<ILight> lights, ICamera camera, Matrix4f toShadowMapSpace);
+			Collection<ILight> lights, ICamera camera, VMatrix4f toShadowMapSpace);
 	
 	void clean();
 

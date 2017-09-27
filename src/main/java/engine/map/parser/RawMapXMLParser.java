@@ -15,7 +15,7 @@ import object.texture.terrain.TerrainTexturePack;
 import primitive.buffer.Loader;
 import primitive.model.Mesh;
 import primitive.model.Model;
-import tool.math.vector.Vector3f;
+import tool.math.vector.Vector3fF;
 import tool.meshLoader.normalMapObject.NormalMappedObjLoader;
 import tool.meshLoader.object.ModelData;
 import tool.meshLoader.object.OBJFileLoader;
@@ -178,7 +178,7 @@ public class RawMapXMLParser extends XMLParser implements IObjectParser<IRawMana
 				material.setAlphaMap(alphaMap);
 				material.setShininess(shininess);
 				material.setReflectivity(reflectivity);
-				material.setColor(new Vector3f(r,g,b));
+				material.setColor(new Vector3fF(r,g,b));
 				map.addMaterial(material);
 				if (EngineDebug.hasDebugPermission()) {
 					System.out.println(">> " + map.getMaterial(name).getName());

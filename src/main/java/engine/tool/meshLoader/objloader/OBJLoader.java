@@ -11,12 +11,12 @@ import object.texture.Texture2D;
 import object.texture.material.Material;
 import primitive.model.importClasses.Model;
 import tool.math.vector.Vector2f;
-import tool.math.vector.Vector3f;
+import tool.math.vector.Vector3fF;
 
 public class OBJLoader {
 
 	private ArrayList<Vertex> vertices = new ArrayList<Vertex>();
-	private ArrayList<Vector3f> normals = new ArrayList<Vector3f>();
+	private ArrayList<Vector3fF> normals = new ArrayList<Vector3fF>();
 	private ArrayList<Vector2f> texCoords = new ArrayList<Vector2f>();
 
 	private Deque<Object> objects = new ArrayDeque<Object>();
@@ -59,7 +59,7 @@ public class OBJLoader {
 							}
 							if(tokens[0].equals("Kd")){
 								if (tokens.length > 1){
-									Vector3f color = new Vector3f(Float.valueOf(tokens[1]), Float.valueOf(tokens[2]), Float.valueOf(tokens[3]));
+									Vector3fF color = new Vector3fF(Float.valueOf(tokens[1]), Float.valueOf(tokens[2]), Float.valueOf(tokens[3]));
 									materials.get(currentMtl).setColor(color);
 								}
 							}
@@ -109,13 +109,13 @@ public class OBJLoader {
 					
 					if(tokens[0].equals("v"))
 					{
-						vertices.add(new Vertex(new Vector3f(Float.valueOf(tokens[1]),
+						vertices.add(new Vertex(new Vector3fF(Float.valueOf(tokens[1]),
 														  Float.valueOf(tokens[2]),
 														  Float.valueOf(tokens[3]))));
 					}
 					if(tokens[0].equals("vn"))
 					{
-						normals.add(new Vector3f(Float.valueOf(tokens[1]),
+						normals.add(new Vector3fF(Float.valueOf(tokens[1]),
 											  Float.valueOf(tokens[2]),
 											  Float.valueOf(tokens[3])));
 					}

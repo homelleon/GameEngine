@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import object.animation.Animator;
-import tool.math.Matrix4f;
+import tool.math.VMatrix4f;
 
 /**
  * 
@@ -38,10 +38,10 @@ public class Joint {
 	public final String name;
 	public final List<Joint> children = new ArrayList<Joint>();
 
-	private Matrix4f animatedTransform = new Matrix4f();
+	private VMatrix4f animatedTransform = new VMatrix4f();
 
-	private final Matrix4f localBindTransform;
-	private Matrix4f inverseBindTransform = new Matrix4f();
+	private final VMatrix4f localBindTransform;
+	private VMatrix4f inverseBindTransform = new VMatrix4f();
 
 	/**
 	 * @param index
@@ -53,7 +53,7 @@ public class Joint {
 	 * @param bindLocalTransform
 	 *            - the bone-space transform of the joint in the bind position.
 	 */
-	public Joint(int index, String name, Matrix4f bindLocalTransform) {
+	public Joint(int index, String name, VMatrix4f bindLocalTransform) {
 		this.index = index;
 		this.name = name;
 		this.localBindTransform = bindLocalTransform;
@@ -84,7 +84,7 @@ public class Joint {
 	 * @return The transformation matrix of the joint which is used to deform
 	 *         associated vertices of the skin in the shaders.
 	 */
-	public Matrix4f getAnimatedTransform() {
+	public VMatrix4f getAnimatedTransform() {
 		return animatedTransform;
 	}
 
@@ -96,7 +96,7 @@ public class Joint {
 	 * @param animationTransform
 	 *            - the new joint transform.
 	 */
-	public void setAnimationTransform(Matrix4f animationTransform) {
+	public void setAnimationTransform(VMatrix4f animationTransform) {
 		this.animatedTransform = animationTransform;
 	}
 
@@ -109,7 +109,7 @@ public class Joint {
 	 * 
 	 * @return The inverse of the joint's bind transform (in model-space).
 	 */
-	public Matrix4f getInverseBindTransform() {
+	public VMatrix4f getInverseBindTransform() {
 		return inverseBindTransform;
 	}
 
@@ -132,9 +132,9 @@ public class Joint {
 	 * @param parentBindTransform
 	 *            - the model-space bind transform of the parent joint.
 	 */
-	protected void calcInverseBindTransform(Matrix4f parentBindTransform) {
-		Matrix4f bindTransform = Matrix4f.mul(parentBindTransform, localBindTransform);
-		Matrix4f.invert(bindTransform, inverseBindTransform);
+	protected void calcInverseBindTransform(VMatrix4f parentBindTransform) {
+		VMatrix4f bindTransform = VMatrix4f.mul(parentBindTransform, localBindTransform);
+		VMatrix4f.invert(bindTransform, inverseBindTransform);
 		for (Joint child : children) {
 			child.calcInverseBindTransform(bindTransform);
 		}

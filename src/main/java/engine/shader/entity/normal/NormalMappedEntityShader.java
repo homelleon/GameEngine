@@ -8,9 +8,9 @@ import org.lwjgl.util.vector.Vector4f;
 import core.settings.EngineSettings;
 import object.light.ILight;
 import shader.ShaderProgram;
-import tool.math.Matrix4f;
+import tool.math.VMatrix4f;
 import tool.math.vector.Vector2f;
-import tool.math.vector.Vector3f;
+import tool.math.vector.Vector3fF;
 
 public class NormalMappedEntityShader extends ShaderProgram {
 
@@ -66,7 +66,7 @@ public class NormalMappedEntityShader extends ShaderProgram {
 		}
 	}
 
-	public void loadToShadowSpaceMatrix(Matrix4f matrix) {
+	public void loadToShadowSpaceMatrix(VMatrix4f matrix) {
 		super.loadMatrix("toShadowMapSpace", matrix);
 	}
 
@@ -109,7 +109,7 @@ public class NormalMappedEntityShader extends ShaderProgram {
 	}
 
 	public void loadSkyColour(float r, float g, float b) {
-		super.loadVector("skyColour", new Vector3f(r, g, b));
+		super.loadVector("skyColour", new Vector3fF(r, g, b));
 	}
 
 	public void loadShineVariables(float damper, float reflectivity) {
@@ -117,11 +117,11 @@ public class NormalMappedEntityShader extends ShaderProgram {
 		super.loadFloat("reflectivity", reflectivity);
 	}
 
-	public void loadTransformationMatrix(Matrix4f matrix) {
+	public void loadTransformationMatrix(VMatrix4f matrix) {
 		super.loadMatrix("transformationMatrix", matrix);
 	}
 
-	public void loadLights(Collection<ILight> lights, Matrix4f viewMatrix) {
+	public void loadLights(Collection<ILight> lights, VMatrix4f viewMatrix) {
 		super.loadInt("lightCount", EngineSettings.MAX_LIGHTS);
 		Iterator<ILight> iterator = lights.iterator();
 		for (int i = 0; i < EngineSettings.MAX_LIGHTS; i++) {
@@ -131,26 +131,26 @@ public class NormalMappedEntityShader extends ShaderProgram {
 				super.loadVector("lightColour[" + i + "]", light.getColour());
 				super.loadVector("attenuation[" + i + "]", light.getAttenuation());
 			} else {
-				super.loadVector("lightPositionEyeSpace[" + i + "]", new Vector3f(0, 0, 0));
-				super.loadVector("lightColour[" + i + "]", new Vector3f(0, 0, 0));
-				super.loadVector("attenuation[" + i + "]", new Vector3f(1, 0, 0));
+				super.loadVector("lightPositionEyeSpace[" + i + "]", new Vector3fF(0, 0, 0));
+				super.loadVector("lightColour[" + i + "]", new Vector3fF(0, 0, 0));
+				super.loadVector("attenuation[" + i + "]", new Vector3fF(1, 0, 0));
 			}
 		}
 	}
 
-	public void loadViewMatrix(Matrix4f viewMatrix) {
+	public void loadViewMatrix(VMatrix4f viewMatrix) {
 		super.loadMatrix("viewMatrix", viewMatrix);
 	}
 
-	public void loadProjectionMatrix(Matrix4f projection) {
+	public void loadProjectionMatrix(VMatrix4f projection) {
 		super.loadMatrix("projectionMatrix", projection);
 	}
 
-	private Vector3f getEyeSpacePosition(ILight light, Matrix4f viewMatrix) {
-		Vector3f position = light.getPosition();
+	private Vector3fF getEyeSpacePosition(ILight light, VMatrix4f viewMatrix) {
+		Vector3fF position = light.getPosition();
 		Vector4f eyeSpacePos = new Vector4f(position.x, position.y, position.z, 1f);
 		eyeSpacePos = viewMatrix.transform(eyeSpacePos);
-		return new Vector3f(eyeSpacePos);
+		return new Vector3fF(eyeSpacePos);
 	}
 
 }

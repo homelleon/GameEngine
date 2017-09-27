@@ -18,7 +18,7 @@ import primitive.model.Mesh;
 import primitive.model.Model;
 import shader.entity.normal.NormalMappedEntityShader;
 import tool.math.Maths;
-import tool.math.Matrix4f;
+import tool.math.VMatrix4f;
 import tool.math.vector.Vector2f;
 import tool.openGL.OGLUtils;
 
@@ -27,7 +27,7 @@ public class NormalEntityRenderer implements IEntityRenderer {
 	private NormalMappedEntityShader shader;
 	private Texture environmentMap;
 
-	public NormalEntityRenderer(Matrix4f projectionMatrix) {
+	public NormalEntityRenderer(VMatrix4f projectionMatrix) {
 		this.shader = new NormalMappedEntityShader();
 		shader.start();
 		shader.loadProjectionMatrix(projectionMatrix);
@@ -37,7 +37,7 @@ public class NormalEntityRenderer implements IEntityRenderer {
 
 	@Override
 	public void renderHigh(Map<Model, List<IEntity>> entities, Vector4f clipPlane, Collection<ILight> lights,
-			ICamera camera, Matrix4f toShadowMapSpace, Texture environmentMap) {
+			ICamera camera, VMatrix4f toShadowMapSpace, Texture environmentMap) {
 		if(!entities.isEmpty()) {
 			shader.start();
 			shader.loadFogDensity(EngineSettings.FOG_DENSITY);
@@ -58,7 +58,7 @@ public class NormalEntityRenderer implements IEntityRenderer {
 	}
 	
 	@Override
-	public void renderLow(Map<Model, List<IEntity>> entities, Collection<ILight> lights, ICamera camera, Matrix4f toShadowMapSpace) {
+	public void renderLow(Map<Model, List<IEntity>> entities, Collection<ILight> lights, ICamera camera, VMatrix4f toShadowMapSpace) {
 		GL11.glClearColor(1, 1, 1, 1);
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 		shader.start();
@@ -110,7 +110,7 @@ public class NormalEntityRenderer implements IEntityRenderer {
 	}
 
 	private void prepareInstance(IEntity entity) {
-		Matrix4f transformationMatrix = Maths.createTransformationMatrix(entity.getPosition(), entity.getRotation().getX(),
+		VMatrix4f transformationMatrix = Maths.createTransformationMatrix(entity.getPosition(), entity.getRotation().getX(),
 				entity.getRotation().getY(), entity.getRotation().getZ(), entity.getScale());
 		shader.loadTransformationMatrix(transformationMatrix);
 		Vector2f textureOffset = entity.getTextureOffset();
@@ -121,7 +121,7 @@ public class NormalEntityRenderer implements IEntityRenderer {
 	private void prepare(Vector4f clipPlane, Collection<ILight> lights, ICamera camera) {
 		shader.loadClipPlane(clipPlane);
 		shader.loadSkyColour(EngineSettings.DISPLAY_RED, EngineSettings.DISPLAY_GREEN, EngineSettings.DISPLAY_BLUE);
-		Matrix4f viewMatrix = Maths.createViewMatrix(camera);
+		VMatrix4f viewMatrix = Maths.createViewMatrix(camera);
 
 		shader.loadLights(lights, viewMatrix);
 		shader.loadViewMatrix(viewMatrix);

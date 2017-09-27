@@ -8,9 +8,9 @@ import tool.colladaParser.colladaLoader.ColladaLoader;
 import tool.colladaParser.dataStructures.AnimationData;
 import tool.colladaParser.dataStructures.JointTransformData;
 import tool.colladaParser.dataStructures.KeyFrameData;
-import tool.math.Matrix4f;
+import tool.math.VMatrix4f;
 import tool.math.Quaternion;
-import tool.math.vector.Vector3f;
+import tool.math.vector.Vector3fF;
 
 /**
  * This class loads up an animation collada file, gets the information from it,
@@ -64,8 +64,8 @@ public class AnimationLoader {
 	 * @return The joint transform.
 	 */
 	private static JointTransform createTransform(JointTransformData data) {
-		Matrix4f mat = data.jointLocalTransform;
-		Vector3f translation = new Vector3f(mat.m[3][0], mat.m[3][1], mat.m[3][2]);
+		VMatrix4f mat = data.jointLocalTransform;
+		Vector3fF translation = new Vector3fF(mat.m[3][0], mat.m[3][1], mat.m[3][2]);
 		Quaternion rotation = Quaternion.fromMatrix(mat);
 		return new JointTransform(translation, rotation);
 	}

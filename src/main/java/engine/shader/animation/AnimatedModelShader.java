@@ -3,8 +3,8 @@ package shader.animation;
 import core.settings.EngineSettings;
 import renderer.object.animation.AnimatedModelRenderer;
 import shader.ShaderProgram;
-import tool.math.Matrix4f;
-import tool.math.vector.Vector3f;
+import tool.math.VMatrix4f;
+import tool.math.vector.Vector3fF;
 
 public class AnimatedModelShader extends ShaderProgram {
 
@@ -48,11 +48,11 @@ public class AnimatedModelShader extends ShaderProgram {
 		super.bindAttribute(4, "in_weights");
 	}
 
-	public void loadprojectionViewMatrix(Matrix4f projectionViewMatrix) {
+	public void loadprojectionViewMatrix(VMatrix4f projectionViewMatrix) {
 		super.loadMatrix("projectionViewMatrix", projectionViewMatrix);
 	}
 
-	public void loadLightDirection(Vector3f direction) {
+	public void loadLightDirection(Vector3fF direction) {
 		super.loadVector("lightDirection", direction);
 	}
 
@@ -60,7 +60,7 @@ public class AnimatedModelShader extends ShaderProgram {
 		super.loadInt("diffuseMap", DIFFUSE_TEX_UNIT);
 	}
 
-	public void loadJointTransforms(Matrix4f[] jointTransforms) {
+	public void loadJointTransforms(VMatrix4f[] jointTransforms) {
 		for (int i = 0; i < MAX_JOINTS; i++) {
 			super.loadMatrix("jointTransforms["+i+"]", jointTransforms[i]);
 		}

@@ -4,14 +4,14 @@ import object.entity.entity.IEntity;
 import object.entity.entity.NormalMappedEntity;
 import object.entity.entity.TexturedEntity;
 import primitive.model.Model;
-import tool.math.vector.Vector3f;
+import tool.math.vector.Vector3fF;
 
 public class EntityBuilder implements IEntityBuilder {
 	
 	private Model model;
 	private float scale = 1.0f;
-	private Vector3f position = new Vector3f(0,0,0);
-	private Vector3f rotation = new Vector3f(0,0,0);
+	private Vector3fF position = new Vector3fF(0,0,0);
+	private Vector3fF rotation = new Vector3fF(0,0,0);
 	private int textureIndex = 0;
 	
 	@Override
@@ -27,13 +27,13 @@ public class EntityBuilder implements IEntityBuilder {
 	}
 
 	@Override
-	public IEntityBuilder setPosition(Vector3f position) {
+	public IEntityBuilder setPosition(Vector3fF position) {
 		this.position = position;
 		return this;
 	}
 
 	@Override
-	public IEntityBuilder setRotation(Vector3f rotation) {
+	public IEntityBuilder setRotation(Vector3fF rotation) {
 		this.rotation = rotation;
 		return this;
 	}

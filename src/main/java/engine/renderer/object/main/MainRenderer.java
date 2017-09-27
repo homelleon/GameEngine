@@ -35,14 +35,14 @@ import renderer.object.voxel.VoxelRenderer;
 import renderer.processor.ISceneProcessor;
 import renderer.processor.SceneProcessor;
 import renderer.viewCulling.frustum.Frustum;
-import tool.math.Matrix4f;
+import tool.math.VMatrix4f;
 import tool.openGL.OGLUtils;
 
 public class MainRenderer implements IMainRenderer {
 
-	private Matrix4f projectionMatrix;
-	private Matrix4f normalDistProjectionMatrix;
-	private Matrix4f lowDistProjectionMatrix;
+	private VMatrix4f projectionMatrix;
+	private VMatrix4f normalDistProjectionMatrix;
+	private VMatrix4f lowDistProjectionMatrix;
 	private TerrainRenderer terrainRenderer;	
 	private SkyboxRenderer skyboxRenderer;
 	private VoxelRenderer voxelRenderer;
@@ -129,7 +129,7 @@ public class MainRenderer implements IMainRenderer {
 			boundingRenderer.render(texturedEntities, normalEntities, scene.getCamera());
 		}
 		
-		Matrix4f shadowMapSpaceMatrix = shadowMapRenderer.getToShadowMapSpaceMatrix();
+		VMatrix4f shadowMapSpaceMatrix = shadowMapRenderer.getToShadowMapSpaceMatrix();
 		this.entityRendererManager.render(clipPlane, scene.getLights().getAll(), scene.getCamera(), shadowMapSpaceMatrix, environmentMap, false);
 
 		checkWiredFrameOn(terrainWiredFrame);
@@ -148,7 +148,7 @@ public class MainRenderer implements IMainRenderer {
 	
 	private void renderEditorScene(IScene scene) {
 		prepare();
-		Matrix4f shadowMapSpaceMatrix = shadowMapRenderer.getToShadowMapSpaceMatrix();
+		VMatrix4f shadowMapSpaceMatrix = shadowMapRenderer.getToShadowMapSpaceMatrix();
 		this.entityRendererManager.render(EngineSettings.NO_CLIP, scene.getLights().getAll(), scene.getCamera(), shadowMapSpaceMatrix, null, false);
 		texturedEntities.clear();
 		normalEntities.clear();
@@ -196,7 +196,7 @@ public class MainRenderer implements IMainRenderer {
 	}
 
 	private void createProjectionMatrix() {
-		normalDistProjectionMatrix = new Matrix4f();
+		normalDistProjectionMatrix = new VMatrix4f();
 		float aspectRatio = (float) Display.getWidth() / (float) Display.getHeight();
 		float y_scale = (float) (1f / Math.tan(Math.toRadians(EngineSettings.FOV / 2f)));
 		float x_scale = y_scale / aspectRatio;
@@ -212,7 +212,7 @@ public class MainRenderer implements IMainRenderer {
 	}
 
 	private void createLowDistProjectionMatrix() {
-		lowDistProjectionMatrix = new Matrix4f();
+		lowDistProjectionMatrix = new VMatrix4f();
 		float farPlane = 100;
 		float aspectRatio = (float) Display.getWidth() / (float) Display.getHeight();
 		float y_scale = (float) (1f / Math.tan(Math.toRadians(EngineSettings.FOV / 2f)));
@@ -228,7 +228,7 @@ public class MainRenderer implements IMainRenderer {
 	}
 
 	@Override
-	public Matrix4f getProjectionMatrix() {
+	public VMatrix4f getProjectionMatrix() {
 		return projectionMatrix;
 	}
 

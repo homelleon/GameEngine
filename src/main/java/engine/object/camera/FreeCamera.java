@@ -5,12 +5,12 @@ import org.lwjgl.input.Mouse;
 
 import core.display.DisplayManager;
 import core.settings.EngineSettings;
-import tool.math.Matrix4f;
-import tool.math.vector.Vector3f;
+import tool.math.VMatrix4f;
+import tool.math.vector.Vector3fF;
 
 public class FreeCamera extends BaseCamera implements ICamera {
 
-	public FreeCamera(String name, Vector3f position) {
+	public FreeCamera(String name, Vector3fF position) {
 		super(name, position);
 		this.setPosition(position);
 		this.name = name;
@@ -87,17 +87,17 @@ public class FreeCamera extends BaseCamera implements ICamera {
 
 
 	@Override
-	public Matrix4f getViewMatrix() {
+	public VMatrix4f getViewMatrix() {
 		return null;
 	}
 
 	@Override
-	public Matrix4f getProjectionMatrix() {
+	public VMatrix4f getProjectionMatrix() {
 		return null;
 	}
 
 	@Override
-	public Matrix4f getProjectionViewMatrix() {
+	public VMatrix4f getProjectionViewMatrix() {
 		return null;
 	}
 

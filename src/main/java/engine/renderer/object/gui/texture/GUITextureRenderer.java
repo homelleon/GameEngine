@@ -14,7 +14,7 @@ import primitive.buffer.VAO;
 import primitive.model.Mesh;
 import shader.guiTexture.GUITextureShader;
 import tool.math.Maths;
-import tool.math.Matrix4f;
+import tool.math.VMatrix4f;
 import tool.math.vector.Vector2f;
 import tool.openGL.OGLUtils;
 
@@ -43,7 +43,7 @@ public class GUITextureRenderer {
 				GL13.glActiveTexture(GL13.GL_TEXTURE0);
 				glBindTexture(GL_TEXTURE_2D, 27);
 				Vector2f scale = new Vector2f(guiTexture.getScale().x, guiTexture.getScale().y);
-				Matrix4f matrix = Maths.createTransformationMatrix(guiTexture.getPosition(), scale);
+				VMatrix4f matrix = Maths.createTransformationMatrix(guiTexture.getPosition(), scale);
 				this.shader.loadTransformation(matrix);
 				this.shader.loadMixColorVariables(guiTexture.isMixColored(), guiTexture.getMixColor());
 				GL11.glDrawArrays(GL11.GL_TRIANGLE_STRIP, 0, this.quad.getVertexCount());

@@ -3,8 +3,8 @@ package shader.guiTexture;
 
 import core.settings.EngineSettings;
 import shader.ShaderProgram;
-import tool.math.Matrix4f;
-import tool.math.vector.Vector3f;
+import tool.math.VMatrix4f;
+import tool.math.vector.Vector3fF;
 
 public class GUITextureShader extends ShaderProgram {
 
@@ -30,11 +30,11 @@ public class GUITextureShader extends ShaderProgram {
 		super.addUniform("mixColor");
 	}
 
-	public void loadTransformation(Matrix4f matrix) {
+	public void loadTransformation(VMatrix4f matrix) {
 		super.loadMatrix("transformationMatrix", matrix);
 	}
 	
-	public void loadMixColorVariables(boolean isMixColored, Vector3f color) {
+	public void loadMixColorVariables(boolean isMixColored, Vector3fF color) {
 		super.loadBoolean("isMixColored", isMixColored);
 		super.loadVector("mixColor", color);
 	}

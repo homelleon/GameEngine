@@ -9,13 +9,13 @@ import tool.colladaParser.dataStructures.AnimationData;
 import tool.colladaParser.dataStructures.JointTransformData;
 import tool.colladaParser.dataStructures.KeyFrameData;
 import tool.colladaParser.xmlParser.XmlNode;
-import tool.math.Matrix4f;
-import tool.math.vector.Vector3f;
+import tool.math.VMatrix4f;
+import tool.math.vector.Vector3fF;
 
 public class AnimationLoader {
 
-	private static final Matrix4f CORRECTION = new Matrix4f().rotate((float) Math.toRadians(-90),
-			new Vector3f(1, 0, 0));
+	private static final VMatrix4f CORRECTION = new VMatrix4f().rotate((float) Math.toRadians(-90),
+			new Vector3fF(1, 0, 0));
 
 	private XmlNode animationData;
 	private XmlNode jointHierarchy;
@@ -84,7 +84,7 @@ public class AnimationLoader {
 			buffer.clear();
 			buffer.put(matrixData);
 			buffer.flip();
-			Matrix4f transform = new Matrix4f();
+			VMatrix4f transform = new VMatrix4f();
 			transform.load(buffer);
 			transform.transpose();
 			if (root) {

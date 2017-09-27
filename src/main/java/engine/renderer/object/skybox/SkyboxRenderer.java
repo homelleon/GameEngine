@@ -11,7 +11,7 @@ import primitive.buffer.Loader;
 import primitive.buffer.VAO;
 import primitive.model.Mesh;
 import shader.skybox.SkyboxShader;
-import tool.math.Matrix4f;
+import tool.math.VMatrix4f;
 
 public class SkyboxRenderer {
 
@@ -76,7 +76,7 @@ public class SkyboxRenderer {
 	private SkyboxShader shader;
 	private float time = 0;
 
-	public SkyboxRenderer(Matrix4f projectionMatrix) {
+	public SkyboxRenderer(VMatrix4f projectionMatrix) {
 		Loader loader = Loader.getInstance();
 		cube = loader.getVertexLoader().loadToVAO(VERTICES, 3);
 		dayTexture = loader.getTextureLoader().loadCubeMap(EngineSettings.TEXTURE_SKYBOX_PATH, TEXTURE_FILES);

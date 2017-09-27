@@ -1,7 +1,7 @@
 package primitive.model.importClasses;
 
 import object.texture.Texture2D;
-import tool.math.vector.Vector3f;
+import tool.math.vector.Vector3fF;
 
 public class MaterialO{
 	
@@ -12,7 +12,7 @@ public class MaterialO{
 	private Texture2D ambientmap;
 	private Texture2D specularmap;
 	private Texture2D alphamap;
-	private Vector3f color;
+	private Vector3fF color;
 	private float alpha;
 	private float displaceScale;
 	private float emission;
@@ -54,10 +54,10 @@ public class MaterialO{
 	public void setAlphamap(Texture2D alphamap) {
 		this.alphamap = alphamap;
 	}
-	public Vector3f getColor() {
+	public Vector3fF getColor() {
 		return color;
 	}
-	public void setColor(Vector3f color) {
+	public void setColor(Vector3fF color) {
 		this.color = color;
 	}
 	public float getAlpha() {

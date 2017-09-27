@@ -3,7 +3,7 @@ package tool.colladaParser.dataStructures;
 import java.util.ArrayList;
 import java.util.List;
 
-import tool.math.Matrix4f;
+import tool.math.VMatrix4f;
 
 
 
@@ -18,11 +18,11 @@ public class JointData {
 
 	public final int index;
 	public final String nameId;
-	public final Matrix4f bindLocalTransform;
+	public final VMatrix4f bindLocalTransform;
 
 	public final List<JointData> children = new ArrayList<JointData>();
 
-	public JointData(int index, String nameId, Matrix4f bindLocalTransform) {
+	public JointData(int index, String nameId, VMatrix4f bindLocalTransform) {
 		this.index = index;
 		this.nameId = nameId;
 		this.bindLocalTransform = bindLocalTransform;

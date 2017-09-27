@@ -10,9 +10,9 @@ import object.camera.ICamera;
 import object.light.ILight;
 import shader.ShaderProgram;
 import tool.math.Maths;
-import tool.math.Matrix4f;
+import tool.math.VMatrix4f;
 import tool.math.vector.Vector2f;
-import tool.math.vector.Vector3f;
+import tool.math.vector.Vector3fF;
 
 public class TexturedEntityShader extends ShaderProgram {
 
@@ -83,7 +83,7 @@ public class TexturedEntityShader extends ShaderProgram {
 		super.loadBoolean("usesSpecularMap", useMap);
 	}
 
-	public void loadToShadowSpaceMatrix(Matrix4f matrix) {
+	public void loadToShadowSpaceMatrix(VMatrix4f matrix) {
 		super.loadMatrix("toShadowMapSpace", matrix);
 	}
 
@@ -111,7 +111,7 @@ public class TexturedEntityShader extends ShaderProgram {
 	}
 
 	public void loadSkyColour(float r, float g, float b) {
-		super.loadVector("skyColour", new Vector3f(r, g, b));
+		super.loadVector("skyColour", new Vector3fF(r, g, b));
 	}
 
 	public void loadFakeLightingVariable(boolean useFake) {
@@ -137,12 +137,12 @@ public class TexturedEntityShader extends ShaderProgram {
 	}
 
 	public void loadCamera(ICamera camera) {
-		Matrix4f viewMatrix = Maths.createViewMatrix(camera);
+		VMatrix4f viewMatrix = Maths.createViewMatrix(camera);
 		super.loadMatrix("viewMatrix", viewMatrix);
 		super.loadVector("cameraPosition", camera.getPosition());
 	}
 
-	public void loadTranformationMatrix(Matrix4f matrix) {
+	public void loadTranformationMatrix(VMatrix4f matrix) {
 		super.loadMatrix("transformationMatrix", matrix);
 	}
 
@@ -156,20 +156,20 @@ public class TexturedEntityShader extends ShaderProgram {
 				super.loadVector("lightColour[" + i + "]", light.getColour());
 				super.loadVector("attenuation[" + i + "]", light.getAttenuation());
 			} else {
-				super.loadVector("lightPosition[" + i + "]", new Vector3f(0, 0, 0));
-				super.loadVector("lightColour[" + i + "]", new Vector3f(0, 0, 0));
-				super.loadVector("attenuation[" + i + "]", new Vector3f(1, 0, 0));
+				super.loadVector("lightPosition[" + i + "]", new Vector3fF(0, 0, 0));
+				super.loadVector("lightColour[" + i + "]", new Vector3fF(0, 0, 0));
+				super.loadVector("attenuation[" + i + "]", new Vector3fF(1, 0, 0));
 			}
 		}
 
 	}
 
 	public void loadViewMatrix(ICamera camera) {
-		Matrix4f viewMatrix = Maths.createViewMatrix(camera);
+		VMatrix4f viewMatrix = Maths.createViewMatrix(camera);
 		super.loadMatrix("viewMatrix", viewMatrix);
 	}
 
-	public void loadProjectionMatrix(Matrix4f projection) {
+	public void loadProjectionMatrix(VMatrix4f projection) {
 		super.loadMatrix("projectionMatrix", projection);
 	}
 

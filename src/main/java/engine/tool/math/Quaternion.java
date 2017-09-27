@@ -1,7 +1,7 @@
 package tool.math;
 
 
-import tool.math.vector.Vector3f;
+import tool.math.vector.Vector3fF;
 
 public class Quaternion {
 
@@ -38,7 +38,7 @@ public class Quaternion {
 		return new Quaternion(x_, y_, z_, w_);
 	}
 
-	public Quaternion mul(Vector3f r)
+	public Quaternion mul(Vector3fF r)
 	{
 		float w_ = -x * r.x - y * r.y - z * r.z;
 		float x_ =  w * r.x + y * r.z - z * r.y;
@@ -84,8 +84,8 @@ public class Quaternion {
 		return new Quaternion(x_, y_, z_, w_);
 	}
 
-	public Matrix4f toRotationMatrix() {
-		Matrix4f matrix = new Matrix4f();
+	public VMatrix4f toRotationMatrix() {
+		VMatrix4f matrix = new VMatrix4f();
 		final float xy = x * y;
 		final float xz = x * z;
 		final float xw = x * w;
@@ -114,7 +114,7 @@ public class Quaternion {
 		return matrix;
 	}
 
-	public static Quaternion fromMatrix(Matrix4f matrix) {
+	public static Quaternion fromMatrix(VMatrix4f matrix) {
 		float w, x, y, z;
 		float diagonal = matrix.m[0][0] + matrix.m[1][1] + matrix.m[2][2];
 		if (diagonal > 0) {

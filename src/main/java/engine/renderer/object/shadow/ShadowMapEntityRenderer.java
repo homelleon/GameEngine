@@ -7,18 +7,19 @@ import org.lwjgl.opengl.GL11;
 
 import object.camera.ICamera;
 import object.entity.entity.IEntity;
+import object.texture.material.Material;
 import primitive.buffer.VAO;
 import primitive.model.Mesh;
 import primitive.model.Model;
 import shader.shadow.ShadowShader;
 import tool.math.Maths;
-import tool.math.Matrix4f;
+import tool.math.VMatrix4f;
 import tool.math.vector.Vector2f;
 import tool.openGL.OGLUtils;
 
 public class ShadowMapEntityRenderer {
 
-	private Matrix4f projectionViewMatrix;
+	private VMatrix4f projectionViewMatrix;
 	private ShadowShader shader;
 
 	/**
@@ -29,7 +30,7 @@ public class ShadowMapEntityRenderer {
 	 *            - the orthographic projection matrix multiplied by the light's
 	 *            "view" matrix.
 	 */
-	protected ShadowMapEntityRenderer(ShadowShader shader, Matrix4f projectionViewMatrix) {
+	protected ShadowMapEntityRenderer(ShadowShader shader, VMatrix4f projectionViewMatrix) {
 		this.shader = shader;
 		this.projectionViewMatrix = projectionViewMatrix;
 	}
@@ -42,22 +43,24 @@ public class ShadowMapEntityRenderer {
 	 *            - the entities to be rendered to the shadow map.
 	 */
 	protected void render(Map<Model, List<IEntity>> entities, ICamera camera) {
-		for (Model model : entities.keySet()) {
+		entities.forEach((model, entityList) -> {
 			Mesh mesh = model.getMesh();
 			bindModel(mesh);
-			model.getMaterial().getDiffuseMap().bind(0);
+			Material material = model.getMaterial();
+			material.getDiffuseMap().bind(0);
+			shader.loadNumberOfRows(material.getDiffuseMap().getNumberOfRows());
 			if (model.getMaterial().getDiffuseMap().isHasTransparency()) {
 				OGLUtils.cullBackFaces(false);
 			}
-			for (IEntity entity : entities.get(model)) {
+			entityList.forEach(entity -> {
 				prepareInstance(entity);
 				GL11.glDrawElements(GL11.GL_TRIANGLES, mesh.getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
-			}
+			});
 			if (model.getMaterial().getDiffuseMap().isHasTransparency()) {
 				OGLUtils.cullBackFaces(true);
 			}
-		}
-		unbindModel();
+			unbindModel();
+		});
 	}
 
 	/**
@@ -87,13 +90,12 @@ public class ShadowMapEntityRenderer {
 	 *            - the entity to be prepared for rendering.
 	 */
 	private void prepareInstance(IEntity entity) {
-		Matrix4f modelMatrix = Maths.createTransformationMatrix(entity.getPosition(), entity.getRotation().getX(),
+		VMatrix4f transformationMatrix = Maths.createTransformationMatrix(entity.getPosition(), entity.getRotation().getX(),
 				entity.getRotation().getY(), entity.getRotation().getZ(), entity.getScale());
-		Matrix4f mvpMatrix = Matrix4f.mul(projectionViewMatrix, modelMatrix);
+		VMatrix4f mvpMatrix = VMatrix4f.mul(projectionViewMatrix, transformationMatrix);
 		shader.loadMvpMatrix(mvpMatrix);
 		Vector2f textureOffset = entity.getTextureOffset();
 		shader.loadOffset(textureOffset.x, textureOffset.y);
-		shader.loadNumberOfRows(entity.getModel().getMaterial().getDiffuseMap().getNumberOfRows());
 	}
 
 }

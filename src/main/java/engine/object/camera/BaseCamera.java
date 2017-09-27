@@ -1,14 +1,14 @@
 package object.camera;
 
-import tool.math.Matrix4f;
-import tool.math.vector.Vector3f;
+import tool.math.VMatrix4f;
+import tool.math.vector.Vector3fF;
 
 public abstract class BaseCamera {
 	
 	protected static float speed = 100;
 	protected static float runSpeed = 4;
 
-	protected Vector3f position = new Vector3f(0, 0, 0);
+	protected Vector3fF position = new Vector3fF(0, 0, 0);
 
 	protected float pitch = 20;
 	protected float yaw = 0;
@@ -25,7 +25,7 @@ public abstract class BaseCamera {
 	protected boolean isMoved = false;
 	protected boolean isAngleChanged = false;
 
-	protected BaseCamera(String name, Vector3f position) {
+	protected BaseCamera(String name, Vector3fF position) {
 		this.setPosition(position);
 		this.name = name;
 	}
@@ -41,7 +41,7 @@ public abstract class BaseCamera {
 		this.position.z = posZ;
 	}
 	
-	public void setPosition(Vector3f position) {
+	public void setPosition(Vector3fF position) {
 		this.position = position;
 	} 
 
@@ -71,7 +71,7 @@ public abstract class BaseCamera {
 		this.isMoved = false;
 	}
 
-	public Vector3f getPosition() {
+	public Vector3fF getPosition() {
 		return position;
 	}
 
@@ -98,11 +98,11 @@ public abstract class BaseCamera {
 	// переключить между поворотами камеры
 	protected abstract void switchToFace(int faceIndex);
 
-	protected abstract Matrix4f getViewMatrix();
+	protected abstract VMatrix4f getViewMatrix();
 
-	protected abstract Matrix4f getProjectionMatrix();
+	protected abstract VMatrix4f getProjectionMatrix();
 	
-	protected abstract Matrix4f getProjectionViewMatrix();
+	protected abstract VMatrix4f getProjectionViewMatrix();
 
 	public boolean isMoved() {
 		return isMoved;

@@ -1,11 +1,8 @@
 package renderer.object.entity;
 
-import java.util.AbstractMap.SimpleEntry;
-import java.util.function.Function;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
@@ -24,7 +21,7 @@ import primitive.model.Model;
 import renderer.object.main.IMainRenderer;
 import shader.entity.textured.TexturedEntityShader;
 import tool.math.Maths;
-import tool.math.Matrix4f;
+import tool.math.VMatrix4f;
 import tool.math.vector.Vector2f;
 import tool.openGL.OGLUtils;
 
@@ -53,11 +50,11 @@ public class TexturedEntityRenderer implements IEntityRenderer {
 	 * it.
 	 * 
 	 * @param projectionMatrix
-	 *            - {@link Matrix4f} value to draw entities in the scene using
+	 *            - {@link VMatrix4f} value to draw entities in the scene using
 	 *            its projection in the game world space
 	 */
 
-	public TexturedEntityRenderer(Matrix4f projectionMatrix) {
+	public TexturedEntityRenderer(VMatrix4f projectionMatrix) {
 		this.shader = new TexturedEntityShader();
 		shader.start();
 		shader.loadProjectionMatrix(projectionMatrix);
@@ -79,7 +76,7 @@ public class TexturedEntityRenderer implements IEntityRenderer {
 	 * @param camera
 	 *            - {@link ICamera} that represents point of view
 	 * @param toShadowMapSpace
-	 *            - {@link Matrix4f} value of space where shadow map is rendered
+	 *            - {@link VMatrix4f} value of space where shadow map is rendered
 	 * @param environmentMap
 	 *            - {@link Texture} value of reflection map to render at
 	 *            reflecting objects
@@ -90,7 +87,7 @@ public class TexturedEntityRenderer implements IEntityRenderer {
 	 * @see Texture
 	 */
 	public void renderHigh(Map<Model, List<IEntity>> entities, Vector4f clipPlane, Collection<ILight> lights,
-			ICamera camera, Matrix4f toShadowMapSpace, Texture environmentMap) {
+			ICamera camera, VMatrix4f toShadowMapSpace, Texture environmentMap) {
 		if(!entities.isEmpty()) {
 			this.environmentMap = environmentMap;
 			shader.start();
@@ -101,25 +98,15 @@ public class TexturedEntityRenderer implements IEntityRenderer {
 			shader.loadCamera(camera);
 			shader.loadToShadowSpaceMatrix(toShadowMapSpace);
 			shader.loadShadowVariables(EngineSettings.SHADOW_DISTANCE, EngineSettings.SHADOW_MAP_SIZE,
-					EngineSettings.SHADOW_TRANSITION_DISTANCE, EngineSettings.SHADOW_PCF);
-			Map<Mesh, Model> meshModel = entities.keySet().stream()
-					.collect(Collectors.toMap(Model::getMesh, Function.identity()));
-			Map<Material, Model> materialModel = entities.keySet().stream()
-					.collect(Collectors.toMap(Model::getMaterial, Function.identity()));
-			
-			Map<Mesh, Long> meshCount = entities.keySet().stream()
-					.collect(Collectors.groupingBy(model -> model.getMesh(), Collectors.counting()));
-			Map<Mesh, Model> sameMeshMap = meshCount 			
-			
-			
-//			entities.forEach((model, entityList) -> {
-//				prepareTexturedModel(model);
-//				entityList.forEach(entity -> {
-//						prepareInstance(entity);
-//						GL11.glDrawElements(GL11.GL_TRIANGLES, model.getMesh().getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
-//				});
-//				unbindTexturedModel();
-//			});
+					EngineSettings.SHADOW_TRANSITION_DISTANCE, EngineSettings.SHADOW_PCF);			
+			entities.forEach((model, entityList) -> {
+				prepareTexturedModel(model);
+				entityList.forEach(entity -> {
+						prepareInstance(entity);
+						GL11.glDrawElements(GL11.GL_TRIANGLES, model.getMesh().getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
+				});
+				unbindTexturedModel();
+			});
 			shader.stop();
 		}
 	}
@@ -141,7 +128,7 @@ public class TexturedEntityRenderer implements IEntityRenderer {
 	 * @see Light
 	 * @see ICamera
 	 */
-	public void renderLow(Map<Model, List<IEntity>> entities, Collection<ILight> lights, ICamera camera, Matrix4f toShadowMapSpace) {
+	public void renderLow(Map<Model, List<IEntity>> entities, Collection<ILight> lights, ICamera camera, VMatrix4f toShadowMapSpace) {
 		GL11.glClearColor(1, 1, 1, 1);
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 		shader.start();
@@ -168,20 +155,6 @@ public class TexturedEntityRenderer implements IEntityRenderer {
 
 	public void clean() {
 		shader.clean();
-	}
-	
-	private void prepareMesh(Mesh mesh) {
-		VAO vao = mesh.getVAO();
-		vao.bind(0, 1, 2);
-	}
-	
-	private void prepareModel(Model model) {
-		Material material = model.getMaterial();
-		shader.loadNumberOfRows(material.getDiffuseMap().getNumberOfRows());
-		if (material.getDiffuseMap().isHasTransparency()) {
-			OGLUtils.cullBackFaces(false);
-		}
-		model.getMaterial().getDiffuseMap().bind(0);
 	}
  
 	/**
@@ -248,7 +221,7 @@ public class TexturedEntityRenderer implements IEntityRenderer {
 	 */
 
 	private void prepareInstance(IEntity entity) {
-		Matrix4f transformationMatrix = Maths.createTransformationMatrix(entity.getPosition(), entity.getRotation().getX(),
+		VMatrix4f transformationMatrix = Maths.createTransformationMatrix(entity.getPosition(), entity.getRotation().getX(),
 				entity.getRotation().getY(), entity.getRotation().getZ(), entity.getScale());
 		shader.loadTranformationMatrix(transformationMatrix);
 		Vector2f textureOffset = entity.getTextureOffset();

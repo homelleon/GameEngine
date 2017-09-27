@@ -20,7 +20,7 @@ import object.water.WaterTile;
 import primitive.buffer.Loader;
 import primitive.model.Mesh;
 import primitive.model.Model;
-import tool.math.vector.Vector3f;
+import tool.math.vector.Vector3fF;
 import tool.meshLoader.normalMapObject.NormalMappedObjLoader;
 import tool.meshLoader.object.ModelData;
 import tool.meshLoader.object.OBJFileLoader;
@@ -113,7 +113,7 @@ public class EngineUtils {
 							int textIndexSeed = random.nextInt(1);
 							float noise = random.nextInt(10)/5;
 							IEntity grassEntity = new DecorEntity("Grass" + String.valueOf(i) + "-" + String.valueOf(j), grass, textIndexSeed,
-									new Vector3f(x + invDensity * i, 0, z + invDensity * j), new Vector3f(-90, 0, -45), noise);
+									new Vector3fF(x + invDensity * i, 0, z + invDensity * j), new Vector3fF(-90, 0, -45), noise);
 							grassEntity.setBaseName("grassEntity");
 							return grassEntity;
 						}))
@@ -121,7 +121,7 @@ public class EngineUtils {
 				.collect(Collectors.toList());
 	}
 
-	public static List<WaterTile> createWaterSurfce(Vector3f position, int size) {
+	public static List<WaterTile> createWaterSurfce(Vector3fF position, int size) {
 		List<WaterTile> waters = new ArrayList<WaterTile>();
 		for (int i = 0; i < size; i++) {
 			for (int j = 0; j < size; j++) {
@@ -162,7 +162,7 @@ public class EngineUtils {
 		return terrain;
 	}
 
-	public static void createForest(List<TexturedEntity> forest, Vector3f position, float noise) {
+	public static void createForest(List<TexturedEntity> forest, Vector3fF position, float noise) {
 
 	}
 

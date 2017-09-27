@@ -12,7 +12,7 @@ import primitive.model.Mesh;
 import primitive.model.Model;
 import shader.bounding.BoundingShader;
 import tool.math.Maths;
-import tool.math.Matrix4f;
+import tool.math.VMatrix4f;
 import tool.openGL.OGLUtils;
 
 public class BoundingRenderer {
@@ -20,7 +20,7 @@ public class BoundingRenderer {
 	private BoundingShader shader;
 	private boolean boundingWiredFrame = true;
 
-	public BoundingRenderer(Matrix4f projectionMatrix) {
+	public BoundingRenderer(VMatrix4f projectionMatrix) {
 		this.shader = new BoundingShader();
 		shader.start();
 		shader.loadProjectionMatrix(projectionMatrix);
@@ -69,7 +69,7 @@ public class BoundingRenderer {
 	}
 
 	public void prepareInstance(IEntity entity) {
-		Matrix4f transformationMatrix = Maths.createTransformationMatrix(entity.getPosition(), entity.getRotation().getX(),
+		VMatrix4f transformationMatrix = Maths.createTransformationMatrix(entity.getPosition(), entity.getRotation().getX(),
 				entity.getRotation().getY(), entity.getRotation().getZ(), entity.getScale());
 		shader.loadTranformationMatrix(transformationMatrix);
 	}

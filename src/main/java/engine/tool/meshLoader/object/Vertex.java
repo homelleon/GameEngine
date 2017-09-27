@@ -1,19 +1,19 @@
 package tool.meshLoader.object;
 
-import tool.math.vector.Vector3f;
+import tool.math.vector.Vector3fF;
 
 public class Vertex {
 
 	private static final int NO_INDEX = -1;
 
-	private Vector3f position;
+	private Vector3fF position;
 	private int textureIndex = NO_INDEX;
 	private int normalIndex = NO_INDEX;
 	private Vertex duplicateVertex = null;
 	private int index;
 	private float length;
 
-	public Vertex(int index, Vector3f position) {
+	public Vertex(int index, Vector3fF position) {
 		this.index = index;
 		this.position = position;
 		this.length = position.length();
@@ -43,7 +43,7 @@ public class Vertex {
 		this.normalIndex = normalIndex;
 	}
 
-	public Vector3f getPosition() {
+	public Vector3fF getPosition() {
 		return position;
 	}
 

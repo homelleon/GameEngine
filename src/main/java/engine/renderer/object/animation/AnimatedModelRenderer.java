@@ -6,7 +6,7 @@ import object.animatedModel.AnimatedModel;
 import object.camera.ICamera;
 import primitive.buffer.VAO;
 import shader.animation.AnimatedModelShader;
-import tool.math.vector.Vector3f;
+import tool.math.vector.Vector3fF;
 import tool.openGL.OGLUtils;
 
 /**
@@ -42,7 +42,7 @@ public class AnimatedModelRenderer {
 	 * @param lightDir
 	 *            - the direction of the light in the scene.
 	 */
-	public void render(AnimatedModel entity, ICamera camera, Vector3f lightDir) {
+	public void render(AnimatedModel entity, ICamera camera, Vector3fF lightDir) {
 		prepare(camera, lightDir);
 		entity.getTexture().bindToUnit(0);
 		entity.getVAO().bind(0, 1, 2, 3, 4);
@@ -69,7 +69,7 @@ public class AnimatedModelRenderer {
 	 * @param lightDir
 	 *            - the direction of the light in the scene.
 	 */
-	private void prepare(ICamera camera, Vector3f lightDir) {
+	private void prepare(ICamera camera, Vector3fF lightDir) {
 		shader.start();
 		shader.loadprojectionViewMatrix(camera.getProjectionViewMatrix());
 		shader.loadLightDirection(lightDir);

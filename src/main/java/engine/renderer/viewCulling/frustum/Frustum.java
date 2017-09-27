@@ -3,8 +3,8 @@ package renderer.viewCulling.frustum;
 
 import object.camera.ICamera;
 import tool.math.Maths;
-import tool.math.Matrix4f;
-import tool.math.vector.Vector3f;
+import tool.math.VMatrix4f;
+import tool.math.vector.Vector3fF;
 
 public class Frustum {
 
@@ -12,14 +12,14 @@ public class Frustum {
 	
 	private ICamera camera;
 
-	public Frustum extractFrustum(ICamera camera, Matrix4f projectionMatrix) {
+	public Frustum extractFrustum(ICamera camera, VMatrix4f projectionMatrix) {
 		this.camera = camera;
-		Matrix4f clip;
+		VMatrix4f clip;
 		float t;
 
-		Matrix4f viewMatrix = Maths.createViewMatrix(camera);
+		VMatrix4f viewMatrix = Maths.createViewMatrix(camera);
 		/* multiply matrix */
-		clip = Matrix4f.mul(projectionMatrix, viewMatrix);
+		clip = VMatrix4f.mul(projectionMatrix, viewMatrix);
 		/* RIGHT */
 		/* find A,B,C,D on the RIGHT plane */
 		this.plane[0][0] = clip.m[0][3] - clip.m[0][0];
@@ -107,7 +107,7 @@ public class Frustum {
 		return this;
 	}
 
-	public boolean pointInFrustum(Vector3f position) {
+	public boolean pointInFrustum(Vector3fF position) {
 		boolean isInFrustum = true;
 		for (int p = 0; p < 6; p++) {
 			if (plane[p][0] * position.x + plane[p][1] * position.y + plane[p][2] * position.z + plane[p][3] <= 0) {
@@ -118,7 +118,7 @@ public class Frustum {
 		return isInFrustum;
 	}
 
-	public boolean sphereInFrustum(Vector3f position, float radius) {
+	public boolean sphereInFrustum(Vector3fF position, float radius) {
 		boolean isInFrustum = true;
 		for (int p = 0; p < 6; p++) {
 			if (plane[p][0] * position.x + plane[p][1] * position.y + plane[p][2] * position.z
@@ -130,7 +130,7 @@ public class Frustum {
 		return isInFrustum;
 	}
 	
-	public boolean sphereInFrustumAndDsitance(Vector3f position, float radius, 
+	public boolean sphereInFrustumAndDsitance(Vector3fF position, float radius, 
 			float startClipDistance, float endClipDistance) {
 		float distance = Maths.distance2Points(position, this.camera.getPosition());
 		if(distance < startClipDistance || distance > endClipDistance) {
@@ -145,7 +145,7 @@ public class Frustum {
 		return true;
 	}
 
-	public float distanceSphereInFrustum(Vector3f position, float radius) {
+	public float distanceSphereInFrustum(Vector3fF position, float radius) {
 		float distance = 0;
 		for (int p = 0; p < 6; p++) {
 			distance = plane[p][0] * position.x + plane[p][1] * position.y + plane[p][2] * position.z + plane[p][3];

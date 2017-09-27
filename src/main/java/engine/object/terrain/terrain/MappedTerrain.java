@@ -14,7 +14,7 @@ import primitive.buffer.Loader;
 import primitive.model.Mesh;
 import tool.math.Maths;
 import tool.math.vector.Vector2f;
-import tool.math.vector.Vector3f;
+import tool.math.vector.Vector3fF;
 
 /**
  * Terrain class representing landscape plane.
@@ -168,12 +168,12 @@ public class MappedTerrain implements ITerrain {
 		float zCoord = (terrainZ % gridSquareSize) / gridSquareSize;
 		float answer;
 		if (xCoord <= (1 - zCoord)) {
-			answer = Maths.barryCentric(new Vector3f(0, heights[gridX][gridZ], 0),
-					new Vector3f(1, heights[gridX + 1][gridZ], 0), new Vector3f(0, heights[gridX][gridZ + 1], 1),
+			answer = Maths.barryCentric(new Vector3fF(0, heights[gridX][gridZ], 0),
+					new Vector3fF(1, heights[gridX + 1][gridZ], 0), new Vector3fF(0, heights[gridX][gridZ + 1], 1),
 					new Vector2f(xCoord, zCoord));
 		} else {
-			answer = Maths.barryCentric(new Vector3f(1, heights[gridX + 1][gridZ], 0),
-					new Vector3f(1, heights[gridX + 1][gridZ + 1], 1), new Vector3f(0, heights[gridX][gridZ + 1], 1),
+			answer = Maths.barryCentric(new Vector3fF(1, heights[gridX + 1][gridZ], 0),
+					new Vector3fF(1, heights[gridX + 1][gridZ + 1], 1), new Vector3fF(0, heights[gridX][gridZ + 1], 1),
 					new Vector2f(xCoord, zCoord));
 		}
 		return answer;
@@ -215,7 +215,7 @@ public class MappedTerrain implements ITerrain {
 				heights[j][i] = height;
 				vertices[vertexPointer * 3 + 1] = height;
 				vertices[vertexPointer * 3 + 2] = i / ((float) VERTEX_COUNT - 1) * ITerrain.TERRAIN_SIZE;
-				Vector3f normal = calculateNormal(j, i, image);
+				Vector3fF normal = calculateNormal(j, i, image);
 				normals[vertexPointer * 3] = normal.x;
 				normals[vertexPointer * 3 + 1] = normal.y;
 				normals[vertexPointer * 3 + 2] = normal.z;
@@ -243,12 +243,12 @@ public class MappedTerrain implements ITerrain {
 	}
 
 
-	private Vector3f calculateNormal(int x, int z, BufferedImage image) {
+	private Vector3fF calculateNormal(int x, int z, BufferedImage image) {
 		float heightL = getHeight(x - 1, z, image);
 		float heightR = getHeight(x + 1, z, image);
 		float heightD = getHeight(x, z - 1, image);
 		float heightU = getHeight(x, z + 1, image);
-		Vector3f normal = new Vector3f(heightL - heightR, 2f, heightD - heightU);
+		Vector3fF normal = new Vector3fF(heightL - heightR, 2f, heightD - heightU);
 		normal.normalize();
 		return normal;
 	}

@@ -9,7 +9,7 @@ import org.lwjgl.openal.AL10;
 import org.lwjgl.util.WaveData;
 
 import core.settings.EngineSettings;
-import tool.math.vector.Vector3f;
+import tool.math.vector.Vector3fF;
 
 /**
  * Class of 3 dimentional sound engine storeing audio buffers in the map.
@@ -47,7 +47,7 @@ public class AudioMaster implements IAudioMaster {
 	}
 
 	@Override
-	public void setListenerData(Vector3f position) {
+	public void setListenerData(Vector3fF position) {
 		AL10.alListener3f(AL10.AL_POSITION, position.x, position.y, position.z);
 		AL10.alListener3f(AL10.AL_VELOCITY, 0, 0, 0);
 	}

@@ -5,7 +5,7 @@ import object.animation.Animation;
 import object.animation.Animator;
 import object.texture.Texture;
 import primitive.buffer.VAO;
-import tool.math.Matrix4f;
+import tool.math.VMatrix4f;
 
 /**
  * 
@@ -59,7 +59,7 @@ public class AnimatedModel {
 		this.rootJoint = rootJoint;
 		this.jointCount = jointCount;
 		this.animator = new Animator(this);
-		rootJoint.calcInverseBindTransform(new Matrix4f());
+		rootJoint.calcInverseBindTransform(new VMatrix4f());
 	}
 
 	/**
@@ -123,8 +123,8 @@ public class AnimatedModel {
 	 * @return The array of model-space transforms of the joints in the current
 	 *         animation pose.
 	 */
-	public Matrix4f[] getJointTransforms() {
-		Matrix4f[] jointMatrices = new Matrix4f[jointCount];
+	public VMatrix4f[] getJointTransforms() {
+		VMatrix4f[] jointMatrices = new VMatrix4f[jointCount];
 		addJointsToArray(rootJoint, jointMatrices);
 		return jointMatrices;
 	}
@@ -140,7 +140,7 @@ public class AnimatedModel {
 	 * @param jointMatrices
 	 *            - the array of joint transforms that is being filled.
 	 */
-	private void addJointsToArray(Joint headJoint, Matrix4f[] jointMatrices) {
+	private void addJointsToArray(Joint headJoint, VMatrix4f[] jointMatrices) {
 		jointMatrices[headJoint.index] = headJoint.getAnimatedTransform();
 		for (Joint childJoint : headJoint.children) {
 			addJointsToArray(childJoint, jointMatrices);

@@ -4,15 +4,15 @@ import core.settings.EngineSettings;
 import object.entity.entity.IEntity;
 import primitive.model.Model;
 import tool.math.vector.Vector2f;
-import tool.math.vector.Vector3f;
+import tool.math.vector.Vector3fF;
 
 public abstract class BaseEntity {
 	
 	protected Model model; // текстурная модель
 	protected String name; // имя
 	protected String baseName;
-	protected Vector3f position; // позиция
-	protected Vector3f rotation; // повороты
+	protected Vector3fF position; // позиция
+	protected Vector3fF rotation; // повороты
 	protected float scale = 1f; // масштаб
 	protected float radius; // радицс
 	protected boolean isVisible = true; // видимый
@@ -33,7 +33,7 @@ public abstract class BaseEntity {
 	 * @param rotZ
 	 * @param scale
 	 */
-	public BaseEntity(String name, int typeID, Model model, Vector3f position, Vector3f rotation, float scale) {
+	public BaseEntity(String name, int typeID, Model model, Vector3fF position, Vector3fF rotation, float scale) {
 		this.name = name;
 		this.typeID = typeID;
 		this.model = model;
@@ -55,7 +55,7 @@ public abstract class BaseEntity {
 	 * @param rotZ
 	 * @param scale
 	 */
-	public BaseEntity(String name, int typeID, Model model, int textureIndex, Vector3f position, Vector3f rotation, float scale) {
+	public BaseEntity(String name, int typeID, Model model, int textureIndex, Vector3fF position, Vector3fF rotation, float scale) {
 		this.name = name;
 		this.typeID = typeID;
 		this.textureIndex = textureIndex;
@@ -138,20 +138,20 @@ public abstract class BaseEntity {
 		this.model = model;
 	}
 
-	public Vector3f getPosition() {
+	public Vector3fF getPosition() {
 		return position;
 	}
 
-	public synchronized void setPosition(Vector3f position) {
+	public synchronized void setPosition(Vector3fF position) {
 		this.position = position;
 	}
 
-	public synchronized void setRotation(Vector3f rotation) {
+	public synchronized void setRotation(Vector3fF rotation) {
 		this.rotation = rotation;
 		
 	}
 
-	public Vector3f getRotation() {
+	public Vector3fF getRotation() {
 		return this.rotation;
 	}
 

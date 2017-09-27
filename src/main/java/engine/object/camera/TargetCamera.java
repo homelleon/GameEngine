@@ -8,8 +8,8 @@ import core.settings.EngineSettings;
 import object.entity.player.IPlayer;
 import object.input.KeyboardGame;
 import object.input.MouseGame;
-import tool.math.Matrix4f;
-import tool.math.vector.Vector3f;
+import tool.math.VMatrix4f;
+import tool.math.vector.Vector3fF;
 
 public class TargetCamera extends BaseCamera implements ICamera {
 
@@ -38,7 +38,7 @@ public class TargetCamera extends BaseCamera implements ICamera {
 	private IPlayer player;
 
 	public TargetCamera(String name, IPlayer player) {
-		super(name, new Vector3f(0,0,0));
+		super(name, new Vector3fF(0,0,0));
 		this.player = player;
 		this.name = name;
 		if(Loop.getInstance().getEditMode()) {
@@ -143,17 +143,17 @@ public class TargetCamera extends BaseCamera implements ICamera {
 	}
 
 	@Override
-	public Matrix4f getViewMatrix() {
+	public VMatrix4f getViewMatrix() {
 		return null;
 	}
 
 	@Override
-	public Matrix4f getProjectionMatrix() {
+	public VMatrix4f getProjectionMatrix() {
 		return null;
 	}
 
 	@Override
-	public Matrix4f getProjectionViewMatrix() {
+	public VMatrix4f getProjectionViewMatrix() {
 		return null;
 	}
 

@@ -125,7 +125,7 @@ public class ShadowFrameBuffer {
 		Texture2D texture = Texture2D.create(width, height, 1, false);
 		texture.bind();
 		GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL14.GL_DEPTH_COMPONENT16, 
-				texture.getWidth(), texture.getHeight(), 0, GL11.GL_DEPTH_COMPONENT,
+				width, height, 0, GL11.GL_DEPTH_COMPONENT,
 				GL11.GL_FLOAT, (ByteBuffer) null);
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);

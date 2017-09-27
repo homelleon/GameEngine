@@ -5,7 +5,7 @@ import core.settings.EngineSettings;
 import object.camera.ICamera;
 import shader.ShaderProgram;
 import tool.math.Maths;
-import tool.math.Matrix4f;
+import tool.math.VMatrix4f;
 
 public class BoundingShader extends ShaderProgram {
 
@@ -34,16 +34,16 @@ public class BoundingShader extends ShaderProgram {
 		super.bindAttribute(2, "normal");
 	}
 
-	public void loadTranformationMatrix(Matrix4f matrix) {
+	public void loadTranformationMatrix(VMatrix4f matrix) {
 		super.loadMatrix("transformationMatrix", matrix);
 	}
 
 	public void loadViewMatrix(ICamera camera) {
-		Matrix4f viewMatrix = Maths.createViewMatrix(camera);
+		VMatrix4f viewMatrix = Maths.createViewMatrix(camera);
 		super.loadMatrix("viewMatrix", viewMatrix);
 	}
 
-	public void loadProjectionMatrix(Matrix4f projection) {
+	public void loadProjectionMatrix(VMatrix4f projection) {
 		super.loadMatrix("projectionMatrix", projection);
 	}
 

@@ -2,15 +2,15 @@ package intersects;
 
 import java.util.List;
 
-import tool.math.vector.Vector3f;
+import tool.math.vector.Vector3fF;
 
 public class IntersectData {
 	
 	private float distance;
-	private List<Vector3f> positions;
+	private List<Vector3fF> positions;
 	private int type;
 	
-	public IntersectData(int type, float distance, List<Vector3f> positions) {
+	public IntersectData(int type, float distance, List<Vector3fF> positions) {
 		this.type = type;
 		this.distance = distance;
 		this.positions = positions;
@@ -24,11 +24,11 @@ public class IntersectData {
 		return this.distance;
 	}	
 	
-	public void setPosition(List<Vector3f> positions) {
+	public void setPosition(List<Vector3fF> positions) {
 		this.positions = positions;
 	}
 	
-	public List<Vector3f> getPositions() {
+	public List<Vector3fF> getPositions() {
 		return this.positions;
 	}
 	

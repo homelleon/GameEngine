@@ -14,7 +14,7 @@ import object.gui.text.GUIText;
 import object.gui.text.GUITextBuilder;
 import object.gui.text.IGUITextBuilder;
 import tool.math.vector.Vector2f;
-import tool.math.vector.Vector3f;
+import tool.math.vector.Vector3fF;
 import tool.xml.XMLUtils;
 import tool.xml.loader.IXMLLoader;
 import tool.xml.loader.XMLFileLoader;
@@ -103,7 +103,7 @@ public class GUITextXMLParser extends XMLParser implements IListParser<GUIText> 
 						b = Float.valueOf(colorNode.getChildNodes().item(0).getNodeValue());
 					}
 				}
-				Vector3f color = new Vector3f(r, g, b);
+				Vector3fF color = new Vector3fF(r, g, b);
 				IXMLLoader xmlLoader = new XMLFileLoader(
 						EngineSettings.TEXT_PATH + path + EngineSettings.EXTENSION_XML);
 				IObjectParser<String> textParser = new TextXMLParser(xmlLoader.load());

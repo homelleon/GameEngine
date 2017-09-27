@@ -27,7 +27,7 @@ import object.gui.system.IGUIMenuSystem;
 import object.input.KeyboardGame;
 import object.input.MouseGame;
 import tool.math.vector.Vector2f;
-import tool.math.vector.Vector3f;
+import tool.math.vector.Vector3fF;
 
 public class MyGame extends Game {
 	
@@ -139,7 +139,7 @@ public class MyGame extends Game {
 				.flatMap(gui -> gui.getTextures().stream())
 				.forEach(texture -> {
 					texture.setMixColored(true);
-					texture.setMixColor(new Vector3f(1,0,0));
+					texture.setMixColor(new Vector3fF(1,0,0));
 				});
 			injection.inject(vector);
 			injection.inject(new Vector2f(-vector.x, -vector.y));
@@ -165,7 +165,7 @@ public class MyGame extends Game {
 				.flatMap(gui -> gui.getTextures().stream())
 				.forEach(texture -> {
 					texture.setMixColored(true);
-					texture.setMixColor(new Vector3f(0,0,1));
+					texture.setMixColor(new Vector3fF(0,0,1));
 				});
 			injection.inject(vector);
 		};
@@ -206,7 +206,7 @@ public class MyGame extends Game {
 		
 		IAction action2 = () -> {
 			buttonAnimation.start(button2, time, changeVector);
-			this.gameManager.getScene().getPlayer().setPosition(new Vector3f(0,0,0));
+			this.gameManager.getScene().getPlayer().setPosition(new Vector3fF(0,0,0));
 		};
 		
 

@@ -3,7 +3,7 @@ package object.entity.entity;
 import object.Nameable;
 import primitive.model.Model;
 import tool.math.vector.Vector2f;
-import tool.math.vector.Vector3f;
+import tool.math.vector.Vector3fF;
 
 /**
  * 
@@ -99,25 +99,25 @@ import tool.math.vector.Vector3f;
 	/**
 	 * Gets entity current position in 3 dimentional space coordinates.
 	 *  
-	 * @return {@link Vector3f} value of current position
+	 * @return {@link Vector3fF} value of current position
 	 */
-	 Vector3f getPosition();
+	 Vector3fF getPosition();
 
 	/**
 	 * Sets entity position in 3 dimentional space.
 	 * 
-	 * @param position {@link Vector3f} value in 3 dimentions
+	 * @param position {@link Vector3fF} value in 3 dimentions
 	 */
-	 void setPosition(Vector3f position);
+	 void setPosition(Vector3fF position);
 	
 	/**
 	 * Sets entity rotation scale in 3 dimentions.
 	 * 
-	 * @param rotation {@link Vector3f} value in 3 dimentions
+	 * @param rotation {@link Vector3fF} value in 3 dimentions
 	 */
-	 void setRotation(Vector3f rotation);
+	 void setRotation(Vector3fF rotation);
 	
-	 Vector3f getRotation();
+	 Vector3fF getRotation();
 
 	/**
 	 * Gets entity size scale value.

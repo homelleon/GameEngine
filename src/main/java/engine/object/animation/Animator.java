@@ -6,7 +6,7 @@ import java.util.Map;
 import core.display.DisplayManager;
 import object.animatedModel.AnimatedModel;
 import object.animatedModel.Joint;
-import tool.math.Matrix4f;
+import tool.math.VMatrix4f;
 
 public class Animator {
 
@@ -29,8 +29,8 @@ public class Animator {
 			return;
 		}
 		increaseAnimationTime();
-		Map<String, Matrix4f> currentPose = calculateCurrentAnimationPose();
-		applyPoseToJoints(currentPose, entity.getRootJoint(), new Matrix4f());
+		Map<String, VMatrix4f> currentPose = calculateCurrentAnimationPose();
+		applyPoseToJoints(currentPose, entity.getRootJoint(), new VMatrix4f());
 	}
 
 	public void increaseAnimationTime() {
@@ -40,15 +40,15 @@ public class Animator {
 		}
 	}
 
-	private Map<String, Matrix4f> calculateCurrentAnimationPose() {
+	private Map<String, VMatrix4f> calculateCurrentAnimationPose() {
 		KeyFrame[] frames = getPreviousAndNextFrames();
 		float progression = calculateProgression(frames[0], frames[1]);
 		return interpolatePoses(frames[0], frames[1], progression);
 	}
 
-	private void applyPoseToJoints(Map<String, Matrix4f> currentPose, Joint joint, Matrix4f parentTransform) {
-		Matrix4f currentLocalTransform = currentPose.get(joint.name);
-		Matrix4f currentTransform = Matrix4f.mul(parentTransform, currentLocalTransform);
+	private void applyPoseToJoints(Map<String, VMatrix4f> currentPose, Joint joint, VMatrix4f parentTransform) {
+		VMatrix4f currentLocalTransform = currentPose.get(joint.name);
+		VMatrix4f currentTransform = VMatrix4f.mul(parentTransform, currentLocalTransform);
 		for (Joint childJoint : joint.children) {
 			applyPoseToJoints(currentPose, childJoint, currentTransform);
 			joint.setAnimationTransform(currentTransform);
@@ -75,8 +75,8 @@ public class Animator {
 		return currentTime / totalTime;
 	}
 
-	private Map<String, Matrix4f> interpolatePoses(KeyFrame previousFrame, KeyFrame nextFrame, float progression) {
-		Map<String, Matrix4f> currentPose = new HashMap<String, Matrix4f>();
+	private Map<String, VMatrix4f> interpolatePoses(KeyFrame previousFrame, KeyFrame nextFrame, float progression) {
+		Map<String, VMatrix4f> currentPose = new HashMap<String, VMatrix4f>();
 		for (String jointName : previousFrame.getJointKeyFrames().keySet()) {
 			JointTransform previousTransform = previousFrame.getJointKeyFrames().get(jointName);
 			JointTransform nextTransform = nextFrame.getJointKeyFrames().get(jointName);

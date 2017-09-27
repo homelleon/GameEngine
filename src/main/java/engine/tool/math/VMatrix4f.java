@@ -2,23 +2,45 @@ package tool.math;
 
 import java.nio.FloatBuffer;
 
+import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector4f;
 
 import tool.math.vector.Vector2f;
-import tool.math.vector.Vector3f;
+import tool.math.vector.Vector3fF;
 
 
-public class Matrix4f {
+public class VMatrix4f {
 
 	public float[][] m;
 	
-	public Matrix4f()
+	public VMatrix4f()
 	{
 		load(new float[4][4]);
 		setIdentity();
 	}
 	
-	public Matrix4f Zero()
+	public Matrix4f getMatrix4f() {
+		Matrix4f m = new Matrix4f();
+		m.m00 = this.m[0][0];
+		m.m01 = this.m[0][1];
+		m.m02 = this.m[0][2];
+		m.m03 = this.m[0][3];
+		m.m10 = this.m[1][0];
+		m.m11 = this.m[1][1];
+		m.m12 = this.m[1][2];
+		m.m23 = this.m[1][3];
+		m.m20 = this.m[2][0];
+		m.m21 = this.m[2][1];
+		m.m22 = this.m[2][2];
+		m.m23 = this.m[2][3];
+		m.m30 = this.m[3][0];
+		m.m31 = this.m[3][1];
+		m.m32 = this.m[3][2];
+		m.m33 = this.m[3][3];
+		return m;
+	}
+	
+	public VMatrix4f Zero()
 	{
 		m[0][0] = 0; m[0][1] = 0; m[0][2] = 0; m[0][3] = 0;
 		m[1][0] = 0; m[1][1] = 0; m[1][2] = 0; m[1][3] = 0;
@@ -28,7 +50,7 @@ public class Matrix4f {
 		return this;
 	}
 	
-	public Matrix4f setIdentity()
+	public VMatrix4f setIdentity()
 	{
 		m[0][0] = 1; m[0][1] = 0; m[0][2] = 0; m[0][3] = 0;
 		m[1][0] = 0; m[1][1] = 1; m[1][2] = 0; m[1][3] = 0;
@@ -38,7 +60,7 @@ public class Matrix4f {
 		return this;
 	}
 	
-	public Matrix4f Orthographic2D(int width, int height)
+	public VMatrix4f Orthographic2D(int width, int height)
 	{
 		m[0][0] = 2f/(float)width; 	m[0][1] = 0; 			    m[0][2] = 0; m[0][3] = -1;
 		m[1][0] = 0;		 		m[1][1] = 2f/(float)height; m[1][2] = 0; m[1][3] = -1;
@@ -48,7 +70,7 @@ public class Matrix4f {
 		return this;
 	}
 	
-	public Matrix4f translate(Vector3f translation)
+	public VMatrix4f translate(Vector3fF translation)
 	{
 		m[3][0] += m[0][0] * translation.x + m[1][0] * translation.y + m[2][0] * translation.z;
 		m[3][1] += m[0][1] * translation.x + m[1][1] * translation.y + m[2][1] * translation.z;
@@ -58,7 +80,7 @@ public class Matrix4f {
 		return this;
 	}
 	
-	public Matrix4f translate(Vector2f translation) {		
+	public VMatrix4f translate(Vector2f translation) {		
 		m[3][0] += m[0][0] * translation.x + m[1][0] * translation.y;
 		m[3][1] += m[0][1] * translation.x + m[1][1] * translation.y;
 		m[3][2] += m[0][2] * translation.x + m[1][2] * translation.y;
@@ -76,7 +98,7 @@ public class Matrix4f {
 		return new Vector4f(x,y,z,w);
 	}
 	
-	public static Vector4f transform(Matrix4f matrix, Vector4f plane) {
+	public static Vector4f transform(VMatrix4f matrix, Vector4f plane) {
 		float x = matrix.m[0][0] * plane.x + matrix.m[1][0] * plane.y + matrix.m[2][0] * plane.z + matrix.m[3][0] * plane.w;
 		float y = matrix.m[0][1] * plane.x + matrix.m[1][1] * plane.y + matrix.m[2][1] * plane.z + matrix.m[3][1] * plane.w;
 		float z = matrix.m[0][2] * plane.x + matrix.m[1][2] * plane.y + matrix.m[2][2] * plane.z + matrix.m[3][2] * plane.w;
@@ -85,11 +107,11 @@ public class Matrix4f {
 		return new Vector4f(x,y,z,w);
 	}
 	
-	public Matrix4f rotate(Vector3f rotation)
+	public VMatrix4f rotate(Vector3fF rotation)
 	{
-		Matrix4f rx = new Matrix4f();
-		Matrix4f ry = new Matrix4f();
-		Matrix4f rz = new Matrix4f();
+		VMatrix4f rx = new VMatrix4f();
+		VMatrix4f ry = new VMatrix4f();
+		VMatrix4f rz = new VMatrix4f();
 		
 		float x = (float)Math.toRadians(rotation.getX());
 		float y = (float)Math.toRadians(rotation.getY());
@@ -115,7 +137,7 @@ public class Matrix4f {
 		return this;
 	}
 	
-	public Matrix4f rotate(float angle, Vector3f axis) {
+	public VMatrix4f rotate(float angle, Vector3fF axis) {
 		
 		float c = (float) Math.cos(angle);
 		float s = (float) Math.sin(angle);
@@ -165,7 +187,7 @@ public class Matrix4f {
 		return this;
 	}
 	
-	public Matrix4f scale(Vector3f scaling)
+	public VMatrix4f scale(Vector3fF scaling)
 	{
 		m[0][0] = m[0][0] * scaling.x;
 		m[0][1] = m[0][1] * scaling.x;
@@ -183,7 +205,7 @@ public class Matrix4f {
 		return this;
 	}
 	
-	public Matrix4f OrthographicProjection(float l, float r, float b, float t, float n, float f){
+	public VMatrix4f OrthographicProjection(float l, float r, float b, float t, float n, float f){
 		
 		m[0][0] = 2.0f/(r-l); 	m[0][1] = 0; 			m[0][2] = 0; 			m[0][3] = -(r+l)/(r-l);
 		m[1][0] = 0;			m[1][1] = 2.0f/(t-b); 	m[1][2] = 0; 			m[1][3] = -(t+b)/(t-b);
@@ -193,7 +215,7 @@ public class Matrix4f {
 		return this;
 	}
 	
-	public Matrix4f PerspectiveProjection(float fovY, float width, float height, float zNear, float zFar)
+	public VMatrix4f PerspectiveProjection(float fovY, float width, float height, float zNear, float zFar)
 	{
 		float tanFOV = (float) Math.tan(Math.toRadians(fovY/2));
 		float aspectRatio = width/height;
@@ -206,11 +228,11 @@ public class Matrix4f {
 		return this;
 	}
 	
-	public Matrix4f View(Vector3f forward, Vector3f up)
+	public VMatrix4f View(Vector3fF forward, Vector3fF up)
 	{
-		Vector3f f = forward;
-		Vector3f u = up;
-		Vector3f r = u.cross(f);
+		Vector3fF f = forward;
+		Vector3fF u = up;
+		Vector3fF r = u.cross(f);
 		
 		m[0][0] = r.getX(); m[0][1] = r.getY(); m[0][2] = r.getZ(); m[0][3] = 0;
 		m[1][0] = u.getX(); m[1][1] = u.getY(); m[1][2] = u.getZ(); m[1][3] = 0;
@@ -221,13 +243,13 @@ public class Matrix4f {
 	}
 	
 	
-	public Matrix4f mul(Matrix4f r){
+	public VMatrix4f mul(VMatrix4f r){
 		
 		return clone(mul(this, r));
 	}
 	
-	public static Matrix4f mul(Matrix4f l, Matrix4f r){
-		Matrix4f m = new Matrix4f();
+	public static VMatrix4f mul(VMatrix4f l, VMatrix4f r){
+		VMatrix4f m = new VMatrix4f();
 		m.m[0][0] = l.m[0][0] * r.m[0][0] + l.m[1][0] * r.m[0][1] + l.m[2][0] * r.m[0][2] + l.m[3][0] * r.m[0][3];
 		m.m[0][1] = l.m[0][1] * r.m[0][0] + l.m[1][1] * r.m[0][1] + l.m[2][1] * r.m[0][2] + l.m[3][1] * r.m[0][3];
 		m.m[0][2] = l.m[0][2] * r.m[0][0] + l.m[1][2] * r.m[0][1] + l.m[2][2] * r.m[0][2] + l.m[3][2] * r.m[0][3];
@@ -260,9 +282,9 @@ public class Matrix4f {
 		return res;
 	}
 	
-	public Matrix4f transpose()
+	public VMatrix4f transpose()
 	{
-		Matrix4f result = new Matrix4f();
+		VMatrix4f result = new VMatrix4f();
 		
 		for(int i=0; i<4; i++){
 			for(int j=0; j<4; j++){
@@ -271,7 +293,7 @@ public class Matrix4f {
 		}
 		return result;
 	}
-	public static Matrix4f invert(Matrix4f src, Matrix4f dest) {
+	public static VMatrix4f invert(VMatrix4f src, VMatrix4f dest) {
 		float determinant = src.determinant();
 
 		if (determinant != 0) {
@@ -282,7 +304,7 @@ public class Matrix4f {
 			 * m30 m31 m32 m33
 			 */
 			if (dest == null)
-				dest = new Matrix4f();
+				dest = new VMatrix4f();
 			float determinant_inv = 1f/determinant;
 
 			// first row
@@ -362,7 +384,7 @@ public class Matrix4f {
 		return f;
 	}
 	
-	public static Matrix4f invert(Matrix4f r)
+	public static VMatrix4f invert(VMatrix4f r)
 	{
 		float s0 = r.get(0, 0) * r.get(1, 1) - r.get(1, 0) * r.get(0, 1);
 		float s1 = r.get(0, 0) * r.get(1, 2) - r.get(1, 0) * r.get(0, 2);
@@ -384,7 +406,7 @@ public class Matrix4f {
 		
 	    float invdet = 1.0f / div;
 	    
-	    Matrix4f invM = new Matrix4f();
+	    VMatrix4f invM = new VMatrix4f();
 	    
 	    invM.set(0, 0, (r.get(1, 1) * c5 - r.get(1, 2) * c4 + r.get(1, 3) * c3) * invdet);
 	    invM.set(0, 1, (-r.get(0, 1) * c5 + r.get(0, 2) * c4 - r.get(0, 3) * c3) * invdet);
@@ -409,7 +431,7 @@ public class Matrix4f {
 		return invM;
 	}
 	
-	public Matrix4f invert()
+	public VMatrix4f invert()
 	{
 		float s0 = get(0, 0) * get(1, 1) - get(1, 0) * get(0, 1);
 		float s1 = get(0, 0) * get(1, 2) - get(1, 0) * get(0, 2);
@@ -431,7 +453,7 @@ public class Matrix4f {
 		
 	    float invdet = 1.0f / div;
 	    
-	    Matrix4f invM = new Matrix4f();
+	    VMatrix4f invM = new VMatrix4f();
 	    
 	    invM.set(0, 0, (get(1, 1) * c5 - get(1, 2) * c4 + get(1, 3) * c3) * invdet);
 	    invM.set(0, 1, (-get(0, 1) * c5 + get(0, 2) * c4 - get(0, 3) * c3) * invdet);
@@ -456,7 +478,7 @@ public class Matrix4f {
 		return invM;
 	}
 	
-	public boolean equals(Matrix4f m){
+	public boolean equals(VMatrix4f m){
 		if (this.m[0][0] == m.getM()[0][0] && this.m[0][1] == m.getM()[0][1] &&
 			this.m[0][2] == m.getM()[0][2] && this.m[0][3] == m.getM()[0][3] &&
 			this.m[1][0] == m.getM()[1][0] && this.m[1][1] == m.getM()[1][1] &&
@@ -491,7 +513,7 @@ public class Matrix4f {
 	 * @param buf A float buffer to read from
 	 * @return this
 	 */
-	public Matrix4f load(FloatBuffer buf) {
+	public VMatrix4f load(FloatBuffer buf) {
 
 		m[0][0] = buf.get();
 		m[0][1] = buf.get();
@@ -522,7 +544,7 @@ public class Matrix4f {
 	 * major (openGL) order.
 	 * @param buf The buffer to store this matrix in
 	 */
-	public Matrix4f store(FloatBuffer buf) {
+	public VMatrix4f store(FloatBuffer buf) {
 		buf.put(m[0][0]);
 		buf.put(m[0][1]);
 		buf.put(m[0][2]);
@@ -543,15 +565,29 @@ public class Matrix4f {
 		return this;
 	}
 	
+	/**
+	 * Verticle visualization
+	 */
 	public String toString() {
 		
-		return 	"|" + m[0][0] + " " + m[0][1] + " " + m[0][2] + " " + m[0][3] + "|\n" +
-				"|" + m[1][0] + " " + m[1][1] + " " + m[1][2] + " " + m[1][3] + "|\n" +
-				"|" + m[2][0] + " " + m[2][1] + " " + m[2][2] + " " + m[2][3] + "|\n" +
-				"|" + m[3][0] + " " + m[3][1] + " " + m[3][2] + " " + m[3][3] + "|";
+		return 	"|" + m[0][0] + " " + m[1][0] + " " + m[2][0] + " " + m[3][0] + "|\n" +
+				"|" + m[0][1] + " " + m[1][1] + " " + m[2][1] + " " + m[3][1] + "|\n" +
+				"|" + m[0][2] + " " + m[1][2] + " " + m[2][2] + " " + m[3][2] + "|\n" +
+				"|" + m[0][3] + " " + m[1][3] + " " + m[2][3] + " " + m[3][3] + "|";
 	}
 	
-	public Matrix4f clone(Matrix4f m) {
+//	/**
+//	 * Horizontal visualization
+//	 */
+//	public String toString() {
+//		
+//		return 	"|" + m[0][0] + " " + m[0][1] + " " + m[0][2] + " " + m[0][3] + "|\n" +
+//				"|" + m[1][0] + " " + m[1][1] + " " + m[1][2] + " " + m[1][3] + "|\n" +
+//				"|" + m[2][0] + " " + m[2][1] + " " + m[2][2] + " " + m[2][3] + "|\n" +
+//				"|" + m[3][0] + " " + m[3][1] + " " + m[3][2] + " " + m[3][3] + "|";
+//	}
+	
+	public VMatrix4f clone(VMatrix4f m) {
 		this.m[0][0] = m.m[0][0];
 		this.m[0][1] = m.m[0][1];
 		this.m[0][2] = m.m[0][2];
