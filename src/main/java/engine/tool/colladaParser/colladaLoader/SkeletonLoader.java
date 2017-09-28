@@ -8,8 +8,8 @@ import org.lwjgl.BufferUtils;
 import tool.colladaParser.dataStructures.JointData;
 import tool.colladaParser.dataStructures.SkeletonData;
 import tool.colladaParser.xmlParser.XmlNode;
-import tool.math.VMatrix4f;
-import tool.math.vector.Vector3fF;
+import tool.math.Matrix4f;
+import tool.math.vector.Vector3f;
 
 public class SkeletonLoader {
 
@@ -19,8 +19,8 @@ public class SkeletonLoader {
 
 	private int jointCount = 0;
 
-	private static final VMatrix4f CORRECTION = new VMatrix4f().rotate((float) Math.toRadians(-90),
-			new Vector3fF(1, 0, 0));
+	private static final Matrix4f CORRECTION = new Matrix4f().rotate((float) Math.toRadians(-90),
+			new Vector3f(1, 0, 0));
 
 	public SkeletonLoader(XmlNode visualSceneNode, List<String> boneOrder) {
 		this.armatureData = visualSceneNode.getChild("visual_scene").getChildWithAttribute("node", "id", "Armature");
@@ -45,7 +45,7 @@ public class SkeletonLoader {
 		String nameId = jointNode.getAttribute("id");
 		int index = boneOrder.indexOf(nameId);
 		String[] matrixData = jointNode.getChild("matrix").getData().split(" ");
-		VMatrix4f matrix = new VMatrix4f();
+		Matrix4f matrix = new Matrix4f();
 		matrix.load(convertData(matrixData));
 		matrix.transpose();
 		if (isRoot) {

@@ -3,28 +3,28 @@ package tool.meshLoader.normalMapObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import tool.math.vector.Vector3fF;
+import tool.math.vector.Vector3f;
 
 public class VertexNM {
 
 	private static final int NO_INDEX = -1;
 
-	private Vector3fF position;
+	private Vector3f position;
 	private int textureIndex = NO_INDEX;
 	private int normalIndex = NO_INDEX;
 	private VertexNM duplicateVertex = null;
 	private int index;
 	private float length;
-	private List<Vector3fF> tangents = new ArrayList<Vector3fF>();
-	private Vector3fF averagedTangent = new Vector3fF(0, 0, 0);
+	private List<Vector3f> tangents = new ArrayList<Vector3f>();
+	private Vector3f averagedTangent = new Vector3f(0, 0, 0);
 
-	protected VertexNM(int index, Vector3fF position) {
+	protected VertexNM(int index, Vector3f position) {
 		this.index = index;
 		this.position = position;
 		this.length = position.length();
 	}
 
-	protected void addTangent(Vector3fF tangent) {
+	protected void addTangent(Vector3f tangent) {
 		tangents.add(tangent);
 	}
 
@@ -39,13 +39,13 @@ public class VertexNM {
 		if (tangents.isEmpty()) {
 			return;
 		}
-		for (Vector3fF tangent : tangents) {
+		for (Vector3f tangent : tangents) {
 			averagedTangent.add(tangent);
 		}
 		averagedTangent.normalize();
 	}
 
-	protected Vector3fF getAverageTangent() {
+	protected Vector3f getAverageTangent() {
 		return averagedTangent;
 	}
 
@@ -73,7 +73,7 @@ public class VertexNM {
 		this.normalIndex = normalIndex;
 	}
 
-	protected Vector3fF getPosition() {
+	protected Vector3f getPosition() {
 		return position;
 	}
 

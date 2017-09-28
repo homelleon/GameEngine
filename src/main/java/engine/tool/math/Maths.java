@@ -4,19 +4,19 @@ import object.camera.ICamera;
 import object.entity.entity.IEntity;
 import object.terrain.terrain.ITerrain;
 import tool.math.vector.Vector2f;
-import tool.math.vector.Vector3fF;
+import tool.math.vector.Vector3f;
 
 public class Maths {
 
-	public static VMatrix4f createTransformationMatrix(Vector2f translation, Vector2f scale) {
-		VMatrix4f matrix = new VMatrix4f();
+	public static Matrix4f createTransformationMatrix(Vector2f translation, Vector2f scale) {
+		Matrix4f matrix = new Matrix4f();
 		matrix.setIdentity();
 		matrix.translate(translation);
-		matrix.scale(new Vector3fF(scale.x, scale.y, 1f));
+		matrix.scale(new Vector3f(scale.x, scale.y, 1f));
 		return matrix;
 	}
 
-	public static float barryCentric(Vector3fF p1, Vector3fF p2, Vector3fF p3, Vector2f pos) {
+	public static float barryCentric(Vector3f p1, Vector3f p2, Vector3f p3, Vector2f pos) {
 		float det = (p2.z - p3.z) * (p1.x - p3.x) + (p3.x - p2.x) * (p1.z - p3.z);
 		float l1 = ((p2.z - p3.z) * (pos.x - p3.x) + (p3.x - p2.x) * (pos.y - p3.z)) / det;
 		float l2 = ((p3.z - p1.z) * (pos.x - p3.x) + (p1.x - p3.x) * (pos.y - p3.z)) / det;
@@ -24,24 +24,24 @@ public class Maths {
 		return l1 * p1.y + l2 * p2.y + l3 * p3.y;
 	}
 
-	public static VMatrix4f createTransformationMatrix(Vector3fF translation, float rx, float ry, float rz, float scale) {
-		VMatrix4f matrix = new VMatrix4f();
+	public static Matrix4f createTransformationMatrix(Vector3f translation, float rx, float ry, float rz, float scale) {
+		Matrix4f matrix = new Matrix4f();
 		matrix.translate(translation);
-		matrix.rotate((float) Math.toRadians(rx), new Vector3fF(1, 0, 0));
-		matrix.rotate((float) Math.toRadians(ry), new Vector3fF(0, 1, 0));
-		matrix.rotate((float) Math.toRadians(rz), new Vector3fF(0, 0, 1));
-		matrix.scale(new Vector3fF(scale, scale, scale));
+		matrix.rotate((float) Math.toRadians(rx), new Vector3f(1, 0, 0));
+		matrix.rotate((float) Math.toRadians(ry), new Vector3f(0, 1, 0));
+		matrix.rotate((float) Math.toRadians(rz), new Vector3f(0, 0, 1));
+		matrix.scale(new Vector3f(scale, scale, scale));
 		return matrix;
 	}
 
-	public static VMatrix4f createViewMatrix(ICamera camera) {
-		VMatrix4f viewMatrix = new VMatrix4f();
+	public static Matrix4f createViewMatrix(ICamera camera) {
+		Matrix4f viewMatrix = new Matrix4f();
 		viewMatrix.setIdentity();
-		viewMatrix.rotate((float) Math.toRadians(camera.getPitch()), new Vector3fF(1, 0, 0));
-		viewMatrix.rotate((float) Math.toRadians(camera.getYaw()), new Vector3fF(0, 1, 0));
-		viewMatrix.rotate((float) Math.toRadians(camera.getRoll()), new Vector3fF(0, 0, 1));
-		Vector3fF cameraPos = camera.getPosition();
-		Vector3fF negativeCameraPos = new Vector3fF(-cameraPos.x, -cameraPos.y, -cameraPos.z);
+		viewMatrix.rotate((float) Math.toRadians(camera.getPitch()), new Vector3f(1, 0, 0));
+		viewMatrix.rotate((float) Math.toRadians(camera.getYaw()), new Vector3f(0, 1, 0));
+		viewMatrix.rotate((float) Math.toRadians(camera.getRoll()), new Vector3f(0, 0, 1));
+		Vector3f cameraPos = camera.getPosition();
+		Vector3f negativeCameraPos = new Vector3f(-cameraPos.x, -cameraPos.y, -cameraPos.z);
 		viewMatrix.translate(negativeCameraPos);
 		return viewMatrix;
 	}
@@ -69,7 +69,7 @@ public class Maths {
 	}
 
 	/* distance between 2 points in 3D */
-	public static float distance2Points(Vector3fF point1, Vector3fF point2) {
+	public static float distance2Points(Vector3f point1, Vector3f point2) {
 		float distance = 0;
 		distance = Maths.sqr(point1.x - point2.x);
 		distance += Maths.sqr(point1.y - point2.y);
@@ -194,7 +194,7 @@ public class Maths {
 		return value1 - (int) Math.floor(value1 / value2) * value2;
 	}
 
-	public static boolean pointIsOnRay(Vector3fF point, Vector3fF ray) {
+	public static boolean pointIsOnRay(Vector3f point, Vector3f ray) {
 		boolean isOnRay = false;
 
 		float x = point.x;

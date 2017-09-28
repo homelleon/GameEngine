@@ -18,8 +18,8 @@ import primitive.buffer.VBO;
 import primitive.model.Mesh;
 import shader.particle.ParticleShader;
 import tool.math.Maths;
-import tool.math.VMatrix4f;
-import tool.math.vector.Vector3fF;
+import tool.math.Matrix4f;
+import tool.math.vector.Vector3f;
 
 public class ParticleRenderer {
 
@@ -35,7 +35,7 @@ public class ParticleRenderer {
 	private VBO vbo;
 	private int pointer = 0;
 
-	public ParticleRenderer(VMatrix4f projectionMatrix) {
+	public ParticleRenderer(Matrix4f projectionMatrix) {
 		BufferLoader vertexLoader = Loader.getInstance().getVertexLoader();
 		this.vbo = vertexLoader.createEmptyVbo(INSTANCE_DATA_LENGTH * MAX_INSTANCES);
 		quad = vertexLoader.loadToVAO(VERTICES, 2);		
@@ -52,7 +52,7 @@ public class ParticleRenderer {
 	}
 
 	public void render(Map<ParticleMaterial, List<Particle>> particles, ICamera camera) {
-		VMatrix4f viewMatrix = Maths.createViewMatrix(camera);
+		Matrix4f viewMatrix = Maths.createViewMatrix(camera);
 		prepare();
 		for (ParticleMaterial texture : particles.keySet()) {
 			bindTexture(texture);
@@ -92,9 +92,9 @@ public class ParticleRenderer {
 		shader.loadNumberOfRows(material.getTexture().getNumberOfRows());
 	}
 
-	private void updateModelViewMatrix(Vector3fF position, float rotation, float scale, VMatrix4f viewMatrix,
+	private void updateModelViewMatrix(Vector3f position, float rotation, float scale, Matrix4f viewMatrix,
 			float[] vboData) {
-		VMatrix4f modelMatrix = new VMatrix4f();
+		Matrix4f modelMatrix = new Matrix4f();
 		modelMatrix.translate(position);
 		modelMatrix.m[0][0] = viewMatrix.m[0][0];
 		modelMatrix.m[0][1] = viewMatrix.m[1][0];
@@ -106,13 +106,13 @@ public class ParticleRenderer {
 		modelMatrix.m[2][1] = viewMatrix.m[1][2];
 		modelMatrix.m[2][2] = viewMatrix.m[2][2];
 
-		VMatrix4f modelViewMatrix = VMatrix4f.mul(viewMatrix, modelMatrix);
-		modelViewMatrix.rotate((float) Math.toRadians(rotation), new Vector3fF(0, 0, 1));
-		modelViewMatrix.scale(new Vector3fF(scale, scale, scale));
+		Matrix4f modelViewMatrix = Matrix4f.mul(viewMatrix, modelMatrix);
+		modelViewMatrix.rotate((float) Math.toRadians(rotation), new Vector3f(0, 0, 1));
+		modelViewMatrix.scale(new Vector3f(scale, scale, scale));
 		storeMatrixData(modelViewMatrix, vboData);
 	}
 
-	private void storeMatrixData(VMatrix4f matrix, float[] vboData) {
+	private void storeMatrixData(Matrix4f matrix, float[] vboData) {
 		vboData[pointer++] = matrix.m[0][0];
 		vboData[pointer++] = matrix.m[0][1];
 		vboData[pointer++] = matrix.m[0][2];

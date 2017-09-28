@@ -10,8 +10,8 @@ import object.camera.ICamera;
 import object.light.ILight;
 import shader.ShaderProgram;
 import tool.math.Maths;
-import tool.math.VMatrix4f;
-import tool.math.vector.Vector3fF;
+import tool.math.Matrix4f;
+import tool.math.vector.Vector3f;
 
 public class TerrainShader extends ShaderProgram {
 
@@ -73,7 +73,7 @@ public class TerrainShader extends ShaderProgram {
 		super.loadInt("shadowMap", 5);
 	}
 
-	public void loadToShadowSpaceMatrix(VMatrix4f matrix) {
+	public void loadToShadowSpaceMatrix(Matrix4f matrix) {
 		super.loadMatrix("toShadowMapSpace", matrix);
 	}
 
@@ -89,7 +89,7 @@ public class TerrainShader extends ShaderProgram {
 	}
 
 	public void loadSkyColour(float r, float g, float b) {
-		super.loadVector("skyColour", new Vector3fF(r, g, b));
+		super.loadVector("skyColour", new Vector3f(r, g, b));
 	}
 
 	public void loadShineVariables(float damper, float reflectivity) {
@@ -101,7 +101,7 @@ public class TerrainShader extends ShaderProgram {
 		super.loadFloat("fogDensity", density);
 	}
 
-	public void loadTranformationMatrix(VMatrix4f matrix) {
+	public void loadTranformationMatrix(Matrix4f matrix) {
 		super.loadMatrix("transformationMatrix", matrix);
 	}
 
@@ -115,19 +115,19 @@ public class TerrainShader extends ShaderProgram {
 				super.loadVector("lightColour[" + i + "]", light.getColour());
 				super.loadVector("attenuation[" + i + "]", light.getAttenuation());
 			} else {
-				super.loadVector("lightPosition[" + i + "]", new Vector3fF(0, 0, 0));
-				super.loadVector("lightColour[" + i + "]", new Vector3fF(0, 0, 0));
-				super.loadVector("attenuation[" + i + "]", new Vector3fF(1, 0, 0));
+				super.loadVector("lightPosition[" + i + "]", new Vector3f(0, 0, 0));
+				super.loadVector("lightColour[" + i + "]", new Vector3f(0, 0, 0));
+				super.loadVector("attenuation[" + i + "]", new Vector3f(1, 0, 0));
 			}
 		}
 	}
 
 	public void loadViewMatrix(ICamera camera) {
-		VMatrix4f viewMatrix = Maths.createViewMatrix(camera);
+		Matrix4f viewMatrix = Maths.createViewMatrix(camera);
 		super.loadMatrix("viewMatrix", viewMatrix);
 	}
 
-	public void loadProjectionMatrix(VMatrix4f projection) {
+	public void loadProjectionMatrix(Matrix4f projection) {
 		super.loadMatrix("projectionMatrix", projection);
 	}
 

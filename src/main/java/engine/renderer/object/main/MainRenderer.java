@@ -28,7 +28,6 @@ import renderer.object.entity.IEntityRendererManager;
 import renderer.object.entity.NormalEntityRenderer;
 import renderer.object.entity.TexturedEntityRenderer;
 import renderer.object.environment.EnvironmentMapRenderer;
-import renderer.object.shadow.ShadowMapEntityRenderer;
 import renderer.object.shadow.ShadowMapMasterRenderer;
 import renderer.object.skybox.SkyboxRenderer;
 import renderer.object.terrain.TerrainRenderer;
@@ -36,21 +35,19 @@ import renderer.object.voxel.VoxelRenderer;
 import renderer.processor.ISceneProcessor;
 import renderer.processor.SceneProcessor;
 import renderer.viewCulling.frustum.Frustum;
-import shader.shadow.ShadowShader;
-import tool.math.VMatrix4f;
+import tool.math.Matrix4f;
 import tool.openGL.OGLUtils;
 
 public class MainRenderer implements IMainRenderer {
 
-	private VMatrix4f projectionMatrix;
-	private VMatrix4f normalDistProjectionMatrix;
-	private VMatrix4f lowDistProjectionMatrix;
+	private Matrix4f projectionMatrix;
+	private Matrix4f normalDistProjectionMatrix;
+	private Matrix4f lowDistProjectionMatrix;
 	private TerrainRenderer terrainRenderer;	
 	private SkyboxRenderer skyboxRenderer;
 	private VoxelRenderer voxelRenderer;
 	private BoundingRenderer boundingRenderer;
 	private ShadowMapMasterRenderer shadowMapRenderer;
-	private ShadowMapEntityRenderer shadowEntityRenderer;
 	private EnvironmentMapRenderer enviroRenderer;
 	
 	IEntityRendererManager entityRendererManager; 
@@ -89,7 +86,6 @@ public class MainRenderer implements IMainRenderer {
 		this.voxelRenderer = new VoxelRenderer(projectionMatrix);
 		this.boundingRenderer = new BoundingRenderer(projectionMatrix);
 		this.shadowMapRenderer = new ShadowMapMasterRenderer(scene.getCamera());
-		shadowEntityRenderer = new ShadowMapEntityRenderer(new ShadowShader(), projectionMatrix);
 		scene.setFrustum(this.frustum);
 		this.enviroRenderer = new EnvironmentMapRenderer();
 		this.processor = new SceneProcessor();
@@ -133,17 +129,15 @@ public class MainRenderer implements IMainRenderer {
 			boundingRenderer.render(texturedEntities, normalEntities, scene.getCamera());
 		}
 		
-		VMatrix4f shadowMapSpaceMatrix = shadowMapRenderer.getToShadowMapSpaceMatrix();
+		Matrix4f shadowMapSpaceMatrix = shadowMapRenderer.getToShadowMapSpaceMatrix();
 		this.entityRendererManager.render(clipPlane, scene.getLights().getAll(), scene.getCamera(), shadowMapSpaceMatrix, environmentMap, false);
-		shadowEntityRenderer.render(texturedEntities);
 		checkWiredFrameOn(terrainWiredFrame);
 		voxelRenderer.render(scene.getChunks(), clipPlane, scene.getLights().getAll(), scene.getCamera(), shadowMapSpaceMatrix,
 				frustum);
 		terrainRenderer.render(terrains, clipPlane, scene.getLights().getAll(), scene.getCamera(), shadowMapSpaceMatrix);
 		checkWiredFrameOff(terrainWiredFrame);
 
-		skyboxRenderer.render(scene.getCamera());
-		
+		skyboxRenderer.render(scene.getCamera());		
 		terrains.clear();
 		texturedEntities.clear();
 		normalEntities.clear();
@@ -152,8 +146,9 @@ public class MainRenderer implements IMainRenderer {
 	
 	private void renderEditorScene(IScene scene) {
 		prepare();
-		VMatrix4f shadowMapSpaceMatrix = shadowMapRenderer.getToShadowMapSpaceMatrix();
+		Matrix4f shadowMapSpaceMatrix = shadowMapRenderer.getToShadowMapSpaceMatrix();
 		this.entityRendererManager.render(EngineSettings.NO_CLIP, scene.getLights().getAll(), scene.getCamera(), shadowMapSpaceMatrix, null, false);
+		terrains.clear();
 		texturedEntities.clear();
 		normalEntities.clear();
 		decorEntities.clear();
@@ -174,6 +169,8 @@ public class MainRenderer implements IMainRenderer {
 			.forEach((type, list) -> list.parallelStream()
 					.forEach(entity -> 
 						processEntityByType(type, entity)));
+		scene.getTerrains().getAll()
+		.forEach(terrain -> processor.processTerrain(terrain, terrains));
 		shadowMapRenderer.render(texturedEntities, terrains, normalEntities, scene.getSun(), scene.getCamera());
 		texturedEntities.clear();
 		normalEntities.clear();
@@ -200,7 +197,7 @@ public class MainRenderer implements IMainRenderer {
 	}
 
 	private void createProjectionMatrix() {
-		normalDistProjectionMatrix = new VMatrix4f();
+		normalDistProjectionMatrix = new Matrix4f();
 		float aspectRatio = (float) Display.getWidth() / (float) Display.getHeight();
 		float y_scale = (float) (1f / Math.tan(Math.toRadians(EngineSettings.FOV / 2f)));
 		float x_scale = y_scale / aspectRatio;
@@ -216,7 +213,7 @@ public class MainRenderer implements IMainRenderer {
 	}
 
 	private void createLowDistProjectionMatrix() {
-		lowDistProjectionMatrix = new VMatrix4f();
+		lowDistProjectionMatrix = new Matrix4f();
 		float farPlane = 100;
 		float aspectRatio = (float) Display.getWidth() / (float) Display.getHeight();
 		float y_scale = (float) (1f / Math.tan(Math.toRadians(EngineSettings.FOV / 2f)));
@@ -232,7 +229,7 @@ public class MainRenderer implements IMainRenderer {
 	}
 
 	@Override
-	public VMatrix4f getProjectionMatrix() {
+	public Matrix4f getProjectionMatrix() {
 		return projectionMatrix;
 	}
 

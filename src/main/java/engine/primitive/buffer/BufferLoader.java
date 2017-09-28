@@ -13,7 +13,7 @@ import object.bounding.BoundingBox;
 import object.bounding.BoundingSphere;
 import primitive.model.Mesh;
 import tool.math.Maths;
-import tool.math.vector.Vector3fF;
+import tool.math.vector.Vector3f;
 
 /**
  * Vertex buffer and vertex array loader.
@@ -238,10 +238,10 @@ public class BufferLoader {
 	 */
 	private float getDistFarVertToCenter(float[] positions) {
 		float distance = 0;
-		Vector3fF center = new Vector3fF(0, 0, 0);
-		Vector3fF point;
+		Vector3f center = new Vector3f(0, 0, 0);
+		Vector3f point;
 		for (int i = 1; i < positions.length / 3; i++) {
-			point = new Vector3fF(positions[3 * i - 3], positions[3 * i - 2], positions[3 * i - 1]);
+			point = new Vector3f(positions[3 * i - 3], positions[3 * i - 2], positions[3 * i - 1]);
 			float length = Maths.distance2Points(point, center);
 			if (length > distance) {
 				distance = length;

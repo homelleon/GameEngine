@@ -1,41 +1,41 @@
 package tool.meshLoader.objloader;
 
 import tool.math.vector.Vector2f;
-import tool.math.vector.Vector3fF;
+import tool.math.vector.Vector3f;
 
 public class Vertex {
 
 	public static final int BYTES = 14 * Float.BYTES;
 	public static final int FLOATS = 14;
 	
-	private Vector3fF pos;
-	private Vector3fF normal;
+	private Vector3f pos;
+	private Vector3f normal;
 	private Vector2f textureCoord;
-	private Vector3fF tangent;
-	private Vector3fF bitangent;
+	private Vector3f tangent;
+	private Vector3f bitangent;
 	
 	public Vertex(){	
 	}
 	
-	public Vertex(Vector3fF pos)
+	public Vertex(Vector3f pos)
 	{
 		this.setPos(pos);
 		this.setTextureCoord(new Vector2f(0,0));
-		this.setNormal(new Vector3fF(0,0,0));
+		this.setNormal(new Vector3f(0,0,0));
 	}
 	
-	public Vertex(Vector3fF pos, Vector2f texture)
+	public Vertex(Vector3f pos, Vector2f texture)
 	{
 		this.setPos(pos);
 		this.setTextureCoord(texture);
-		this.setNormal(new Vector3fF(0,0,0));
+		this.setNormal(new Vector3f(0,0,0));
 	}
 
-	public Vector3fF getPos() {
+	public Vector3f getPos() {
 		return pos;
 	}
 
-	public void setPos(Vector3fF pos) {
+	public void setPos(Vector3f pos) {
 		this.pos = pos;
 	}
 
@@ -48,27 +48,27 @@ public class Vertex {
 	}
 
 
-	public Vector3fF getNormal() {
+	public Vector3f getNormal() {
 		return normal;
 	}
 
-	public void setNormal(Vector3fF normal) {
+	public void setNormal(Vector3f normal) {
 		this.normal = normal;
 	}
 
-	public Vector3fF getTangent() {
+	public Vector3f getTangent() {
 		return tangent;
 	}
 
-	public void setTangent(Vector3fF tangent) {
+	public void setTangent(Vector3f tangent) {
 		this.tangent = tangent;
 	}
 
-	public Vector3fF getBitangent() {
+	public Vector3f getBitangent() {
 		return bitangent;
 	}
 
-	public void setBitangent(Vector3fF bitangent) {
+	public void setBitangent(Vector3f bitangent) {
 		this.bitangent = bitangent;
 	}
 }

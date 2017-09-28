@@ -1,7 +1,7 @@
 package object.particle;
 
 import object.Nameable;
-import tool.math.vector.Vector3fF;
+import tool.math.vector.Vector3f;
 
 public interface IParticleSystem extends Nameable {
 
@@ -13,7 +13,7 @@ public interface IParticleSystem extends Nameable {
 	 *            - A value between 0 and 1 indicating how far from the chosen
 	 *            direction particles can deviate.
 	 */
-	public void setDirection(Vector3fF direction, float deviation);
+	public void setDirection(Vector3f direction, float deviation);
 
 	public void randomizeRotation();
 
@@ -35,9 +35,9 @@ public interface IParticleSystem extends Nameable {
 	 */
 	public void setScaleError(float error);
 
-	public void setPosition(Vector3fF position);
+	public void setPosition(Vector3f position);
 	
-	public Vector3fF getPosition();
+	public Vector3f getPosition();
 
 	public void generateParticles();
 

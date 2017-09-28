@@ -5,7 +5,6 @@ import java.util.Map;
 
 import org.lwjgl.opengl.GL11;
 
-import object.camera.ICamera;
 import object.entity.entity.IEntity;
 import object.texture.material.Material;
 import primitive.buffer.VAO;
@@ -13,13 +12,13 @@ import primitive.model.Mesh;
 import primitive.model.Model;
 import shader.shadow.ShadowShader;
 import tool.math.Maths;
-import tool.math.VMatrix4f;
+import tool.math.Matrix4f;
 import tool.math.vector.Vector2f;
 import tool.openGL.OGLUtils;
 
 public class ShadowMapEntityRenderer {
 
-	private VMatrix4f projectionViewMatrix;
+	private Matrix4f projectionViewMatrix;
 	private ShadowShader shader;
 
 	/**
@@ -30,7 +29,7 @@ public class ShadowMapEntityRenderer {
 	 *            - the orthographic projection matrix multiplied by the light's
 	 *            "view" matrix.
 	 */
-	public ShadowMapEntityRenderer(ShadowShader shader, VMatrix4f projectionViewMatrix) {
+	public ShadowMapEntityRenderer(ShadowShader shader, Matrix4f projectionViewMatrix) {
 		this.shader = shader;
 		this.projectionViewMatrix = projectionViewMatrix;
 	}
@@ -92,9 +91,9 @@ public class ShadowMapEntityRenderer {
 	 *            - the entity to be prepared for rendering.
 	 */
 	private void prepareInstance(IEntity entity) {
-		VMatrix4f transformationMatrix = Maths.createTransformationMatrix(entity.getPosition(), entity.getRotation().getX(),
+		Matrix4f transformationMatrix = Maths.createTransformationMatrix(entity.getPosition(), entity.getRotation().getX(),
 				entity.getRotation().getY(), entity.getRotation().getZ(), entity.getScale());
-		VMatrix4f mvpMatrix = VMatrix4f.mul(projectionViewMatrix, transformationMatrix);
+		Matrix4f mvpMatrix = Matrix4f.mul(projectionViewMatrix, transformationMatrix);
 		shader.loadMvpMatrix(mvpMatrix);
 		Vector2f textureOffset = entity.getTextureOffset();
 		shader.loadOffset(textureOffset.x, textureOffset.y);

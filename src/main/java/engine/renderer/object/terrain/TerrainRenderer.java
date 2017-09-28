@@ -14,14 +14,14 @@ import primitive.buffer.VAO;
 import primitive.model.Mesh;
 import shader.terrain.TerrainShader;
 import tool.math.Maths;
-import tool.math.VMatrix4f;
-import tool.math.vector.Vector3fF;
+import tool.math.Matrix4f;
+import tool.math.vector.Vector3f;
 
 public class TerrainRenderer {
 
 	private TerrainShader shader;
 
-	public TerrainRenderer(VMatrix4f projectionMatrix) {
+	public TerrainRenderer(Matrix4f projectionMatrix) {
 		this.shader = new TerrainShader();
 		shader.start();
 		shader.loadProjectionMatrix(projectionMatrix);
@@ -30,7 +30,7 @@ public class TerrainRenderer {
 	}
 
 	public void render(Collection<ITerrain> terrains, Vector4f clipPlane, Collection<ILight> lights,
-			ICamera camera, VMatrix4f toShadowMapSpace) {
+			ICamera camera, Matrix4f toShadowMapSpace) {
 		shader.start();
 		shader.loadClipPlane(clipPlane);
 		shader.loadSkyColour(EngineSettings.DISPLAY_RED, EngineSettings.DISPLAY_GREEN, EngineSettings.DISPLAY_BLUE);
@@ -100,8 +100,8 @@ public class TerrainRenderer {
 	}
 
 	private void loadModelMatrix(ITerrain terrain) {
-		VMatrix4f transformationMatrix = Maths
-				.createTransformationMatrix(new Vector3fF(terrain.getX(), 0, terrain.getZ()), 0, 0, 0, 1);
+		Matrix4f transformationMatrix = Maths
+				.createTransformationMatrix(new Vector3f(terrain.getX(), 0, terrain.getZ()), 0, 0, 0, 1);
 		shader.loadTranformationMatrix(transformationMatrix);
 	}
 

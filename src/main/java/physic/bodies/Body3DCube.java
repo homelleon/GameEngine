@@ -3,11 +3,11 @@ package bodies;
 import intersects.IntersectData;
 import object.entity.entity.IEntity;
 import physicMain.PE10;
-import tool.math.vector.Vector3fF;
+import tool.math.vector.Vector3f;
 
 public class Body3DCube extends BodyBasic implements IBody {
 
-	public Body3DCube(Vector3fF position, float size) {
+	public Body3DCube(Vector3f position, float size) {
 		super(position, size);
 		typeID = PE10.BODY_3D_CUBE;
 	}
@@ -18,12 +18,12 @@ public class Body3DCube extends BodyBasic implements IBody {
 	}
 
 	@Override
-	public Vector3fF getPosition() {
+	public Vector3f getPosition() {
 		return super.getPosition();
 	}
 	
 	@Override
-	public void setPosition(Vector3fF position) {
+	public void setPosition(Vector3f position) {
 		super.setPosition(position);
 	}
 	
@@ -42,7 +42,7 @@ public class Body3DCube extends BodyBasic implements IBody {
 	}
 	
 	@Override
-	public void doAcceleration(float value, Vector3fF direction) {
+	public void doAcceleration(float value, Vector3f direction) {
 		
 	}
 	

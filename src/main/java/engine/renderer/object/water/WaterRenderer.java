@@ -18,8 +18,8 @@ import primitive.buffer.VAO;
 import primitive.model.Mesh;
 import shader.water.WaterShader;
 import tool.math.Maths;
-import tool.math.VMatrix4f;
-import tool.math.vector.Vector3fF;
+import tool.math.Matrix4f;
+import tool.math.vector.Vector3f;
 
 public class WaterRenderer {
 
@@ -36,7 +36,7 @@ public class WaterRenderer {
 
 	private float moveFactor = 0;
 
-	public WaterRenderer(WaterShader shader, VMatrix4f projectionMatrix, WaterFrameBuffers fbos) {
+	public WaterRenderer(WaterShader shader, Matrix4f projectionMatrix, WaterFrameBuffers fbos) {
 		this.shader = shader;
 		this.fbos = fbos;
 		TextureBufferLoader textureLoader = Loader.getInstance().getTextureLoader();
@@ -54,8 +54,8 @@ public class WaterRenderer {
 	public void render(Collection<WaterTile> water, ICamera camera, Light sun) {
 		prepareRender(camera, sun);
 		for (WaterTile tile : water) {
-			VMatrix4f modelMatrix = Maths.createTransformationMatrix(
-					new Vector3fF(tile.getX(), tile.getHeight(), tile.getZ()), 0, 0, 0, tile.getSize());
+			Matrix4f modelMatrix = Maths.createTransformationMatrix(
+					new Vector3f(tile.getX(), tile.getHeight(), tile.getZ()), 0, 0, 0, tile.getSize());
 			shader.loadModelMatrix(modelMatrix);
 			shader.loadTilingSize(tile.getTilingSize());
 			shader.loadWaveStrength(tile.getWaveStrength());

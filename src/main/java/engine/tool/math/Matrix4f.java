@@ -2,45 +2,23 @@ package tool.math;
 
 import java.nio.FloatBuffer;
 
-import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector4f;
 
 import tool.math.vector.Vector2f;
-import tool.math.vector.Vector3fF;
+import tool.math.vector.Vector3f;
 
 
-public class VMatrix4f {
+public class Matrix4f {
 
 	public float[][] m;
 	
-	public VMatrix4f()
+	public Matrix4f()
 	{
 		load(new float[4][4]);
 		setIdentity();
 	}
 	
-	public Matrix4f getMatrix4f() {
-		Matrix4f m = new Matrix4f();
-		m.m00 = this.m[0][0];
-		m.m01 = this.m[0][1];
-		m.m02 = this.m[0][2];
-		m.m03 = this.m[0][3];
-		m.m10 = this.m[1][0];
-		m.m11 = this.m[1][1];
-		m.m12 = this.m[1][2];
-		m.m23 = this.m[1][3];
-		m.m20 = this.m[2][0];
-		m.m21 = this.m[2][1];
-		m.m22 = this.m[2][2];
-		m.m23 = this.m[2][3];
-		m.m30 = this.m[3][0];
-		m.m31 = this.m[3][1];
-		m.m32 = this.m[3][2];
-		m.m33 = this.m[3][3];
-		return m;
-	}
-	
-	public VMatrix4f Zero()
+	public Matrix4f Zero()
 	{
 		m[0][0] = 0; m[0][1] = 0; m[0][2] = 0; m[0][3] = 0;
 		m[1][0] = 0; m[1][1] = 0; m[1][2] = 0; m[1][3] = 0;
@@ -50,7 +28,7 @@ public class VMatrix4f {
 		return this;
 	}
 	
-	public VMatrix4f setIdentity()
+	public Matrix4f setIdentity()
 	{
 		m[0][0] = 1; m[0][1] = 0; m[0][2] = 0; m[0][3] = 0;
 		m[1][0] = 0; m[1][1] = 1; m[1][2] = 0; m[1][3] = 0;
@@ -60,7 +38,7 @@ public class VMatrix4f {
 		return this;
 	}
 	
-	public VMatrix4f Orthographic2D(int width, int height)
+	public Matrix4f Orthographic2D(int width, int height)
 	{
 		m[0][0] = 2f/(float)width; 	m[0][1] = 0; 			    m[0][2] = 0; m[0][3] = -1;
 		m[1][0] = 0;		 		m[1][1] = 2f/(float)height; m[1][2] = 0; m[1][3] = -1;
@@ -70,7 +48,7 @@ public class VMatrix4f {
 		return this;
 	}
 	
-	public VMatrix4f translate(Vector3fF translation)
+	public Matrix4f translate(Vector3f translation)
 	{
 		m[3][0] += m[0][0] * translation.x + m[1][0] * translation.y + m[2][0] * translation.z;
 		m[3][1] += m[0][1] * translation.x + m[1][1] * translation.y + m[2][1] * translation.z;
@@ -80,7 +58,7 @@ public class VMatrix4f {
 		return this;
 	}
 	
-	public VMatrix4f translate(Vector2f translation) {		
+	public Matrix4f translate(Vector2f translation) {		
 		m[3][0] += m[0][0] * translation.x + m[1][0] * translation.y;
 		m[3][1] += m[0][1] * translation.x + m[1][1] * translation.y;
 		m[3][2] += m[0][2] * translation.x + m[1][2] * translation.y;
@@ -98,7 +76,7 @@ public class VMatrix4f {
 		return new Vector4f(x,y,z,w);
 	}
 	
-	public static Vector4f transform(VMatrix4f matrix, Vector4f plane) {
+	public static Vector4f transform(Matrix4f matrix, Vector4f plane) {
 		float x = matrix.m[0][0] * plane.x + matrix.m[1][0] * plane.y + matrix.m[2][0] * plane.z + matrix.m[3][0] * plane.w;
 		float y = matrix.m[0][1] * plane.x + matrix.m[1][1] * plane.y + matrix.m[2][1] * plane.z + matrix.m[3][1] * plane.w;
 		float z = matrix.m[0][2] * plane.x + matrix.m[1][2] * plane.y + matrix.m[2][2] * plane.z + matrix.m[3][2] * plane.w;
@@ -107,11 +85,11 @@ public class VMatrix4f {
 		return new Vector4f(x,y,z,w);
 	}
 	
-	public VMatrix4f rotate(Vector3fF rotation)
+	public Matrix4f rotate(Vector3f rotation)
 	{
-		VMatrix4f rx = new VMatrix4f();
-		VMatrix4f ry = new VMatrix4f();
-		VMatrix4f rz = new VMatrix4f();
+		Matrix4f rx = new Matrix4f();
+		Matrix4f ry = new Matrix4f();
+		Matrix4f rz = new Matrix4f();
 		
 		float x = (float)Math.toRadians(rotation.getX());
 		float y = (float)Math.toRadians(rotation.getY());
@@ -137,7 +115,7 @@ public class VMatrix4f {
 		return this;
 	}
 	
-	public VMatrix4f rotate(float angle, Vector3fF axis) {
+	public Matrix4f rotate(float angle, Vector3f axis) {
 		
 		float c = (float) Math.cos(angle);
 		float s = (float) Math.sin(angle);
@@ -187,7 +165,7 @@ public class VMatrix4f {
 		return this;
 	}
 	
-	public VMatrix4f scale(Vector3fF scaling)
+	public Matrix4f scale(Vector3f scaling)
 	{
 		m[0][0] = m[0][0] * scaling.x;
 		m[0][1] = m[0][1] * scaling.x;
@@ -205,7 +183,7 @@ public class VMatrix4f {
 		return this;
 	}
 	
-	public VMatrix4f OrthographicProjection(float l, float r, float b, float t, float n, float f){
+	public Matrix4f OrthographicProjection(float l, float r, float b, float t, float n, float f){
 		
 		m[0][0] = 2.0f/(r-l); 	m[0][1] = 0; 			m[0][2] = 0; 			m[0][3] = -(r+l)/(r-l);
 		m[1][0] = 0;			m[1][1] = 2.0f/(t-b); 	m[1][2] = 0; 			m[1][3] = -(t+b)/(t-b);
@@ -215,7 +193,7 @@ public class VMatrix4f {
 		return this;
 	}
 	
-	public VMatrix4f PerspectiveProjection(float fovY, float width, float height, float zNear, float zFar)
+	public Matrix4f PerspectiveProjection(float fovY, float width, float height, float zNear, float zFar)
 	{
 		float tanFOV = (float) Math.tan(Math.toRadians(fovY/2));
 		float aspectRatio = width/height;
@@ -228,11 +206,11 @@ public class VMatrix4f {
 		return this;
 	}
 	
-	public VMatrix4f View(Vector3fF forward, Vector3fF up)
+	public Matrix4f View(Vector3f forward, Vector3f up)
 	{
-		Vector3fF f = forward;
-		Vector3fF u = up;
-		Vector3fF r = u.cross(f);
+		Vector3f f = forward;
+		Vector3f u = up;
+		Vector3f r = u.cross(f);
 		
 		m[0][0] = r.getX(); m[0][1] = r.getY(); m[0][2] = r.getZ(); m[0][3] = 0;
 		m[1][0] = u.getX(); m[1][1] = u.getY(); m[1][2] = u.getZ(); m[1][3] = 0;
@@ -243,31 +221,31 @@ public class VMatrix4f {
 	}
 	
 	
-	public VMatrix4f mul(VMatrix4f r){
+	public Matrix4f mul(Matrix4f matrix){
 		
-		return clone(mul(this, r));
+		return load(mul(this, matrix));
 	}
 	
-	public static VMatrix4f mul(VMatrix4f l, VMatrix4f r){
-		VMatrix4f m = new VMatrix4f();
-		m.m[0][0] = l.m[0][0] * r.m[0][0] + l.m[1][0] * r.m[0][1] + l.m[2][0] * r.m[0][2] + l.m[3][0] * r.m[0][3];
-		m.m[0][1] = l.m[0][1] * r.m[0][0] + l.m[1][1] * r.m[0][1] + l.m[2][1] * r.m[0][2] + l.m[3][1] * r.m[0][3];
-		m.m[0][2] = l.m[0][2] * r.m[0][0] + l.m[1][2] * r.m[0][1] + l.m[2][2] * r.m[0][2] + l.m[3][2] * r.m[0][3];
-		m.m[0][3] = l.m[0][3] * r.m[0][0] + l.m[1][3] * r.m[0][1] + l.m[2][3] * r.m[0][2] + l.m[3][3] * r.m[0][3];
-		m.m[1][0] = l.m[0][0] * r.m[1][0] + l.m[1][0] * r.m[1][1] + l.m[2][0] * r.m[1][2] + l.m[3][0] * r.m[1][3];
-		m.m[1][1] = l.m[0][1] * r.m[1][0] + l.m[1][1] * r.m[1][1] + l.m[2][1] * r.m[1][2] + l.m[3][1] * r.m[1][3];
-		m.m[1][2] = l.m[0][2] * r.m[1][0] + l.m[1][2] * r.m[1][1] + l.m[2][2] * r.m[1][2] + l.m[3][2] * r.m[1][3];
-		m.m[1][3] = l.m[0][3] * r.m[1][0] + l.m[1][3] * r.m[1][1] + l.m[2][3] * r.m[1][2] + l.m[3][3] * r.m[1][3];
-		m.m[2][0] = l.m[0][0] * r.m[2][0] + l.m[1][0] * r.m[2][1] + l.m[2][0] * r.m[2][2] + l.m[3][0] * r.m[2][3];
-		m.m[2][1] = l.m[0][1] * r.m[2][0] + l.m[1][1] * r.m[2][1] + l.m[2][1] * r.m[2][2] + l.m[3][1] * r.m[2][3];
-		m.m[2][2] = l.m[0][2] * r.m[2][0] + l.m[1][2] * r.m[2][1] + l.m[2][2] * r.m[2][2] + l.m[3][2] * r.m[2][3];
-		m.m[2][3] = l.m[0][3] * r.m[2][0] + l.m[1][3] * r.m[2][1] + l.m[2][3] * r.m[2][2] + l.m[3][3] * r.m[2][3];
-		m.m[3][0] = l.m[0][0] * r.m[3][0] + l.m[1][0] * r.m[3][1] + l.m[2][0] * r.m[3][2] + l.m[3][0] * r.m[3][3];
-		m.m[3][1] = l.m[0][1] * r.m[3][0] + l.m[1][1] * r.m[3][1] + l.m[2][1] * r.m[3][2] + l.m[3][1] * r.m[3][3];
-		m.m[3][2] = l.m[0][2] * r.m[3][0] + l.m[1][2] * r.m[3][1] + l.m[2][2] * r.m[3][2] + l.m[3][2] * r.m[3][3];
-		m.m[3][3] = l.m[0][3] * r.m[3][0] + l.m[1][3] * r.m[3][1] + l.m[2][3] * r.m[3][2] + l.m[3][3] * r.m[3][3];
+	public static Matrix4f mul(Matrix4f left, Matrix4f right){
+		Matrix4f matrix = new Matrix4f();
+		matrix.m[0][0] = left.m[0][0] * right.m[0][0] + left.m[1][0] * right.m[0][1] + left.m[2][0] * right.m[0][2] + left.m[3][0] * right.m[0][3];
+		matrix.m[0][1] = left.m[0][1] * right.m[0][0] + left.m[1][1] * right.m[0][1] + left.m[2][1] * right.m[0][2] + left.m[3][1] * right.m[0][3];
+		matrix.m[0][2] = left.m[0][2] * right.m[0][0] + left.m[1][2] * right.m[0][1] + left.m[2][2] * right.m[0][2] + left.m[3][2] * right.m[0][3];
+		matrix.m[0][3] = left.m[0][3] * right.m[0][0] + left.m[1][3] * right.m[0][1] + left.m[2][3] * right.m[0][2] + left.m[3][3] * right.m[0][3];
+		matrix.m[1][0] = left.m[0][0] * right.m[1][0] + left.m[1][0] * right.m[1][1] + left.m[2][0] * right.m[1][2] + left.m[3][0] * right.m[1][3];
+		matrix.m[1][1] = left.m[0][1] * right.m[1][0] + left.m[1][1] * right.m[1][1] + left.m[2][1] * right.m[1][2] + left.m[3][1] * right.m[1][3];
+		matrix.m[1][2] = left.m[0][2] * right.m[1][0] + left.m[1][2] * right.m[1][1] + left.m[2][2] * right.m[1][2] + left.m[3][2] * right.m[1][3];
+		matrix.m[1][3] = left.m[0][3] * right.m[1][0] + left.m[1][3] * right.m[1][1] + left.m[2][3] * right.m[1][2] + left.m[3][3] * right.m[1][3];
+		matrix.m[2][0] = left.m[0][0] * right.m[2][0] + left.m[1][0] * right.m[2][1] + left.m[2][0] * right.m[2][2] + left.m[3][0] * right.m[2][3];
+		matrix.m[2][1] = left.m[0][1] * right.m[2][0] + left.m[1][1] * right.m[2][1] + left.m[2][1] * right.m[2][2] + left.m[3][1] * right.m[2][3];
+		matrix.m[2][2] = left.m[0][2] * right.m[2][0] + left.m[1][2] * right.m[2][1] + left.m[2][2] * right.m[2][2] + left.m[3][2] * right.m[2][3];
+		matrix.m[2][3] = left.m[0][3] * right.m[2][0] + left.m[1][3] * right.m[2][1] + left.m[2][3] * right.m[2][2] + left.m[3][3] * right.m[2][3];
+		matrix.m[3][0] = left.m[0][0] * right.m[3][0] + left.m[1][0] * right.m[3][1] + left.m[2][0] * right.m[3][2] + left.m[3][0] * right.m[3][3];
+		matrix.m[3][1] = left.m[0][1] * right.m[3][0] + left.m[1][1] * right.m[3][1] + left.m[2][1] * right.m[3][2] + left.m[3][1] * right.m[3][3];
+		matrix.m[3][2] = left.m[0][2] * right.m[3][0] + left.m[1][2] * right.m[3][1] + left.m[2][2] * right.m[3][2] + left.m[3][2] * right.m[3][3];
+		matrix.m[3][3] = left.m[0][3] * right.m[3][0] + left.m[1][3] * right.m[3][1] + left.m[2][3] * right.m[3][2] + left.m[3][3] * right.m[3][3];
 
-		return m;
+		return matrix;
 	}
 	
 	public Quaternion mul(Quaternion v)
@@ -282,9 +260,9 @@ public class VMatrix4f {
 		return res;
 	}
 	
-	public VMatrix4f transpose()
+	public Matrix4f transpose()
 	{
-		VMatrix4f result = new VMatrix4f();
+		Matrix4f result = new Matrix4f();
 		
 		for(int i=0; i<4; i++){
 			for(int j=0; j<4; j++){
@@ -293,7 +271,7 @@ public class VMatrix4f {
 		}
 		return result;
 	}
-	public static VMatrix4f invert(VMatrix4f src, VMatrix4f dest) {
+	public static Matrix4f invert(Matrix4f src, Matrix4f dest) {
 		float determinant = src.determinant();
 
 		if (determinant != 0) {
@@ -304,7 +282,7 @@ public class VMatrix4f {
 			 * m30 m31 m32 m33
 			 */
 			if (dest == null)
-				dest = new VMatrix4f();
+				dest = new Matrix4f();
 			float determinant_inv = 1f/determinant;
 
 			// first row
@@ -384,101 +362,17 @@ public class VMatrix4f {
 		return f;
 	}
 	
-	public static VMatrix4f invert(VMatrix4f r)
+	public static Matrix4f invert(Matrix4f matrix)
 	{
-		float s0 = r.get(0, 0) * r.get(1, 1) - r.get(1, 0) * r.get(0, 1);
-		float s1 = r.get(0, 0) * r.get(1, 2) - r.get(1, 0) * r.get(0, 2);
-		float s2 = r.get(0, 0) * r.get(1, 3) - r.get(1, 0) * r.get(0, 3);
-		float s3 = r.get(0, 1) * r.get(1, 2) - r.get(1, 1) * r.get(0, 2);
-		float s4 = r.get(0, 1) * r.get(1, 3) - r.get(1, 1) * r.get(0, 3);
-		float s5 = r.get(0, 2) * r.get(1, 3) - r.get(1, 2) * r.get(0, 3);
-
-		float c5 = r.get(2, 2) * r.get(3, 3) - r.get(3, 2) * r.get(2, 3);
-		float c4 = r.get(2, 1) * r.get(3, 3) - r.get(3, 1) * r.get(2, 3);
-		float c3 = r.get(2, 1) * r.get(3, 2) - r.get(3, 1) * r.get(2, 2);
-		float c2 = r.get(2, 0) * r.get(3, 3) - r.get(3, 0) * r.get(2, 3);
-		float c1 = r.get(2, 0) * r.get(3, 2) - r.get(3, 0) * r.get(2, 2);
-		float c0 = r.get(2, 0) * r.get(3, 1) - r.get(3, 0) * r.get(2, 1);
-		
-		
-		float div = (s0 * c5 - s1 * c4 + s2 * c3 + s3 * c2 - s4 * c1 + s5 * c0);
-		if (div == 0) return null;
-		
-	    float invdet = 1.0f / div;
-	    
-	    VMatrix4f invM = new VMatrix4f();
-	    
-	    invM.set(0, 0, (r.get(1, 1) * c5 - r.get(1, 2) * c4 + r.get(1, 3) * c3) * invdet);
-	    invM.set(0, 1, (-r.get(0, 1) * c5 + r.get(0, 2) * c4 - r.get(0, 3) * c3) * invdet);
-	    invM.set(0, 2, (r.get(3, 1) * s5 - r.get(3, 2) * s4 + r.get(3, 3) * s3) * invdet);
-	    invM.set(0, 3, (-r.get(2, 1) * s5 + r.get(2, 2) * s4 - r.get(2, 3) * s3) * invdet);
-
-	    invM.set(1, 0, (-r.get(1, 0) * c5 + r.get(1, 2) * c2 - r.get(1, 3) * c1) * invdet);
-	    invM.set(1, 1, (r.get(0, 0) * c5 - r.get(0, 2) * c2 + r.get(0, 3) * c1) * invdet);
-	    invM.set(1, 2, (-r.get(3, 0) * s5 + r.get(3, 2) * s2 - r.get(3, 3) * s1) * invdet);
-	    invM.set(1, 3, (r.get(2, 0) * s5 - r.get(2, 2) * s2 + r.get(2, 3) * s1) * invdet);
-
-	    invM.set(2, 0, (r.get(1, 0) * c4 - r.get(1, 1) * c2 + r.get(1, 3) * c0) * invdet);
-	    invM.set(2, 1, (-r.get(0, 0) * c4 + r.get(0, 1) * c2 - r.get(0, 3) * c0) * invdet);
-	    invM.set(2, 2, (r.get(3, 0) * s4 - r.get(3, 1) * s2 + r.get(3, 3) * s0) * invdet);
-	    invM.set(2, 3, (-r.get(2, 0) * s4 + r.get(2, 1) * s2 - r.get(2, 3) * s0) * invdet);
-
-	    invM.set(3, 0, (-r.get(1, 0) * c3 + r.get(1, 1) * c1 - r.get(1, 2) * c0) * invdet);
-	    invM.set(3, 1, (r.get(0, 0) * c3 - r.get(0, 1) * c1 + r.get(0, 2) * c0) * invdet);
-	    invM.set(3, 2, (-r.get(3, 0) * s3 + r.get(3, 1) * s1 - r.get(3, 2) * s0) * invdet);
-	    invM.set(3, 3, (r.get(2, 0) * s3 - r.get(2, 1) * s1 + r.get(2, 2) * s0) * invdet);
-		
-		return invM;
+		return invert(matrix, null);
 	}
 	
-	public VMatrix4f invert()
+	public Matrix4f invert()
 	{
-		float s0 = get(0, 0) * get(1, 1) - get(1, 0) * get(0, 1);
-		float s1 = get(0, 0) * get(1, 2) - get(1, 0) * get(0, 2);
-		float s2 = get(0, 0) * get(1, 3) - get(1, 0) * get(0, 3);
-		float s3 = get(0, 1) * get(1, 2) - get(1, 1) * get(0, 2);
-		float s4 = get(0, 1) * get(1, 3) - get(1, 1) * get(0, 3);
-		float s5 = get(0, 2) * get(1, 3) - get(1, 2) * get(0, 3);
-
-		float c5 = get(2, 2) * get(3, 3) - get(3, 2) * get(2, 3);
-		float c4 = get(2, 1) * get(3, 3) - get(3, 1) * get(2, 3);
-		float c3 = get(2, 1) * get(3, 2) - get(3, 1) * get(2, 2);
-		float c2 = get(2, 0) * get(3, 3) - get(3, 0) * get(2, 3);
-		float c1 = get(2, 0) * get(3, 2) - get(3, 0) * get(2, 2);
-		float c0 = get(2, 0) * get(3, 1) - get(3, 0) * get(2, 1);
-		
-		
-		float div = (s0 * c5 - s1 * c4 + s2 * c3 + s3 * c2 - s4 * c1 + s5 * c0);
-		if (div == 0) return null;
-		
-	    float invdet = 1.0f / div;
-	    
-	    VMatrix4f invM = new VMatrix4f();
-	    
-	    invM.set(0, 0, (get(1, 1) * c5 - get(1, 2) * c4 + get(1, 3) * c3) * invdet);
-	    invM.set(0, 1, (-get(0, 1) * c5 + get(0, 2) * c4 - get(0, 3) * c3) * invdet);
-	    invM.set(0, 2, (get(3, 1) * s5 - get(3, 2) * s4 + get(3, 3) * s3) * invdet);
-	    invM.set(0, 3, (-get(2, 1) * s5 + get(2, 2) * s4 - get(2, 3) * s3) * invdet);
-
-	    invM.set(1, 0, (-get(1, 0) * c5 + get(1, 2) * c2 - get(1, 3) * c1) * invdet);
-	    invM.set(1, 1, (get(0, 0) * c5 - get(0, 2) * c2 + get(0, 3) * c1) * invdet);
-	    invM.set(1, 2, (-get(3, 0) * s5 + get(3, 2) * s2 - get(3, 3) * s1) * invdet);
-	    invM.set(1, 3, (get(2, 0) * s5 - get(2, 2) * s2 + get(2, 3) * s1) * invdet);
-
-	    invM.set(2, 0, (get(1, 0) * c4 - get(1, 1) * c2 + get(1, 3) * c0) * invdet);
-	    invM.set(2, 1, (-get(0, 0) * c4 + get(0, 1) * c2 - get(0, 3) * c0) * invdet);
-	    invM.set(2, 2, (get(3, 0) * s4 - get(3, 1) * s2 + get(3, 3) * s0) * invdet);
-	    invM.set(2, 3, (-get(2, 0) * s4 + get(2, 1) * s2 - get(2, 3) * s0) * invdet);
-
-	    invM.set(3, 0, (-get(1, 0) * c3 + get(1, 1) * c1 - get(1, 2) * c0) * invdet);
-	    invM.set(3, 1, (get(0, 0) * c3 - get(0, 1) * c1 + get(0, 2) * c0) * invdet);
-	    invM.set(3, 2, (-get(3, 0) * s3 + get(3, 1) * s1 - get(3, 2) * s0) * invdet);
-	    invM.set(3, 3, (get(2, 0) * s3 - get(2, 1) * s1 + get(2, 2) * s0) * invdet);
-		
-		return invM;
+		return invert(this, null);
 	}
 	
-	public boolean equals(VMatrix4f m){
+	public boolean equals(Matrix4f m){
 		if (this.m[0][0] == m.getM()[0][0] && this.m[0][1] == m.getM()[0][1] &&
 			this.m[0][2] == m.getM()[0][2] && this.m[0][3] == m.getM()[0][3] &&
 			this.m[1][0] == m.getM()[1][0] && this.m[1][1] == m.getM()[1][1] &&
@@ -513,7 +407,7 @@ public class VMatrix4f {
 	 * @param buf A float buffer to read from
 	 * @return this
 	 */
-	public VMatrix4f load(FloatBuffer buf) {
+	public Matrix4f load(FloatBuffer buf) {
 
 		m[0][0] = buf.get();
 		m[0][1] = buf.get();
@@ -544,7 +438,7 @@ public class VMatrix4f {
 	 * major (openGL) order.
 	 * @param buf The buffer to store this matrix in
 	 */
-	public VMatrix4f store(FloatBuffer buf) {
+	public Matrix4f store(FloatBuffer buf) {
 		buf.put(m[0][0]);
 		buf.put(m[0][1]);
 		buf.put(m[0][2]);
@@ -587,23 +481,23 @@ public class VMatrix4f {
 //				"|" + m[3][0] + " " + m[3][1] + " " + m[3][2] + " " + m[3][3] + "|";
 //	}
 	
-	public VMatrix4f clone(VMatrix4f m) {
-		this.m[0][0] = m.m[0][0];
-		this.m[0][1] = m.m[0][1];
-		this.m[0][2] = m.m[0][2];
-		this.m[0][3] = m.m[0][3];
-		this.m[1][0] = m.m[1][0];
-		this.m[1][1] = m.m[1][1];
-		this.m[1][2] = m.m[1][2];
-		this.m[1][3] = m.m[1][3];
-		this.m[2][0] = m.m[2][0];
-		this.m[2][1] = m.m[2][1];
-		this.m[2][2] = m.m[2][2];
-		this.m[2][3] = m.m[2][3];
-		this.m[3][0] = m.m[3][0];
-		this.m[3][1] = m.m[3][1];
-		this.m[3][2] = m.m[3][2];
-		this.m[3][3] = m.m[3][3];
+	public Matrix4f load(Matrix4f matrix) {
+		this.m[0][0] = matrix.m[0][0];
+		this.m[0][1] = matrix.m[0][1];
+		this.m[0][2] = matrix.m[0][2];
+		this.m[0][3] = matrix.m[0][3];
+		this.m[1][0] = matrix.m[1][0];
+		this.m[1][1] = matrix.m[1][1];
+		this.m[1][2] = matrix.m[1][2];
+		this.m[1][3] = matrix.m[1][3];
+		this.m[2][0] = matrix.m[2][0];
+		this.m[2][1] = matrix.m[2][1];
+		this.m[2][2] = matrix.m[2][2];
+		this.m[2][3] = matrix.m[2][3];
+		this.m[3][0] = matrix.m[3][0];
+		this.m[3][1] = matrix.m[3][1];
+		this.m[3][2] = matrix.m[3][2];
+		this.m[3][3] = matrix.m[3][3];
 		
 		return this;
 	}

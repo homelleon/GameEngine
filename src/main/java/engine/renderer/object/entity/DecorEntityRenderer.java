@@ -20,7 +20,7 @@ import primitive.model.Model;
 import renderer.object.main.IMainRenderer;
 import shader.entity.decor.DecorEntityShader;
 import tool.math.Maths;
-import tool.math.VMatrix4f;
+import tool.math.Matrix4f;
 import tool.math.vector.Vector2f;
 import tool.openGL.OGLUtils;
 
@@ -48,11 +48,11 @@ public class DecorEntityRenderer implements IEntityRenderer {
 	 * it.
 	 * 
 	 * @param projectionMatrix
-	 *            - {@link VMatrix4f} value to draw entities in the scene using
+	 *            - {@link Matrix4f} value to draw entities in the scene using
 	 *            its projection in the game world space
 	 */
 
-	public DecorEntityRenderer(VMatrix4f projectionMatrix) {
+	public DecorEntityRenderer(Matrix4f projectionMatrix) {
 		this.shader = new DecorEntityShader();
 		shader.start();
 		shader.loadProjectionMatrix(projectionMatrix);
@@ -74,7 +74,7 @@ public class DecorEntityRenderer implements IEntityRenderer {
 	 * @param camera
 	 *            - {@link ICamera} that represents point of view
 	 * @param toShadowMapSpace
-	 *            - {@link VMatrix4f} value of space where shadow map is rendered
+	 *            - {@link Matrix4f} value of space where shadow map is rendered
 	 * @param environmentMap
 	 *            - {@link Texture} value of reflection map to render at
 	 *            reflecting objects
@@ -85,7 +85,7 @@ public class DecorEntityRenderer implements IEntityRenderer {
 	 * @see Texture
 	 */
 	public void renderHigh(Map<Model, List<IEntity>> entities, Vector4f clipPlane, Collection<ILight> lights,
-			ICamera camera, VMatrix4f toShadowMapSpace, Texture environmentMap) {
+			ICamera camera, Matrix4f toShadowMapSpace, Texture environmentMap) {
 		if(!entities.isEmpty()) {
 			shader.start();
 			shader.loadClipPlane(clipPlane);
@@ -125,7 +125,7 @@ public class DecorEntityRenderer implements IEntityRenderer {
 	 * @see Light
 	 * @see ICamera
 	 */
-	public void renderLow(Map<Model, List<IEntity>> entities, Collection<ILight> lights, ICamera camera, VMatrix4f toShadowMapSpace) {
+	public void renderLow(Map<Model, List<IEntity>> entities, Collection<ILight> lights, ICamera camera, Matrix4f toShadowMapSpace) {
 		GL11.glClearColor(1, 1, 1, 1);
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 		shader.start();
@@ -210,7 +210,7 @@ public class DecorEntityRenderer implements IEntityRenderer {
 	 */
 
 	private void prepareInstance(IEntity entity) {
-		VMatrix4f transformationMatrix = Maths.createTransformationMatrix(entity.getPosition(), entity.getRotation().getX(),
+		Matrix4f transformationMatrix = Maths.createTransformationMatrix(entity.getPosition(), entity.getRotation().getX(),
 				entity.getRotation().getY(), entity.getRotation().getZ(), entity.getScale());
 		shader.loadTranformationMatrix(transformationMatrix);
 		Vector2f textureOffset = entity.getTextureOffset();

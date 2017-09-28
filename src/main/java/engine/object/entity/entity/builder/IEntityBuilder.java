@@ -2,7 +2,7 @@ package object.entity.entity.builder;
 
 import object.entity.entity.IEntity;
 import primitive.model.Model;
-import tool.math.vector.Vector3fF;
+import tool.math.vector.Vector3f;
 
 public interface IEntityBuilder {
 	
@@ -10,9 +10,9 @@ public interface IEntityBuilder {
 
 	public IEntityBuilder setScale(float scale);
 
-	public IEntityBuilder setPosition(Vector3fF position);
+	public IEntityBuilder setPosition(Vector3f position);
 
-	public IEntityBuilder setRotation(Vector3fF rotation);
+	public IEntityBuilder setRotation(Vector3f rotation);
 	
 	public IEntityBuilder setTextureIndex(int index);
 

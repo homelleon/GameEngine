@@ -10,7 +10,7 @@ import java.util.List;
 
 import core.settings.EngineSettings;
 import tool.math.vector.Vector2f;
-import tool.math.vector.Vector3fF;
+import tool.math.vector.Vector3f;
 
 public class OBJFileLoader {
 
@@ -27,7 +27,7 @@ public class OBJFileLoader {
 
 		List<Vertex> vertices = new ArrayList<Vertex>();
 		List<Vector2f> textures = new ArrayList<Vector2f>();
-		List<Vector3fF> normals = new ArrayList<Vector3fF>();
+		List<Vector3f> normals = new ArrayList<Vector3f>();
 		List<Integer> indices = new ArrayList<Integer>();
 		try {
 			while (true) {
@@ -37,7 +37,7 @@ public class OBJFileLoader {
 				} else if (line.startsWith("v ")) {
 					String[] currentLine = line.split(" ");
 					try {
-						Vector3fF vertex = new Vector3fF(Float.valueOf(currentLine[1]),
+						Vector3f vertex = new Vector3f(Float.valueOf(currentLine[1]),
 								Float.valueOf(currentLine[2]), Float.valueOf(currentLine[3]));
 						Vertex newVertex = new Vertex(vertices.size(), vertex);
 						vertices.add(newVertex);
@@ -53,7 +53,7 @@ public class OBJFileLoader {
 					textures.add(texture);
 				} else if (line.startsWith("vn ")) {
 					String[] currentLine = line.split(" ");
-					Vector3fF normal = new Vector3fF(Float.valueOf(currentLine[1]),
+					Vector3f normal = new Vector3f(Float.valueOf(currentLine[1]),
 							Float.valueOf(currentLine[2]), Float.valueOf(currentLine[3]));
 					normals.add(normal);
 				} else if (line.startsWith("f ")) {
@@ -103,7 +103,7 @@ public class OBJFileLoader {
 		return indicesArray;
 	}
 
-	private static float convertDataToArrays(List<Vertex> vertices, List<Vector2f> textures, List<Vector3fF> normals,
+	private static float convertDataToArrays(List<Vertex> vertices, List<Vector2f> textures, List<Vector3f> normals,
 			float[] verticesArray, float[] texturesArray, float[] normalsArray) {
 		float furthestPoint = 0;
 		for (int i = 0; i < vertices.size(); i++) {
@@ -111,9 +111,9 @@ public class OBJFileLoader {
 			if (currentVertex.getLength() > furthestPoint) {
 				furthestPoint = currentVertex.getLength();
 			}
-			Vector3fF position = currentVertex.getPosition();
+			Vector3f position = currentVertex.getPosition();
 			Vector2f textureCoord = textures.get(currentVertex.getTextureIndex());
-			Vector3fF normalVector = normals.get(currentVertex.getNormalIndex());
+			Vector3f normalVector = normals.get(currentVertex.getNormalIndex());
 			verticesArray[i * 3] = position.x;
 			verticesArray[i * 3 + 1] = position.y;
 			verticesArray[i * 3 + 2] = position.z;

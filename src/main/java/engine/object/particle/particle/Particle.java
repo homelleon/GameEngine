@@ -6,12 +6,12 @@ import object.camera.ICamera;
 import object.particle.master.ParticleMaster;
 import object.texture.particle.ParticleMaterial;
 import tool.math.vector.Vector2f;
-import tool.math.vector.Vector3fF;
+import tool.math.vector.Vector3f;
 
 public class Particle {
 
-	private Vector3fF position;
-	private Vector3fF velocity;
+	private Vector3f position;
+	private Vector3f velocity;
 	private float gravityEffect;
 	private float lifeLength;
 	private float rotation;
@@ -26,7 +26,7 @@ public class Particle {
 	private float blend;
 	private float distance;
 
-	public Particle(ParticleMaterial material, Vector3fF position, Vector3fF velocity, float gravityEffect,
+	public Particle(ParticleMaterial material, Vector3f position, Vector3f velocity, float gravityEffect,
 			float lifeLength, float rotation, float scale) {
 		this.position = position;
 		this.velocity = velocity;
@@ -58,7 +58,7 @@ public class Particle {
 		return material;
 	}
 
-	public Vector3fF getPosition() {
+	public Vector3f getPosition() {
 		return position;
 	}
 
@@ -72,11 +72,11 @@ public class Particle {
 
 	public boolean update(ICamera camera) {
 		velocity.y += EngineSettings.GRAVITY * gravityEffect * DisplayManager.getFrameTimeSeconds();
-		Vector3fF change = new Vector3fF(velocity);
+		Vector3f change = new Vector3f(velocity);
 		change.scale(DisplayManager.getFrameTimeSeconds());
 		position.add(change);
 		updateTextureCoordInfo();
-		distance = Vector3fF.sub(camera.getPosition(), position).lengthSquared();
+		distance = Vector3f.sub(camera.getPosition(), position).lengthSquared();
 		elapsedTime += DisplayManager.getFrameTimeSeconds();
 		return elapsedTime < lifeLength;
 	}

@@ -10,7 +10,7 @@ import java.util.List;
 
 import core.settings.EngineSettings;
 import tool.math.vector.Vector2f;
-import tool.math.vector.Vector3fF;
+import tool.math.vector.Vector3f;
 import tool.meshLoader.object.ModelData;
 
 public class NormalMappedObjLoader {
@@ -29,7 +29,7 @@ public class NormalMappedObjLoader {
 		String line;
 		List<VertexNM> vertices = new ArrayList<VertexNM>();
 		List<Vector2f> textures = new ArrayList<Vector2f>();
-		List<Vector3fF> normals = new ArrayList<Vector3fF>();
+		List<Vector3f> normals = new ArrayList<Vector3f>();
 		List<Integer> indices = new ArrayList<Integer>();
 
 		try {
@@ -39,7 +39,7 @@ public class NormalMappedObjLoader {
 
 				if (line.startsWith("v ")) {
 					String[] currentLine = line.split(" ");
-					Vector3fF vertex = new Vector3fF(Float.valueOf(currentLine[1]),
+					Vector3f vertex = new Vector3f(Float.valueOf(currentLine[1]),
 							Float.valueOf(currentLine[2]), Float.valueOf(currentLine[3]));
 					VertexNM newVertex = new VertexNM(vertices.size(), vertex);
 					vertices.add(newVertex);
@@ -51,7 +51,7 @@ public class NormalMappedObjLoader {
 					textures.add(texture);
 				} else if (line.startsWith("vn ")) {
 					String[] currentLine = line.split(" ");
-					Vector3fF normal = new Vector3fF(Float.valueOf(currentLine[1]),
+					Vector3f normal = new Vector3f(Float.valueOf(currentLine[1]),
 							Float.valueOf(currentLine[2]), Float.valueOf(currentLine[3]));
 					normals.add(normal);
 				} else if (line.startsWith("f ")) {
@@ -87,8 +87,8 @@ public class NormalMappedObjLoader {
 
 	// NEW
 	private static void calculateTangents(VertexNM v0, VertexNM v1, VertexNM v2, List<Vector2f> textures) {
-		Vector3fF delatPos1 = Vector3fF.sub(v1.getPosition(), v0.getPosition());
-		Vector3fF delatPos2 = Vector3fF.sub(v2.getPosition(), v0.getPosition());
+		Vector3f delatPos1 = Vector3f.sub(v1.getPosition(), v0.getPosition());
+		Vector3f delatPos2 = Vector3f.sub(v2.getPosition(), v0.getPosition());
 		Vector2f uv0 = textures.get(v0.getTextureIndex());
 		Vector2f uv1 = textures.get(v1.getTextureIndex());
 		Vector2f uv2 = textures.get(v2.getTextureIndex());
@@ -98,7 +98,7 @@ public class NormalMappedObjLoader {
 		float r = 1.0f / (deltaUv1.x * deltaUv2.y - deltaUv1.y * deltaUv2.x);
 		delatPos1.scale(deltaUv2.y);
 		delatPos2.scale(deltaUv1.y);
-		Vector3fF tangent = Vector3fF.sub(delatPos1, delatPos2);
+		Vector3f tangent = Vector3f.sub(delatPos1, delatPos2);
 		tangent.scale(r);
 		v0.addTangent(tangent);
 		v1.addTangent(tangent);
@@ -129,7 +129,7 @@ public class NormalMappedObjLoader {
 		return indicesArray;
 	}
 
-	private static float convertDataToArrays(List<VertexNM> vertices, List<Vector2f> textures, List<Vector3fF> normals,
+	private static float convertDataToArrays(List<VertexNM> vertices, List<Vector2f> textures, List<Vector3f> normals,
 			float[] verticesArray, float[] texturesArray, float[] normalsArray, float[] tangentsArray) {
 		float furthestPoint = 0;
 
@@ -139,10 +139,10 @@ public class NormalMappedObjLoader {
 			if (currentVertex.getLength() > furthestPoint) {
 				furthestPoint = currentVertex.getLength();
 			}
-			Vector3fF position = currentVertex.getPosition();
+			Vector3f position = currentVertex.getPosition();
 			Vector2f textureCoord = textures.get(currentVertex.getTextureIndex());
-			Vector3fF normalVector = normals.get(currentVertex.getNormalIndex());
-			Vector3fF tangent = currentVertex.getAverageTangent();
+			Vector3f normalVector = normals.get(currentVertex.getNormalIndex());
+			Vector3f tangent = currentVertex.getAverageTangent();
 			verticesArray[i * 3] = position.x;
 			verticesArray[i * 3 + 1] = position.y;
 			verticesArray[i * 3 + 2] = position.z;

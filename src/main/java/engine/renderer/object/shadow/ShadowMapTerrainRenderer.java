@@ -10,12 +10,12 @@ import primitive.buffer.VAO;
 import primitive.model.Mesh;
 import shader.shadow.ShadowShader;
 import tool.math.Maths;
-import tool.math.VMatrix4f;
-import tool.math.vector.Vector3fF;
+import tool.math.Matrix4f;
+import tool.math.vector.Vector3f;
 
 public class ShadowMapTerrainRenderer {
 
-	private VMatrix4f projectionViewMatrix;
+	private Matrix4f projectionViewMatrix;
 	private ShadowShader shader;
 
 	/**
@@ -26,7 +26,7 @@ public class ShadowMapTerrainRenderer {
 	 *            - the orthographic projection matrix multiplied by the light's
 	 *            "view" matrix.
 	 */
-	public ShadowMapTerrainRenderer(ShadowShader shader, VMatrix4f projectionViewMatrix) {
+	public ShadowMapTerrainRenderer(ShadowShader shader, Matrix4f projectionViewMatrix) {
 		this.shader = shader;
 		this.projectionViewMatrix = projectionViewMatrix;
 	}
@@ -76,9 +76,9 @@ public class ShadowMapTerrainRenderer {
 	}
 
 	private void prepareInstance(ITerrain terrain) {
-		VMatrix4f transformationMatrix = Maths.createTransformationMatrix(new Vector3fF(terrain.getX(), 0, terrain.getZ()), 0, 0,
+		Matrix4f transformationMatrix = Maths.createTransformationMatrix(new Vector3f(terrain.getX(), 0, terrain.getZ()), 0, 0,
 				0, 1);
-		VMatrix4f mvpMatrix = VMatrix4f.mul(projectionViewMatrix, transformationMatrix);
+		Matrix4f mvpMatrix = Matrix4f.mul(projectionViewMatrix, transformationMatrix);
 		shader.loadMvpMatrix(mvpMatrix);
 	}
 

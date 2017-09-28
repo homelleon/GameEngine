@@ -2,7 +2,7 @@ package object.gui.texture;
 
 import object.texture.Texture2D;
 import tool.math.vector.Vector2f;
-import tool.math.vector.Vector3fF;
+import tool.math.vector.Vector3f;
 
 public class GUITexture {
 
@@ -12,7 +12,7 @@ public class GUITexture {
 	private Texture2D texture;
 	private Vector2f position;
 	private Vector2f scale;
-	private Vector3fF mixColor = new Vector3fF(1,0,0);
+	private Vector3f mixColor = new Vector3f(1,0,0);
 	private boolean isMixColored = false;
 	private float transparency = 0;
 
@@ -43,11 +43,11 @@ public class GUITexture {
 		return this.scale;
 	}
 	
-	public synchronized void setMixColor(Vector3fF color) {
+	public synchronized void setMixColor(Vector3f color) {
 		this.mixColor = color;
 	}
 	
-	public Vector3fF getMixColor() {
+	public Vector3f getMixColor() {
 		return this.mixColor;
 	}
 

@@ -12,7 +12,7 @@ import object.entity.entity.IEntity;
 import object.light.ILight;
 import object.texture.Texture;
 import primitive.model.Model;
-import tool.math.VMatrix4f;
+import tool.math.Matrix4f;
 
 public class EntityRendererManager implements IEntityRendererManager {
 	
@@ -25,7 +25,7 @@ public class EntityRendererManager implements IEntityRendererManager {
 	}
 	
 	@Override
-	public void render(Vector4f clipPlane, Collection<ILight> lights, ICamera camera, VMatrix4f toShadowMapSpace,
+	public void render(Vector4f clipPlane, Collection<ILight> lights, ICamera camera, Matrix4f toShadowMapSpace,
 			Texture environmentMap, boolean isLowDetailed) {
 		if(isLowDetailed) {
 			entityRenderers.forEach((renderer, entities) -> 

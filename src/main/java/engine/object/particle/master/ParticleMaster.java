@@ -12,14 +12,14 @@ import object.particle.InsertionSort;
 import object.particle.particle.Particle;
 import object.texture.particle.ParticleMaterial;
 import renderer.object.particle.ParticleRenderer;
-import tool.math.VMatrix4f;
+import tool.math.Matrix4f;
 
 public class ParticleMaster {
 
 	private static Map<ParticleMaterial, List<Particle>> particles = new HashMap<ParticleMaterial, List<Particle>>();
 	private static ParticleRenderer renderer;
 
-	public static void init(VMatrix4f projectionMatrix) {
+	public static void init(Matrix4f projectionMatrix) {
 		renderer = new ParticleRenderer(projectionMatrix);
 	}
 

@@ -1,6 +1,6 @@
 package tool.colladaParser.dataStructures;
 
-import tool.math.VMatrix4f;
+import tool.math.Matrix4f;
 
 /**
  * This contains the data for a transformation of one joint, at a certain time
@@ -13,9 +13,9 @@ import tool.math.VMatrix4f;
 public class JointTransformData {
 
 	public final String jointNameId;
-	public final VMatrix4f jointLocalTransform;
+	public final Matrix4f jointLocalTransform;
 
-	public JointTransformData(String jointNameId, VMatrix4f jointLocalTransform) {
+	public JointTransformData(String jointNameId, Matrix4f jointLocalTransform) {
 		this.jointNameId = jointNameId;
 		this.jointLocalTransform = jointLocalTransform;
 	}

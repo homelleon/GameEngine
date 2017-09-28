@@ -2,7 +2,7 @@ package bodies;
 
 import intersects.IntersectData;
 import object.entity.entity.IEntity;
-import tool.math.vector.Vector3fF;
+import tool.math.vector.Vector3f;
 
 public abstract class BodyBasic {
 	
@@ -10,29 +10,29 @@ public abstract class BodyBasic {
 	protected float mass = 0;
 	protected float size;
 	protected float vertex [][][];
-	protected Vector3fF position;
-	protected Vector3fF speed;
+	protected Vector3f position;
+	protected Vector3f speed;
 	protected IEntity entity;
 	protected boolean entityAttached = false;
 	
-	protected BodyBasic(Vector3fF position, float size) {
+	protected BodyBasic(Vector3f position, float size) {
 		this.position = position;
 		this.size = size;
 	}
 	
 	protected BodyBasic() {}
 	
-	protected BodyBasic(int id, Vector3fF position, float[][][] vertex) {
+	protected BodyBasic(int id, Vector3f position, float[][][] vertex) {
 		this.typeID = id;
 		this.position = position;
 		this.vertex = vertex;
 	}
 	
-	protected void setPosition(Vector3fF position) {
+	protected void setPosition(Vector3f position) {
 		this.position = position;
 	}
 	
-	protected Vector3fF getPosition() {
+	protected Vector3f getPosition() {
 		return this.position;
 	}
 		
@@ -66,7 +66,7 @@ public abstract class BodyBasic {
 		return entity;
 	}
 	
-	protected void doAcceleration(float value, Vector3fF direction) {
+	protected void doAcceleration(float value, Vector3f direction) {
 		
 	}
 	

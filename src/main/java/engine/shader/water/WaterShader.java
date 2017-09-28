@@ -6,8 +6,8 @@ import object.camera.ICamera;
 import object.light.Light;
 import shader.ShaderProgram;
 import tool.math.Maths;
-import tool.math.VMatrix4f;
-import tool.math.vector.Vector3fF;
+import tool.math.Matrix4f;
+import tool.math.vector.Vector3f;
 
 public class WaterShader extends ShaderProgram {
 
@@ -74,24 +74,24 @@ public class WaterShader extends ShaderProgram {
 	}
 
 	public void loadSkyColour(float r, float g, float b) {
-		super.loadVector("skyColour", new Vector3fF(r, g, b));
+		super.loadVector("skyColour", new Vector3f(r, g, b));
 	}
 
 	public void loadFogDensity(float density) {
 		super.loadFloat("fogDensity", density);
 	}
 
-	public void loadProjectionMatrix(VMatrix4f projection) {
+	public void loadProjectionMatrix(Matrix4f projection) {
 		loadMatrix("projectionMatrix", projection);
 	}
 
 	public void loadViewMatrix(ICamera camera) {
-		VMatrix4f viewMatrix = Maths.createViewMatrix(camera);
+		Matrix4f viewMatrix = Maths.createViewMatrix(camera);
 		loadMatrix("viewMatrix", viewMatrix);
 		super.loadVector("cameraPosition", camera.getPosition());
 	}
 
-	public void loadModelMatrix(VMatrix4f modelMatrix) {
+	public void loadModelMatrix(Matrix4f modelMatrix) {
 		loadMatrix("modelMatrix", modelMatrix);
 	}
 

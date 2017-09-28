@@ -1,7 +1,7 @@
 package object.camera;
 
-import tool.math.VMatrix4f;
-import tool.math.vector.Vector3fF;
+import tool.math.Matrix4f;
+import tool.math.vector.Vector3f;
 
 public class CubeMapCamera extends BaseCamera implements ICamera {
 
@@ -15,11 +15,11 @@ public class CubeMapCamera extends BaseCamera implements ICamera {
 	private static final float FOV = 90;// don't change!
 	private static final float ASPECT_RATIO = 1;
 
-	private VMatrix4f projectionMatrix = new VMatrix4f();
-	private VMatrix4f viewMatrix = new VMatrix4f();
-	private VMatrix4f projectionViewMatrix = new VMatrix4f();
+	private Matrix4f projectionMatrix = new Matrix4f();
+	private Matrix4f viewMatrix = new Matrix4f();
+	private Matrix4f projectionViewMatrix = new Matrix4f();
 
-	public CubeMapCamera(String name, Vector3fF position) {
+	public CubeMapCamera(String name, Vector3f position) {
 		super(name, position);
 		this.pitch = 0;
 		this.position = position;
@@ -63,17 +63,17 @@ public class CubeMapCamera extends BaseCamera implements ICamera {
 	}
 
 	@Override
-	public VMatrix4f getViewMatrix() {
+	public Matrix4f getViewMatrix() {
 		return viewMatrix;
 	}
 
 	@Override
-	public VMatrix4f getProjectionMatrix() {
+	public Matrix4f getProjectionMatrix() {
 		return projectionMatrix;
 	}
 
 	@Override
-	public VMatrix4f getProjectionViewMatrix() {
+	public Matrix4f getProjectionViewMatrix() {
 		return projectionViewMatrix;
 	}
 
@@ -100,10 +100,10 @@ public class CubeMapCamera extends BaseCamera implements ICamera {
 	 */
 	private void updateViewMatrix() {
 		viewMatrix.setIdentity();
-		viewMatrix.rotate(new Vector3fF(0, 0, 180));
-		viewMatrix.rotate(new Vector3fF(pitch, 0, 0));
-		viewMatrix.rotate(new Vector3fF(0, yaw, 0));
-		Vector3fF negativeCameraPos = new Vector3fF(-position.x, -position.y, -position.z);
+		viewMatrix.rotate(new Vector3f(0, 0, 180));
+		viewMatrix.rotate(new Vector3f(pitch, 0, 0));
+		viewMatrix.rotate(new Vector3f(0, yaw, 0));
+		Vector3f negativeCameraPos = new Vector3f(-position.x, -position.y, -position.z);
 		viewMatrix.translate(negativeCameraPos);
 
 		projectionMatrix.mul(viewMatrix);

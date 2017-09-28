@@ -2,7 +2,7 @@ package shader.shadow;
 
 import core.settings.EngineSettings;
 import shader.ShaderProgram;
-import tool.math.VMatrix4f;
+import tool.math.Matrix4f;
 import tool.math.vector.Vector2f;
 
 public class ShadowShader extends ShaderProgram {
@@ -38,7 +38,7 @@ public class ShadowShader extends ShaderProgram {
 
 	}
 
-	public void loadMvpMatrix(VMatrix4f mvpMatrix) {
+	public void loadMvpMatrix(Matrix4f mvpMatrix) {
 		super.loadMatrix(UNIFORM_MVP_MATRIX, mvpMatrix);
 	}
 

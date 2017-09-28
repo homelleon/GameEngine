@@ -13,7 +13,7 @@ import object.scene.IScene;
 import object.terrain.terrain.ITerrain;
 import primitive.model.Model;
 import renderer.viewCulling.frustum.Frustum;
-import tool.math.VMatrix4f;
+import tool.math.Matrix4f;
 
 /**
  * Main interface of render Engine that contatins scene, environment and shadow
@@ -92,7 +92,7 @@ public interface IMainRenderer {
 	 * 
 	 * @return
 	 */
-	VMatrix4f getProjectionMatrix();
+	Matrix4f getProjectionMatrix();
 
 	/**
 	 * 

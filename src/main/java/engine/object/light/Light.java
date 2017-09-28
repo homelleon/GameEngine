@@ -1,6 +1,6 @@
 package object.light;
 
-import tool.math.vector.Vector3fF;
+import tool.math.vector.Vector3f;
 
 /*
  * Light - источник света
@@ -10,19 +10,19 @@ import tool.math.vector.Vector3fF;
 
 public class Light implements ILight {
 
-	private Vector3fF position; // позиция
-	private Vector3fF colour; // цвеь
-	private Vector3fF attenuation = new Vector3fF(1, 0, 0); // затухание
+	private Vector3f position; // позиция
+	private Vector3f colour; // цвеь
+	private Vector3f attenuation = new Vector3f(1, 0, 0); // затухание
 
 	private String name;
 
-	public Light(String name, Vector3fF position, Vector3fF colour) {
+	public Light(String name, Vector3f position, Vector3f colour) {
 		this.position = position;
 		this.colour = colour;
 		this.name = name;
 	}
 
-	public Light(String name, Vector3fF position, Vector3fF colour, Vector3fF attenuation) {
+	public Light(String name, Vector3f position, Vector3f colour, Vector3f attenuation) {
 		this.position = position;
 		this.colour = colour;
 		this.attenuation = attenuation;
@@ -35,23 +35,23 @@ public class Light implements ILight {
 	}
 
 	// вернуть затухание
-	public Vector3fF getAttenuation() {
+	public Vector3f getAttenuation() {
 		return attenuation;
 	}
 
-	public Vector3fF getPosition() {
+	public Vector3f getPosition() {
 		return position;
 	}
 
-	public void setPosition(Vector3fF position) {
+	public void setPosition(Vector3f position) {
 		this.position = position;
 	}
 
-	public Vector3fF getColour() {
+	public Vector3f getColour() {
 		return colour;
 	}
 
-	public void setColour(Vector3fF colour) {
+	public void setColour(Vector3f colour) {
 		this.colour = colour;
 	}
 

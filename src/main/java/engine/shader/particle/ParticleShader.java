@@ -3,7 +3,7 @@ package shader.particle;
 
 import core.settings.EngineSettings;
 import shader.ShaderProgram;
-import tool.math.VMatrix4f;
+import tool.math.Matrix4f;
 
 public class ParticleShader extends ShaderProgram {
 
@@ -35,7 +35,7 @@ public class ParticleShader extends ShaderProgram {
 		super.loadFloat("numberOfRows", numberOfRows);
 	}
 
-	public void loadProjectionMatrix(VMatrix4f projectionMatrix) {
+	public void loadProjectionMatrix(Matrix4f projectionMatrix) {
 		super.loadMatrix("projectionMatrix", projectionMatrix);
 	}
 

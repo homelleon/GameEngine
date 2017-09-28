@@ -1,7 +1,7 @@
 package object.camera;
 
-import tool.math.VMatrix4f;
-import tool.math.vector.Vector3fF;
+import tool.math.Matrix4f;
+import tool.math.vector.Vector3f;
 
 /**
  * Class that allows to set a world camera.
@@ -63,7 +63,7 @@ import tool.math.vector.Vector3fF;
 	 * 
 	 * @return Vec3f value of current position
 	 */
-	 Vector3fF getPosition(); // вернуть позицию камеры
+	 Vector3f getPosition(); // вернуть позицию камеры
 
 	/**
 	 * Method returns current pitch angle of the camera.
@@ -111,17 +111,17 @@ import tool.math.vector.Vector3fF;
 	 * 
 	 * @return Matrix4f value of current view matrix
 	 */
-	 VMatrix4f getViewMatrix();
+	 Matrix4f getViewMatrix();
 
 	/**
 	 * 
 	 * @return Matrix4f value of current projection matrix
 	 */
-	 VMatrix4f getProjectionMatrix();
+	 Matrix4f getProjectionMatrix();
 
 	/**
 	 * 
 	 * @return Matrix4f value of current projection-view matrix
 	 */
-	 VMatrix4f getProjectionViewMatrix();
+	 Matrix4f getProjectionViewMatrix();
 }

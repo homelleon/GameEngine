@@ -24,8 +24,8 @@ import primitive.model.Model;
 import renderer.viewCulling.frustum.Frustum;
 import shader.voxel.VoxelShader;
 import tool.math.Maths;
-import tool.math.VMatrix4f;
-import tool.math.vector.Vector3fF;
+import tool.math.Matrix4f;
+import tool.math.vector.Vector3f;
 import tool.math.vector.Vector3i;
 import tool.openGL.OGLUtils;
 
@@ -99,9 +99,9 @@ public class VoxelRenderer {
 	private Material texture;
 	private VoxelShader shader;
 
-	VMatrix4f projectionMatrix;
+	Matrix4f projectionMatrix;
 
-	public VoxelRenderer(VMatrix4f projectionMatrix) {
+	public VoxelRenderer(Matrix4f projectionMatrix) {
 		Loader loader = Loader.getInstance();
 		this.shader = new VoxelShader();
 		this.shader.start();
@@ -116,7 +116,7 @@ public class VoxelRenderer {
 	}
 
 	public void render(IChunkManager chunkManager, Vector4f clipPlane, Collection<ILight> lights,
-			ICamera camera, VMatrix4f toShadowMapSpace, Frustum frustum) {
+			ICamera camera, Matrix4f toShadowMapSpace, Frustum frustum) {
 		shader.start();
 		shader.loadClipPlane(clipPlane);
 		shader.loadSkyColour(EngineSettings.DISPLAY_RED, EngineSettings.DISPLAY_GREEN, EngineSettings.DISPLAY_BLUE);
@@ -160,12 +160,12 @@ public class VoxelRenderer {
 				GL11.GL_UNSIGNED_INT, 24 * face);
 	}
 
-	private boolean checkVisibility(Frustum frustum, Vector3fF position, float radius) {
+	private boolean checkVisibility(Frustum frustum, Vector3f position, float radius) {
 		return frustum.sphereInFrustumAndDsitance(position, radius, 0, EngineSettings.RENDERING_VIEW_DISTANCE);
 	}
 
-	private synchronized void prepareInstance(Vector3fF position) {
-		VMatrix4f transformationMatrix = Maths.createTransformationMatrix(position, 0, 0, 0, 1);
+	private synchronized void prepareInstance(Vector3f position) {
+		Matrix4f transformationMatrix = Maths.createTransformationMatrix(position, 0, 0, 0, 1);
 		shader.loadTranformationMatrix(transformationMatrix);
 	}
 
