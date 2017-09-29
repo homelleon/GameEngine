@@ -9,8 +9,8 @@ import java.util.stream.Collectors;
 import core.settings.EngineSettings;
 import object.camera.ICamera;
 import object.entity.entity.IEntity;
-import renderer.viewCulling.frustum.Frustum;
 import tool.manager.AbstractManager;
+import tool.math.Frustum;
 
 /**
  * Manages entities in the game engine.

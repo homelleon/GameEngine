@@ -6,8 +6,8 @@ import java.util.Map;
 
 import object.camera.ICamera;
 import object.entity.entity.IEntity;
-import renderer.viewCulling.frustum.Frustum;
 import tool.manager.IManager;
+import tool.math.Frustum;
 
 /**
  * Entity control manager interface.

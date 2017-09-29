@@ -3,7 +3,7 @@ package renderer.scene;
 import object.input.Controls;
 import object.input.IControls;
 import object.scene.IScene;
-import renderer.object.main.MainRenderer;
+import renderer.main.MainRenderer;
 
 public class EditorSceneRenderer implements ISceneRenderer {
 	

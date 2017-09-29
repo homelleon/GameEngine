@@ -11,8 +11,8 @@ import object.entity.player.IPlayer;
 import object.light.Light;
 import object.particle.ParticleSystem;
 import object.texture.Texture;
-import renderer.viewCulling.frustum.Frustum;
 import tool.MousePicker;
+import tool.math.Frustum;
 
 /**
  * Scene interface to control all objects to use in the game.

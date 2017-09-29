@@ -11,7 +11,7 @@ import object.camera.ICamera;
 import object.particle.InsertionSort;
 import object.particle.particle.Particle;
 import object.texture.particle.ParticleMaterial;
-import renderer.object.particle.ParticleRenderer;
+import renderer.particle.ParticleRenderer;
 import tool.math.Matrix4f;
 
 public class ParticleMaster {

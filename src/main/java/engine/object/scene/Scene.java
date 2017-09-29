@@ -22,8 +22,8 @@ import object.light.Light;
 import object.particle.ParticleSystem;
 import object.terrain.terrain.ITerrain;
 import object.texture.Texture;
-import renderer.viewCulling.frustum.Frustum;
 import tool.MousePicker;
+import tool.math.Frustum;
 import tool.math.vector.Vector3f;
 
 public class Scene extends AObjectManager implements IScene {

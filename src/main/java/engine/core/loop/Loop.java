@@ -24,7 +24,7 @@ import object.input.MouseGame;
 import object.scene.IScene;
 import object.scene.Scene;
 import primitive.buffer.Loader;
-import renderer.object.main.MainRenderer;
+import renderer.main.MainRenderer;
 import renderer.scene.EditorSceneRenderer;
 import renderer.scene.GameSceneRenderer;
 import renderer.scene.ISceneRenderer;
