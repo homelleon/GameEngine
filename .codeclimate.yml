@@ -1,0 +1,27 @@
+engines:
+  rubocop:
+    enabled: true
+  golint:
+    enabled: true
+  eslint:
+    enabled: true
+  csslint:
+    enabled: true
+  duplication:
+   enabled: true
+   config:
+      languages:
+      - java
+ratings:
+  paths:
+  - src/main/java/engine/**/*
+  - src/main/java/game/**/*
+  - src/main/java/editor/**/*
+  - src/main/java/physic/**/*
+exclude_paths:
+- bin/**/*
+- library/**/*
+- src/main/java/resource/**/*
+- target/**/*
+- tools/**/*
+- document/**/*
