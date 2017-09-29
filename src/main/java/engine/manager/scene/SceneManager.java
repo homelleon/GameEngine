@@ -1,6 +1,7 @@
 package manager.scene;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.lwjgl.openal.AL10;
@@ -15,6 +16,7 @@ import object.entity.player.IPlayer;
 import object.entity.player.Player;
 import object.light.Light;
 import object.scene.IScene;
+import object.texture.material.Material;
 import object.water.WaterTile;
 import primitive.model.Model;
 import tool.EngineUtils;
@@ -44,16 +46,16 @@ public class SceneManager implements ISceneManager {
 	}
 	
 	private void initializeEditor(IScene scene) {
-		Model cubeModel = EngineUtils.loadStaticModel("stall", "stallTexture");
+		List<Model> cubeModels = EngineUtils.loadStaticModels("spartan", "stallTexture");
 		IPlayer player1 = new Player(
 				playerName, 
-				cubeModel, 
+				cubeModels, 
 				new Vector3f(0, 0, 0), 
 				new Vector3f(0, 0, 0), 
 				1
 		);
 		player1.setBaseName("cubeEntity1");
-		player1.getModel().getMaterial().setShininess(5.0f);
+		player1.getModels().forEach(model -> model.getMaterial().setShininess(5.0f));
 		scene.setPlayer(player1);
 		scene.getEntities().add(player1);
 		scene.setCamera(new TargetCamera(cameraName, player1));
@@ -66,18 +68,22 @@ public class SceneManager implements ISceneManager {
 	private void initializeGame(IScene scene) {
 		/*------------------PLAYER-----------------*/
 		Model cubeModel = EngineUtils.loadStaticModel("cube", "cube1");
+		Collection<Model> playerModels = new ArrayList<Model>();
+		playerModels.add(cubeModel);
 		IPlayer player1 = new Player(
 				playerName, 
-				cubeModel, 
+				playerModels, 
 				new Vector3f(100, 0, 10), 
 				new Vector3f(0, 0, 0), 
 				1
 		);
 		player1.setBaseName("cubeEntity1");
-		player1.getModel().getMaterial().setReflectiveFactor(1.0f);
-		player1.getModel().getMaterial().setRefractiveFactor(1.0f);
-		player1.getModel().getMaterial().setRefractiveIndex(1.33f);
-		player1.getModel().getMaterial().setShininess(5.0f);
+		player1.getModels().forEach(model -> {
+			Material material = model.getMaterial();
+			material.setReflectiveFactor(1.0f);
+			material.setRefractiveFactor(1.0f);
+			material.setShininess(5.0f);			
+		});
 
 		/*--------------UI-------------------*/
 		scene.getUserInterface().initialize();
@@ -96,8 +102,7 @@ public class SceneManager implements ISceneManager {
 		List<WaterTile> waterList = new ArrayList<WaterTile>();
 		WaterTile water = new WaterTile("Water", 0, 0, -4, 10000);
 		waterList.add(water);
-		waterList.stream()
-			.forEach(waterTile -> {
+		waterList.forEach(waterTile -> {
 				waterTile.setTilingSize(0.05f);
 				waterTile.setWaterSpeed(0.7f);
 				waterTile.setWaveStrength(0.1f);

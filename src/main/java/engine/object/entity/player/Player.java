@@ -28,8 +28,8 @@ public class Player extends TexturedEntity implements IPlayer {
 
 	public volatile boolean isInAir = false;
 
-	public Player(String name, Model model, Vector3f position, Vector3f rotation, float scale) {
-		super(name, model, position, rotation, scale);
+	public Player(String name, Collection<Model> modelList, Vector3f position, Vector3f rotation, float scale) {
+		super(name, modelList, position, rotation, scale);
 	}
 
 	@Override

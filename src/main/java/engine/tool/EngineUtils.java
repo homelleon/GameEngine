@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import core.settings.EngineSettings;
 import object.entity.entity.DecorEntity;
@@ -24,6 +25,7 @@ import tool.math.vector.Vector3f;
 import tool.meshLoader.normalMapObject.NormalMappedObjLoader;
 import tool.meshLoader.object.ModelData;
 import tool.meshLoader.object.OBJFileLoader;
+import tool.meshLoader.objloader.OBJLoader;
 
 public class EngineUtils {
 
@@ -35,6 +37,18 @@ public class EngineUtils {
 		Model staticModel = new Model(objFile, rawModel,
 				new Material(textureName, loader.getTextureLoader().loadTexture(EngineSettings.TEXTURE_MODEL_PATH, textureName)));
 		return staticModel;
+	}
+	
+	public static List<Model> loadStaticModels(String objFile, String textureName) {
+		List<Model> models = new ArrayList<Model>();
+		OBJLoader objLoader = new OBJLoader();
+		Mesh[] meshes = objLoader.load(EngineSettings.MODEL_PATH, objFile, null);
+		for(int i=0; i< meshes.length; i++) {
+			Model staticModel = new Model(objFile, meshes[i],
+					new Material(textureName, Loader.getInstance().getTextureLoader().loadTexture(EngineSettings.TEXTURE_MODEL_PATH, textureName)));
+			models.add(staticModel);
+		}
+		return models;
 	}
 	
 	public static Model loadStaticModel(String objFile, Material texture) {
@@ -112,7 +126,7 @@ public class EngineUtils {
 							int zSeed = random.nextInt(20);
 							int textIndexSeed = random.nextInt(1);
 							float noise = random.nextInt(10)/5;
-							IEntity grassEntity = new DecorEntity("Grass" + String.valueOf(i) + "-" + String.valueOf(j), grass, textIndexSeed,
+							IEntity grassEntity = new DecorEntity("Grass" + String.valueOf(i) + "-" + String.valueOf(j), Stream.of(grass).collect(Collectors.toList()), textIndexSeed,
 									new Vector3f(x + invDensity * i, 0, z + invDensity * j), new Vector3f(-90, 0, -45), noise);
 							grassEntity.setBaseName("grassEntity");
 							return grassEntity;

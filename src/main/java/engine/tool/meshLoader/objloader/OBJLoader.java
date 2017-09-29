@@ -6,10 +6,13 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.HashMap;
+import java.util.stream.Stream;
 
 import object.texture.Texture2D;
 import object.texture.material.Material;
-import primitive.model.importClasses.Model;
+import primitive.buffer.BufferLoader;
+import primitive.buffer.Loader;
+import primitive.model.Mesh;
 import tool.math.vector.Vector2f;
 import tool.math.vector.Vector3f;
 
@@ -31,7 +34,7 @@ public class OBJLoader {
 		CW,CCW
 	}
 	
-	public Model[] load(String path, String objFile, String mtlFile)
+	public Mesh[] load(String path, String objFile, String mtlFile)
 	{
 		long time = System.currentTimeMillis();
 		
@@ -98,7 +101,7 @@ public class OBJLoader {
 				
 			// load .obj
 			try{
-				meshReader = new BufferedReader(new FileReader(path + "/" + objFile));
+				meshReader = new BufferedReader(new FileReader(path + "/" + objFile + ".obj"));
 				String line;
 				while((line = meshReader.readLine()) != null)
 				{
@@ -195,32 +198,24 @@ public class OBJLoader {
 					}
 				}					
 					
-				ArrayList<Model> models = new ArrayList<Model>();
+				ArrayList<Mesh> meshes = new ArrayList<Mesh>();
 				
 				for(Object object : objects){
 					for (PolygonGroup polygonGroup : object.getPolygonGroups()){
 						for (Polygon polygon : polygonGroup.getPolygons()){
 							
 							generatePolygon(polygonGroup.getSmoothingGroups(), polygon);
-							Model model = convert(polygon);
-					
-							if(polygon.getMaterial() != null){
-								model.setMaterial(materials.get(polygon.getMaterial()));
-							}
-							else
-								System.out.println("no material in polygon of: " + 
-													object.getName() + " " +  polygonGroup.getName());
-						
-							models.add(model);
+							Mesh mesh = convert(polygon);						
+							meshes.add(mesh);
 						}
 					}
 				}
 			
 				System.out.println("obj loading time : " + (System.currentTimeMillis() - time) + "ms");
 				
-				Model[] modelArray = new Model[models.size()];
+				Mesh[] meshArray = new Mesh[meshes.size()];
 				
-				return models.toArray(modelArray);
+				return meshes.toArray(meshArray);
 			}
 			catch(Exception e)
 			{
@@ -493,18 +488,39 @@ public class OBJLoader {
 		}
 	}
 	
-	public Model convert(Polygon polygon){
+	public Mesh convert(Polygon polygon){
 		
 		Vertex[] vertexData = new Vertex[polygon.getVertices().size()];
 		polygon.getVertices().toArray(vertexData);
-	
+		float[] positions = new float[polygon.getVertices().size()*3];
+		float[] normals = new float[polygon.getVertices().size()*3];
+		float[] textureCoords = new float[polygon.getVertices().size()*2];
+		float[] tangents = new float[polygon.getVertices().size()*3];
+		
+		int[] i = new int[1];
+		i[0] = 0;
+		polygon.getVertices().stream()
+				.flatMap(vertex -> Stream.of(vertex.getPos().x,vertex.getPos().y, vertex.getPos().z))
+				.forEachOrdered(value -> positions[i[0]++] = value);
+		i[0] = 0;
+		polygon.getVertices().stream()
+				.flatMap(vertex -> Stream.of(vertex.getNormal().x,vertex.getNormal().y,vertex.getNormal().z))
+				.forEachOrdered(value -> normals[i[0]++] = value);
+		i[0] = 0;
+		polygon.getVertices().stream()
+				.flatMap(vertex -> Stream.of(vertex.getTextureCoord().x, vertex.getTextureCoord().y))
+				.forEachOrdered(value -> textureCoords[i[0]++] = value);
+		i[0] = 0;
+		polygon.getVertices().stream()
+				.filter(vertex -> vertex.getTangent() != null)
+				.flatMap(vertex -> Stream.of(vertex.getTangent().x, vertex.getTangent().y, vertex.getTangent().z))
+				.forEachOrdered(value -> positions[i[0]++] = value);
+		
 		Integer[] objectArray = new Integer[polygon.getIndices().size()];
 		polygon.getIndices().toArray(objectArray);
-		int[] indexData = Util.toIntArray(objectArray);
-	
-		Model model = new Model(new MeshData(vertexData, indexData));
-		model.setMaterial(materials.get(polygon.getMaterial()));
-		
-		return model;
+		int[] indices = Util.toIntArray(objectArray);
+		BufferLoader loader = Loader.getInstance().getVertexLoader();
+		Mesh mesh = loader.loadToVAO(positions, textureCoords, normals, tangents, indices);		
+		return mesh;
 	}
 }

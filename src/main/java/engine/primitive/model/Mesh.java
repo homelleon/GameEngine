@@ -11,7 +11,7 @@ public class Mesh {
 	private BoundingBox box;
 	private String name;
 	private VAO vao;
-
+	
 	public Mesh(String name, VAO vao, int vertexCount, BoundingSphere sphere, BoundingBox box) {
 		this.vao = vao;
 		this.vertexCount = vertexCount;

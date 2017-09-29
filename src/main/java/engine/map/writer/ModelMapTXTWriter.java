@@ -71,12 +71,12 @@ public class ModelMapTXTWriter implements ILevelMapWriter {
 					String line = "<e> ";
 					line += String.valueOf(entity.getName());
 					line += " ";
-					line += String.valueOf(entity.getModel().getName());
+					//line += String.valueOf(entity.getModels().getName());
 					line += " ";
 					// TODO: find out why it returns null texture
-					String texture = entity.getModel().getMaterial().getDiffuseMap().getName();
-					System.out.println(texture);
-					line += String.valueOf(texture);
+					//String texture = entity.getModel().getMaterial().getDiffuseMap().getName();
+					//System.out.println(texture);
+					//line += String.valueOf(texture);
 					line += " ";
 					line += String.valueOf(entity.getPosition().x);
 					line += " ";
@@ -92,15 +92,15 @@ public class ModelMapTXTWriter implements ILevelMapWriter {
 						Loader loader = Loader.getInstance();
 						line += String.valueOf(true);
 						line += " ";						
-						String normal = entity.getModel().getMaterial().getNormalMap().getName();
-						line += normal;
+						//String normal = entity.getModel().getMaterial().getNormalMap().getName();
+						//line += normal;
 						line += " ";
-						String specular = entity.getModel().getMaterial().getSpecularMap().getName();
-						line += specular;
+						//String specular = entity.getModel().getMaterial().getSpecularMap().getName();
+						//line += specular;
 						line += " ";
-						line += entity.getModel().getMaterial().getShininess();
+						//line += entity.getModel().getMaterial().getShininess();
 						line += " ";
-						line += entity.getModel().getMaterial().getReflectivity();
+						//line += entity.getModel().getMaterial().getReflectivity();
 					}
 					lines.add(line);
 				}

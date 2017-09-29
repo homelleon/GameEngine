@@ -1,5 +1,7 @@
 package object.entity.entity;
 
+import java.util.List;
+
 import object.Nameable;
 import primitive.model.Model;
 import tool.math.vector.Vector2f;
@@ -87,14 +89,14 @@ import tool.math.vector.Vector3f;
 	 * 
 	 * @return {@link Model} object
 	 */
-	 Model getModel();
+	 List<Model> getModels();
 
 	/**
 	 * Sets enitity textured model object.
 	 * 
 	 * @param model {@link Model} object
 	 */
-	 void setModel(Model model);
+	 void addModel(Model model);
 
 	/**
 	 * Gets entity current position in 3 dimentional space coordinates.
@@ -149,5 +151,7 @@ import tool.math.vector.Vector3f;
 	 boolean isMoved();
 
 	 void setMoved(boolean isMoved);
+	 
+	 void delete();
 
 }

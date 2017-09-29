@@ -1,5 +1,7 @@
 package object.entity.entity;
 
+import java.util.Collection;
+
 import core.settings.EngineSettings;
 import object.entity.BaseEntity;
 import primitive.model.Model;
@@ -29,8 +31,8 @@ public class TexturedEntity extends BaseEntity implements IEntity {
 	 * @param rotZ
 	 * @param scale
 	 */
-	public TexturedEntity(String name, Model model, Vector3f position, Vector3f rotation, float scale) {
-		super(name, EngineSettings.ENTITY_TYPE_SIMPLE, model, position, rotation, scale);
+	public TexturedEntity(String name, Collection<Model> modelList, Vector3f position, Vector3f rotation, float scale) {
+		super(name, EngineSettings.ENTITY_TYPE_SIMPLE, modelList, position, rotation, scale);
 	}
 	
 	/**
@@ -42,13 +44,13 @@ public class TexturedEntity extends BaseEntity implements IEntity {
 	 * @param rotation
 	 * @param scale
 	 */
-	public TexturedEntity(String name, Model model, int textureIndex, Vector3f position, Vector3f rotation, float scale) {
-		super(name, EngineSettings.ENTITY_TYPE_SIMPLE, model, textureIndex, position, rotation, scale);
+	public TexturedEntity(String name, Collection<Model> modelList, int textureIndex, Vector3f position, Vector3f rotation, float scale) {
+		super(name, EngineSettings.ENTITY_TYPE_SIMPLE, modelList, textureIndex, position, rotation, scale);
 	} 
 	
 	@Override
 	public IEntity clone(String name) {
-		IEntity entity = new TexturedEntity(name, this.model, this.textureIndex, this.position, this.rotation, this.scale);
+		IEntity entity = new TexturedEntity(name, this.models, this.textureIndex, this.position, this.rotation, this.scale);
 		entity.setBaseName(this.getName());
 		return entity;
 	}

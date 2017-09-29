@@ -1,5 +1,9 @@
 package object.entity;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import core.settings.EngineSettings;
 import object.entity.entity.IEntity;
 import primitive.model.Model;
@@ -8,7 +12,7 @@ import tool.math.vector.Vector3f;
 
 public abstract class BaseEntity {
 	
-	protected Model model; // текстурная модель
+	protected List<Model> models = new ArrayList<Model>(); // текстурная модель
 	protected String name; // имя
 	protected String baseName;
 	protected Vector3f position; // позиция
@@ -33,11 +37,11 @@ public abstract class BaseEntity {
 	 * @param rotZ
 	 * @param scale
 	 */
-	public BaseEntity(String name, int typeID, Model model, Vector3f position, Vector3f rotation, float scale) {
+	public BaseEntity(String name, int typeID, Collection<Model> modelList, Vector3f position, Vector3f rotation, float scale) {
 		this.name = name;
 		this.typeID = typeID;
-		this.model = model;
-		this.radius = model.getMesh().getBSphere().getRadius() * scale;
+		this.models.addAll(modelList);
+		this.radius = this.models.get(0).getMesh().getBSphere().getRadius() * scale;
 		this.position = position;
 		this.rotation = rotation;
 		this.scale = scale;
@@ -55,12 +59,12 @@ public abstract class BaseEntity {
 	 * @param rotZ
 	 * @param scale
 	 */
-	public BaseEntity(String name, int typeID, Model model, int textureIndex, Vector3f position, Vector3f rotation, float scale) {
+	public BaseEntity(String name, int typeID, Collection<Model> modelList, int textureIndex, Vector3f position, Vector3f rotation, float scale) {
 		this.name = name;
 		this.typeID = typeID;
 		this.textureIndex = textureIndex;
-		this.model = model;
-		this.radius = model.getMesh().getBSphere().getRadius() * scale;
+		this.models.addAll(modelList);
+		this.radius = this.models.get(0).getMesh().getBSphere().getRadius() * scale;
 		this.position = position;
 		this.rotation = rotation;
 		this.scale = scale;
@@ -83,10 +87,10 @@ public abstract class BaseEntity {
 	}
 	
 	public Vector2f getTextureOffset() {		
-		int row = textureIndex / model.getMaterial().getDiffuseMap().getNumberOfRows();
-		int column = textureIndex % model.getMaterial().getDiffuseMap().getNumberOfRows();		
-		float xOffset = (float) row / (float) model.getMaterial().getDiffuseMap().getNumberOfRows();
-		float yOffset = (float) column / (float) model.getMaterial().getDiffuseMap().getNumberOfRows();
+		int row = textureIndex / models.get(0).getMaterial().getDiffuseMap().getNumberOfRows();
+		int column = textureIndex %  models.get(0).getMaterial().getDiffuseMap().getNumberOfRows();		
+		float xOffset = (float) row / (float) models.get(0).getMaterial().getDiffuseMap().getNumberOfRows();
+		float yOffset = (float) column / (float) models.get(0).getMaterial().getDiffuseMap().getNumberOfRows();
 		return new Vector2f(xOffset, yOffset);
 	}
 
@@ -130,12 +134,12 @@ public abstract class BaseEntity {
 		return this.typeID;
 	}
 
-	public Model getModel() {
-		return model;
+	public List<Model> getModels() {
+		return models;
 	}
 
-	public synchronized void setModel(Model model) {
-		this.model = model;
+	public void addModel(Model model) {
+		this.models.add(model);
 	}
 
 	public Vector3f getPosition() {
@@ -161,7 +165,7 @@ public abstract class BaseEntity {
 
 	public synchronized void setScale(float scale) {
 		this.scale = scale;
-		this.radius = model.getMesh().getBSphere().getRadius() * scale;
+		this.radius =  models.get(0).getMesh().getBSphere().getRadius() * scale;
 	}
 
 	public float getSphereRadius() {
@@ -176,6 +180,10 @@ public abstract class BaseEntity {
 
 	public void setMoved(boolean isMoved) {
 		this.isMoved = isMoved;
+	}
+	
+	public void delete() {
+		this.models.clear();
 	}
 
 }
