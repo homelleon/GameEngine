@@ -100,8 +100,7 @@ public class ShadowBox {
 				minZ = point.z;
 			}
 		}
-		maxZ += OFFSET;
-
+		maxZ += OFFSET;		
 	}
 
 	/**

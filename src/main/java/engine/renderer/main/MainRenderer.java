@@ -168,7 +168,7 @@ public class MainRenderer implements IMainRenderer {
 		scene.getEntities().updateWithFrustum(frustum, scene.getCamera())
 			.forEach((type, list) -> list.parallelStream()
 					.forEach(entity -> 
-						processEntityByType(type, entity)));
+						processEntityByType(EngineSettings.ENTITY_TYPE_SIMPLE, entity)));
 		scene.getTerrains().getAll()
 		.forEach(terrain -> processor.processTerrain(terrain, terrains));
 		shadowMapRenderer.render(texturedEntities, terrains, normalEntities, scene.getSun(), scene.getCamera());

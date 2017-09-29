@@ -39,9 +39,7 @@ public class GUITextureRenderer {
 
 		for (GUITexture guiTexture : textureList) {
 			if (guiTexture.getIsVisible()) {
-				//guiTexture.getTexture().bind(0);
-				GL13.glActiveTexture(GL13.GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, 27);
+				guiTexture.getTexture().bind(0);
 				Vector2f scale = new Vector2f(guiTexture.getScale().x, guiTexture.getScale().y);
 				Matrix4f matrix = Maths.createTransformationMatrix(guiTexture.getPosition(), scale);
 				this.shader.loadTransformation(matrix);

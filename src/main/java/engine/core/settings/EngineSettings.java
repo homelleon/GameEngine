@@ -77,7 +77,7 @@ public class EngineSettings {
 	public static final float GRAVITY = -50;
 	public static final float TIME_LENGTH = 1;
 	public static final float FOG_DENSITY = 0.0022f;
-	public static final float SHADOW_DISTANCE = 500;
+	public static final float SHADOW_DISTANCE = 150;
 	public static final int SHADOW_MAP_SIZE = 16384;
 	public static final float SHADOW_TRANSITION_DISTANCE = SHADOW_DISTANCE;
 	public static final int SHADOW_PCF = 2;

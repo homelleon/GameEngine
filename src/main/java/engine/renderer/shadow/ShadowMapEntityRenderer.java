@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.lwjgl.opengl.GL11;
 
+import object.camera.ICamera;
 import object.entity.entity.IEntity;
 import object.texture.material.Material;
 import primitive.buffer.VAO;
@@ -41,7 +42,7 @@ public class ShadowMapEntityRenderer {
 	 * @param entities
 	 *            - the entities to be rendered to the shadow map.
 	 */
-	public void render(Map<Model, List<IEntity>> entities) {
+	public void render(Map<Model, List<IEntity>> entities, ICamera camera) {
 		shader.start();
 		entities.forEach((model, entityList) -> {
 			Mesh mesh = model.getMesh();
@@ -53,7 +54,7 @@ public class ShadowMapEntityRenderer {
 				OGLUtils.cullBackFaces(false);
 			}
 			entityList.forEach(entity -> {
-				prepareInstance(entity);
+				prepareInstance(entity, camera);
 				GL11.glDrawElements(GL11.GL_TRIANGLES, mesh.getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
 			});
 			if (model.getMaterial().getDiffuseMap().isHasTransparency()) {
@@ -90,7 +91,7 @@ public class ShadowMapEntityRenderer {
 	 * @param entity
 	 *            - the entity to be prepared for rendering.
 	 */
-	private void prepareInstance(IEntity entity) {
+	private void prepareInstance(IEntity entity, ICamera camera) {
 		Matrix4f transformationMatrix = Maths.createTransformationMatrix(entity.getPosition(), entity.getRotation().getX(),
 				entity.getRotation().getY(), entity.getRotation().getZ(), entity.getScale());
 		Matrix4f mvpMatrix = Matrix4f.mul(projectionViewMatrix, transformationMatrix);
