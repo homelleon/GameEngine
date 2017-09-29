@@ -2,6 +2,7 @@
 [![Code Climate](https://codeclimate.com/github/homelleon/GameEngine/badges/gpa.svg)](https://codeclimate.com/github/homelleon/GameEngine)
 [![Test Coverage](https://codeclimate.com/github/homelleon/GameEngine/badges/coverage.svg)](https://codeclimate.com/github/homelleon/GameEngine/coverage)
 [![Issue Count](https://codeclimate.com/github/homelleon/GameEngine/badges/issue_count.svg)](https://codeclimate.com/github/homelleon/GameEngine)
+
 This is a Game Engine for game or graphic editor that is implemented in Java 8 language. 
 Uses LWJGL 2.9.3 to control OpenGL and OpenAL libraries.
 (planning to update used LWJGL build) 
