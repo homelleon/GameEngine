@@ -105,7 +105,8 @@ public class MainRenderer implements IMainRenderer {
 
 	@Override
 	public void renderScene(IScene scene, Vector4f clipPlane, boolean isLowDistance) {
-		this.frustum.extractFrustum(scene.getCamera(), this.getProjectionMatrix());
+		Matrix4f projectionViewMatrix = Matrix4f.mul(this.getProjectionMatrix(), scene.getCamera().getViewMatrix());
+		this.frustum.extractFrustum(projectionViewMatrix);
 		scene.getTerrains().getAll().forEach(terrain -> processor.processTerrain(terrain, terrains));
 		this.environmentMap = scene.getEnvironmentMap();
 		scene.getEntities().updateWithFrustum(this.frustum, scene.getCamera())
@@ -164,7 +165,7 @@ public class MainRenderer implements IMainRenderer {
 
 	@Override
 	public void renderShadowMap(IScene scene) {
-		this.frustum.extractFrustum(scene.getCamera(), this.getProjectionMatrix());
+		this.frustum.extractFrustum(shadowMapRenderer.getToShadowMapSpaceMatrix());
 		scene.getEntities().updateWithFrustum(frustum, scene.getCamera())
 			.forEach((type, list) -> list.parallelStream()
 					.forEach(entity -> 

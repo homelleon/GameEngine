@@ -129,7 +129,7 @@ public class VoxelRenderer {
 		prepareModel(cube.getMesh());
 		bindMaterial(texture);
 		
-		getAllBlocks(chunkManager, frustum).stream()
+		getAllBlocks(chunkManager, frustum, camera).stream()
 		.peek(i -> prepareInstance(chunkManager.getBlockPositionByBlockIndex(i)))
 		.map(i -> new SimpleEntry<Integer, FaceCullingData>(i, isNeedBlockCulling(chunkManager, i)))
 		.filter(entry -> !isAllFaceCulled(entry.getValue()))
@@ -143,9 +143,9 @@ public class VoxelRenderer {
 		shader.stop();
 	}
 	
-	private List<Integer> getAllBlocks(IChunkManager chunkManager, Frustum frustum) {
+	private List<Integer> getAllBlocks(IChunkManager chunkManager, Frustum frustum, ICamera camera) {
 		return IntStream.range(0, (int) Math.pow(chunkManager.getSize(), 3))		
-				.filter(i -> checkVisibility(frustum, chunkManager.getChunkPositionByChunkIndex(i), CHUNK_RADIUS))
+				.filter(i -> checkVisibility(frustum, chunkManager.getChunkPositionByChunkIndex(i), CHUNK_RADIUS, camera))
 				.filter(i -> chunkManager.getChunk(i).getIsAcitve())
 				.mapToObj(i -> new SimpleEntry<Integer, IntStream>(i, IntStream.rangeClosed(0, (int) Math.pow(EngineSettings.VOXEL_CHUNK_SIZE, 3))
 						.map(a -> i * (int) Math.pow(EngineSettings.VOXEL_CHUNK_SIZE, 3) + a)
@@ -160,8 +160,8 @@ public class VoxelRenderer {
 				GL11.GL_UNSIGNED_INT, 24 * face);
 	}
 
-	private boolean checkVisibility(Frustum frustum, Vector3f position, float radius) {
-		return frustum.sphereInFrustumAndDsitance(position, radius, 0, EngineSettings.RENDERING_VIEW_DISTANCE);
+	private boolean checkVisibility(Frustum frustum, Vector3f position, float radius, ICamera camera) {
+		return frustum.sphereInFrustumAndDsitance(position, radius, 0, EngineSettings.RENDERING_VIEW_DISTANCE, camera);
 	}
 
 	private synchronized void prepareInstance(Vector3f position) {

@@ -46,7 +46,7 @@ public class SceneManager implements ISceneManager {
 	}
 	
 	private void initializeEditor(IScene scene) {
-		List<Model> cubeModels = EngineUtils.loadStaticModels("spartan", "stallTexture");
+		List<Model> cubeModels = EngineUtils.loadStaticModels("cube", "cube1");
 		IPlayer player1 = new Player(
 				playerName, 
 				cubeModels, 

@@ -8,6 +8,7 @@ import core.settings.EngineSettings;
 import object.entity.player.IPlayer;
 import object.input.KeyboardGame;
 import object.input.MouseGame;
+import tool.math.Maths;
 import tool.math.Matrix4f;
 import tool.math.vector.Vector3f;
 
@@ -144,7 +145,7 @@ public class TargetCamera extends BaseCamera implements ICamera {
 
 	@Override
 	public Matrix4f getViewMatrix() {
-		return null;
+		return Maths.createViewMatrix(this);
 	}
 
 	@Override

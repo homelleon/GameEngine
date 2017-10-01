@@ -66,7 +66,7 @@ public class EntityManager extends AbstractManager<IEntity> implements IEntityMa
 	@Override
 	public Map<Integer, List<IEntity>> updateWithFrustum(Frustum frustum, ICamera camera) {
 		return this.getAll().parallelStream()
-				.filter(entity -> checkVisibility(entity, frustum))
+				.filter(entity -> checkVisibility(entity, frustum, camera))
 				.collect(Collectors.groupingBy(IEntity::getType));
 	}
 
@@ -98,7 +98,7 @@ public class EntityManager extends AbstractManager<IEntity> implements IEntityMa
 		this.pointedEntities.clear();		
 	}
 	
-	private boolean checkVisibility(IEntity entity, Frustum frustum) {
+	private boolean checkVisibility(IEntity entity, Frustum frustum, ICamera camera) {
 		float distance1 = 0;
 		float distance2 = 0;
 		switch(entity.getType()) {
@@ -115,7 +115,7 @@ public class EntityManager extends AbstractManager<IEntity> implements IEntityMa
 			return false;
 		}
 		return frustum.sphereInFrustumAndDsitance(
-				entity.getPosition(), entity.getSphereRadius(), distance1, distance2);	
+				entity.getPosition(), entity.getSphereRadius(), distance1, distance2, camera);	
 	}
 
 

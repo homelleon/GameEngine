@@ -17,6 +17,8 @@ import tool.math.Matrix4f;
  * 
  * @author homelleon
  * @see EntityRendererManager
+ * @see TexturedEntityRenderer
+ * @see DecorEntityRenderer
  */
 public interface IEntityRendererManager {
 	

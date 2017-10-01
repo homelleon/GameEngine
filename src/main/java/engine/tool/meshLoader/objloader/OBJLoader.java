@@ -492,6 +492,7 @@ public class OBJLoader {
 		
 		Vertex[] vertexData = new Vertex[polygon.getVertices().size()];
 		polygon.getVertices().toArray(vertexData);
+		
 		float[] positions = new float[polygon.getVertices().size()*3];
 		float[] normals = new float[polygon.getVertices().size()*3];
 		float[] textureCoords = new float[polygon.getVertices().size()*2];
@@ -507,20 +508,32 @@ public class OBJLoader {
 				.flatMap(vertex -> Stream.of(vertex.getNormal().x,vertex.getNormal().y,vertex.getNormal().z))
 				.forEachOrdered(value -> normals[i[0]++] = value);
 		i[0] = 0;
-		polygon.getVertices().stream()
-				.flatMap(vertex -> Stream.of(vertex.getTextureCoord().x, vertex.getTextureCoord().y))
-				.forEachOrdered(value -> textureCoords[i[0]++] = value);
+		for(int j = 0; j < polygon.getVertices().size(); j++) {
+			textureCoords[2*j] = polygon.getVertices().get(j).getTextureCoord().x;
+			textureCoords[2*j+1] = polygon.getVertices().get(j).getTextureCoord().y;
+		}
 		i[0] = 0;
+		boolean[] isTangent = new boolean[1];
+		isTangent[0] = false;
 		polygon.getVertices().stream()
 				.filter(vertex -> vertex.getTangent() != null)
 				.flatMap(vertex -> Stream.of(vertex.getTangent().x, vertex.getTangent().y, vertex.getTangent().z))
-				.forEachOrdered(value -> positions[i[0]++] = value);
+				.forEachOrdered(value -> {
+						positions[i[0]++] = value;
+						isTangent[0] = true;
+					});
 		
 		Integer[] objectArray = new Integer[polygon.getIndices().size()];
+		
 		polygon.getIndices().toArray(objectArray);
 		int[] indices = Util.toIntArray(objectArray);
 		BufferLoader loader = Loader.getInstance().getVertexLoader();
-		Mesh mesh = loader.loadToVAO(positions, textureCoords, normals, tangents, indices);		
+		Mesh mesh = null;
+		if(isTangent[0]) {
+			mesh = loader.loadToVAO(positions, textureCoords, normals, tangents, indices);
+		} else {
+			mesh = loader.loadToVAO(positions, textureCoords, normals, indices);
+		}
 		return mesh;
 	}
 }

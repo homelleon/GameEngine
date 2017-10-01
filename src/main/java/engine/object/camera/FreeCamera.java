@@ -5,6 +5,7 @@ import org.lwjgl.input.Mouse;
 
 import core.display.DisplayManager;
 import core.settings.EngineSettings;
+import tool.math.Maths;
 import tool.math.Matrix4f;
 import tool.math.vector.Vector3f;
 
@@ -88,7 +89,7 @@ public class FreeCamera extends BaseCamera implements ICamera {
 
 	@Override
 	public Matrix4f getViewMatrix() {
-		return null;
+		return Maths.createViewMatrix(this);
 	}
 
 	@Override

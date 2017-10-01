@@ -7,17 +7,13 @@ import tool.math.vector.Vector3f;
 public class Frustum {
 
 	private float[][] plane = new float[6][4];
-	
-	private ICamera camera;
 
-	public Frustum extractFrustum(ICamera camera, Matrix4f projectionMatrix) {
-		this.camera = camera;
-		Matrix4f clip;
+	public Frustum extractFrustum(Matrix4f projectionViewMatrix) {
+		Matrix4f clip = new Matrix4f();
 		float t;
-
-		Matrix4f viewMatrix = Maths.createViewMatrix(camera);
+		
 		/* multiply matrix */
-		clip = Matrix4f.mul(projectionMatrix, viewMatrix);
+		clip.load(projectionViewMatrix);
 		/* RIGHT */
 		/* find A,B,C,D on the RIGHT plane */
 		this.plane[0][0] = clip.m[0][3] - clip.m[0][0];
@@ -129,8 +125,8 @@ public class Frustum {
 	}
 	
 	public boolean sphereInFrustumAndDsitance(Vector3f position, float radius, 
-			float startClipDistance, float endClipDistance) {
-		float distance = Maths.distance2Points(position, this.camera.getPosition());
+			float startClipDistance, float endClipDistance, ICamera camera) {
+		float distance = Maths.distance2Points(position, camera.getPosition());
 		if(distance < startClipDistance || distance > endClipDistance) {
 			return false;
 		}
