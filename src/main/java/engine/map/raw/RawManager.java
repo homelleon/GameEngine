@@ -13,29 +13,29 @@ import primitive.model.Model;
 
 public class RawManager implements IRawManager {
 	
-	private Map<String, Mesh> meshes = new HashMap<String, Mesh>();
+	private Map<String, Mesh[]> meshGroups = new HashMap<String, Mesh[]>();
 	private Map<String, Texture2D> textures = new HashMap<String, Texture2D>();
 	private Map<String, Material> materials = new HashMap<String, Material>();
 	private Map<String, TerrainTexturePack> terrainTexturePacks = new HashMap<String, TerrainTexturePack>();
-	private Map<String, Model> models = new HashMap<String, Model>();
+	private Map<String, Model[]> modelGroups = new HashMap<String, Model[]>();
 
 	@Override
-	public void addMesh(Mesh mesh) {
-		this.meshes.put(mesh.getName(), mesh);		
+	public void addMeshGroup(Mesh[] meshes) {
+		this.meshGroups.put(meshes[0].getName(), meshes);		
 	}
 
 	@Override
-	public List<Mesh> getMeshes() {
-		List<Mesh> list = new ArrayList<Mesh>();
-		list.addAll(this.meshes.values());
+	public List<Mesh[]> getMeshGroups() {
+		List<Mesh[]> list = new ArrayList<Mesh[]>();
+		list.addAll(this.meshGroups.values());
 		return list;
 	}
 	
 
 	@Override
-	public Mesh getMesh(String name) {
-		if(this.meshes.containsKey(name)) {
-		return this.meshes.get(name);
+	public Mesh[] getMeshGroup(String name) {
+		if(this.meshGroups.containsKey(name)) {
+		return this.meshGroups.get(name);
 		} else {
 			throw new NullPointerException("There is no mesh with name " + name + " in mesh array!");
 		}
@@ -85,21 +85,21 @@ public class RawManager implements IRawManager {
 	}
 
 	@Override
-	public void addModel(Model model) {
-		this.models.put(model.getName(), model);		
+	public void addModelGroup(Model[] models) {
+		this.modelGroups.put(models[0].getName(), models);		
 	}
 
 	@Override
-	public List<Model> getModels() {
-		List<Model> list = new ArrayList<Model>();
-		list.addAll(this.models.values());
+	public List<Model[]> getModelGroups() {
+		List<Model[]> list = new ArrayList<Model[]>();
+		list.addAll(this.modelGroups.values());
 		return list;
 	}
 
 	@Override
-	public Model getModel(String name) {
-		if(this.models.containsKey(name)) {
-			return this.models.get(name);
+	public Model[] getModelGroup(String name) {
+		if(this.modelGroups.containsKey(name)) {
+			return this.modelGroups.get(name);
 		} else {
 			throw new NullPointerException("There is no textured model with name " + name + " in textured model array!");
 		}
@@ -107,10 +107,10 @@ public class RawManager implements IRawManager {
 
 	@Override
 	public void clean() {
-		this.meshes.clear();
+		this.meshGroups.clear();
 		this.materials.clear();
 		this.terrainTexturePacks.clear();
-		this.models.clear();
+		this.modelGroups.clear();
 	}
 
 	@Override

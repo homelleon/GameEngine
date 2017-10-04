@@ -57,7 +57,7 @@ public class DisplayManager {
 				frame.getScreenPanel().add(canvas);
 
 				Display.setParent(canvas);
-				Display.setTitle("EditMode");
+				Display.setTitle("OutWorldMind Engine - EditMode");
 			} catch (LWJGLException e) {
 				e.printStackTrace();
 			}
@@ -72,7 +72,7 @@ public class DisplayManager {
 				Display.setDisplayModeAndFullscreen(new DisplayMode(width, height));
 				Display.create(new PixelFormat().withDepthBits(24), attribs);
 				Display.setFullscreen(true);
-				Display.setTitle("MyGame");
+				Display.setTitle("OutWorldMind Engine");
 
 			} catch (LWJGLException e) {
 				e.printStackTrace();

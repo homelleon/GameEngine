@@ -16,9 +16,9 @@ import primitive.model.Model;
  */
 public interface IRawManager {
 	
-	void addMesh(Mesh mesh);
-	List<Mesh> getMeshes();
-	Mesh getMesh(String name);
+	void addMeshGroup(Mesh[] meshes);
+	List<Mesh[]> getMeshGroups();
+	Mesh[] getMeshGroup(String name);
 	
 	void addTexture(Texture2D texture);
 	List<Texture2D> getTextures();
@@ -32,9 +32,9 @@ public interface IRawManager {
 	List<TerrainTexturePack> getTerrainTexturePacks();
 	TerrainTexturePack getTerrainTexturePack(String name);
 	
-	void addModel(Model model);
-	List<Model> getModels();
-	Model getModel(String name);
+	void addModelGroup(Model[] models);
+	List<Model[]> getModelGroups();
+	Model[] getModelGroup(String name);
 	
 	void clean();
 

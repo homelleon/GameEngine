@@ -46,13 +46,13 @@ public class SceneManager implements ISceneManager {
 	}
 	
 	private void initializeEditor(IScene scene) {
-		List<Model> cubeModels = EngineUtils.loadStaticModels("cube", "cube1");
+		List<Model> cubeModels = EngineUtils.loadStaticModels("tree", "leave");
 		IPlayer player1 = new Player(
 				playerName, 
 				cubeModels, 
 				new Vector3f(0, 0, 0), 
 				new Vector3f(0, 0, 0), 
-				1
+				0.2f
 		);
 		player1.setBaseName("cubeEntity1");
 		player1.getModels().forEach(model -> model.getMaterial().setShininess(5.0f));
@@ -67,21 +67,19 @@ public class SceneManager implements ISceneManager {
 	
 	private void initializeGame(IScene scene) {
 		/*------------------PLAYER-----------------*/
-		Model cubeModel = EngineUtils.loadStaticModel("cube", "cube1");
-		Collection<Model> playerModels = new ArrayList<Model>();
-		playerModels.add(cubeModel);
+		List<Model> cubeModels = EngineUtils.loadStaticModels("spartan", "spartan");
 		IPlayer player1 = new Player(
 				playerName, 
-				playerModels, 
+				cubeModels, 
 				new Vector3f(100, 0, 10), 
 				new Vector3f(0, 0, 0), 
-				1
+				0.07f
 		);
-		player1.setBaseName("cubeEntity1");
+		player1.setBaseName("spartanEntity");
 		player1.getModels().forEach(model -> {
 			Material material = model.getMaterial();
-			material.setReflectiveFactor(1.0f);
-			material.setRefractiveFactor(1.0f);
+			//material.setReflectiveFactor(1.0f);
+			//material.setRefractiveFactor(1.0f);
 			material.setShininess(5.0f);			
 		});
 

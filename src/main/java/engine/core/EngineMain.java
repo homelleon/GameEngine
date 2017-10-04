@@ -12,7 +12,6 @@ import core.loop.ILoop;
  * @version 1.0
  * 
  */
-
 public class EngineMain {
 
 	private static ILoop loopGame;

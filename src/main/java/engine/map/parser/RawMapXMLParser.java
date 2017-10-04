@@ -19,6 +19,7 @@ import tool.math.vector.Vector3f;
 import tool.meshLoader.normalMapObject.NormalMappedObjLoader;
 import tool.meshLoader.object.ModelData;
 import tool.meshLoader.object.OBJFileLoader;
+import tool.meshLoader.objloader.OBJLoader;
 import tool.xml.XMLUtils;
 import tool.xml.parser.IObjectParser;
 import tool.xml.parser.XMLParser;
@@ -73,25 +74,34 @@ public class RawMapXMLParser extends XMLParser implements IObjectParser<IRawMana
 				String name = XMLUtils.getAttributeValue(meshElement, XMLUtils.NAME);
 				String file = XMLUtils.getAttributeValue(meshElement, XMLUtils.FILE);
 				String type = XMLUtils.getAttributeValue(meshElement, XMLUtils.TYPE);
-				Mesh mesh;
-				ModelData data;
+				Mesh[] meshesBase;
+				Mesh[] meshes;
+				//ModelData data;
+				OBJLoader objLoader = new OBJLoader();
 				if(type.equals(XMLUtils.SIMPLE)) {
-					 data = OBJFileLoader.loadOBJ(file);
-					 mesh = new Mesh(name, Loader.getInstance().getVertexLoader()
-								.loadToVAO(data.getVertices(), data.getTextureCoords(), data.getNormals(),
-										data.getIndices()));
+					meshesBase = objLoader.load(EngineSettings.MODEL_PATH, file, null);
+//					 data = OBJFileLoader.loadOBJ(file);
+//					 mesh = new Mesh(name, Loader.getInstance().getVertexLoader()
+//								.loadToVAO(data.getVertices(), data.getTextureCoords(), data.getNormals(),
+//										data.getIndices()));
 				} else if(type.equals(XMLUtils.NORMAL)) {
-					data = NormalMappedObjLoader.loadOBJ(file);
-					mesh = new Mesh(name, Loader.getInstance().getVertexLoader()
-							.loadToVAO(data.getVertices(), data.getTextureCoords(), data.getNormals(),
-							data.getTangents(), data.getIndices()));
+					meshesBase = objLoader.load(EngineSettings.MODEL_PATH, file, null);
+//					data = NormalMappedObjLoader.loadOBJ(file);
+//					mesh = new Mesh(name, Loader.getInstance().getVertexLoader()
+//							.loadToVAO(data.getVertices(), data.getTextureCoords(), data.getNormals(),
+//							data.getTangents(), data.getIndices()));
 				} else {
 					throw new IllegalArgumentException(type + " is incorrect model type!");
 				}
 				
-				map.addMesh(mesh);
+				meshes = new Mesh[meshesBase.length];
+				for(int i=0; i < meshesBase.length; i++) {
+					meshes[i] = meshesBase[i].clone(name);
+				}
+				
+				map.addMeshGroup(meshes);
 				if (EngineDebug.hasDebugPermission()) {
-					System.out.println(">> " + map.getMesh(name).getName());
+					System.out.println(">> " + map.getMeshGroup(name)[0].getName());
 				}
 			}
 		}
@@ -237,12 +247,19 @@ public class RawMapXMLParser extends XMLParser implements IObjectParser<IRawMana
 				String name = XMLUtils.getAttributeValue(modelElement, XMLUtils.NAME);
 				String meshName = XMLUtils.getAttributeValue(modelElement, XMLUtils.MESH);
 				String materialName = XMLUtils.getAttributeValue(modelElement, XMLUtils.MATERIAL);
-				Mesh mesh = map.getMesh(meshName).clone(meshName);
+				int meshGroupSize = map.getMeshGroup(meshName).length;
+				Mesh[] meshes = new Mesh[meshGroupSize];
+				for(int i = 0; i < meshGroupSize; i++) {
+					meshes[i] = map.getMeshGroup(meshName)[i].clone(meshName);
+				}
 				Material material = map.getMaterial(materialName).clone(materialName);
-				Model model = new Model(name, mesh, material);
-				map.addModel(model);
+				Model[] models = new Model[meshGroupSize];
+				for(int i = 0; i < meshGroupSize; i++) {
+					models[i] = new Model(name, meshes[i], material);
+				}
+				map.addModelGroup(models);
 				if (EngineDebug.hasDebugPermission()) {
-					System.out.println(">> " + map.getModel(name).getName());
+					System.out.println(">> " + map.getModelGroup(name)[0].getName());
 				}
 			}
 		}

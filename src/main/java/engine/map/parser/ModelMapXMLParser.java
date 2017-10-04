@@ -70,11 +70,13 @@ public class ModelMapXMLParser extends XMLParser implements IObjectParser<IObjec
 				String modelName = XMLUtils.getAttributeValue(entityEl, XMLUtils.MODEL);
 				float scale = Float.valueOf(XMLUtils.getAttributeValue(entityEl, XMLUtils.SCALE));
 				int textureIndex = Integer.valueOf(XMLUtils.getAttributeValue(entityEl, XMLUtils.TEXTURE_INDEX));
-				Model model = rawMap.getModel(modelName);
+				Model[] models = rawMap.getModelGroup(modelName);
 				IEntityBuilder builder =  new EntityBuilder()
-						.setModel(model)
 						.setScale(scale)
 						.setTextureIndex(textureIndex);
+				for(int i = 0; i < models.length; i++) {
+					builder.setModel(models[i]);
+				}
 				map.getEntities().add(builder.build(name));
 				if (EngineDebug.hasDebugPermission()) {
 					System.out.println(">> " + map.getEntities().get(name).getName());
