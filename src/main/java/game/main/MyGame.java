@@ -58,11 +58,6 @@ public class MyGame extends Game {
 		helpGUIBuilder = new GUIBuilder(this.gameManager.getScene().getUserInterface().getComponent());
 		helpGUIBuilder.setText("versionText",this.gameManager.getTexts().get("version"));
 		this.helpGroup.add(helpGUIBuilder.build("version"));
-		//-------sign GUI-------------//
-		IGUIGroupBuilderTexture groupBuilder = new GUIGroupBuilderTexture(this.gameManager.getScene().getUserInterface())
-				.setTextureName("Sign");
-		IGUIGroup signGroup = groupBuilder.build("sign");
-		((GUIObject) signGroup).show();
 		
 		//-----------button GUI--------------//		
 		menuSystem = this.gameManager.getScene().getUserInterface().getMenus();

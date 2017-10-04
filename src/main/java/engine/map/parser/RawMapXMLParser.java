@@ -76,23 +76,10 @@ public class RawMapXMLParser extends XMLParser implements IObjectParser<IRawMana
 				String type = XMLUtils.getAttributeValue(meshElement, XMLUtils.TYPE);
 				Mesh[] meshesBase;
 				Mesh[] meshes;
-				//ModelData data;
+				
 				OBJLoader objLoader = new OBJLoader();
-				if(type.equals(XMLUtils.SIMPLE)) {
-					meshesBase = objLoader.load(EngineSettings.MODEL_PATH, file, null);
-//					 data = OBJFileLoader.loadOBJ(file);
-//					 mesh = new Mesh(name, Loader.getInstance().getVertexLoader()
-//								.loadToVAO(data.getVertices(), data.getTextureCoords(), data.getNormals(),
-//										data.getIndices()));
-				} else if(type.equals(XMLUtils.NORMAL)) {
-					meshesBase = objLoader.load(EngineSettings.MODEL_PATH, file, null);
-//					data = NormalMappedObjLoader.loadOBJ(file);
-//					mesh = new Mesh(name, Loader.getInstance().getVertexLoader()
-//							.loadToVAO(data.getVertices(), data.getTextureCoords(), data.getNormals(),
-//							data.getTangents(), data.getIndices()));
-				} else {
-					throw new IllegalArgumentException(type + " is incorrect model type!");
-				}
+				meshesBase = objLoader.load(EngineSettings.MODEL_PATH, file, null);
+				objLoader.clean();
 				
 				meshes = new Mesh[meshesBase.length];
 				for(int i=0; i < meshesBase.length; i++) {

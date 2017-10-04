@@ -2,6 +2,7 @@ package manager.entity;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -11,6 +12,7 @@ import object.camera.ICamera;
 import object.entity.entity.IEntity;
 import tool.manager.AbstractManager;
 import tool.math.Frustum;
+import tool.math.Maths;
 
 /**
  * Manages entities in the game engine.
@@ -26,6 +28,7 @@ import tool.math.Frustum;
  * 
  * @author homelleon
  * @version 1.0.1
+ * @see IEntityManager
  * 
  */
 public class EntityManager extends AbstractManager<IEntity> implements IEntityManager {
@@ -64,10 +67,10 @@ public class EntityManager extends AbstractManager<IEntity> implements IEntityMa
 	}
 
 	@Override
-	public Map<Integer, List<IEntity>> updateWithFrustum(Frustum frustum, ICamera camera) {
+	public List<IEntity> updateWithFrustum(Frustum frustum, ICamera camera, boolean isLow) {
 		return this.getAll().parallelStream()
-				.filter(entity -> checkVisibility(entity, frustum, camera))
-				.collect(Collectors.groupingBy(IEntity::getType));
+				.filter(entity -> checkVisibility(entity, frustum, camera, isLow))
+				.collect(Collectors.toList());
 	}
 
 	@Override
@@ -95,27 +98,24 @@ public class EntityManager extends AbstractManager<IEntity> implements IEntityMa
 	@Override
 	public void clean() {
 		super.clean();
-		this.pointedEntities.clear();		
+		this.pointedEntities.clear();
+		this.editorEntities.clear();
 	}
 	
-	private boolean checkVisibility(IEntity entity, Frustum frustum, ICamera camera) {
+	private boolean checkVisibility(IEntity entity, Frustum frustum, ICamera camera, boolean isLow) {
 		float distance1 = 0;
-		float distance2 = 0;
-		switch(entity.getType()) {
-		case EngineSettings.ENTITY_TYPE_SIMPLE:
-			distance2 = EngineSettings.RENDERING_VIEW_DISTANCE;
-			break;
-		case EngineSettings.ENTITY_TYPE_NORMAL:
-			distance2 = EngineSettings.RENDERING_VIEW_DISTANCE;
-			break;
-		case EngineSettings.ENTITY_TYPE_DECORATE:
-			distance2 = EngineSettings.RENDERING_VIEW_DISTANCE/6;
-			break;
-		default:
+		float distance2 = EngineSettings.RENDERING_VIEW_DISTANCE;
+		if(isLow) {
+			distance2 /= 2;
+		}
+		if(entity.getType() == EngineSettings.ENTITY_TYPE_DECORATE) {
+			distance2 /= 4;
+		}
+		float distance = Maths.distance2Points(entity.getPosition(), camera.getPosition());
+		if(distance > distance2 || distance < distance1) {
 			return false;
 		}
-		return frustum.sphereInFrustumAndDsitance(
-				entity.getPosition(), entity.getSphereRadius(), distance1, distance2, camera);	
+		return frustum.sphereInFrustum(entity.getPosition(), entity.getSphereRadius());	
 	}
 
 

@@ -113,13 +113,16 @@ public class TargetCamera extends BaseCamera implements ICamera {
 		if (((distanceFromPlayer < maxDistanceFromPlayer) && (zoomLevel < 0))
 				|| ((distanceFromPlayer > minDistanceFromPlayer) && (zoomLevel > 0))) {
 			distanceFromPlayer -= zoomLevel;
+			this.isMoved = true;
 		}
 	}
 
 	private void calculatePitchAndAngle() {
+		float pitchChange = 0;
+		float angleChange = 0;
 		if ((!Loop.getInstance().getEditMode() && !MouseGame.isPressed(MouseGame.MIDDLE_CLICK))||
 				(Loop.getInstance().getEditMode() && MouseGame.isPressed(MouseGame.MIDDLE_CLICK))) {
-			float pitchChange = Mouse.getDY() * EngineSettings.MOUSE_Y_SPEED;
+			pitchChange = Mouse.getDY() * EngineSettings.MOUSE_Y_SPEED;
 
 			if ((pitch < maxPitch) || (pitch > minPitch)) {
 				pitch -= pitchChange;
@@ -127,10 +130,13 @@ public class TargetCamera extends BaseCamera implements ICamera {
 		}
 
 		if (MouseGame.isPressed(MouseGame.MIDDLE_CLICK)) {
-			float angleChange = Mouse.getDX() * EngineSettings.MOUSE_X_SPEED;
+			angleChange = Mouse.getDX() * EngineSettings.MOUSE_X_SPEED;
 			angleAroundPlayer += -angleChange;
 		} else if(!Loop.getInstance().getEditMode()) {
 			angleAroundPlayer = 0;
+		}
+		if((pitchChange != 0) || (angleChange !=0)) {
+			this.isRotated = true;
 		}
 	}
 

@@ -46,7 +46,7 @@ public class SceneManager implements ISceneManager {
 	}
 	
 	private void initializeEditor(IScene scene) {
-		List<Model> cubeModels = EngineUtils.loadStaticModels("tree", "leave");
+		List<Model> cubeModels = EngineUtils.loadModels("tree", "leave");
 		IPlayer player1 = new Player(
 				playerName, 
 				cubeModels, 
@@ -67,7 +67,7 @@ public class SceneManager implements ISceneManager {
 	
 	private void initializeGame(IScene scene) {
 		/*------------------PLAYER-----------------*/
-		List<Model> cubeModels = EngineUtils.loadStaticModels("spartan", "spartan");
+		List<Model> cubeModels = EngineUtils.loadModels("spartan", "spartan");
 		IPlayer player1 = new Player(
 				playerName, 
 				cubeModels, 
@@ -111,7 +111,7 @@ public class SceneManager implements ISceneManager {
 		scene.setPlayer(player1);
 		scene.getAudioSources().getMaster().setListenerData(scene.getPlayer().getPosition());
 		scene.getEntities().add(player1);
-		scene.getEntities().addAll(EngineUtils.createGrassField(500, 500, 8000, 4, 0.02f));
+		scene.getEntities().addAll(EngineUtils.createObjectField(500, 500, 8000, 4, 0.08f));
 		scene.setCamera(new TargetCamera(cameraName, player1));
 		scene.setSun(new Light("Sun", 
 				new Vector3f(-1000000, 200000, -1000000), 

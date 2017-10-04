@@ -14,7 +14,7 @@ import tool.math.Frustum;
  * 
  * @author homelleon
  * @version 1.0
- *
+ * @see EntityManager
  */
 public interface IEntityManager extends IManager<IEntity> {
 
@@ -66,7 +66,7 @@ public interface IEntityManager extends IManager<IEntity> {
 	 * @param frustum
 	 *            {@link Frustum} value of frustum pyramid
 	 */
-	Map<Integer, List<IEntity>> updateWithFrustum(Frustum frustum, ICamera camera);
+	List<IEntity> updateWithFrustum(Frustum frustum, ICamera camera, boolean isLow);
 
 	/**
 	 * Returns list of entities chosen by player.

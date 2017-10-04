@@ -286,9 +286,8 @@ public class MousePicker {
 		IEntity pickedEntity = null;
 		List<IEntity> pointedEntities = new ArrayList<IEntity>();
 		pointedEntities.addAll(
-			scene.getEntities().updateWithFrustum(scene.getFrustum(), camera).values().stream()
-			.flatMap(list -> list.stream())
-			.filter(entity -> intersects(entity.getPosition(), entity.getSphereRadius()))
+			scene.getEntities().updateWithFrustum(scene.getFrustum(), camera, true).stream()
+				.filter(entity -> intersects(entity.getPosition(), entity.getSphereRadius()))
 //			.filter(entity -> {
 //				Vec3f min = entity.getModel().getRawModel().getBBox().getMin();
 //				Vec3f max = entity.getModel().getRawModel().getBBox().getMax();

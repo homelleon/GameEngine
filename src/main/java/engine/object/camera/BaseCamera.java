@@ -23,7 +23,7 @@ public abstract class BaseCamera {
 
 	protected boolean isUnderWater = false;
 	protected boolean isMoved = false;
-	protected boolean isAngleChanged = false;
+	protected boolean isRotated = false;
 
 	protected BaseCamera(String name, Vector3f position) {
 		this.setPosition(position);
@@ -69,6 +69,7 @@ public abstract class BaseCamera {
 
 	public void move() {
 		this.isMoved = false;
+		this.isRotated = false;
 	}
 
 	public Vector3f getPosition() {
@@ -112,12 +113,13 @@ public abstract class BaseCamera {
 		this.isMoved = isMoved;
 	}
 
-	public boolean isAngleChanged() {
-		return isAngleChanged;
+	public boolean isRotated() {
+		return isRotated;
 	}
 
-	public void setAngleChanged(boolean isAngleChanged) {
-		this.isAngleChanged = isAngleChanged;
+	public void setRotated(boolean isRotated) {
+		this.isRotated = isRotated;
 	}
+
 
 }

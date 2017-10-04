@@ -65,6 +65,9 @@ public class MainRenderer implements IMainRenderer {
 	private Map<Model, List<IEntity>> texturedEntities = new HashMap<Model, List<IEntity>>();
 	private Map<Model, List<IEntity>> normalEntities = new HashMap<Model, List<IEntity>>();
 	private Map<Model, List<IEntity>> decorEntities = new HashMap<Model, List<IEntity>>();
+	private List<IEntity> frustumHighEntities = new ArrayList<IEntity>();
+	private List<IEntity> frustumLowEntities = new ArrayList<IEntity>();
+	private List<IEntity> frustumShadowEntities = new ArrayList<IEntity>();
 	private Collection<ITerrain> terrains = new ArrayList<ITerrain>();
 
 	public MainRenderer(IScene scene) {
@@ -89,6 +92,11 @@ public class MainRenderer implements IMainRenderer {
 		scene.setFrustum(this.frustum);
 		this.enviroRenderer = new EnvironmentMapRenderer();
 		this.processor = new SceneProcessor();
+		Matrix4f projectionViewMatrix = Matrix4f.mul(this.getProjectionMatrix(), scene.getCamera().getViewMatrix());
+		this.frustum.extractFrustum(projectionViewMatrix);
+		this.frustumHighEntities = scene.getEntities().updateWithFrustum(this.frustum, scene.getCamera(), false);
+		this.frustum.extractFrustum(shadowMapRenderer.getToShadowMapSpaceMatrix());
+		this.frustumShadowEntities = scene.getEntities().updateWithFrustum(this.frustum, scene.getCamera(), false);
 	}
 
 	@Override
@@ -105,14 +113,23 @@ public class MainRenderer implements IMainRenderer {
 
 	@Override
 	public void renderScene(IScene scene, Vector4f clipPlane, boolean isLowDistance) {
-		Matrix4f projectionViewMatrix = Matrix4f.mul(this.getProjectionMatrix(), scene.getCamera().getViewMatrix());
-		this.frustum.extractFrustum(projectionViewMatrix);
 		scene.getTerrains().getAll().forEach(terrain -> processor.processTerrain(terrain, terrains));
 		this.environmentMap = scene.getEnvironmentMap();
-		scene.getEntities().updateWithFrustum(this.frustum, scene.getCamera())
-			.forEach((type, list) -> 
-				list.parallelStream().forEach(entity -> 
-					processEntityByType(type, entity)));
+		if(scene.getCamera().isMoved() || scene.getCamera().isRotated()) {
+			Matrix4f projectionViewMatrix = Matrix4f.mul(this.getProjectionMatrix(), scene.getCamera().getViewMatrix());
+			this.frustum.extractFrustum(projectionViewMatrix);
+			if(isLowDistance) {
+				this.frustumLowEntities.clear();
+				this.frustumLowEntities = scene.getEntities().updateWithFrustum(this.frustum, scene.getCamera(), true);
+			} else {
+				this.frustumHighEntities.clear();
+				this.frustumHighEntities = scene.getEntities().updateWithFrustum(this.frustum, scene.getCamera(), false);
+			}
+		}
+		this.frustumHighEntities
+			.parallelStream()
+				.forEach(entity -> 
+					processEntityByType(entity.getType(), entity));
 		if (this.environmentDynamic) {
 			environmentRendered = false;
 		}
@@ -139,20 +156,14 @@ public class MainRenderer implements IMainRenderer {
 		checkWiredFrameOff(terrainWiredFrame);
 
 		skyboxRenderer.render(scene.getCamera());		
-		terrains.clear();
-		texturedEntities.clear();
-		normalEntities.clear();
-		decorEntities.clear();
+		this.cleanScene();
 	}
 	
 	private void renderEditorScene(IScene scene) {
 		prepare();
 		Matrix4f shadowMapSpaceMatrix = shadowMapRenderer.getToShadowMapSpaceMatrix();
 		this.entityRendererManager.render(EngineSettings.NO_CLIP, scene.getLights().getAll(), scene.getCamera(), shadowMapSpaceMatrix, null, false);
-		terrains.clear();
-		texturedEntities.clear();
-		normalEntities.clear();
-		decorEntities.clear();
+		this.cleanScene();
 	}
 
 	@Override
@@ -165,18 +176,19 @@ public class MainRenderer implements IMainRenderer {
 
 	@Override
 	public void renderShadowMap(IScene scene) {
-		this.frustum.extractFrustum(shadowMapRenderer.getToShadowMapSpaceMatrix());
-		scene.getEntities().updateWithFrustum(frustum, scene.getCamera())
-			.forEach((type, list) -> list.parallelStream()
-					.forEach(entity -> 
-						processEntityByType(EngineSettings.ENTITY_TYPE_SIMPLE, entity)));
+		if(scene.getCamera().isMoved() || scene.getCamera().isRotated()) {
+			this.frustum.extractFrustum(shadowMapRenderer.getToShadowMapSpaceMatrix());
+			this.frustumShadowEntities.clear();
+			this.frustumShadowEntities = scene.getEntities().updateWithFrustum(this.frustum, scene.getCamera(), false);
+		}
+		this.frustumShadowEntities
+			.parallelStream()
+				.forEach(entity -> 
+					processEntityByType(EngineSettings.ENTITY_TYPE_SIMPLE, entity));
 		scene.getTerrains().getAll()
-		.forEach(terrain -> processor.processTerrain(terrain, terrains));
+			.forEach(terrain -> processor.processTerrain(terrain, terrains));
 		shadowMapRenderer.render(texturedEntities, terrains, normalEntities, scene.getSun(), scene.getCamera());
-		texturedEntities.clear();
-		normalEntities.clear();
-		decorEntities.clear();
-		terrains.clear();
+		this.cleanScene();
 	}
 
 	private Texture2D getShadowMapTexture() {
@@ -186,8 +198,19 @@ public class MainRenderer implements IMainRenderer {
 	@Override
 	public void clean() {
 		this.entityRendererManager.clean();
-		terrainRenderer.clean();
-		shadowMapRenderer.clean();
+		this.terrainRenderer.clean();
+		this.shadowMapRenderer.clean();
+		this.frustumHighEntities.clear();
+		this.frustumLowEntities.clear();
+		this.frustumShadowEntities.clear();
+		
+	}
+	
+	private void cleanScene() {
+		this.texturedEntities.clear();
+		this.normalEntities.clear();
+		this.decorEntities.clear();
+		this.terrains.clear();
 	}
 
 	private void prepare() {

@@ -134,7 +134,7 @@ public class GameSceneRenderer implements ISceneRenderer {
 	private void renderWaterRefraction() {
 		waterFBOs.bindRefractionFrameBuffer();
 		mainRenderer.renderScene(scene, new Vector4f(0, -1, 0, scene.getWaters().getByName("Water").getHeight() + 1f),
-				true);
+				false);
 	}
 
 	private void renderParticles() {
