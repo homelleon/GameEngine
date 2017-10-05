@@ -51,6 +51,7 @@ public class MainRenderer implements IMainRenderer {
 	private EnvironmentMapRenderer enviroRenderer;
 	
 	IEntityRendererManager entityRendererManager; 
+	IFrustumEntityManager frustumEntityManager;
 	
 	private ISceneProcessor processor;
 
@@ -65,9 +66,6 @@ public class MainRenderer implements IMainRenderer {
 	private Map<Model, List<IEntity>> texturedEntities = new HashMap<Model, List<IEntity>>();
 	private Map<Model, List<IEntity>> normalEntities = new HashMap<Model, List<IEntity>>();
 	private Map<Model, List<IEntity>> decorEntities = new HashMap<Model, List<IEntity>>();
-	private List<IEntity> frustumHighEntities = new ArrayList<IEntity>();
-	private List<IEntity> frustumLowEntities = new ArrayList<IEntity>();
-	private List<IEntity> frustumShadowEntities = new ArrayList<IEntity>();
 	private Collection<ITerrain> terrains = new ArrayList<ITerrain>();
 
 	public MainRenderer(IScene scene) {
@@ -83,20 +81,15 @@ public class MainRenderer implements IMainRenderer {
 		this.entityRendererManager.addPair(texturedEntityRenderer, texturedEntities);
 		this.entityRendererManager.addPair(normalEntityRenderer, normalEntities);
 		this.entityRendererManager.addPair(decorEntityRenderer, decorEntities);
-		
+		this.frustumEntityManager = new FrustumEntityManager(this.frustum);
+		scene.setFrustum(this.frustum);
 		this.terrainRenderer = new TerrainRenderer(projectionMatrix);
 		this.skyboxRenderer = new SkyboxRenderer(projectionMatrix);
 		this.voxelRenderer = new VoxelRenderer(projectionMatrix);
 		this.boundingRenderer = new BoundingRenderer(projectionMatrix);
 		this.shadowMapRenderer = new ShadowMapMasterRenderer(scene.getCamera());
-		scene.setFrustum(this.frustum);
 		this.enviroRenderer = new EnvironmentMapRenderer();
 		this.processor = new SceneProcessor();
-		Matrix4f projectionViewMatrix = Matrix4f.mul(this.getProjectionMatrix(), scene.getCamera().getViewMatrix());
-		this.frustum.extractFrustum(projectionViewMatrix);
-		this.frustumHighEntities = scene.getEntities().updateWithFrustum(this.frustum, scene.getCamera(), false);
-		this.frustum.extractFrustum(shadowMapRenderer.getToShadowMapSpaceMatrix());
-		this.frustumShadowEntities = scene.getEntities().updateWithFrustum(this.frustum, scene.getCamera(), false);
 	}
 
 	@Override
@@ -115,21 +108,7 @@ public class MainRenderer implements IMainRenderer {
 	public void renderScene(IScene scene, Vector4f clipPlane, boolean isLowDistance) {
 		scene.getTerrains().getAll().forEach(terrain -> processor.processTerrain(terrain, terrains));
 		this.environmentMap = scene.getEnvironmentMap();
-		if(scene.getCamera().isMoved() || scene.getCamera().isRotated()) {
-			Matrix4f projectionViewMatrix = Matrix4f.mul(this.getProjectionMatrix(), scene.getCamera().getViewMatrix());
-			this.frustum.extractFrustum(projectionViewMatrix);
-			if(isLowDistance) {
-				this.frustumLowEntities.clear();
-				this.frustumLowEntities = scene.getEntities().updateWithFrustum(this.frustum, scene.getCamera(), true);
-			} else {
-				this.frustumHighEntities.clear();
-				this.frustumHighEntities = scene.getEntities().updateWithFrustum(this.frustum, scene.getCamera(), false);
-			}
-		}
-		this.frustumHighEntities
-			.parallelStream()
-				.forEach(entity -> 
-					processEntityByType(entity.getType(), entity));
+		this.prepareFrustumEntities(scene, isLowDistance);
 		if (this.environmentDynamic) {
 			environmentRendered = false;
 		}
@@ -140,6 +119,13 @@ public class MainRenderer implements IMainRenderer {
 		render(scene, clipPlane, isLowDistance);
 	}
 
+	/**
+	 * Renders full scene with preloaded objects.
+	 * 
+	 * @param scene {@link IScene}
+	 * @param clipPlane {@link Vector4f} clipping plane
+	 * @param isLowDistance 
+	 */
 	private void render(IScene scene, Vector4f clipPlane, boolean isLowDistance) {
 		prepare();
 		checkWiredFrameOn(entitiyWiredFrame);
@@ -155,7 +141,7 @@ public class MainRenderer implements IMainRenderer {
 		terrainRenderer.render(terrains, clipPlane, scene.getLights().getAll(), scene.getCamera(), shadowMapSpaceMatrix);
 		checkWiredFrameOff(terrainWiredFrame);
 
-		skyboxRenderer.render(scene.getCamera());		
+		skyboxRenderer.render(scene.getCamera());	
 		this.cleanScene();
 	}
 	
@@ -176,34 +162,43 @@ public class MainRenderer implements IMainRenderer {
 
 	@Override
 	public void renderShadowMap(IScene scene) {
-		if(scene.getCamera().isMoved() || scene.getCamera().isRotated()) {
-			this.frustum.extractFrustum(shadowMapRenderer.getToShadowMapSpaceMatrix());
-			this.frustumShadowEntities.clear();
-			this.frustumShadowEntities = scene.getEntities().updateWithFrustum(this.frustum, scene.getCamera(), false);
-		}
-		this.frustumShadowEntities
-			.parallelStream()
-				.forEach(entity -> 
-					processEntityByType(EngineSettings.ENTITY_TYPE_SIMPLE, entity));
 		scene.getTerrains().getAll()
 			.forEach(terrain -> processor.processTerrain(terrain, terrains));
+		prepareShadowFrustumEntities(scene);
 		shadowMapRenderer.render(texturedEntities, terrains, normalEntities, scene.getSun(), scene.getCamera());
 		this.cleanScene();
 	}
 
-	private Texture2D getShadowMapTexture() {
-		return shadowMapRenderer.getShadowMap();
+	private void prepare() {
+		OGLUtils.depthTest(true);
+		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+		GL11.glClearColor(EngineSettings.DISPLAY_RED, EngineSettings.DISPLAY_GREEN, EngineSettings.DISPLAY_BLUE, 1);
+		getShadowMapTexture().bind(5);
 	}
-
-	@Override
-	public void clean() {
-		this.entityRendererManager.clean();
-		this.terrainRenderer.clean();
-		this.shadowMapRenderer.clean();
-		this.frustumHighEntities.clear();
-		this.frustumLowEntities.clear();
-		this.frustumShadowEntities.clear();
-		
+	
+	private void initializeFrustumEntities(IScene scene) {
+		this.prepareFrustumEntities(scene, true);
+		this.prepareShadowFrustumEntities(scene);
+	}
+	
+	private void prepareFrustumEntities(IScene scene, boolean isLowDistance) {
+		List<IEntity> frustumEntities = new ArrayList<IEntity>();
+		if(isLowDistance) {
+			frustumEntities = this.frustumEntityManager.prepareFrustumLowEntities(scene, this.getProjectionMatrix());
+		} else {
+			frustumEntities = this.frustumEntityManager.prepareFrustumLowEntities(scene, this.getProjectionMatrix());
+		}
+		frustumEntities.parallelStream()
+			.forEach(entity -> 
+				processEntityByType(entity.getType(), entity));
+	}
+	
+	private void prepareShadowFrustumEntities(IScene scene) {
+		List<IEntity> frustumEntities = new ArrayList<IEntity>();
+		frustumEntities = this.frustumEntityManager.prepareShadowFrustumEntities(scene, shadowMapRenderer.getToShadowMapSpaceMatrix());
+		frustumEntities.parallelStream()
+			.forEach(entity -> 
+				processEntityByType(EngineSettings.ENTITY_TYPE_SIMPLE, entity));
 	}
 	
 	private void cleanScene() {
@@ -213,11 +208,13 @@ public class MainRenderer implements IMainRenderer {
 		this.terrains.clear();
 	}
 
-	private void prepare() {
-		OGLUtils.depthTest(true);
-		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
-		GL11.glClearColor(EngineSettings.DISPLAY_RED, EngineSettings.DISPLAY_GREEN, EngineSettings.DISPLAY_BLUE, 1);
-		getShadowMapTexture().bind(5);
+	@Override
+	public void clean() {
+		this.entityRendererManager.clean();
+		this.terrainRenderer.clean();
+		this.shadowMapRenderer.clean();
+		this.frustumEntityManager.clean();
+		
 	}
 
 	private void createProjectionMatrix() {
@@ -255,6 +252,10 @@ public class MainRenderer implements IMainRenderer {
 	@Override
 	public Matrix4f getProjectionMatrix() {
 		return projectionMatrix;
+	}
+
+	private Texture2D getShadowMapTexture() {
+		return shadowMapRenderer.getShadowMap();
 	}
 
 	@Override
