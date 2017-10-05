@@ -2,29 +2,29 @@ package object.voxel.octree;
 
 import object.entity.entity.IEntity;
 
-public class Node {
+public class OctreeNode {
 
 	private boolean hasParent = false;
-	private Node parent;
+	private OctreeNode parent;
 	private boolean hasChildren = false;
-	private Node[] childrens;
+	private OctreeNode[] childrens;
 	private float scale;
 	private IEntity entity;
 
-	public Node(float scale, Node parent, boolean hasChildren) {
+	public OctreeNode(float scale, OctreeNode parent, boolean hasChildren) {
 		this.scale = scale;
 		this.hasParent = true;
 		this.parent = parent;
 		this.hasChildren = hasChildren;
 		if (this.hasChildren) {
-			this.childrens = new Node[Octree.MAX_CHILD_COUNT];
+			this.childrens = new OctreeNode[Octree.MAX_CHILD_COUNT];
 			for (int i = 0; i < Octree.MAX_CHILD_COUNT; i++) {
-				this.childrens[i] = new Node(this.scale / 8);
+				this.childrens[i] = new OctreeNode(this.scale / 8);
 			}
 		}
 	}
 
-	public Node(float scale) {
+	public OctreeNode(float scale) {
 		this.scale = scale;
 		this.hasParent = false;
 		this.hasChildren = false;
@@ -34,9 +34,9 @@ public class Node {
 		boolean isSucced = false;
 		if (!hasChildren) {
 			this.hasChildren = true;
-			this.childrens = new Node[Octree.MAX_CHILD_COUNT];
+			this.childrens = new OctreeNode[Octree.MAX_CHILD_COUNT];
 			for (int i = 0; i < Octree.MAX_CHILD_COUNT; i++) {
-				this.childrens[i] = new Node(this.scale / 8);
+				this.childrens[i] = new OctreeNode(this.scale / 8);
 			}
 			isSucced = true;
 		}
@@ -61,6 +61,10 @@ public class Node {
 			isCanBeScaled = true;
 		}
 		return isCanBeScaled;
+	}
+	
+	public float getScale() {
+		return this.scale;
 	}
 
 	public void setEntity(IEntity entity) {

@@ -6,7 +6,6 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.HashMap;
-import java.util.List;
 
 import object.texture.Texture2D;
 import object.texture.material.Material;
@@ -15,7 +14,6 @@ import primitive.buffer.Loader;
 import primitive.model.Mesh;
 import tool.math.vector.Vector2f;
 import tool.math.vector.Vector3f;
-import tool.meshLoader.normalMapObject.VertexNM;
 
 public class OBJLoader {
 
