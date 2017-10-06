@@ -1,4 +1,4 @@
-package tool.meshLoader.normalMapObject;
+package primitive.model.meshLoader.normalMapObject;
 
 import java.util.ArrayList;
 import java.util.List;

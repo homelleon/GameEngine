@@ -1,4 +1,4 @@
-package object.gui.pattern.button;
+package object.gui.element.button;
 
 import tool.math.vector.Vector2f;
 

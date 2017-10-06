@@ -41,10 +41,10 @@ public abstract class Game extends Thread implements IGame {
 			String GLSLVersion = GL11.glGetString(GL20.GL_SHADING_LANGUAGE_VERSION);
 			EngineDebug.printBorder();
 			EngineDebug.printOpen("OpenGL");
-			EngineDebug.print(" OpenGL Vendor: " + OGLVendor);
-			EngineDebug.print(" OpenGL Renderer: " + OGLRenderer);			
-			EngineDebug.print(" OpenGL Version: " + OGLVersion);
-			EngineDebug.print(" GLSL Version: " + GLSLVersion);
+			EngineDebug.print("OpenGL Vendor: " + OGLVendor, 1);
+			EngineDebug.print("OpenGL Renderer: " + OGLRenderer, 1);			
+			EngineDebug.print("OpenGL Version: " + OGLVersion, 1);
+			EngineDebug.print("GLSL Version: " + GLSLVersion, 1);
 			EngineDebug.printClose("OpenGL");
 			EngineDebug.printBorder();
 		}

@@ -14,8 +14,8 @@ import object.texture.material.Material;
 import object.texture.terrain.TerrainTexturePack;
 import primitive.model.Mesh;
 import primitive.model.Model;
+import primitive.model.meshLoader.objloader.OBJLoader;
 import tool.math.vector.Vector3f;
-import tool.meshLoader.objloader.OBJLoader;
 import tool.xml.XMLUtils;
 import tool.xml.parser.IObjectParser;
 import tool.xml.parser.XMLParser;
@@ -60,7 +60,7 @@ public class RawMapXMLParser extends XMLParser implements IObjectParser<IRawMana
 	private void parseMeshes(Node node, IRawManager map) {
 		//TODO separate normal and simple instead of models
 		if (EngineDebug.hasDebugPermission()) {
-			EngineDebug.print("> Loading meshes...");
+			EngineDebug.print("Loading meshes...", 1);
 		}
 		NodeList meshList = node.getChildNodes();
 		for (int j = 0; j < meshList.getLength(); j++) {
@@ -85,18 +85,18 @@ public class RawMapXMLParser extends XMLParser implements IObjectParser<IRawMana
 				
 				map.addMeshGroup(meshes);
 				if (EngineDebug.hasDebugPermission()) {
-					EngineDebug.print(">> " + map.getMeshGroup(name)[0].getName());
+					EngineDebug.print(map.getMeshGroup(name)[0].getName(), 2);
 				}
 			}
 		}
 		if (EngineDebug.hasDebugPermission()) {
-			EngineDebug.print("> Succed!");
+			EngineDebug.print("Succed!", 1);
 		}
 	}
 	
 	private void parseTextures(Node node, IRawManager map) {
 		if (EngineDebug.hasDebugPermission()) {
-			EngineDebug.print("> Loading textures...");
+			EngineDebug.print("Loading textures...", 1);
 		}
 		NodeList texturesNodeList = node.getChildNodes();
 		for (int j = 0; j < texturesNodeList.getLength(); j++) {
@@ -111,19 +111,19 @@ public class RawMapXMLParser extends XMLParser implements IObjectParser<IRawMana
 				texture.setNumberOfRows(numberOfRows);
 				map.addTexture(texture);
 				if (EngineDebug.hasDebugPermission()) {
-					EngineDebug.print(">> " + map.getTexture(name).getName());
+					EngineDebug.print(map.getTexture(name).getName(), 2);
 				}
 			}
 		}
 		if (EngineDebug.hasDebugPermission()) {
-			EngineDebug.print("> Succed!");
+			EngineDebug.print("Succed!", 1);
 		}
 		
 	}
 	
 	private void parseMaterials(Node node, IRawManager map) {
 		if (EngineDebug.hasDebugPermission()) {
-			EngineDebug.print("> Loading materials...");
+			EngineDebug.print("Loading materials...", 1);
 		}
 		NodeList materialList = node.getChildNodes();
 		for (int k = 0; k < materialList.getLength(); k++) {
@@ -175,18 +175,18 @@ public class RawMapXMLParser extends XMLParser implements IObjectParser<IRawMana
 				material.setColor(new Vector3f(r,g,b));
 				map.addMaterial(material);
 				if (EngineDebug.hasDebugPermission()) {
-					EngineDebug.print(">> " + map.getMaterial(name).getName());
+					EngineDebug.print(map.getMaterial(name).getName(), 2);
 				}
 			}
 		}
 		if (EngineDebug.hasDebugPermission()) {
-			EngineDebug.print("> Succed!");
+			EngineDebug.print("Succed!", 1);
 		}
 	}
 
 	private void parseTerrainPacks(Node node, IRawManager map) {
 		if (EngineDebug.hasDebugPermission()) {
-			EngineDebug.print("> Loading terrain packs...");
+			EngineDebug.print("Loading terrain packs...", 1);
 		}
 		NodeList packList = node.getChildNodes();
 		for (int k = 0; k < packList.getLength(); k++) {
@@ -209,18 +209,18 @@ public class RawMapXMLParser extends XMLParser implements IObjectParser<IRawMana
 				TerrainTexturePack texture = new TerrainTexturePack(name, baseTexture, redTexture, greenTexture, blueTexture);
 				map.addTerrainTexturePack(texture);
 				if (EngineDebug.hasDebugPermission()) {
-					EngineDebug.print(">> " + map.getTerrainTexturePack(name).getName());
+					EngineDebug.print(map.getTerrainTexturePack(name).getName(), 2);
 				}
 			}
 		}
 		if (EngineDebug.hasDebugPermission()) {
-			EngineDebug.print("> Succed!");
+			EngineDebug.print("Succed!", 1);
 		}
 	}
 	
 	private void parseModels(Node node, IRawManager map) {
 		if (EngineDebug.hasDebugPermission()) {
-			EngineDebug.print("> Loading models...");
+			EngineDebug.print("Loading models...", 1);
 		}
 		NodeList modelList = node.getChildNodes();
 		for (int j = 0; j < modelList.getLength(); j++) {
@@ -243,12 +243,12 @@ public class RawMapXMLParser extends XMLParser implements IObjectParser<IRawMana
 				}
 				map.addModelGroup(models);
 				if (EngineDebug.hasDebugPermission()) {
-					EngineDebug.print(">> " + map.getModelGroup(name)[0].getName());
+					EngineDebug.print(map.getModelGroup(name)[0].getName(), 2);
 				}
 			}
 		}
 		if (EngineDebug.hasDebugPermission()) {
-			EngineDebug.print("> Succed!");
+			EngineDebug.print("Succed!", 1);
 		}
 	}
 

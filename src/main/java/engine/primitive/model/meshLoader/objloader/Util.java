@@ -1,4 +1,4 @@
-package tool.meshLoader.objloader;
+package primitive.model.meshLoader.objloader;
 
 import java.nio.FloatBuffer;
 import java.util.ArrayList;

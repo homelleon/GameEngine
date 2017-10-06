@@ -129,7 +129,7 @@ public class MainRenderer implements IMainRenderer {
 	private void render(IScene scene, Vector4f clipPlane, boolean isLowDistance) {
 		prepare();
 		checkWiredFrameOn(entitiyWiredFrame);
-		if (EngineDebug.boundingMode != EngineDebug.BOUNDING_NONE) {
+		if (EngineDebug.getBoundingMode() != EngineDebug.BOUNDING_NONE) {
 			boundingRenderer.render(texturedEntities, normalEntities, scene.getCamera());
 		}
 		

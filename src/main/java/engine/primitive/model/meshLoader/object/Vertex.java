@@ -1,4 +1,4 @@
-package tool.meshLoader.object;
+package primitive.model.meshLoader.object;
 
 import tool.math.vector.Vector3f;
 

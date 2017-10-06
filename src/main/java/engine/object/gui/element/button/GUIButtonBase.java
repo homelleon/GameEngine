@@ -1,11 +1,11 @@
-package object.gui.pattern.button;
+package object.gui.element.button;
 
 import org.lwjgl.opengl.Display;
 
 import core.debug.EngineDebug;
 import object.bounding.BoundingQuad;
+import object.gui.element.object.GUIObject;
 import object.gui.group.IGUIGroup;
-import object.gui.pattern.object.GUIObject;
 import object.gui.texture.GUITexture;
 import tool.math.Maths;
 import tool.math.vector.Vector2f;
@@ -52,18 +52,25 @@ public abstract class GUIButtonBase extends GUIObject implements IGUIButton {
 			thread.start();
 		}
 		if(EngineDebug.hasDebugPermission()) {
-			System.out.println("Button " + this.name + " is selected!");
+			EngineDebug.print("Button " + this.name + " is selected!");
 		}
 		return thread;
 	}
 	
 	@Override
 	public Thread select(IAction action) {
+		Thread thread = null;
 		this.isSelected = true;
-		Thread thread = new Thread(action);
-		thread.start();
-		if(EngineDebug.hasDebugPermission()) {
-			System.out.println("Button " + this.name + " is selected!");
+		if(action != null) {			
+			thread = new Thread(action);
+			thread.start();
+			if(EngineDebug.hasDebugPermission()) {
+				EngineDebug.print("Button " + this.name + " is selected!");
+			}
+		} else {
+			if(EngineDebug.hasDebugPermission()) {
+				EngineDebug.print("There is empty action in button " + this.name + " on selection!");
+			}
 		}
 		return thread;
 	}
@@ -77,37 +84,53 @@ public abstract class GUIButtonBase extends GUIObject implements IGUIButton {
 			thread.start();
 		}
 		if(EngineDebug.hasDebugPermission()) {
-			System.out.println("Button " + this.name + " is deselected!");
+			EngineDebug.print("Button " + this.name + " is deselected!");
 		}		
 		return thread;
 	}
 	
 	@Override
 	public Thread deselect(IAction action) {
+		Thread thread = null;
 		this.isSelected = false;
-		Thread thread = new Thread(action);
-		thread.start();
+		if(action != null) {
+			thread = new Thread(action);
+			thread.start();
+		} else {
+			if(EngineDebug.hasDebugPermission()) {
+				EngineDebug.print("There is empty action in button " + this.name + " on deselection!");
+			}
+		}
 		if(EngineDebug.hasDebugPermission()) {
-			System.out.println("Button " + this.name + " is deselected!");
-		}		
+			EngineDebug.print("Button " + this.name + " is deselected!");
+		}
 		return thread;
 	}
 
 	@Override
-	public void use(IAction action) {
+	public Thread use(IAction action) {
 		try {
 			this.deselect().join();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		new Thread(action).start();
-		if(EngineDebug.hasDebugPermission()) {
-			System.out.println("Button " + this.name + " is used!");
+		Thread thread = null;
+		if(action != null) {
+			thread = new Thread(action);
+			thread.start();			
+		} else {
+			if(EngineDebug.hasDebugPermission()) {
+				EngineDebug.print("There is empty action in button " + this.name + " on using!");
+			}
 		}
+		if(EngineDebug.hasDebugPermission()) {
+			EngineDebug.print("Button " + this.name + " is used!");
+		}
+		return thread;
 	}
 	
 	@Override
-	public void use() {
+	public Thread use() {
 		try {
 			if(this.isSelected) {
 				this.deselect().join();
@@ -115,10 +138,15 @@ public abstract class GUIButtonBase extends GUIObject implements IGUIButton {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		if(useAction != null) {new Thread(this.useAction).start();}
-		if(EngineDebug.hasDebugPermission()) {
-			System.out.println("Button " + this.name + " is used!");
+		Thread thread = null;
+		if(useAction != null) {
+			thread = new Thread(this.useAction);
+			thread.start();
 		}
+		if(EngineDebug.hasDebugPermission()) {
+			EngineDebug.print("Button " + this.name + " is used!");
+		}
+		return thread;
 	}
 	
 	@Override

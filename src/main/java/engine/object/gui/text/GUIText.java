@@ -78,7 +78,7 @@ public class GUIText {
 		makeFontSmooth();
 	}
 	
-	void changeText(String text) {
+	protected void changeText(String text) {
 		this.textString = text;
 	}
 

@@ -1,7 +1,7 @@
 package object.gui.system;
 
 import object.gui.Hideable;
-import object.gui.pattern.menu.IGUIMenu;
+import object.gui.element.menu.IGUIMenu;
 import tool.manager.IManager;
 
 /**

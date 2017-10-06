@@ -8,19 +8,25 @@ package core.debug;
  */
 public class EngineDebug {
 
-	private static enum Permission { NONE, SIMPLE, HARD };
-	private static Permission debugPermission = Permission.SIMPLE;
-	private static final String LEVEL_SEPARATOR = " ";
+	private static final String LEVEL_SEPARATOR = "  |";
+	
+	/* permission variables */
+	public static final int PERMISSION_NONE = 0;
+	public static final int PERMISSION_SIMPLE = 1;
+	public static final int PERMISSION_HARD = 2;
+	private static int debugPermission = PERMISSION_SIMPLE;
+
 
 	/* bounding variables */
 	public static final int BOUNDING_NONE = 0;
 	public static final int BOUNDING_BOX = 1;
 	public static final int BOUNDING_SPHERE = 2;
 	public static final int BOUNDING_BOX_AND_SPHERE = 3;
-	public static int boundingMode = BOUNDING_NONE;
+	private static int boundingMode = BOUNDING_NONE;
 
-	public static boolean debugInformation = false;
-
+	public static int getBoundingMode() {
+		return boundingMode;
+	}
 	/**
 	 * Changes bounding surface mode.
 	 */
@@ -31,34 +37,22 @@ public class EngineDebug {
 			} else {
 				boundingMode++;
 			}
-			String mode = "error";
+			String mode = "Error";
 			switch (boundingMode) {
-			case BOUNDING_NONE:
-				mode = "No bounding";
-				break;
-			case BOUNDING_BOX:
-				mode = "Box bounding";
-				break;
-			case BOUNDING_SPHERE:
-				mode = "Sphere bounding";
-				break;
-			case BOUNDING_BOX_AND_SPHERE:
-				mode = "Box and Sphere bounding";
-				break;
-			default:
-				mode = "error";
-				break;
+				case BOUNDING_NONE:
+					mode = "No bounding";
+					break;
+				case BOUNDING_BOX:
+					mode = "Box bounding";
+					break;
+				case BOUNDING_SPHERE:
+					mode = "Sphere bounding";
+					break;
+				case BOUNDING_BOX_AND_SPHERE:
+					mode = "Box and Sphere bounding";
+					break;
 			}
-			System.out.println("Bounding mode is set to '" + mode + "'");
-		}
-	}
-
-	/**
-	 * Switches display of debug information.
-	 */
-	public static void switchDebugInformation() {
-		if (hasDebugPermission()) {
-			debugInformation = !debugInformation;
+			print("Bounding mode is set to '" + mode + "'");
 		}
 	}
 
@@ -66,17 +60,24 @@ public class EngineDebug {
 	 * Swithces permission to use debug tools.
 	 */
 	public static void switchDebugPermission() {
+		if (debugPermission == PERMISSION_HARD) {
+			debugPermission = PERMISSION_NONE;
+		} else {
+			debugPermission++;
+		}
+		String mode = "Error";
 		switch(debugPermission) {
-			case NONE:
-				debugPermission = Permission.SIMPLE;
+			case PERMISSION_NONE:
+				mode = "Simple";
 				break;
-			case SIMPLE:
-				debugPermission = Permission.HARD;
+			case PERMISSION_SIMPLE:
+				mode = "Hard";
 				break;
-			case HARD:
-				debugPermission = Permission.NONE;
+			case PERMISSION_HARD:
+				mode = "None";
 				break;
 		}
+		print("Debug info is set to '"+ mode + "'");
 	}
 
 	/**
@@ -86,14 +87,7 @@ public class EngineDebug {
 	 *         false if permission is denied
 	 */
 	public static boolean hasDebugPermission() {
-		if (debugPermission != Permission.NONE) {
-			return true;
-		} else {
-			if (debugInformation) {
-				print("Debug mode is not permitted");
-			}
-			return false;
-		}		
+		return debugPermission != PERMISSION_NONE;
 	}
 	
 	/**

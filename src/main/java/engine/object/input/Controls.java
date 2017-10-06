@@ -37,7 +37,7 @@ public class Controls implements IControls {
 			EngineDebug.switchBounding();
 		}
 		if (KeyboardGame.isKeyPressed(EngineSettings.KEY_DEBUG_INFORMATION)) {
-			EngineDebug.switchDebugInformation();
+			EngineDebug.switchDebugPermission();
 		}		
 	}
 

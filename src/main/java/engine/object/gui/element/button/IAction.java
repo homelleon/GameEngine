@@ -1,4 +1,4 @@
-package object.gui.pattern.button;
+package object.gui.element.button;
 
 /**
  * Command directions.

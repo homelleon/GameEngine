@@ -6,6 +6,7 @@ import java.util.List;
 import org.lwjgl.openal.AL10;
 import org.lwjgl.openal.AL11;
 
+import core.debug.EngineDebug;
 import core.settings.EngineSettings;
 import manager.particle.ParticleManager;
 import object.audio.source.AudioSource;
@@ -67,6 +68,9 @@ public class SceneManager implements ISceneManager {
 	private void initializeGame(IScene scene) {
 		/*------------------PLAYER-----------------*/
 		List<Model> cubeModels = EngineUtils.loadModels("spartan", "spartan");
+		if(EngineDebug.hasDebugPermission()) {
+			EngineDebug.print(cubeModels.get(0).getName(), 2);
+		}
 		IPlayer player1 = new Player(
 				playerName, 
 				cubeModels, 
@@ -126,6 +130,9 @@ public class SceneManager implements ISceneManager {
 		scene.getAudioSources().add(ambientSource);
 		scene.getWaters().addAll(waterList);
 		scene.getParticles().addAll(ParticleManager.createParticleSystem());
+		if(EngineDebug.hasDebugPermission()) {
+			EngineDebug.print("Total loaded entities: " + scene.getEntities().getAll().stream().count(), 2);
+		}
 
 		scene.spreadEntitiesOnHeights(scene.getEntities().getAll());
 		//scene.getEntities().get("Cuby4").getModel().getTexture().setReflectiveFactor(1.2f);

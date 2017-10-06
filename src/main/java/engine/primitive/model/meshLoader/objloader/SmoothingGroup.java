@@ -1,4 +1,4 @@
-package tool.meshLoader.objloader;
+package primitive.model.meshLoader.objloader;
 
 import java.util.ArrayList;
 
@@ -7,23 +7,23 @@ public class SmoothingGroup {
 	private ArrayList<Face> faces;
 	private ArrayList<Vertex> vertices;
 	
-	public SmoothingGroup(){
+	protected SmoothingGroup(){
 		faces = new ArrayList<Face>();
 		vertices = new ArrayList<Vertex>();
 	}
 	
-	public ArrayList<Vertex> getVertices() {
+	protected ArrayList<Vertex> getVertices() {
 		return vertices;
 	}
-	public void setVertices(ArrayList<Vertex> vertices) {
+	protected void setVertices(ArrayList<Vertex> vertices) {
 		this.vertices = vertices;
 	}
 
-	public ArrayList<Face> getFaces() {
+	protected ArrayList<Face> getFaces() {
 		return faces;
 	}
 
-	public void setFaces(ArrayList<Face> faces) {
+	protected void setFaces(ArrayList<Face> faces) {
 		this.faces = faces;
 	}
 }

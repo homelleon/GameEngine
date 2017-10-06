@@ -1,4 +1,4 @@
-package tool.meshLoader.objloader;
+package primitive.model.meshLoader.objloader;
 
 public class MeshData{
 
@@ -8,49 +8,49 @@ public class MeshData{
 	private boolean isTangentSpace;
 	private boolean isInstanced;
 	
-	public MeshData(Vertex[] vertices, int[] indices)
+	protected MeshData(Vertex[] vertices, int[] indices)
 	{
 		this.vertices = vertices;
 		this.indices = indices;
 	}
 
-	public Vertex[] getVertices() {
+	protected Vertex[] getVertices() {
 		return vertices;
 	}
 
-	public void setVertices(Vertex[] vertices) {
+	protected void setVertices(Vertex[] vertices) {
 		this.vertices = vertices;
 	}
 
-	public int[] getIndices() {
+	protected int[] getIndices() {
 		return indices;
 	}
 
-	public void setIndices(int[] indices) {
+	protected void setIndices(int[] indices) {
 		this.indices = indices;
 	}
 
-	public boolean isInstanced() {
+	protected boolean isInstanced() {
 		return isInstanced;
 	}
 
-	public void setInstanced(boolean instanced) {
+	protected void setInstanced(boolean instanced) {
 		this.isInstanced = instanced;
 	}
 
-	public int getInstances() {
+	protected int getInstances() {
 		return instances;
 	}
 
-	public void setInstances(int instances) {
+	protected void setInstances(int instances) {
 		this.instances = instances;
 	}
 
-	public boolean isTangentSpace() {
+	protected boolean isTangentSpace() {
 		return isTangentSpace;
 	}
 
-	public void setTangentSpace(boolean isTangentSpace) {
+	protected void setTangentSpace(boolean isTangentSpace) {
 		this.isTangentSpace = isTangentSpace;
 	}
 }

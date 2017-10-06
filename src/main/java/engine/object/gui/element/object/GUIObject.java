@@ -1,4 +1,4 @@
-package object.gui.pattern.object;
+package object.gui.element.object;
 
 import object.Nameable;
 import object.gui.Hideable;

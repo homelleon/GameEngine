@@ -1,4 +1,4 @@
-package tool.meshLoader.objloader;
+package primitive.model.meshLoader.objloader;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Deque;
 import java.util.HashMap;
 
+import core.debug.EngineDebug;
 import object.texture.Texture2D;
 import object.texture.material.Material;
 import primitive.buffer.BufferLoader;
@@ -212,8 +213,9 @@ public class OBJLoader {
 						}
 					}
 				}
-			
-				System.out.println("obj loading time : " + (System.currentTimeMillis() - time) + "ms");
+				if(EngineDebug.hasDebugPermission()) {
+					EngineDebug.print("obj loading time : " + (System.currentTimeMillis() - time) + "ms", 2);
+				}
 				
 				Mesh[] meshArray = new Mesh[meshes.size()];
 				

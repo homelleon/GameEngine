@@ -1,4 +1,4 @@
-package tool.meshLoader.objloader;
+package primitive.model.meshLoader.objloader;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,32 +9,32 @@ public class PolygonGroup {
 	private HashMap<Integer,SmoothingGroup> smoothingGroups = new HashMap<Integer,SmoothingGroup>();
 	private String name = "";
 	
-	public PolygonGroup(){
+	protected PolygonGroup(){
 		smoothingGroups = new HashMap<Integer,SmoothingGroup>();
 		polygons = new ArrayList<Polygon>();
 	}
 
-	public ArrayList<Polygon> getPolygons() {
+	protected ArrayList<Polygon> getPolygons() {
 		return polygons;
 	}
 
-	public void setPolygons(ArrayList<Polygon> polygons) {
+	protected void setPolygons(ArrayList<Polygon> polygons) {
 		this.polygons = polygons;
 	}
 
-	public String getName() {
+	protected String getName() {
 		return name;
 	}
 
-	public void setName(String name) {
+	protected void setName(String name) {
 		this.name = name;
 	}
 
-	public HashMap<Integer,SmoothingGroup> getSmoothingGroups() {
+	protected HashMap<Integer,SmoothingGroup> getSmoothingGroups() {
 		return smoothingGroups;
 	}
 
-	public void setSmoothingGroups(HashMap<Integer,SmoothingGroup> smoothingGroups) {
+	protected void setSmoothingGroups(HashMap<Integer,SmoothingGroup> smoothingGroups) {
 		this.smoothingGroups = smoothingGroups;
 	}	
 }

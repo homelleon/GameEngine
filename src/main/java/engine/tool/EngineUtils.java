@@ -21,11 +21,11 @@ import object.water.WaterTile;
 import primitive.buffer.Loader;
 import primitive.model.Mesh;
 import primitive.model.Model;
+import primitive.model.meshLoader.normalMapObject.NormalMappedObjLoader;
+import primitive.model.meshLoader.object.ModelData;
+import primitive.model.meshLoader.object.OBJFileLoader;
+import primitive.model.meshLoader.objloader.OBJLoader;
 import tool.math.vector.Vector3f;
-import tool.meshLoader.normalMapObject.NormalMappedObjLoader;
-import tool.meshLoader.object.ModelData;
-import tool.meshLoader.object.OBJFileLoader;
-import tool.meshLoader.objloader.OBJLoader;
 
 public class EngineUtils {
 

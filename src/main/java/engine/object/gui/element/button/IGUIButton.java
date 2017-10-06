@@ -1,4 +1,4 @@
-package object.gui.pattern.button;
+package object.gui.element.button;
 
 import object.Moveable;
 import object.Nameable;
@@ -73,13 +73,13 @@ public interface IGUIButton extends Nameable, Moveable<Vector2f> {
 	 * Uses button command throw param.
 	 * @param action {@link IAction} commad directions
 	 */
-	void use(IAction action);
+	Thread use(IAction action);
 	
 	/**
 	 * Uses button command with pre-attached event.<br>
 	 * If event wasn't attached this method does nothing.
 	 */
-	void use();
+	Thread use();
 	
 	/**
 	 * Gets GUI group attached to that button.

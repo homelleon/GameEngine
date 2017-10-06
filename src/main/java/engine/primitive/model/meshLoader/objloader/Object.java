@@ -1,4 +1,4 @@
-package tool.meshLoader.objloader;
+package primitive.model.meshLoader.objloader;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
@@ -8,23 +8,23 @@ public class Object {
 	private Deque<PolygonGroup> polygonGroups;
 	private String name = "";
 	
-	public Object(){
+	protected Object(){
 		polygonGroups = new ArrayDeque<PolygonGroup>();
 	}
 
-	public Deque<PolygonGroup> getPolygonGroups() {
+	protected Deque<PolygonGroup> getPolygonGroups() {
 		return polygonGroups;
 	}
 
-	public void setPolygonGroups(Deque<PolygonGroup> polygonGroups) {
+	protected void setPolygonGroups(Deque<PolygonGroup> polygonGroups) {
 		this.polygonGroups = polygonGroups;
 	}
 
-	public String getName() {
+	protected String getName() {
 		return name;
 	}
 
-	public void setName(String name) {
+	protected void setName(String name) {
 		this.name = name;
 	}
 }

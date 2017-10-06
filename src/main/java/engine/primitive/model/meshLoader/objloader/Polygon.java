@@ -1,4 +1,4 @@
-package tool.meshLoader.objloader;
+package primitive.model.meshLoader.objloader;
 
 import java.util.ArrayList;
 
@@ -8,31 +8,32 @@ public class Polygon {
 	private ArrayList<Integer> indices;
 	private String material = null;
 	
-	public Polygon(){
+	protected Polygon(){
 		vertices = new ArrayList<Vertex>();
 		indices = new ArrayList<Integer>();
 	}
 	
-	public String getMaterial() {
+	protected String getMaterial() {
 		return material;
 	}
-	public void setMaterial(String material) {
+	
+	protected void setMaterial(String material) {
 		this.material = material;
 	}
 
-	public ArrayList<Vertex> getVertices() {
+	protected ArrayList<Vertex> getVertices() {
 		return vertices;
 	}
 
-	public void setVertices(ArrayList<Vertex> vertices) {
+	protected void setVertices(ArrayList<Vertex> vertices) {
 		this.vertices = vertices;
 	}
 
-	public ArrayList<Integer> getIndices() {
+	protected ArrayList<Integer> getIndices() {
 		return indices;
 	}
 
-	public void setIndices(ArrayList<Integer> indices) {
+	protected void setIndices(ArrayList<Integer> indices) {
 		this.indices = indices;
 	}
 }

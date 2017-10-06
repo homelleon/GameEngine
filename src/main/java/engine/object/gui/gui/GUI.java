@@ -2,7 +2,7 @@ package object.gui.gui;
 
 import java.util.List;
 
-import object.gui.pattern.object.GUIObject;
+import object.gui.element.object.GUIObject;
 import object.gui.text.GUIText;
 import object.gui.texture.GUITexture;
 import tool.math.vector.Vector2f;

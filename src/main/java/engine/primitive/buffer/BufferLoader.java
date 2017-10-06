@@ -50,6 +50,7 @@ public class BufferLoader {
 		VAO vao = VAO.create();
 		this.vaos.add(vao);
 		vao.bind();
+		vao.createIndexBuffer(indices);
 		vao.createAttribute(0, 3, positions);
 		vao.createAttribute(2, 3, normals);
 		VAO.unbind();

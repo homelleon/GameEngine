@@ -230,8 +230,8 @@ public class Loop implements ILoop {
 			IObjectParser<IObjectManager> mapParser = new LevelMapXMLParser(xmlLoader.load(), this.modelMap);
 			this.levelMap = mapParser.parse();
 			if (EngineDebug.hasDebugPermission()) {
-				System.out.println("Total loaded entities: " + this.levelMap.getEntities().getAll().stream().count());
-				System.out.println("Total loaded terrains: " + this.levelMap.getTerrains().getAll().stream().count());
+				EngineDebug.print("Total loaded entities: " + this.levelMap.getEntities().getAll().stream().count(), 2);
+				EngineDebug.print("Total loaded terrains: " + this.levelMap.getTerrains().getAll().stream().count(), 2);
 			}
 		} else {
 			throw new NullPointerException("File " + path + " is not existed! Can't load level map!");
@@ -272,9 +272,9 @@ public class Loop implements ILoop {
 		IObjectParser<GameSettings> settingsParser = new SettingsXMLParser(xmlLoader.load());
 		GameSettings settings = settingsParser.parse();
 		if (EngineDebug.hasDebugPermission()) {
-			EngineDebug.print("> " + settings.getRawMapName());
-			EngineDebug.print("> " + settings.getModelMapName());
-			EngineDebug.print("> " + settings.getLevelMapName());
+			EngineDebug.print(settings.getRawMapName(), 1);
+			EngineDebug.print(settings.getModelMapName(), 1);
+			EngineDebug.print(settings.getLevelMapName(), 1);
 			EngineDebug.print("Loading complete...");
 			EngineDebug.printClose("Game Settings");
 			EngineDebug.printBorder();

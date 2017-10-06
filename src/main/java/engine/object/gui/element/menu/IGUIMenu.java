@@ -1,12 +1,12 @@
-package object.gui.pattern.menu;
+package object.gui.element.menu;
 
 import java.util.List;
 
 import object.Nameable;
 import object.gui.Hideable;
-import object.gui.pattern.button.IAction;
-import object.gui.pattern.button.IGUIButton;
-import object.gui.pattern.object.GUIObject;
+import object.gui.element.button.IAction;
+import object.gui.element.button.IGUIButton;
+import object.gui.element.object.GUIObject;
 
 /**
  * Controls and stores groups of GUI objects.
