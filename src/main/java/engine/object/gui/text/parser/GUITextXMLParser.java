@@ -63,7 +63,7 @@ public class GUITextXMLParser extends XMLParser implements IListParser<GUIText> 
 	 */
 	private List<GUIText> createText(Node node) {
 		if (EngineDebug.hasDebugPermission()) {
-			System.out.println("> Loading GUI texts...");
+			EngineDebug.print("> Loading GUI texts...");
 		}
 
 		List<GUIText> textList = new ArrayList<GUIText>();
@@ -107,7 +107,7 @@ public class GUITextXMLParser extends XMLParser implements IListParser<GUIText> 
 				count++;
 				if (EngineDebug.hasDebugPermission()) {
 					if (count != Integer.valueOf(id)) {
-						System.err.println("error id order!");
+						EngineDebug.printError("error id order!");
 					}
 				}
 				IGUITextBuilder builder = new GUITextBuilder();
@@ -117,12 +117,12 @@ public class GUITextXMLParser extends XMLParser implements IListParser<GUIText> 
 				guiText.setColor(color);
 				textList.add(guiText);
 				if (EngineDebug.hasDebugPermission()) {
-					System.out.println(">> " + guiText.getName());
+					EngineDebug.print(">> " + guiText.getName());
 				}
 			}
 		}
 		if (EngineDebug.hasDebugPermission()) {
-			System.out.println("> Succed!");
+			EngineDebug.print("> Succed!");
 		}
 
 		return textList;

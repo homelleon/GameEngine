@@ -38,7 +38,7 @@ public class GUITextureXMLParser extends XMLParser implements IListParser<GUITex
 
 	private List<GUITexture> createTexture(Node node) {
 		if (EngineDebug.hasDebugPermission()) {
-			System.out.println("> Loading GUI textures...");
+			EngineDebug.print("> Loading GUI textures...");
 		}
 		List<GUITexture> textureList = new ArrayList<GUITexture>();
 		Node guiTextures = node;
@@ -62,7 +62,7 @@ public class GUITextureXMLParser extends XMLParser implements IListParser<GUITex
 				count++;
 				if (EngineDebug.hasDebugPermission()) {
 					if (count != Integer.valueOf(id)) {
-						System.err.println("error id order!");
+						EngineDebug.printError("error id order!");
 					}
 				}
 				GUITexture guiTexture =	new GUITextureBuilder()
@@ -72,12 +72,12 @@ public class GUITextureXMLParser extends XMLParser implements IListParser<GUITex
 					   .build(name);
 				textureList.add(guiTexture);
 				if (EngineDebug.hasDebugPermission()) {
-					System.out.println(">> " + guiTexture.getName());
+					EngineDebug.print(">> " + guiTexture.getName());
 				}
 			}
 		}
 		if (EngineDebug.hasDebugPermission()) {
-			System.out.println("> Succed!");
+			EngineDebug.print("> Succed!");
 		}
 		return textureList;
 	}

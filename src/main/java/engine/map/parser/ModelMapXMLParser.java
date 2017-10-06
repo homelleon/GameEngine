@@ -45,9 +45,9 @@ public class ModelMapXMLParser extends XMLParser implements IObjectParser<IObjec
 				}
 			}
 			if (EngineDebug.hasDebugPermission()) {
-				System.out.println("Models complete!");
-				System.out.println("[X>Model map<X]");
-				System.out.println("................");
+				EngineDebug.print("Models complete!");
+				EngineDebug.printClose("Model map");
+				EngineDebug.printBorder();
 			}
 		} else {
 			throw new NullPointerException("Incorrect parent element name of used model map file!");
@@ -58,7 +58,7 @@ public class ModelMapXMLParser extends XMLParser implements IObjectParser<IObjec
 
 	private void parseEntities(Node node, IObjectManager map) {
 		if (EngineDebug.hasDebugPermission()) {
-			System.out.println("> Loading entities...");
+			EngineDebug.print("> Loading entities...");
 		}
 		Node entities = node;
 		NodeList entityList = entities.getChildNodes();
@@ -80,18 +80,18 @@ public class ModelMapXMLParser extends XMLParser implements IObjectParser<IObjec
 				}
 				map.getEntities().add(builder.build(name));
 				if (EngineDebug.hasDebugPermission()) {
-					System.out.println(">> " + map.getEntities().get(name).getName());
+					EngineDebug.print(">> " + map.getEntities().get(name).getName());
 				}
 			}
 		}
 		if (EngineDebug.hasDebugPermission()) {
-			System.out.println("> Succed!");
+			EngineDebug.print("> Succed!");
 		}
 	}
 
 	private void parseTerrains(Node node, IObjectManager map) {
 		if (EngineDebug.hasDebugPermission()) {
-			System.out.println("> Loading terrains...");
+			EngineDebug.print("> Loading terrains...");
 		}
 		NodeList terrainNodeList = node.getChildNodes();
 		for (int j = 0; j < terrainNodeList.getLength(); j++) {
@@ -131,14 +131,14 @@ public class ModelMapXMLParser extends XMLParser implements IObjectParser<IObjec
 							this.seed = map.getTerrains().get(name).getGenerator().getSeed();
 						}
 						if (EngineDebug.hasDebugPermission()) {
-							System.out.println(">> " + map.getTerrains().get(name).getName());
+							EngineDebug.print(">> " + map.getTerrains().get(name).getName());
 						}
 					}
 				}
 			}
 		}
 		if (EngineDebug.hasDebugPermission()) {
-			System.out.println("> Succed!");
+			EngineDebug.print("> Succed!");
 		}
 	}
 

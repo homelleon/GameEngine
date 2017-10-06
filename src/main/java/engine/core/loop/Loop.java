@@ -195,9 +195,9 @@ public class Loop implements ILoop {
 	 */
 	private void loadModelMap(String name) {
 		if (EngineDebug.hasDebugPermission()) {
-			System.out.println("................");
-			System.out.println("[>>Model map<<]");
-			System.out.println("Loading models...");
+			EngineDebug.printBorder();
+			EngineDebug.printOpen("Model map");
+			EngineDebug.print("Loading models...");
 		}
 		String path = EngineSettings.MAP_PATH + name + EngineSettings.EXTENSION_XML;
 		if(new File(path).exists()) {
@@ -220,9 +220,9 @@ public class Loop implements ILoop {
 	 */
 	private void loadLevelMap(String name) {
 		if (EngineDebug.hasDebugPermission()) {
-			System.out.println("................");
-			System.out.println("[>>Level map<<]");
-			System.out.println("Loading level...");
+			EngineDebug.printBorder();
+			EngineDebug.printOpen("Level map");
+			EngineDebug.print("Loading level...");
 		}
 		String path = EngineSettings.MAP_PATH + name + EngineSettings.EXTENSION_XML;
 		if(new File(path).exists()) {
@@ -240,9 +240,9 @@ public class Loop implements ILoop {
 	
 	private void loadRawMap(String name) {
 		if (EngineDebug.hasDebugPermission()) {
-			System.out.println("................");
-			System.out.println("[>>Raw map<<]");
-			System.out.println("Loading raws...");
+			EngineDebug.printBorder();
+			EngineDebug.printOpen("Raw map");
+			EngineDebug.print("Loading raws...");
 		}
 		String path = EngineSettings.MAP_PATH + name + EngineSettings.EXTENSION_XML;
 		if(new File(path).exists()) {
@@ -263,23 +263,21 @@ public class Loop implements ILoop {
 	 */
 	private void loadGameSettings() {
 		if (EngineDebug.hasDebugPermission()) {
-			System.out.println("................");
-			System.out.println("[>>Game Settings<<]");
-			System.out.println("Loading game settings...");
+			EngineDebug.printBorder();
+			EngineDebug.printOpen("Game Settings");
+			EngineDebug.print("Loading game settings...");
 		}
 		IXMLLoader xmlLoader = new XMLFileLoader(
 				EngineSettings.SETTINGS_GAME_PATH + SETTINGS_NAME + EngineSettings.EXTENSION_XML);
 		IObjectParser<GameSettings> settingsParser = new SettingsXMLParser(xmlLoader.load());
 		GameSettings settings = settingsParser.parse();
 		if (EngineDebug.hasDebugPermission()) {
-			System.out.println("> " + settings.getRawMapName());
-			System.out.println("> " + settings.getModelMapName());
-			System.out.println("> " + settings.getLevelMapName());
-		}
-		if (EngineDebug.hasDebugPermission()) {
-			System.out.println("Loading complete...");
-			System.out.println("[X>Game Settings<X]");
-			System.out.println("................");
+			EngineDebug.print("> " + settings.getRawMapName());
+			EngineDebug.print("> " + settings.getModelMapName());
+			EngineDebug.print("> " + settings.getLevelMapName());
+			EngineDebug.print("Loading complete...");
+			EngineDebug.printClose("Game Settings");
+			EngineDebug.printBorder();
 		}
 		loadRawMap(settings.getRawMapName());
 		loadModelMap(settings.getModelMapName());

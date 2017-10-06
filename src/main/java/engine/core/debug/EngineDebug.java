@@ -1,14 +1,16 @@
 package core.debug;
 
 /**
- * Class that helps to debug game engine.
+ * Class to debug game engine.
  * 
  * @author homelleon
- * @version 1.0
+ * @version 1.1
  */
 public class EngineDebug {
 
-	private static boolean debugPermission = true;
+	private static enum Permission { NONE, SIMPLE, HARD };
+	private static Permission debugPermission = Permission.SIMPLE;
+	private static final String LEVEL_SEPARATOR = " ";
 
 	/* bounding variables */
 	public static final int BOUNDING_NONE = 0;
@@ -64,7 +66,17 @@ public class EngineDebug {
 	 * Swithces permission to use debug tools.
 	 */
 	public static void switchDebugPermission() {
-		debugPermission = !debugPermission;
+		switch(debugPermission) {
+			case NONE:
+				debugPermission = Permission.SIMPLE;
+				break;
+			case SIMPLE:
+				debugPermission = Permission.HARD;
+				break;
+			case HARD:
+				debugPermission = Permission.NONE;
+				break;
+		}
 	}
 
 	/**
@@ -74,19 +86,71 @@ public class EngineDebug {
 	 *         false if permission is denied
 	 */
 	public static boolean hasDebugPermission() {
-		boolean isPermitted = false;
-		if (debugPermission) {
-			isPermitted = true;
+		if (debugPermission != Permission.NONE) {
+			return true;
 		} else {
 			if (debugInformation) {
-				System.out.println("Debug mode is not permitted");
+				print("Debug mode is not permitted");
 			}
-		}
-		return isPermitted;
+			return false;
+		}		
 	}
 	
-	public static void printDebug(Object obj) {
-		System.out.println(obj);
+	/**
+	 * Prints debug info in console.
+	 * 
+	 * @param text {@link String} value of debug info
+	 */
+	public static void print(String text) {
+		System.out.println(text);
+	}
+	
+	/**
+	 * Prints debug border in console for visual separating structure.
+	 */
+	public static void printBorder() {
+		print("................");
+	}
+	
+	/**
+	 * Prints name with openning tags to show beginning of a debug structure in console .
+	 *  
+	 * @param text {@link String} value of structure name to print
+	 */
+	public static void printOpen(String text) {
+		print("[+]" + text + "[+]");
+	}
+	
+	/**
+	 * Prints name with closing tags to show ending of a debug structure in console .
+	 * 
+	 * @param text {@link String} value of structure name to print
+	 */
+	public static void printClose(String text) {
+		print("[-]"+ text + "[-]");
+	}
+	
+	/**
+	 * Prints debug info with separator before text.
+	 *  
+	 * @param text {@link String} value of debug info
+	 * @param level int value of seprator level
+	 */
+	public static void print(String text, int level) {
+		for(int i = 0; i < level; i++) {
+			System.out.print(LEVEL_SEPARATOR);
+		}
+		print(text);
+	}
+	
+	/**
+	 * Prints debug error info in console.
+	 * <br>Prints in red color.
+	 *  
+	 * @param text {@link String} value of debug info
+	 */
+	public static void printError(String text) {
+		System.err.println(text);
 	}
 
 }
