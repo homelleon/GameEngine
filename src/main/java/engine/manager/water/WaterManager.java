@@ -6,6 +6,12 @@ import java.util.Map;
 
 import object.water.WaterTile;
 
+/**
+ * Manages water tiles.
+ * 
+ * @author homelleon
+ *
+ */
 public class WaterManager implements IWaterManager {
 
 	Map<String, WaterTile> waters = new HashMap<String, WaterTile>();

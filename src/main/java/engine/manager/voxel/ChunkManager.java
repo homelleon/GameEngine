@@ -46,7 +46,7 @@ public class ChunkManager implements IChunkManager {
 	
 	private void createVoxels() {
 		IntStream.rangeClosed(0, (int) (Math.pow(EngineSettings.VOXEL_CHUNK_SIZE, 3) * (Math.pow(size, 3))))
-		.forEach(blockIndex -> getBlockByBlockIndex(blockIndex).setIsActive(true));
+		.forEach(blockIndex -> getBlockByGeneralIndex(blockIndex).setIsActive(true));
 	}
 
 	@Override
@@ -85,11 +85,11 @@ public class ChunkManager implements IChunkManager {
 	}
 	
 	@Override
-	public Vector3f getChunkPositionByBlockIndex(int blockIndex) {
+	public Vector3f getChunkPositionByGeneralIndex(int generalIndex) {
 		float step = EngineSettings.VOXEL_CHUNK_SIZE * EngineSettings.VOXEL_BLOCK_SIZE;
-		int x = (int) Math.floor(blockIndex / (Math.pow(EngineSettings.VOXEL_CHUNK_SIZE, 3) *  Math.pow(size,2)));
-		int y = (int) Math.floor(blockIndex / (Math.pow(EngineSettings.VOXEL_CHUNK_SIZE, 3) * size));
-		int z = (int) Math.floor(blockIndex / Math.pow(EngineSettings.VOXEL_CHUNK_SIZE, 3));
+		int x = (int) Math.floor(generalIndex / (Math.pow(EngineSettings.VOXEL_CHUNK_SIZE, 3) *  Math.pow(size,2)));
+		int y = (int) Math.floor(generalIndex / (Math.pow(EngineSettings.VOXEL_CHUNK_SIZE, 3) * size));
+		int z = (int) Math.floor(generalIndex / Math.pow(EngineSettings.VOXEL_CHUNK_SIZE, 3));
 		x = Maths.tailOfDivisionNoReminder(x, size);
 		y = Maths.tailOfDivisionNoReminder(y, size);
 		z = Maths.tailOfDivisionNoReminder(z, size);
@@ -114,15 +114,15 @@ public class ChunkManager implements IChunkManager {
 	}
 	
 	@Override
-	public Vector3f getBlockPositionByBlockIndex(int blockIndex) {
-		int x = (int) Math.floor(blockIndex / Math.pow(EngineSettings.VOXEL_CHUNK_SIZE, 2));
-		int y = (int) Math.floor(blockIndex / EngineSettings.VOXEL_CHUNK_SIZE);
-		int z = blockIndex;
+	public Vector3f getBlockPositionByGeneralIndex(int generalIndex) {
+		int x = (int) Math.floor(generalIndex / Math.pow(EngineSettings.VOXEL_CHUNK_SIZE, 2));
+		int y = (int) Math.floor(generalIndex / EngineSettings.VOXEL_CHUNK_SIZE);
+		int z = generalIndex;
 		x = Maths.tailOfDivisionNoReminder(x, EngineSettings.VOXEL_CHUNK_SIZE);
 		y = Maths.tailOfDivisionNoReminder(y, EngineSettings.VOXEL_CHUNK_SIZE);
 		z = Maths.tailOfDivisionNoReminder(z, EngineSettings.VOXEL_CHUNK_SIZE);
 		IVectorBuilder3<Integer, Vector3i> vecBuilder = new VectorBuilder3i();
-		Vector3f chunkPosition = getChunkPositionByBlockIndex(blockIndex);
+		Vector3f chunkPosition = getChunkPositionByGeneralIndex(generalIndex);
 		Vector3i blockVector = vecBuilder
 				.setX(x)
 				.setY(y)
@@ -170,10 +170,10 @@ public class ChunkManager implements IChunkManager {
 	}
 	
 	@Override
-	public Vector3i getBlockIndexVector(int index) {
-		int x = (int) Math.floor(index / Math.pow(EngineSettings.VOXEL_CHUNK_SIZE, 2));
-		int y = (int) Math.floor(index / EngineSettings.VOXEL_CHUNK_SIZE);
-		int z = index;
+	public Vector3i getBlockIndexVector(int blockIndex) {
+		int x = (int) Math.floor(blockIndex / Math.pow(EngineSettings.VOXEL_CHUNK_SIZE, 2));
+		int y = (int) Math.floor(blockIndex / EngineSettings.VOXEL_CHUNK_SIZE);
+		int z = blockIndex;
 		IVectorBuilder3<Integer, Vector3i> vecBuilder = new VectorBuilder3i();
 		return vecBuilder
 					.setX(Maths.tailOfDivisionNoReminder(x, EngineSettings.VOXEL_CHUNK_SIZE))
@@ -204,10 +204,10 @@ public class ChunkManager implements IChunkManager {
 	}
 	
 	@Override
-	public Chunk getChunkByBlockIndex(int blockIndex) {
-		int chX = (int) Math.floor(blockIndex / (Math.pow(EngineSettings.VOXEL_CHUNK_SIZE, 3) *  Math.pow(size,2)));
-		int chY = (int) Math.floor(blockIndex / (Math.pow(EngineSettings.VOXEL_CHUNK_SIZE, 3) * size));
-		int chZ = (int) Math.floor(blockIndex / Math.pow(EngineSettings.VOXEL_CHUNK_SIZE, 3));
+	public Chunk getChunkByGeneralIndex(int generalIndex) {
+		int chX = (int) Math.floor(generalIndex / (Math.pow(EngineSettings.VOXEL_CHUNK_SIZE, 3) *  Math.pow(size,2)));
+		int chY = (int) Math.floor(generalIndex / (Math.pow(EngineSettings.VOXEL_CHUNK_SIZE, 3) * size));
+		int chZ = (int) Math.floor(generalIndex / Math.pow(EngineSettings.VOXEL_CHUNK_SIZE, 3));
 		chX = Maths.tailOfDivisionNoReminder(chX, size);
 		chY = Maths.tailOfDivisionNoReminder(chY, size);
 		chZ = Maths.tailOfDivisionNoReminder(chZ, size);
@@ -221,13 +221,13 @@ public class ChunkManager implements IChunkManager {
 	}
 	
 	@Override
-	public Block getBlockByBlockIndex(int blockIndex) {
-		int chX = (int) Math.floor(blockIndex / (Math.pow(EngineSettings.VOXEL_CHUNK_SIZE, 3) *  Math.pow(size,2)));
-		int chY = (int) Math.floor(blockIndex / (Math.pow(EngineSettings.VOXEL_CHUNK_SIZE, 3) * size));
-		int chZ = (int) Math.floor(blockIndex / Math.pow(EngineSettings.VOXEL_CHUNK_SIZE, 3));
-		int x = (int) Math.floor(blockIndex / Math.pow(EngineSettings.VOXEL_CHUNK_SIZE, 2));
-		int y = (int) Math.floor(blockIndex / EngineSettings.VOXEL_CHUNK_SIZE);
-		int z = blockIndex;
+	public Block getBlockByGeneralIndex(int generalIndex) {
+		int chX = (int) Math.floor(generalIndex / (Math.pow(EngineSettings.VOXEL_CHUNK_SIZE, 3) *  Math.pow(size,2)));
+		int chY = (int) Math.floor(generalIndex / (Math.pow(EngineSettings.VOXEL_CHUNK_SIZE, 3) * size));
+		int chZ = (int) Math.floor(generalIndex / Math.pow(EngineSettings.VOXEL_CHUNK_SIZE, 3));
+		int x = (int) Math.floor(generalIndex / Math.pow(EngineSettings.VOXEL_CHUNK_SIZE, 2));
+		int y = (int) Math.floor(generalIndex / EngineSettings.VOXEL_CHUNK_SIZE);
+		int z = generalIndex;
 		x = Maths.tailOfDivisionNoReminder(x, EngineSettings.VOXEL_CHUNK_SIZE);
 		y = Maths.tailOfDivisionNoReminder(y, EngineSettings.VOXEL_CHUNK_SIZE);
 		z = Maths.tailOfDivisionNoReminder(z, EngineSettings.VOXEL_CHUNK_SIZE);

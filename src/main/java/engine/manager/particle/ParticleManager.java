@@ -11,8 +11,20 @@ import primitive.buffer.Loader;
 import tool.manager.AbstractManager;
 import tool.math.vector.Vector3f;
 
+/**
+ * Manages paricle systems.
+ * 
+ * @author homelleon
+ * @see ParticleSystem
+ * @see IParticleSystem
+ */
 public class ParticleManager extends AbstractManager<IParticleSystem> implements IParticleManager {
 
+	/**
+	 * Creates testing particle systems.
+	 * 
+	 * @return {@link List}<{@link IParticleSystem}> array of particle systems
+	 */
 	public static List<IParticleSystem> createParticleSystem() {
 		Loader loader = Loader.getInstance();
 		List<IParticleSystem> pSystem = new ArrayList<IParticleSystem>();

@@ -9,7 +9,7 @@ import manager.water.IWaterManager;
 import map.objectMap.ObjectMapManager;
 
 /**
- * Contains lists of objects.
+ * Provide access to manages game objects through its managers.
  * 
  * @author homelleon
  * @version 1.0

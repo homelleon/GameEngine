@@ -29,14 +29,14 @@ public interface ILoop extends Runnable {
 	 * escape button is pressed. After that it clean all objects variables.
 	 */
 	@Override
-	void run(); // запуск
+	void run();
 
 	/**
 	 * Returns scene for external scene objects control.
 	 * 
 	 * @return Scene value
 	 */
-	IScene getScene(); // вернуть игровую сцену
+	IScene getScene();
 
 	/**
 	 * Switch visualization of rendering terrain between normal and wired frame
@@ -49,7 +49,7 @@ public interface ILoop extends Runnable {
 	 * 
 	 * @see #setEntityWiredFrame(boolean)
 	 */
-	void setTerrainWiredFrame(boolean value); // показать сетку ландшафта
+	void setTerrainWiredFrame(boolean value);
 
 	/**
 	 * Switch visualization of rendering entities between normal and wired frame
@@ -62,7 +62,7 @@ public interface ILoop extends Runnable {
 	 * 
 	 * @see #setTerrainWiredFrame(boolean)
 	 */
-	void setEntityWiredFrame(boolean value); // показать сетку объектов
+	void setEntityWiredFrame(boolean value);
 
 	/**
 	 * Turns scene pause mode on or off
@@ -72,7 +72,7 @@ public interface ILoop extends Runnable {
 	 *            if true - sets pause mode on<br>
 	 *            if false - sets pause mode off<br>
 	 */
-	void setScenePaused(boolean value); // установка паузы для сцены
+	void setScenePaused(boolean value);
 
 	/**
 	 * Returns boolean varialbe to check if scene object was paused.

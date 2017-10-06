@@ -130,7 +130,7 @@ public class VoxelRenderer {
 		bindMaterial(texture);
 		
 		getAllBlocks(chunkManager, frustum, camera).stream()
-		.peek(i -> prepareInstance(chunkManager.getBlockPositionByBlockIndex(i)))
+		.peek(i -> prepareInstance(chunkManager.getBlockPositionByGeneralIndex(i)))
 		.map(i -> new SimpleEntry<Integer, FaceCullingData>(i, isNeedBlockCulling(chunkManager, i)))
 		.filter(entry -> !isAllFaceCulled(entry.getValue()))
 		.flatMap(entry -> IntStream.range(0, 6)
@@ -192,7 +192,7 @@ public class VoxelRenderer {
 	}
 	
 	private FaceCullingData isNeedBlockCulling(IChunkManager chunkManager, int index) {
-		Chunk chunk = chunkManager.getChunkByBlockIndex(index);
+		Chunk chunk = chunkManager.getChunkByGeneralIndex(index);
 		Vector3i blockVector = chunkManager.getBlockIndexVector(index);
 		return isNeedBlockCulling(chunk, blockVector.x, blockVector.y, blockVector.z);
 	}

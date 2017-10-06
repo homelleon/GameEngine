@@ -14,10 +14,11 @@ import primitive.buffer.Loader;
 import primitive.buffer.VAO;
 
 /**
- * Manager for text that rendered in the screen.
+ * Manages GUI text rendered in display.
  * 
  * @author homelleon
  * @see IGUITextManager
+ * @see GUIText
  */
 public class GUITextManager implements IGUITextManager {
 
@@ -26,9 +27,6 @@ public class GUITextManager implements IGUITextManager {
 
 	/**
 	 * Constracts GUITextManager manager.
-	 * 
-	 * @param loader
-	 *            {@link Loader}
 	 */
 	public GUITextManager() {
 		this.fontManager = new FontManager();

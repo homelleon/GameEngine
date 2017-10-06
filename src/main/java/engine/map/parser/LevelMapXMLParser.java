@@ -14,6 +14,14 @@ import tool.xml.XMLUtils;
 import tool.xml.parser.IObjectParser;
 import tool.xml.parser.XMLParser;
 
+/**
+ * Parser for creating manager relying on their positions and preloaded models from xml format.
+ * 
+ * @author homelleon
+ * @see XMLParser
+ * @see IObjectManager
+ * @see IObjectParser
+ */
 public class LevelMapXMLParser extends XMLParser implements IObjectParser<IObjectManager> {
 	
 	IObjectManager modelMap;

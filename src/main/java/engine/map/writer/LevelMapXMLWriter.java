@@ -17,6 +17,13 @@ import org.w3c.dom.Element;
 import core.settings.EngineSettings;
 import manager.scene.IObjectManager;
 
+/**
+ * Writer for creating xml file from object manager with object datas.
+ * 
+ * @author homelleon
+ * @see ILevelMapWriter
+ * @see IObjectManager
+ */
 public class LevelMapXMLWriter implements ILevelMapWriter {
 	
 	private final String saveName = "levelMap1";

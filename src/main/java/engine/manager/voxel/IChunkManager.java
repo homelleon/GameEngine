@@ -40,13 +40,20 @@ public interface IChunkManager {
 	/**
 	 * Returns chunk by its index in the chunk manager.
 	 * 
-	 * @param index
+	 * @param chunkIndex
 	 *            {@link Integer} value chunk index in the chunk manager
 	 * @return {@link Chunk} value
 	 */
-	Chunk getChunk(int index);
+	Chunk getChunk(int chunkIndex);
 	
-	Chunk getChunkByBlockIndex(int index);
+	/**
+	 * Gets chunk by block index.
+	 * 
+	 * @param generalIndex int value of block index
+	 * 
+	 * @return {@link Chunk} object
+	 */
+	Chunk getChunkByGeneralIndex(int generalIndex);
 
 	/**
 	 * Returns world coordinate position of chunk by its 3 dimentional index
@@ -62,14 +69,20 @@ public interface IChunkManager {
 	/**
 	 * Returns chunk world position by its index in array.
 	 * 
-	 * @param index
+	 * @param chunkIndex
 	 *            {@link Integer} value of index in array
 	 * @return {@link Vector3f} value of chunk position in world coordinate
 	 *         space
 	 */
-	Vector3f getChunkPositionByChunkIndex(int index);
+	Vector3f getChunkPositionByChunkIndex(int chunkIndex);
 	
-	Vector3f getChunkPositionByBlockIndex(int index);
+	/**
+	 * Gets chunk position by block index.
+	 * 
+	 * @param generalIndex int value of block index
+	 * @return {@link Vector3f} chunk position in 3 dimentions
+	 */
+	Vector3f getChunkPositionByGeneralIndex(int generalIndex);
 	
 
 	/**
@@ -82,7 +95,13 @@ public interface IChunkManager {
 	 */
 	Vector3i getChunkIndexVector(int index);
 	
-	Block getBlockByBlockIndex(int blockIndex);
+	/**
+	 * Gets block by block index.
+	 * 
+	 * @param generalIndex int value of block index
+	 * @return {@link Block} object
+	 */
+	Block getBlockByGeneralIndex(int generalIndex);
 
 	/**
 	 * Returns block world position by its 3 dimentional index position in the chunk.
@@ -96,10 +115,29 @@ public interface IChunkManager {
 	 */
 	Vector3f getBlockPosition(int chunkIndex, Vector3i indexPosition);
 	
+	/**
+	 * Gets block position by chunk and block indexes.
+	 * 
+	 * @param chunkIndex int value of chunk index
+	 * @param blockIndex int value of block index
+	 * @return
+	 */
 	Vector3f getBlockPosition(int chunkIndex, int blockIndex);
 	
-	Vector3f getBlockPositionByBlockIndex(int index);	
+	/**
+	 * Gets block position by block index.
+	 * 
+	 * @param generalIndex int value of block index
+	 * @return {@link Vector3f} position in 3 dimentions
+	 */
+	Vector3f getBlockPositionByGeneralIndex(int generalIndex);	
 	
+	/**
+	 * Gets block 3 dimentional index within a chunk by general index value.
+	 * 
+	 * @param index value
+	 * @return {@link Vector3i} index position in 3 dimentions within a chunk
+	 */
 	Vector3i getBlockIndexVector(int index);	
 
 

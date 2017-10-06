@@ -11,11 +11,25 @@ import manager.gui.component.IGUIComponentManager;
 import object.gui.group.GUIGroup;
 import object.gui.group.IGUIGroup;
 
+/**
+ * Manages GUIGroups.
+ * 
+ * @author homelleon
+ * 
+ * @see IGUIGroupManager
+ * @see GUIGroup
+ * @see GUI
+ */
 public class GUIGroupManager implements IGUIGroupManager {
 
 	Map<String, IGUIGroup> groups = new HashMap<String, IGUIGroup>();
 	IGUIComponentManager componentManager;
 	
+	/**
+	 * Contructes group manager with defined component manager.
+	 * 
+	 * @param componentManager {@link IGUIComponentManagaer} object
+	 */
 	public GUIGroupManager(IGUIComponentManager componentManager) {
 		this.componentManager = componentManager;
 	}

@@ -8,13 +8,19 @@ import manager.gui.group.IGUIGroupManager;
 import object.gui.system.GUIMenuSystem;
 import object.gui.system.IGUIMenuSystem;
 
+/**
+ * Main graphic user interface manager that includes texture and text managers.
+ * 
+ * @author homelleon
+ *
+ */
 public class GUIManager implements IGUIManager {
 
 	private static final String GUI_FILE_NAME = "interface";
 
-	IGUIComponentManager componentManager;
-	IGUIMenuSystem menuSystem;
-	IGUIGroupManager groupManager;
+	private IGUIComponentManager componentManager;
+	private IGUIMenuSystem menuSystem;
+	private IGUIGroupManager groupManager;
 	
 
 	@Override

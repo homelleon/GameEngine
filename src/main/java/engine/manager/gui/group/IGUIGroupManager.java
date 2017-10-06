@@ -5,9 +5,13 @@ import java.util.Collection;
 import object.gui.group.IGUIGroup;
 
 /**
+ * Provide access to GUI groups.
  * 
  * @author homelleon
+ * 
  * @see GUIGroupManager
+ * @see GUIGroup
+ * @see GUI
  */
 public interface IGUIGroupManager {
 

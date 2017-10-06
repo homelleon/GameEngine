@@ -20,6 +20,16 @@ import tool.xml.XMLUtils;
 import tool.xml.parser.IObjectParser;
 import tool.xml.parser.XMLParser;
 
+/**
+ * Parser for creating raw object manager from xml format.
+ * 
+ * @author homelleon
+ * 
+ * @see XMLParser
+ * @see IObjectParser
+ * @see IRawManager
+ * @see RawManaer
+ */
 public class RawMapXMLParser extends XMLParser implements IObjectParser<IRawManager> {
 
 	public RawMapXMLParser(Document document) {

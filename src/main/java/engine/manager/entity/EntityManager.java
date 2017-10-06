@@ -17,12 +17,6 @@ import tool.math.Maths;
  * <p>
  * Can differ entities that are situated in the frustum. Also can store entities
  * chosen by player and entities for editor menu.
- * <p>
- * rus:<br>
- * Менеджер игровых сущностей.
- * <p>
- * Может разделять сущности, которые попадают в пирамиду проекции. Также может
- * хранить сущности, выбранные игроком, и сущности для интерфейса редактора.
  * 
  * @author homelleon
  * @version 1.0.1

@@ -22,6 +22,12 @@ import tool.dataEditor.menu.DataEditorFrame;
  *  
  */
 
+/**
+ * Engine display manager.
+ * 
+ * @author homelleon
+ *
+ */
 public class DisplayManager {
 
 	private static long lastFrameTime; // Время прошло с запуска окна
@@ -33,7 +39,11 @@ public class DisplayManager {
 		createDisplay(null);
 	}
 
-	// конструктор с указанием режима приложения
+	/**
+	 * Creates display in defined editor frame.
+	 * 
+	 * @param frame {@link DataEditorFrame} object to render display
+	 */
 	public static void createDisplay(DataEditorFrame frame) {
 		
 		if (frame != null) {
@@ -84,6 +94,9 @@ public class DisplayManager {
 		lastFrameTime = getCurrentTime();
 	}
 
+	/**
+	 * Updates display and keyboard.
+	 */
 	public static void updateDisplay() {
 		Display.sync(EngineSettings.FPS_CAP);
 		KeyboardGame.update();
@@ -93,10 +106,18 @@ public class DisplayManager {
 		lastFrameTime = currentFrameTime;
 	}
 
+	/**
+	 * Gets number of frames per second.
+	 *  
+	 * @return float value of FPS
+	 */
 	public static float getFrameTimeSeconds() {
 		return delta;
 	}
 
+	/**
+	 * Closes display.
+	 */
 	public static void closeDisplay() {
 		Display.destroy();
 	}
@@ -105,10 +126,20 @@ public class DisplayManager {
 		return Sys.getTime() * 1000 / Sys.getTimerResolution();
 	}
 
+	/**
+	 * Gets display height.
+	 * 
+	 * @return int value of display height
+	 */
 	public static int getHeight() {
 		return height;
 	}
 
+	/**
+	 * Gets display width.
+	 * 
+	 * @return int value of display width
+	 */
 	public static int getWidth() {
 		return width;
 	}

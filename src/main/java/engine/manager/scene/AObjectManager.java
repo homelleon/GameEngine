@@ -14,6 +14,12 @@ import manager.water.IWaterManager;
 import manager.water.WaterManager;
 import object.audio.master.IAudioMaster;
 
+/**
+ * Abstact class of engine objects manager.
+ * 
+ * @author homelleon
+ * 
+ */
 public abstract class AObjectManager {
 	
 	protected IEntityManager entityManager;

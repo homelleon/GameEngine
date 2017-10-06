@@ -5,11 +5,11 @@ import object.gui.text.GUIText;
 import tool.manager.IManager;
 
 /**
- * Interface to store and control graphic interface texts.
+ * Provide access to storing and controling graphic user interface texts.
  * 
  * @author homelleon
  * @see GUITextManager
- *
+ * @see GUIText
  */
 
 public interface IGUITextManager extends IManager<GUIText> {

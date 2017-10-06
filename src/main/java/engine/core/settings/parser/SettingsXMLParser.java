@@ -10,8 +10,19 @@ import tool.xml.XMLUtils;
 import tool.xml.parser.IObjectParser;
 import tool.xml.parser.XMLParser;
 
+/**
+ * Parsing util for settings in xml format.
+ * 
+ * @author homelleon
+ *
+ */
 public class SettingsXMLParser extends XMLParser implements IObjectParser<GameSettings> {
 
+	/**
+	 * XML Parser constructor.
+	 * 
+	 * @param document {@link Document} object ot parse
+	 */
 	public SettingsXMLParser(Document document) {
 		super(document);
 	}
@@ -39,18 +50,36 @@ public class SettingsXMLParser extends XMLParser implements IObjectParser<GameSe
 		return settings;
 	}
 
+	/**
+	 * Reads level map settings.
+	 * 
+	 * @param node {@link Node} input node object
+	 * @param settings {@link GameSettings} object to store node info in it
+	 */
 	private void readLevelMapSettings(Node node, GameSettings settings) {
 		Element map = (Element) node;
 		String name = XMLUtils.getTagValue(map, XMLUtils.NAME);
 		settings.setLevelMapName(name);
 	}
 
+	/**
+	 * Reads model map settings.
+	 * 
+	 * @param node {@link Node} input node object
+	 * @param settings {@link GameSettings} object to store node info in it
+	 */
 	private void readModelMapSettings(Node node, GameSettings settings) {
 		Element objectMap = (Element) node;
 		String name = XMLUtils.getTagValue(objectMap, XMLUtils.NAME);
 		settings.setModelMapName(name);
 	}
 	
+	/**
+	 * Reads raw map settings.
+	 * 
+	 * @param node {@link Node} input node object
+	 * @param settings {@link GameSettings} object to store node info in it
+	 */
 	private void readRawMapSettings(Node node, GameSettings settings) {
 		Element rawMap = (Element) node;
 		String name = XMLUtils.getTagValue(rawMap, XMLUtils.NAME);

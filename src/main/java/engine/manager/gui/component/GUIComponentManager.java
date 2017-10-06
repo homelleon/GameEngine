@@ -20,18 +20,34 @@ import tool.xml.loader.IXMLLoader;
 import tool.xml.loader.XMLFileLoader;
 import tool.xml.reader.IXMLReader;
 
+/**
+ * Manages GUI components such as textureManager, textManager and its renderer.
+ * 
+ * @author homelleon
+ */
 public class GUIComponentManager implements IGUIComponentManager {
 
 	private IGUITextureManager textureManager;
 	private IGUITextManager textManager;
 	private IGUIRenderer guiRenderer;
 
+	/**
+	 * Constructor to create component manager with input texture and text managers.
+	 * 
+	 * @param textureManager {@link IGUITextureManager} object
+	 * @param textManager {@link IGUITextManager} object
+	 */
 	public GUIComponentManager(IGUITextureManager textureManager, IGUITextManager textManager) {
 		this.textManager = textManager;
 		this.textureManager = textureManager;
 		this.guiRenderer = new GUIRenderer(this.textManager.getFonts());
 	}
 
+	/**
+	 * Constructor to create component manager with inpute file name to load parameters from.
+	 * 
+	 * @param guiFileName {@link String} value of file name
+	 */
 	public GUIComponentManager(String guiFileName) {
 		this.textureManager = new GUITextureManager();
 		this.textManager = new GUITextManager();

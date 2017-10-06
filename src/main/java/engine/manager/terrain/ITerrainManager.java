@@ -4,7 +4,7 @@ import object.terrain.terrain.ITerrain;
 import tool.manager.IManager;
 
 /**
- * Interface to store and control terrains.
+ * Provide access for storing and controlling terrains.
  * 
  * @author homelleon
  * @see TerrainManager

@@ -8,6 +8,12 @@ import core.settings.EngineSettings;
 import object.gui.font.FontType;
 import primitive.buffer.Loader;
 
+/**
+ * Manages GUI fonts.
+ * 
+ * @author homelleon
+ *
+ */
 public class FontManager implements IFontManager {
 
 	private Map<String, FontType> fonts = new HashMap<String, FontType>();

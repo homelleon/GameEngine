@@ -20,6 +20,15 @@ import tool.xml.XMLUtils;
 import tool.xml.parser.IObjectParser;
 import tool.xml.parser.XMLParser;
 
+/**
+ * Parser for creating manager of engine models from xml format.
+ * 
+ * @author homelleon
+ * 
+ * @see XMLParser
+ * @see IObjectParser
+ * @see IObjectManager
+ */
 public class ModelMapXMLParser extends XMLParser implements IObjectParser<IObjectManager> {
 
 	private IObjectManager modelMap;

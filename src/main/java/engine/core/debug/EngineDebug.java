@@ -1,7 +1,7 @@
 package core.debug;
 
 /**
- * Class to debug game engine.
+ * Game engine debug util.
  * 
  * @author homelleon
  * @version 1.1

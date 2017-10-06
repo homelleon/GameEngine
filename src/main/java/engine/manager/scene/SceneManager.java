@@ -23,7 +23,7 @@ import tool.EngineUtils;
 import tool.math.vector.Vector3f;
 
 /**
- * Manager of default test objects of the scene.
+ * Manages default test objects for the scene.
  * 
  * @author homelleon
  *

@@ -5,7 +5,8 @@ import object.gui.element.menu.IGUIMenu;
 import tool.manager.IManager;
 
 /**
- * 
+ * GUI menu system control interface.
+ *  
  * @author homelleon
  * @see GUIMenuSystem
  */

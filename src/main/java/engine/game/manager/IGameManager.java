@@ -11,8 +11,25 @@ import object.scene.IScene;
  */
 public interface IGameManager {
 
+	/**
+	 * Gets engine scene object.
+	 * 
+	 * @return {@link IScene} object
+	 */
 	IScene getScene();
+	
+	/**
+	 * Gets texture manager.
+	 * 
+	 * @return {@link IGUITextureManager} object
+	 */
 	IGUITextureManager getTextures();
+	
+	/**
+	 * Gets text manager.
+	 * 
+	 * @return {@link IGUITextManager} object
+	 */
 	IGUITextManager getTexts();
 
 }
