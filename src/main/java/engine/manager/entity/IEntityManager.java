@@ -2,7 +2,6 @@ package manager.entity;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 import object.camera.ICamera;
 import object.entity.entity.IEntity;

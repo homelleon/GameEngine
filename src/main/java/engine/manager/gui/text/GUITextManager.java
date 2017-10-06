@@ -9,6 +9,7 @@ import manager.gui.font.FontManager;
 import manager.gui.font.IFontManager;
 import object.gui.font.TextMeshData;
 import object.gui.text.GUIText;
+import object.gui.text.TextRebuildManager;
 import primitive.buffer.Loader;
 import primitive.buffer.VAO;
 
@@ -61,6 +62,24 @@ public class GUITextManager implements IGUITextManager {
 			}
 		}
 	}
+	
+	@Override
+	public void changeContent(String name, String content) {
+		if(this.texts.containsKey(name)) {
+			GUIText text = this.texts.get(name);
+			text.delete();
+			TextRebuildManager.changeContent(text, content);
+			String font = text.getFont();
+			TextMeshData data = this.fontManager.get(font).loadText(text);
+			VAO vao = Loader.getInstance().getVertexLoader().loadToVAO(data.getVertexPositions(), data.getTextureCoords());
+			text.setMeshInfo(vao, data.getVertexCount());
+		} else {
+			if(EngineDebug.hasDebugPermission()) {
+				System.err.println(
+						"Can't change text because can't find text with name: " + name + "!");
+			}
+		}
+	}
 
 	@Override
 	public GUIText get(String name) {
@@ -75,6 +94,7 @@ public class GUITextManager implements IGUITextManager {
 	@Override
 	public boolean delete(String name) {
 		if(this.texts.containsKey(name)) {
+			this.texts.get(name).delete();
 			this.texts.remove(name);
 			return true;
 		} else {
@@ -85,6 +105,7 @@ public class GUITextManager implements IGUITextManager {
 	@Override
 	public void clean() {
 		this.fontManager.clean();
+		this.texts.values().forEach(GUIText::delete);
 		this.texts.clear();
 	}
 

@@ -53,10 +53,6 @@ public class GUITextXMLParser extends XMLParser implements IListParser<GUIText> 
 				textList = createText(node);
 			}
 		}
-		if (EngineDebug.hasDebugPermission()) {
-			System.out.println("---");
-		}
-
 		return textList;
 	}
 

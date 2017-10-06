@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL20;
 
 import core.debug.EngineDebug;
 import game.manager.GameManager;
@@ -33,10 +34,19 @@ public abstract class Game extends Thread implements IGame {
 		IGUI versionGUI = new GUI("version", versionTextureList, versionTextList);
 
 		if (EngineDebug.hasDebugPermission()) {
-			System.out.println(GL11.glGetString(GL11.GL_VENDOR));
-			System.out.println(GL11.glGetString(GL11.GL_RENDERER));
-			System.out.println(GL11.glGetString(GL11.GL_VERSION));
 			versionGUI.show();
+			String OGLVendor = GL11.glGetString(GL11.GL_VENDOR);
+			String OGLRenderer = GL11.glGetString(GL11.GL_RENDERER);
+			String OGLVersion = GL11.glGetString(GL11.GL_VERSION);
+			String GLSLVersion = GL11.glGetString(GL20.GL_SHADING_LANGUAGE_VERSION);
+			System.out.println("................");
+			System.out.println("[>>OpenGL<<]");
+			System.out.println("OpenGL Vendor: " + OGLVendor);
+			System.out.println("OpenGL Renderer: " + OGLRenderer);			
+			System.out.println("OpenGL Version: " + OGLVersion);
+			System.out.println("GLSL Version: " + GLSLVersion);
+			System.out.println("[X>OpenGL<X]");
+			System.out.println("................");
 		}
 
 	}

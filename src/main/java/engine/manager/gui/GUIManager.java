@@ -20,6 +20,8 @@ public class GUIManager implements IGUIManager {
 	@Override
 	public void initialize() {
 		if (EngineDebug.hasDebugPermission()) {
+			System.out.println("................");
+			System.out.println("[>>GUI Manager<<]");
 			System.out.println("Loading User Interface...");
 		}
 		this.componentManager = new GUIComponentManager(GUI_FILE_NAME);
@@ -27,7 +29,8 @@ public class GUIManager implements IGUIManager {
 		this.groupManager = new GUIGroupManager(this.componentManager);
 		if (EngineDebug.hasDebugPermission()) {
 			System.out.println("Loading complete!");
-			System.out.println("-------------------------");
+			System.out.println("[X>GUI Manager<X]");
+			System.out.println("................");
 		}
 	}
 	

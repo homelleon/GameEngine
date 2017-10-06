@@ -78,6 +78,7 @@ public class GUI extends GUIObject implements IGUI {
 
 	@Override
 	public void clean() {
+		guiTexts.forEach(GUIText::delete);
 		guiTextures.clear();
 		guiTexts.clear();
 	}

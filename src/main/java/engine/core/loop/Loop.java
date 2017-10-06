@@ -49,7 +49,6 @@ public class Loop implements ILoop {
 	private static Loop instance;
 	private static final String SETTINGS_NAME = "settings";
 
-	private Loader loader;
 	private MainRenderer renderer;
 	private ISceneRenderer sceneRenderer;
 
@@ -98,7 +97,6 @@ public class Loop implements ILoop {
 	private void initializeGameMode() {
 		DisplayManager.createDisplay();
 		/*--------------PRE LOAD TOOLS-------------*/
-		this.loader = Loader.getInstance();
 		loadGameSettings();
 		if (!this.mapIsLoaded) {
 			loadModelMap("defaultModelMap");
@@ -114,7 +112,6 @@ public class Loop implements ILoop {
 		DisplayManager.createDisplay(frame);
 		frame.pack();
 		/*--------------PRE LOAD TOOLS-------------*/
-		this.loader = Loader.getInstance();
 		this.scene = new Scene();
 		this.sceneRenderer = new EditorSceneRenderer();
 		this.sceneManager = new SceneManager();
@@ -178,7 +175,7 @@ public class Loop implements ILoop {
 	 */
 	private void clean() {
 		this.scene.clean();
-		this.loader.clean();
+		Loader.getInstance().clean();
 		this.sceneRenderer.clean();
 		if(!isEditMode) {
 			this.levelMap.clean();
@@ -198,6 +195,8 @@ public class Loop implements ILoop {
 	 */
 	private void loadModelMap(String name) {
 		if (EngineDebug.hasDebugPermission()) {
+			System.out.println("................");
+			System.out.println("[>>Model map<<]");
 			System.out.println("Loading models...");
 		}
 		String path = EngineSettings.MAP_PATH + name + EngineSettings.EXTENSION_XML;
@@ -221,13 +220,19 @@ public class Loop implements ILoop {
 	 */
 	private void loadLevelMap(String name) {
 		if (EngineDebug.hasDebugPermission()) {
-			System.out.println("Loading objects...");
+			System.out.println("................");
+			System.out.println("[>>Level map<<]");
+			System.out.println("Loading level...");
 		}
 		String path = EngineSettings.MAP_PATH + name + EngineSettings.EXTENSION_XML;
 		if(new File(path).exists()) {
 			IXMLLoader xmlLoader = new XMLFileLoader(EngineSettings.MAP_PATH + name + EngineSettings.EXTENSION_XML);
 			IObjectParser<IObjectManager> mapParser = new LevelMapXMLParser(xmlLoader.load(), this.modelMap);
 			this.levelMap = mapParser.parse();
+			if (EngineDebug.hasDebugPermission()) {
+				System.out.println("Total loaded entities: " + this.levelMap.getEntities().getAll().stream().count());
+				System.out.println("Total loaded terrains: " + this.levelMap.getTerrains().getAll().stream().count());
+			}
 		} else {
 			throw new NullPointerException("File " + path + " is not existed! Can't load level map!");
 		}
@@ -235,6 +240,8 @@ public class Loop implements ILoop {
 	
 	private void loadRawMap(String name) {
 		if (EngineDebug.hasDebugPermission()) {
+			System.out.println("................");
+			System.out.println("[>>Raw map<<]");
 			System.out.println("Loading raws...");
 		}
 		String path = EngineSettings.MAP_PATH + name + EngineSettings.EXTENSION_XML;
@@ -256,6 +263,8 @@ public class Loop implements ILoop {
 	 */
 	private void loadGameSettings() {
 		if (EngineDebug.hasDebugPermission()) {
+			System.out.println("................");
+			System.out.println("[>>Game Settings<<]");
 			System.out.println("Loading game settings...");
 		}
 		IXMLLoader xmlLoader = new XMLFileLoader(
@@ -269,6 +278,8 @@ public class Loop implements ILoop {
 		}
 		if (EngineDebug.hasDebugPermission()) {
 			System.out.println("Loading complete...");
+			System.out.println("[X>Game Settings<X]");
+			System.out.println("................");
 		}
 		loadRawMap(settings.getRawMapName());
 		loadModelMap(settings.getModelMapName());

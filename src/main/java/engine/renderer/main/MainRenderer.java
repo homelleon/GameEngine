@@ -176,11 +176,6 @@ public class MainRenderer implements IMainRenderer {
 		getShadowMapTexture().bind(5);
 	}
 	
-	private void initializeFrustumEntities(IScene scene) {
-		this.prepareFrustumEntities(scene, true);
-		this.prepareShadowFrustumEntities(scene);
-	}
-	
 	private void prepareFrustumEntities(IScene scene, boolean isLowDistance) {
 		List<IEntity> frustumEntities = new ArrayList<IEntity>();
 		if(isLowDistance) {

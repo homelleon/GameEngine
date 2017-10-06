@@ -2,7 +2,6 @@ package manager.gui.group;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -64,6 +63,9 @@ public class GUIGroupManager implements IGUIGroupManager {
 			this.get(name).getAll().stream()
 				.flatMap(gui -> gui.getTexts().stream())
 				.forEach(text -> this.componentManager.getTexts().delete(text.getName()));
+			this.get(name).getAll().stream()
+				.flatMap(gui -> gui.getTextures().stream())
+				.forEach(texture -> this.componentManager.getTextures().delete(texture.getName()));
 			this.groups.get(name).clean();
 			this.groups.remove(name);
 			return true;

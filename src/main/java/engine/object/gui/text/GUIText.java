@@ -77,6 +77,10 @@ public class GUIText {
 		this.centered = centered;
 		makeFontSmooth();
 	}
+	
+	void changeText(String text) {
+		this.textString = text;
+	}
 
 	/**
 	 * Returns graphic width of interface text.
@@ -328,6 +332,10 @@ public class GUIText {
 		GUIText guiText = new GUIText(name, text, this.fontSize, this.fontName, this.position, this.maxLineLength, this.centered);
 		guiText.setColor(this.color);
 		return guiText;
+	}
+	
+	public void delete() {
+		this.textMeshVao.delete();
 	}
 
 	private void makeFontSmooth() {

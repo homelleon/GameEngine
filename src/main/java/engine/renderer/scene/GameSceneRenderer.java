@@ -52,6 +52,8 @@ public class GameSceneRenderer implements ISceneRenderer {
 	private MousePicker mousePicker;
 	private IScene scene;
 	private IControls controls;
+	GUIText fpsText;
+	GUIText coordsText;
 
 	@Override
 	public void initialize(IScene scene) {
@@ -72,6 +74,23 @@ public class GameSceneRenderer implements ISceneRenderer {
 		this.mousePicker = new MousePicker(scene.getCamera(), mainRenderer.getProjectionMatrix());
 		this.scene.setMousePicker(mousePicker);
 		this.controls = new Controls();
+		
+		//GUI text info
+		String fontName = "candara";
+		fpsText = createFPSText(Math.round(1 / DisplayManager.getFrameTimeSeconds()), fontName);
+		fpsText.setColor(1, 0, 0);
+		coordsText = createPickerCoordsText(mousePicker, fontName);
+		coordsText.setColor(1, 0, 0);
+		List<GUITexture> textureList = new ArrayList<GUITexture>();
+		List<GUIText> textList = new ArrayList<GUIText>();
+		textList.add(fpsText);
+		textList.add(coordsText);
+		String statusGroupName = "statusGroup";
+		String statusGUIName = "status";
+		IGUI statusInterface = new GUI(statusGUIName, textureList, textList);
+		scene.getUserInterface().getGroups().createEmpty(statusGroupName);
+		scene.getUserInterface().getGroups().get(statusGroupName).add(statusInterface);
+		((GUIObject) scene.getUserInterface().getGroups().get(statusGroupName)).show();
 	}
 
 	@Override
@@ -144,21 +163,13 @@ public class GameSceneRenderer implements ISceneRenderer {
 	}
 
 	private void renderGUI() {
-		String fontName = "candara";
-		GUIText fpsText = createFPSText(Math.round(1 / DisplayManager.getFrameTimeSeconds()), fontName);
-		fpsText.setColor(1, 0, 0);
-		GUIText coordsText = createPickerCoordsText(mousePicker, fontName);
-		coordsText.setColor(1, 0, 0);
-		List<GUITexture> textureList = new ArrayList<GUITexture>();
-		List<GUIText> textList = new ArrayList<GUIText>();
-		textList.add(fpsText);
-		textList.add(coordsText);
-		IGUI statusInterface = new GUI("status", textureList, textList);
-		scene.getUserInterface().getGroups().createEmpty("statusGroup");
-		scene.getUserInterface().getGroups().get("statusGroup").add(statusInterface);
-		((GUIObject) scene.getUserInterface().getGroups().get("statusGroup")).show();
+		float fps = Math.round(1 / DisplayManager.getFrameTimeSeconds());
+		scene.getUserInterface().getComponent().getTexts()
+			.changeContent(fpsText.getName(), "FPS: " + String.valueOf((int) fps));
+		String coords = String.valueOf(mousePicker.getCurrentRay());
+		scene.getUserInterface().getComponent().getTexts()
+			.changeContent(coordsText.getName(), coords);
 		scene.getUserInterface().render();
-		// scene.getUserInterface().deleteGUIGroup("statusGroup");
 	}
 
 	private GUIText createFPSText(float FPS, String fontName) {

@@ -32,9 +32,6 @@ public class GUITextureXMLParser extends XMLParser implements IListParser<GUITex
 			if (XMLUtils.ifNodeIsElement(node, XMLUtils.GUI_TEXTURES)) {
 				textureList = createTexture(node);
 			}
-		}		
-		if (EngineDebug.hasDebugPermission()) {
-			System.out.println("---");
 		}
 		return textureList;
 	}

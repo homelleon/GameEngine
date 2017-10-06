@@ -1,4 +1,4 @@
-package manager.texture.terrain.pack;
+package manager.texture.terrain;
 
 public interface ITerrainTexturePackageManager {
 

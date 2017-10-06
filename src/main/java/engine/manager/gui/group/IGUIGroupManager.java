@@ -1,7 +1,6 @@
 package manager.gui.group;
 
 import java.util.Collection;
-import java.util.List;
 
 import object.gui.group.IGUIGroup;
 

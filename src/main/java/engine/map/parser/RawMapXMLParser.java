@@ -12,13 +12,9 @@ import map.raw.RawManager;
 import object.texture.Texture2D;
 import object.texture.material.Material;
 import object.texture.terrain.TerrainTexturePack;
-import primitive.buffer.Loader;
 import primitive.model.Mesh;
 import primitive.model.Model;
 import tool.math.vector.Vector3f;
-import tool.meshLoader.normalMapObject.NormalMappedObjLoader;
-import tool.meshLoader.object.ModelData;
-import tool.meshLoader.object.OBJFileLoader;
 import tool.meshLoader.objloader.OBJLoader;
 import tool.xml.XMLUtils;
 import tool.xml.parser.IObjectParser;
@@ -51,7 +47,8 @@ public class RawMapXMLParser extends XMLParser implements IObjectParser<IRawMana
 			}
 			if (EngineDebug.hasDebugPermission()) {
 				System.out.println("Raws complete!");
-				System.out.println("-------------------------");
+				System.out.println("[X>Raw Map<X]");
+				System.out.println("................");
 			}
 		} else {
 			throw new NullPointerException("Incorrect parent element name of used model map file!");

@@ -37,7 +37,8 @@ public class LevelMapXMLParser extends XMLParser implements IObjectParser<IObjec
 			}
 			if (EngineDebug.hasDebugPermission()) {
 				System.out.println("Loading complete!");
-				System.out.println("-------------------------");
+				System.out.println("[X>Level Map<X]");
+				System.out.println("................");
 			}
 		} else {
 			throw new NullPointerException("Incorrect parent element name of used level map file!");

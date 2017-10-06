@@ -50,7 +50,6 @@ public class EntityManager extends AbstractManager<IEntity> implements IEntityMa
 
 	}
 
-
 	@Override
 	public void addPointed(IEntity entity) {
 		if (entity != null) {

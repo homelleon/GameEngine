@@ -46,7 +46,8 @@ public class ModelMapXMLParser extends XMLParser implements IObjectParser<IObjec
 			}
 			if (EngineDebug.hasDebugPermission()) {
 				System.out.println("Models complete!");
-				System.out.println("-------------------------");
+				System.out.println("[X>Model map<X]");
+				System.out.println("................");
 			}
 		} else {
 			throw new NullPointerException("Incorrect parent element name of used model map file!");

@@ -15,6 +15,14 @@ import tool.manager.IManager;
 public interface IGUITextManager extends IManager<GUIText> {
 
 	/**
+	 * Change content text of GUIText object and rebuild it.
+	 * 
+	 * @param name String value of GUIText name
+	 * @param content String value of text content 
+	 */
+	void changeContent(String name, String content);
+	
+	/**
 	 * Returns font manager.
 	 * 
 	 * @return {@link IFontManager} value
