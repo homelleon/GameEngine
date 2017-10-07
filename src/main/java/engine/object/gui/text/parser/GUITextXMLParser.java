@@ -63,7 +63,7 @@ public class GUITextXMLParser extends XMLParser implements IListParser<GUIText> 
 	 */
 	private List<GUIText> createText(Node node) {
 		if (EngineDebug.hasDebugPermission()) {
-			EngineDebug.print("Loading GUI texts...", 1);
+			EngineDebug.println("Loading GUI texts...", 1);
 		}
 
 		List<GUIText> textList = new ArrayList<GUIText>();
@@ -117,12 +117,12 @@ public class GUITextXMLParser extends XMLParser implements IListParser<GUIText> 
 				guiText.setColor(color);
 				textList.add(guiText);
 				if (EngineDebug.hasDebugPermission()) {
-					EngineDebug.print(guiText.getName(), 2);
+					EngineDebug.println(guiText.getName(), 2);
 				}
 			}
 		}
 		if (EngineDebug.hasDebugPermission()) {
-			EngineDebug.print("Succed!", 1);
+			EngineDebug.println("Succed!", 1);
 		}
 
 		return textList;

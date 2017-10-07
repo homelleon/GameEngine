@@ -52,7 +52,7 @@ public class EngineDebug {
 					mode = "Box and Sphere bounding";
 					break;
 			}
-			print("Bounding mode is set to '" + mode + "'");
+			println("Bounding mode is set to '" + mode + "'");
 		}
 	}
 
@@ -77,7 +77,7 @@ public class EngineDebug {
 				mode = "None";
 				break;
 		}
-		print("Debug info is set to '"+ mode + "'");
+		println("Debug info is set to '"+ mode + "'");
 	}
 
 	/**
@@ -90,20 +90,74 @@ public class EngineDebug {
 		return debugPermission != PERMISSION_NONE;
 	}
 	
+	public static void print(String text, int level) {
+		for(int i = 0; i < level; i++) {
+			print(LEVEL_SEPARATOR);
+		}
+		print(text);
+	}
+	
+	public static void print(String text) {
+		System.out.print(text);
+	}
+	
+	public static void print(Object object) {
+		System.out.print(object.toString());
+	}
+	
+	public static void print(float value) {
+		System.out.print(value);
+	}
+	
+	public static void print(int value) {
+		System.out.print(value);
+	}
+	
+	public static void println() {
+		System.out.println();
+	}
+	
 	/**
 	 * Prints debug info in console.
 	 * 
 	 * @param text {@link String} value of debug info
 	 */
-	public static void print(String text) {
+	public static void println(String text) {
 		System.out.println(text);
+	}
+	
+	/**
+	 * Prints debug info in console.
+	 * 
+	 * @param {@link Object} value of debug info
+	 */
+	public static void println(Object object) {
+		System.out.println(object.toString());
+	}
+	
+	/**
+	 * Prints debug info in console.
+	 * 
+	 * @param value - float value of debug info
+	 */
+	public static void println(float value) {
+		System.out.println(value);
+	}
+	
+	/**
+	 * Prints debug info in console.
+	 * 
+	 * @param value - int value of debug info
+	 */
+	public static void println(int value) {
+		System.out.println(value);
 	}
 	
 	/**
 	 * Prints debug border in console for visual separating structure.
 	 */
 	public static void printBorder() {
-		print("................");
+		println("................");
 	}
 	
 	/**
@@ -112,7 +166,7 @@ public class EngineDebug {
 	 * @param text {@link String} value of structure name to print
 	 */
 	public static void printOpen(String text) {
-		print("[+]" + text + "[+]");
+		println("[+]" + text + "[+]");
 	}
 	
 	/**
@@ -121,7 +175,7 @@ public class EngineDebug {
 	 * @param text {@link String} value of structure name to print
 	 */
 	public static void printClose(String text) {
-		print("[-]"+ text + "[-]");
+		println("[-]"+ text + "[-]");
 	}
 	
 	/**
@@ -130,11 +184,37 @@ public class EngineDebug {
 	 * @param text {@link String} value of debug info
 	 * @param level int value of seprator level
 	 */
-	public static void print(String text, int level) {
+	public static void println(String text, int level) {
 		for(int i = 0; i < level; i++) {
-			System.out.print(LEVEL_SEPARATOR);
+			print(LEVEL_SEPARATOR);
 		}
-		print(text);
+		println(text);
+	}
+	
+	/**
+	 * Prints debug info with separator before text.
+	 *  
+	 * @param value int value of debug info
+	 * @param level int value of seprator level
+	 */
+	public static void println(int value, int level) {
+		for(int i = 0; i < level; i++) {
+			print(LEVEL_SEPARATOR);
+		}
+		println(value);
+	}
+	
+	/**
+	 * Prints debug info with separator before text.
+	 *  
+	 * @param value float value of debug info
+	 * @param level int value of seprator level
+	 */
+	public static void println(float value, int level) {
+		for(int i = 0; i < level; i++) {
+			print(LEVEL_SEPARATOR);
+		}
+		println(value);
 	}
 	
 	/**

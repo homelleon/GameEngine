@@ -14,7 +14,9 @@ import tool.math.vector.Vector3f;
  */
 public interface IAudioMaster {
 
-	/** Initialization of Audio Master creating OpenAL context. */
+	/** 
+	 * Initialization of Audio Master creating OpenAL context. 
+	 */
 	void init();
 
 	/**

@@ -52,11 +52,11 @@ public class MyGame extends Game {
 		
 		//--------help hints GUI-------------//
 		IGUIBuilder helpGUIBuilder = new GUIBuilder(this.gameManager.getScene().getUserInterface().getComponent());
-		helpGUIBuilder.setText("inputHintsText",this.gameManager.getTexts().get("inputHints"));
+		helpGUIBuilder.setText("inputHintsText", this.gameManager.getTexts().get("inputHints"));
 		this.helpGroup = this.gameManager.getScene().getUserInterface().getGroups().createEmpty(guiGroupName);
 		this.helpGroup.add(helpGUIBuilder.build("help"));
 		helpGUIBuilder = new GUIBuilder(this.gameManager.getScene().getUserInterface().getComponent());
-		helpGUIBuilder.setText("versionText",this.gameManager.getTexts().get("version"));
+		helpGUIBuilder.setText("versionText", this.gameManager.getTexts().get("version"));
 		this.helpGroup.add(helpGUIBuilder.build("version"));
 		
 		//-----------button GUI--------------//		

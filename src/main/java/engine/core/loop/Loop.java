@@ -197,7 +197,7 @@ public class Loop implements ILoop {
 		if (EngineDebug.hasDebugPermission()) {
 			EngineDebug.printBorder();
 			EngineDebug.printOpen("Model map");
-			EngineDebug.print("Loading models...");
+			EngineDebug.println("Loading models...");
 		}
 		String path = EngineSettings.MAP_PATH + name + EngineSettings.EXTENSION_XML;
 		if(new File(path).exists()) {
@@ -222,7 +222,7 @@ public class Loop implements ILoop {
 		if (EngineDebug.hasDebugPermission()) {
 			EngineDebug.printBorder();
 			EngineDebug.printOpen("Level map");
-			EngineDebug.print("Loading level...");
+			EngineDebug.println("Loading level...");
 		}
 		String path = EngineSettings.MAP_PATH + name + EngineSettings.EXTENSION_XML;
 		if(new File(path).exists()) {
@@ -230,8 +230,8 @@ public class Loop implements ILoop {
 			IObjectParser<IObjectManager> mapParser = new LevelMapXMLParser(xmlLoader.load(), this.modelMap);
 			this.levelMap = mapParser.parse();
 			if (EngineDebug.hasDebugPermission()) {
-				EngineDebug.print("Total loaded entities: " + this.levelMap.getEntities().getAll().stream().count(), 2);
-				EngineDebug.print("Total loaded terrains: " + this.levelMap.getTerrains().getAll().stream().count(), 2);
+				EngineDebug.println("Total loaded entities: " + this.levelMap.getEntities().getAll().stream().count(), 2);
+				EngineDebug.println("Total loaded terrains: " + this.levelMap.getTerrains().getAll().stream().count(), 2);
 			}
 		} else {
 			throw new NullPointerException("File " + path + " is not existed! Can't load level map!");
@@ -242,7 +242,7 @@ public class Loop implements ILoop {
 		if (EngineDebug.hasDebugPermission()) {
 			EngineDebug.printBorder();
 			EngineDebug.printOpen("Raw map");
-			EngineDebug.print("Loading raws...");
+			EngineDebug.println("Loading raws...");
 		}
 		String path = EngineSettings.MAP_PATH + name + EngineSettings.EXTENSION_XML;
 		if(new File(path).exists()) {
@@ -265,17 +265,17 @@ public class Loop implements ILoop {
 		if (EngineDebug.hasDebugPermission()) {
 			EngineDebug.printBorder();
 			EngineDebug.printOpen("Game Settings");
-			EngineDebug.print("Loading game settings...");
+			EngineDebug.println("Loading game settings...");
 		}
 		IXMLLoader xmlLoader = new XMLFileLoader(
 				EngineSettings.SETTINGS_GAME_PATH + SETTINGS_NAME + EngineSettings.EXTENSION_XML);
 		IObjectParser<GameSettings> settingsParser = new SettingsXMLParser(xmlLoader.load());
 		GameSettings settings = settingsParser.parse();
 		if (EngineDebug.hasDebugPermission()) {
-			EngineDebug.print(settings.getRawMapName(), 1);
-			EngineDebug.print(settings.getModelMapName(), 1);
-			EngineDebug.print(settings.getLevelMapName(), 1);
-			EngineDebug.print("Loading complete...");
+			EngineDebug.println(settings.getRawMapName(), 1);
+			EngineDebug.println(settings.getModelMapName(), 1);
+			EngineDebug.println(settings.getLevelMapName(), 1);
+			EngineDebug.println("Loading complete...");
 			EngineDebug.printClose("Game Settings");
 			EngineDebug.printBorder();
 		}

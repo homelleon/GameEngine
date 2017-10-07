@@ -214,7 +214,7 @@ public class OBJLoader {
 					}
 				}
 				if(EngineDebug.hasDebugPermission()) {
-					EngineDebug.print("obj loading time : " + (System.currentTimeMillis() - time) + "ms", 2);
+					EngineDebug.println("obj loading time : " + (System.currentTimeMillis() - time) + "ms", 2);
 				}
 				
 				Mesh[] meshArray = new Mesh[meshes.size()];

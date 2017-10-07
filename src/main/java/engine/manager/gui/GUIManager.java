@@ -28,13 +28,13 @@ public class GUIManager implements IGUIManager {
 		if (EngineDebug.hasDebugPermission()) {
 			EngineDebug.printBorder();
 			EngineDebug.printOpen("GUI Manager");
-			EngineDebug.print("Loading User Interface...");
+			EngineDebug.println("Loading User Interface...");
 		}
 		this.componentManager = new GUIComponentManager(GUI_FILE_NAME);
 		this.menuSystem = GUIMenuSystem.getInstace();
 		this.groupManager = new GUIGroupManager(this.componentManager);
 		if (EngineDebug.hasDebugPermission()) {
-			EngineDebug.print("Loading complete!");
+			EngineDebug.println("Loading complete!");
 			EngineDebug.printClose("GUI Manager");
 			EngineDebug.printBorder();
 		}

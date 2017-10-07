@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.List;
 
 import core.settings.EngineSettings;
+import manager.octree.EntityNode;
 import object.entity.entity.IEntity;
 import primitive.model.Model;
 import tool.math.vector.Vector2f;
@@ -22,6 +23,7 @@ public abstract class BaseEntity {
 	protected boolean isVisible = true; // видимый
 	protected boolean isChosen = false; // выбранный
 	protected boolean isMoved = false;
+	protected EntityNode parent = null;
 
 	protected int textureIndex = 0; // индекс текстуры
 	protected int typeID = EngineSettings.ENTITY_TYPE_SIMPLE; // тип объекта
@@ -69,6 +71,27 @@ public abstract class BaseEntity {
 		this.rotation = rotation;
 		this.scale = scale;
 	}
+	 
+	 public void setParentNode(EntityNode parent) {
+		 this.parent = parent;
+	 }
+	 
+	 public EntityNode getParentNode() {
+		 return this.parent;
+	 }
+	 
+	 public boolean removeParentNode() {
+		 if(hasParent()) {
+			 this.parent = null;
+			 return true;
+		 } else {
+			 return false;
+		 }
+	 }
+	 
+	 public boolean hasParent() {
+		 return this.parent == null ? false : true;
+	 }
 
 	public synchronized void setChosen(boolean isChosen) {
 		this.isChosen = isChosen;
@@ -183,6 +206,10 @@ public abstract class BaseEntity {
 	}
 	
 	public void delete() {
+		if(this.parent != null) {
+			this.parent.removeEntity(this.getName());
+			this.parent = null;
+		}
 		this.models.clear();
 	}
 

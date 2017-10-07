@@ -2,9 +2,11 @@ package tool.math.vector;
 
 import org.lwjgl.util.vector.Vector4f;
 
+import object.entity.entity.IEntity;
+import tool.math.Maths;
 import tool.math.Quaternion;
 
-public class Vector3f extends Vector{
+public class Vector3f extends Vector implements Comparable {
 	
 	public float x;
 	public float y;
@@ -257,6 +259,11 @@ public class Vector3f extends Vector{
 
 	public void setZ(float z) {
 		this.z = z;
+	}
+
+	@Override
+	public int compareTo(Object vector) {
+		return Maths.compare(this, ((Vector3f) vector));
 	}
 	
 	

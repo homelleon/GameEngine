@@ -2,6 +2,7 @@ package object.entity.entity;
 
 import java.util.List;
 
+import manager.octree.EntityNode;
 import object.Nameable;
 import primitive.model.Model;
 import tool.math.vector.Vector2f;
@@ -12,12 +13,21 @@ import tool.math.vector.Vector3f;
  * @author homelleon
  * @see TexturedEntity
  * @see NormalMappedEntity
+ * @see BaseEntity
  */
  public interface IEntity extends Nameable {
 	
 	 String getBaseName();
 	
 	 void setBaseName(String name);
+	 
+	 void setParentNode(EntityNode parent);
+	 
+	 EntityNode getParentNode();
+	 
+	 boolean removeParentNode();
+	 
+	 boolean hasParent();
 	
 	/**
 	 * Gets entity "visible" flag.

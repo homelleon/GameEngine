@@ -54,7 +54,7 @@ public class ModelMapXMLParser extends XMLParser implements IObjectParser<IObjec
 				}
 			}
 			if (EngineDebug.hasDebugPermission()) {
-				EngineDebug.print("Models complete!");
+				EngineDebug.println("Models complete!");
 				EngineDebug.printClose("Model map");
 				EngineDebug.printBorder();
 			}
@@ -67,7 +67,7 @@ public class ModelMapXMLParser extends XMLParser implements IObjectParser<IObjec
 
 	private void parseEntities(Node node, IObjectManager map) {
 		if (EngineDebug.hasDebugPermission()) {
-			EngineDebug.print("Loading entities...", 1);
+			EngineDebug.println("Loading entities...", 1);
 		}
 		Node entities = node;
 		NodeList entityList = entities.getChildNodes();
@@ -89,18 +89,18 @@ public class ModelMapXMLParser extends XMLParser implements IObjectParser<IObjec
 				}
 				map.getEntities().add(builder.build(name));
 				if (EngineDebug.hasDebugPermission()) {
-					EngineDebug.print(map.getEntities().get(name).getName(), 2);
+					EngineDebug.println(map.getEntities().get(name).getName(), 2);
 				}
 			}
 		}
 		if (EngineDebug.hasDebugPermission()) {
-			EngineDebug.print("Succed!", 1);
+			EngineDebug.println("Succed!", 1);
 		}
 	}
 
 	private void parseTerrains(Node node, IObjectManager map) {
 		if (EngineDebug.hasDebugPermission()) {
-			EngineDebug.print("Loading terrains...",1);
+			EngineDebug.println("Loading terrains...",1);
 		}
 		NodeList terrainNodeList = node.getChildNodes();
 		for (int j = 0; j < terrainNodeList.getLength(); j++) {
@@ -140,14 +140,14 @@ public class ModelMapXMLParser extends XMLParser implements IObjectParser<IObjec
 							this.seed = map.getTerrains().get(name).getGenerator().getSeed();
 						}
 						if (EngineDebug.hasDebugPermission()) {
-							EngineDebug.print(map.getTerrains().get(name).getName(),2);
+							EngineDebug.println(map.getTerrains().get(name).getName(),2);
 						}
 					}
 				}
 			}
 		}
 		if (EngineDebug.hasDebugPermission()) {
-			EngineDebug.print("Succed!", 1);
+			EngineDebug.println("Succed!", 1);
 		}
 	}
 

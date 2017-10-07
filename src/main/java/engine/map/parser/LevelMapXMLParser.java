@@ -44,7 +44,7 @@ public class LevelMapXMLParser extends XMLParser implements IObjectParser<IObjec
 				}
 			}
 			if (EngineDebug.hasDebugPermission()) {
-				EngineDebug.print("Level complete!");
+				EngineDebug.println("Level complete!");
 				EngineDebug.printClose("Level map");
 				EngineDebug.printBorder();
 			}
@@ -56,7 +56,7 @@ public class LevelMapXMLParser extends XMLParser implements IObjectParser<IObjec
 
 	private void parseEntities(Node node, IObjectManager levelMap) {
 		if (EngineDebug.hasDebugPermission()) {
-			EngineDebug.print("Loading entities...", 1);
+			EngineDebug.println("Loading entities...", 1);
 		}
 		Node entities = node;
 		NodeList entityList = entities.getChildNodes();
@@ -79,12 +79,12 @@ public class LevelMapXMLParser extends XMLParser implements IObjectParser<IObjec
 				entityClone.setScale(scale);
 				levelMap.getEntities().add(entityClone);
 				if (EngineDebug.hasDebugPermission()) {
-					EngineDebug.print(levelMap.getEntities().get(name).getName(), 2);
+					EngineDebug.println(levelMap.getEntities().get(name).getName(), 2);
 				}
 			}
 		}
 		if (EngineDebug.hasDebugPermission()) {
-			EngineDebug.print("Succed!", 1);
+			EngineDebug.println("Succed!", 1);
 		}
 	}
 }

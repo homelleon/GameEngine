@@ -226,10 +226,27 @@ public class Maths {
 	}
 	
 	public static int compare(Vector2f a, Vector2f b) {
-		if(a == b) {
+		if(a == b || ((a.x == b.x) && (a.y == b.y))) {
 			return 0;
 		} else if(a.x == b.x) {
 			if(a.y < b.y) {return -1;}
+		} else if(a.x < b.x) {
+			return -1;
+		}
+		return 1;
+	}
+
+	public static int compare(Vector3f a, Vector3f b) {
+		if(a == b || ((a.x == b.x) && (a.y == b.y) && (a.z == b.z))) {
+			return 0;
+		} else if(a.x == b.x) {
+			if(a.z == b.z) {
+				if(a.y < b.y) {
+					return -1;
+				}
+			} else if(a.z < b.z) {
+				return -1;
+			}
 		} else if(a.x < b.x) {
 			return -1;
 		}

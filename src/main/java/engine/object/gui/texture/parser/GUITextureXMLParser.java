@@ -38,7 +38,7 @@ public class GUITextureXMLParser extends XMLParser implements IListParser<GUITex
 
 	private List<GUITexture> createTexture(Node node) {
 		if (EngineDebug.hasDebugPermission()) {
-			EngineDebug.print("Loading GUI textures...", 1);
+			EngineDebug.println("Loading GUI textures...", 1);
 		}
 		List<GUITexture> textureList = new ArrayList<GUITexture>();
 		Node guiTextures = node;
@@ -72,12 +72,12 @@ public class GUITextureXMLParser extends XMLParser implements IListParser<GUITex
 					   .build(name);
 				textureList.add(guiTexture);
 				if (EngineDebug.hasDebugPermission()) {
-					EngineDebug.print(guiTexture.getName(), 2);
+					EngineDebug.println(guiTexture.getName(), 2);
 				}
 			}
 		}
 		if (EngineDebug.hasDebugPermission()) {
-			EngineDebug.print("Succed!", 1);
+			EngineDebug.println("Succed!", 1);
 		}
 		return textureList;
 	}

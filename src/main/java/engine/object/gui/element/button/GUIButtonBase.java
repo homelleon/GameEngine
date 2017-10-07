@@ -52,7 +52,7 @@ public abstract class GUIButtonBase extends GUIObject implements IGUIButton {
 			thread.start();
 		}
 		if(EngineDebug.hasDebugPermission()) {
-			EngineDebug.print("Button " + this.name + " is selected!");
+			EngineDebug.println("Button " + this.name + " is selected!");
 		}
 		return thread;
 	}
@@ -65,11 +65,11 @@ public abstract class GUIButtonBase extends GUIObject implements IGUIButton {
 			thread = new Thread(action);
 			thread.start();
 			if(EngineDebug.hasDebugPermission()) {
-				EngineDebug.print("Button " + this.name + " is selected!");
+				EngineDebug.println("Button " + this.name + " is selected!");
 			}
 		} else {
 			if(EngineDebug.hasDebugPermission()) {
-				EngineDebug.print("There is empty action in button " + this.name + " on selection!");
+				EngineDebug.println("There is empty action in button " + this.name + " on selection!");
 			}
 		}
 		return thread;
@@ -84,7 +84,7 @@ public abstract class GUIButtonBase extends GUIObject implements IGUIButton {
 			thread.start();
 		}
 		if(EngineDebug.hasDebugPermission()) {
-			EngineDebug.print("Button " + this.name + " is deselected!");
+			EngineDebug.println("Button " + this.name + " is deselected!");
 		}		
 		return thread;
 	}
@@ -98,11 +98,11 @@ public abstract class GUIButtonBase extends GUIObject implements IGUIButton {
 			thread.start();
 		} else {
 			if(EngineDebug.hasDebugPermission()) {
-				EngineDebug.print("There is empty action in button " + this.name + " on deselection!");
+				EngineDebug.println("There is empty action in button " + this.name + " on deselection!");
 			}
 		}
 		if(EngineDebug.hasDebugPermission()) {
-			EngineDebug.print("Button " + this.name + " is deselected!");
+			EngineDebug.println("Button " + this.name + " is deselected!");
 		}
 		return thread;
 	}
@@ -120,11 +120,11 @@ public abstract class GUIButtonBase extends GUIObject implements IGUIButton {
 			thread.start();			
 		} else {
 			if(EngineDebug.hasDebugPermission()) {
-				EngineDebug.print("There is empty action in button " + this.name + " on using!");
+				EngineDebug.println("There is empty action in button " + this.name + " on using!");
 			}
 		}
 		if(EngineDebug.hasDebugPermission()) {
-			EngineDebug.print("Button " + this.name + " is used!");
+			EngineDebug.println("Button " + this.name + " is used!");
 		}
 		return thread;
 	}
@@ -144,7 +144,7 @@ public abstract class GUIButtonBase extends GUIObject implements IGUIButton {
 			thread.start();
 		}
 		if(EngineDebug.hasDebugPermission()) {
-			EngineDebug.print("Button " + this.name + " is used!");
+			EngineDebug.println("Button " + this.name + " is used!");
 		}
 		return thread;
 	}

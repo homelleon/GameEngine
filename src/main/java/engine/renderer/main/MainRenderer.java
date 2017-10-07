@@ -181,7 +181,7 @@ public class MainRenderer implements IMainRenderer {
 		if(isLowDistance) {
 			frustumEntities = this.frustumEntityManager.prepareFrustumLowEntities(scene, this.getProjectionMatrix());
 		} else {
-			frustumEntities = this.frustumEntityManager.prepareFrustumLowEntities(scene, this.getProjectionMatrix());
+			frustumEntities = this.frustumEntityManager.prepareFrustumHighEntities(scene, this.getProjectionMatrix());
 		}
 		frustumEntities.parallelStream()
 			.forEach(entity -> 

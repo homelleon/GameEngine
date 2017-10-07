@@ -17,7 +17,11 @@ import tool.math.Frustum;
  */
 public interface IEntityManager extends IManager<IEntity> {
 
-
+	void addEntityInNodes(IEntity entity);
+	
+	void setHasNodes(boolean value);
+	
+	void rebuildNodes(int size);
 	/**
 	 * Add list of entities chosen by player.
 	 * 
