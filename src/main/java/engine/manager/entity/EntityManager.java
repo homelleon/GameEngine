@@ -61,22 +61,11 @@ public class EntityManager extends AbstractManager<IEntity> implements IEntityMa
 				this.entityNodes.remove(parent);
 			}
 		}
-		EntityNode finalNode = null;
-		for(EntityNode node : entityNodes) {
-			if(node.isBounding(entity)) {
-				finalNode = node;
-				break;
-			}
-		}
-		if(finalNode == null) {
-			finalNode = createEntityNode(entity.getPosition());
-		}
-		finalNode.addEntity(entity);
-//		entityNodes.stream()
-//				.filter(node -> node.isBounding(entity))
-//				.findFirst()
-//				.orElse(createEntityNode(entity.getPosition()))
-//				.addEntity(entity);
+		entityNodes.stream()
+				.filter(node -> node.isBounding(entity))
+				.findFirst()
+				.orElseGet(() -> createEntityNode(entity.getPosition()))
+				.addEntity(entity);
 	}
 	
 	private EntityNode createEntityNode(Vector3f position) {
