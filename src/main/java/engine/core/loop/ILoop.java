@@ -39,32 +39,6 @@ public interface ILoop extends Runnable {
 	IScene getScene();
 
 	/**
-	 * Switch visualization of rendering terrain between normal and wired frame
-	 * mode.
-	 * 
-	 * @param value
-	 *            {@link Boolean} variable to change visualization mode<br>
-	 *            if true - sets wrired frame mode<br>
-	 *            if flase - sets normal mode
-	 * 
-	 * @see #setEntityWiredFrame(boolean)
-	 */
-	void setTerrainWiredFrame(boolean value);
-
-	/**
-	 * Switch visualization of rendering entities between normal and wired frame
-	 * mode.
-	 * 
-	 * @param value
-	 *            {@link Boolean} variable to change visualization mode<br>
-	 *            if true - sets wrired frame mode<br>
-	 *            if flase - sets normal mode
-	 * 
-	 * @see #setTerrainWiredFrame(boolean)
-	 */
-	void setEntityWiredFrame(boolean value);
-
-	/**
 	 * Turns scene pause mode on or off
 	 * 
 	 * @param value

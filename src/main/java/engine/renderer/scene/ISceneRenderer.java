@@ -15,7 +15,7 @@ public interface ISceneRenderer {
 
 	public void render(boolean isPaused);
 	
-	public MainRenderer getMasterRenderer();
+	public MainRenderer getMainRenderer();
 
 	public void clean();
 

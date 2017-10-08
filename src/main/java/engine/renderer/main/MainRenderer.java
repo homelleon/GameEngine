@@ -10,6 +10,7 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector4f;
 
+import core.EngineMain;
 import core.debug.EngineDebug;
 import core.settings.EngineSettings;
 import object.camera.ICamera;
@@ -58,8 +59,6 @@ public class MainRenderer implements IMainRenderer {
 	private Texture environmentMap;
 	private Frustum frustum = new Frustum();
 
-	private boolean terrainWiredFrame = false;
-	private boolean entitiyWiredFrame = false;
 	private boolean environmentDynamic = false;
 	private boolean environmentRendered = false;
 
@@ -128,18 +127,26 @@ public class MainRenderer implements IMainRenderer {
 	 */
 	private void render(IScene scene, Vector4f clipPlane, boolean isLowDistance) {
 		prepare();
-		checkWiredFrameOn(entitiyWiredFrame);
+
 		if (EngineDebug.getBoundingMode() != EngineDebug.BOUNDING_NONE) {
 			boundingRenderer.render(texturedEntities, normalEntities, scene.getCamera());
 		}
 		
+		if(EngineMain.getWiredFrameMode() == EngineSettings.WIRED_FRAME_ENTITY || 
+				EngineMain.getWiredFrameMode() == EngineSettings.WIRED_FRAME_ENTITY_TERRAIN) {
+			OGLUtils.doWiredFrame(true);
+		}
 		Matrix4f shadowMapSpaceMatrix = shadowMapRenderer.getToShadowMapSpaceMatrix();
 		this.entityRendererManager.render(clipPlane, scene.getLights().getAll(), scene.getCamera(), shadowMapSpaceMatrix, environmentMap, false);
-		checkWiredFrameOn(terrainWiredFrame);
+		OGLUtils.doWiredFrame(false);
 		voxelRenderer.render(scene.getChunks(), clipPlane, scene.getLights().getAll(), scene.getCamera(), shadowMapSpaceMatrix,
 				frustum);
+		if(EngineMain.getWiredFrameMode() == EngineSettings.WIRED_FRAME_TERRAIN || 
+				EngineMain.getWiredFrameMode() == EngineSettings.WIRED_FRAME_ENTITY_TERRAIN) {
+			OGLUtils.doWiredFrame(true);
+		}
 		terrainRenderer.render(terrains, clipPlane, scene.getLights().getAll(), scene.getCamera(), shadowMapSpaceMatrix);
-		checkWiredFrameOff(terrainWiredFrame);
+		OGLUtils.doWiredFrame(false);
 
 		skyboxRenderer.render(scene.getCamera());	
 		this.cleanScene();
@@ -256,16 +263,6 @@ public class MainRenderer implements IMainRenderer {
 	@Override
 	public Frustum getFrustum() {
 		return this.frustum;
-	}
-
-	@Override
-	public void setEntityWiredFrame(boolean entitiyWiredFrame) {
-		this.entitiyWiredFrame = entitiyWiredFrame;
-	}
-
-	@Override
-	public void setTerrainWiredFrame(boolean terrainWiredFrame) {
-		this.terrainWiredFrame = terrainWiredFrame;
 	}
 	
 	private synchronized void processEntityByType(int type, IEntity entity) {

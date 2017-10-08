@@ -290,16 +290,6 @@ public class Loop implements ILoop {
 	}
 
 	@Override
-	public void setTerrainWiredFrame(boolean value) {
-		this.renderer.setTerrainWiredFrame(value);
-	}
-
-	@Override
-	public void setEntityWiredFrame(boolean value) {
-		this.renderer.setEntityWiredFrame(value);
-	}
-
-	@Override
 	public void setScenePaused(boolean value) {
 		MouseGame.centerCoursor();
 		MouseGame.switchCoursorVisibility();

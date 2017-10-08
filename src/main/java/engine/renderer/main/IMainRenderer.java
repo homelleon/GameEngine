@@ -68,18 +68,6 @@ public interface IMainRenderer {
 
 	/**
 	 * 
-	 * @param entitiyWiredFrame
-	 */
-	public void setEntityWiredFrame(boolean entitiyWiredFrame);
-
-	/**
-	 * 
-	 * @param terrainWiredFrame
-	 */
-	public void setTerrainWiredFrame(boolean terrainWiredFrame);
-
-	/**
-	 * 
 	 * @param entities
 	 * @param terrains
 	 * @param lights

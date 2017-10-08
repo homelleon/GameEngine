@@ -61,20 +61,20 @@ public class EngineDebug {
 	 */
 	public static void switchDebugPermission() {
 		if (debugPermission == PERMISSION_HARD) {
-			debugPermission = PERMISSION_NONE;
+			debugPermission = PERMISSION_SIMPLE;
 		} else {
 			debugPermission++;
 		}
 		String mode = "Error";
 		switch(debugPermission) {
 			case PERMISSION_NONE:
-				mode = "Simple";
+				mode = "None";
 				break;
 			case PERMISSION_SIMPLE:
-				mode = "Hard";
+				mode = "Simple";
 				break;
 			case PERMISSION_HARD:
-				mode = "None";
+				mode = "Hard";
 				break;
 		}
 		println("Debug info is set to '"+ mode + "'");
@@ -88,6 +88,16 @@ public class EngineDebug {
 	 */
 	public static boolean hasDebugPermission() {
 		return debugPermission != PERMISSION_NONE;
+	}
+	
+	/**
+	 * Returns if user has hard permission for debug.
+	 * 
+	 * @return true if hard permission is granted<br>
+	 * 		   false if hard permission is deined
+	 */
+	public static boolean hasHardDebugPermission() {
+		return debugPermission == PERMISSION_HARD;
 	}
 	
 	public static void print(String text, int level) {
@@ -114,7 +124,7 @@ public class EngineDebug {
 	}
 	
 	public static void println() {
-		System.out.println();
+		System.out.println("");
 	}
 	
 	/**

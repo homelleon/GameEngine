@@ -14,8 +14,8 @@ import org.lwjgl.util.vector.Vector4f;
 public class EngineSettings {
 
 	/* display settings */
-	public static final int DISPLAY_WIDTH = 800; // 1920;
-	public static final int DISPLAY_HEIGHT = 600; // 1080;
+	public static final int DISPLAY_WIDTH = 1920; // 1920;
+	public static final int DISPLAY_HEIGHT = 1080; // 1080;
 	public static final int FAR_PLANE = 10000000;
 	public static final float NEAR_PLANE = 0.5f;
 	public static final int FPS_CAP = 90;
@@ -70,8 +70,9 @@ public class EngineSettings {
 	public static final int KEY_EDITOR_CENTER_VIEW = Keyboard.KEY_HOME;
 
 	/* debug control */
-	public static final int KEY_DEBUG_BOUNDING_BOX = Keyboard.KEY_F2;
 	public static final int KEY_DEBUG_INFORMATION = Keyboard.KEY_F1;
+	public static final int KEY_DEBUG_BOUNDING_BOX = Keyboard.KEY_F2;
+	public static final int KEY_DEBUG_WIRED_FRAME = Keyboard.KEY_F3;
 
 	/* simulation settings */
 	public static final float GRAVITY = -50;
@@ -171,5 +172,11 @@ public class EngineSettings {
 	
 	public final static int ENGINE_MODE_GAME = 0;
 	public final static int ENGINE_MODE_EDITOR = 1;
+	
+	/* wired frame modes */
+	public static final int WIRED_FRAME_NONE = 0;
+	public static final int WIRED_FRAME_ENTITY = 1;
+	public static final int WIRED_FRAME_TERRAIN = 2;
+	public static final int WIRED_FRAME_ENTITY_TERRAIN = 3;
 
 }

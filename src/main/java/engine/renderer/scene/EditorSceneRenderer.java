@@ -37,7 +37,7 @@ public class EditorSceneRenderer implements ISceneRenderer {
 	}
 
 	@Override
-	public MainRenderer getMasterRenderer() {
+	public MainRenderer getMainRenderer() {
 		return this.mainRenderer;
 	}
 

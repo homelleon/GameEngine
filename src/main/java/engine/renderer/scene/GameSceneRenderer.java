@@ -197,7 +197,7 @@ public class GameSceneRenderer implements ISceneRenderer {
 	}
 
 	@Override
-	public MainRenderer getMasterRenderer() {
+	public MainRenderer getMainRenderer() {
 		return this.mainRenderer;
 	}
 

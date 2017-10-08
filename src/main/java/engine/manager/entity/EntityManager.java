@@ -38,18 +38,21 @@ public class EntityManager extends AbstractManager<IEntity> implements IEntityMa
 	
 	@Override
 	public void rebuildNodes(int size) {
-		EngineDebug.printBorder();
-		EngineDebug.printOpen("Entity nodes");
-		EngineDebug.println("Building entity nodes...");
+		if(EngineDebug.hasDebugPermission()) {
+			EngineDebug.printBorder();
+			EngineDebug.printOpen("Entity nodes");
+			EngineDebug.println("Generating entity nodes...", 1);
+		}
 		this.hasNodes = true;
 		
 		EntityNode node = new EntityNode(new Vector3f(0,-50,0));
-		entityNodes.add(node);
-		
+		entityNodes.add(node);	
 		this.getAll().forEach(this::addEntityInNodes);
-		EngineDebug.println();
-		EngineDebug.println("Succed!");
-		EngineDebug.printClose("Entity nodes");
+		if(EngineDebug.hasDebugPermission()) {
+			EngineDebug.println("Generated " + entityNodes.size() + " nodes.", 2);
+			EngineDebug.println("Succed!", 1);
+			EngineDebug.printClose("Entity nodes");
+		}
 	}
 	
 	@Override

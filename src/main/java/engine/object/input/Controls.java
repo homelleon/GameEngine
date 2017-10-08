@@ -20,8 +20,25 @@ public class Controls implements IControls {
 
 	@Override
 	public void update(IScene scene) {
+		debugControls();
 		pointedEntitiesControls(scene);
 		sceneControls();
+	}
+	
+	private void debugControls() {		
+		if(EngineDebug.hasDebugPermission()) {
+			if (KeyboardGame.isKeyPressed(EngineSettings.KEY_DEBUG_INFORMATION)) {
+				EngineDebug.switchDebugPermission();
+			}
+			
+			if (KeyboardGame.isKeyPressed(EngineSettings.KEY_DEBUG_BOUNDING_BOX)) {
+				EngineDebug.switchBounding();
+			}
+			
+			if(KeyboardGame.isKeyPressed(EngineSettings.KEY_DEBUG_WIRED_FRAME)) {
+				EngineMain.switchWiredFrameMode();
+			}
+		}
 	}
 
 	private void sceneControls() {
@@ -33,12 +50,7 @@ public class Controls implements IControls {
 		if (KeyboardGame.isKeyPressed(EngineSettings.KEY_PAUSE)) {
 			EngineMain.pauseEngine(!EngineMain.getIsEnginePaused());
 		}
-		if (KeyboardGame.isKeyPressed(EngineSettings.KEY_DEBUG_BOUNDING_BOX)) {
-			EngineDebug.switchBounding();
-		}
-		if (KeyboardGame.isKeyPressed(EngineSettings.KEY_DEBUG_INFORMATION)) {
-			EngineDebug.switchDebugPermission();
-		}		
+		
 	}
 
 	private void pointedEntitiesControls(IScene scene) {
