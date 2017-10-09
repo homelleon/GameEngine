@@ -71,6 +71,12 @@
 			name="terrainBlendMap"
 			file="blendMap/blendMap"
 			rows="1"
+			transparency="true" />
+		<texture 
+			id="13"
+			name="spartanTexture"
+			file="model/spartan"
+			rows="1"
 			transparency="false" />
 	</textures>
 	<terrain_packs>
@@ -163,6 +169,26 @@
 					g="0"
 					b="0"/>
 		</material>
+		<material
+			id="5"
+			name="spartanMaterial"
+			diffuse_map="spartanTexture"
+			normal_map="null"
+			displace_map="null"
+			ambient_map="null"
+			specular_map="null"
+			alpha_map="null" 
+			shininess="1"
+			reflectivity="0" 
+			reflectiveFactor="0"
+			refractiveFactor="0"
+			refractiveIndex="0"
+			emission="0">
+				<color
+					r="0"
+					g="0"
+					b="0"/>
+			</material>
 	</materials>
 	<meshes>
 		<mesh
@@ -185,6 +211,11 @@
 			name="barrelMesh"
 			file="barrel" 
 			type="normal" />
+		<mesh 
+			id="5"
+			name="spartanMesh"
+			file="spartan" 
+			type="simple" />
 	</meshes>
 	<models>
 		<model id="1" 
@@ -202,6 +233,10 @@
 		<model id="4" 
 			name="barrelModel"
 			mesh="barrelMesh"
-			material="barrelMaterial" />	
+			material="barrelMaterial" />
+		<model id="5" 
+			name="spartanModel"
+			mesh="spartanMesh"
+			material="spartanMaterial" />	
 	</models>
 </raw_map>

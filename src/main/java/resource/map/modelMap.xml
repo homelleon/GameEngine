@@ -48,6 +48,12 @@
 		model="stallModel"
 		scale="4.0"
 		texture_index="0" />
+	<entity 
+		id="6"
+		name="spartanEntity"
+		model="spartanModel"
+		scale="0.5"
+		texture_index="0" />
   </entities>
   <terrains>
 	<mapped>	

@@ -10,7 +10,6 @@ import core.settings.EngineSettings;
 import manager.octree.EntityNode;
 import object.camera.ICamera;
 import object.entity.entity.IEntity;
-import object.terrain.terrain.ITerrain;
 import tool.manager.AbstractManager;
 import tool.math.Frustum;
 import tool.math.Maths;
@@ -128,12 +127,12 @@ public class EntityManager extends AbstractManager<IEntity> implements IEntityMa
 	}
 
 	@Override
-	public List<IEntity> updateWithFrustum(Frustum frustum, ICamera camera, boolean isLow) {		
+	public List<IEntity> updateWithFrustum(Frustum frustum, ICamera camera, boolean isLowDetail) {		
 		return entityNodes.parallelStream()
 				.filter(node -> !node.getNamedEntities().isEmpty())
 				.filter(node -> this.checkVisibity(node.getPosition(), camera, NODE_CHECK_RADIUS))
 				.flatMap(node -> node.getNamedEntities().values().stream())
-				.filter(entity -> this.checkVisibility(entity, frustum, camera, isLow))
+				.filter(entity -> this.checkVisibility(entity, frustum, camera, isLowDetail))
 				.collect(Collectors.toList());
 	}
 
@@ -171,10 +170,10 @@ public class EntityManager extends AbstractManager<IEntity> implements IEntityMa
 		return distance <= radius;
 	}
 	
-	private boolean checkVisibility(IEntity entity, Frustum frustum, ICamera camera, boolean isLow) {
+	private boolean checkVisibility(IEntity entity, Frustum frustum, ICamera camera, boolean isLowDetail) {
 		float distance1 = 0;
 		float distance2 = EngineSettings.RENDERING_VIEW_DISTANCE;
-		if(isLow) {
+		if(isLowDetail) {
 			distance2 /= 2;
 		}
 		if(entity.getType() == EngineSettings.ENTITY_TYPE_DECORATE) {
