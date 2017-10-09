@@ -45,6 +45,15 @@ public class EngineUtils {
 		return models;
 	}
 	
+	public static Model loadOldModel(String objFile, String materialName) {
+		ModelData data = OBJFileLoader.loadOBJ(objFile);
+		Loader loader = Loader.getInstance();
+		Mesh mesh = loader.getVertexLoader().loadToVAO(data.getVertices(), data.getTextureCoords(), data.getNormals(),
+				data.getIndices());
+		Model model = new Model(objFile, mesh, new Material(materialName, Loader.getInstance().getTextureLoader().loadTexture(EngineSettings.TEXTURE_MODEL_PATH, materialName)));
+		return model;
+	}
+	
 	public static Model loadModel(String objFile, Material material) {
 		ModelData data = OBJFileLoader.loadOBJ(objFile);
 		Loader loader = Loader.getInstance();

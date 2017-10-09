@@ -14,9 +14,9 @@ import org.lwjgl.util.vector.Vector4f;
 public class EngineSettings {
 
 	/* display settings */
-	public static final int DISPLAY_WIDTH = 1920; // 1920;
-	public static final int DISPLAY_HEIGHT = 1080; // 1080;
-	public static final int FAR_PLANE = 10000000;
+	public static final int DISPLAY_WIDTH = 800; // 1920;
+	public static final int DISPLAY_HEIGHT = 600; // 1080;
+	public static final int FAR_PLANE = 100000;
 	public static final float NEAR_PLANE = 0.5f;
 	public static final int FPS_CAP = 90;
 	public static final float FOV = 70;
@@ -82,7 +82,7 @@ public class EngineSettings {
 	public static final int SHADOW_MAP_SIZE = 16384;
 	public static final float SHADOW_TRANSITION_DISTANCE = SHADOW_DISTANCE;
 	public static final int SHADOW_PCF = 2;
-	public static final float RENDERING_VIEW_DISTANCE = 800;
+	public static final float RENDERING_VIEW_DISTANCE = 500;
 	public static final float DETAIL_VIEW_DISTANCE = 150;
 	public static final int MAX_LIGHTS = 10;
 

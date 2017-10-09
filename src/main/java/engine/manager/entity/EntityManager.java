@@ -130,7 +130,7 @@ public class EntityManager extends AbstractManager<IEntity> implements IEntityMa
 	public List<IEntity> updateWithFrustum(Frustum frustum, ICamera camera, boolean isLowDetail) {		
 		return entityNodes.parallelStream()
 				.filter(node -> !node.getNamedEntities().isEmpty())
-				.filter(node -> this.checkVisibity(node.getPosition(), camera, NODE_CHECK_RADIUS))
+				.filter(node -> this.checkVisibity(node.getPosition(), frustum, camera, NODE_CHECK_RADIUS))
 				.flatMap(node -> node.getNamedEntities().values().stream())
 				.filter(entity -> this.checkVisibility(entity, frustum, camera, isLowDetail))
 				.collect(Collectors.toList());
@@ -165,9 +165,15 @@ public class EntityManager extends AbstractManager<IEntity> implements IEntityMa
 		this.editorEntities.clear();
 	}
 	
-	private boolean checkVisibity(Vector3f position, ICamera camera, float radius) {
+	private boolean checkVisibity(Vector3f position, Frustum frustum, ICamera camera, float radius) {
+		float distance1 = 0;
+		float distance2 = radius;
 		float distance = Maths.distance2Points(position, camera.getPosition());
-		return distance <= radius;
+		if(distance > distance2 || distance < distance1) {
+			return false;
+		} else {
+			return frustum.sphereInFrustum(position, EntityNode.RADIUS);
+		}
 	}
 	
 	private boolean checkVisibility(IEntity entity, Frustum frustum, ICamera camera, boolean isLowDetail) {

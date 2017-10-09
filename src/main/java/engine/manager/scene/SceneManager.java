@@ -47,7 +47,9 @@ public class SceneManager implements ISceneManager {
 	}
 	
 	private void initializeEditor(IScene scene) {
-		List<Model> cubeModels = EngineUtils.loadModels("spartan", "spartan");
+		//List<Model> cubeModels = new ArrayList<Model>();
+		//cubeModels.add(EngineUtils.loadOldModel("cube", "Cube1"));
+		List<Model> cubeModels = EngineUtils.loadModels("cube", "Cube1");
 		IPlayer player1 = new Player(
 				playerName, 
 				cubeModels, 

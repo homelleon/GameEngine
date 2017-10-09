@@ -118,6 +118,15 @@ public class MainRenderer implements IMainRenderer {
 		render(scene, clipPlane, isLowDistance);
 	}
 
+	@Override
+	public void renderLowQualityScene(Map<Model, List<IEntity>> entities, Collection<ITerrain> terrains,
+			Collection<ILight> lights, ICamera camera) {
+		this.entityRendererManager.render(null, lights, camera, null, null, true);
+		terrainRenderer.renderLow(terrains, lights, camera);
+		skyboxRenderer.render(camera);
+		this.cleanScene();
+	}
+
 	/**
 	 * Renders full scene with preloaded objects.
 	 * 
@@ -129,7 +138,7 @@ public class MainRenderer implements IMainRenderer {
 		prepare();
 
 		if (EngineDebug.getBoundingMode() != EngineDebug.BOUNDING_NONE) {
-			boundingRenderer.render(texturedEntities, normalEntities, scene.getCamera());
+			boundingRenderer.render(texturedEntities, normalEntities, decorEntities, scene.getCamera());
 		}
 		
 		if(EngineMain.getWiredFrameMode() == EngineSettings.WIRED_FRAME_ENTITY || 
@@ -160,19 +169,11 @@ public class MainRenderer implements IMainRenderer {
 	}
 
 	@Override
-	public void renderLowQualityScene(Map<Model, List<IEntity>> entities, Collection<ITerrain> terrains,
-			Collection<ILight> lights, ICamera camera) {
-		this.entityRendererManager.render(null, lights, camera, null, null, true);
-		terrainRenderer.renderLow(terrains, lights, camera);
-		skyboxRenderer.render(camera);
-	}
-
-	@Override
 	public void renderShadowMap(IScene scene) {
 		scene.getTerrains().getAll()
 			.forEach(terrain -> processor.processTerrain(terrain, terrains));
 		prepareShadowFrustumEntities(scene);
-		shadowMapRenderer.render(texturedEntities, terrains, normalEntities, scene.getSun(), scene.getCamera());
+		shadowMapRenderer.render(decorEntities, terrains, scene.getSun(), scene.getCamera());
 		this.cleanScene();
 	}
 
@@ -200,7 +201,7 @@ public class MainRenderer implements IMainRenderer {
 		frustumEntities = this.frustumEntityManager.prepareShadowFrustumEntities(scene, shadowMapRenderer.getToShadowMapSpaceMatrix());
 		frustumEntities.parallelStream()
 			.forEach(entity -> 
-				processEntityByType(EngineSettings.ENTITY_TYPE_SIMPLE, entity));
+				processEntityByType(EngineSettings.ENTITY_TYPE_DECORATE, entity));
 	}
 	
 	private void cleanScene() {
@@ -276,18 +277,6 @@ public class MainRenderer implements IMainRenderer {
 		 	case EngineSettings.ENTITY_TYPE_NORMAL:
 		 		processor.processEntity(entity, normalEntities);
 		 		break;
-		}
-	}
-
-	private void checkWiredFrameOn(boolean value) {
-		if(value) {
-			OGLUtils.doWiredFrame(true);
-		}
-	}
-
-	private void checkWiredFrameOff(boolean value) {
-		if(value) {
-			OGLUtils.doWiredFrame(false);
 		}
 	}
 

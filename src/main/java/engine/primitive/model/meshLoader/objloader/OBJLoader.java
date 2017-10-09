@@ -424,6 +424,8 @@ public class OBJLoader {
 		
 		if (!smoothingGroup.getVertices().contains(v0)) 
 			smoothingGroup.getVertices().add(v0);
+		//TODO: try to check on else statement if it has same texture and normal and add new Vertex with 
+		//textures and normals.
 		if (!smoothingGroup.getVertices().contains(v1)) 
 			smoothingGroup.getVertices().add(v1);
 		if (!smoothingGroup.getVertices().contains(v2)) 
@@ -530,6 +532,14 @@ public class OBJLoader {
 		
 		polygon.getIndices().toArray(objectArray);
 		int[] indices = Util.toIntArray(objectArray);
+		
+		//TODO: delete debug
+		EngineDebug.println("vertex: " + positions.length);
+		EngineDebug.println("normals: " + normals.length);
+		EngineDebug.println("texture: " + textureCoords.length);
+		EngineDebug.println("indices: " + indices.length);
+		EngineDebug.println("tangents: " + tangents.length);
+		
 		BufferLoader loader = Loader.getInstance().getVertexLoader();
 		Mesh mesh = null;
 		if(isTangent) {

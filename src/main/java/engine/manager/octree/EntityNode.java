@@ -17,7 +17,7 @@ import tool.math.vector.Vector3f;
  */
 public class EntityNode extends Node {
 	
-	public static final float RADIUS = 300f;
+	public static final float RADIUS = 100f;
 	public static final float BIG_RADIUS = (float) Math.sqrt(2 * RADIUS * RADIUS);
 	private Vector3f position = new Vector3f(0,0,0);
 	private NavigableMap<Vector3f, String> positionedEntityMap = new TreeMap<Vector3f, String>();

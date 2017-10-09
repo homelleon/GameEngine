@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import core.debug.EngineDebug;
 import core.settings.EngineSettings;
 import tool.math.vector.Vector2f;
 import tool.math.vector.Vector3f;
@@ -76,6 +77,13 @@ public class OBJFileLoader {
 		float[] normalsArray = new float[vertices.size() * 3];
 		float furthest = convertDataToArrays(vertices, textures, normals, verticesArray, texturesArray, normalsArray);
 		int[] indicesArray = convertIndicesListToArray(indices);
+		
+		//TODO: delete debug
+		EngineDebug.println("vertex: " + verticesArray.length);
+		EngineDebug.println("texture: " + texturesArray.length);
+		EngineDebug.println("normals: " + normalsArray.length);
+		EngineDebug.println("index: " + indicesArray.length);
+		
 		ModelData data = new ModelData(verticesArray, texturesArray, normalsArray, indicesArray, furthest);
 		return data;
 	}
