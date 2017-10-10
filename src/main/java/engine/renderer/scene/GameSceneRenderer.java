@@ -22,6 +22,7 @@ import object.gui.texture.GUITexture;
 import object.input.Controls;
 import object.input.IControls;
 import object.input.KeyboardGame;
+import object.input.MousePicker;
 import object.particle.master.ParticleMaster;
 import object.scene.IScene;
 import object.water.WaterFrameBuffers;
@@ -30,7 +31,6 @@ import renderer.water.WaterRenderer;
 import shader.postProcessing.Fbo;
 import shader.postProcessing.PostProcessing;
 import shader.water.WaterShader;
-import tool.MousePicker;
 import tool.math.vector.Vector2f;
 import tool.openGL.OGLUtils;
 

@@ -15,7 +15,7 @@ public class SkyboxShader extends ShaderProgram {
 	private static final String VERTEX_FILE = EngineSettings.SHADERS_SKYBOX_PATH + "skyboxVertexShader.glsl";
 	private static final String FRAGMENT_FILE = EngineSettings.SHADERS_SKYBOX_PATH + "skyboxFragmentShader.glsl";
 
-	private static final float ROTATE_SPEED = 1f;
+	private static final float ROTATE_SPEED = 0.2f;
 
 	private float rotation = 0;
 

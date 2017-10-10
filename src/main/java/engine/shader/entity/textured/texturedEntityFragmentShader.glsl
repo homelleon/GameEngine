@@ -106,6 +106,10 @@ void main(void) {
 
 	out_Color = textureColour;
 
+	if(isChosen) {
+		out_Color.r *= 3;
+	}
+
 	out_Color = mix(out_Color, refractedColour, refractiveFactor);
 	out_Color = mix(out_Color, reflectedColour, reflectiveFactor);
 
@@ -113,9 +117,5 @@ void main(void) {
 
 	out_Color = mix(vec4(skyColour,1.0), out_Color, fogVisibility);
 
-
-	if(isChosen) {
-		out_Color.r *= 4;
-	}
 	
 }

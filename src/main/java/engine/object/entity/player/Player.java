@@ -5,6 +5,7 @@ import java.util.Collection;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
+import core.debug.EngineDebug;
 import core.display.DisplayManager;
 import core.settings.EngineSettings;
 import object.entity.entity.TexturedEntity;
@@ -18,7 +19,7 @@ public class Player extends TexturedEntity implements IPlayer {
 
 	private static final float MOVE_SPEED = 20;
 	private static final float RUN_SPEED = 100;
-	private static final float TURN_SPEED = 80;
+	private static final float TURN_SPEED = 20;
 	private static final float JUMP_POWER = 30;
 
 	private float currentForwardSpeed = 0;
@@ -116,7 +117,7 @@ public class Player extends TexturedEntity implements IPlayer {
 		}
 
 		if (!MouseGame.isPressed(MouseGame.MIDDLE_CLICK)) {
-			this.currentTurnSpeed = -TURN_SPEED * Mouse.getDX()	* EngineSettings.MOUSE_X_SPEED;
+			this.currentTurnSpeed = -TURN_SPEED * EngineSettings.MOUSE_X_SPEED * Mouse.getDX();
 			MouseGame.centerCoursor();
 		}
 	}

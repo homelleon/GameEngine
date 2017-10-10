@@ -103,7 +103,7 @@ void main(void) {
 
 
 	if(isChosen) {
-		out_Color.r *= 4;
+		out_Color.r *= 3;
 	}
 	
 }

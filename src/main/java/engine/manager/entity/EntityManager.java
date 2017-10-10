@@ -172,7 +172,7 @@ public class EntityManager extends AbstractManager<IEntity> implements IEntityMa
 		if(distance > distance2 || distance < distance1) {
 			return false;
 		} else {
-			return frustum.sphereInFrustum(position, EntityNode.RADIUS);
+			return frustum.sphereInFrustum(position, EntityNode.BIG_RADIUS);
 		}
 	}
 	

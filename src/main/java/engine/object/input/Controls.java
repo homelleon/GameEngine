@@ -59,7 +59,7 @@ public class Controls implements IControls {
 		if (MouseGame.isOncePressed(MouseGame.LEFT_CLICK)) {
 			if(!Loop.getInstance().getEditMode()) {
 				IEntity pointedEntity = scene.getMousePicker().chooseObjectByRay(scene);
-				if (pointedEntity != null) {
+				if (pointedEntity != null && !scene.getEntities().getPointed().contains(pointedEntity)) {
 					scene.getEntities().addPointed(pointedEntity);
 				}
 			}
@@ -70,35 +70,53 @@ public class Controls implements IControls {
 		}
 
 		if (Keyboard.isKeyDown(EngineSettings.KEY_OBJECT_MOVE_FORWARD)) {
-			scene.getEntities().getPointed().forEach(i -> i.move(1, 0));
+			scene.getEntities().getPointed().forEach(entity -> {
+				entity.move(1, 0);
+				scene.getEntities().addEntityInNodes(entity);	
+			});
 		}
 
 		if (Keyboard.isKeyDown(EngineSettings.KEY_OBJECT_MOVE_BACKWARD)) {
-			scene.getEntities().getPointed().forEach(i -> i.move(-1, 0));
+			scene.getEntities().getPointed().forEach(entity -> {				
+				entity.move(-1, 0);
+				scene.getEntities().addEntityInNodes(entity);
+			});
 		}
 
 		if (Keyboard.isKeyDown(EngineSettings.KEY_OBJECT_MOVE_LEFT)) {
-			scene.getEntities().getPointed().forEach(i -> i.move(0, 1));
+			scene.getEntities().getPointed().forEach(entity -> {
+				entity.move(0, 1);
+				scene.getEntities().addEntityInNodes(entity);
+			});
 		}
 
 		if (Keyboard.isKeyDown(EngineSettings.KEY_OBJECT_MOVE_RIGHT)) {
-			scene.getEntities().getPointed().forEach(i -> i.move(0, -1));
+			scene.getEntities().getPointed().forEach(entity -> {
+				entity.move(0, -1);
+				scene.getEntities().addEntityInNodes(entity);
+			});
 		}
 
 		if (Keyboard.isKeyDown(EngineSettings.KEY_OBJECT_MOVE_UP)) {
-			scene.getEntities().getPointed().forEach(i -> i.increasePosition(0, 1, 0));
+			scene.getEntities().getPointed().forEach(entity -> {
+				entity.increasePosition(0, 1, 0);
+				scene.getEntities().addEntityInNodes(entity);
+			});
 		}
 
 		if (Keyboard.isKeyDown(EngineSettings.KEY_OBJECT_MOVE_DOWN)) {
-			scene.getEntities().getPointed().forEach(i -> i.increasePosition(0, -1, 0));
+			scene.getEntities().getPointed().forEach(entity -> {
+				entity.increasePosition(0, -1, 0);
+				scene.getEntities().addEntityInNodes(entity);
+			});
 		}
 
 		if (Keyboard.isKeyDown(EngineSettings.KEY_OBJECT_ROTATE_LEFT)) {
-			scene.getEntities().getPointed().forEach(i -> i.increaseRotation(0, 1, 0));
+			scene.getEntities().getPointed().forEach(entity -> entity.increaseRotation(0, 1, 0));
 		}
 
 		if (Keyboard.isKeyDown(EngineSettings.KEY_OBJECT_ROTATE_RIGHT)) {
-			scene.getEntities().getPointed().forEach(i -> i.increaseRotation(0, -1, 0));
+			scene.getEntities().getPointed().forEach(entity -> entity.increaseRotation(0, -1, 0));
 		}
 
 		if (Keyboard.isKeyDown(Keyboard.KEY_P)) {

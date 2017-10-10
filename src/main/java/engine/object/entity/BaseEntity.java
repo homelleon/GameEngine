@@ -136,9 +136,9 @@ public abstract class BaseEntity {
 	}
 
 	public synchronized void increaseRotation(float dx, float dy, float dz) {
-		this.rotation.x += dx;
-		this.rotation.y += dy;
-		this.rotation.z += dz;
+		this.rotation.x += dx / scale;
+		this.rotation.y += dy / scale;
+		this.rotation.z += dz / scale;
 	}
 
 	public String getName() {

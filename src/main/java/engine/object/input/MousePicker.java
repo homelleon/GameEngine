@@ -1,4 +1,4 @@
-package tool;
+package object.input;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -102,7 +102,7 @@ void main(void) {
 	out_Color = mix(vec4(skyColour,1.0),out_Color, visibility);
 	
 	if(isChosen) {
-		out_Color.r *= 4; 
+		out_Color.r *= 3;
 	}
 
 }

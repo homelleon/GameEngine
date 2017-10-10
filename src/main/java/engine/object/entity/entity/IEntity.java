@@ -13,7 +13,7 @@ import tool.math.vector.Vector3f;
  * @author homelleon
  * @see TexturedEntity
  * @see NormalMappedEntity
- * @see BaseEntity
+ * @see /BaseEntity
  */
  public interface IEntity extends Nameable {
 	

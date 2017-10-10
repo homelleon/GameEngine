@@ -110,22 +110,22 @@ public class SkyboxRenderer {
 		int texture2;
 		float blendFactor;
 
-		if (time >= 0 && time < 5000) {
+		if (time >= 0 && time < 50000) {
 			texture1 = dayTexture;
 			texture2 = dayTexture;
-			blendFactor = (time - 0) / (5000 - 0);
-		} else if (time >= 5000 && time < 8000) {
+			blendFactor = (time - 0) / (50000 - 0);
+		} else if (time >= 50000 && time < 80000) {
 			texture1 = dayTexture;
 			texture2 = nightTexture;
-			blendFactor = (time - 5000) / (8000 - 5000);
-		} else if (time >= 8000 && time < 21000) {
+			blendFactor = (time - 50000) / (80000 - 50000);
+		} else if (time >= 80000 && time < 210000) {
 			texture1 = nightTexture;
 			texture2 = nightTexture;
-			blendFactor = (time - 8000) / (21000 - 8000);
+			blendFactor = (time - 80000) / (210000 - 80000);
 		} else {
 			texture1 = nightTexture;
 			texture2 = dayTexture;
-			blendFactor = (time - 21000) / (24000 - 21000);
+			blendFactor = (time - 210000) / (240000 - 210000);
 		}
 		GL13.glActiveTexture(GL13.GL_TEXTURE0);
 		GL11.glBindTexture(GL13.GL_TEXTURE_CUBE_MAP, texture1);
