@@ -3,12 +3,12 @@ package primitive.model.meshLoader.objloader;
 import java.util.ArrayDeque;
 import java.util.Deque;
 
-public class Object {
+public class MeshObject {
 
 	private Deque<PolygonGroup> polygonGroups;
 	private String name = "";
 	
-	protected Object(){
+	protected MeshObject(){
 		polygonGroups = new ArrayDeque<PolygonGroup>();
 	}
 

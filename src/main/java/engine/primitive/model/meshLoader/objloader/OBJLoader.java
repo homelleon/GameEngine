@@ -22,7 +22,7 @@ public class OBJLoader {
 	private ArrayList<Vector3f> normals = new ArrayList<Vector3f>();
 	private ArrayList<Vector2f> texCoords = new ArrayList<Vector2f>();
 
-	private Deque<Object> objects = new ArrayDeque<Object>();
+	private Deque<MeshObject> objects = new ArrayDeque<MeshObject>();
 	private HashMap<String, Material> materials = new HashMap<String,Material>();
 	private int currentSmoothingGroup;
 	private String materialname = null;
@@ -128,16 +128,16 @@ public class OBJLoader {
 					}
 					if(tokens[0].equals("o"))
 					{
-						Object object = new Object();
+						MeshObject object = new MeshObject();
 						object.setName(tokens[1]);
-						objects.add(new Object());
+						objects.add(new MeshObject());
 					}
 					if(tokens[0].equals("g"))
 					{
 						PolygonGroup polygonGroup = new PolygonGroup();	
 						if (tokens.length > 1)
 							polygonGroup.setName(tokens[1]);
-						if (objects.isEmpty()) objects.add(new Object());
+						if (objects.isEmpty()) objects.add(new MeshObject());
 						objects.peekLast().getPolygonGroups().add(polygonGroup);
 					}
 					if(tokens[0].equals("usemtl"))
@@ -189,7 +189,7 @@ public class OBJLoader {
 				meshReader.close();
 					
 				if (normals.isEmpty() && generateNormals){
-					for (Object object : objects){
+					for (MeshObject object : objects){
 						for (PolygonGroup polygonGroup : object.getPolygonGroups()){
 							for (Integer key : polygonGroup.getSmoothingGroups().keySet()){
 								if (frontface == Frontface.CW)
@@ -203,7 +203,7 @@ public class OBJLoader {
 					
 				ArrayList<Mesh> meshes = new ArrayList<Mesh>();
 				
-				for(Object object : objects){
+				for(MeshObject object : objects){
 					for (PolygonGroup polygonGroup : object.getPolygonGroups()){
 						for (Polygon polygon : polygonGroup.getPolygons()){
 							
@@ -242,9 +242,9 @@ public class OBJLoader {
 								   Integer.parseInt(tokens[2].split("//")[1]) - 1,
 								   Integer.parseInt(tokens[3].split("//")[1]) - 1};
 			
-			Vertex v0 = vertices.get(vertexIndices[0]);
-			Vertex v1 = vertices.get(vertexIndices[1]);
-			Vertex v2 = vertices.get(vertexIndices[2]);
+			Vertex v0 = new Vertex(vertices.get(vertexIndices[0]).getPos());
+			Vertex v1 = new Vertex(vertices.get(vertexIndices[1]).getPos());
+			Vertex v2 = new Vertex(vertices.get(vertexIndices[2]).getPos());
 			v0.setNormal(normals.get(normalIndices[0]));
 			v1.setNormal(normals.get(normalIndices[1]));
 			v2.setNormal(normals.get(normalIndices[2]));
@@ -267,9 +267,9 @@ public class OBJLoader {
 									   Integer.parseInt(tokens[2].split("/")[2]) - 1,
 									   Integer.parseInt(tokens[3].split("/")[2]) - 1};
 				
-				Vertex v0 = vertices.get(vertexIndices[0]);
-				Vertex v1 = vertices.get(vertexIndices[1]);
-				Vertex v2 = vertices.get(vertexIndices[2]);
+				Vertex v0 = new Vertex(vertices.get(vertexIndices[0]).getPos());
+				Vertex v1 =  new Vertex(vertices.get(vertexIndices[1]).getPos());
+				Vertex v2 =  new Vertex(vertices.get(vertexIndices[2]).getPos());
 				v0.setNormal(normals.get(normalIndices[0]));
 				v1.setNormal(normals.get(normalIndices[1]));
 				v2.setNormal(normals.get(normalIndices[2]));
@@ -291,9 +291,9 @@ public class OBJLoader {
 										  Integer.parseInt(tokens[2].split("/")[1]) - 1,
 										  Integer.parseInt(tokens[3].split("/")[1]) - 1};
 				
-				Vertex v0 = vertices.get(vertexIndices[0]);
-				Vertex v1 = vertices.get(vertexIndices[1]);
-				Vertex v2 = vertices.get(vertexIndices[2]);
+				Vertex v0 = new Vertex(vertices.get(vertexIndices[0]).getPos());
+				Vertex v1 = new Vertex(vertices.get(vertexIndices[1]).getPos());
+				Vertex v2 = new Vertex(vertices.get(vertexIndices[2]).getPos());
 				v0.setTextureCoord(texCoords.get(texCoordIndices[0]));
 				v1.setTextureCoord(texCoords.get(texCoordIndices[1]));
 				v2.setTextureCoord(texCoords.get(texCoordIndices[2]));
@@ -332,10 +332,10 @@ public class OBJLoader {
 								   Integer.parseInt(tokens[3].split("//")[1]) - 1,
 								   Integer.parseInt(tokens[4].split("//")[1]) - 1};
 			
-			Vertex v0 = vertices.get(vertexIndices[0]);
-			Vertex v1 = vertices.get(vertexIndices[1]);
-			Vertex v2 = vertices.get(vertexIndices[2]);
-			Vertex v3 = vertices.get(vertexIndices[3]);
+			Vertex v0 = new Vertex(vertices.get(vertexIndices[0]).getPos());
+			Vertex v1 = new Vertex(vertices.get(vertexIndices[1]).getPos());
+			Vertex v2 = new Vertex(vertices.get(vertexIndices[2]).getPos());
+			Vertex v3 = new Vertex(vertices.get(vertexIndices[3]).getPos());
 			v0.setNormal(normals.get(normalIndices[0]));
 			v1.setNormal(normals.get(normalIndices[1]));
 			v2.setNormal(normals.get(normalIndices[2]));
@@ -362,14 +362,14 @@ public class OBJLoader {
 						               Integer.parseInt(tokens[3].split("/")[2]) - 1,
 						               Integer.parseInt(tokens[4].split("/")[2]) - 1};
 				
-				Vertex v0 = vertices.get(vertexIndices[0]);
-				Vertex v1 = vertices.get(vertexIndices[1]);
-				Vertex v2 = vertices.get(vertexIndices[2]);
-				Vertex v3 = vertices.get(vertexIndices[3]);
+				Vertex v0 = new Vertex(vertices.get(vertexIndices[0]).getPos());
+				Vertex v1 = new Vertex(vertices.get(vertexIndices[1]).getPos());
+				Vertex v2 = new Vertex(vertices.get(vertexIndices[2]).getPos());
+				Vertex v3 = new Vertex(vertices.get(vertexIndices[3]).getPos());
 				v0.setNormal(normals.get(normalIndices[0]));
 				v1.setNormal(normals.get(normalIndices[1]));
 				v2.setNormal(normals.get(normalIndices[2]));
-				v3.setNormal(normals.get(normalIndices[3]));				
+				v3.setNormal(normals.get(normalIndices[3]));			
 				v0.setTextureCoord(texCoords.get(texCoordIndices[0]));
 				v1.setTextureCoord(texCoords.get(texCoordIndices[1]));
 				v2.setTextureCoord(texCoords.get(texCoordIndices[2]));
@@ -390,10 +390,10 @@ public class OBJLoader {
 										  Integer.parseInt(tokens[3].split("/")[1]) - 1,
 										  Integer.parseInt(tokens[4].split("/")[1]) - 1};
 				
-				Vertex v0 = vertices.get(vertexIndices[0]);
-				Vertex v1 = vertices.get(vertexIndices[1]);
-				Vertex v2 = vertices.get(vertexIndices[2]);
-				Vertex v3 = vertices.get(vertexIndices[3]);				
+				Vertex v0 = new Vertex(vertices.get(vertexIndices[0]).getPos());
+				Vertex v1 = new Vertex(vertices.get(vertexIndices[1]).getPos());
+				Vertex v2 = new Vertex(vertices.get(vertexIndices[2]).getPos());
+				Vertex v3 = new Vertex(vertices.get(vertexIndices[3]).getPos());				
 				v0.setTextureCoord(texCoords.get(texCoordIndices[0]));
 				v1.setTextureCoord(texCoords.get(texCoordIndices[1]));
 				v2.setTextureCoord(texCoords.get(texCoordIndices[2]));
@@ -411,10 +411,10 @@ public class OBJLoader {
 					      		   Integer.parseInt(tokens[3]) - 1,
 					      		   Integer.parseInt(tokens[4]) - 1};
 			
-			Vertex v0 = vertices.get(vertexIndices[0]);
-			Vertex v1 = vertices.get(vertexIndices[1]);
-			Vertex v2 = vertices.get(vertexIndices[2]);
-			Vertex v3 = vertices.get(vertexIndices[3]);
+			Vertex v0 = new Vertex(vertices.get(vertexIndices[0]).getPos());
+			Vertex v1 = new Vertex(vertices.get(vertexIndices[1]).getPos());
+			Vertex v2 = new Vertex(vertices.get(vertexIndices[2]).getPos());
+			Vertex v3 = new Vertex(vertices.get(vertexIndices[3]).getPos());
 			
 			addToSmoothingGroup(objects.peekLast().getPolygonGroups().peekLast().getSmoothingGroups().get(currentSmoothingGroup),v0,v1,v2,v3);
 		}
@@ -422,18 +422,9 @@ public class OBJLoader {
 	
 	private void addToSmoothingGroup(SmoothingGroup smoothingGroup, Vertex v0, Vertex v1, Vertex v2){
 		
-		if (!smoothingGroup.getVertices().contains(v0)) 
-			smoothingGroup.getVertices().add(v0);
-		//TODO: try to check on else statement if it has same texture and normal and add new Vertex with 
-		//textures and normals.
-		if (!smoothingGroup.getVertices().contains(v1)) 
-			smoothingGroup.getVertices().add(v1);
-		if (!smoothingGroup.getVertices().contains(v2)) 
-			smoothingGroup.getVertices().add(v2);
-		
-		int index0 = smoothingGroup.getVertices().indexOf(v0);
-		int index1 = smoothingGroup.getVertices().indexOf(v1);
-		int index2 = smoothingGroup.getVertices().indexOf(v2);
+		int index0 = processVertex(smoothingGroup, v0);
+		int index1 = processVertex(smoothingGroup, v1);
+		int index2 = processVertex(smoothingGroup, v2);
 		
 		Face face = new Face();
 		face.getIndices()[0] = index0;
@@ -446,19 +437,10 @@ public class OBJLoader {
 	
 	private void addToSmoothingGroup(SmoothingGroup smoothingGroup, Vertex v0, Vertex v1, Vertex v2, Vertex v3){
 		
-		if (!smoothingGroup.getVertices().contains(v0)) 
-			smoothingGroup.getVertices().add(v0);
-		if (!smoothingGroup.getVertices().contains(v1)) 
-			smoothingGroup.getVertices().add(v1);
-		if (!smoothingGroup.getVertices().contains(v2)) 
-			smoothingGroup.getVertices().add(v2);
-		if (!smoothingGroup.getVertices().contains(v3)) 
-			smoothingGroup.getVertices().add(v3);
-		
-		int index0 = smoothingGroup.getVertices().indexOf(v0);
-		int index1 = smoothingGroup.getVertices().indexOf(v1);
-		int index2 = smoothingGroup.getVertices().indexOf(v2);
-		int index3 = smoothingGroup.getVertices().indexOf(v3);
+		int index0 = processVertex(smoothingGroup, v0);
+		int index1 = processVertex(smoothingGroup, v1);
+		int index2 = processVertex(smoothingGroup, v2);
+		int index3 = processVertex(smoothingGroup, v3);
 		
 		Face face0 = new Face();
 		face0.getIndices()[0] = index0;
@@ -474,6 +456,34 @@ public class OBJLoader {
 		
 		smoothingGroup.getFaces().add(face0);
 		smoothingGroup.getFaces().add(face1);
+	}
+	
+	private int processVertex(SmoothingGroup smoothingGroup, Vertex previousVertex) {
+		if (smoothingGroup.getVertices().contains(previousVertex)) {
+			int index = smoothingGroup.getVertices().indexOf(previousVertex);
+			Vertex sameVertex = smoothingGroup.getVertices().get(index);
+			if(hasSameNormalAndTexture(previousVertex, sameVertex)) {
+				smoothingGroup.getVertices().add(previousVertex);
+				return smoothingGroup.getVertices().indexOf(previousVertex);
+			} else if(sameVertex.getDublicateVertex() != null) {
+				return processVertex(smoothingGroup, sameVertex.getDublicateVertex());
+			} else {
+				Vertex newVertex = new Vertex();
+				newVertex.setPos(previousVertex.getPos());
+				newVertex.setNormal(previousVertex.getNormal());
+				newVertex.setTextureCoord(previousVertex.getTextureCoord());
+				previousVertex.setDubilcateVertex(newVertex);
+				smoothingGroup.getVertices().add(newVertex);
+				return smoothingGroup.getVertices().indexOf(newVertex);
+			}
+		} else {
+			smoothingGroup.getVertices().add(previousVertex);
+			return smoothingGroup.getVertices().indexOf(previousVertex);
+		}
+	}
+	
+	private boolean hasSameNormalAndTexture(Vertex v1, Vertex v2) {
+		return v1.getNormal().equals(v2.getNormal()) && v1.getTextureCoord().equals(v2.getTextureCoord());
 	}
 	
 	private void generatePolygon(HashMap<Integer, SmoothingGroup> smoothingGroups, Polygon polygon){
@@ -532,13 +542,6 @@ public class OBJLoader {
 		
 		polygon.getIndices().toArray(objectArray);
 		int[] indices = Util.toIntArray(objectArray);
-		
-		//TODO: delete debug
-		EngineDebug.println("vertex: " + positions.length);
-		EngineDebug.println("normals: " + normals.length);
-		EngineDebug.println("texture: " + textureCoords.length);
-		EngineDebug.println("indices: " + indices.length);
-		EngineDebug.println("tangents: " + tangents.length);
 		
 		BufferLoader loader = Loader.getInstance().getVertexLoader();
 		Mesh mesh = null;

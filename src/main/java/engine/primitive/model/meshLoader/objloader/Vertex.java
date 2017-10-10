@@ -13,19 +13,17 @@ public class Vertex {
 	private Vector2f textureCoord;
 	private Vector3f tangent;
 	private Vector3f bitangent;
+	private Vertex dublicateVertex = null;
 	
-	public Vertex(){	
-	}
+	public Vertex(){}
 	
-	public Vertex(Vector3f pos)
-	{
+	public Vertex(Vector3f pos)	{
 		this.setPos(pos);
 		this.setTextureCoord(new Vector2f(0,0));
 		this.setNormal(new Vector3f(0,0,0));
 	}
 	
-	public Vertex(Vector3f pos, Vector2f texture)
-	{
+	public Vertex(Vector3f pos, Vector2f texture) {
 		this.setPos(pos);
 		this.setTextureCoord(texture);
 		this.setNormal(new Vector3f(0,0,0));
@@ -55,6 +53,14 @@ public class Vertex {
 	public void setNormal(Vector3f normal) {
 		this.normal = normal;
 	}
+	
+	public void setDubilcateVertex(Vertex vertex) {
+		this.dublicateVertex = vertex;
+	}
+	
+	public Vertex getDublicateVertex() {
+		return this.dublicateVertex;
+	}
 
 	public Vector3f getTangent() {
 		return tangent;
@@ -71,4 +77,32 @@ public class Vertex {
 	public void setBitangent(Vector3f bitangent) {
 		this.bitangent = bitangent;
 	}
+	
+	public boolean equals(Object obj) {
+		if(this == obj) {
+			return true;
+		}
+		if(obj == null || getClass() != obj.getClass() || this.hashCode() != obj.hashCode()) {
+			return false;
+		}
+		Vertex other = (Vertex) obj;
+		if(this.getPos().equals(other.getPos()) &&
+				this.getNormal().equals(other.getNormal()) &&
+				this.getTextureCoord().equals(other.getTextureCoord())) {
+			return true;
+		} else {
+			return false;
+		}
+		
+	}
+	
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + this.getPos().hashCode();
+		result = prime * result + this.getNormal().hashCode();
+		result = prime * result + this.getTextureCoord().hashCode();
+		return result;
+	}
+	
 }
