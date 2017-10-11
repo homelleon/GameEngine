@@ -1,5 +1,7 @@
 package object.terrain.terrain;
 
+import object.camera.FreeCamera;
+import object.camera.ICamera;
 import object.terrain.generator.HeightsGenerator;
 import object.texture.Texture2D;
 import object.texture.terrain.TerrainTexturePack;
@@ -63,7 +65,7 @@ public class ProceduredTerrain extends ATerrain implements ITerrain {
 	 */
 	public ProceduredTerrain(String name, int gridX, int gridZ, TerrainTexturePack texturePack,
 			Texture2D blendMap, float amplitude, int octaves, float roughness) {
-		super(name);
+		super(name, new FreeCamera("FreeCamera", new Vector3f(0,0,0)));
 		this.texturePack = texturePack;
 		this.blendMap = blendMap;
 		this.x = gridX * ITerrain.TERRAIN_SIZE;
@@ -76,7 +78,7 @@ public class ProceduredTerrain extends ATerrain implements ITerrain {
 	
 	public ProceduredTerrain(String name, int seed, int gridX, int gridZ, TerrainTexturePack texturePack,
 			Texture2D blendMap, float amplitude, int octaves, float roughness) {
-		super(name);
+		super(name, new FreeCamera("FreeCamera", new Vector3f(0,0,0)));
 		this.texturePack = texturePack;
 		this.blendMap = blendMap;
 		this.x = gridX * ITerrain.TERRAIN_SIZE;
@@ -89,7 +91,7 @@ public class ProceduredTerrain extends ATerrain implements ITerrain {
 	
 	public ProceduredTerrain(String name, int gridX, int gridZ, TerrainTexturePack texturePack,
 			Texture2D blendMap, float amplitude, int octaves, float roughness, float[][] heights, Mesh model) {
-		super(name);
+		super(name, new FreeCamera("FreeCamera", new Vector3f(0,0,0)));
 		this.texturePack = texturePack;
 		this.blendMap = blendMap;
 		this.x = gridX * ITerrain.TERRAIN_SIZE;

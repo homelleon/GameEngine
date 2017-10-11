@@ -7,6 +7,8 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import core.settings.EngineSettings;
+import object.camera.FreeCamera;
+import object.camera.ICamera;
 import object.terrain.generator.HeightsGenerator;
 import object.texture.Texture2D;
 import object.texture.terrain.TerrainTexturePack;
@@ -65,7 +67,7 @@ public class MappedTerrain extends ATerrain implements ITerrain {
 	 */
 	public MappedTerrain(String name, int gridX, int gridZ, TerrainTexturePack texturePack,
 			Texture2D blendMap, String heightMap) {
-		super(name);
+		super(name, new FreeCamera("FreeCamera", new Vector3f(0,0,0)));
 		this.texturePack = texturePack;
 		this.blendMap = blendMap;
 		this.x = gridX * ITerrain.TERRAIN_SIZE;

@@ -1,5 +1,7 @@
 package object;
 
+import manager.octree.Node;
+
 /**
  * Abstract super class for game objects.
  * <br>Has name property and can return name value as a String.
@@ -7,7 +9,7 @@ package object;
  * @author homelleon
  * @version 1.0
  */
-public abstract class GameObject {
+public abstract class GameObject extends Node {
 	protected String name;
 	
 	protected GameObject(String name) {

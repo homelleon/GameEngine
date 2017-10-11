@@ -27,7 +27,7 @@ public class Node {
 	 * 
 	 * @param child
 	 */
-	public void addChildren(Node child) {
+	public void addChild(Node child) {
 		if(this.isLeaf) {
 			this.isLeaf = false;
 		}
@@ -88,6 +88,14 @@ public class Node {
 	 */
 	public void update() {
 		this.children.forEach(Node::update);
+	}
+
+	public boolean isLeaf() {
+		return isLeaf;
+	}
+
+	public void setLeaf(boolean isLeaf) {
+		this.isLeaf = isLeaf;
 	}
 
 }

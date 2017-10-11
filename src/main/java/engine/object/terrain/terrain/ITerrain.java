@@ -19,6 +19,10 @@ public interface ITerrain extends Nameable {
 	public static final int TERRAIN_VERTEX_COUNT = 256;
 	public static final int TERRAIN_SIZE = 10000;
 	
+	public static final float TERRAIN_SCALE_XZ = 1f;
+	public static final float TERRAIN_SCALE_Y = 1f;
+	public static final int[] LOD_RANGE = new int[16];
+	
 	/**
 	 * Gets size of terrain tiles.
 	 * 
