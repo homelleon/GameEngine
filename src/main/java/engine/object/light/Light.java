@@ -1,5 +1,6 @@
 package object.light;
 
+import object.GameObject;
 import tool.math.vector.Vector3f;
 
 /*
@@ -8,7 +9,7 @@ import tool.math.vector.Vector3f;
  * ------------
  */
 
-public class Light implements ILight {
+public class Light extends GameObject implements ILight {
 
 	private Vector3f position; // позиция
 	private Vector3f colour; // цвеь
@@ -17,21 +18,17 @@ public class Light implements ILight {
 	private String name;
 
 	public Light(String name, Vector3f position, Vector3f colour) {
+		super(name);
 		this.position = position;
 		this.colour = colour;
-		this.name = name;
 	}
 
 	public Light(String name, Vector3f position, Vector3f colour, Vector3f attenuation) {
+		super(name);
 		this.position = position;
 		this.colour = colour;
 		this.attenuation = attenuation;
-		this.name = name;
 
-	}
-
-	public String getName() {
-		return name;
 	}
 
 	// вернуть затухание

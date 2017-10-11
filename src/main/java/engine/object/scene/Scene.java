@@ -3,7 +3,9 @@ package object.scene;
 import java.util.Collection;
 
 import manager.audio.IAudioManager;
+import manager.entity.FrustumEntityManager;
 import manager.entity.IEntityManager;
+import manager.entity.IFrustumEntityManager;
 import manager.gui.GUIManager;
 import manager.gui.IGUIManager;
 import manager.light.ILightManager;
@@ -39,6 +41,7 @@ public class Scene extends AObjectManager implements IScene {
 
 	private IChunkManager chunkManager;
 	private IGUIManager uiManager = new GUIManager();
+	private IFrustumEntityManager frustumManager;
 	
 	public Scene() {
 		super();
@@ -66,6 +69,14 @@ public class Scene extends AObjectManager implements IScene {
 		chunkManager.getChunk(2).getBlock(0,5,5).setIsActive(false);
 		chunkManager.getChunk(2).getBlock(0,4,5).setIsActive(false);
 		chunkManager.getChunk(2).getBlock(0,5,6).setIsActive(false);
+		this.frustum = new Frustum();
+		this.frustumManager = new FrustumEntityManager(this.frustum);
+		this.frustumManager.rebuildNodes(this.getEntities().getAll(), ITerrain.TERRAIN_SIZE);
+	}
+	
+	@Override
+	public IFrustumEntityManager getFrustumEntities() {
+		return frustumManager;
 	}
 
 	@Override
@@ -213,15 +224,15 @@ public class Scene extends AObjectManager implements IScene {
 	}
 
 	@Override
-	public void spreadParitclesOnHeights(Collection<ParticleSystem> systems) {
-		if (!systems.isEmpty()) {
-			for (ParticleSystem system : systems) {
+	public void spreadParitclesOnHeights(Collection<ParticleSystem> particleSystems) {
+		if (!particleSystems.isEmpty()) {
+			for (ParticleSystem partilceSystem : particleSystems) {
 				float terrainHeight = 0;
 
 				for (ITerrain terrain : this.terrainManager.getAll()) {
-					terrainHeight += terrain.getHeightOfTerrain(system.getPosition().x, system.getPosition().z);
+					terrainHeight += terrain.getHeightOfTerrain(partilceSystem.getPosition().x, partilceSystem.getPosition().z);
 				}
-				system.setPosition(new Vector3f(system.getPosition().x, terrainHeight, system.getPosition().z));
+				partilceSystem.setPosition(new Vector3f(partilceSystem.getPosition().x, terrainHeight, partilceSystem.getPosition().z));
 			}
 		}
 	}
@@ -235,6 +246,9 @@ public class Scene extends AObjectManager implements IScene {
 		}
 		if(this.uiManager != null) {
 			this.uiManager.cleanAll();
+		}
+		if(this.frustumManager != null) {
+			this.frustumManager.clean();
 		}
 	}
 

@@ -191,7 +191,7 @@ public class GameSceneRenderer implements ISceneRenderer {
 		scene.getPlayer().move(scene.getTerrains().getAll());
 		scene.getCamera().move();
 		if(scene.getPlayer().isMoved()) {
-			scene.getEntities().addEntityInNodes(scene.getPlayer());
+			scene.getFrustumEntities().addEntityInNodes(scene.getPlayer());
 		}
 		scene.getAudioSources().getMaster().setListenerData(scene.getCamera().getPosition());
 	}

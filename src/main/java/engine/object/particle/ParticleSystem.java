@@ -5,12 +5,13 @@ import java.util.Random;
 import org.lwjgl.util.vector.Vector4f;
 
 import core.display.DisplayManager;
+import object.GameObject;
 import object.particle.particle.Particle;
 import object.texture.particle.ParticleMaterial;
 import tool.math.Matrix4f;
 import tool.math.vector.Vector3f;
 
-public class ParticleSystem implements IParticleSystem {
+public class ParticleSystem extends GameObject implements IParticleSystem {
 
 	private String name;
 
@@ -28,7 +29,7 @@ public class ParticleSystem implements IParticleSystem {
 
 	public ParticleSystem(String name, ParticleMaterial texture, float pps, float speed, float gravityComplient,
 			float lifeLength, float scale) {
-		this.name = name;
+		super(name);
 		this.pps = pps;
 		this.averageSpeed = speed;
 		this.gravityComplient = gravityComplient;
@@ -36,11 +37,6 @@ public class ParticleSystem implements IParticleSystem {
 		this.averageScale = scale;
 		this.texture = texture;
 		this.position = new Vector3f(0, 0, 0);
-	}
-
-	@Override
-	public String getName() {
-		return name;
 	}
 
 	@Override

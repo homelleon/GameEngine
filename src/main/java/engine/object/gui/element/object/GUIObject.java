@@ -1,15 +1,14 @@
 package object.gui.element.object;
 
-import object.Nameable;
+import object.GameObject;
 import object.gui.Hideable;
 
-public abstract class GUIObject implements Hideable, Nameable {
+public abstract class GUIObject extends GameObject implements Hideable {
 	
 	protected boolean isVisible = false;
-	protected String name;
 	
 	public GUIObject(String name) {
-		this.name = name;
+		super(name);
 	}
 	
 	@Override

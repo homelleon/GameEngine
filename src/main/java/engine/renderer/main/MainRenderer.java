@@ -35,7 +35,6 @@ import renderer.shadow.ShadowMapMasterRenderer;
 import renderer.skybox.SkyboxRenderer;
 import renderer.terrain.TerrainRenderer;
 import renderer.voxel.VoxelRenderer;
-import tool.math.Frustum;
 import tool.math.Matrix4f;
 import tool.openGL.OGLUtils;
 
@@ -51,13 +50,11 @@ public class MainRenderer implements IMainRenderer {
 	private ShadowMapMasterRenderer shadowMapRenderer;
 	private EnvironmentMapRenderer enviroRenderer;
 	
-	IEntityRendererManager entityRendererManager; 
-	IFrustumEntityManager frustumEntityManager;
+	IEntityRendererManager entityRendererManager;
 	
 	private ISceneProcessor processor;
 
 	private Texture environmentMap;
-	private Frustum frustum = new Frustum();
 
 	private boolean environmentDynamic = false;
 	private boolean environmentRendered = false;
@@ -69,8 +66,8 @@ public class MainRenderer implements IMainRenderer {
 
 	public MainRenderer(IScene scene) {
 		OGLUtils.cullBackFaces(true);
-		createProjectionMatrix();
-		createLowDistProjectionMatrix();
+		this.normalDistProjectionMatrix = createProjectionMatrix(EngineSettings.FAR_PLANE);
+		this.lowDistProjectionMatrix = createProjectionMatrix(100);
 		projectionMatrix = normalDistProjectionMatrix;
 		
 		IEntityRenderer texturedEntityRenderer = new TexturedEntityRenderer(projectionMatrix);
@@ -80,8 +77,6 @@ public class MainRenderer implements IMainRenderer {
 		this.entityRendererManager.addPair(texturedEntityRenderer, texturedEntities);
 		this.entityRendererManager.addPair(normalEntityRenderer, normalEntities);
 		this.entityRendererManager.addPair(decorEntityRenderer, decorEntities);
-		this.frustumEntityManager = new FrustumEntityManager(this.frustum);
-		scene.setFrustum(this.frustum);
 		this.terrainRenderer = new TerrainRenderer(projectionMatrix);
 		this.skyboxRenderer = new SkyboxRenderer(projectionMatrix);
 		this.voxelRenderer = new VoxelRenderer(projectionMatrix);
@@ -149,7 +144,7 @@ public class MainRenderer implements IMainRenderer {
 		this.entityRendererManager.render(clipPlane, scene.getLights().getAll(), scene.getCamera(), shadowMapSpaceMatrix, environmentMap, false);
 		OGLUtils.doWiredFrame(false);
 		voxelRenderer.render(scene.getChunks(), clipPlane, scene.getLights().getAll(), scene.getCamera(), shadowMapSpaceMatrix,
-				frustum);
+				scene.getFrustum());
 		if(EngineMain.getWiredFrameMode() == EngineSettings.WIRED_FRAME_TERRAIN || 
 				EngineMain.getWiredFrameMode() == EngineSettings.WIRED_FRAME_ENTITY_TERRAIN) {
 			OGLUtils.doWiredFrame(true);
@@ -187,9 +182,9 @@ public class MainRenderer implements IMainRenderer {
 	private void prepareFrustumEntities(IScene scene, boolean isLowDistance) {
 		List<IEntity> frustumEntities = new ArrayList<IEntity>();
 		if(isLowDistance) {
-			frustumEntities = this.frustumEntityManager.prepareFrustumLowEntities(scene, this.getProjectionMatrix());
+			frustumEntities = scene.getFrustumEntities().prepareFrustumLowEntities(scene, this.lowDistProjectionMatrix);
 		} else {
-			frustumEntities = this.frustumEntityManager.prepareFrustumHighEntities(scene, this.getProjectionMatrix());
+			frustumEntities = scene.getFrustumEntities().prepareFrustumHighEntities(scene, this.normalDistProjectionMatrix);
 		}
 		frustumEntities.parallelStream()
 			.forEach(entity -> 
@@ -198,7 +193,7 @@ public class MainRenderer implements IMainRenderer {
 	
 	private void prepareShadowFrustumEntities(IScene scene) {
 		List<IEntity> frustumEntities = new ArrayList<IEntity>();
-		frustumEntities = this.frustumEntityManager.prepareShadowFrustumEntities(scene, shadowMapRenderer.getToShadowMapSpaceMatrix());
+		frustumEntities = scene.getFrustumEntities().prepareShadowFrustumEntities(scene, shadowMapRenderer.getToShadowMapSpaceMatrix());
 		frustumEntities.parallelStream()
 			.forEach(entity -> 
 				processEntityByType(EngineSettings.ENTITY_TYPE_DECORATE, entity));
@@ -216,40 +211,23 @@ public class MainRenderer implements IMainRenderer {
 		this.entityRendererManager.clean();
 		this.terrainRenderer.clean();
 		this.shadowMapRenderer.clean();
-		this.frustumEntityManager.clean();
 		
 	}
-
-	private void createProjectionMatrix() {
-		normalDistProjectionMatrix = new Matrix4f();
-		float aspectRatio = (float) Display.getWidth() / (float) Display.getHeight();
-		float y_scale = (float) (1f / Math.tan(Math.toRadians(EngineSettings.FOV / 2f)));
-		float x_scale = y_scale / aspectRatio;
-		float frustrum_length = EngineSettings.FAR_PLANE - EngineSettings.NEAR_PLANE;
-
-		normalDistProjectionMatrix.m[0][0] = x_scale;
-		normalDistProjectionMatrix.m[1][1] = y_scale;
-		normalDistProjectionMatrix.m[2][2] = -((EngineSettings.FAR_PLANE + EngineSettings.NEAR_PLANE) / frustrum_length);
-		normalDistProjectionMatrix.m[2][3] = -1;
-		normalDistProjectionMatrix.m[3][2] = -((2 * EngineSettings.NEAR_PLANE * EngineSettings.FAR_PLANE)
-				/ frustrum_length);
-		normalDistProjectionMatrix.m[3][3] = 0;
-	}
-
-	private void createLowDistProjectionMatrix() {
-		lowDistProjectionMatrix = new Matrix4f();
-		float farPlane = 100;
+	
+	private Matrix4f createProjectionMatrix(float farPlane) {
+		Matrix4f currProjectionMatrix = new Matrix4f();		
 		float aspectRatio = (float) Display.getWidth() / (float) Display.getHeight();
 		float y_scale = (float) (1f / Math.tan(Math.toRadians(EngineSettings.FOV / 2f)));
 		float x_scale = y_scale / aspectRatio;
 		float frustrum_length = farPlane - EngineSettings.NEAR_PLANE;
 
-		lowDistProjectionMatrix.m[0][0] = x_scale;
-		lowDistProjectionMatrix.m[1][1] = y_scale;
-		lowDistProjectionMatrix.m[2][2] = -((farPlane + EngineSettings.NEAR_PLANE) / frustrum_length);
-		lowDistProjectionMatrix.m[2][3] = -1;
-		lowDistProjectionMatrix.m[3][2] = -((2 * EngineSettings.NEAR_PLANE * farPlane) / frustrum_length);
-		lowDistProjectionMatrix.m[3][3] = 0;
+		currProjectionMatrix.m[0][0] = x_scale;
+		currProjectionMatrix.m[1][1] = y_scale;
+		currProjectionMatrix.m[2][2] = -((farPlane + EngineSettings.NEAR_PLANE) / frustrum_length);
+		currProjectionMatrix.m[2][3] = -1;
+		currProjectionMatrix.m[3][2] = -((2 * EngineSettings.NEAR_PLANE * farPlane) / frustrum_length);
+		currProjectionMatrix.m[3][3] = 0;
+		return currProjectionMatrix;
 	}
 
 	@Override
@@ -259,11 +237,6 @@ public class MainRenderer implements IMainRenderer {
 
 	private Texture2D getShadowMapTexture() {
 		return shadowMapRenderer.getShadowMap();
-	}
-
-	@Override
-	public Frustum getFrustum() {
-		return this.frustum;
 	}
 	
 	private synchronized void processEntityByType(int type, IEntity entity) {

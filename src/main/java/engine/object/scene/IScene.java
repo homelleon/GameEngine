@@ -2,6 +2,7 @@ package object.scene;
 
 import java.util.Collection;
 
+import manager.entity.IFrustumEntityManager;
 import manager.gui.IGUIManager;
 import manager.scene.IObjectManager;
 import manager.voxel.IChunkManager;
@@ -24,6 +25,8 @@ import tool.math.Frustum;
  */
 public interface IScene extends IObjectManager {
 
+	
+	IFrustumEntityManager getFrustumEntities();
 	/**
 	 * Returns texture of current environment map.
 	 * <p>
@@ -31,7 +34,7 @@ public interface IScene extends IObjectManager {
 	 * 
 	 * @return {@link Texture} value of environment map
 	 */
-	public Texture getEnvironmentMap();
+	Texture getEnvironmentMap();
 
 	/**
 	 * Returns object current player.
@@ -119,6 +122,6 @@ public interface IScene extends IObjectManager {
 	/**
 	 * Spreads all particles on the surface of terrain's height.
 	 */
-	void spreadParitclesOnHeights(Collection<ParticleSystem> systems);
+	void spreadParitclesOnHeights(Collection<ParticleSystem> particleSystems);
 
 }

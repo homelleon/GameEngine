@@ -24,7 +24,6 @@ import object.input.MouseGame;
 import object.scene.IScene;
 import object.scene.Scene;
 import primitive.buffer.Loader;
-import renderer.main.MainRenderer;
 import renderer.scene.EditorSceneRenderer;
 import renderer.scene.GameSceneRenderer;
 import renderer.scene.ISceneRenderer;
@@ -48,8 +47,7 @@ public class Loop implements ILoop {
 
 	private static Loop instance;
 	private static final String SETTINGS_NAME = "settings";
-
-	private MainRenderer renderer;
+	
 	private ISceneRenderer sceneRenderer;
 
 	private ISceneManager sceneManager;

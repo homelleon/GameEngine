@@ -3,11 +3,11 @@ package object.entity.entity;
 import java.util.Collection;
 
 import core.settings.EngineSettings;
-import object.entity.BaseEntity;
+import object.entity.AEntity;
 import primitive.model.Model;
 import tool.math.vector.Vector3f;
 
-public class DecorEntity extends BaseEntity implements IEntity {
+public class DecorEntity extends AEntity implements IEntity {
 
 	public DecorEntity(String name, Collection<Model> modelList, int textureIndex, Vector3f position,
 			Vector3f rotation, float scale) {

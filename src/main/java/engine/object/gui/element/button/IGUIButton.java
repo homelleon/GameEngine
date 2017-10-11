@@ -1,8 +1,8 @@
 package object.gui.element.button;
 
 import object.Moveable;
-import object.Nameable;
 import object.bounding.BoundingQuad;
+import object.gui.element.object.IGUIObject;
 import object.gui.group.GUIGroup;
 import object.gui.group.IGUIGroup;
 import tool.math.vector.Vector2f;
@@ -14,7 +14,7 @@ import tool.math.vector.Vector2f;
  * @see GUIButton
  *
  */
-public interface IGUIButton extends Nameable, Moveable<Vector2f> {
+public interface IGUIButton extends IGUIObject, Moveable<Vector2f> {
 
 	/**
 	 * Does selection for current button.<br>

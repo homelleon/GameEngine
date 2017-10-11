@@ -6,10 +6,10 @@ import object.gui.group.IGUIGroup;
 /**
  * 
  * @author homelleon
- * @see GUIButtonBase
+ * @see AGUIButton
  * @see IGUIButton
  */
-public class GUIButton extends GUIButtonBase {
+public class GUIButton extends AGUIButton {
 
 	public GUIButton(String name, IGUIGroup guiGroup) {
 		super(name, guiGroup);

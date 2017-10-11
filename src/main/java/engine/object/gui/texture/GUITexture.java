@@ -1,10 +1,11 @@
 package object.gui.texture;
 
+import object.GameObject;
 import object.texture.Texture2D;
 import tool.math.vector.Vector2f;
 import tool.math.vector.Vector3f;
 
-public class GUITexture {
+public class GUITexture extends GameObject {
 
 	private String name;
 	private boolean isVisible = false;
@@ -17,14 +18,10 @@ public class GUITexture {
 	private float transparency = 0;
 
 	public GUITexture(String name, Texture2D texture, Vector2f position, Vector2f scale) {
-		this.name = name;
+		super(name);
 		this.texture = texture;
 		this.position = position;
 		this.scale = scale;
-	}
-
-	public String getName() {
-		return name;
 	}
 
 	public Texture2D getTexture() {

@@ -6,6 +6,8 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.HashMap;
+import java.util.List;
+import java.util.stream.Stream;
 
 import core.debug.EngineDebug;
 import object.texture.Texture2D;
@@ -13,6 +15,7 @@ import object.texture.material.Material;
 import primitive.buffer.BufferLoader;
 import primitive.buffer.Loader;
 import primitive.model.Mesh;
+import tool.EngineUtils;
 import tool.math.vector.Vector2f;
 import tool.math.vector.Vector3f;
 
@@ -29,9 +32,16 @@ public class OBJLoader {
 	
 	private Frontface frontface = Frontface.CCW;
 	private boolean generateNormals = true;
+	private boolean generateTangents = false;
 	
 	private enum Frontface {
 		CW,CCW
+	}
+	
+	public OBJLoader() {}
+	
+	public OBJLoader(boolean generateTangents) {
+		this.generateTangents = generateTangents;
 	}
 	
 	public Mesh[] load(String path, String objFile, String mtlFile)
@@ -248,7 +258,9 @@ public class OBJLoader {
 			v0.setNormal(normals.get(normalIndices[0]));
 			v1.setNormal(normals.get(normalIndices[1]));
 			v2.setNormal(normals.get(normalIndices[2]));
-			
+			if(this.generateTangents) {
+				generateTangents(v0, v1, v2);
+			}
 			addToSmoothingGroup(objects.peekLast().getPolygonGroups().peekLast().getSmoothingGroups().get(currentSmoothingGroup),v0,v1,v2);
 		}
 		
@@ -276,8 +288,9 @@ public class OBJLoader {
 				v0.setTextureCoord(texCoords.get(texCoordIndices[0]));
 				v1.setTextureCoord(texCoords.get(texCoordIndices[1]));
 				v2.setTextureCoord(texCoords.get(texCoordIndices[2]));
-				calculateTangents(v0, v1, v2);
-				
+				if(this.generateTangents) {
+					generateTangents(v0, v1, v2);
+				}				
 				addToSmoothingGroup(objects.peekLast().getPolygonGroups().peekLast().getSmoothingGroups().get(currentSmoothingGroup),v0,v1,v2);
 			}
 			
@@ -297,8 +310,9 @@ public class OBJLoader {
 				v0.setTextureCoord(texCoords.get(texCoordIndices[0]));
 				v1.setTextureCoord(texCoords.get(texCoordIndices[1]));
 				v2.setTextureCoord(texCoords.get(texCoordIndices[2]));
-				calculateTangents(v0, v1, v2);
-				
+				if(this.generateTangents) {
+					generateTangents(v0, v1, v2);
+				}				
 				addToSmoothingGroup(objects.peekLast().getPolygonGroups().peekLast().getSmoothingGroups().get(currentSmoothingGroup),v0,v1,v2);
 			}		
 		}
@@ -313,7 +327,9 @@ public class OBJLoader {
 			Vertex v0 = vertices.get(vertexIndices[0]);
 			Vertex v1 = vertices.get(vertexIndices[1]);
 			Vertex v2 = vertices.get(vertexIndices[2]);
-			
+			if(this.generateTangents) {
+				generateTangents(v0, v1, v2);
+			}
 			addToSmoothingGroup(objects.peekLast().getPolygonGroups().peekLast().getSmoothingGroups().get(currentSmoothingGroup),v0,v1,v2);
 		}
 	}
@@ -461,25 +477,23 @@ public class OBJLoader {
 	private int processVertex(SmoothingGroup smoothingGroup, Vertex previousVertex) {
 		if (smoothingGroup.getVertices().contains(previousVertex)) {
 			int index = smoothingGroup.getVertices().indexOf(previousVertex);
-			Vertex sameVertex = smoothingGroup.getVertices().get(index);
-			if(hasSameNormalAndTexture(previousVertex, sameVertex)) {
-				smoothingGroup.getVertices().add(previousVertex);
-				return smoothingGroup.getVertices().indexOf(previousVertex);
-			} else if(sameVertex.getDublicateVertex() != null) {
-				return processVertex(smoothingGroup, sameVertex.getDublicateVertex());
-			} else {
-				Vertex newVertex = new Vertex();
-				newVertex.setPos(previousVertex.getPos());
-				newVertex.setNormal(previousVertex.getNormal());
-				newVertex.setTextureCoord(previousVertex.getTextureCoord());
-				previousVertex.setDubilcateVertex(newVertex);
-				smoothingGroup.getVertices().add(newVertex);
-				return smoothingGroup.getVertices().indexOf(newVertex);
+			Vertex nextVertex = smoothingGroup.getVertices().get(index);
+			if(!hasSameNormalAndTexture(previousVertex, nextVertex)) {				
+				if(nextVertex.getDublicateVertex() != null) {
+					return processVertex(smoothingGroup, nextVertex.getDublicateVertex());
+				} else {
+					Vertex newVertex = new Vertex();
+					newVertex.setPos(previousVertex.getPos());
+					newVertex.setNormal(previousVertex.getNormal());
+					newVertex.setTextureCoord(previousVertex.getTextureCoord());
+					previousVertex.setDubilcateVertex(newVertex);
+					smoothingGroup.getVertices().add(newVertex);
+					return smoothingGroup.getVertices().indexOf(newVertex);
+				}
 			}
-		} else {
-			smoothingGroup.getVertices().add(previousVertex);
-			return smoothingGroup.getVertices().indexOf(previousVertex);
 		}
+		smoothingGroup.getVertices().add(previousVertex);
+		return smoothingGroup.getVertices().indexOf(previousVertex);
 	}
 	
 	private boolean hasSameNormalAndTexture(Vertex v1, Vertex v2) {
@@ -506,54 +520,7 @@ public class OBJLoader {
 		}
 	}
 	
-	private Mesh convert(Polygon polygon){
-		
-		float[] positions = new float[polygon.getVertices().size()*3];
-		float[] normals = new float[polygon.getVertices().size()*3];
-		float[] textureCoords = new float[polygon.getVertices().size()*2];
-		float[] tangents = new float[polygon.getVertices().size()*3];
-		float[] bitangents = new float[polygon.getVertices().size()*3];
-		boolean isTangent = false;
-		int i = 0;
-		for(Vertex vertex : polygon.getVertices()) {
-			positions[3 * i] = vertex.getPos().x;
-			positions[3 * i + 1] = vertex.getPos().y;
-			positions[3 * i + 2] = vertex.getPos().z;
-			normals[3 * i] = vertex.getNormal().x;
-			normals[3 * i + 1] = vertex.getNormal().y;
-			normals[3 * i + 2] = vertex.getNormal().z;
-			textureCoords[2 * i] = vertex.getTextureCoord().x;
-			textureCoords[2 * i + 1] = 1 - vertex.getTextureCoord().y;
-			if(vertex.getTangent()!=null) {
-				tangents[3 * i] = vertex.getTangent().x;
-				tangents[3 * i + 1] = vertex.getTangent().y;
-				tangents[3 * i + 2] = vertex.getTangent().z;
-				isTangent = true;
-			}
-			if(vertex.getBitangent()!= null) {
-				bitangents[3 * i] = vertex.getBitangent().x;
-				bitangents[3 * i + 1] = vertex.getBitangent().y;
-				bitangents[3 * i + 2] = vertex.getBitangent().z;
-			}
-			i++;
-		}
-		
-		Integer[] objectArray = new Integer[polygon.getIndices().size()];
-		
-		polygon.getIndices().toArray(objectArray);
-		int[] indices = Util.toIntArray(objectArray);
-		
-		BufferLoader loader = Loader.getInstance().getVertexLoader();
-		Mesh mesh = null;
-		if(isTangent) {
-			mesh = loader.loadToVAO(positions, textureCoords, normals, tangents, indices);
-		} else {
-			mesh = loader.loadToVAO(positions, textureCoords, normals, indices);
-		}
-		return mesh;
-	}
-	
-	private void calculateTangents(Vertex v0, Vertex v1, Vertex v2) {
+	private void generateTangents(Vertex v0, Vertex v1, Vertex v2) {
 		Vector3f delatPos1 = Vector3f.sub(v1.getPos(), v0.getPos());
 		Vector3f delatPos2 = Vector3f.sub(v2.getPos(), v0.getPos());
 		Vector2f uv0 = v0.getTextureCoord();
@@ -570,6 +537,50 @@ public class OBJLoader {
 		v0.setTangent(tangent);
 		v1.setTangent(tangent);
 		v2.setTangent(tangent);
+	}
+	
+	private Mesh convert(Polygon polygon){
+		
+		Object[] positionObjectArray = new Object[polygon.getVertices().size()*3];
+		Object[] normalObjectArray = new Object[polygon.getVertices().size()*3];
+		Object[] textureObjectArray = new Object[polygon.getVertices().size()*2];
+		float[] tangents = null;
+		Integer[] objectArray = new Integer[polygon.getIndices().size()];
+		
+		polygon.getIndices().toArray(objectArray);
+		List<Vertex> vertices = polygon.getVertices();
+		
+		positionObjectArray = vertices.stream()
+			.flatMap(vertex -> Stream.of(vertex.getPos().x, vertex.getPos().y, vertex.getPos().z))
+			.toArray();
+		normalObjectArray = vertices.stream()
+				.flatMap(vertex -> Stream.of(vertex.getNormal().x, vertex.getNormal().y, vertex.getNormal().z))
+				.toArray();
+		textureObjectArray = vertices.stream()
+				.flatMap(vertex -> Stream.of(vertex.getTextureCoord().x, 1 - vertex.getTextureCoord().y))
+				.toArray();
+		
+		float[] positions = EngineUtils.toFloatArray(positionObjectArray);
+		float[] normals = EngineUtils.toFloatArray(normalObjectArray);
+		float[] textureCoords = EngineUtils.toFloatArray(textureObjectArray);
+		int[] indices = EngineUtils.toIntArray(objectArray);
+		
+		BufferLoader loader = Loader.getInstance().getVertexLoader();
+		Mesh mesh = null;
+		
+		if(this.generateTangents) {
+			Object[] tangentObjectArray = new Object[polygon.getVertices().size()*3];
+			tangentObjectArray = vertices.stream()
+					.flatMap(vertex -> Stream.of(vertex.getTangent().x, vertex.getTangent().y, vertex.getTangent().z))
+					.toArray();
+
+			tangents = EngineUtils.toFloatArray(tangentObjectArray);
+			mesh = loader.loadToVAO(positions, textureCoords, normals, tangents, indices);
+		} else {
+			mesh = loader.loadToVAO(positions, textureCoords, normals, indices);
+		}
+		
+		return mesh;
 	}
 	
 	public void clean() {

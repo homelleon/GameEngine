@@ -3,10 +3,8 @@ package manager.entity;
 import java.util.Collection;
 import java.util.List;
 
-import object.camera.ICamera;
 import object.entity.entity.IEntity;
 import tool.manager.IManager;
-import tool.math.Frustum;
 
 /**
  * Entity control manager interface.
@@ -16,12 +14,7 @@ import tool.math.Frustum;
  * @see EntityManager
  */
 public interface IEntityManager extends IManager<IEntity> {
-
-	void addEntityInNodes(IEntity entity);
 	
-	void setHasNodes(boolean value);
-	
-	void rebuildNodes(int size);
 	/**
 	 * Add list of entities chosen by player.
 	 * 
@@ -62,14 +55,6 @@ public interface IEntityManager extends IManager<IEntity> {
 	 *            {@link IEntity} value
 	 */
 	void addForEditor(IEntity entity);
-
-	/**
-	 * Update entity array using frustum culling technic.
-	 * 
-	 * @param frustum
-	 *            {@link Frustum} value of frustum pyramid
-	 */
-	List<IEntity> updateWithFrustum(Frustum frustum, ICamera camera, boolean isLow);
 
 	/**
 	 * Returns list of entities chosen by player.

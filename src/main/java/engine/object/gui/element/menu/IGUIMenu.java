@@ -2,11 +2,10 @@ package object.gui.element.menu;
 
 import java.util.List;
 
-import object.Nameable;
-import object.gui.Hideable;
 import object.gui.element.button.IAction;
 import object.gui.element.button.IGUIButton;
 import object.gui.element.object.GUIObject;
+import object.gui.element.object.IGUIObject;
 
 /**
  * Controls and stores groups of GUI objects.
@@ -14,7 +13,7 @@ import object.gui.element.object.GUIObject;
  * @author homelleon
  * @see GUIMenu
  */
-public interface IGUIMenu extends Hideable,Nameable {
+public interface IGUIMenu extends IGUIObject {
 
 	/**
 	 * Adds {@link GUIObject} into GUI menu.

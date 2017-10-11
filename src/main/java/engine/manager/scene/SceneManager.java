@@ -16,7 +16,6 @@ import object.entity.player.IPlayer;
 import object.entity.player.Player;
 import object.light.Light;
 import object.scene.IScene;
-import object.terrain.terrain.ITerrain;
 import object.texture.material.Material;
 import object.water.WaterTile;
 import primitive.model.Model;
@@ -49,7 +48,7 @@ public class SceneManager implements ISceneManager {
 	private void initializeEditor(IScene scene) {
 		//List<Model> cubeModels = new ArrayList<Model>();
 		//cubeModels.add(EngineUtils.loadOldModel("cube", "Cube1"));
-		List<Model> cubeModels = EngineUtils.loadModels("barrel", "barrel");
+		List<Model> cubeModels = EngineUtils.loadModels("tree", "bark");
 		IPlayer player1 = new Player(
 				playerName, 
 				cubeModels, 
@@ -117,7 +116,10 @@ public class SceneManager implements ISceneManager {
 		scene.setPlayer(player1);
 		scene.getAudioSources().getMaster().setListenerData(scene.getPlayer().getPosition());
 		scene.getEntities().add(player1);
+		scene.getFrustumEntities().addEntityInNodes(player1);
 		scene.getEntities().addAll(EngineUtils.createObjectField(500, 500, 5000, 4, 0.1f));
+		scene.getEntities().getAll()
+			.forEach(entity -> scene.getFrustumEntities().addEntityInNodes(entity));
 		scene.setCamera(new TargetCamera(cameraName, player1));
 		scene.setSun(new Light("Sun", 
 				new Vector3f(-1000000, 200000, -1000000), 
@@ -138,7 +140,6 @@ public class SceneManager implements ISceneManager {
 		}
 
 		scene.spreadEntitiesOnHeights(scene.getEntities().getAll());
-		scene.getEntities().rebuildNodes(ITerrain.TERRAIN_SIZE);
 		//scene.getEntities().get("Cuby4").getModel().getTexture().setReflectiveFactor(1.2f);
 	}
 

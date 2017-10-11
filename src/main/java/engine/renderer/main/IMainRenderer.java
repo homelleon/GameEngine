@@ -12,7 +12,6 @@ import object.light.ILight;
 import object.scene.IScene;
 import object.terrain.terrain.ITerrain;
 import primitive.model.Model;
-import tool.math.Frustum;
 import tool.math.Matrix4f;
 
 /**
@@ -81,11 +80,5 @@ public interface IMainRenderer {
 	 * @return
 	 */
 	Matrix4f getProjectionMatrix();
-
-	/**
-	 * 
-	 * @return
-	 */
-	Frustum getFrustum();
 
 }

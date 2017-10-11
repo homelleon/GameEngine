@@ -19,7 +19,7 @@ import tool.math.vector.Vector2f;
  * @author homelleon
  * @see IGUIButton
  */
-public abstract class GUIButtonBase extends GUIObject implements IGUIButton {
+public abstract class AGUIButton extends GUIObject implements IGUIButton {
 
 	protected IGUIGroup guiGroup;
 	protected volatile boolean isSelected = false;
@@ -29,7 +29,7 @@ public abstract class GUIButtonBase extends GUIObject implements IGUIButton {
 	protected BoundingQuad quad; 
 	protected Vector2f position = new Vector2f(0,0);
 
-	protected GUIButtonBase(String name, IGUIGroup guiGroup) {
+	protected AGUIButton(String name, IGUIGroup guiGroup) {
 		super(name);
 		this.guiGroup = guiGroup;
 		Vector2f point1 = calculateFirstPoint();
@@ -37,7 +37,7 @@ public abstract class GUIButtonBase extends GUIObject implements IGUIButton {
 		this.quad = new BoundingQuad(point1, point2);		
 	}
 	
-	protected GUIButtonBase(String name, IGUIGroup guiGroup, BoundingQuad quad) {
+	protected AGUIButton(String name, IGUIGroup guiGroup, BoundingQuad quad) {
 		super(name);
 		this.guiGroup = guiGroup;
 		this.quad = quad;

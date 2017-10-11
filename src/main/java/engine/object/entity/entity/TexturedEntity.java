@@ -3,7 +3,7 @@ package object.entity.entity;
 import java.util.Collection;
 
 import core.settings.EngineSettings;
-import object.entity.BaseEntity;
+import object.entity.AEntity;
 import primitive.model.Model;
 import tool.math.vector.Vector3f;
 
@@ -19,7 +19,7 @@ import tool.math.vector.Vector3f;
  *
  */
 
-public class TexturedEntity extends BaseEntity implements IEntity {
+public class TexturedEntity extends AEntity implements IEntity {
 	
 	/**
 	 * 

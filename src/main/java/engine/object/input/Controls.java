@@ -72,42 +72,42 @@ public class Controls implements IControls {
 		if (Keyboard.isKeyDown(EngineSettings.KEY_OBJECT_MOVE_FORWARD)) {
 			scene.getEntities().getPointed().forEach(entity -> {
 				entity.move(1, 0);
-				scene.getEntities().addEntityInNodes(entity);	
+				scene.getFrustumEntities().addEntityInNodes(entity);	
 			});
 		}
 
 		if (Keyboard.isKeyDown(EngineSettings.KEY_OBJECT_MOVE_BACKWARD)) {
 			scene.getEntities().getPointed().forEach(entity -> {				
 				entity.move(-1, 0);
-				scene.getEntities().addEntityInNodes(entity);
+				scene.getFrustumEntities().addEntityInNodes(entity);
 			});
 		}
 
 		if (Keyboard.isKeyDown(EngineSettings.KEY_OBJECT_MOVE_LEFT)) {
 			scene.getEntities().getPointed().forEach(entity -> {
 				entity.move(0, 1);
-				scene.getEntities().addEntityInNodes(entity);
+				scene.getFrustumEntities().addEntityInNodes(entity);
 			});
 		}
 
 		if (Keyboard.isKeyDown(EngineSettings.KEY_OBJECT_MOVE_RIGHT)) {
 			scene.getEntities().getPointed().forEach(entity -> {
 				entity.move(0, -1);
-				scene.getEntities().addEntityInNodes(entity);
+				scene.getFrustumEntities().addEntityInNodes(entity);
 			});
 		}
 
 		if (Keyboard.isKeyDown(EngineSettings.KEY_OBJECT_MOVE_UP)) {
 			scene.getEntities().getPointed().forEach(entity -> {
 				entity.increasePosition(0, 1, 0);
-				scene.getEntities().addEntityInNodes(entity);
+				scene.getFrustumEntities().addEntityInNodes(entity);
 			});
 		}
 
 		if (Keyboard.isKeyDown(EngineSettings.KEY_OBJECT_MOVE_DOWN)) {
 			scene.getEntities().getPointed().forEach(entity -> {
 				entity.increasePosition(0, -1, 0);
-				scene.getEntities().addEntityInNodes(entity);
+				scene.getFrustumEntities().addEntityInNodes(entity);
 			});
 		}
 

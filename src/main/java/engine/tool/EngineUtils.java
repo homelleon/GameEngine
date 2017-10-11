@@ -10,7 +10,6 @@ import java.util.stream.Stream;
 import core.settings.EngineSettings;
 import object.entity.entity.DecorEntity;
 import object.entity.entity.IEntity;
-import object.entity.entity.TexturedEntity;
 import object.terrain.terrain.ITerrain;
 import object.terrain.terrain.MappedTerrain;
 import object.terrain.terrain.ProceduredTerrain;
@@ -107,7 +106,6 @@ public class EngineUtils {
 	}
 
 	public static List<IEntity> createObjectField(float x, float z, float r, float sizeNoise, float density) {
-		// TODO: Noise - better using
 		Model objectModel = loadModel("spartan", "spartan");
 		objectModel.getMaterial().getDiffuseMap().setNumberOfRows(1);
 		objectModel.getMaterial().setShininess(1);
@@ -177,6 +175,26 @@ public class EngineUtils {
 		Texture2D blendMap = loader.getTextureLoader().loadTexture(EngineSettings.TEXTURE_BLEND_MAP_PATH, blendTexture);
 		ITerrain terrain = new ProceduredTerrain(name, x, y, texturePack, blendMap, amplitude, octaves, roughness);
 		return terrain;
+	}
+	
+	public static int[] toIntArray(Integer[] data) {
+		int[] result = new int[data.length];
+		
+		for(int i = 0; i < data.length; i++) {
+			result[i] = data[i].intValue();
+		}		
+		
+		return result;
+	}
+	
+	public static float[] toFloatArray(Object[] data) {
+		float[] result = new float[data.length];
+		
+		for(int i = 0; i < data.length; i++) {
+			result[i] = (Float)data[i];
+		}
+		
+		return result;
 	}
 
 }

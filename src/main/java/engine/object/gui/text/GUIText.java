@@ -1,5 +1,6 @@
 package object.gui.text;
 
+import object.GameObject;
 import primitive.buffer.VAO;
 import tool.math.vector.Vector2f;
 import tool.math.vector.Vector3f;
@@ -11,9 +12,7 @@ import tool.math.vector.Vector3f;
  * @author homelleon
  *
  */
-public class GUIText {
-
-	private String name;
+public class GUIText extends GameObject {
 
 	private String textString;
 	private float fontSize;
@@ -68,7 +67,7 @@ public class GUIText {
 	 */
 	public GUIText(String name, String text, float fontSize, String fontName, Vector2f position, float maxLineLength,
 			boolean centered) {
-		this.name = name;
+		super(name);
 		this.textString = text;
 		this.fontSize = fontSize;
 		this.fontName = fontName;
@@ -138,15 +137,6 @@ public class GUIText {
 
 	public synchronized void setOutlineColor(Vector3f outlineColor) {
 		this.outlineColor = outlineColor;
-	}
-
-	/**
-	 * Returns name of interface text.
-	 * 
-	 * @return {@link String} value of current name
-	 */
-	public String getName() {
-		return this.name;
 	}
 
 	/**

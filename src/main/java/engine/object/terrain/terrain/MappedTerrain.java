@@ -22,7 +22,7 @@ import tool.math.vector.Vector3f;
  * @author homelleon
  * @see ITerrain
  */
-public class MappedTerrain implements ITerrain {
+public class MappedTerrain extends ATerrain implements ITerrain {
 
 	private static final float MAX_HEIGHT = 100;
 	private static final float MAX_PIXEL_COLOUR = 256 * 256 * 256;
@@ -34,7 +34,6 @@ public class MappedTerrain implements ITerrain {
 	private Texture2D blendMap;
 	private String heightMapName;
 	private boolean isProcedureGenerated = false;
-	private String name;
 	private boolean isVisible = true;
 	private float amplitude;
 	private int octaves;
@@ -66,12 +65,12 @@ public class MappedTerrain implements ITerrain {
 	 */
 	public MappedTerrain(String name, int gridX, int gridZ, TerrainTexturePack texturePack,
 			Texture2D blendMap, String heightMap) {
+		super(name);
 		this.texturePack = texturePack;
 		this.blendMap = blendMap;
 		this.x = gridX * ITerrain.TERRAIN_SIZE;
 		this.z = gridZ * ITerrain.TERRAIN_SIZE;
 		this.model = generateTerrain(heightMap);
-		this.name = name;
 	}
 
 	@Override
@@ -102,11 +101,6 @@ public class MappedTerrain implements ITerrain {
 	@Override
 	public Mesh getModel() {
 		return model;
-	}
-
-	@Override
-	public String getName() {
-		return name;
 	}
 
 	@Override

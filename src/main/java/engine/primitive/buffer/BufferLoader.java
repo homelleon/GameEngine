@@ -108,25 +108,6 @@ public class BufferLoader {
 	}
 
 	/**
-	 * Updates verticies buffer object to use with verticies array object.
-	 * 
-	 * @param vbo
-	 *            {@link Integer} value of verticies buffer object number in
-	 *            video buffer
-	 * @param data
-	 *            {@link Float} array value of data to update in video buffer
-	 * @param buffer
-	 */
-	public void updateVbo(VBO vbo, float[] data, FloatBuffer buffer) {
-		buffer.clear();
-		buffer.put(data);
-		buffer.flip();
-		vbo.bind();
-		vbo.storeSubData(buffer, data);
-		vbo.unbind();
-	}
-
-	/**
 	 * Loads verticies buffer object to use with verticies array object.
 	 * 
 	 * @param positions
@@ -157,6 +138,26 @@ public class BufferLoader {
 
 	}
 
+
+	/**
+	 * Updates verticies buffer object to use with verticies array object.
+	 * 
+	 * @param vbo
+	 *            {@link Integer} value of verticies buffer object number in
+	 *            video buffer
+	 * @param data
+	 *            {@link Float} array value of data to update in video buffer
+	 * @param buffer
+	 */
+	public void updateVbo(VBO vbo, float[] data, FloatBuffer buffer) {
+		buffer.clear();
+		buffer.put(data);
+		buffer.flip();
+		vbo.bind();
+		vbo.storeSubData(buffer, data);
+		vbo.unbind();
+	}
+	
 	/**
 	 * Creates empty vertex buffer object.
 	 * 

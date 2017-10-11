@@ -68,7 +68,6 @@ public class RawMapXMLParser extends XMLParser implements IObjectParser<IRawMana
 	}
 	
 	private void parseMeshes(Node node, IRawManager map) {
-		//TODO separate normal and simple instead of models
 		if (EngineDebug.hasDebugPermission()) {
 			EngineDebug.println("Loading meshes...", 1);
 		}
@@ -81,14 +80,12 @@ public class RawMapXMLParser extends XMLParser implements IObjectParser<IRawMana
 				String name = XMLUtils.getAttributeValue(meshElement, XMLUtils.NAME);
 				String file = XMLUtils.getAttributeValue(meshElement, XMLUtils.FILE);
 				String type = XMLUtils.getAttributeValue(meshElement, XMLUtils.TYPE);
-				Mesh[] meshesBase;
-				Mesh[] meshes;
 				
-				OBJLoader objLoader = new OBJLoader();
-				meshesBase = objLoader.load(EngineSettings.MODEL_PATH, file, null);
+				OBJLoader objLoader = type.equals("normal") ? new OBJLoader(true) : new OBJLoader();
+				Mesh[] meshesBase = objLoader.load(EngineSettings.MODEL_PATH, file, null);
 				objLoader.clean();
 				
-				meshes = new Mesh[meshesBase.length];
+				Mesh[] meshes = new Mesh[meshesBase.length];
 				for(int i=0; i < meshesBase.length; i++) {
 					meshes[i] = meshesBase[i].clone(name);
 				}

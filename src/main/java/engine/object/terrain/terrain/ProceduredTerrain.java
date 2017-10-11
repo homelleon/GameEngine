@@ -15,7 +15,7 @@ import tool.math.vector.Vector3f;
  * @author homelleon
  * @see ITerrain
  */
-public class ProceduredTerrain implements ITerrain {
+public class ProceduredTerrain extends ATerrain implements ITerrain {
 
 	private float x;
 	private float z;
@@ -24,7 +24,6 @@ public class ProceduredTerrain implements ITerrain {
 	private Texture2D blendMap;
 	private String heightMapName;
 	private boolean isProcedureGenerated = true;
-	private String name;
 	private boolean isVisible = true;
 	private float amplitude;
 	private int octaves;
@@ -64,6 +63,7 @@ public class ProceduredTerrain implements ITerrain {
 	 */
 	public ProceduredTerrain(String name, int gridX, int gridZ, TerrainTexturePack texturePack,
 			Texture2D blendMap, float amplitude, int octaves, float roughness) {
+		super(name);
 		this.texturePack = texturePack;
 		this.blendMap = blendMap;
 		this.x = gridX * ITerrain.TERRAIN_SIZE;
@@ -72,11 +72,11 @@ public class ProceduredTerrain implements ITerrain {
 		this.octaves = octaves;
 		this.roughness = roughness;
 		this.model = generateWithProcedure(amplitude, octaves, roughness);
-		this.name = name;
 	}
 	
 	public ProceduredTerrain(String name, int seed, int gridX, int gridZ, TerrainTexturePack texturePack,
 			Texture2D blendMap, float amplitude, int octaves, float roughness) {
+		super(name);
 		this.texturePack = texturePack;
 		this.blendMap = blendMap;
 		this.x = gridX * ITerrain.TERRAIN_SIZE;
@@ -85,11 +85,11 @@ public class ProceduredTerrain implements ITerrain {
 		this.octaves = octaves;
 		this.roughness = roughness;
 		this.model = generateWithProcedure(amplitude, octaves, roughness, seed);
-		this.name = name;
 	}
 	
 	public ProceduredTerrain(String name, int gridX, int gridZ, TerrainTexturePack texturePack,
 			Texture2D blendMap, float amplitude, int octaves, float roughness, float[][] heights, Mesh model) {
+		super(name);
 		this.texturePack = texturePack;
 		this.blendMap = blendMap;
 		this.x = gridX * ITerrain.TERRAIN_SIZE;
@@ -99,7 +99,6 @@ public class ProceduredTerrain implements ITerrain {
 		this.roughness = roughness;
 		this.heights = heights;
 		this.model = model;
-		this.name = name;
 	}
 
 	@Override
@@ -130,11 +129,6 @@ public class ProceduredTerrain implements ITerrain {
 	@Override
 	public Mesh getModel() {
 		return model;
-	}
-
-	@Override
-	public String getName() {
-		return name;
 	}
 
 	@Override

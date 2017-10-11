@@ -6,15 +6,15 @@ import java.util.List;
 
 import core.settings.EngineSettings;
 import manager.octree.EntityNode;
+import object.GameObject;
 import object.entity.entity.IEntity;
 import primitive.model.Model;
 import tool.math.vector.Vector2f;
 import tool.math.vector.Vector3f;
 
-public abstract class BaseEntity {
+public abstract class AEntity extends GameObject {
 	
 	protected List<Model> models = new ArrayList<Model>(); // текстурная модель
-	protected String name; // имя
 	protected String baseName;
 	protected Vector3f position; // позиция
 	protected Vector3f rotation; // повороты
@@ -39,8 +39,8 @@ public abstract class BaseEntity {
 	 * @param rotZ
 	 * @param scale
 	 */
-	public BaseEntity(String name, int typeID, Collection<Model> modelList, Vector3f position, Vector3f rotation, float scale) {
-		this.name = name;
+	public AEntity(String name, int typeID, Collection<Model> modelList, Vector3f position, Vector3f rotation, float scale) {
+		super(name);
 		this.typeID = typeID;
 		this.models.addAll(modelList);
 		this.radius = this.models.get(0).getMesh().getBSphere().getRadius() * scale;
@@ -61,8 +61,8 @@ public abstract class BaseEntity {
 	 * @param rotZ
 	 * @param scale
 	 */
-	public BaseEntity(String name, int typeID, Collection<Model> modelList, int textureIndex, Vector3f position, Vector3f rotation, float scale) {
-		this.name = name;
+	public AEntity(String name, int typeID, Collection<Model> modelList, int textureIndex, Vector3f position, Vector3f rotation, float scale) {
+		super(name);
 		this.typeID = typeID;
 		this.textureIndex = textureIndex;
 		this.models.addAll(modelList);
@@ -139,10 +139,6 @@ public abstract class BaseEntity {
 		this.rotation.x += dx / scale;
 		this.rotation.y += dy / scale;
 		this.rotation.z += dz / scale;
-	}
-
-	public String getName() {
-		return name;
 	}
 	
 	public String getBaseName() {
