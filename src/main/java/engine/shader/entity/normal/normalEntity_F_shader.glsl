@@ -31,7 +31,7 @@ uniform float reflectivity;
 uniform vec3 skyColor;
 uniform int lightCount;
 uniform float usesSpecularMap;
-uniform float usesAlpaMap;
+uniform float usesAlphaMap;
 
 //shadows
 uniform float shadowMapSize;
@@ -50,7 +50,7 @@ void main(void) {
 	}
 
 	//transparent in alpha texture
-	if(usesAlpaMap > 0.5) {
+	if(usesAlphaMap > 0.5) {
 		vec4 alphaColour = texture(alphaMap, pass_textureCoordinates);
 		if(alphaColour.r < 1) {
 			discard;

@@ -156,7 +156,7 @@ public class TexturedEntityShader extends ShaderProgram {
 		super.loadBoolean(UNIFORM_USES_SPECULAR_MAP, useMap);
 	}
 	
-	public void loadUsesAlpaMap(boolean useMap) {
+	public void loadUsesAlphaMap(boolean useMap) {
 		super.loadBoolean(UNIFORM_USES_ALPHA_MAP, useMap);
 	}
 

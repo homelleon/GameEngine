@@ -199,7 +199,7 @@ public class TexturedEntityRenderer implements IEntityRenderer {
 		if (material.getSpecularMap() !=null) {
 			material.getSpecularMap().bind(4);
 		}
-		shader.loadUsesAlpaMap(material.getAlphaMap() != null);
+		shader.loadUsesAlphaMap(material.getAlphaMap() != null);
 		if(material.getAlphaMap() != null) {
 			material.getAlphaMap().bind(5);
 		}

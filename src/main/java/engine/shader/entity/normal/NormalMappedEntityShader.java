@@ -130,7 +130,7 @@ public class NormalMappedEntityShader extends ShaderProgram {
 		super.loadBoolean(UNIFORM_USES_SPECULAR_MAP, useMap);
 	}
 	
-	public void loadUseAlpaMap(boolean useMap) {
+	public void loadUseAlphaMap(boolean useMap) {
 		super.loadBoolean(UNIFORM_USES_ALPHA_MAP, useMap);
 	}
 

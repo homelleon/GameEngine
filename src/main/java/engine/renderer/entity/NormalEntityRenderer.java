@@ -7,6 +7,7 @@ import java.util.Map;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector4f;
 
+import core.debug.EngineDebug;
 import core.settings.EngineSettings;
 import object.camera.ICamera;
 import object.entity.entity.IEntity;
@@ -103,7 +104,7 @@ public class NormalEntityRenderer implements IEntityRenderer {
 		if (material.getSpecularMap() != null) {
 			model.getMaterial().getSpecularMap().bind(4);
 		}
-		shader.loadUseAlpaMap(material.getAlphaMap() != null);
+		shader.loadUseAlphaMap(material.getAlphaMap() != null);
 		if (material.getAlphaMap() != null) {
 			model.getMaterial().getAlphaMap().bind(5);
 		}

@@ -26,7 +26,7 @@ uniform samplerCube enviroMap;
 
 //shadows
 uniform float usesSpecularMap;
-uniform float usesAlpaMap;
+uniform float usesAlphaMap;
 uniform sampler2D shadowMap;
 uniform float shadowMapSize;
 uniform int shadowPCFCount;
@@ -55,7 +55,7 @@ void main(void) {
 	}
 
 	//transparent in alpha texture
-	if(usesAlpaMap > 0.5) {
+	if(usesAlphaMap > 0.5) {
 		vec4 alphaColour = texture(alphaMap, pass_textureCoordinates);
 		if(alphaColour.r < 1) {
 			discard;
