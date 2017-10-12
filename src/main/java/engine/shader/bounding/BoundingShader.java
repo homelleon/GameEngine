@@ -8,10 +8,19 @@ import tool.math.Maths;
 import tool.math.Matrix4f;
 
 public class BoundingShader extends ShaderProgram {
-
-	public static final String VERTEX_FILE = EngineSettings.SHADERS_BOUNDING_PATH + "boundVertexShader.glsl";
-	public static final String FRAGMENT_FILE = EngineSettings.SHADERS_BOUNDING_PATH + "boundFragmentShader.glsl";
-
+	//----shaders
+	private static final String VERTEX_FILE = EngineSettings.SHADERS_BOUNDING_PATH + "bound_V_shader.glsl";
+	private static final String FRAGMENT_FILE = EngineSettings.SHADERS_BOUNDING_PATH + "bound_F_shader.glsl";
+	//----attributes
+	private static final String ATTRIBUTE_OUT_COLOR = "out_Color";
+	private static final String ATTRIBUTE_POSITION = "position";
+	private static final String ATTRIBUTE_TEXTURE_COORDINATES = "textureCoordinates";
+	private static final String ATTRIBUTE_NORMAL = "normal";
+	//----uniforms
+	private static final String UNIFORM_TRANSFORMATION_MATRIX = "transformationMatrix";
+	private static final String UNIFORM_PROJECTION_MATRIX = "projectionMatrix";
+	private static final String UNIFORM_VIEW_MATRIX = "viewMatrix";
+	
 	public BoundingShader() {
 		super();
 		addVertexShader(VERTEX_FILE);
@@ -21,30 +30,30 @@ public class BoundingShader extends ShaderProgram {
 
 	@Override
 	protected void loadUniformLocations() {
-		super.addUniform("transformationMatrix");
-		super.addUniform("projectionMatrix");
-		super.addUniform("viewMatrix");
+		super.addUniform(UNIFORM_TRANSFORMATION_MATRIX);
+		super.addUniform(UNIFORM_PROJECTION_MATRIX);
+		super.addUniform(UNIFORM_VIEW_MATRIX);
 	}
 
 	@Override
 	protected void bindAttributes() {
-		super.bindFragOutput(0, "out_Color");
-		super.bindAttribute(0, "position");
-		super.bindAttribute(1, "textureCoordinates");
-		super.bindAttribute(2, "normal");
+		super.bindFragOutput(0, ATTRIBUTE_OUT_COLOR);
+		super.bindAttribute(0, ATTRIBUTE_POSITION);
+		super.bindAttribute(1, ATTRIBUTE_TEXTURE_COORDINATES);
+		super.bindAttribute(2, ATTRIBUTE_NORMAL);
 	}
 
 	public void loadTranformationMatrix(Matrix4f matrix) {
-		super.loadMatrix("transformationMatrix", matrix);
+		super.loadMatrix(UNIFORM_TRANSFORMATION_MATRIX, matrix);
 	}
 
 	public void loadViewMatrix(ICamera camera) {
 		Matrix4f viewMatrix = Maths.createViewMatrix(camera);
-		super.loadMatrix("viewMatrix", viewMatrix);
+		super.loadMatrix(UNIFORM_VIEW_MATRIX, viewMatrix);
 	}
 
 	public void loadProjectionMatrix(Matrix4f projection) {
-		super.loadMatrix("projectionMatrix", projection);
+		super.loadMatrix(UNIFORM_PROJECTION_MATRIX, projection);
 	}
 
 }

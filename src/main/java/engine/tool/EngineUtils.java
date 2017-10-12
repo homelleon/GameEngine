@@ -44,6 +44,18 @@ public class EngineUtils {
 		return models;
 	}
 	
+	public static List<Model> loadModels(String objFile, String textureName, boolean normal) {
+		List<Model> models = new ArrayList<Model>();
+		OBJLoader objLoader = normal ? new OBJLoader(true) : new OBJLoader();
+		Mesh[] meshes = objLoader.load(EngineSettings.MODEL_PATH, objFile, null);
+		for(int i=0; i< meshes.length; i++) {
+			Model staticModel = new Model(objFile, meshes[i],
+					new Material(textureName, Loader.getInstance().getTextureLoader().loadTexture(EngineSettings.TEXTURE_MODEL_PATH, textureName)));
+			models.add(staticModel);
+		}
+		return models;
+	}
+	
 	public static Model loadOldModel(String objFile, String materialName) {
 		ModelData data = OBJFileLoader.loadOBJ(objFile);
 		Loader loader = Loader.getInstance();

@@ -6,10 +6,19 @@ import shader.ShaderProgram;
 import tool.math.Matrix4f;
 
 public class ParticleShader extends ShaderProgram {
-
-	private static final String VERTEX_FILE = EngineSettings.SHADERS_PARTICLE_PATH + "particleVertexShader.glsl";
-	private static final String FRAGMENT_FILE = EngineSettings.SHADERS_PARTICLE_PATH + "particleFragmentShader.glsl";
-
+	
+	//----shaders
+	private static final String VERTEX_FILE = EngineSettings.SHADERS_PARTICLE_PATH + "particle_V_shader.glsl";
+	private static final String FRAGMENT_FILE = EngineSettings.SHADERS_PARTICLE_PATH + "particle_F_shader.glsl";
+	//----attributes
+	private static final String ATTRIBUTE_POSITION = "position";
+	private static final String ATTRIBUTE_MODEL_VIEW_MATRIX = "modelViewMatrix";
+	private static final String ATTRIBUTE_TEX_OFFSETS = "texOffsets";
+	private static final String ATTRIBUTE_BLEND_FACTOR = "blendFactor";
+	//----uniforms
+	private static final String UNIFORM_NUMBER_OF_ROWS = "numberOfRows";
+	private static final String UNIFORM_PROJECTION_MATRIX = "projectionMatrix";
+	
 	public ParticleShader() {
 		super();
 		addVertexShader(VERTEX_FILE);
@@ -19,24 +28,24 @@ public class ParticleShader extends ShaderProgram {
 
 	@Override
 	protected void bindAttributes() {
-		super.bindAttribute(0, "position");
-		super.bindAttribute(1, "modelViewMatrix");
-		super.bindAttribute(5, "texOffsets");
-		super.bindAttribute(6, "blendFactor");
+		super.bindAttribute(0, ATTRIBUTE_POSITION);
+		super.bindAttribute(1, ATTRIBUTE_MODEL_VIEW_MATRIX);
+		super.bindAttribute(5, ATTRIBUTE_TEX_OFFSETS);
+		super.bindAttribute(6, ATTRIBUTE_BLEND_FACTOR);
 	}
 
 	@Override
 	protected void loadUniformLocations() {
-		super.addUniform("numberOfRows");
-		super.addUniform("projectionMatrix");
+		super.addUniform(UNIFORM_NUMBER_OF_ROWS);
+		super.addUniform(UNIFORM_PROJECTION_MATRIX);
 	}
 
 	public void loadNumberOfRows(float numberOfRows) {
-		super.loadFloat("numberOfRows", numberOfRows);
+		super.loadFloat(UNIFORM_NUMBER_OF_ROWS, numberOfRows);
 	}
 
 	public void loadProjectionMatrix(Matrix4f projectionMatrix) {
-		super.loadMatrix("projectionMatrix", projectionMatrix);
+		super.loadMatrix(UNIFORM_PROJECTION_MATRIX, projectionMatrix);
 	}
 
 }

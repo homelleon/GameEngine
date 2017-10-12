@@ -185,22 +185,26 @@ public class TexturedEntityRenderer implements IEntityRenderer {
 		Mesh rawModel = model.getMesh();
 		VAO vao = rawModel.getVAO();
 		vao.bind(0, 1, 2);
-		Material texture = model.getMaterial();
-		shader.loadNumberOfRows(texture.getDiffuseMap().getNumberOfRows());
-		if (texture.getDiffuseMap().isHasTransparency()) {
+		Material material = model.getMaterial();
+		shader.loadNumberOfRows(material.getDiffuseMap().getNumberOfRows());
+		if (material.getDiffuseMap().isHasTransparency()) {
 			OGLUtils.cullBackFaces(false);
 		}
-		shader.loadFakeLightingVariable(texture.isUseFakeLighting());
-		shader.loadShineVariables(texture.getShininess(), texture.getReflectivity());
-		shader.loadReflectiveFactor(texture.getReflectiveFactor());
-		shader.loadRefractVariables(texture.getRefractiveIndex(), texture.getRefractiveFactor());
+		shader.loadFakeLightingVariable(material.isUseFakeLighting());
+		shader.loadShineVariables(material.getShininess(), material.getReflectivity());
+		shader.loadReflectiveFactor(material.getReflectiveFactor());
+		shader.loadRefractVariables(material.getRefractiveIndex(), material.getRefractiveFactor());
 		model.getMaterial().getDiffuseMap().bind(0);
-		shader.loadUsesSpecularMap(texture.getSpecularMap() !=null);
-		if (texture.getSpecularMap() !=null) {
-			model.getMaterial().getSpecularMap().bind(1);
+		shader.loadUsesSpecularMap(material.getSpecularMap() !=null);
+		if (material.getSpecularMap() !=null) {
+			material.getSpecularMap().bind(4);
 		}
-		if ((texture.getReflectiveFactor() > 0) || (texture.getRefractiveFactor() > 0)) {
-			GL13.glActiveTexture(GL13.GL_TEXTURE3);
+		shader.loadUsesAlpaMap(material.getAlphaMap() != null);
+		if(material.getAlphaMap() != null) {
+			material.getAlphaMap().bind(5);
+		}
+		if ((material.getReflectiveFactor() > 0) || (material.getRefractiveFactor() > 0)) {
+			GL13.glActiveTexture(GL13.GL_TEXTURE7);
 			GL11.glBindTexture(GL13.GL_TEXTURE_CUBE_MAP, environmentMap.textureId);
 		}
 	}

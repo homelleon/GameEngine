@@ -14,8 +14,8 @@ import org.lwjgl.util.vector.Vector4f;
 public class EngineSettings {
 
 	/* display settings */
-	public static final int DISPLAY_WIDTH = 800; // 1920;
-	public static final int DISPLAY_HEIGHT = 600; // 1080;
+	public static final int DISPLAY_WIDTH = 1920; // 1920;
+	public static final int DISPLAY_HEIGHT = 1080; // 1080;
 	public static final int FAR_PLANE = 100000;
 	public static final float NEAR_PLANE = 0.5f;
 	public static final int FPS_CAP = 90;
@@ -110,6 +110,7 @@ public class EngineSettings {
 	public final static String TEXTURE_NORMAL_MAP_PATH = TEXTURE_PATH + "normalMap/";
 	public final static String TEXTURE_SKYBOX_PATH = TEXTURE_PATH + "skybox/";
 	public final static String TEXTURE_SPECULAR_MAP_PATH = TEXTURE_PATH + "specularMap/";
+	public final static String TEXTURE_ALPHA_MAP_PATH = TEXTURE_PATH + "alphaMap/";
 
 	/* objects */
 	public final static String MAP_PATH = RES_PATH + "map/";

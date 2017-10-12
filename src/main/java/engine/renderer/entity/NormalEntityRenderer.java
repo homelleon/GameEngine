@@ -90,17 +90,22 @@ public class NormalEntityRenderer implements IEntityRenderer {
 		Mesh rawModel = model.getMesh();
 		VAO vao = rawModel.getVAO();
 		vao.bind(0, 1, 2, 3);
-		Material texture = model.getMaterial();
-		shader.loadNumberOfRows(texture.getDiffuseMap().getNumberOfRows());
-		if (texture.getDiffuseMap().isHasTransparency()) {
+		Material material = model.getMaterial();
+		shader.loadNumberOfRows(material.getDiffuseMap().getNumberOfRows());
+		if (material.getDiffuseMap().isHasTransparency()) {
 			OGLUtils.cullBackFaces(false);
 		}
-		shader.loadShineVariables(texture.getShininess(), texture.getReflectivity());
+		shader.loadFakeLightingVariable(material.isUseFakeLighting());
+		shader.loadShineVariables(material.getShininess(), material.getReflectivity());
 		model.getMaterial().getDiffuseMap().bind(0);
-		model.getMaterial().getNormalMap().bind(2);
-		shader.loadUseSpecularMap(texture.getSpecularMap() !=null);
-		if (texture.getSpecularMap() !=null) {
-			model.getMaterial().getSpecularMap().bind(1);
+		model.getMaterial().getNormalMap().bind(1);
+		shader.loadUseSpecularMap(material.getSpecularMap() !=null);
+		if (material.getSpecularMap() != null) {
+			model.getMaterial().getSpecularMap().bind(4);
+		}
+		shader.loadUseAlpaMap(material.getAlphaMap() != null);
+		if (material.getAlphaMap() != null) {
+			model.getMaterial().getAlphaMap().bind(5);
 		}
 	}
 

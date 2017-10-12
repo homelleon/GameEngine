@@ -18,6 +18,7 @@ import object.light.Light;
 import object.scene.IScene;
 import object.texture.material.Material;
 import object.water.WaterTile;
+import primitive.buffer.Loader;
 import primitive.model.Model;
 import tool.EngineUtils;
 import tool.math.vector.Vector3f;
@@ -46,9 +47,7 @@ public class SceneManager implements ISceneManager {
 	}
 	
 	private void initializeEditor(IScene scene) {
-		//List<Model> cubeModels = new ArrayList<Model>();
-		//cubeModels.add(EngineUtils.loadOldModel("cube", "Cube1"));
-		List<Model> cubeModels = EngineUtils.loadModels("tree", "bark");
+		List<Model> cubeModels = EngineUtils.loadModels("xuchilbara", "xuchilbara_dif", true);
 		IPlayer player1 = new Player(
 				playerName, 
 				cubeModels, 
@@ -56,20 +55,27 @@ public class SceneManager implements ISceneManager {
 				new Vector3f(0, 0, 0), 
 				0.2f
 		);
+		
 		player1.setBaseName("cubeEntity1");
 		player1.getModels().forEach(model -> model.getMaterial().setShininess(5.0f));
+		player1.getModels().get(0).getMaterial().setNormalMap(
+				Loader.getInstance().getTextureLoader().loadTexture(
+						EngineSettings.TEXTURE_NORMAL_MAP_PATH, "xuchilbara_n"));
+		player1.getModels().get(0).getMaterial().setSpecularMap(
+				Loader.getInstance().getTextureLoader().loadTexture(
+						EngineSettings.TEXTURE_SPECULAR_MAP_PATH, "xuchilbara_spec"));
 		scene.setPlayer(player1);
 		scene.getEntities().add(player1);
 		scene.setCamera(new TargetCamera(cameraName, player1));
 		scene.setSun(new Light("Sun", 
-				new Vector3f(-1000, 5000, -1000), 
+				new Vector3f(1000, 5000, 1000), 
 				new Vector3f(1.3f, 1.3f, 1.3f)));
 		scene.getLights().add(scene.getSun());
 	}
 	
 	private void initializeGame(IScene scene) {
 		/*------------------PLAYER-----------------*/
-		List<Model> cubeModels = EngineUtils.loadModels("spartan", "spartan");
+		List<Model> cubeModels = EngineUtils.loadModels("xuchilbara", "xuchilbara_dif", true);
 		if(EngineDebug.hasDebugPermission()) {
 			EngineDebug.println(cubeModels.get(0).getName(), 2);
 		}
@@ -80,12 +86,20 @@ public class SceneManager implements ISceneManager {
 				new Vector3f(0, 0, 0), 
 				0.07f
 		);
-		player1.setBaseName("spartanEntity");
+		player1.setBaseName("xuchilbaraEntity");
 		player1.getModels().forEach(model -> {
 			Material material = model.getMaterial();
-			//material.setReflectiveFactor(1.0f);
-			//material.setRefractiveFactor(1.0f);
-			material.setShininess(5.0f);			
+			material.getDiffuseMap().setHasTransparency(true);
+			material.setShininess(0.1f);
+			material.setNormalMap(
+				Loader.getInstance().getTextureLoader().loadTexture(
+						EngineSettings.TEXTURE_NORMAL_MAP_PATH, "xuchilbara_n"));
+			material.setSpecularMap(
+					Loader.getInstance().getTextureLoader().loadTexture(
+							EngineSettings.TEXTURE_SPECULAR_MAP_PATH, "xuchilbara_spec"));
+			material.setAlphaMap(
+					Loader.getInstance().getTextureLoader().loadTexture(
+							EngineSettings.TEXTURE_ALPHA_MAP_PATH, "xuchilbara_o"));
 		});
 
 		/*--------------UI-------------------*/
@@ -117,7 +131,7 @@ public class SceneManager implements ISceneManager {
 		scene.getAudioSources().getMaster().setListenerData(scene.getPlayer().getPosition());
 		scene.getEntities().add(player1);
 		scene.getFrustumEntities().addEntityInNodes(player1);
-		scene.getEntities().addAll(EngineUtils.createObjectField(500, 500, 5000, 4, 0.1f));
+		scene.getEntities().addAll(EngineUtils.createObjectField(500, 500, 1000, 4, 0.1f));
 		scene.getEntities().getAll()
 			.forEach(entity -> scene.getFrustumEntities().addEntityInNodes(entity));
 		scene.setCamera(new TargetCamera(cameraName, player1));

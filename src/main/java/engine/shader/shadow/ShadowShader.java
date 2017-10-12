@@ -6,14 +6,17 @@ import tool.math.Matrix4f;
 import tool.math.vector.Vector2f;
 
 public class ShadowShader extends ShaderProgram {
-
-	private static final String VERTEX_FILE = EngineSettings.SHADERS_SHADOW_PATH + "shadowVertexShader.glsl";
-	private static final String FRAGMENT_FILE = EngineSettings.SHADERS_SHADOW_PATH + "shadowFragmentShader.glsl";
-
+	
+	//----shaders
+	private static final String VERTEX_FILE = EngineSettings.SHADERS_SHADOW_PATH + "shadow_V_shader.glsl";
+	private static final String FRAGMENT_FILE = EngineSettings.SHADERS_SHADOW_PATH + "shadow_F_shader.glsl";
+	//----atributes
 	private static final String ATTRIBUTE_POSITION = "in_position";
 	private static final String ATTRIBUTE_TEXTURE_COORDINATES = "in_textureCoords";
-	
+	//----uniforms
+	//matrix
 	private static final String UNIFORM_MVP_MATRIX = "mvpMatrix";
+	//texture coords variables
 	private static final String UNIFORM_OFFSET = "offset";
 	private static final String UNIFORM_NUMBER_OF_ROWS = "numberOfRows";
 	
@@ -32,7 +35,9 @@ public class ShadowShader extends ShaderProgram {
 
 	@Override
 	protected void loadUniformLocations() {
+		//matrix
 		super.addUniform(UNIFORM_MVP_MATRIX);
+		//texture coords variables
 		super.addUniform(UNIFORM_OFFSET);
 		super.addUniform(UNIFORM_NUMBER_OF_ROWS);
 

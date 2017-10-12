@@ -5,14 +5,17 @@ import shader.ShaderProgram;
 
 public class CombineShader extends ShaderProgram {
 
-	/*
-	 * CombineShader - шейдер для объединения других фильтров постобработки
-	 * 03.02.17 ------------------------------
-	 */
-
-	private static final String VERTEX_FILE = EngineSettings.SHADERS_BLOOM_PATH + "simpleVertexShader.glsl";
-	private static final String FRAGMENT_FILE = EngineSettings.SHADERS_BLOOM_PATH + "combineFragmentShader.glsl";
-
+	//----shaders
+	private static final String VERTEX_FILE = EngineSettings.SHADERS_BLOOM_PATH + "simple_V_shader.glsl";
+	private static final String FRAGMENT_FILE = EngineSettings.SHADERS_BLOOM_PATH + "combine_F_shader.glsl";
+	//----attributes
+	private static final String ATTRIBUTE_POSITION = "position";
+	//----uniforms
+	private static final String UNIFORM_COLOR_TEXTURE = "colorTexture";
+	private static final String UNIFORM_HIGHLIGHT_TEXTURE2 = "highlightTexture2";
+	private static final String UNIFORM_HIGHLIGHT_TEXTURE4 = "highlightTexture4";
+	private static final String UNIFORM_HIGHLIGHT_TEXTURE8 = "highlightTexture8";
+	
 	protected CombineShader() {
 		super();
 		addVertexShader(VERTEX_FILE);
@@ -22,22 +25,22 @@ public class CombineShader extends ShaderProgram {
 
 	@Override
 	protected void bindAttributes() {
-		super.bindAttribute(0, "position");
+		super.bindAttribute(0, ATTRIBUTE_POSITION);
 	}
 
 	@Override
 	protected void loadUniformLocations() {
-		super.addUniform("colourTexture");
-		super.addUniform("highlightTexture2");
-		super.addUniform("highlightTexture4");
-		super.addUniform("highlightTexture8");
+		super.addUniform(UNIFORM_COLOR_TEXTURE);
+		super.addUniform(UNIFORM_HIGHLIGHT_TEXTURE2);
+		super.addUniform(UNIFORM_HIGHLIGHT_TEXTURE4);
+		super.addUniform(UNIFORM_HIGHLIGHT_TEXTURE8);
 	}
 
 	protected void connectTextureUnits() {
-		super.loadInt("colourTexture", 0);
-		super.loadInt("highlightTexture2", 1);
-		super.loadInt("highlightTexture4", 2);
-		super.loadInt("highlightTexture8", 3);
+		super.loadInt(UNIFORM_COLOR_TEXTURE, 0);
+		super.loadInt(UNIFORM_HIGHLIGHT_TEXTURE2, 1);
+		super.loadInt(UNIFORM_HIGHLIGHT_TEXTURE4, 2);
+		super.loadInt(UNIFORM_HIGHLIGHT_TEXTURE8, 3);
 	}
 
 }

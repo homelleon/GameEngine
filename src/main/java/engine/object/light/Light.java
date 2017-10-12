@@ -12,7 +12,7 @@ import tool.math.vector.Vector3f;
 public class Light extends GameObject implements ILight {
 
 	private Vector3f position; // позиция
-	private Vector3f colour; // цвеь
+	private Vector3f color; // цвеь
 	private Vector3f attenuation = new Vector3f(1, 0, 0); // затухание
 
 	private String name;
@@ -20,13 +20,13 @@ public class Light extends GameObject implements ILight {
 	public Light(String name, Vector3f position, Vector3f colour) {
 		super(name);
 		this.position = position;
-		this.colour = colour;
+		this.color = colour;
 	}
 
 	public Light(String name, Vector3f position, Vector3f colour, Vector3f attenuation) {
 		super(name);
 		this.position = position;
-		this.colour = colour;
+		this.color = colour;
 		this.attenuation = attenuation;
 
 	}
@@ -44,12 +44,12 @@ public class Light extends GameObject implements ILight {
 		this.position = position;
 	}
 
-	public Vector3f getColour() {
-		return colour;
+	public Vector3f getColor() {
+		return color;
 	}
 
-	public void setColour(Vector3f colour) {
-		this.colour = colour;
+	public void setColor(Vector3f color) {
+		this.color = color;
 	}
 
 }

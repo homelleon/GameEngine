@@ -176,7 +176,7 @@ public class MainRenderer implements IMainRenderer {
 		OGLUtils.depthTest(true);
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 		GL11.glClearColor(EngineSettings.DISPLAY_RED, EngineSettings.DISPLAY_GREEN, EngineSettings.DISPLAY_BLUE, 1);
-		getShadowMapTexture().bind(5);
+		getShadowMapTexture().bind(6);
 	}
 	
 	private void prepareFrustumEntities(IScene scene, boolean isLowDistance) {

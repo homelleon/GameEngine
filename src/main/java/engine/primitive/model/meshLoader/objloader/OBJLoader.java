@@ -357,6 +357,10 @@ public class OBJLoader {
 			v2.setNormal(normals.get(normalIndices[2]));
 			v3.setNormal(normals.get(normalIndices[3]));
 			
+			if(this.generateTangents) {
+				generateTangents(v0, v1, v2);
+				generateTangents(v2, v1, v3);
+			}			
 			addToSmoothingGroup(objects.peekLast().getPolygonGroups().peekLast().getSmoothingGroups().get(currentSmoothingGroup),v0,v1,v2,v3);
 		}
 		
@@ -390,6 +394,10 @@ public class OBJLoader {
 				v1.setTextureCoord(texCoords.get(texCoordIndices[1]));
 				v2.setTextureCoord(texCoords.get(texCoordIndices[2]));
 				v3.setTextureCoord(texCoords.get(texCoordIndices[3]));
+				if(this.generateTangents) {
+					generateTangents(v0, v1, v2);
+					generateTangents(v2, v1, v3);
+				}
 				
 				addToSmoothingGroup(objects.peekLast().getPolygonGroups().peekLast().getSmoothingGroups().get(currentSmoothingGroup),v0,v1,v2,v3);
 			}
@@ -414,6 +422,10 @@ public class OBJLoader {
 				v1.setTextureCoord(texCoords.get(texCoordIndices[1]));
 				v2.setTextureCoord(texCoords.get(texCoordIndices[2]));
 				v3.setTextureCoord(texCoords.get(texCoordIndices[3]));
+				if(this.generateTangents) {
+					generateTangents(v0, v1, v2);
+					generateTangents(v2, v1, v3);
+				}
 				
 				addToSmoothingGroup(objects.peekLast().getPolygonGroups().peekLast().getSmoothingGroups().get(currentSmoothingGroup),v0,v1,v2,v3);
 			}		
@@ -431,6 +443,10 @@ public class OBJLoader {
 			Vertex v1 = new Vertex(vertices.get(vertexIndices[1]).getPos());
 			Vertex v2 = new Vertex(vertices.get(vertexIndices[2]).getPos());
 			Vertex v3 = new Vertex(vertices.get(vertexIndices[3]).getPos());
+			if(this.generateTangents) {
+				generateTangents(v0, v1, v2);
+				generateTangents(v2, v1, v3);
+			}
 			
 			addToSmoothingGroup(objects.peekLast().getPolygonGroups().peekLast().getSmoothingGroups().get(currentSmoothingGroup),v0,v1,v2,v3);
 		}

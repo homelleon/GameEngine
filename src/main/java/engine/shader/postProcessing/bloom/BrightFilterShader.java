@@ -10,10 +10,13 @@ import shader.ShaderProgram;
 */
 
 public class BrightFilterShader extends ShaderProgram {
-
-	private static final String VERTEX_FILE = EngineSettings.SHADERS_BLOOM_PATH + "simpleVertexShader.glsl";
-	private static final String FRAGMENT_FILE = EngineSettings.SHADERS_BLOOM_PATH + "brightFilterFragment.glsl";
-
+	
+	//----shaders
+	private static final String VERTEX_FILE = EngineSettings.SHADERS_BLOOM_PATH + "simple_V_shader.glsl";
+	private static final String FRAGMENT_FILE = EngineSettings.SHADERS_BLOOM_PATH + "brightFilter_F_shader.glsl";
+	//----attributes
+	private static final String ATTRIBUTE_POSITION = "position";
+	
 	public BrightFilterShader() {
 		super();
 		addVertexShader(VERTEX_FILE);
@@ -23,11 +26,10 @@ public class BrightFilterShader extends ShaderProgram {
 
 	@Override
 	protected void bindAttributes() {
-		super.bindAttribute(0, "position");
+		super.bindAttribute(0, ATTRIBUTE_POSITION);
 	}
 
 	@Override
-	protected void loadUniformLocations() {
-	}
+	protected void loadUniformLocations() {}
 
 }

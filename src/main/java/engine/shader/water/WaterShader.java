@@ -11,8 +11,36 @@ import tool.math.vector.Vector3f;
 
 public class WaterShader extends ShaderProgram {
 
-	private final static String VERTEX_FILE = EngineSettings.SHADERS_WATER_PATH + "waterVertexShader.glsl";
-	private final static String FRAGMENT_FILE = EngineSettings.SHADERS_WATER_PATH + "waterFragmentShader.glsl";
+	//----shaders
+	private final static String VERTEX_FILE = EngineSettings.SHADERS_WATER_PATH + "water_V_shader.glsl";
+	private final static String FRAGMENT_FILE = EngineSettings.SHADERS_WATER_PATH + "water_F_shader.glsl";
+	//----attributes
+	private final static String ATTRIBUTE_OUT_COLOR = "out_Color";
+	private final static String ATTRIBUTE_OUT_BRIGHT_COLOR = "out_BrightColor";
+	private final static String ATTRIBUTE_POSITION = "position";
+	//----uniforms
+	//matrix
+	private final static String UNIFORM_PROJECTION_MATRIX = "projectionMatrix";
+	private final static String UNIFORM_VIEW_MATRIX = "viewMatrix";
+	private final static String UNIFORM_MODEL_MATRIX = "modelMatrix";
+	private final static String UNIFORM_CAMERA_POSITION = "cameraPosition";	
+	//material
+	private final static String UNIFORM_NORMAL_MAP = "normalMap";
+	private final static String UNIFORM_DUDV_MAP = "dudvMap";
+	private final static String UNIFORM_DEPTH_MAP = "depthMap";
+	private final static String UNIFORM_REFLECTION_TEXTURE = "reflectionTexture";
+	private final static String UNIFORM_REFRACTION_TEXTURE = "refractionTexture";		
+	//ambient variables
+	private final static String UNIFORM_SKY_COLOR = "skyColor";
+	private final static String UNIFORM_FOG_DENSITY = "fogDensity";
+	//texture coords variables
+	private final static String UNIFORM_TILING = "tiling";
+	//wave varibales
+	private final static String UNIFORM_WAVE_STRENGTH = "waveStrength";
+	private final static String UNIFORM_MOVE_FACTOR = "moveFactor";	
+	private final static String UNIFORM_LIGHT_COLOR = "lightColor";
+	//light
+	private final static String UNIFORM_LIGHT_POSITION = "lightPosition";
 	
 	public WaterShader() {
 		super();
@@ -23,76 +51,81 @@ public class WaterShader extends ShaderProgram {
 
 	@Override
 	protected void bindAttributes() {
-		super.bindFragOutput(0, "out_Color");
-		super.bindFragOutput(1, "out_BrightColor");
-		bindAttribute(0, "position");
+		super.bindFragOutput(0, ATTRIBUTE_OUT_COLOR);
+		super.bindFragOutput(1, ATTRIBUTE_OUT_BRIGHT_COLOR);
+		bindAttribute(0, ATTRIBUTE_POSITION);
 	}
 
 	@Override
 	protected void loadUniformLocations() {
-		addUniform("projectionMatrix");
-		addUniform("viewMatrix");
-		addUniform("modelMatrix");
-		addUniform("reflectionTexture");
-		addUniform("refractionTexture");
-		addUniform("dudvMap");
-		addUniform("moveFactor");
-		addUniform("cameraPosition");
-		addUniform("normalMap");
-		addUniform("lightColour");
-		addUniform("lightPosition");
-		addUniform("depthMap");
-		addUniform("tiling");
-		addUniform("skyColour");
-		addUniform("fogDensity");
-		addUniform("waveStrength");
+		//matrix
+		addUniform(UNIFORM_PROJECTION_MATRIX);
+		addUniform(UNIFORM_VIEW_MATRIX);
+		addUniform(UNIFORM_MODEL_MATRIX);
+		addUniform(UNIFORM_CAMERA_POSITION);
+		//material
+		addUniform(UNIFORM_NORMAL_MAP);
+		addUniform(UNIFORM_DUDV_MAP);
+		addUniform(UNIFORM_DEPTH_MAP);
+		addUniform(UNIFORM_REFLECTION_TEXTURE);
+		addUniform(UNIFORM_REFRACTION_TEXTURE);	
+		//ambient variables
+		addUniform(UNIFORM_SKY_COLOR);
+		addUniform(UNIFORM_FOG_DENSITY);
+		//texture coords variables
+		addUniform(UNIFORM_TILING);
+		//wave varibales
+		addUniform(UNIFORM_WAVE_STRENGTH);
+		addUniform(UNIFORM_MOVE_FACTOR);		
+		addUniform(UNIFORM_LIGHT_COLOR);
+		//light
+		addUniform(UNIFORM_LIGHT_POSITION);
 	}
 
 	public void connectTextureUnits() {
-		super.loadInt("reflectionTexture", 0);
-		super.loadInt("refractionTexture", 1);
-		super.loadInt("dudvMap", 2);
-		super.loadInt("normalMap", 3);
-		super.loadInt("depthMap", 4);
-	}
-
-	public void loadLight(Light sun) {
-		super.loadVector("lightColour", sun.getColour());
-		super.loadVector("lightPosition", sun.getPosition());
-	}
-
-	public void loadMoveFactor(float factor) {
-		super.loadFloat("moveFactor", factor);
-	}
-
-	public void loadTilingSize(float size) {
-		super.loadFloat("tiling", size);
-	}
-
-	public void loadWaveStrength(float strength) {
-		super.loadFloat("waveStrength", strength);
-	}
-
-	public void loadSkyColour(float r, float g, float b) {
-		super.loadVector("skyColour", new Vector3f(r, g, b));
-	}
-
-	public void loadFogDensity(float density) {
-		super.loadFloat("fogDensity", density);
+		super.loadInt(UNIFORM_REFLECTION_TEXTURE, 0);
+		super.loadInt(UNIFORM_REFRACTION_TEXTURE, 1);
+		super.loadInt(UNIFORM_DUDV_MAP, 2);
+		super.loadInt(UNIFORM_NORMAL_MAP, 3);
+		super.loadInt(UNIFORM_DEPTH_MAP, 4);
 	}
 
 	public void loadProjectionMatrix(Matrix4f projection) {
-		loadMatrix("projectionMatrix", projection);
+		super.loadMatrix(UNIFORM_PROJECTION_MATRIX, projection);
 	}
 
 	public void loadViewMatrix(ICamera camera) {
 		Matrix4f viewMatrix = Maths.createViewMatrix(camera);
-		loadMatrix("viewMatrix", viewMatrix);
-		super.loadVector("cameraPosition", camera.getPosition());
+		super.loadMatrix(UNIFORM_VIEW_MATRIX, viewMatrix);
+		super.loadVector(UNIFORM_CAMERA_POSITION, camera.getPosition());
 	}
 
 	public void loadModelMatrix(Matrix4f modelMatrix) {
-		loadMatrix("modelMatrix", modelMatrix);
+		super.loadMatrix(UNIFORM_MODEL_MATRIX, modelMatrix);
 	}
 
+	public void loadLight(Light sun) {
+		super.loadVector(UNIFORM_LIGHT_COLOR, sun.getColor());
+		super.loadVector(UNIFORM_LIGHT_POSITION, sun.getPosition());
+	}
+
+	public void loadMoveFactor(float factor) {
+		super.loadFloat(UNIFORM_MOVE_FACTOR, factor);
+	}
+
+	public void loadTilingSize(float size) {
+		super.loadFloat(UNIFORM_TILING, size);
+	}
+
+	public void loadWaveStrength(float strength) {
+		super.loadFloat(UNIFORM_WAVE_STRENGTH, strength);
+	}
+
+	public void loadSkyColour(float r, float g, float b) {
+		super.loadVector(UNIFORM_SKY_COLOR, new Vector3f(r, g, b));
+	}
+
+	public void loadFogDensity(float density) {
+		super.loadFloat(UNIFORM_FOG_DENSITY, density);
+	}
 }
