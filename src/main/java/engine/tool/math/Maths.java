@@ -191,7 +191,11 @@ public class Maths {
 	 */
 
 	public static int tailOfDivisionNoReminder(int value1, int value2) {
-		return value1 - (int) Math.floor(value1 / value2) * value2;
+		if(value2 == 0) {
+			return 0;
+		} else {
+			return value1 - (int) Math.floor(value1 / value2) * value2;
+		}
 	}
 
 	public static boolean pointIsOnRay(Vector3f point, Vector3f ray) {

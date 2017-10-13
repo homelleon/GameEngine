@@ -1,16 +1,16 @@
 package renderer.voxel;
 
-import java.util.AbstractMap.SimpleEntry;
 import java.util.Collection;
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
+import org.lwjgl.system.linux.X11.Functions;
 import org.lwjgl.util.vector.Vector4f;
 
-import core.debug.EngineDebug;
 import core.settings.EngineSettings;
 import manager.voxel.IChunkManager;
 import object.camera.ICamera;
@@ -131,11 +131,15 @@ public class VoxelRenderer {
 		bindMaterial(texture);
 		
 		getAllBlocks(chunkManager, frustum, camera).stream()
-			.peek(i -> prepareInstance(chunkManager.getBlockPositionByGeneralIndex(i)))
-			.map(i -> new SimpleEntry<Integer, FaceCullingData>(i, isNeedBlockCulling(chunkManager, i)))
-			.filter(entry -> !isAllFaceCulled(entry.getValue()))
-			.flatMap(entry -> IntStream.range(0, 6)
-					.filter(face -> !entry.getValue().getFace(face))
+			.filter(generalIndex -> chunkManager.getBlockByGeneralIndex(generalIndex).getIsActive())
+			.map(generalIndex -> {
+				prepareInstance(chunkManager.getBlockPositionByGeneralIndex(generalIndex));
+				return generalIndex;
+			})
+			.map(generalIndex -> isNeedBlockCulling(chunkManager, generalIndex))
+			.filter(blockCullingData -> !isAllFaceCulled(blockCullingData))
+			.flatMap(blockCullingData -> IntStream.range(0, 6)
+//					.filter(face -> !blockCullingData.getFace(face))
 					.boxed()
 			)
 			.forEach(this::drawElements);
@@ -145,26 +149,15 @@ public class VoxelRenderer {
 	}
 	
 	private List<Integer> getAllBlocks(IChunkManager chunkManager, Frustum frustum, ICamera camera) {
-//		return IntStream.range(0, (int) Math.pow(chunkManager.getSize(), 3))		
-//				.filter(i -> checkVisibility(frustum, chunkManager.getChunkPositionByChunkIndex(i), CHUNK_RADIUS, camera))
-//				.filter(i -> chunkManager.getChunk(i).getIsAcitve())
-//				.mapToObj(i -> new SimpleEntry<Integer, IntStream>(i, IntStream.rangeClosed(0, (int) Math.pow(EngineSettings.VOXEL_CHUNK_SIZE, 3))
-//						.map(a -> i * (int) Math.pow(EngineSettings.VOXEL_CHUNK_SIZE, 3) + a)
-//						))
-//				.flatMap(i -> i.getValue().boxed())
-//				.collect(Collectors.toList());
 		return IntStream.range(0, (int) Math.pow(chunkManager.getSize(), 3)).parallel()
 					.sorted()
-					.filter(chunk -> checkVisibility(frustum, chunkManager.getChunkPositionByChunkIndex(chunk), CHUNK_RADIUS, camera))
-					.filter(chunk -> chunkManager.getChunk(chunk).getIsAcitve())
-					.map(chunk -> chunk * (int) Math.pow(EngineSettings.VOXEL_CHUNK_SIZE, 3))
-					.flatMap(newChunk -> IntStream.range(0, (int) EngineSettings.VOXEL_CHUNK_SIZE).parallel()
-							.map(x -> x * (int) Math.pow(EngineSettings.VOXEL_CHUNK_SIZE, 2) + newChunk))
-					.flatMap(newX -> IntStream.range(0, EngineSettings.VOXEL_CHUNK_SIZE).parallel()
-							.map(y -> y * EngineSettings.VOXEL_CHUNK_SIZE + newX))
-					.flatMap(newY -> IntStream.range(0, EngineSettings.VOXEL_CHUNK_SIZE).parallel()
-							.map(z -> z + newY))
-					.mapToObj(i -> i)
+					.filter(chunkIndex -> checkVisibility(frustum, chunkManager.getChunkPositionByChunkIndex(chunkIndex), CHUNK_RADIUS, camera))
+					.filter(chunkIndex -> chunkManager.getChunk(chunkIndex).getIsAcitve())
+					.map(chunkIndex -> chunkIndex * (int) Math.pow(EngineSettings.VOXEL_CHUNK_SIZE, 3))
+					.flatMap(chunkIndex -> 
+								IntStream.range(0, (int) Math.pow(EngineSettings.VOXEL_CHUNK_SIZE, 3)).parallel()
+									.map(block -> block + chunkIndex))
+					.mapToObj(generalIndex -> generalIndex)
 					.collect(Collectors.toList());
 	}
 
@@ -206,30 +199,14 @@ public class VoxelRenderer {
 	}
 	
 	private FaceCullingData isNeedBlockCulling(IChunkManager chunkManager, int index) {
+		FaceCullingData fcData = new FaceCullingData(index);
 		Chunk chunk = chunkManager.getChunkByGeneralIndex(index);
-		Vector3i blockVector = chunkManager.getBlockIndexVector(index);
-		return isNeedBlockCulling(chunk, blockVector.x, blockVector.y, blockVector.z);
-	}
-
-	private FaceCullingData isNeedBlockCulling(Chunk chunk, int x, int y, int z) {
-		FaceCullingData fcData = new FaceCullingData();
-		for (int face = 0; face < 6; face++) {
-			if (isFaceCovered(chunk, x, y, z, face)) {
+		Vector3i blockIndexPosition = chunkManager.getBlockIndexVectorByGenerealIndex(index);
+		for(int face = 0; face < 6; face++) {
+			if(isFaceCovered(chunk, blockIndexPosition.x, blockIndexPosition.y, blockIndexPosition.z, face)) {
 				fcData.setFaceRendering(face, true);
 			}
 		}
-
-		return fcData;
-	}
-
-	private FaceCullingData isNeedChunkCulling(IChunkManager chunkManager, int index) {
-		FaceCullingData fcData = new FaceCullingData();
-		for (int face = 0; face < 6; face++) {
-			if (isFaceCovered(chunkManager, index, face)) {
-				fcData.setFaceRendering(face, true);
-			}
-		}
-
 		return fcData;
 	}
 

@@ -1,10 +1,12 @@
 package object.voxel.data;
 
 public class FaceCullingData {
-
+	
+	int index = 0;
 	private boolean[] face = new boolean[6];
 
-	public FaceCullingData() {
+	public FaceCullingData(int index) {
+		this.index = index;
 		for (int i = 0; i < 6; i++) {
 			this.face[i] = false;
 		}
@@ -22,6 +24,10 @@ public class FaceCullingData {
 
 	public void setFaceRendering(int index, boolean value) {
 		this.face[index] = value;
+	}
+	
+	public int getIndex() {
+		return this.index;
 	}
 
 }

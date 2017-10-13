@@ -14,6 +14,13 @@ import tool.math.vector.Vector3i;
  */
 public interface IChunkManager {
 	
+	public static final int FRONT = 0;
+	public static final int BACK = 1;
+	public static final int TOP = 2;
+	public static final int BOTTOM = 3;
+	public static final int LEFT = 4;
+	public static final int RIGHT = 5;
+	
 	/**
 	 * Adds one chunk ito the chunks array.
 	 * <p>
@@ -135,10 +142,10 @@ public interface IChunkManager {
 	/**
 	 * Gets block 3 dimentional index within a chunk by general index value.
 	 * 
-	 * @param index value
+	 * @param generalIndex value
 	 * @return {@link Vector3i} index position in 3 dimentions within a chunk
 	 */
-	Vector3i getBlockIndexVector(int index);	
+	Vector3i getBlockIndexVectorByGenerealIndex(int generalIndex);	
 
 
 	/**

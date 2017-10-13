@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import core.settings.EngineSettings;
 import object.voxel.Block;
@@ -36,17 +37,15 @@ public class ChunkManager implements IChunkManager {
 	public ChunkManager(int size, Vector3f position) {
 		this.size = size;
 		this.position = position;
-		chunks = IntStream.range(0, size)
-			.flatMap(x -> IntStream.range(0, size))
-			.flatMap(y -> IntStream.range(0, size))
-			.mapToObj(z -> new Chunk())
+		//chunk creation
+		chunks = IntStream.range(0, (int) Math.pow(size, 3))
+			.sorted()
+			.mapToObj(index -> new Chunk())
 			.collect(Collectors.toList());
-		this.createVoxels();
-	}
-	
-	private void createVoxels() {
-		IntStream.rangeClosed(0, (int) (Math.pow(EngineSettings.VOXEL_CHUNK_SIZE, 3) * (Math.pow(size, 3))))
-		.forEach(blockIndex -> getBlockByGeneralIndex(blockIndex).setIsActive(true));
+		//blocks activation TODO: need to be deleted in future
+		chunks.parallelStream()
+			.flatMap(chunk -> Stream.of(chunk.getBlocks()))
+			.forEach(block -> block.setIsActive(true));
 	}
 
 	@Override
@@ -170,10 +169,10 @@ public class ChunkManager implements IChunkManager {
 	}
 	
 	@Override
-	public Vector3i getBlockIndexVector(int blockIndex) {
-		int x = (int) Math.floor(blockIndex / Math.pow(EngineSettings.VOXEL_CHUNK_SIZE, 2));
-		int y = (int) Math.floor(blockIndex / EngineSettings.VOXEL_CHUNK_SIZE);
-		int z = blockIndex;
+	public Vector3i getBlockIndexVectorByGenerealIndex(int generalIndex) {
+		int x = (int) Math.floor(generalIndex / Math.pow(EngineSettings.VOXEL_CHUNK_SIZE, 2));
+		int y = (int) Math.floor(generalIndex / EngineSettings.VOXEL_CHUNK_SIZE);
+		int z = generalIndex;
 		IVectorBuilder3<Integer, Vector3i> vecBuilder = new VectorBuilder3i();
 		return vecBuilder
 					.setX(Maths.tailOfDivisionNoReminder(x, EngineSettings.VOXEL_CHUNK_SIZE))
@@ -205,42 +204,16 @@ public class ChunkManager implements IChunkManager {
 	
 	@Override
 	public Chunk getChunkByGeneralIndex(int generalIndex) {
-		int chX = (int) Math.floor(generalIndex / (Math.pow(EngineSettings.VOXEL_CHUNK_SIZE, 3) *  Math.pow(size,2)));
-		int chY = (int) Math.floor(generalIndex / (Math.pow(EngineSettings.VOXEL_CHUNK_SIZE, 3) * size));
-		int chZ = (int) Math.floor(generalIndex / Math.pow(EngineSettings.VOXEL_CHUNK_SIZE, 3));
-		chX = Maths.tailOfDivisionNoReminder(chX, size);
-		chY = Maths.tailOfDivisionNoReminder(chY, size);
-		chZ = Maths.tailOfDivisionNoReminder(chZ, size);
-		IVectorBuilder3<Integer, Vector3i> chunkVecBuilder = new VectorBuilder3i();
-		Vector3i chunkVector = chunkVecBuilder
-				.setX(chX)
-				.setY(chY)
-				.setZ(chZ)
-				.build();
-		return getChunk(chunkVector);
+		int index = (int) Math.floor(generalIndex / (Math.pow(EngineSettings.VOXEL_CHUNK_SIZE, 3)));
+		return getChunk(index);
 	}
 	
 	@Override
 	public Block getBlockByGeneralIndex(int generalIndex) {
-		int chX = (int) Math.floor(generalIndex / (Math.pow(EngineSettings.VOXEL_CHUNK_SIZE, 3) *  Math.pow(size,2)));
-		int chY = (int) Math.floor(generalIndex / (Math.pow(EngineSettings.VOXEL_CHUNK_SIZE, 3) * size));
-		int chZ = (int) Math.floor(generalIndex / Math.pow(EngineSettings.VOXEL_CHUNK_SIZE, 3));
-		int x = (int) Math.floor(generalIndex / Math.pow(EngineSettings.VOXEL_CHUNK_SIZE, 2));
-		int y = (int) Math.floor(generalIndex / EngineSettings.VOXEL_CHUNK_SIZE);
-		int z = generalIndex;
-		x = Maths.tailOfDivisionNoReminder(x, EngineSettings.VOXEL_CHUNK_SIZE);
-		y = Maths.tailOfDivisionNoReminder(y, EngineSettings.VOXEL_CHUNK_SIZE);
-		z = Maths.tailOfDivisionNoReminder(z, EngineSettings.VOXEL_CHUNK_SIZE);
-		chX = Maths.tailOfDivisionNoReminder(chX, size);
-		chY = Maths.tailOfDivisionNoReminder(chY, size);
-		chZ = Maths.tailOfDivisionNoReminder(chZ, size);
-		IVectorBuilder3<Integer, Vector3i> chunkVecBuilder = new VectorBuilder3i();
-		Vector3i chunkVector = chunkVecBuilder
-				.setX(chX)
-				.setY(chY)
-				.setZ(chZ)
-				.build();
-		return getChunk(chunkVector).getBlock(x,y,z);
+		int chunkIndex = (int) Math.floor(generalIndex / (Math.pow(EngineSettings.VOXEL_CHUNK_SIZE, 3)));
+		Chunk chunk = getChunk(chunkIndex);
+		Block block = chunk.getBlock(generalIndex - chunkIndex * (int)(Math.pow(EngineSettings.VOXEL_CHUNK_SIZE, 3)));
+		return block;
 	}
 
 	@Override

@@ -1,6 +1,7 @@
 package object.voxel;
 
 import core.settings.EngineSettings;
+import manager.voxel.IChunkManager;
 import tool.math.Maths;
 import tool.math.vector.Vector3i;
 
@@ -46,6 +47,10 @@ public class Chunk {
 	public Block getBlock(Vector3i position) {
 		return blocks[position.x * EngineSettings.VOXEL_CHUNK_SIZE * EngineSettings.VOXEL_CHUNK_SIZE
 				+ position.y * EngineSettings.VOXEL_CHUNK_SIZE + position.z];
+	}
+	
+	public Block[] getBlocks() {
+		return this.blocks;
 	}
 
 	public boolean getIsAcitve() {

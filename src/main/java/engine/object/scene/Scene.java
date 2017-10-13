@@ -66,9 +66,9 @@ public class Scene extends AObjectManager implements IScene {
 		this.getAudioSources().addAll(levelMap.getAudioSources().getAll());
 		Vector3f voxelGridPosition = this.spreadPointOnHeights(new Vector3f(0,0,0));
 		this.chunkManager = new ChunkManager(CHUNK_WORLD_SIZE, voxelGridPosition);		
-		chunkManager.getChunk(2).getBlock(0,5,5).setIsActive(false);
-		chunkManager.getChunk(2).getBlock(0,4,5).setIsActive(false);
-		chunkManager.getChunk(2).getBlock(0,5,6).setIsActive(false);
+		chunkManager.getChunk(1).getBlock(0,5,5).setIsActive(false);
+		chunkManager.getChunk(1).getBlock(0,4,5).setIsActive(false);
+		chunkManager.getChunk(1).getBlock(0,5,6).setIsActive(false);
 		this.frustum = new Frustum();
 		this.frustumManager = new FrustumEntityManager(this.frustum);
 		this.frustumManager.rebuildNodes(this.getEntities().getAll(), ITerrain.TERRAIN_SIZE);
