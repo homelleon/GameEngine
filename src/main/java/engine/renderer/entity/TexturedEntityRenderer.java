@@ -137,9 +137,6 @@ public class TexturedEntityRenderer implements IEntityRenderer {
 		shader.loadFogDensity(EngineSettings.FOG_DENSITY);
 		shader.loadLights(lights);
 		shader.loadCamera(camera);
-//		shader.loadToShadowSpaceMatrix(toShadowMapSpace);
-//		shader.loadShadowVariables(EngineSettings.SHADOW_DISTANCE, EngineSettings.SHADOW_MAP_SIZE,
-//				EngineSettings.SHADOW_TRANSITION_DISTANCE, EngineSettings.SHADOW_PCF);
 		entities.keySet()
 			.forEach(model -> {
 				prepareLowTexturedModel(model);

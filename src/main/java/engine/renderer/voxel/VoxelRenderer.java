@@ -10,6 +10,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 import org.lwjgl.util.vector.Vector4f;
 
+import core.debug.EngineDebug;
 import core.settings.EngineSettings;
 import manager.voxel.IChunkManager;
 import object.camera.ICamera;
@@ -130,28 +131,41 @@ public class VoxelRenderer {
 		bindMaterial(texture);
 		
 		getAllBlocks(chunkManager, frustum, camera).stream()
-		.peek(i -> prepareInstance(chunkManager.getBlockPositionByGeneralIndex(i)))
-		.map(i -> new SimpleEntry<Integer, FaceCullingData>(i, isNeedBlockCulling(chunkManager, i)))
-		.filter(entry -> !isAllFaceCulled(entry.getValue()))
-		.flatMap(entry -> IntStream.range(0, 6)
-				.filter(face -> !entry.getValue().getFace(face))
-				.boxed()
-				)
-		.forEach(this::drawElements);
+			.peek(i -> prepareInstance(chunkManager.getBlockPositionByGeneralIndex(i)))
+			.map(i -> new SimpleEntry<Integer, FaceCullingData>(i, isNeedBlockCulling(chunkManager, i)))
+			.filter(entry -> !isAllFaceCulled(entry.getValue()))
+			.flatMap(entry -> IntStream.range(0, 6)
+					.filter(face -> !entry.getValue().getFace(face))
+					.boxed()
+			)
+			.forEach(this::drawElements);
 		
 		unbindTexturedModel();
 		shader.stop();
 	}
 	
 	private List<Integer> getAllBlocks(IChunkManager chunkManager, Frustum frustum, ICamera camera) {
-		return IntStream.range(0, (int) Math.pow(chunkManager.getSize(), 3))		
-				.filter(i -> checkVisibility(frustum, chunkManager.getChunkPositionByChunkIndex(i), CHUNK_RADIUS, camera))
-				.filter(i -> chunkManager.getChunk(i).getIsAcitve())
-				.mapToObj(i -> new SimpleEntry<Integer, IntStream>(i, IntStream.rangeClosed(0, (int) Math.pow(EngineSettings.VOXEL_CHUNK_SIZE, 3))
-						.map(a -> i * (int) Math.pow(EngineSettings.VOXEL_CHUNK_SIZE, 3) + a)
-						))
-				.flatMap(i -> i.getValue().boxed())
-				.collect(Collectors.toList());
+//		return IntStream.range(0, (int) Math.pow(chunkManager.getSize(), 3))		
+//				.filter(i -> checkVisibility(frustum, chunkManager.getChunkPositionByChunkIndex(i), CHUNK_RADIUS, camera))
+//				.filter(i -> chunkManager.getChunk(i).getIsAcitve())
+//				.mapToObj(i -> new SimpleEntry<Integer, IntStream>(i, IntStream.rangeClosed(0, (int) Math.pow(EngineSettings.VOXEL_CHUNK_SIZE, 3))
+//						.map(a -> i * (int) Math.pow(EngineSettings.VOXEL_CHUNK_SIZE, 3) + a)
+//						))
+//				.flatMap(i -> i.getValue().boxed())
+//				.collect(Collectors.toList());
+		return IntStream.range(0, (int) Math.pow(chunkManager.getSize(), 3)).parallel()
+					.sorted()
+					.filter(chunk -> checkVisibility(frustum, chunkManager.getChunkPositionByChunkIndex(chunk), CHUNK_RADIUS, camera))
+					.filter(chunk -> chunkManager.getChunk(chunk).getIsAcitve())
+					.map(chunk -> chunk * (int) Math.pow(EngineSettings.VOXEL_CHUNK_SIZE, 3))
+					.flatMap(newChunk -> IntStream.range(0, (int) EngineSettings.VOXEL_CHUNK_SIZE).parallel()
+							.map(x -> x * (int) Math.pow(EngineSettings.VOXEL_CHUNK_SIZE, 2) + newChunk))
+					.flatMap(newX -> IntStream.range(0, EngineSettings.VOXEL_CHUNK_SIZE).parallel()
+							.map(y -> y * EngineSettings.VOXEL_CHUNK_SIZE + newX))
+					.flatMap(newY -> IntStream.range(0, EngineSettings.VOXEL_CHUNK_SIZE).parallel()
+							.map(z -> z + newY))
+					.mapToObj(i -> i)
+					.collect(Collectors.toList());
 	}
 
 	
