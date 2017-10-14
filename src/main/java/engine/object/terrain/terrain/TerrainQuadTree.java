@@ -2,6 +2,7 @@ package object.terrain.terrain;
 
 import java.util.stream.Stream;
 
+import core.debug.EngineDebug;
 import manager.octree.Node;
 import object.camera.ICamera;
 import primitive.buffer.Loader;
@@ -67,7 +68,9 @@ public class TerrainQuadTree extends Node {
 				.toArray();
 		
 		float[] positions = EngineUtils.toFloatArray(positionArray);
-		
+		for(int i = 0; i < positions.length; i++) {
+			EngineDebug.println(positions[i]);
+		}
 		return positions;
 	}
 	public static int getRootNodes() {

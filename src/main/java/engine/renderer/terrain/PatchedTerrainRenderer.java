@@ -18,7 +18,7 @@ public class PatchedTerrainRenderer {
 	public final static float TESSELLATION_SHIFT = 0.1f;
 	
 	public final static float SCALE_XZ = 6000f;
-	public final static float SCALE_Y = 5f;
+	public final static float SCALE_Y = -5f;
 	
 	public final static int[] LOD_MORPH_AREAS = {1750, 874, 386, 192, 100, 50, 0, 0};
 	
