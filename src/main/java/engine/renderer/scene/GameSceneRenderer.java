@@ -101,7 +101,7 @@ public class GameSceneRenderer implements ISceneRenderer {
 		}
 		mainRenderer.renderShadowMap(scene);
 		renderParticles();
-		renderWaterSurface();
+		//renderWaterSurface();
 		renderToScreen();
 	}
 

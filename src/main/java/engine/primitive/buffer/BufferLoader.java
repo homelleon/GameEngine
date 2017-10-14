@@ -12,8 +12,6 @@ import org.lwjgl.opengl.GL33;
 import object.bounding.BoundingBox;
 import object.bounding.BoundingSphere;
 import primitive.model.Mesh;
-import tool.math.Maths;
-import tool.math.vector.Vector3f;
 
 /**
  * Vertex buffer and vertex array loader.
@@ -32,6 +30,8 @@ public class BufferLoader {
 	 * List of vertex buffer objects.
 	 */
 	private List<VBO> vbos = new ArrayList<VBO>();
+	
+	private List<PatchVAO> patchVaos = new ArrayList<PatchVAO>();
 	
 	/**
 	 * Loads vertex positions, normals and indices attributes into the new
@@ -76,6 +76,13 @@ public class BufferLoader {
 		vao.createAttribute(1, 2, textureCoords);
 		VAO.unbind();
 		return vao;
+	}
+	
+	public PatchVAO loadPatchToVAO(float[] positions, int patchSize) {
+		PatchVAO patchVao = new PatchVAO();
+		this.patchVaos.add(patchVao);
+		patchVao.allocate(positions, patchSize);
+		return patchVao;
 	}
 
 	/**
@@ -230,26 +237,9 @@ public class BufferLoader {
 		if(!vbos.isEmpty()) {
 			vbos.forEach(VBO::delete);
 		}
-	}
-
-	/**
-	 * Gets distance from coordinate axis center to farthest point.
-	 * 
-	 * @param positions
-	 * @return
-	 */
-	private float getDistFarVertToCenter(float[] positions) {
-		float distance = 0;
-		Vector3f center = new Vector3f(0, 0, 0);
-		Vector3f point;
-		for (int i = 1; i < positions.length / 3; i++) {
-			point = new Vector3f(positions[3 * i - 3], positions[3 * i - 2], positions[3 * i - 1]);
-			float length = Maths.distance2Points(point, center);
-			if (length > distance) {
-				distance = length;
-			}
+		if(!patchVaos.isEmpty()) {
+			patchVaos.forEach(PatchVAO::delete);
 		}
-		return distance;
 	}
 
 }

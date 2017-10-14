@@ -2,13 +2,11 @@ package renderer.voxel;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
-import org.lwjgl.system.linux.X11.Functions;
 import org.lwjgl.util.vector.Vector4f;
 
 import core.settings.EngineSettings;

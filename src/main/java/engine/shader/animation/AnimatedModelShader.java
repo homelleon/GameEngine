@@ -53,7 +53,7 @@ public class AnimatedModelShader extends ShaderProgram {
 	}
 
 	public void loadLightDirection(Vector3f direction) {
-		super.loadVector("lightDirection", direction);
+		super.load3DVector("lightDirection", direction);
 	}
 
 	private void loadDisffuseMap() {

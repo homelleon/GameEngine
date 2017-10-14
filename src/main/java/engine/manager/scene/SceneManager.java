@@ -16,6 +16,7 @@ import object.entity.player.IPlayer;
 import object.entity.player.Player;
 import object.light.Light;
 import object.scene.IScene;
+import object.terrain.terrain.PatchedTerrain;
 import object.texture.material.Material;
 import object.water.WaterTile;
 import primitive.buffer.Loader;
@@ -149,6 +150,7 @@ public class SceneManager implements ISceneManager {
 		scene.getAudioSources().add(ambientSource);
 		scene.getWaters().addAll(waterList);
 		scene.getParticles().addAll(ParticleManager.createParticleSystem());
+		scene.setPatchedTerrain(new PatchedTerrain("PathcedTerrain", scene.getCamera()));
 		if(EngineDebug.hasDebugPermission()) {
 			EngineDebug.println("Total loaded entities: " + scene.getEntities().getAll().stream().count(), 2);
 		}

@@ -182,7 +182,7 @@ public class NormalMappedEntityShader extends ShaderProgram {
 	}
 
 	public void loadSkyColour(float r, float g, float b) {
-		super.loadVector(UNIFORM_SKY_COLOR, new Vector3f(r, g, b));
+		super.load3DVector(UNIFORM_SKY_COLOR, new Vector3f(r, g, b));
 	}
 	
 	public void loadFakeLightingVariable(boolean useFake) {
@@ -200,13 +200,13 @@ public class NormalMappedEntityShader extends ShaderProgram {
 		for (int i = 0; i < EngineSettings.MAX_LIGHTS; i++) {
 			if (iterator.hasNext()) {
 				ILight light = iterator.next();
-				super.loadVector(UNIFORM_LIGHT_POSITION_EYE_SPACE + "[" + i + "]", getEyeSpacePosition(light, viewMatrix));
-				super.loadVector(UNIFORM_LIGHT_COLOR + "[" + i + "]", light.getColor());
-				super.loadVector(UNIFORM_ATTENUATION + "[" + i + "]", light.getAttenuation());
+				super.load3DVector(UNIFORM_LIGHT_POSITION_EYE_SPACE + "[" + i + "]", getEyeSpacePosition(light, viewMatrix));
+				super.load3DVector(UNIFORM_LIGHT_COLOR + "[" + i + "]", light.getColor());
+				super.load3DVector(UNIFORM_ATTENUATION + "[" + i + "]", light.getAttenuation());
 			} else {
-				super.loadVector(UNIFORM_LIGHT_POSITION_EYE_SPACE + "[" + i + "]", new Vector3f(0, 0, 0));
-				super.loadVector(UNIFORM_LIGHT_COLOR + "[" + i + "]", new Vector3f(0, 0, 0));
-				super.loadVector(UNIFORM_ATTENUATION + "[" + i + "]", new Vector3f(1, 0, 0));
+				super.load3DVector(UNIFORM_LIGHT_POSITION_EYE_SPACE + "[" + i + "]", new Vector3f(0, 0, 0));
+				super.load3DVector(UNIFORM_LIGHT_COLOR + "[" + i + "]", new Vector3f(0, 0, 0));
+				super.load3DVector(UNIFORM_ATTENUATION + "[" + i + "]", new Vector3f(1, 0, 0));
 			}
 		}
 	}

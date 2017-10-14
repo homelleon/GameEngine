@@ -73,7 +73,7 @@ public class SkyboxShader extends ShaderProgram {
 	}
 
 	public void loadFogColour(float r, float g, float b) {
-		super.loadVector(UNIFORM_FOG_COLOR, new Vector3f(r, g, b));
+		super.load3DVector(UNIFORM_FOG_COLOR, new Vector3f(r, g, b));
 	}
 
 	public void loadBlendFactor(float blend) {

@@ -67,10 +67,10 @@ public class FontShader extends ShaderProgram {
 	}
 
 	public void loadOutLineColour(Vector3f colour) {
-		super.loadVector(UNIFORM_OUTLINE_COLOR, colour);
+		super.load3DVector(UNIFORM_OUTLINE_COLOR, colour);
 	}
 
 	public void loadColour(Vector3f colour) {
-		super.loadVector(UNIFORM_COLOR, colour);
+		super.load3DVector(UNIFORM_COLOR, colour);
 	}
 }

@@ -33,8 +33,10 @@ import renderer.processor.ISceneProcessor;
 import renderer.processor.SceneProcessor;
 import renderer.shadow.ShadowMapMasterRenderer;
 import renderer.skybox.SkyboxRenderer;
+import renderer.terrain.PatchedTerrainRenderer;
 import renderer.terrain.TerrainRenderer;
 import renderer.voxel.VoxelRenderer;
+import shader.terrain.PatchedTerrainShader;
 import tool.math.Matrix4f;
 import tool.openGL.OGLUtils;
 
@@ -43,7 +45,8 @@ public class MainRenderer implements IMainRenderer {
 	private Matrix4f projectionMatrix;
 	private Matrix4f normalDistProjectionMatrix;
 	private Matrix4f lowDistProjectionMatrix;
-	private TerrainRenderer terrainRenderer;	
+	private TerrainRenderer terrainRenderer;
+	private PatchedTerrainRenderer pTerrainRenderer;
 	private SkyboxRenderer skyboxRenderer;
 	private VoxelRenderer voxelRenderer;
 	private BoundingRenderer boundingRenderer;
@@ -78,6 +81,7 @@ public class MainRenderer implements IMainRenderer {
 		this.entityRendererManager.addPair(normalEntityRenderer, normalEntities);
 		this.entityRendererManager.addPair(decorEntityRenderer, decorEntities);
 		this.terrainRenderer = new TerrainRenderer(projectionMatrix);
+		this.pTerrainRenderer = new PatchedTerrainRenderer();
 		this.skyboxRenderer = new SkyboxRenderer(projectionMatrix);
 		this.voxelRenderer = new VoxelRenderer(projectionMatrix);
 		this.boundingRenderer = new BoundingRenderer(projectionMatrix);
@@ -149,7 +153,9 @@ public class MainRenderer implements IMainRenderer {
 				EngineMain.getWiredFrameMode() == EngineSettings.WIRED_FRAME_ENTITY_TERRAIN) {
 			OGLUtils.doWiredFrame(true);
 		}
-		terrainRenderer.render(terrains, clipPlane, scene.getLights().getAll(), scene.getCamera(), shadowMapSpaceMatrix);
+		scene.getPatchedTerrain().updateQuadTree(scene.getCamera());
+		pTerrainRenderer.render(scene.getPatchedTerrain(), scene, Matrix4f.mul(projectionMatrix, scene.getCamera().getViewMatrix()));
+		//terrainRenderer.render(terrains, clipPlane, scene.getLights().getAll(), scene.getCamera(), shadowMapSpaceMatrix);
 		OGLUtils.doWiredFrame(false);
 
 		skyboxRenderer.render(scene.getCamera());	
@@ -211,7 +217,7 @@ public class MainRenderer implements IMainRenderer {
 		this.entityRendererManager.clean();
 		this.terrainRenderer.clean();
 		this.shadowMapRenderer.clean();
-		
+		this.pTerrainRenderer.clean();
 	}
 	
 	private Matrix4f createProjectionMatrix(float farPlane) {

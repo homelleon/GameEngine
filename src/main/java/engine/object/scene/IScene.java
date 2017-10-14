@@ -12,6 +12,7 @@ import object.entity.player.IPlayer;
 import object.input.MousePicker;
 import object.light.Light;
 import object.particle.ParticleSystem;
+import object.terrain.terrain.PatchedTerrain;
 import object.texture.Texture;
 import tool.math.Frustum;
 
@@ -25,6 +26,9 @@ import tool.math.Frustum;
  */
 public interface IScene extends IObjectManager {
 
+	void setPatchedTerrain(PatchedTerrain patchedTerrain);
+	
+	PatchedTerrain getPatchedTerrain();
 	
 	IFrustumEntityManager getFrustumEntities();
 	/**

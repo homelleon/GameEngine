@@ -155,7 +155,7 @@ public abstract class ShaderProgram {
 		GL20.glUniform1f(uniformLocation, value);
 	}
 
-	protected void loadVector(String name, Vector3f vector) {
+	protected void load3DVector(String name, Vector3f vector) {
 		int uniformLocation = this.unfiroms.get(name);
 		GL20.glUniform3f(uniformLocation, vector.x, vector.y, vector.z);
 	}

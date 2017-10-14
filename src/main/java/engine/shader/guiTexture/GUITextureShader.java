@@ -43,7 +43,7 @@ public class GUITextureShader extends ShaderProgram {
 	
 	public void loadMixColorVariables(boolean isMixColored, Vector3f color) {
 		super.loadBoolean(UNIFORM_IS_MIX_COLORED, isMixColored);
-		super.loadVector(UNIFORM_MIX_COLOR, color);
+		super.load3DVector(UNIFORM_MIX_COLOR, color);
 	}
 
 }

@@ -133,7 +133,7 @@ public class DecorEntityShader extends ShaderProgram {
 	public void loadCamera(ICamera camera) {
 		Matrix4f viewMatrix = Maths.createViewMatrix(camera);
 		super.loadMatrix(UNIFORM_VIEW_MATRIX, viewMatrix);
-		super.loadVector(UNIFORM_CAMERA_POSITION, camera.getPosition());
+		super.load3DVector(UNIFORM_CAMERA_POSITION, camera.getPosition());
 	}
 
 	public void loadViewMatrix(ICamera camera) {
@@ -177,7 +177,7 @@ public class DecorEntityShader extends ShaderProgram {
 	}
 
 	public void loadSkyColour(float r, float g, float b) {
-		super.loadVector(UNIFORM_SKY_COLOR, new Vector3f(r, g, b));
+		super.load3DVector(UNIFORM_SKY_COLOR, new Vector3f(r, g, b));
 	}
 
 	public void loadFakeLightingVariable(boolean useFake) {
@@ -203,13 +203,13 @@ public class DecorEntityShader extends ShaderProgram {
 		for (int i = 0; i < EngineSettings.MAX_LIGHTS; i++) {
 			if (iterator.hasNext()) {
 				ILight light = iterator.next();
-				super.loadVector(UNIFORM_LIGHT_POSITION + "[" + i + "]", light.getPosition());
-				super.loadVector(UNIFORM_LIGHT_COLOR + "[" + i + "]", light.getColor());
-				super.loadVector(UNIFORM_ATTENUATION + "[" + i + "]", light.getAttenuation());
+				super.load3DVector(UNIFORM_LIGHT_POSITION + "[" + i + "]", light.getPosition());
+				super.load3DVector(UNIFORM_LIGHT_COLOR + "[" + i + "]", light.getColor());
+				super.load3DVector(UNIFORM_ATTENUATION + "[" + i + "]", light.getAttenuation());
 			} else {
-				super.loadVector(UNIFORM_LIGHT_POSITION + "[" + i + "]", new Vector3f(0, 0, 0));
-				super.loadVector(UNIFORM_LIGHT_COLOR + "[" + i + "]", new Vector3f(0, 0, 0));
-				super.loadVector(UNIFORM_ATTENUATION + "[" + i + "]", new Vector3f(1, 0, 0));
+				super.load3DVector(UNIFORM_LIGHT_POSITION + "[" + i + "]", new Vector3f(0, 0, 0));
+				super.load3DVector(UNIFORM_LIGHT_COLOR + "[" + i + "]", new Vector3f(0, 0, 0));
+				super.load3DVector(UNIFORM_ATTENUATION + "[" + i + "]", new Vector3f(1, 0, 0));
 			}
 		}
 

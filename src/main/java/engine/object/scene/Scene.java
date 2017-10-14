@@ -24,6 +24,7 @@ import object.input.MousePicker;
 import object.light.Light;
 import object.particle.ParticleSystem;
 import object.terrain.terrain.ITerrain;
+import object.terrain.terrain.PatchedTerrain;
 import object.texture.Texture;
 import tool.math.Frustum;
 import tool.math.vector.Vector3f;
@@ -35,6 +36,8 @@ public class Scene extends AObjectManager implements IScene {
 	private ICamera camera;
 	private Light sun;
 	private Frustum frustum;
+	
+	private PatchedTerrain patchedTerrain;
 
 	private Texture environmentMap = Texture.newEmptyCubeMap(128);
 	private MousePicker mousePicker;
@@ -72,6 +75,16 @@ public class Scene extends AObjectManager implements IScene {
 		this.frustum = new Frustum();
 		this.frustumManager = new FrustumEntityManager(this.frustum);
 		this.frustumManager.rebuildNodes(this.getEntities().getAll(), ITerrain.TERRAIN_SIZE);
+	}
+	
+	@Override
+	public void setPatchedTerrain(PatchedTerrain patchedTerrain) {
+		this.patchedTerrain = patchedTerrain;
+	}
+	
+	@Override
+	public PatchedTerrain getPatchedTerrain() {
+		return this.patchedTerrain;
 	}
 	
 	@Override
