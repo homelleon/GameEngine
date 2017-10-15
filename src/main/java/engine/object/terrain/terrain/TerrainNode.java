@@ -3,6 +3,7 @@ package object.terrain.terrain;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL40;
 
+import core.debug.EngineDebug;
 import manager.octree.Node;
 import object.camera.ICamera;
 import primitive.buffer.PatchVAO;
@@ -34,11 +35,12 @@ public class TerrainNode extends Node {
 		Vector3f localScaling = new Vector3f(gap, 0, gap);
 		Vector3f localTranslation = new Vector3f(location.getX(), 0, location.getY());
 		
-		this.localTransformationMatrix.scale(localScaling);
 		this.localTransformationMatrix.translate(localTranslation);
+		this.localTransformationMatrix.scale(localScaling);
 		
-		this.worldTransformationMatrix.scale(new Vector3f(PatchedTerrainRenderer.SCALE_XZ, PatchedTerrainRenderer.SCALE_Y, PatchedTerrainRenderer.SCALE_XZ));
+		
 		this.worldTransformationMatrix.translate(new Vector3f(-PatchedTerrainRenderer.SCALE_XZ / 2f, 0, -PatchedTerrainRenderer.SCALE_XZ / 2f));
+		this.worldTransformationMatrix.scale(new Vector3f(PatchedTerrainRenderer.SCALE_XZ, PatchedTerrainRenderer.SCALE_Y, PatchedTerrainRenderer.SCALE_XZ));
 		
 		this.computeWorldPosition();
 		this.updateQuadTree(camera);		
@@ -46,7 +48,6 @@ public class TerrainNode extends Node {
 	
 	public void computeWorldPosition() {
 		Vector2f loc = new Vector2f(location).add(gap / 2f).mul(PatchedTerrainRenderer.SCALE_XZ).sub(PatchedTerrainRenderer.SCALE_XZ / 2f);
-		
 		this.worldPosition = new Vector3f(loc.getX(), 0, loc.getY());
 	}
 	
@@ -56,18 +57,17 @@ public class TerrainNode extends Node {
 		} else {
 			this.worldPosition.setY(camera.getPosition().getY());
 		}
-		updateChildren(camera);
+		updateChildNodes(camera);
 		for(Node node : this.getChildren()) {
 			((TerrainNode) node).updateQuadTree(camera);
 		}
 	}
 	
-	public void updateChildren(ICamera camera) {
+	public void updateChildNodes(ICamera camera) {
 		float distance = (new Vector3f(camera.getPosition()).sub(this.worldPosition)).length();
-		
-		if(distance < PatchedTerrainRenderer.LOD_MORPH_AREAS[this.lod]) {
-			this.addChildren(this.lod + 1, camera);
-		} else if(distance >= PatchedTerrainRenderer.LOD_MORPH_AREAS[this.lod]) {
+		if(distance < PatchedTerrainRenderer.LOD_RANGES[this.lod]) {
+			this.addChildNodes(this.lod + 1, camera);
+		} else if(distance >= PatchedTerrainRenderer.LOD_RANGES[this.lod]) {
 			this.removeChildNodes();
 		}
 	}
@@ -81,19 +81,18 @@ public class TerrainNode extends Node {
 		}
 	}
 	
-	public void render(PatchedTerrainShader shader, PatchVAO vao) {
+	public void render(PatchedTerrainShader shader, PatchVAO patchedVao) {
 		if(this.isLeaf()) {
 			shader.loadLoDVariables(lod, index, gap, location);
 			shader.loadPositionMatrix(worldTransformationMatrix, localTransformationMatrix);
-			
-			GL11.glDrawArrays(GL40.GL_PATCHES, 0, vao.getSize());
+			GL11.glDrawArrays(GL40.GL_PATCHES, 0, patchedVao.getSize());
 		}
 		for(Node child : this.getChildren()) {
-			((TerrainNode) child).render(shader, vao);
+			((TerrainNode) child).render(shader, patchedVao);
 		}
 	}
 	
-	private void addChildren(int lod, ICamera camera) {
+	private void addChildNodes(int lod, ICamera camera) {
 		if(this.isLeaf()) {
 			this.setLeaf(false);
 		}
@@ -103,7 +102,7 @@ public class TerrainNode extends Node {
 				for(int j = 0; j < 2; j++) {
 					this.addChild(
 							new TerrainNode(
-								new Vector2f(location).add(new Vector2f(i * gap / 2f,j * gap / 2f)),
+								new Vector2f(location).add(new Vector2f(i * gap / 2f, j * gap / 2f)),
 								lod,
 								new Vector2f(i, j),
 								camera

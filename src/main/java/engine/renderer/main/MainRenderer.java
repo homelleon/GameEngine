@@ -154,7 +154,9 @@ public class MainRenderer implements IMainRenderer {
 			OGLUtils.doWiredFrame(true);
 		}
 		scene.getPatchedTerrain().updateQuadTree(scene.getCamera());
-		pTerrainRenderer.render(scene.getPatchedTerrain(), scene, Matrix4f.mul(projectionMatrix, scene.getCamera().getViewMatrix()));
+		if(!isLowDistance) {
+			pTerrainRenderer.render(scene.getPatchedTerrain(), scene, Matrix4f.mul(projectionMatrix, scene.getCamera().getViewMatrix()));
+		}
 		//terrainRenderer.render(terrains, clipPlane, scene.getLights().getAll(), scene.getCamera(), shadowMapSpaceMatrix);
 		OGLUtils.doWiredFrame(false);
 

@@ -18,16 +18,30 @@ public class PatchedTerrainRenderer {
 	public final static float TESSELLATION_SHIFT = 0.1f;
 	
 	public final static float SCALE_XZ = 6000f;
-	public final static float SCALE_Y = -5f;
+	public final static float SCALE_Y = 5f;
 	
-	public final static int[] LOD_MORPH_AREAS = {1750, 874, 386, 192, 100, 50, 0, 0};
+	public final static int[] LOD_RANGES = {1750, 874, 386, 192, 100, 50, 0, 0};
+	public static int[] lod_morph_areas;
+	
+	public static int[] getLodMorphAreas() {
+		return lod_morph_areas;
+	}
 	
 	public PatchedTerrainRenderer() {
+		lod_morph_areas = new int[LOD_RANGES.length];
+		for(int i = 0; i < LOD_RANGES.length; i++) {
+			if(LOD_RANGES[i] == 0) {
+				lod_morph_areas[i] = 0;
+			} else { 
+				lod_morph_areas[i] = LOD_RANGES[i] - (int) ((SCALE_XZ / TerrainQuadTree.getRootNodes()) / Math.pow(2, i + 1));
+			}
+		}
 		this.shader = new PatchedTerrainShader();
 		shader.start();
 		shader.loadScale(SCALE_Y);
 		shader.loadTessellationVariables(TESSELLATION_FACTOR, TESSELLATION_SLOPE, TESSELLATION_SHIFT);
-		shader.loadLodMorphAreaArray(LOD_MORPH_AREAS);
+		shader.loadLodMorphAreaArray(lod_morph_areas);
+		shader.stop();
 	}
 	
 	public void render(PatchedTerrain terrain, IScene scene, Matrix4f projectionViewMatrix) {
@@ -35,12 +49,12 @@ public class PatchedTerrainRenderer {
 		shader.loadProjectionViewMatrix(projectionViewMatrix);
 		shader.loadCameraPosition(scene.getCamera().getPosition());
 		TerrainQuadTree terrainTree = (TerrainQuadTree) terrain.getChildren().get(0);
-		PatchVAO vao = terrainTree.getVao();
-		vao.bind();
-		for(Node node : terrain.getChildren().get(0).getChildren()) {
-			((TerrainNode) node).render(shader, vao);
+		PatchVAO patchVao = terrainTree.getVao();
+		patchVao.bind();
+		for(Node node : terrainTree.getChildren()) {
+			((TerrainNode) node).render(shader, patchVao);
 		}
-		vao.unbind();
+		patchVao.unbind();
 		shader.stop();
 	}
 	

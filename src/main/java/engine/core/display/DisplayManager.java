@@ -56,7 +56,7 @@ public class DisplayManager {
 			canvas.setVisible(true);
 			canvas.setSize(width, height);
 
-			ContextAttribs attribs = new ContextAttribs(3, 3)
+			ContextAttribs attribs = new ContextAttribs(4, 3)
 					.withForwardCompatible(true)
 					.withProfileCore(true);
 
@@ -76,7 +76,7 @@ public class DisplayManager {
 			// режим игры
 			width = EngineSettings.DISPLAY_WIDTH;
 			height = EngineSettings.DISPLAY_HEIGHT;
-			ContextAttribs attribs = new ContextAttribs(3, 3).withForwardCompatible(true).withProfileCore(true);
+			ContextAttribs attribs = new ContextAttribs(4, 3).withForwardCompatible(true).withProfileCore(true);
 
 			try {
 				Display.setDisplayModeAndFullscreen(new DisplayMode(width, height));

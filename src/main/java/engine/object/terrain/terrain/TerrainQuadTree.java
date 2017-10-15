@@ -2,7 +2,6 @@ package object.terrain.terrain;
 
 import java.util.stream.Stream;
 
-import core.debug.EngineDebug;
 import manager.octree.Node;
 import object.camera.ICamera;
 import primitive.buffer.Loader;
@@ -22,14 +21,15 @@ public class TerrainQuadTree extends Node {
 	public TerrainQuadTree(ICamera camera) {
 		float[] positions = this.generateVertexData();
 		this.vao = Loader.getInstance().getVertexLoader().loadPatchToVAO(positions, 16);
+		
 		for(int i = 0; i < rootNodes; i++) {
 			for(int j = 0; j < rootNodes; j++) {
 				this.addChild(new TerrainNode(new Vector2f(i/ (float) rootNodes, j / (float) rootNodes), 0, new Vector2f(i, j), camera));
 			}
 		}
 		this.worldTransformationMatrix = new Matrix4f();
+		this.worldTransformationMatrix.translate(new Vector3f(-PatchedTerrainRenderer.SCALE_XZ / 2f, 0, -PatchedTerrainRenderer.SCALE_XZ / 2f));
 		this.worldTransformationMatrix.scale(new Vector3f(PatchedTerrainRenderer.SCALE_XZ, PatchedTerrainRenderer.SCALE_Y, PatchedTerrainRenderer.SCALE_XZ));
-		this.worldTransformationMatrix.translate(new Vector3f(-PatchedTerrainRenderer.SCALE_XZ / 2f, 0, -PatchedTerrainRenderer.SCALE_XZ));
 	}
 	
 	public void updateQuadTree(ICamera camera) {
@@ -38,7 +38,7 @@ public class TerrainQuadTree extends Node {
 		}
 	}
 
-	public float[] generateVertexData() {
+	private float[] generateVertexData() {
 		Vector2f[] vertices = new Vector2f[16];
 		
 		int index = 0;
@@ -68,9 +68,6 @@ public class TerrainQuadTree extends Node {
 				.toArray();
 		
 		float[] positions = EngineUtils.toFloatArray(positionArray);
-		for(int i = 0; i < positions.length; i++) {
-			EngineDebug.println(positions[i]);
-		}
 		return positions;
 	}
 	public static int getRootNodes() {

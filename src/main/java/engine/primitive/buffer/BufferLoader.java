@@ -80,8 +80,8 @@ public class BufferLoader {
 	
 	public PatchVAO loadPatchToVAO(float[] positions, int patchSize) {
 		PatchVAO patchVao = new PatchVAO();
-		this.patchVaos.add(patchVao);
 		patchVao.allocate(positions, patchSize);
+		this.patchVaos.add(patchVao);		
 		return patchVao;
 	}
 
