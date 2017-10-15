@@ -2,11 +2,11 @@ package object.terrain.terrain;
 
 import java.util.stream.Stream;
 
+import core.settings.EngineSettings;
 import manager.octree.Node;
 import object.camera.ICamera;
 import primitive.buffer.Loader;
 import primitive.buffer.PatchVAO;
-import renderer.terrain.PatchedTerrainRenderer;
 import tool.EngineUtils;
 import tool.math.Matrix4f;
 import tool.math.vector.Vector2f;
@@ -28,8 +28,8 @@ public class TerrainQuadTree extends Node {
 			}
 		}
 		this.worldTransformationMatrix = new Matrix4f();
-		this.worldTransformationMatrix.translate(new Vector3f(-PatchedTerrainRenderer.SCALE_XZ / 2f, 0, -PatchedTerrainRenderer.SCALE_XZ / 2f));
-		this.worldTransformationMatrix.scale(new Vector3f(PatchedTerrainRenderer.SCALE_XZ, PatchedTerrainRenderer.SCALE_Y, PatchedTerrainRenderer.SCALE_XZ));
+		this.worldTransformationMatrix.translate(new Vector3f(-EngineSettings.SCALE_XZ / 2f, 0, -EngineSettings.SCALE_XZ / 2f));
+		this.worldTransformationMatrix.scale(new Vector3f(EngineSettings.SCALE_XZ, EngineSettings.SCALE_Y, EngineSettings.SCALE_XZ));
 	}
 	
 	public void updateQuadTree(ICamera camera) {

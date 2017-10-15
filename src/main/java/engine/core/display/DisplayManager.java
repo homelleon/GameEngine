@@ -34,6 +34,8 @@ public class DisplayManager {
 	private static float delta; // текущее время окна
 	private static int height; // высота окна
 	private static int width; // ширина окна
+	private static int majorVersion = 4;
+	private static int minorVersion = 3;
 
 	public static void createDisplay() {
 		createDisplay(null);
@@ -56,10 +58,9 @@ public class DisplayManager {
 			canvas.setVisible(true);
 			canvas.setSize(width, height);
 
-			ContextAttribs attribs = new ContextAttribs(4, 3)
+			ContextAttribs attribs = new ContextAttribs(majorVersion, minorVersion)
 					.withForwardCompatible(true)
 					.withProfileCore(true);
-
 			try {
 				Display.setDisplayMode(new DisplayMode(width, height));
 				Display.create(new PixelFormat().withDepthBits(24), attribs);
@@ -71,19 +72,19 @@ public class DisplayManager {
 			} catch (LWJGLException e) {
 				e.printStackTrace();
 			}
-
+			
 		} else if (frame == null) {
 			// режим игры
 			width = EngineSettings.DISPLAY_WIDTH;
 			height = EngineSettings.DISPLAY_HEIGHT;
-			ContextAttribs attribs = new ContextAttribs(4, 3).withForwardCompatible(true).withProfileCore(true);
-
+			ContextAttribs attribs = new ContextAttribs(majorVersion, minorVersion)
+					.withForwardCompatible(true)
+					.withProfileCore(true);
 			try {
 				Display.setDisplayModeAndFullscreen(new DisplayMode(width, height));
 				Display.create(new PixelFormat().withDepthBits(24), attribs);
 				Display.setFullscreen(true);
 				Display.setTitle("OutWorldMind Engine");
-
 			} catch (LWJGLException e) {
 				e.printStackTrace();
 			}

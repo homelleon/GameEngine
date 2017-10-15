@@ -85,6 +85,17 @@ public class EngineSettings {
 	public static final float RENDERING_VIEW_DISTANCE = 500;
 	public static final float DETAIL_VIEW_DISTANCE = 150;
 	public static final int MAX_LIGHTS = 10;
+	
+	/* terrain settings */
+	public final static int TESSELLATION_FACTOR = 600;
+	public final static float TESSELLATION_SLOPE = 1.8f;
+	public final static float TESSELLATION_SHIFT = 0.1f;
+	
+	public final static float SCALE_XZ = 6000f;
+	public final static float SCALE_Y = 50f;
+	
+	public final static int[] LOD_RANGES = {1750, 874, 386, 192, 100, 50, 0, 0};
+	public static int[] lod_morph_areas;
 
 	/* voxel settings */
 	public static final float VOXEL_BLOCK_SIZE = 5f;

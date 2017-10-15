@@ -6,10 +6,14 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector4f;
 
 import core.settings.EngineSettings;
+import manager.octree.Node;
 import object.camera.ICamera;
 import object.light.ILight;
 import object.terrain.terrain.ITerrain;
+import object.terrain.terrain.TerrainNode;
+import object.terrain.terrain.TerrainQuadTree;
 import object.texture.terrain.TerrainTexturePack;
+import primitive.buffer.PatchVAO;
 import primitive.buffer.VAO;
 import primitive.model.Mesh;
 import shader.terrain.TerrainShader;
@@ -25,6 +29,9 @@ public class TerrainRenderer {
 		this.shader = new TerrainShader();
 		shader.start();
 		shader.loadProjectionMatrix(projectionMatrix);
+		shader.loadScale(EngineSettings.SCALE_Y);
+		shader.loadTessellationVariables(EngineSettings.TESSELLATION_FACTOR, EngineSettings.TESSELLATION_SLOPE, EngineSettings.TESSELLATION_SHIFT);
+		shader.loadLodMorphAreaArray(EngineSettings.lod_morph_areas);
 		shader.connectTextureUnits();
 		shader.stop();
 	}
@@ -36,15 +43,22 @@ public class TerrainRenderer {
 		shader.loadSkyColour(EngineSettings.DISPLAY_RED, EngineSettings.DISPLAY_GREEN, EngineSettings.DISPLAY_BLUE);
 		shader.loadFogDensity(EngineSettings.FOG_DENSITY);
 		shader.loadLights(lights);
-		shader.loadViewMatrix(camera);
+		shader.loadViewMatrix(camera.getViewMatrix());
+		shader.loadCameraPosition(camera.getPosition());
 		shader.loadToShadowSpaceMatrix(toShadowMapSpace);
 		shader.loadShadowVariables(EngineSettings.SHADOW_DISTANCE, EngineSettings.SHADOW_MAP_SIZE,
 				EngineSettings.SHADOW_TRANSITION_DISTANCE, EngineSettings.SHADOW_PCF);
 
+		
 		for (ITerrain terrain : terrains) {
+			if(camera.isMoved() || camera.isRotated()) {
+				terrain.updateQuadTree(camera);
+			}
 			prepareTerrain(terrain);
 			loadModelMatrix(terrain);
-			GL11.glDrawElements(GL11.GL_TRIANGLES, terrain.getModel().getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
+			for(Node node : terrain.getQuadTree().getChildren()) {
+				((TerrainNode) node).render(shader, terrain.getQuadTree().getVao());
+			}
 			unbindTexture();
 		}
 
@@ -57,14 +71,16 @@ public class TerrainRenderer {
 		shader.loadSkyColour(EngineSettings.DISPLAY_RED, EngineSettings.DISPLAY_GREEN, EngineSettings.DISPLAY_BLUE);
 		shader.loadFogDensity(EngineSettings.FOG_DENSITY);
 		shader.loadLights(lights);
-		shader.loadViewMatrix(camera);
+		shader.loadViewMatrix(camera.getViewMatrix());
 		shader.loadShadowVariables(EngineSettings.SHADOW_DISTANCE, EngineSettings.SHADOW_MAP_SIZE,
 				EngineSettings.SHADOW_TRANSITION_DISTANCE, EngineSettings.SHADOW_PCF);
 
 		for (ITerrain terrain : terrains) {
 			prepareTerrain(terrain);
 			loadModelMatrix(terrain);
-			GL11.glDrawElements(GL11.GL_TRIANGLES, terrain.getModel().getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
+			for(Node node : terrain.getQuadTree().getChildren()) {
+				((TerrainNode) node).render(shader, terrain.getQuadTree().getVao());
+			}
 			unbindTexture();
 
 		}
@@ -77,6 +93,9 @@ public class TerrainRenderer {
 	}
 
 	private void prepareTerrain(ITerrain terrain) {
+		TerrainQuadTree terrainTree = (TerrainQuadTree) terrain.getQuadTree();
+		PatchVAO patchVao = terrainTree.getVao();
+		patchVao.bind();
 		Mesh mesh = terrain.getModel();
 		VAO vao = mesh.getVAO();
 		vao.bind(0, 1, 2);
@@ -97,6 +116,7 @@ public class TerrainRenderer {
 
 	private void unbindTexture() {
 		VAO.unbind(0, 1, 2);
+		PatchVAO.unbind();
 	}
 
 	private void loadModelMatrix(ITerrain terrain) {

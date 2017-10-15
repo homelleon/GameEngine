@@ -1,9 +1,11 @@
 package object.terrain.terrain;
 
 import object.Nameable;
+import object.camera.ICamera;
 import object.terrain.generator.HeightsGenerator;
 import object.texture.Texture2D;
 import object.texture.terrain.TerrainTexturePack;
+import primitive.buffer.PatchVAO;
 import primitive.model.Mesh;
 
 /**
@@ -23,37 +25,42 @@ public interface ITerrain extends Nameable {
 	public static final float TERRAIN_SCALE_Y = 1f;
 	public static final int[] LOD_RANGE = new int[16];
 	
+	
+	TerrainQuadTree getQuadTree();
+	
+	void updateQuadTree(ICamera camera);
+	
 	/**
 	 * Gets size of terrain tiles.
 	 * 
 	 * @return {@link Float} value of terrain size
 	 */
-	public float getSize();
+	float getSize();
 
 	/**
 	 * Gets x-coordinate at terrain sized coordinate axis.
 	 * 
 	 * @return {@link Float} value of x-coordinate
 	 */
-	public float getX();
+	float getX();
 
 	/**
 	 * Gets z-coordinate at terrain sized coordinate axis.
 	 * 
 	 * @return {@link Float} value of z-coordinate
 	 */
-	public float getZ();
+	float getZ();
 	
-	public void setXPosition(int xPosition);
+	void setXPosition(int xPosition);
 	
-	public void setZPosition(int zPosition);
+	void setZPosition(int zPosition);
 
 	/**
 	 * Gets terrain raw model with all vertices.
 	 * 
 	 * @return {@link Mesh} value of terrain raw model
 	 */
-	public Mesh getModel();
+	Mesh getModel();
 
 	/**
 	 * Returns if terrain is visible.
@@ -61,7 +68,7 @@ public interface ITerrain extends Nameable {
 	 * @return true if terrain is visible<br>
 	 *         false if terrain is hidden
 	 */
-	public boolean isVisible();
+	boolean isVisible();
 
 	/**
 	 * Sets terrain visible or hiding.
@@ -69,14 +76,14 @@ public interface ITerrain extends Nameable {
 	 * @param isVisible
 	 *            {@link Boolean} value to define terrain visibity parameter
 	 */
-	public void setVisible(boolean isVisible);
+	void setVisible(boolean isVisible);
 
 	/**
 	 * Gets Terrain texture pack consisted from 4 texture.
 	 * 
 	 * @return {@link TerrainTexturePack} value of 4 texture pack
 	 */
-	public TerrainTexturePack getTexturePack();
+	TerrainTexturePack getTexturePack();
 
 	/**
 	 * Gets texture map of intensity of blending that effects on terrain
@@ -84,14 +91,14 @@ public interface ITerrain extends Nameable {
 	 * 
 	 * @return {@link TerrainTexture} value of blending texture.
 	 */
-	public Texture2D getBlendMap();
+	Texture2D getBlendMap();
 
 	/**
 	 * Gets terrain height texture-map name.
 	 * 
 	 * @return {@link String} value of height texture map name
 	 */
-	public String getHeightMapName();
+	String getHeightMapName();
 
 	/**
 	 * Returns if terrain is procedurally generated or not.
@@ -99,7 +106,7 @@ public interface ITerrain extends Nameable {
 	 * @return true if terrain is procedurally generated<br>
 	 *         false if terrain is not procedurally generated
 	 */
-	public boolean getIsProcedureGenerated();
+	boolean getIsProcedureGenerated();
 
 	/**
 	 * Gets maximum and minimum value (amplitude) of terrain height for
@@ -107,7 +114,7 @@ public interface ITerrain extends Nameable {
 	 * 
 	 * @return {link Float} value of terrain height amplitude
 	 */
-	public float getAmplitude();
+	float getAmplitude();
 
 	/**
 	 * Gets intensity of point to point changes due to terrain procedure
@@ -115,14 +122,14 @@ public interface ITerrain extends Nameable {
 	 * 
 	 * @return {@link Integer} value of change intensity
 	 */
-	public int getOctaves();
+	int getOctaves();
 
 	/**
 	 * Gets terrain edge roughness for terrain procedure generation.
 	 * 
 	 * @return {@link Float} value of terrain edge roughness
 	 */
-	public float getRoughness();
+	float getRoughness();
 
 	/**
 	 * Gets terrain height value (y-coordinate in game world space) due to input
@@ -134,14 +141,14 @@ public interface ITerrain extends Nameable {
 	 *            {@link Float} value of z-coordinate in game world space
 	 * @return
 	 */
-	public float getHeightOfTerrain(float worldX, float worldZ);
+	float getHeightOfTerrain(float worldX, float worldZ);
 	
 	/**
 	 * Gets saved height generator.
 	 * 
 	 * @return {@link HeightsGenerator} object
 	 */
-	public HeightsGenerator getGenerator();
+	HeightsGenerator getGenerator();
 	
 	/**
 	 * Clones current terrain.
@@ -150,6 +157,6 @@ public interface ITerrain extends Nameable {
 	 * 
 	 * @return {@link ITerrain} object
 	 */
-	public ITerrain clone(String name);
+	ITerrain clone(String name);
 
 }

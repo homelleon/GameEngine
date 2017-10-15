@@ -3,12 +3,11 @@ package object.terrain.terrain;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL40;
 
-import core.debug.EngineDebug;
+import core.settings.EngineSettings;
 import manager.octree.Node;
 import object.camera.ICamera;
 import primitive.buffer.PatchVAO;
-import renderer.terrain.PatchedTerrainRenderer;
-import shader.terrain.PatchedTerrainShader;
+import shader.terrain.TerrainShader;
 import tool.math.Matrix4f;
 import tool.math.vector.Vector2f;
 import tool.math.vector.Vector3f;
@@ -39,21 +38,21 @@ public class TerrainNode extends Node {
 		this.localTransformationMatrix.scale(localScaling);
 		
 		
-		this.worldTransformationMatrix.translate(new Vector3f(-PatchedTerrainRenderer.SCALE_XZ / 2f, 0, -PatchedTerrainRenderer.SCALE_XZ / 2f));
-		this.worldTransformationMatrix.scale(new Vector3f(PatchedTerrainRenderer.SCALE_XZ, PatchedTerrainRenderer.SCALE_Y, PatchedTerrainRenderer.SCALE_XZ));
+		this.worldTransformationMatrix.translate(new Vector3f(-EngineSettings.SCALE_XZ / 2f, 0, -EngineSettings.SCALE_XZ / 2f));
+		this.worldTransformationMatrix.scale(new Vector3f(EngineSettings.SCALE_XZ, EngineSettings.SCALE_Y, EngineSettings.SCALE_XZ));
 		
 		this.computeWorldPosition();
 		this.updateQuadTree(camera);		
 	}
 	
 	public void computeWorldPosition() {
-		Vector2f loc = new Vector2f(location).add(gap / 2f).mul(PatchedTerrainRenderer.SCALE_XZ).sub(PatchedTerrainRenderer.SCALE_XZ / 2f);
+		Vector2f loc = new Vector2f(location).add(gap / 2f).mul(EngineSettings.SCALE_XZ).sub(EngineSettings.SCALE_XZ / 2f);
 		this.worldPosition = new Vector3f(loc.getX(), 0, loc.getY());
 	}
 	
 	public void updateQuadTree(ICamera camera) {
-		if(camera.getPosition().getY() > PatchedTerrainRenderer.SCALE_Y) {
-			this.worldPosition.setY(PatchedTerrainRenderer.SCALE_Y);
+		if(camera.getPosition().getY() > EngineSettings.SCALE_Y) {
+			this.worldPosition.setY(EngineSettings.SCALE_Y);
 		} else {
 			this.worldPosition.setY(camera.getPosition().getY());
 		}
@@ -65,9 +64,9 @@ public class TerrainNode extends Node {
 	
 	public void updateChildNodes(ICamera camera) {
 		float distance = (new Vector3f(camera.getPosition()).sub(this.worldPosition)).length();
-		if(distance < PatchedTerrainRenderer.LOD_RANGES[this.lod]) {
+		if(distance < EngineSettings.LOD_RANGES[this.lod]) {
 			this.addChildNodes(this.lod + 1, camera);
-		} else if(distance >= PatchedTerrainRenderer.LOD_RANGES[this.lod]) {
+		} else if(distance >= EngineSettings.LOD_RANGES[this.lod]) {
 			this.removeChildNodes();
 		}
 	}
@@ -81,7 +80,7 @@ public class TerrainNode extends Node {
 		}
 	}
 	
-	public void render(PatchedTerrainShader shader, PatchVAO patchedVao) {
+	public void render(TerrainShader shader, PatchVAO patchedVao) {
 		if(this.isLeaf()) {
 			shader.loadLoDVariables(lod, index, gap, location);
 			shader.loadPositionMatrix(worldTransformationMatrix, localTransformationMatrix);

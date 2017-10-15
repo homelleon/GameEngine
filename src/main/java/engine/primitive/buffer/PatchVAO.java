@@ -20,7 +20,7 @@ public class PatchVAO {
 		vao.bind(0);
 	}
 	
-	public void unbind() {
+	public static void unbind() {
 		VAO.unbind(0);
 	}
 	

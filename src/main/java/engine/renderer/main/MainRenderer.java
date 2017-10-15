@@ -153,11 +153,10 @@ public class MainRenderer implements IMainRenderer {
 				EngineMain.getWiredFrameMode() == EngineSettings.WIRED_FRAME_ENTITY_TERRAIN) {
 			OGLUtils.doWiredFrame(true);
 		}
-		scene.getPatchedTerrain().updateQuadTree(scene.getCamera());
-		if(!isLowDistance) {
-			pTerrainRenderer.render(scene.getPatchedTerrain(), scene, Matrix4f.mul(projectionMatrix, scene.getCamera().getViewMatrix()));
-		}
-		//terrainRenderer.render(terrains, clipPlane, scene.getLights().getAll(), scene.getCamera(), shadowMapSpaceMatrix);
+//		if(!isLowDistance) {
+//			pTerrainRenderer.render(scene.getPatchedTerrain(), scene, Matrix4f.mul(projectionMatrix, scene.getCamera().getViewMatrix()));
+//		}
+		terrainRenderer.render(terrains, clipPlane, scene.getLights().getAll(), scene.getCamera(), shadowMapSpaceMatrix);
 		OGLUtils.doWiredFrame(false);
 
 		skyboxRenderer.render(scene.getCamera());	
