@@ -4,7 +4,6 @@ import core.settings.EngineSettings;
 import manager.octree.Node;
 import object.scene.IScene;
 import object.terrain.terrain.PatchedTerrain;
-import object.terrain.terrain.TerrainNode;
 import object.terrain.terrain.TerrainQuadTree;
 import primitive.buffer.PatchVAO;
 import shader.terrain.PatchedTerrainShader;

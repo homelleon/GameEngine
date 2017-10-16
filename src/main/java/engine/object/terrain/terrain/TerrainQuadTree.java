@@ -39,32 +39,32 @@ public class TerrainQuadTree extends Node {
 	}
 
 	private float[] generateVertexData() {
-		Vector2f[] vertices = new Vector2f[16];
+		Vector3f[] vertices = new Vector3f[16];
 		
 		int index = 0;
 		
-		vertices[index++] = new Vector2f(0, 0);
-		vertices[index++] = new Vector2f(0.333f, 0);
-		vertices[index++] = new Vector2f(0.666f, 0);
-		vertices[index++] = new Vector2f(1, 0);
+		vertices[index++] = new Vector3f(0, 0, 0);
+		vertices[index++] = new Vector3f(0.333f, 0,  0);
+		vertices[index++] = new Vector3f(0.666f, 0, 0);
+		vertices[index++] = new Vector3f(1, 0, 0);
 		
-		vertices[index++] = new Vector2f(0, 0.333f);
-		vertices[index++] = new Vector2f(0.333f, 0.333f);
-		vertices[index++] = new Vector2f(0.666f, 0.333f);
-		vertices[index++] = new Vector2f(1, 0.333f);
+		vertices[index++] = new Vector3f(0, 0, 0.333f);
+		vertices[index++] = new Vector3f(0.333f, 0, 0.333f);
+		vertices[index++] = new Vector3f(0.666f, 0, 0.333f);
+		vertices[index++] = new Vector3f(1, 0, 0.333f);
 		
-		vertices[index++] = new Vector2f(0, 0.666f);
-		vertices[index++] = new Vector2f(0.333f, 0.666f);
-		vertices[index++] = new Vector2f(0.666f, 0.666f);
-		vertices[index++] = new Vector2f(1, 0.666f);
+		vertices[index++] = new Vector3f(0, 0, 0.666f);
+		vertices[index++] = new Vector3f(0.333f, 0, 0.666f);
+		vertices[index++] = new Vector3f(0.666f, 0, 0.666f);
+		vertices[index++] = new Vector3f(1, 0, 0.666f);
 		
-		vertices[index++] = new Vector2f(0, 1);
-		vertices[index++] = new Vector2f(0.333f, 1);
-		vertices[index++] = new Vector2f(0.666f, 1);
-		vertices[index++] = new Vector2f(1, 1);
+		vertices[index++] = new Vector3f(0, 0, 1);
+		vertices[index++] = new Vector3f(0.333f, 0, 1);
+		vertices[index++] = new Vector3f(0.666f, 0, 1);
+		vertices[index++] = new Vector3f(1, 0, 1);
 		
 		Object[] positionArray = Stream.of(vertices)
-				.flatMap(vertex -> Stream.of(vertex.x, vertex.y))
+				.flatMap(vertex -> Stream.of(vertex.x, vertex.y, vertex.z))
 				.toArray();
 		
 		float[] positions = EngineUtils.toFloatArray(positionArray);

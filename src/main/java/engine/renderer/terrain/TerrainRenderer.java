@@ -96,9 +96,9 @@ public class TerrainRenderer {
 		TerrainQuadTree terrainTree = (TerrainQuadTree) terrain.getQuadTree();
 		PatchVAO patchVao = terrainTree.getVao();
 		patchVao.bind();
-		Mesh mesh = terrain.getModel();
-		VAO vao = mesh.getVAO();
-		vao.bind(0, 1, 2);
+//		Mesh mesh = terrain.getModel();
+//		VAO vao = mesh.getVAO();
+//		vao.bind(0, 1, 2);
 		bindTexture(terrain);
 		shader.loadShineVariables(1, 0);
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
@@ -115,7 +115,7 @@ public class TerrainRenderer {
 	}
 
 	private void unbindTexture() {
-		VAO.unbind(0, 1, 2);
+		//VAO.unbind(0, 1, 2);
 		PatchVAO.unbind();
 	}
 

@@ -46,7 +46,6 @@ public class MainRenderer implements IMainRenderer {
 	private Matrix4f normalDistProjectionMatrix;
 	private Matrix4f lowDistProjectionMatrix;
 	private TerrainRenderer terrainRenderer;
-	private PatchedTerrainRenderer pTerrainRenderer;
 	private SkyboxRenderer skyboxRenderer;
 	private VoxelRenderer voxelRenderer;
 	private BoundingRenderer boundingRenderer;
@@ -81,7 +80,6 @@ public class MainRenderer implements IMainRenderer {
 		this.entityRendererManager.addPair(normalEntityRenderer, normalEntities);
 		this.entityRendererManager.addPair(decorEntityRenderer, decorEntities);
 		this.terrainRenderer = new TerrainRenderer(projectionMatrix);
-		this.pTerrainRenderer = new PatchedTerrainRenderer();
 		this.skyboxRenderer = new SkyboxRenderer(projectionMatrix);
 		this.voxelRenderer = new VoxelRenderer(projectionMatrix);
 		this.boundingRenderer = new BoundingRenderer(projectionMatrix);
@@ -218,7 +216,6 @@ public class MainRenderer implements IMainRenderer {
 		this.entityRendererManager.clean();
 		this.terrainRenderer.clean();
 		this.shadowMapRenderer.clean();
-		this.pTerrainRenderer.clean();
 	}
 	
 	private Matrix4f createProjectionMatrix(float farPlane) {

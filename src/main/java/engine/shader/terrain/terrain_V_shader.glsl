@@ -1,8 +1,8 @@
 //VERTEX SHADER - Terrain
-#version 400 core
+#version 430 core
 
 /*===== in ======*/
-in vec3 position;
+in vec3 in_position;
 in vec2 textureCoordinates;
 in vec3 normal;
 
@@ -145,21 +145,21 @@ vec2 morph(vec2 localPosition, int morph_area) {
 /*------------- main ---------------*/
 void main(void) {
 
-	//
-
-
-   vec4 worldPosition = transformationMatrix * vec4(position, 1.0);
-   shadowCoords = toShadowMapSpace * worldPosition;
-   
-   gl_ClipDistance[0] = dot(worldPosition, clipPlane);
-   
-   //vec4 positionRelativeToCam = viewMatrix * worldPosition;
-   //gl_Position = projectionMatrix * positionRelativeToCam;
-   vec2 localPosition = (localMatrix * vec4(in_position.x, 0, in_position.y,1)).xz;
+   vec2 localPosition = (localMatrix * vec4(in_position.x, in_position.y, in_position.z,1)).xz;
 
    if(lod > 0) {
 	  localPosition += morph(localPosition, lod_morph_area[lod-1]);
    }
+
+   vec4 worldPosition = transformationMatrix * vec4(in_position, 1.0);
+   //vec4 worldPosition = worldMatrix * vec4(localPosition.x, 0, localPosition.y, 1);
+
+   shadowCoords = toShadowMapSpace * worldPosition;
+   
+   //gl_ClipDistance[0] = dot(worldPosition, clipPlane);
+   
+   vec4 positionRelativeToCam = viewMatrix * worldPosition;
+   //gl_Position = projectionMatrix * positionRelativeToCam;
 
    gl_Position = worldMatrix * vec4(localPosition.x, 0, localPosition.y, 1);
 
