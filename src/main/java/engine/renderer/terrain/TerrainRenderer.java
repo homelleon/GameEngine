@@ -13,9 +13,7 @@ import object.terrain.terrain.ITerrain;
 import object.terrain.terrain.TerrainNode;
 import object.terrain.terrain.TerrainQuadTree;
 import object.texture.terrain.TerrainTexturePack;
-import primitive.buffer.PatchVAO;
 import primitive.buffer.VAO;
-import primitive.model.Mesh;
 import shader.terrain.TerrainShader;
 import tool.math.Maths;
 import tool.math.Matrix4f;
@@ -72,6 +70,7 @@ public class TerrainRenderer {
 		shader.loadFogDensity(EngineSettings.FOG_DENSITY);
 		shader.loadLights(lights);
 		shader.loadViewMatrix(camera.getViewMatrix());
+		shader.loadCameraPosition(camera.getPosition());
 		shader.loadShadowVariables(EngineSettings.SHADOW_DISTANCE, EngineSettings.SHADOW_MAP_SIZE,
 				EngineSettings.SHADOW_TRANSITION_DISTANCE, EngineSettings.SHADOW_PCF);
 
@@ -94,11 +93,8 @@ public class TerrainRenderer {
 
 	private void prepareTerrain(ITerrain terrain) {
 		TerrainQuadTree terrainTree = (TerrainQuadTree) terrain.getQuadTree();
-		PatchVAO patchVao = terrainTree.getVao();
-		patchVao.bind();
-//		Mesh mesh = terrain.getModel();
-//		VAO vao = mesh.getVAO();
-//		vao.bind(0, 1, 2);
+		VAO vao = terrainTree.getVao();
+		vao.bind(0, 1, 2);
 		bindTexture(terrain);
 		shader.loadShineVariables(1, 0);
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
@@ -115,13 +111,14 @@ public class TerrainRenderer {
 	}
 
 	private void unbindTexture() {
-		//VAO.unbind(0, 1, 2);
-		PatchVAO.unbind();
+		VAO.unbind(0, 1, 2);
 	}
 
 	private void loadModelMatrix(ITerrain terrain) {
+//		Matrix4f transformationMatrix = Maths
+//				.createTransformationMatrix(new Vector3f(terrain.getX(), 0, terrain.getZ()), 0, 0, 0, 1);
 		Matrix4f transformationMatrix = Maths
-				.createTransformationMatrix(new Vector3f(terrain.getX(), 0, terrain.getZ()), 0, 0, 0, 1);
+				.createTransformationMatrix(new Vector3f(EngineSettings.SCALE_XZ, 0, EngineSettings.SCALE_XZ), 0, 0, 0, 1);
 		shader.loadTranformationMatrix(transformationMatrix);
 	}
 

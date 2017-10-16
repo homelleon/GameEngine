@@ -6,7 +6,7 @@ import org.lwjgl.opengl.GL40;
 import core.settings.EngineSettings;
 import manager.octree.Node;
 import object.camera.ICamera;
-import primitive.buffer.PatchVAO;
+import primitive.buffer.VAO;
 import shader.terrain.TerrainShader;
 import tool.math.Matrix4f;
 import tool.math.vector.Vector2f;
@@ -80,14 +80,14 @@ public class TerrainNode extends Node {
 		}
 	}
 	
-	public void render(TerrainShader shader, PatchVAO patchedVao) {
+	public void render(TerrainShader shader, VAO vao) {
 		if(this.isLeaf()) {
 			shader.loadLoDVariables(lod, index, gap, location);
 			shader.loadPositionMatrix(worldTransformationMatrix, localTransformationMatrix);
-			GL11.glDrawArrays(GL40.GL_PATCHES, 0, patchedVao.getSize());
+			GL11.glDrawArrays(GL40.GL_PATCHES, 0, 16);
 		}
 		for(Node child : this.getChildren()) {
-			((TerrainNode) child).render(shader, patchedVao);
+			((TerrainNode) child).render(shader, vao);
 		}
 	}
 	

@@ -7,6 +7,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
+import org.lwjgl.opengl.GL40;
 
 public class VAO {
 
@@ -59,6 +60,17 @@ public class VAO {
 		dataVbo.unbind();
 		dataVbos.add(dataVbo);
 	}
+	
+	public void createPatchAttribute(int attribute, int attrSize, float[] data, int patchSize) {
+		VBO dataVbo = VBO.create(GL15.GL_ARRAY_BUFFER);
+		dataVbo.bind();
+		dataVbo.storeData(data);
+		GL20.glVertexAttribPointer(attribute, attrSize, GL11.GL_FLOAT, false, attrSize * BYTES_PER_FLOAT, 0);
+		GL40.glPatchParameteri(GL40.GL_PATCH_VERTICES, patchSize);
+		dataVbo.unbind();
+		dataVbos.add(dataVbo);
+	}
+	
 
 	public void createIntAttribute(int attribute, int attrSize, int[] data) {
 		VBO dataVbo = VBO.create(GL15.GL_ARRAY_BUFFER);

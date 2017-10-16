@@ -5,7 +5,6 @@ import java.util.Collection;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
-import core.debug.EngineDebug;
 import core.display.DisplayManager;
 import core.settings.EngineSettings;
 import object.entity.entity.TexturedEntity;
@@ -31,7 +30,6 @@ public class Player extends TexturedEntity implements IPlayer {
 
 	public Player(String name, Collection<Model> modelList, Vector3f position, Vector3f rotation, float scale) {
 		super(name, modelList, position, rotation, scale);
-		this.typeID = EngineSettings.ENTITY_TYPE_NORMAL;
 	}
 
 	@Override

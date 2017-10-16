@@ -33,10 +33,8 @@ import renderer.processor.ISceneProcessor;
 import renderer.processor.SceneProcessor;
 import renderer.shadow.ShadowMapMasterRenderer;
 import renderer.skybox.SkyboxRenderer;
-import renderer.terrain.PatchedTerrainRenderer;
 import renderer.terrain.TerrainRenderer;
 import renderer.voxel.VoxelRenderer;
-import shader.terrain.PatchedTerrainShader;
 import tool.math.Matrix4f;
 import tool.openGL.OGLUtils;
 

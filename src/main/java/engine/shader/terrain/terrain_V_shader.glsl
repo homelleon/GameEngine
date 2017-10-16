@@ -7,12 +7,12 @@ in vec2 textureCoordinates;
 in vec3 normal;
 
 /*===== out =====*/
-out vec2 pass_textureCoords;
-out vec3 surfaceNormal;
-out vec3 toLightVector[10];
-out vec3 toCameraVector;
-out float visibility;
-out vec4 shadowCoords;
+out vec3 gs_surfaceNormal;
+out vec3 gs_toLightVector[10];
+out vec3 gs_toCameraVector;
+out float gs_visibility;
+out vec4 gs_shadowCoords;
+out vec2 gs_textureCoords;
 
 /*== uniforms ==*/
 uniform int lightCount;
@@ -145,38 +145,37 @@ vec2 morph(vec2 localPosition, int morph_area) {
 /*------------- main ---------------*/
 void main(void) {
 
-   vec2 localPosition = (localMatrix * vec4(in_position.x, in_position.y, in_position.z,1)).xz;
+   vec3 localPosition = (localMatrix * vec4(in_position.x, in_position.y, in_position.z,1)).xyz;
 
    if(lod > 0) {
-	  localPosition += morph(localPosition, lod_morph_area[lod-1]);
+	  localPosition.xz += morph(localPosition.xz, lod_morph_area[lod-1]);
    }
 
-   vec4 worldPosition = transformationMatrix * vec4(in_position, 1.0);
-   //vec4 worldPosition = worldMatrix * vec4(localPosition.x, 0, localPosition.y, 1);
+//   vec4 worldPosition = transformationMatrix * vec4(in_position, 1.0);
+   vec4 worldPosition = worldMatrix * vec4(localPosition, 1);
 
-   shadowCoords = toShadowMapSpace * worldPosition;
+   gs_shadowCoords = toShadowMapSpace * worldPosition;
    
-   //gl_ClipDistance[0] = dot(worldPosition, clipPlane);
+   gl_ClipDistance[0] = dot(worldPosition, clipPlane);
    
    vec4 positionRelativeToCam = viewMatrix * worldPosition;
-   //gl_Position = projectionMatrix * positionRelativeToCam;
 
-   gl_Position = worldMatrix * vec4(localPosition.x, 0, localPosition.y, 1);
+   gl_Position = worldMatrix * vec4(localPosition, 1);
 
-   pass_textureCoords = textureCoordinates;
+   gs_textureCoords = textureCoordinates;
 
-   surfaceNormal = (transformationMatrix * vec4(normal,0.0)).xyz;
+   gs_surfaceNormal = (transformationMatrix * vec4(normal,0.0)).xyz;
    for(int i=0;i<lightCount;i++) {
-      toLightVector[i] = lightPosition[i] - worldPosition.xyz;
+      gs_toLightVector[i] = lightPosition[i] - worldPosition.xyz;
    } 
-   toCameraVector = (inverse(viewMatrix) * vec4(0.0,0.0,0.0,1.0)).xyz - worldPosition.xyz; 
+   gs_toCameraVector = (inverse(viewMatrix) * vec4(0.0,0.0,0.0,1.0)).xyz - worldPosition.xyz;
    
    float distance = length(positionRelativeToCam.xyz);
-   visibility = exp(-pow((distance*fogDensity),fogGradient));
-   visibility = clamp(visibility,0.0,1.0);
+   gs_visibility = exp(-pow((distance*fogDensity),fogGradient));
+   gs_visibility = clamp(gs_visibility,0.0,1.0);
    
    distance = distance - (shadowDistance - shadowTransitionDistance);
    distance = distance / shadowTransitionDistance;
-   shadowCoords.w = clamp(1.0 - distance, 0.0, 1.0);
+   gs_shadowCoords.w = clamp(1.0 - distance, 0.0, 1.0);
    
 }

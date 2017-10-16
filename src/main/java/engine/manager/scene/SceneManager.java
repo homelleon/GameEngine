@@ -76,7 +76,8 @@ public class SceneManager implements ISceneManager {
 	
 	private void initializeGame(IScene scene) {
 		/*------------------PLAYER-----------------*/
-		List<Model> cubeModels = EngineUtils.loadModels("xuchilbara", "xuchilbara_dif", true);
+//		List<Model> cubeModels = EngineUtils.loadModels("xuchilbara", "xuchilbara_dif", true);
+		List<Model> cubeModels = EngineUtils.loadModels("cube", "Cube1");
 		if(EngineDebug.hasDebugPermission()) {
 			EngineDebug.println(cubeModels.get(0).getName(), 2);
 		}
@@ -90,17 +91,17 @@ public class SceneManager implements ISceneManager {
 		player1.setBaseName("xuchilbaraEntity");
 		player1.getModels().forEach(model -> {
 			Material material = model.getMaterial();
-			material.getDiffuseMap().setHasTransparency(true);
+//			material.getDiffuseMap().setHasTransparency(true);
 			material.setShininess(0.1f);
-			material.setNormalMap(
-				Loader.getInstance().getTextureLoader().loadTexture(
-						EngineSettings.TEXTURE_NORMAL_MAP_PATH, "xuchilbara_n"));
-			material.setSpecularMap(
-					Loader.getInstance().getTextureLoader().loadTexture(
-							EngineSettings.TEXTURE_SPECULAR_MAP_PATH, "xuchilbara_spec"));
-			material.setAlphaMap(
-					Loader.getInstance().getTextureLoader().loadTexture(
-							EngineSettings.TEXTURE_ALPHA_MAP_PATH, "xuchilbara_o"));
+//			material.setNormalMap(
+//				Loader.getInstance().getTextureLoader().loadTexture(
+//						EngineSettings.TEXTURE_NORMAL_MAP_PATH, "xuchilbara_n"));
+//			material.setSpecularMap(
+//					Loader.getInstance().getTextureLoader().loadTexture(
+//							EngineSettings.TEXTURE_SPECULAR_MAP_PATH, "xuchilbara_spec"));
+//			material.setAlphaMap(
+//					Loader.getInstance().getTextureLoader().loadTexture(
+//							EngineSettings.TEXTURE_ALPHA_MAP_PATH, "xuchilbara_o"));
 		});
 
 		/*--------------UI-------------------*/

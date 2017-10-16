@@ -2,12 +2,12 @@
 #version 430 core
 
 /*===== in ======*/
-in vec2 pass_textureCoords;
-in vec3 surfaceNormal;
-in vec3 toLightVector[10];
-in vec3 toCameraVector;
-in float visibility;
-in vec4 shadowCoords;
+in vec2 fs_textureCoords;
+in vec3 fs_surfaceNormal;
+in vec3 fs_toLightVector[10];
+in vec3 fs_toCameraVector;
+in float fs_visibility;
+in vec4 fs_shadowCoords;
 
 /*===== out =====*/
 out vec4 out_Color;
@@ -41,8 +41,8 @@ void main(void) {
    
    for(int x=-shadowPCFCount; x<=shadowPCFCount; x++) {
    		for(int y=-shadowPCFCount; y<=shadowPCFCount; y++) {
-   				float objectNearestLight = texture(shadowMap, shadowCoords.xy + vec2(x, y) * texelSize).r;
-   				if(shadowCoords.z > objectNearestLight) {
+   				float objectNearestLight = texture(shadowMap, fs_shadowCoords.xy + vec2(x, y) * texelSize).r;
+   				if(fs_shadowCoords.z > objectNearestLight) {
    					total += 1.0;
    				}
    		}
@@ -50,13 +50,13 @@ void main(void) {
    
    total /= totalTexels;
 
-   float lightFactor = 1.0 - (total * shadowCoords.w);
+   float lightFactor = 1.0 - (total * fs_shadowCoords.w);
   	
 
-   vec4 blendMapColour = texture(blendMap, pass_textureCoords);
+   vec4 blendMapColour = texture(blendMap, fs_textureCoords);
    
    float backTextureAmount = 1 - (blendMapColour.r + blendMapColour.g + blendMapColour.b);
-   vec2 tiledCoords = pass_textureCoords * 1000.0;
+   vec2 tiledCoords = fs_textureCoords * 1000.0;
    vec4 backgroundTextureColour = texture(backgroundTexture, tiledCoords) * backTextureAmount;
    vec4 rTextureColour = texture(rTexture,tiledCoords) * blendMapColour.r;
    vec4 gTextureColour = texture(gTexture,tiledCoords) * blendMapColour.g;
@@ -64,16 +64,16 @@ void main(void) {
 
    vec4 totalColour = backgroundTextureColour + rTextureColour + gTextureColour + bTextureColour;
    
-   vec3 unitNormal = normalize(surfaceNormal);
-   vec3 unitVectorToCamera = normalize(toCameraVector);
+   vec3 unitNormal = normalize(fs_surfaceNormal);
+   vec3 unitVectorToCamera = normalize(fs_toCameraVector);
    
    vec3 totalDiffuse = vec3(0.0);
    vec3 totalSpecular = vec3(0.0);
    
    for(int i=0;i<lightCount;i++) {
-     float distance = length(toLightVector[i]);
+     float distance = length(fs_toLightVector[i]);
      float attFactor = attenuation[1].x + (attenuation[i].y * distance) + (attenuation[i].z * distance * distance);
-     vec3 unitLightVector = normalize(toLightVector[i]); 
+     vec3 unitLightVector = normalize(fs_toLightVector[i]);
      float nDot1 = dot(unitNormal,unitLightVector);
      float brightness = max(nDot1, 0.0);
      totalDiffuse = totalDiffuse + (brightness * lightColor[i])/attFactor;
@@ -87,8 +87,7 @@ void main(void) {
    totalDiffuse = max(totalDiffuse * lightFactor, 0.4);
    
    out_Color = vec4(totalDiffuse, 1.0) * totalColour + vec4(totalSpecular,1.0);
-   out_Color = mix(vec4(skyColour, 1.0), out_Color, visibility);
+   out_Color = mix(vec4(skyColour, 1.0), out_Color, fs_visibility);
    out_BrightColor = vec4(0.0);
-   out_Color = vec4(1.0, 0.0, 0.0, 1.0); //delete it
    
 }

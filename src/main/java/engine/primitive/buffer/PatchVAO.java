@@ -24,15 +24,11 @@ public class PatchVAO {
 		VAO.unbind(0);
 	}
 	
-	public void render() {
-		GL11.glDrawArrays(GL40.GL_PATCHES, 0, this.size);
-	}
-	
 	public int getSize() {
 		return this.size;
 	}
 	
-	public void allocate(float[] positions, int patchSize) {
+	public void allocate(float[] positions, float[] coordinates, int patchSize) {
 		size = positions.length;
 		vao.bind();
 		vbo.bind();
