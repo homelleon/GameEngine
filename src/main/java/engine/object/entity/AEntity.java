@@ -125,7 +125,7 @@ public abstract class AEntity extends GameObject {
 
 	public synchronized void move(float forwardSpeed, float strafeSpeed) {
 		this.isMoved = false;
-		if(forwardSpeed >0 || strafeSpeed > 0) {
+		if(forwardSpeed > 0 || strafeSpeed > 0) {
 			this.isMoved = true;
 		}
 		float dx = (float) (forwardSpeed * Math.sin(Math.toRadians(this.rotation.getY()))
@@ -136,9 +136,9 @@ public abstract class AEntity extends GameObject {
 	}
 
 	public synchronized void increaseRotation(float dx, float dy, float dz) {
-		this.rotation.x += dx / scale;
-		this.rotation.y += dy / scale;
-		this.rotation.z += dz / scale;
+		this.rotation.x += dx;
+		this.rotation.y += dy;
+		this.rotation.z += dz;
 	}
 	
 	public String getBaseName() {

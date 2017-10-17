@@ -21,7 +21,7 @@ public class TerrainQuadTree extends Node {
 	
 	public TerrainQuadTree(ICamera camera) {
 		float[] positions = this.generateVertexData();
-		float[] coordinates = this.generateCoordinateData();
+		float[] coordinates = this.generateVertexData2D();
 		float[] normals = this.generateNormalData();
 		this.vao = Loader.getInstance().getVertexLoader().loadPatchToVAO(positions, coordinates, normals, 16);
 		
@@ -173,6 +173,11 @@ public class TerrainQuadTree extends Node {
 		float[] positions = EngineUtils.toFloatArray(positionArray);
 		return positions;
 	}
+	
+	public Matrix4f getWorldMatrix() {
+		return this.worldTransformationMatrix;
+	}
+	
 	public static int getRootNodes() {
 		return rootNodes;
 	}

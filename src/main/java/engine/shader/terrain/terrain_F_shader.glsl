@@ -56,14 +56,14 @@ void main(void) {
    vec4 blendMapColour = texture(blendMap, fs_textureCoords);
    
    float backTextureAmount = 1 - (blendMapColour.r + blendMapColour.g + blendMapColour.b);
-   vec2 tiledCoords = fs_textureCoords * 1000.0;
+   vec2 tiledCoords = fs_textureCoords;
    vec4 backgroundTextureColour = texture(backgroundTexture, tiledCoords) * backTextureAmount;
    vec4 rTextureColour = texture(rTexture,tiledCoords) * blendMapColour.r;
    vec4 gTextureColour = texture(gTexture,tiledCoords) * blendMapColour.g;
    vec4 bTextureColour = texture(bTexture,tiledCoords) * blendMapColour.b;
 
    vec4 totalColour = backgroundTextureColour + rTextureColour + gTextureColour + bTextureColour;
-   
+
    vec3 unitNormal = normalize(fs_surfaceNormal);
    vec3 unitVectorToCamera = normalize(fs_toCameraVector);
    
@@ -88,6 +88,7 @@ void main(void) {
    
    out_Color = vec4(totalDiffuse, 1.0) * totalColour + vec4(totalSpecular,1.0);
    out_Color = mix(vec4(skyColour, 1.0), out_Color, fs_visibility);
+
    out_BrightColor = vec4(0.0);
    
 }

@@ -112,11 +112,11 @@ public class Controls implements IControls {
 		}
 
 		if (Keyboard.isKeyDown(EngineSettings.KEY_OBJECT_ROTATE_LEFT)) {
-			scene.getEntities().getPointed().forEach(entity -> entity.increaseRotation(0, 1, 0));
+			scene.getEntities().getPointed().forEach(entity -> entity.increaseRotation(0, 2, 0));
 		}
 
 		if (Keyboard.isKeyDown(EngineSettings.KEY_OBJECT_ROTATE_RIGHT)) {
-			scene.getEntities().getPointed().forEach(entity -> entity.increaseRotation(0, -1, 0));
+			scene.getEntities().getPointed().forEach(entity -> entity.increaseRotation(0, -2, 0));
 		}
 
 		if (Keyboard.isKeyDown(Keyboard.KEY_P)) {

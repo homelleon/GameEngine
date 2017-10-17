@@ -97,6 +97,7 @@ public class TerrainRenderer {
 		vao.bind(0, 1, 2);
 		bindTexture(terrain);
 		shader.loadShineVariables(1, 0);
+		shader.loadWorldMatrix(terrainTree.getWorldMatrix());
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
 	}

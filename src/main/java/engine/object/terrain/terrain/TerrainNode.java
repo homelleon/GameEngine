@@ -83,7 +83,7 @@ public class TerrainNode extends Node {
 	public void render(TerrainShader shader, VAO vao) {
 		if(this.isLeaf()) {
 			shader.loadLoDVariables(lod, index, gap, location);
-			shader.loadPositionMatrix(worldTransformationMatrix, localTransformationMatrix);
+			shader.loadLocalMatrix(localTransformationMatrix);
 			GL11.glDrawArrays(GL40.GL_PATCHES, 0, 16);
 		}
 		for(Node child : this.getChildren()) {

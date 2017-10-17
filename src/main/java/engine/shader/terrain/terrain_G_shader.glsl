@@ -1,7 +1,7 @@
 #version 430
 
 layout(triangles) in;
-layout(line_strip, max_vertices = 4) out;
+layout(triangle_strip, max_vertices = 3) out;
 
 in vec2 gs_textureCoords[];
 in vec3 gs_surfaceNormal[];
@@ -19,8 +19,6 @@ out vec4 fs_shadowCoords;
 
 uniform mat4 projectionMatrix;
 uniform mat4 viewMatrix;
-uniform mat4 worldMatrix;
-uniform mat4 localMatrix;
 
 void createVertex(int index, mat4 projectionViewMatrix) {
 
@@ -42,10 +40,9 @@ void main() {
 
 	mat4 projectionViewMatrix = projectionMatrix * viewMatrix;
 
-	for(int i=0; i < gl_in.length(); ++i) {
+	for(int i=0; i < gl_in.length(); i++) {
 		createVertex(i, projectionViewMatrix);
 	}
-	createVertex(0, projectionViewMatrix);
 
 	EndPrimitive();
 

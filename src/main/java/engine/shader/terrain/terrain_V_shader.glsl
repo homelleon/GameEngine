@@ -7,12 +7,12 @@ in vec2 textureCoordinates;
 in vec3 normal;
 
 /*===== out =====*/
-out vec3 gs_surfaceNormal;
-out vec3 gs_toLightVector[10];
-out vec3 gs_toCameraVector;
-out float gs_visibility;
-out vec4 gs_shadowCoords;
-out vec2 gs_textureCoords;
+out vec3 tc_surfaceNormal;
+out vec3 tc_toLightVector[10];
+out vec3 tc_toCameraVector;
+out float tc_visibility;
+out vec4 tc_shadowCoords;
+out vec2 tc_textureCoords;
 
 /*== uniforms ==*/
 uniform int lightCount;
@@ -151,10 +151,10 @@ void main(void) {
 	  localPosition.xz += morph(localPosition.xz, lod_morph_area[lod-1]);
    }
 
-//   vec4 worldPosition = transformationMatrix * vec4(in_position, 1.0);
+   //vec4 worldPosition0 = transformationMatrix * vec4(in_position, 1.0);
    vec4 worldPosition = worldMatrix * vec4(localPosition, 1);
 
-   gs_shadowCoords = toShadowMapSpace * worldPosition;
+   tc_shadowCoords = toShadowMapSpace * worldPosition;
    
    gl_ClipDistance[0] = dot(worldPosition, clipPlane);
    
@@ -162,20 +162,22 @@ void main(void) {
 
    gl_Position = worldMatrix * vec4(localPosition, 1);
 
-   gs_textureCoords = textureCoordinates;
+   tc_textureCoords = vec2(localMatrix * vec4(textureCoordinates.x, 0, textureCoordinates.y, 1.0));
 
-   gs_surfaceNormal = (transformationMatrix * vec4(normal,0.0)).xyz;
+   tc_surfaceNormal = vec3(localMatrix * vec4(normal,0.0));
+
    for(int i=0;i<lightCount;i++) {
-      gs_toLightVector[i] = lightPosition[i] - worldPosition.xyz;
-   } 
-   gs_toCameraVector = (inverse(viewMatrix) * vec4(0.0,0.0,0.0,1.0)).xyz - worldPosition.xyz;
+      tc_toLightVector[i] = lightPosition[i] - worldPosition.xyz;
+   }
+
+   tc_toCameraVector = (inverse(viewMatrix) * vec4(0.0,0.0,0.0,1.0)).xyz - worldPosition.xyz;
    
    float distance = length(positionRelativeToCam.xyz);
-   gs_visibility = exp(-pow((distance*fogDensity),fogGradient));
-   gs_visibility = clamp(gs_visibility,0.0,1.0);
+   tc_visibility = exp(-pow((distance*fogDensity), fogGradient));
+   tc_visibility = clamp(tc_visibility,0.0,1.0);
    
    distance = distance - (shadowDistance - shadowTransitionDistance);
    distance = distance / shadowTransitionDistance;
-   gs_shadowCoords.w = clamp(1.0 - distance, 0.0, 1.0);
+   tc_shadowCoords.w = clamp(1.0 - distance, 0.0, 1.0);
    
 }

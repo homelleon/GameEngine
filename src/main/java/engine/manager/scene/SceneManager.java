@@ -86,7 +86,7 @@ public class SceneManager implements ISceneManager {
 				cubeModels, 
 				new Vector3f(100, 0, 10), 
 				new Vector3f(0, 0, 0), 
-				0.07f
+				10.2f
 		);
 		player1.setBaseName("xuchilbaraEntity");
 		player1.getModels().forEach(model -> {

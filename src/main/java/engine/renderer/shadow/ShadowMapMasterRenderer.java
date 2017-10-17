@@ -82,7 +82,7 @@ public class ShadowMapMasterRenderer {
 		Vector3f lightDirection = new Vector3f(-sunPosition.x, -sunPosition.y, -sunPosition.z);
 		prepare(lightDirection, shadowBox);
 		shadowEntityRenderer.render(entities, camera);
-		shadowTerrainRenderer.render(terrains);
+		//shadowTerrainRenderer.render(terrains);
 		finish();
 	}
 

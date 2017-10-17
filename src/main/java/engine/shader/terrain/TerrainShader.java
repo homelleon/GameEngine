@@ -166,8 +166,11 @@ public class TerrainShader extends ShaderProgram {
 		this.loadMatrix(UNIFORM_TRANSFORMATION_MATRIX, matrix);
 	}
 	
-	public void loadPositionMatrix(Matrix4f worldMatrix, Matrix4f localMatrix) {
+	public void loadWorldMatrix(Matrix4f worldMatrix) {
 		this.loadMatrix(UNIFORM_WORLD_MATRIX, worldMatrix);
+	}
+	
+	public void loadLocalMatrix(Matrix4f localMatrix) {
 		this.loadMatrix(UNIFORM_LOCAL_MATRIX, localMatrix);
 	}
 	

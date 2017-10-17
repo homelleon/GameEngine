@@ -2,6 +2,20 @@
 
 layout (vertices = 16) out;
 
+in vec2 tc_textureCoords[];
+in vec3 tc_surfaceNormal[];
+in vec3 tc_toLightVector[];
+in vec3 tc_toCameraVector[];
+in float tc_visibility[];
+in vec4 tc_shadowCoords[];
+
+out vec2 te_textureCoords[];
+out vec3 te_surfaceNormal[];
+out vec3 te_toLightVector[];
+out vec3 te_toCameraVector[];
+out float te_visibility[];
+out vec4 te_shadowCoords[];
+
 const int AB = 2;
 const int BC = 3;
 const int CD = 0;
@@ -39,7 +53,15 @@ void main() {
 
 		gl_TessLevelInner[0] = (gl_TessLevelOuter[BC] + gl_TessLevelOuter[DA])/4;
 		gl_TessLevelInner[1] = (gl_TessLevelOuter[AB] + gl_TessLevelOuter[CD])/4;
+
 	}
+
+	te_textureCoords[gl_InvocationID] = tc_textureCoords[gl_InvocationID];
+	te_surfaceNormal[gl_InvocationID] = tc_surfaceNormal[gl_InvocationID];
+	te_toLightVector[gl_InvocationID] = tc_toLightVector[gl_InvocationID];
+	te_toCameraVector[gl_InvocationID] = tc_toCameraVector[gl_InvocationID];
+	te_visibility[gl_InvocationID] = tc_visibility[gl_InvocationID];
+	te_shadowCoords[gl_InvocationID] = tc_shadowCoords[gl_InvocationID];
 
 	gl_out[gl_InvocationID].gl_Position = gl_in[gl_InvocationID].gl_Position;
 }
