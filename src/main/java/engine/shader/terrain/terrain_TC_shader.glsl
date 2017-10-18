@@ -3,6 +3,8 @@
 layout (vertices = 16) out;
 
 in vec2 tc_textureCoords[];
+in vec2 tc_mapCoords[];
+in vec2 tc_globalTextureCoords[];
 in vec3 tc_surfaceNormal[];
 in vec3 tc_toLightVector[];
 in vec3 tc_toCameraVector[];
@@ -10,6 +12,8 @@ in float tc_visibility[];
 in vec4 tc_shadowCoords[];
 
 out vec2 te_textureCoords[];
+out vec2 te_mapCoords[];
+out vec2 te_globalTextureCoords[];
 out vec3 te_surfaceNormal[];
 out vec3 te_toLightVector[];
 out vec3 te_toCameraVector[];
@@ -47,9 +51,9 @@ void main() {
 		float distanceDA = distance(daMid, cameraPosition);
 
 		gl_TessLevelOuter[AB] = mix(1, gl_MaxTessGenLevel, LodFactor(distanceAB));
-		gl_TessLevelOuter[BC] = mix(1, gl_MaxTessGenLevel, LodFactor(distanceBC));;
-		gl_TessLevelOuter[CD] = mix(1, gl_MaxTessGenLevel, LodFactor(distanceCD));;
-		gl_TessLevelOuter[DA] = mix(1, gl_MaxTessGenLevel, LodFactor(distanceDA));;
+		gl_TessLevelOuter[BC] = mix(1, gl_MaxTessGenLevel, LodFactor(distanceBC));
+		gl_TessLevelOuter[CD] = mix(1, gl_MaxTessGenLevel, LodFactor(distanceCD));
+		gl_TessLevelOuter[DA] = mix(1, gl_MaxTessGenLevel, LodFactor(distanceDA));
 
 		gl_TessLevelInner[0] = (gl_TessLevelOuter[BC] + gl_TessLevelOuter[DA])/4;
 		gl_TessLevelInner[1] = (gl_TessLevelOuter[AB] + gl_TessLevelOuter[CD])/4;
@@ -57,6 +61,8 @@ void main() {
 	}
 
 	te_textureCoords[gl_InvocationID] = tc_textureCoords[gl_InvocationID];
+	te_mapCoords[gl_InvocationID] = tc_mapCoords[gl_InvocationID];
+	te_globalTextureCoords[gl_InvocationID] = tc_globalTextureCoords[gl_InvocationID];
 	te_surfaceNormal[gl_InvocationID] = tc_surfaceNormal[gl_InvocationID];
 	te_toLightVector[gl_InvocationID] = tc_toLightVector[gl_InvocationID];
 	te_toCameraVector[gl_InvocationID] = tc_toCameraVector[gl_InvocationID];

@@ -13,13 +13,16 @@ out vec3 tc_toCameraVector;
 out float tc_visibility;
 out vec4 tc_shadowCoords;
 out vec2 tc_textureCoords;
+out vec2 tc_mapCoords;
+out vec2 tc_globalTextureCoords;
 
 /*== uniforms ==*/
 uniform int lightCount;
-uniform mat4 transformationMatrix;
 uniform mat4 projectionMatrix;
 uniform mat4 viewMatrix;
 uniform vec3 lightPosition[10];
+
+uniform sampler2D heightMap;
 
 uniform mat4 toShadowMapSpace;
 uniform float shadowDistance;
@@ -37,6 +40,7 @@ uniform mat4 localMatrix;
 uniform mat4 worldMatrix;
 uniform float gap;
 uniform vec2 location;
+uniform mat4 transformationMatrix;
 
 uniform int lod_morph_area[8];
 
@@ -151,8 +155,13 @@ void main(void) {
 	  localPosition.xz += morph(localPosition.xz, lod_morph_area[lod-1]);
    }
 
+   float height = texture(heightMap, localPosition.xz).r;
+
+
    //vec4 worldPosition0 = transformationMatrix * vec4(in_position, 1.0);
-   vec4 worldPosition = worldMatrix * vec4(localPosition, 1);
+   vec4 worldPosition = worldMatrix * vec4(localPosition.x, height, localPosition.z, 1);
+
+   tc_mapCoords = vec4(transformationMatrix * vec4(localPosition.x,0,localPosition.z,1.0)).xz;
 
    tc_shadowCoords = toShadowMapSpace * worldPosition;
    
@@ -160,9 +169,11 @@ void main(void) {
    
    vec4 positionRelativeToCam = viewMatrix * worldPosition;
 
-   gl_Position = worldMatrix * vec4(localPosition, 1);
+   gl_Position = worldMatrix * vec4(localPosition.x, height, localPosition.z, 1);
 
-   tc_textureCoords = vec2(localMatrix * vec4(textureCoordinates.x, 0, textureCoordinates.y, 1.0));
+   tc_textureCoords = textureCoordinates;
+
+   tc_globalTextureCoords = vec4(worldMatrix * vec4(textureCoordinates.x, 0, textureCoordinates.y, 1.0)).xz;
 
    tc_surfaceNormal = vec3(localMatrix * vec4(normal,0.0));
 

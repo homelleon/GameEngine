@@ -218,7 +218,7 @@ public class TextureBufferLoader {
 	}
 	
 	//TODO: need to be deleted and refactored (temper function)
-	public static Texture load2DTexture(String path) {
+	public static Texture loadOldTexture(String path) {
 		Texture texture = null;
 		try {
 			FileInputStream in = new FileInputStream(path);

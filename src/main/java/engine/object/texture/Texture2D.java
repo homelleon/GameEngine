@@ -38,7 +38,7 @@ public class Texture2D
 	
 	public Texture2D(String name, String file)
 	{
-		Texture texture = TextureBufferLoader.load2DTexture(file);
+		Texture texture = TextureBufferLoader.loadOldTexture(file);
 		this.name = name;
 		this.height = texture.getTextureHeight();
 		this.width = texture.getTextureWidth();

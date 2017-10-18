@@ -12,7 +12,9 @@ import object.light.ILight;
 import object.terrain.terrain.ITerrain;
 import object.terrain.terrain.TerrainNode;
 import object.terrain.terrain.TerrainQuadTree;
+import object.texture.Texture2D;
 import object.texture.terrain.TerrainTexturePack;
+import primitive.buffer.Loader;
 import primitive.buffer.VAO;
 import shader.terrain.TerrainShader;
 import tool.math.Maths;
@@ -22,8 +24,10 @@ import tool.math.vector.Vector3f;
 public class TerrainRenderer {
 
 	private TerrainShader shader;
+	private Texture2D heightMap;
 
 	public TerrainRenderer(Matrix4f projectionMatrix) {
+		this.heightMap = new Texture2D("heightMap", EngineSettings.TEXTURE_HEIGHT_MAP_PATH + "heightMap.png");
 		this.shader = new TerrainShader();
 		shader.start();
 		shader.loadProjectionMatrix(projectionMatrix);
@@ -46,8 +50,7 @@ public class TerrainRenderer {
 		shader.loadToShadowSpaceMatrix(toShadowMapSpace);
 		shader.loadShadowVariables(EngineSettings.SHADOW_DISTANCE, EngineSettings.SHADOW_MAP_SIZE,
 				EngineSettings.SHADOW_TRANSITION_DISTANCE, EngineSettings.SHADOW_PCF);
-
-		
+		this.heightMap.bind(7);
 		for (ITerrain terrain : terrains) {
 			if(camera.isMoved() || camera.isRotated()) {
 				terrain.updateQuadTree(camera);
@@ -73,7 +76,7 @@ public class TerrainRenderer {
 		shader.loadCameraPosition(camera.getPosition());
 		shader.loadShadowVariables(EngineSettings.SHADOW_DISTANCE, EngineSettings.SHADOW_MAP_SIZE,
 				EngineSettings.SHADOW_TRANSITION_DISTANCE, EngineSettings.SHADOW_PCF);
-
+		this.heightMap.bind(7);
 		for (ITerrain terrain : terrains) {
 			prepareTerrain(terrain);
 			loadModelMatrix(terrain);
@@ -119,7 +122,7 @@ public class TerrainRenderer {
 //		Matrix4f transformationMatrix = Maths
 //				.createTransformationMatrix(new Vector3f(terrain.getX(), 0, terrain.getZ()), 0, 0, 0, 1);
 		Matrix4f transformationMatrix = Maths
-				.createTransformationMatrix(new Vector3f(EngineSettings.SCALE_XZ, 0, EngineSettings.SCALE_XZ), 0, 0, 0, 1);
+				.createTransformationMatrix(new Vector3f(EngineSettings.SCALE_XZ, EngineSettings.SCALE_Y, EngineSettings.SCALE_XZ), 0, 0, 0, 1);
 		shader.loadTranformationMatrix(transformationMatrix);
 	}
 

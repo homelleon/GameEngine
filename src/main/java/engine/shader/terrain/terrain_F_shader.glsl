@@ -3,6 +3,7 @@
 
 /*===== in ======*/
 in vec2 fs_textureCoords;
+in vec2 fs_globalTextureCoords;
 in vec3 fs_surfaceNormal;
 in vec3 fs_toLightVector[10];
 in vec3 fs_toCameraVector;
@@ -56,7 +57,7 @@ void main(void) {
    vec4 blendMapColour = texture(blendMap, fs_textureCoords);
    
    float backTextureAmount = 1 - (blendMapColour.r + blendMapColour.g + blendMapColour.b);
-   vec2 tiledCoords = fs_textureCoords;
+   vec2 tiledCoords = fs_globalTextureCoords;
    vec4 backgroundTextureColour = texture(backgroundTexture, tiledCoords) * backTextureAmount;
    vec4 rTextureColour = texture(rTexture,tiledCoords) * blendMapColour.r;
    vec4 gTextureColour = texture(gTexture,tiledCoords) * blendMapColour.g;
