@@ -27,7 +27,7 @@ void createVertex(int index, mat4 projectionViewMatrix) {
 	fs_textureCoords = gs_textureCoords[index];
 	fs_globalTextureCoords = gs_globalTextureCoords[index];
 	fs_surfaceNormal = gs_surfaceNormal[index];
-	//fs_toLightVector[index] = gs_toLightVector[index];
+//	fs_toLightVector[index] = gs_toLightVector[index];
 	fs_toCameraVector = gs_toCameraVector[index];
 	fs_visibility = gs_visibility[index];
 	fs_shadowCoords = gs_shadowCoords[index];

@@ -54,10 +54,10 @@ void main(void) {
    float lightFactor = 1.0 - (total * fs_shadowCoords.w);
   	
 
-   vec4 blendMapColour = texture(blendMap, fs_textureCoords);
+   vec4 blendMapColour = texture(blendMap, fs_globalTextureCoords);
    
    float backTextureAmount = 1 - (blendMapColour.r + blendMapColour.g + blendMapColour.b);
-   vec2 tiledCoords = fs_globalTextureCoords;
+   vec2 tiledCoords = fs_globalTextureCoords * 1000;
    vec4 backgroundTextureColour = texture(backgroundTexture, tiledCoords) * backTextureAmount;
    vec4 rTextureColour = texture(rTexture,tiledCoords) * blendMapColour.r;
    vec4 gTextureColour = texture(gTexture,tiledCoords) * blendMapColour.g;

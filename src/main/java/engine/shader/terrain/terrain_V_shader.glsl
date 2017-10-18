@@ -173,7 +173,7 @@ void main(void) {
 
    tc_textureCoords = textureCoordinates;
 
-   tc_globalTextureCoords = vec4(worldMatrix * vec4(textureCoordinates.x, 0, textureCoordinates.y, 1.0)).xz;
+   tc_globalTextureCoords = vec4(localMatrix * vec4(textureCoordinates.x, 0, textureCoordinates.y, 1.0)).xz;
 
    tc_surfaceNormal = vec3(localMatrix * vec4(normal,0.0));
 

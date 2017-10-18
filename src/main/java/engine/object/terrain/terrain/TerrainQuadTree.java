@@ -99,6 +99,7 @@ public class TerrainQuadTree extends Node {
 		coordinates[index++] = new Vector2f(1,1);
 		coordinates[index++] = new Vector2f(0,0);
 		coordinates[index++] = new Vector2f(1,1);
+		
 		Object[] coordArray = Stream.of(coordinates)
 				.flatMap(vertex -> Stream.of(vertex.x, vertex.y))
 				.toArray();
