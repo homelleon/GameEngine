@@ -3,7 +3,6 @@
 
 /*===== in ======*/
 in vec2 fs_textureCoords;
-in vec2 fs_globalTextureCoords;
 in vec3 fs_surfaceNormal;
 in vec3 fs_toLightVector[10];
 in vec3 fs_toCameraVector;
@@ -54,10 +53,10 @@ void main(void) {
    float lightFactor = 1.0 - (total * fs_shadowCoords.w);
   	
 
-   vec4 blendMapColour = texture(blendMap, fs_globalTextureCoords);
+   vec4 blendMapColour = texture(blendMap, fs_textureCoords);
    
    float backTextureAmount = 1 - (blendMapColour.r + blendMapColour.g + blendMapColour.b);
-   vec2 tiledCoords = fs_globalTextureCoords * 1000;
+   vec2 tiledCoords = fs_textureCoords * 1000;
    vec4 backgroundTextureColour = texture(backgroundTexture, tiledCoords) * backTextureAmount;
    vec4 rTextureColour = texture(rTexture,tiledCoords) * blendMapColour.r;
    vec4 gTextureColour = texture(gTexture,tiledCoords) * blendMapColour.g;
@@ -71,15 +70,15 @@ void main(void) {
    vec3 totalDiffuse = vec3(0.0);
    vec3 totalSpecular = vec3(0.0);
    
-   for(int i=0;i<lightCount;i++) {
+   for(int i = 0; i < lightCount; i++) {
      float distance = length(fs_toLightVector[i]);
      float attFactor = attenuation[1].x + (attenuation[i].y * distance) + (attenuation[i].z * distance * distance);
      vec3 unitLightVector = normalize(fs_toLightVector[i]);
-     float nDot1 = dot(unitNormal,unitLightVector);
+     float nDot1 = dot(unitNormal, unitLightVector);
      float brightness = max(nDot1, 0.0);
-     totalDiffuse = totalDiffuse + (brightness * lightColor[i])/attFactor;
+     totalDiffuse = totalDiffuse + (brightness * lightColor[i]) / attFactor;
      vec3 lightDirection = -unitLightVector;
-     vec3 reflectedLightDirection = reflect(lightDirection,unitNormal);
+     vec3 reflectedLightDirection = reflect(lightDirection, unitNormal);
      float specularFactor = dot(reflectedLightDirection, unitVectorToCamera);
      specularFactor = max(specularFactor, 0.0);
      float dampedFactor = pow(specularFactor,shineDamper);

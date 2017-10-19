@@ -1,10 +1,9 @@
+//TESSELLATION CONTROL SHADER - Terrain
 #version 430
 
 layout (vertices = 16) out;
 
 in vec2 tc_textureCoords[];
-in vec2 tc_mapCoords[];
-in vec2 tc_globalTextureCoords[];
 in vec3 tc_surfaceNormal[];
 in vec3 tc_toLightVector[];
 in vec3 tc_toCameraVector[];
@@ -12,8 +11,6 @@ in float tc_visibility[];
 in vec4 tc_shadowCoords[];
 
 out vec2 te_textureCoords[];
-out vec2 te_mapCoords[];
-out vec2 te_globalTextureCoords[];
 out vec3 te_surfaceNormal[];
 out vec3 te_toLightVector[];
 out vec3 te_toCameraVector[];
@@ -61,8 +58,6 @@ void main() {
 	}
 
 	te_textureCoords[gl_InvocationID] = tc_textureCoords[gl_InvocationID];
-	te_mapCoords[gl_InvocationID] = tc_mapCoords[gl_InvocationID];
-	te_globalTextureCoords[gl_InvocationID] = tc_globalTextureCoords[gl_InvocationID];
 	te_surfaceNormal[gl_InvocationID] = tc_surfaceNormal[gl_InvocationID];
 	te_toLightVector[gl_InvocationID] = tc_toLightVector[gl_InvocationID];
 	te_toCameraVector[gl_InvocationID] = tc_toCameraVector[gl_InvocationID];

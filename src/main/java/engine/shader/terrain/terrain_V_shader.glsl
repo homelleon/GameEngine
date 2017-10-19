@@ -13,14 +13,13 @@ out vec3 tc_toCameraVector;
 out float tc_visibility;
 out vec4 tc_shadowCoords;
 out vec2 tc_textureCoords;
-out vec2 tc_mapCoords;
-out vec2 tc_globalTextureCoords;
 
 /*== uniforms ==*/
 uniform int lightCount;
 uniform mat4 projectionMatrix;
 uniform mat4 viewMatrix;
 uniform vec3 lightPosition[10];
+uniform mat4 modelMatrix;
 
 uniform sampler2D heightMap;
 
@@ -40,7 +39,6 @@ uniform mat4 localMatrix;
 uniform mat4 worldMatrix;
 uniform float gap;
 uniform vec2 location;
-uniform mat4 transformationMatrix;
 
 uniform int lod_morph_area[8];
 
@@ -149,7 +147,9 @@ vec2 morph(vec2 localPosition, int morph_area) {
 /*------------- main ---------------*/
 void main(void) {
 
-   vec3 localPosition = (localMatrix * vec4(in_position.x, in_position.y, in_position.z,1)).xyz;
+   vec3 localPosition = (localMatrix * vec4(in_position.x, in_position.y, in_position.z, 1.0)).xyz;
+
+   vec3 localLightPosition[10];
 
    if(lod > 0) {
 	  localPosition.xz += morph(localPosition.xz, lod_morph_area[lod-1]);
@@ -159,23 +159,19 @@ void main(void) {
 
 
    //vec4 worldPosition0 = transformationMatrix * vec4(in_position, 1.0);
-   vec4 worldPosition = worldMatrix * vec4(localPosition.x, height, localPosition.z, 1);
+   vec4 worldPosition = worldMatrix * vec4(localPosition.x, height, localPosition.z, 1.0);
 
-   tc_mapCoords = vec4(transformationMatrix * vec4(localPosition.x,0,localPosition.z,1.0)).xz;
-
-   tc_shadowCoords = toShadowMapSpace * worldPosition;
+   tc_shadowCoords = toShadowMapSpace * vec4(localPosition, 1.0);
    
    gl_ClipDistance[0] = dot(worldPosition, clipPlane);
    
    vec4 positionRelativeToCam = viewMatrix * worldPosition;
 
-   gl_Position = worldMatrix * vec4(localPosition.x, height, localPosition.z, 1);
+   gl_Position = worldPosition;
 
-   tc_textureCoords = textureCoordinates;
+   tc_textureCoords = localPosition.xz;
 
-   tc_globalTextureCoords = vec4(localMatrix * vec4(textureCoordinates.x, 0, textureCoordinates.y, 1.0)).xz;
-
-   tc_surfaceNormal = vec3(localMatrix * vec4(normal,0.0));
+   tc_surfaceNormal = vec3(localMatrix * vec4(normal, 0.0));
 
    for(int i=0;i<lightCount;i++) {
       tc_toLightVector[i] = lightPosition[i] - worldPosition.xyz;

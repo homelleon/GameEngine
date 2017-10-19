@@ -92,9 +92,10 @@ public class EngineSettings {
 	public final static float TESSELLATION_SHIFT = 0.1f;
 	
 	public final static float SCALE_XZ = 6000f;
-	public final static float SCALE_Y = 600f;
+	public final static float SCALE_Y = 200f;
 	
-	public final static int[] LOD_RANGES = {1750, 874, 386, 192, 100, 50, 0, 0};
+//	public final static int[] LOD_RANGES = {1750, 874, 386, 192, 100, 50, 0, 0};
+	public final static int[] LOD_RANGES = {1550, 1074, 600, 500, 400, 250, 50, 0};
 	public static int[] lod_morph_areas;
 
 	/* voxel settings */
