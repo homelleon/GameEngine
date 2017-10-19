@@ -149,19 +149,16 @@ void main(void) {
 
    vec3 localPosition = (localMatrix * vec4(in_position.x, in_position.y, in_position.z, 1.0)).xyz;
 
-   vec3 localLightPosition[10];
-
    if(lod > 0) {
 	  localPosition.xz += morph(localPosition.xz, lod_morph_area[lod-1]);
    }
 
    float height = texture(heightMap, localPosition.xz).r;
+   localPosition.y = height;
 
-
-   //vec4 worldPosition0 = transformationMatrix * vec4(in_position, 1.0);
    vec4 worldPosition = worldMatrix * vec4(localPosition.x, height, localPosition.z, 1.0);
 
-   tc_shadowCoords = toShadowMapSpace * vec4(localPosition, 1.0);
+   tc_shadowCoords = toShadowMapSpace * vec4(worldPosition.x, 0, worldPosition.z, 1.0);
    
    gl_ClipDistance[0] = dot(worldPosition, clipPlane);
    
