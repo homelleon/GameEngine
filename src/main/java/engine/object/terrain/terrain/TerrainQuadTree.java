@@ -46,25 +46,25 @@ public class TerrainQuadTree extends Node {
 		
 		int index = 0;
 		
-		normals[index++] = new Vector3f(0, 1, 0);
-		normals[index++] = new Vector3f(0, 1, 0);
-		normals[index++] = new Vector3f(0, 1, 0);
-		normals[index++] = new Vector3f(0, 1, 0);
+		normals[index++] = new Vector3f(1, 1, 1);
+		normals[index++] = new Vector3f(1, 1, 1);
+		normals[index++] = new Vector3f(1, 1, 1);
+		normals[index++] = new Vector3f(1, 1, 1);
 		
-		normals[index++] = new Vector3f(0, 1, 0);
-		normals[index++] = new Vector3f(0, 1, 0);
-		normals[index++] = new Vector3f(0, 1, 0);
-		normals[index++] = new Vector3f(0, 1, 0);
+		normals[index++] = new Vector3f(1, 1, 1);
+		normals[index++] = new Vector3f(1, 1, 1);
+		normals[index++] = new Vector3f(1, 1, 1);
+		normals[index++] = new Vector3f(1, 1, 1);
 		
-		normals[index++] = new Vector3f(0, 1, 0);
-		normals[index++] = new Vector3f(0, 1, 0);
-		normals[index++] = new Vector3f(0, 1, 0);
-		normals[index++] = new Vector3f(0, 1, 0);
+		normals[index++] = new Vector3f(1, 1, 1);
+		normals[index++] = new Vector3f(1, 1, 1);
+		normals[index++] = new Vector3f(1, 1, 1);
+		normals[index++] = new Vector3f(1, 1, 1);
 		
-		normals[index++] = new Vector3f(0, 1, 0);
-		normals[index++] = new Vector3f(0, 1, 0);
-		normals[index++] = new Vector3f(0, 1, 0);
-		normals[index++] = new Vector3f(0, 1, 0);
+		normals[index++] = new Vector3f(1, 1, 1);
+		normals[index++] = new Vector3f(1, 1, 1);
+		normals[index++] = new Vector3f(1, 1, 1);
+		normals[index++] = new Vector3f(1, 1, 1);
 		
 		Object[] normArray = Stream.of(normals)
 				.flatMap(vertex -> Stream.of(vertex.x, vertex.y))

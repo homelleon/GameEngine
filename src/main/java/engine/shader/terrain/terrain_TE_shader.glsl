@@ -1,7 +1,7 @@
 //TESSELLATION EVALUATION SHADER - Terrain
 #version 430
 
-layout (quads, fractional_odd_spacing, cw) in;
+layout (quads, equal_spacing, cw) in;
 
 in vec2 te_textureCoords[];
 in vec3 te_surfaceNormal[];
@@ -50,11 +50,13 @@ void main() {
 
 	position.y = height;
 
-	gs_surfaceNormal =
+	vec3 normal =
 			((1-u) * (1-v) * te_surfaceNormal[12] +
 			u * (1-v) * te_surfaceNormal[0] +
 			u * v * te_surfaceNormal[3] +
 			(1-u) * v * te_surfaceNormal[15]);
+
+	gs_surfaceNormal = normal;
 
 	gs_toLightVector =
 			((1-u) * (1-v) * te_toLightVector[12] +

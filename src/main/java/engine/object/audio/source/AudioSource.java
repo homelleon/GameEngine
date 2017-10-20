@@ -81,7 +81,6 @@ public class AudioSource implements IAudioSource {
 			master.loadSound(file);
 		}
 		this.fileName = file;
-		this.position = position;
 		this.setPosition(position);
 	}
 

@@ -168,13 +168,13 @@ void main(void) {
 
    tc_textureCoords = localPosition.xz;
 
-   tc_surfaceNormal = vec3(localMatrix * vec4(normal, 0.0));
+   tc_surfaceNormal = vec3(worldMatrix * localMatrix * vec4(normal, 0.0));
 
    for(int i=0;i<lightCount;i++) {
-      tc_toLightVector[i] = lightPosition[i] - worldPosition.xyz;
+      tc_toLightVector[i] = (worldMatrix * localMatrix * vec4(lightPosition[i] - worldPosition.xyz, 1.0)).xyz;
    }
 
-   tc_toCameraVector = (inverse(viewMatrix) * vec4(0.0,0.0,0.0,1.0)).xyz - worldPosition.xyz;
+   tc_toCameraVector = (worldMatrix * localMatrix *  vec4((inverse(viewMatrix) * vec4(0.0,0.0,0.0,1.0)).xyz - worldPosition.xyz, 1.0)).xyz;
    
    float distance = length(positionRelativeToCam.xyz);
    tc_visibility = exp(-pow((distance*fogDensity), fogGradient));

@@ -57,10 +57,10 @@ void main() {
 
 	}
 
-	te_textureCoords[gl_InvocationID] = tc_textureCoords[gl_InvocationID];
 	te_surfaceNormal[gl_InvocationID] = tc_surfaceNormal[gl_InvocationID];
 	te_toLightVector[gl_InvocationID] = tc_toLightVector[gl_InvocationID];
 	te_toCameraVector[gl_InvocationID] = tc_toCameraVector[gl_InvocationID];
+	te_textureCoords[gl_InvocationID] = tc_textureCoords[gl_InvocationID];
 	te_visibility[gl_InvocationID] = tc_visibility[gl_InvocationID];
 	te_shadowCoords[gl_InvocationID] = tc_shadowCoords[gl_InvocationID];
 

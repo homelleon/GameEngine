@@ -263,6 +263,9 @@ public class Scene extends AObjectManager implements IScene {
 		if(this.frustumManager != null) {
 			this.frustumManager.clean();
 		}
+		if(this.audioManager != null) {
+			this.audioManager.clean();
+		}
 	}
 
 }

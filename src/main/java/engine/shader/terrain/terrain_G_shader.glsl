@@ -20,12 +20,14 @@ out vec4 fs_shadowCoords;
 
 uniform mat4 projectionMatrix;
 uniform mat4 viewMatrix;
+uniform mat4 localMatrix;
+uniform mat4 worldMatrix;
 
 void createVertex(int index, mat4 projectionViewMatrix) {
 
 	fs_textureCoords = gs_textureCoords[index];
-	fs_surfaceNormal = gs_surfaceNormal[index];
-	fs_toLightVector[index] = gs_toLightVector[index];
+	fs_surfaceNormal = (projectionViewMatrix * vec4(gs_surfaceNormal[index], 1.0)).xyz;
+	fs_toLightVector[index] = (projectionViewMatrix * vec4(gs_toLightVector[index], 1.0)).xyz;
 	fs_toCameraVector = gs_toCameraVector[index];
 	fs_visibility = gs_visibility[index];
 	fs_shadowCoords = gs_shadowCoords[index];
