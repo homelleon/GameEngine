@@ -61,6 +61,7 @@ public class TerrainShader extends ShaderProgram {
 	private static final String UNIFORM_BLEND_MAP = "blendMap";
 	private static final String UNIFORM_SHADOW_MAP = "shadowMap";
 	private static final String UNIFORM_HEIGHT_MAP = "heightMap";
+	private static final String UNIFORM_NORMAL_MAP = "normalMap";
 	//clip plane
 	private static final String UNIFORM_CLIP_PLANE = "clipPlane";
 	//shadow variables
@@ -130,6 +131,7 @@ public class TerrainShader extends ShaderProgram {
 		this.addUniform(UNIFORM_BLEND_MAP);
 		this.addUniform(UNIFORM_SHADOW_MAP);
 		this.addUniform(UNIFORM_HEIGHT_MAP);
+		this.addUniform(UNIFORM_NORMAL_MAP);
 		//clip plane
 		this.addUniform(UNIFORM_CLIP_PLANE);
 		//shadow variables
@@ -155,6 +157,7 @@ public class TerrainShader extends ShaderProgram {
 		this.loadInt(UNIFORM_BLEND_MAP, 4);
 		this.loadInt(UNIFORM_SHADOW_MAP, 6);
 		this.loadInt(UNIFORM_HEIGHT_MAP, 7);
+		this.loadInt(UNIFORM_NORMAL_MAP, 8);
 	}
 
 	public void loadProjectionMatrix(Matrix4f projection) {

@@ -94,8 +94,8 @@ public class EngineSettings {
 	public final static float SCALE_XZ = 6000f;
 	public final static float SCALE_Y = 200f;
 	
-//	public final static int[] LOD_RANGES = {1750, 874, 386, 192, 100, 50, 0, 0};
-	public final static int[] LOD_RANGES = {1550, 1074, 600, 500, 400, 250, 50, 0};
+	public final static int[] LOD_RANGES = {1750, 874, 386, 192, 100, 50, 25, 0};
+//	public final static int[] LOD_RANGES = {500, 450, 350, 250, 150, 100, 50, 0};
 	public static int[] lod_morph_areas;
 
 	/* voxel settings */
@@ -152,6 +152,7 @@ public class EngineSettings {
 	public final static String SHADERS_BLUR_PATH = SHADERS_POST_PROCESSING_PATH + "gaussianBlur/";
 	public final static String SHADERS_BLOOM_PATH = SHADERS_POST_PROCESSING_PATH + "bloom/";
 	public final static String SHADERS_ANIMATION_PATH = SHADERS_PATH + "animation/";
+	public final static String SHADERS_GPGPU_PATH = SHADERS_PATH + "gpgpu/";
 
 	public final static String SETTINGS_GAME_PATH = GAME_PATH + "main/";
 

@@ -20,7 +20,10 @@ uniform sampler2D gTexture;
 uniform sampler2D bTexture;
 uniform sampler2D blendMap;
 uniform sampler2D shadowMap;
+uniform sampler2D normalMap;
 uniform int lightCount;
+
+uniform int lod;
 
 uniform vec3 lightColor[10];
 uniform vec3 attenuation[10];
@@ -64,6 +67,7 @@ void main(void) {
 
    vec4 totalColour = backgroundTextureColour + rTextureColour + gTextureColour + bTextureColour;
 
+//   vec3 unitNormal = texture(normalMap, tiledCoords).rgb;
    vec3 unitNormal = normalize(fs_surfaceNormal);
    vec3 unitVectorToCamera = normalize(fs_toCameraVector);
    

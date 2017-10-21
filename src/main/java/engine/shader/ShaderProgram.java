@@ -21,6 +21,7 @@ import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.opengl.GL32;
 import org.lwjgl.opengl.GL40;
+import org.lwjgl.opengl.GL43;
 import org.lwjgl.util.vector.Vector4f;
 
 import tool.math.Matrix4f;
@@ -35,6 +36,7 @@ public abstract class ShaderProgram {
 	private int geometryShaderID;
 	private int tessControlShaderID;
 	private int tessEvaluationShaderID;
+	private int computeShaderID;
 	
 	private Map<String, Integer> unfiroms;
 
@@ -96,6 +98,10 @@ public abstract class ShaderProgram {
 	
 	protected void addTessellationEvaluationShader(String text) {
 		tessEvaluationShaderID = loadShader(text, GL40.GL_TESS_EVALUATION_SHADER);
+	}
+	
+	protected void addComputeShader(String text) {
+		computeShaderID = loadShader(text, GL43.GL_COMPUTE_SHADER);
 	}
 	
 	private int loadShader(String file, int type) {
@@ -204,11 +210,13 @@ public abstract class ShaderProgram {
 		GL20.glDetachShader(programID, geometryShaderID);
 		GL20.glDetachShader(programID, tessControlShaderID);
 		GL20.glDetachShader(programID, tessEvaluationShaderID);
+		GL20.glDetachShader(programID, computeShaderID);
 		GL20.glDeleteShader(vertexShaderID);
 		GL20.glDeleteShader(fragmentShaderID);
 		GL20.glDeleteShader(geometryShaderID);
 		GL20.glDeleteShader(tessControlShaderID);
 		GL20.glDeleteShader(tessEvaluationShaderID);
+		GL20.glDeleteShader(computeShaderID);
 		GL20.glDeleteProgram(programID);
 	}
 

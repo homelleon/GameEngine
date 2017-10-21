@@ -24,10 +24,47 @@ uniform mat4 transformationMatrix;
 uniform sampler2D heightMap;
 uniform float scaleY;
 
+vec4 interpolate4D(vec4 vector[gl_MaxPatchVertices], float u, float v) {
+	return ((1-u) * (1-v) * vector[12] +
+			u * (1-v) * vector[0] +
+			u * v * vector[3] +
+			(1-u) * v * vector[15]);
+}
+
+vec3 interpolate3D(vec3 vector[gl_MaxPatchVertices], float u, float v) {
+	return ((1-u) * (1-v) * vector[12] +
+			u * (1-v) * vector[0] +
+			u * v * vector[3] +
+			(1-u) * v * vector[15]);
+}
+
+vec2 interpolate2D(vec2 vector[gl_MaxPatchVertices], float u, float v) {
+	return ((1-u) * (1-v) * vector[12] +
+			u * (1-v) * vector[0] +
+			u * v * vector[3] +
+			(1-u) * v * vector[15]);
+}
+
+float interpolateFloat(float vector[gl_MaxPatchVertices], float u, float v) {
+	return ((1-u) * (1-v) * vector[12] +
+			u * (1-v) * vector[0] +
+			u * v * vector[3] +
+			(1-u) * v * vector[15]);
+}
+
 void main() {
 
 	float u = gl_TessCoord.x;
 	float v = gl_TessCoord.y;
+
+	vec2 textureCoords = interpolate2D(te_textureCoords, u, v);
+	gs_textureCoords = textureCoords;
+
+	gs_surfaceNormal = interpolate3D(te_surfaceNormal, u, v);
+	gs_toLightVector = interpolate3D(te_toLightVector, u, v);
+	gs_toCameraVector = interpolate3D(te_toCameraVector, u, v);
+	gs_visibility = interpolateFloat(te_visibility, u, v);
+	gs_shadowCoords = interpolate4D(te_shadowCoords, u, v);
 
 	vec4 position =
 		((1-u) * (1-v) * gl_in[12].gl_Position +
@@ -35,52 +72,10 @@ void main() {
 		u * v * gl_in[3].gl_Position +
 		(1-u) * v * gl_in[15].gl_Position);
 
-	vec2 textureCoords =
-		((1-u) * (1-v) * te_textureCoords[12] +
-		u * (1-v) * te_textureCoords[0] +
-		u * v * te_textureCoords[3] +
-		(1-u) * v * te_textureCoords[15]);
-
 	float height = texture(heightMap, textureCoords).r;
-
 	height *= scaleY;
 	height -= 100;
-
-	gs_textureCoords = textureCoords;
-
 	position.y = height;
-
-	vec3 normal =
-			((1-u) * (1-v) * te_surfaceNormal[12] +
-			u * (1-v) * te_surfaceNormal[0] +
-			u * v * te_surfaceNormal[3] +
-			(1-u) * v * te_surfaceNormal[15]);
-
-	gs_surfaceNormal = normal;
-
-	gs_toLightVector =
-			((1-u) * (1-v) * te_toLightVector[12] +
-			u * (1-v) * te_toLightVector[0] +
-			u * v * te_toLightVector[3] +
-			(1-u) * v * te_toLightVector[15]);
-
-	gs_toCameraVector =
-			((1-u) * (1-v) * te_toCameraVector[12] +
-			u * (1-v) * te_toCameraVector[0] +
-			u * v * te_toCameraVector[3] +
-			(1-u) * v * te_toCameraVector[15]);
-
-	gs_visibility =
-			((1-u) * (1-v) * te_visibility[12] +
-			u * (1-v) * te_visibility[0] +
-			u * v * te_visibility[3] +
-			(1-u) * v * te_visibility[15]);
-
-	gs_shadowCoords =
-				((1-u) * (1-v) * te_shadowCoords[12] +
-				u * (1-v) * te_shadowCoords[0] +
-				u * v * te_shadowCoords[3] +
-				(1-u) * v * te_shadowCoords[15]);
 
 	gl_Position = position;
 

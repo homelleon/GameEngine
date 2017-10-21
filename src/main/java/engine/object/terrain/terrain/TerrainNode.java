@@ -57,9 +57,9 @@ public class TerrainNode extends Node {
 			this.worldPosition.setY(camera.getPosition().getY());
 		}
 		updateChildNodes(camera);
-		for(Node node : this.getChildren()) {
-			((TerrainNode) node).updateQuadTree(camera);
-		}
+		this.getChildren().stream()
+			.map(child -> (TerrainNode) child)
+			.forEach(child -> child.updateQuadTree(camera));
 	}
 	
 	public void updateChildNodes(ICamera camera) {
@@ -86,9 +86,9 @@ public class TerrainNode extends Node {
 			shader.loadLocalMatrix(localTransformationMatrix);
 			GL11.glDrawArrays(GL40.GL_PATCHES, 0, 16);
 		}
-		for(Node child : this.getChildren()) {
-			((TerrainNode) child).render(shader, vao);
-		}
+		this.getChildren().stream()
+			.map(child -> (TerrainNode) child)
+			.forEach(child -> child.render(shader, vao));
 	}
 	
 	private void addChildNodes(int lod, ICamera camera) {

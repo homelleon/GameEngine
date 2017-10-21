@@ -6,7 +6,7 @@ layout(triangle_strip, max_vertices = 3) out;
 
 in vec2 gs_textureCoords[];
 in vec3 gs_surfaceNormal[];
-in vec3 gs_toLightVector[];
+in vec3 gs_toLightVector[][10];
 in vec3 gs_toCameraVector[];
 in float gs_visibility[];
 in vec4 gs_shadowCoords[];
@@ -26,15 +26,15 @@ uniform mat4 worldMatrix;
 void createVertex(int index, mat4 projectionViewMatrix) {
 
 	fs_textureCoords = gs_textureCoords[index];
-	fs_surfaceNormal = (projectionViewMatrix * vec4(gs_surfaceNormal[index], 1.0)).xyz;
-	fs_toLightVector[index] = (projectionViewMatrix * vec4(gs_toLightVector[index], 1.0)).xyz;
+	fs_surfaceNormal = (projectionViewMatrix * vec4(gs_surfaceNormal[index],1.0)).xyz;
+	for(int i = 0; i < 10; i++) {
+		fs_toLightVector[i] = (projectionViewMatrix * vec4(gs_toLightVector[index][i], 1.0)).xyz;
+	}
 	fs_toCameraVector = gs_toCameraVector[index];
 	fs_visibility = gs_visibility[index];
 	fs_shadowCoords = gs_shadowCoords[index];
 
-	vec4 position = gl_in[index].gl_Position;
-
-	gl_Position = projectionViewMatrix * position;
+	gl_Position = projectionViewMatrix * gl_in[index].gl_Position;
 
 	EmitVertex();
 }

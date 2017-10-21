@@ -29,6 +29,7 @@ import renderer.entity.IEntityRendererManager;
 import renderer.entity.NormalEntityRenderer;
 import renderer.entity.TexturedEntityRenderer;
 import renderer.environment.EnvironmentMapRenderer;
+import renderer.gpgpu.NormalMapRenderer;
 import renderer.processor.ISceneProcessor;
 import renderer.processor.SceneProcessor;
 import renderer.shadow.ShadowMapMasterRenderer;
@@ -43,6 +44,7 @@ public class MainRenderer implements IMainRenderer {
 	private Matrix4f projectionMatrix;
 	private Matrix4f normalDistProjectionMatrix;
 	private Matrix4f lowDistProjectionMatrix;
+	private NormalMapRenderer normalMapRenderer;
 	private TerrainRenderer terrainRenderer;
 	private SkyboxRenderer skyboxRenderer;
 	private VoxelRenderer voxelRenderer;
@@ -78,6 +80,10 @@ public class MainRenderer implements IMainRenderer {
 		this.entityRendererManager.addPair(normalEntityRenderer, normalEntities);
 		this.entityRendererManager.addPair(decorEntityRenderer, decorEntities);
 		this.terrainRenderer = new TerrainRenderer(projectionMatrix);
+		//this.normalMapRenderer = new NormalMapRenderer(terrainRenderer.getHeightMap().getWidth());
+		//this.normalMapRenderer.setStrength(4);
+		//this.normalMapRenderer.render(terrainRenderer.getHeightMap());
+		//this.terrainRenderer.setNormalMap(this.normalMapRenderer.getNormalMap());
 		this.skyboxRenderer = new SkyboxRenderer(projectionMatrix);
 		this.voxelRenderer = new VoxelRenderer(projectionMatrix);
 		this.boundingRenderer = new BoundingRenderer(projectionMatrix);
@@ -149,9 +155,6 @@ public class MainRenderer implements IMainRenderer {
 				EngineMain.getWiredFrameMode() == EngineSettings.WIRED_FRAME_ENTITY_TERRAIN) {
 			OGLUtils.doWiredFrame(true);
 		}
-//		if(!isLowDistance) {
-//			pTerrainRenderer.render(scene.getPatchedTerrain(), scene, Matrix4f.mul(projectionMatrix, scene.getCamera().getViewMatrix()));
-//		}
 		terrainRenderer.render(terrains, clipPlane, scene.getLights().getAll(), scene.getCamera(), shadowMapSpaceMatrix);
 		OGLUtils.doWiredFrame(false);
 

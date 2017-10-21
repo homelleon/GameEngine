@@ -19,7 +19,6 @@ uniform int lightCount;
 uniform mat4 projectionMatrix;
 uniform mat4 viewMatrix;
 uniform vec3 lightPosition[10];
-uniform mat4 modelMatrix;
 
 uniform sampler2D heightMap;
 
@@ -156,10 +155,10 @@ void main(void) {
    float height = texture(heightMap, localPosition.xz).r;
    localPosition.y = height;
 
-   vec4 worldPosition = worldMatrix * vec4(localPosition.x, height, localPosition.z, 1.0);
-
-   tc_shadowCoords = toShadowMapSpace * vec4(worldPosition.x, 0, worldPosition.z, 1.0);
+   vec4 worldPosition = worldMatrix * vec4(localPosition, 1.0);
    
+   tc_shadowCoords = toShadowMapSpace * vec4(worldPosition.x, 0, worldPosition.z, 1.0);
+
    gl_ClipDistance[0] = dot(worldPosition, clipPlane);
    
    vec4 positionRelativeToCam = viewMatrix * worldPosition;
@@ -168,13 +167,13 @@ void main(void) {
 
    tc_textureCoords = localPosition.xz;
 
-   tc_surfaceNormal = vec3(worldMatrix * localMatrix * vec4(normal, 0.0));
+   tc_surfaceNormal = normal;
 
    for(int i=0;i<lightCount;i++) {
-      tc_toLightVector[i] = (worldMatrix * localMatrix * vec4(lightPosition[i] - worldPosition.xyz, 1.0)).xyz;
+      tc_toLightVector[i] = lightPosition[i] - worldPosition.xyz;
    }
 
-   tc_toCameraVector = (worldMatrix * localMatrix *  vec4((inverse(viewMatrix) * vec4(0.0,0.0,0.0,1.0)).xyz - worldPosition.xyz, 1.0)).xyz;
+   tc_toCameraVector = (inverse(viewMatrix) * vec4(0.0,0.0,0.0,1.0)).xyz - worldPosition.xyz;
    
    float distance = length(positionRelativeToCam.xyz);
    tc_visibility = exp(-pow((distance*fogDensity), fogGradient));
