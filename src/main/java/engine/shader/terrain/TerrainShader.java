@@ -6,10 +6,8 @@ import java.util.Iterator;
 import org.lwjgl.util.vector.Vector4f;
 
 import core.settings.EngineSettings;
-import object.camera.ICamera;
 import object.light.ILight;
 import shader.ShaderProgram;
-import tool.math.Maths;
 import tool.math.Matrix4f;
 import tool.math.vector.Vector2f;
 import tool.math.vector.Vector3f;
@@ -36,7 +34,7 @@ public class TerrainShader extends ShaderProgram {
 	private static final String UNIFORM_VIEW_MATRIX = "viewMatrix";	
 	private static final String UNIFORM_LOCAL_MATRIX = "localMatrix";
 	private static final String UNIFORM_WORLD_MATRIX = "worldMatrix";
-	private static final String UNIFORM_CAMERA_POSITION = "cameraPosition";
+	private static final String UNIFORM_CAMERA_POSITION = "cameraPosition"; 
 	//tessellation
 	private static final String UNIFORM_SCALE_Y = "scaleY";
 	private static final String UNIFORM_INDEX = "index";

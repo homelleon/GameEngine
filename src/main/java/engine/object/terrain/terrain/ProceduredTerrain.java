@@ -1,5 +1,9 @@
 package object.terrain.terrain;
 
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL30;
+import org.lwjgl.opengl.GL42;
+
 import object.camera.FreeCamera;
 import object.camera.ICamera;
 import object.terrain.generator.HeightsGenerator;
@@ -24,6 +28,8 @@ public class ProceduredTerrain extends ATerrain implements ITerrain {
 	private Mesh model;
 	private TerrainTexturePack texturePack;
 	private Texture2D blendMap;
+	private Texture2D heightMap;
+	
 	private String heightMapName;
 	private boolean isProcedureGenerated = true;
 	private boolean isVisible = true;
@@ -304,6 +310,15 @@ public class ProceduredTerrain extends ATerrain implements ITerrain {
 			}
 		}
 		return Loader.getInstance().getVertexLoader().loadToVAO(vertices, textureCoords, normals, indices);
+	}
+	
+	private Texture2D generateHeightMap() {
+		int size = 10;
+		Texture2D heightMap = Texture2D.create(size, size, 1, false);
+		GL42.glTexStorage2D(GL11.GL_TEXTURE_2D,	(int) (Math.log(size) / Math.log(2)), GL30.GL_RGBA32F, size, size);
+		
+		this.heightMap = heightMap;
+		return heightMap;
 	}
 
 	private float getHeight(int x, int z, HeightsGenerator generator) {
