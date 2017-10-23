@@ -2,7 +2,6 @@ package renderer.terrain;
 
 import java.util.Collection;
 
-import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector4f;
 
 import core.settings.EngineSettings;
@@ -14,7 +13,6 @@ import object.terrain.terrain.TerrainNode;
 import object.terrain.terrain.TerrainQuadTree;
 import object.texture.Texture2D;
 import object.texture.terrain.TerrainTexturePack;
-import primitive.buffer.Loader;
 import primitive.buffer.VAO;
 import shader.terrain.TerrainShader;
 import tool.math.Maths;
@@ -38,7 +36,7 @@ public class TerrainRenderer {
 		shader.connectTextureUnits();
 		shader.stop();
 	}
-
+	
 	public void render(Collection<ITerrain> terrains, Vector4f clipPlane, Collection<ILight> lights,
 			ICamera camera, Matrix4f toShadowMapSpace) {
 		shader.start();
@@ -111,7 +109,7 @@ public class TerrainRenderer {
 		texturePack.getBTexture().bind(3);
 		terrain.getBlendMap().bind(4);
 		this.heightMap.bind(7);
-		//this.normalMap.bind(8);
+		this.normalMap.bind(8);
 	}
 
 	private void unbindTexture() {

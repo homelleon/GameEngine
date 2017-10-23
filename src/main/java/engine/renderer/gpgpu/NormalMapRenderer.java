@@ -13,13 +13,14 @@ public class NormalMapRenderer {
 	
 	private NormalMapShader shader;
 	private Texture2D normalMap;
-	private int n;
+	private int size;
 	private float strength;
 	
-	public NormalMapRenderer(int n) {
-		this.n = n;
-		normalMap = Texture2D.create(n, n, 1, false);
-		GL42.glTexStorage2D(GL11.GL_TEXTURE_2D,	(int) (Math.log(n) / Math.log(2)), GL30.GL_RGBA32F, n, n);
+	public NormalMapRenderer(int size) {
+		this.size = size;
+		normalMap = Texture2D.create(size, size, 1, false);
+		normalMap.bind();
+		GL42.glTexStorage2D(GL11.GL_TEXTURE_2D,	(int) (Math.log(size) / Math.log(2)), GL30.GL_RGBA32F, size, size);
 		shader = new NormalMapShader();
 	}
 	
@@ -27,11 +28,11 @@ public class NormalMapRenderer {
 		
 		shader.start();
 		heightMap.bind(0);
-		shader.updateUniforms(n, strength);
+		shader.updateUniforms(size, strength);
 		GL42.glBindImageTexture(0, normalMap.getId(), 0, false, 0, GL15.GL_WRITE_ONLY, GL30.GL_RGBA32F);
-		GL43.glDispatchCompute(n / 16, n / 16, 1);
+		GL43.glDispatchCompute(size / 16, size / 16, 1);
 		GL11.glFinish();
-		heightMap.bilinearFilter();
+		Texture2D.bilinearFilter();
 		shader.stop();
 		
 	}

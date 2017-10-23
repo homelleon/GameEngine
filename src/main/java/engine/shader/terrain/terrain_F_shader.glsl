@@ -67,7 +67,6 @@ void main(void) {
 
    vec4 totalColour = backgroundTextureColour + rTextureColour + gTextureColour + bTextureColour;
 
-//   vec3 unitNormal = texture(normalMap, tiledCoords).rgb;
    vec3 unitNormal = normalize(fs_surfaceNormal);
    vec3 unitVectorToCamera = normalize(fs_toCameraVector);
    

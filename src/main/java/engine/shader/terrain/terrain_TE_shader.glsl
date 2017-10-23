@@ -20,6 +20,7 @@ out vec4 gs_shadowCoords;
 uniform mat4 worldMatrix;
 uniform mat4 localMatrix;
 uniform mat4 transformationMatrix;
+uniform vec4 clipPlane;
 
 uniform sampler2D heightMap;
 uniform float scaleY;
@@ -76,6 +77,8 @@ void main() {
 	height *= scaleY;
 	height -= 100;
 	position.y = height;
+
+	gl_ClipDistance[0] = dot(position, clipPlane);
 
 	gl_Position = position;
 

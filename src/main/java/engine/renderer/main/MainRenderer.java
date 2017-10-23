@@ -80,10 +80,10 @@ public class MainRenderer implements IMainRenderer {
 		this.entityRendererManager.addPair(normalEntityRenderer, normalEntities);
 		this.entityRendererManager.addPair(decorEntityRenderer, decorEntities);
 		this.terrainRenderer = new TerrainRenderer(projectionMatrix);
-		//this.normalMapRenderer = new NormalMapRenderer(terrainRenderer.getHeightMap().getWidth());
-		//this.normalMapRenderer.setStrength(4);
-		//this.normalMapRenderer.render(terrainRenderer.getHeightMap());
-		//this.terrainRenderer.setNormalMap(this.normalMapRenderer.getNormalMap());
+		this.normalMapRenderer = new NormalMapRenderer(terrainRenderer.getHeightMap().getWidth());
+		this.normalMapRenderer.setStrength(4);
+		this.normalMapRenderer.render(terrainRenderer.getHeightMap());
+		this.terrainRenderer.setNormalMap(this.normalMapRenderer.getNormalMap());
 		this.skyboxRenderer = new SkyboxRenderer(projectionMatrix);
 		this.voxelRenderer = new VoxelRenderer(projectionMatrix);
 		this.boundingRenderer = new BoundingRenderer(projectionMatrix);

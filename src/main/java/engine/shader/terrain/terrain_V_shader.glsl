@@ -21,6 +21,7 @@ uniform mat4 viewMatrix;
 uniform vec3 lightPosition[10];
 
 uniform sampler2D heightMap;
+uniform sampler2D normalMap;
 
 uniform mat4 toShadowMapSpace;
 uniform float shadowDistance;
@@ -167,7 +168,7 @@ void main(void) {
 
    tc_textureCoords = localPosition.xz;
 
-   tc_surfaceNormal = normal;
+   tc_surfaceNormal = texture(normalMap, tc_textureCoords).rgb;
 
    for(int i=0;i<lightCount;i++) {
       tc_toLightVector[i] = lightPosition[i] - worldPosition.xyz;

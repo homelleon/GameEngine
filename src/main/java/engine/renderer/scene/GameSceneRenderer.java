@@ -9,12 +9,14 @@ import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Vector4f;
 
 import core.EngineMain;
+import core.debug.EngineDebug;
 import core.display.DisplayManager;
 import manager.scene.IObjectManager;
 import map.objectMap.ObjectMapManager;
 import map.writer.ILevelMapWriter;
 import map.writer.LevelMapXMLWriter;
 import object.gui.element.object.GUIObject;
+import object.gui.group.IGUIGroup;
 import object.gui.gui.GUI;
 import object.gui.gui.IGUI;
 import object.gui.text.GUIText;
@@ -54,6 +56,8 @@ public class GameSceneRenderer implements ISceneRenderer {
 	private IControls controls;
 	GUIText fpsText;
 	GUIText coordsText;
+	
+	private String statusGroupName = "statusGroup";
 
 	@Override
 	public void initialize(IScene scene) {
@@ -85,12 +89,11 @@ public class GameSceneRenderer implements ISceneRenderer {
 		List<GUIText> textList = new ArrayList<GUIText>();
 		textList.add(fpsText);
 		textList.add(coordsText);
-		String statusGroupName = "statusGroup";
+		
 		String statusGUIName = "status";
 		IGUI statusInterface = new GUI(statusGUIName, textureList, textList);
 		scene.getUserInterface().getGroups().createEmpty(statusGroupName);
 		scene.getUserInterface().getGroups().get(statusGroupName).add(statusInterface);
-		((GUIObject) scene.getUserInterface().getGroups().get(statusGroupName)).show();
 	}
 
 	@Override
@@ -101,7 +104,7 @@ public class GameSceneRenderer implements ISceneRenderer {
 		}
 		mainRenderer.renderShadowMap(scene);
 		renderParticles();
-		//renderWaterSurface();
+		renderWaterSurface();
 		renderToScreen();
 	}
 
@@ -115,15 +118,24 @@ public class GameSceneRenderer implements ISceneRenderer {
 			mapWriter.write(map);
 			EngineMain.pauseEngine(false);
 		}
-
+		IGUIGroup statusGUIGroup = scene.getUserInterface().getGroups().get(statusGroupName);
+		if(EngineDebug.hasHardDebugPermission()) {
+			if(!statusGUIGroup.getIsVisible())
+				statusGUIGroup.show();
+		} else {
+			if(statusGUIGroup.getIsVisible())
+				statusGUIGroup.hide();
+		}
 	}
 
 	private void renderToScreen() {
 		waterFBOs.unbindCurrentFrameBuffer();
 		multisampleFbo.bindFrameBuffer();
-		mainRenderer.renderScene(scene, new Vector4f(0, -1, 0, 15));
-		waterRenderer.render(scene.getWaters().getAll(), scene.getCamera(), scene.getSun());
+		OGLUtils.clipDistance(true);
+		mainRenderer.renderScene(scene, new Vector4f(0, 1, 0, 15));
 		ParticleMaster.renderParticles(scene.getCamera());
+		OGLUtils.clipDistance(false);		
+		waterRenderer.render(scene.getWaters().getAll(), scene.getCamera(), scene.getSun());
 		multisampleFbo.unbindFrameBuffer();
 		multisampleFbo.resolveToFbo(GL30.GL_COLOR_ATTACHMENT0, outputFbo);
 		multisampleFbo.resolveToFbo(GL30.GL_COLOR_ATTACHMENT1, outputFbo2);

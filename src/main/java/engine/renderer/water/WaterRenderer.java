@@ -5,6 +5,7 @@ import java.util.Collection;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 
+import core.EngineMain;
 import core.display.DisplayManager;
 import core.settings.EngineSettings;
 import object.camera.ICamera;
@@ -20,6 +21,7 @@ import shader.water.WaterShader;
 import tool.math.Maths;
 import tool.math.Matrix4f;
 import tool.math.vector.Vector3f;
+import tool.openGL.OGLUtils;
 
 public class WaterRenderer {
 
