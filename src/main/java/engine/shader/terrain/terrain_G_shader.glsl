@@ -1,19 +1,21 @@
 //GEOMETRY SHADER - Terrain
 #version 430
 
+#define LIGHT_MAX 10 //max light source count
+
 layout(triangles) in;
 layout(triangle_strip, max_vertices = 3) out;
 
 in vec2 gs_textureCoords[];
 in vec3 gs_surfaceNormal[];
-in vec3 gs_toLightVector[][10];
+in vec3 gs_toLightVector[][LIGHT_MAX];
 in vec3 gs_toCameraVector[];
 in float gs_visibility[];
 in vec4 gs_shadowCoords[];
 
 out vec2 fs_textureCoords;
 out vec3 fs_surfaceNormal;
-out vec3 fs_toLightVector[10];
+out vec3 fs_toLightVector[LIGHT_MAX];
 out vec3 fs_toCameraVector;
 out float fs_visibility;
 out vec4 fs_shadowCoords;
@@ -27,7 +29,7 @@ void createVertex(int index, mat4 projectionViewMatrix) {
 
 	fs_textureCoords = gs_textureCoords[index];
 	fs_surfaceNormal = (projectionViewMatrix * vec4(gs_surfaceNormal[index],1.0)).xyz;
-	for(int i = 0; i < 10; i++) {
+	for(int i = 0; i < LIGHT_MAX; i++) {
 		fs_toLightVector[i] = (projectionViewMatrix * vec4(gs_toLightVector[index][i], 1.0)).xyz;
 	}
 	fs_toCameraVector = gs_toCameraVector[index];

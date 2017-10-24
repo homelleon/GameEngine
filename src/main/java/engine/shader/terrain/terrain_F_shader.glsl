@@ -1,10 +1,12 @@
 //FRAGMENT SHADER - Terrain
 #version 430 core
 
+#define LIGHT_MAX 10 //max light source count
+
 /*===== in ======*/
 in vec2 fs_textureCoords;
 in vec3 fs_surfaceNormal;
-in vec3 fs_toLightVector[10];
+in vec3 fs_toLightVector[LIGHT_MAX];
 in vec3 fs_toCameraVector;
 in float fs_visibility;
 in vec4 fs_shadowCoords;
@@ -25,8 +27,8 @@ uniform int lightCount;
 
 uniform int lod;
 
-uniform vec3 lightColor[10];
-uniform vec3 attenuation[10];
+uniform vec3 lightColor[LIGHT_MAX];
+uniform vec3 attenuation[LIGHT_MAX];
 uniform float shineDamper;
 uniform float reflectivity;
 uniform vec3 skyColour;
@@ -59,7 +61,7 @@ void main(void) {
    vec4 blendMapColour = texture(blendMap, fs_textureCoords);
    
    float backTextureAmount = 1 - (blendMapColour.r + blendMapColour.g + blendMapColour.b);
-   vec2 tiledCoords = fs_textureCoords * 1000;
+   vec2 tiledCoords = fs_textureCoords * 1000.0;
    vec4 backgroundTextureColour = texture(backgroundTexture, tiledCoords) * backTextureAmount;
    vec4 rTextureColour = texture(rTexture,tiledCoords) * blendMapColour.r;
    vec4 gTextureColour = texture(gTexture,tiledCoords) * blendMapColour.g;
@@ -73,7 +75,7 @@ void main(void) {
    vec3 totalDiffuse = vec3(0.0);
    vec3 totalSpecular = vec3(0.0);
    
-   for(int i = 0; i < lightCount; i++) {
+   for(int i = 0; i < LIGHT_MAX; i++) {
      float distance = length(fs_toLightVector[i]);
      float attFactor = attenuation[1].x + (attenuation[i].y * distance) + (attenuation[i].z * distance * distance);
      vec3 unitLightVector = normalize(fs_toLightVector[i]);

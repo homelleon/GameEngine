@@ -1,6 +1,9 @@
 //VERTEX SHADER - Terrain
 #version 430 core
 
+#define LOD_MAX 8 //max level of distance count
+#define LIGHT_MAX 10 //max light source count
+
 /*===== in ======*/
 in vec3 in_position;
 in vec2 textureCoordinates;
@@ -8,7 +11,7 @@ in vec3 normal;
 
 /*===== out =====*/
 out vec3 tc_surfaceNormal;
-out vec3 tc_toLightVector[10];
+out vec3 tc_toLightVector[LIGHT_MAX];
 out vec3 tc_toCameraVector;
 out float tc_visibility;
 out vec4 tc_shadowCoords;
@@ -18,7 +21,7 @@ out vec2 tc_textureCoords;
 uniform int lightCount;
 uniform mat4 projectionMatrix;
 uniform mat4 viewMatrix;
-uniform vec3 lightPosition[10];
+uniform vec3 lightPosition[LIGHT_MAX];
 
 uniform sampler2D heightMap;
 uniform sampler2D normalMap;
@@ -40,7 +43,7 @@ uniform mat4 worldMatrix;
 uniform float gap;
 uniform vec2 location;
 
-uniform int lod_morph_area[8];
+uniform int lod_morph_area[LOD_MAX];
 
 /*== constants ==*/
 const float fogGradient = 5.0;
@@ -52,24 +55,28 @@ float morphLatitude(vec2 position) {
 
 	if(index == vec2(0,0)) {
 		float morph = frac.x - frac.y;
-		if(morph > 0)
+		if(morph > 0) {
 			return morph;
+		}
 	}
 
 	if(index == vec2(1,0)) {
 		float morph = gap - frac.x - frac.y;
-		if(morph > 0)
+		if(morph > 0) {
 			return morph;
+		}
 	}
 	if(index == vec2(0,1)) {
 		float morph = frac.x + frac.y - gap;
-		if(morph > 0)
+		if(morph > 0) {
 			return -morph;
+		}
 	}
 	if(index == vec2(1,1)) {
 		float morph = frac.y - frac.x;
-		if(morph > 0)
+		if(morph > 0) {
 			return -morph;
+		}
 	}
 	return 0;
 }
@@ -80,24 +87,28 @@ float morphLongitude(vec2 position) {
 
 	if(index == vec2(0,0)) {
 		float morph = frac.y - frac.x;
-		if(morph > 0)
+		if(morph > 0) {
 			return -morph;
+		}
 	}
 
 	if(index == vec2(1,0)) {
 		float morph = frac.y - (gap - frac.x);
-		if(morph > 0)
+		if(morph > 0) {
 			return morph;
+		}
 	}
 	if(index == vec2(0,1)) {
 		float morph = gap - frac.y - frac.x;
-		if(morph > 0)
+		if(morph > 0) {
 			return -morph;
+		}
 	}
 	if(index == vec2(1,1)) {
 		float morph = frac.x - frac.y;
-		if(morph > 0)
+		if(morph > 0) {
 			return morph;
+		}
 	}
 	return 0;
 }
@@ -128,18 +139,22 @@ vec2 morph(vec2 localPosition, int morph_area) {
 	}
 
 	float planarFactor = 0;
-	if(cameraPosition.y > abs(scaleY))
+	if(cameraPosition.y > abs(scaleY)) {
 		planarFactor = 1;
-	else planarFactor = cameraPosition.y / abs(scaleY);
+	} else {
+		planarFactor = cameraPosition.y / abs(scaleY);
+	}
 
 	distLatitude = length(cameraPosition - (worldMatrix *
 			vec4(fixPointLatitude.x, planarFactor, fixPointLatitude.y,1)).xyz);
 	distLongitude = length(cameraPosition - (worldMatrix *
 			vec4(fixPointLongitude.x, planarFactor, fixPointLongitude.y,1)).xyz);
-	if(distLatitude > morph_area)
+	if(distLatitude > morph_area) {
 		morphing.x = morphLatitude(localPosition.xy);
-	if(distLongitude > morph_area)
+	}
+	if(distLongitude > morph_area) {
 		morphing.y = morphLongitude(localPosition.xy);
+	}
 
 	return morphing;
 }
@@ -149,7 +164,7 @@ void main(void) {
 
    vec3 localPosition = (localMatrix * vec4(in_position.x, in_position.y, in_position.z, 1.0)).xyz;
 
-   if(lod > 0) {
+   if(lod > 0.0) {
 	  localPosition.xz += morph(localPosition.xz, lod_morph_area[lod-1]);
    }
 
@@ -158,7 +173,7 @@ void main(void) {
 
    vec4 worldPosition = worldMatrix * vec4(localPosition, 1.0);
    
-   tc_shadowCoords = toShadowMapSpace * vec4(worldPosition.x, 0, worldPosition.z, 1.0);
+   tc_shadowCoords = toShadowMapSpace * vec4(worldPosition.x, 0.0, worldPosition.z, 1.0);
 
    gl_ClipDistance[0] = dot(worldPosition, clipPlane);
    
@@ -170,14 +185,14 @@ void main(void) {
 
    tc_surfaceNormal = texture(normalMap, tc_textureCoords).rgb;
 
-   for(int i=0;i<lightCount;i++) {
+   for(int i = 0; i < LIGHT_MAX; i++) {
       tc_toLightVector[i] = lightPosition[i] - worldPosition.xyz;
    }
 
    tc_toCameraVector = (inverse(viewMatrix) * vec4(0.0,0.0,0.0,1.0)).xyz - worldPosition.xyz;
    
    float distance = length(positionRelativeToCam.xyz);
-   tc_visibility = exp(-pow((distance*fogDensity), fogGradient));
+   tc_visibility = exp(-pow((distance * fogDensity), fogGradient));
    tc_visibility = clamp(tc_visibility,0.0,1.0);
    
    distance = distance - (shadowDistance - shadowTransitionDistance);
