@@ -21,6 +21,7 @@ public class NormalMapRenderer {
 		normalMap = Texture2D.create(size, size, 1, false);
 		normalMap.bind();
 		GL42.glTexStorage2D(GL11.GL_TEXTURE_2D,	(int) (Math.log(size) / Math.log(2)), GL30.GL_RGBA32F, size, size);
+		Texture2D.unbind();
 		shader = new NormalMapShader();
 	}
 	

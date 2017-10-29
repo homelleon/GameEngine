@@ -138,7 +138,7 @@ public class MainRenderer implements IMainRenderer {
 	private void render(IScene scene, Vector4f clipPlane, boolean isLowDistance) {
 		prepare();
 
-		if (EngineDebug.getBoundingMode() != EngineDebug.BOUNDING_NONE) {
+		if (EngineDebug.getBoundingVisibility() != EngineDebug.BOUNDING_NONE) {
 			boundingRenderer.render(texturedEntities, normalEntities, decorEntities, scene.getCamera());
 		}
 		

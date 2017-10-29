@@ -23,26 +23,29 @@ import tool.dataEditor.menu.DataEditorFrame;
  */
 
 /**
- * Engine display manager.
+ * Engine display manager for display control.
  * 
  * @author homelleon
  *
  */
 public class DisplayManager {
 
-	private static long lastFrameTime; // Время прошло с запуска окна
-	private static float delta; // текущее время окна
-	private static int height; // высота окна
-	private static int width; // ширина окна
-	private static int majorVersion = 4;
-	private static int minorVersion = 3;
+	private static long lastFrameTime; 		// Time from last start
+	private static float delta; 			// Current display time
+	private static int height; 				// Display height size
+	private static int width; 				// Display width size
+	private static int majorVersion = 4;	// Major version of GLSL 
+	private static int minorVersion = 3;	// Minor version of GLSL
 
+	/**
+	 * Creates display in new frame. 
+	 */
 	public static void createDisplay() {
 		createDisplay(null);
 	}
 
 	/**
-	 * Creates display in defined editor frame.
+	 * Creates display in predefined editor frame.
 	 * 
 	 * @param frame {@link DataEditorFrame} object to render display
 	 */

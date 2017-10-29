@@ -11,22 +11,19 @@ public class EngineDebug {
 	private static final String LEVEL_SEPARATOR = "  |";
 	
 	/* permission variables */
-	public static final int PERMISSION_NONE = 0;
-	public static final int PERMISSION_SIMPLE = 1;
-	public static final int PERMISSION_HARD = 2;
-	private static int debugPermission = PERMISSION_SIMPLE;
+	public static final int PERMISSION_NONE = 0;			// No permission status
+	public static final int PERMISSION_SIMPLE = 1;			// Simple permission status
+	public static final int PERMISSION_HARD = 2;			// Hard permission status
+	private static int debugPermission = PERMISSION_SIMPLE;	// Debug permission status field
 
 
 	/* bounding variables */
-	public static final int BOUNDING_NONE = 0;
-	public static final int BOUNDING_BOX = 1;
-	public static final int BOUNDING_SPHERE = 2;
-	public static final int BOUNDING_BOX_AND_SPHERE = 3;
-	private static int boundingMode = BOUNDING_NONE;
+	public static final int BOUNDING_NONE = 0;				// No bounding shape is visible
+	public static final int BOUNDING_BOX = 1;				// Bounding box is visible
+	public static final int BOUNDING_SPHERE = 2;			// Bounding sphere is visible
+	public static final int BOUNDING_BOX_AND_SPHERE = 3;	// Bounding sphere and box are visible
+	private static int boundingMode = BOUNDING_NONE;		// Bounding shape visbility status field
 
-	public static int getBoundingMode() {
-		return boundingMode;
-	}
 	/**
 	 * Changes bounding surface mode.
 	 */
@@ -235,6 +232,15 @@ public class EngineDebug {
 	 */
 	public static void printError(String text) {
 		System.err.println(text);
+	}
+	
+	/**
+	 * Gets bounding visiblity status.
+	 * 
+	 * @return int value of bounding visibility status
+	 */
+	public static int getBoundingVisibility() {
+		return boundingMode;
 	}
 
 }

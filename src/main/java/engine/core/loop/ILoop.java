@@ -15,11 +15,25 @@ import tool.dataEditor.menu.DataEditorFrame;
  */
 public interface ILoop extends Runnable {
 	
-	
+	/**
+	 * Sets edit mode.
+	 * 
+	 * @param value boolean to switch edit mode.
+	 */
 	public void setEditMode(boolean value);
 	
+	/**
+	 * Gets if the edit mode is on.
+	 * 
+	 * @return true if edit mode is on<br>
+	 * 		   false if edit mode is off
+	 */
 	public boolean getEditMode();
 	
+	/**
+	 * Sets frame for  
+	 * @param frame
+	 */
 	public void setDisplayFrame(DataEditorFrame frame);
 	
 	/**
