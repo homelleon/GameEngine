@@ -1,11 +1,12 @@
 package shader.gpgpu;
 
+import core.settings.EngineSettings;
 import shader.ShaderProgram;
 
 public class HeightMapShader extends ShaderProgram {
 	
 	//----shaders
-	private static final String COMPUTE_SHADER = "heighMap_C_shader.glsl";
+	private static final String COMPUTE_SHADER = EngineSettings.SHADERS_GPGPU_PATH + "heightMap_C_shader.glsl";
 	//----attributes
 	private static final String ATTRIBUTE_POSITION = "position";
 	//----uniforms
