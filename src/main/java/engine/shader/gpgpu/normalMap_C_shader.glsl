@@ -11,7 +11,7 @@ uniform float strength;
 
 void main(void) {
 
-	ivec2 x = ivec2(gl_GlobalInvocationID.xy);
+	ivec2 xy = ivec2(gl_GlobalInvocationID.xy);
 	vec2 texCoord = gl_GlobalInvocationID.xy / float(N);
 
 	float texelSize = 1.0 / N;
@@ -32,7 +32,7 @@ void main(void) {
 	normal.x = z0 + 2 * z3 + z5 - z2 - 2 * z4 - z7;
 	normal.y = z0 + 2 * z1 + z2 - z5 - 2 * z6 - z7;
 
-	imageStore(normalMap, x, vec4((normalize(normal) + 1/2.0, 1)));
+	imageStore(normalMap, xy, vec4(normalize(normal) + 1/2.0, 1));
 
 
 }

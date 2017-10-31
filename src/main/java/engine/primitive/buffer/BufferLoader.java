@@ -117,6 +117,45 @@ public class BufferLoader {
 		BoundingBox box = new BoundingBox(positions);
 		return new Mesh(vao, indices.length, sphere, box);
 	}
+	
+	public Mesh loadToVAOwithSSBO(float[] positions, float[] textureCoords, int[] indices) {
+		VAO vao = VAO.create();
+		this.vaos.add(vao);
+		vao.bind();
+		vao.createIndexBuffer(indices);
+		vao.createSSBOAttribute(0, 3, positions);
+		vao.createAttribute(1, 2, textureCoords);
+		VAO.unbind();
+		BoundingSphere sphere = new BoundingSphere(positions);
+		BoundingBox box = new BoundingBox(positions);
+		return new Mesh(vao, indices.length, sphere, box);
+	}
+	
+	public Mesh loadToVAOwithTBO(float[] positions, float[] textureCoords, int[] indices) {
+		VAO vao = VAO.create();
+		this.vaos.add(vao);
+		vao.bind();
+		vao.createIndexBuffer(indices);
+		vao.createTBOAttribute(0, 3, positions);
+		vao.createAttribute(1, 2, textureCoords);
+		VAO.unbind();
+		BoundingSphere sphere = new BoundingSphere(positions);
+		BoundingBox box = new BoundingBox(positions);
+		return new Mesh(vao, indices.length, sphere, box);
+	}
+	
+	public Mesh loadToVAOwithDispatchInderect(float[] positions, float[] textureCoords, int[] indices) {
+		VAO vao = VAO.create();
+		this.vaos.add(vao);
+		vao.bind();
+		vao.createIndexBuffer(indices);
+		vao.createDispatchAttribute(0, 3, positions);
+		vao.createAttribute(1, 2, textureCoords);
+		VAO.unbind();
+		BoundingSphere sphere = new BoundingSphere(positions);
+		BoundingBox box = new BoundingBox(positions);
+		return new Mesh(vao, indices.length, sphere, box);
+	} 
 
 	/**
 	 * Loads verticies buffer object to use with verticies array object.

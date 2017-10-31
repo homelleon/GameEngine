@@ -22,11 +22,8 @@ import tool.math.vector.Vector3f;
 public class TerrainRenderer {
 
 	private TerrainShader shader;
-	private Texture2D heightMap;
-	private Texture2D normalMap;
 
 	public TerrainRenderer(Matrix4f projectionMatrix) {
-		this.heightMap = new Texture2D("heightMap", EngineSettings.TEXTURE_HEIGHT_MAP_PATH + "heightMap.png");
 		this.shader = new TerrainShader();
 		shader.start();
 		shader.loadProjectionMatrix(projectionMatrix);
@@ -98,7 +95,7 @@ public class TerrainRenderer {
 		bindTexture(terrain);
 		shader.loadShineVariables(1, 0);
 		shader.loadWorldMatrix(terrainTree.getWorldMatrix());
-		Texture2D.repeatWrap();
+		terrain.getTexturePack().getBackgroundTexture().repeatWrap();
 	}
 
 	private void bindTexture(ITerrain terrain) {
@@ -108,8 +105,8 @@ public class TerrainRenderer {
 		texturePack.getGTexture().bind(2);
 		texturePack.getBTexture().bind(3);
 		terrain.getBlendMap().bind(4);
-		this.heightMap.bind(7);
-		this.normalMap.bind(8);
+		terrain.getHeightMap().bind(7);
+		terrain.getNormalMap().bind(8);
 	}
 
 	private void unbindTexture() {
@@ -123,14 +120,6 @@ public class TerrainRenderer {
 		Matrix4f transformationMatrix = Maths
 				.createTransformationMatrix(new Vector3f(EngineSettings.SCALE_XZ, EngineSettings.SCALE_Y, EngineSettings.SCALE_XZ), 0, 0, 0, 1);
 		shader.loadTranformationMatrix(transformationMatrix);
-	}
-	
-	public Texture2D getHeightMap() {
-		return this.heightMap;
-	}
-	
-	public void setNormalMap(Texture2D normalMap) {
-		this.normalMap = normalMap;
 	}
 
 }

@@ -15,7 +15,6 @@ import manager.scene.IObjectManager;
 import map.objectMap.ObjectMapManager;
 import map.writer.ILevelMapWriter;
 import map.writer.LevelMapXMLWriter;
-import object.gui.element.object.GUIObject;
 import object.gui.group.IGUIGroup;
 import object.gui.gui.GUI;
 import object.gui.gui.IGUI;
@@ -27,6 +26,7 @@ import object.input.KeyboardGame;
 import object.input.MousePicker;
 import object.particle.master.ParticleMaster;
 import object.scene.IScene;
+import object.texture.Texture2D;
 import object.water.WaterFrameBuffers;
 import renderer.main.MainRenderer;
 import renderer.water.WaterRenderer;
@@ -79,13 +79,20 @@ public class GameSceneRenderer implements ISceneRenderer {
 		this.scene.setMousePicker(mousePicker);
 		this.controls = new Controls();
 		
-		//GUI text info
+		// GUI text info
 		String fontName = "candara";
 		fpsText = createFPSText(Math.round(1 / DisplayManager.getFrameTimeSeconds()), fontName);
 		fpsText.setColor(1, 0, 0);
 		coordsText = createPickerCoordsText(mousePicker, fontName);
 		coordsText.setColor(1, 0, 0);
 		List<GUITexture> textureList = new ArrayList<GUITexture>();
+		// debug texture
+		Texture2D heightMap = scene.getTerrains().get("Terrain1").getHeightMap();
+		Texture2D normalMap = scene.getTerrains().get("Terrain1").getNormalMap();
+		GUITexture debugTexture1 = new GUITexture("debugTexture1", heightMap, new Vector2f(-0.5f, 0), new Vector2f(0.3f, 0.3f));
+		GUITexture debugTexture2 = new GUITexture("debugTexture2", normalMap, new Vector2f(0.5f, 0), new Vector2f(0.3f, 0.3f));
+		textureList.add(debugTexture1);
+		textureList.add(debugTexture2);
 		List<GUIText> textList = new ArrayList<GUIText>();
 		textList.add(fpsText);
 		textList.add(coordsText);
@@ -94,6 +101,7 @@ public class GameSceneRenderer implements ISceneRenderer {
 		IGUI statusInterface = new GUI(statusGUIName, textureList, textList);
 		scene.getUserInterface().getGroups().createEmpty(statusGroupName);
 		scene.getUserInterface().getGroups().get(statusGroupName).add(statusInterface);
+		
 	}
 
 	@Override

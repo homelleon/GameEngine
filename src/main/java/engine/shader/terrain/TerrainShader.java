@@ -91,7 +91,6 @@ public class TerrainShader extends ShaderProgram {
 		this.bindFragOutput(1, ATTRIBUTE_OUT_BRIGHT_COLOR);
 		this.bindAttribute(0, ATTRIBUTE_POSITION);
 		this.bindAttribute(1, ATTRIBUTE_TEXTURE_COORDINATES);
-		this.bindAttribute(2, ATTRIBUTE_NORMAL);
 	}
 
 	@Override

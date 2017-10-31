@@ -1,21 +1,20 @@
 //VERTEX SHADER - Terrain
 #version 430 core
 
-#define LOD_MAX 8 //max level of distance count
-#define LIGHT_MAX 10 //max light source count
+#define LOD_MAX 8 // max level of distance count
+#define LIGHT_MAX 10 // max light source count
 
 /*===== in ======*/
 in vec3 in_position;
 in vec2 textureCoordinates;
-in vec3 normal;
 
 /*===== out =====*/
-out vec3 tc_surfaceNormal;
 out vec3 tc_toLightVector[LIGHT_MAX];
 out vec3 tc_toCameraVector;
 out float tc_visibility;
 out vec4 tc_shadowCoords;
 out vec2 tc_textureCoords;
+out float tc_clipDistance;
 
 /*== uniforms ==*/
 uniform int lightCount;
@@ -162,7 +161,7 @@ vec2 morph(vec2 localPosition, int morph_area) {
 /*------------- main ---------------*/
 void main(void) {
 
-   vec3 localPosition = (localMatrix * vec4(in_position.x, in_position.y, in_position.z, 1.0)).xyz;
+   vec3 localPosition = (localMatrix * vec4(in_position, 1.0)).xyz;
 
    if(lod > 0.0) {
 	  localPosition.xz += morph(localPosition.xz, lod_morph_area[lod-1]);
@@ -175,7 +174,7 @@ void main(void) {
    
    tc_shadowCoords = toShadowMapSpace * vec4(worldPosition.x, 0.0, worldPosition.z, 1.0);
 
-   gl_ClipDistance[0] = dot(worldPosition, clipPlane);
+   tc_clipDistance = dot(worldPosition, clipPlane);
    
    vec4 positionRelativeToCam = viewMatrix * worldPosition;
 
@@ -183,17 +182,15 @@ void main(void) {
 
    tc_textureCoords = localPosition.xz;
 
-   tc_surfaceNormal = texture(normalMap, tc_textureCoords).rgb;
-
    for(int i = 0; i < LIGHT_MAX; i++) {
-      tc_toLightVector[i] = lightPosition[i] - worldPosition.xyz;
+      tc_toLightVector[i] = lightPosition[i] - localPosition;
    }
 
-   tc_toCameraVector = (inverse(viewMatrix) * vec4(0.0,0.0,0.0,1.0)).xyz - worldPosition.xyz;
+   tc_toCameraVector = (inverse(viewMatrix) * vec4(0.0,0.0,0.0,1.0)).xyz - localPosition;
    
    float distance = length(positionRelativeToCam.xyz);
    tc_visibility = exp(-pow((distance * fogDensity), fogGradient));
-   tc_visibility = clamp(tc_visibility,0.0,1.0);
+   tc_visibility = clamp(tc_visibility, 0.0, 1.0);
    
    distance = distance - (shadowDistance - shadowTransitionDistance);
    distance = distance / shadowTransitionDistance;
