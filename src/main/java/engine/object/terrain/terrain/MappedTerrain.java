@@ -34,6 +34,7 @@ public class MappedTerrain extends ATerrain implements ITerrain {
 	private Mesh model;
 	private TerrainTexturePack texturePack;
 	private Texture2D blendMap;
+	private Texture2D heightMap;
 	private String heightMapName;
 	private boolean isProcedureGenerated = false;
 	private boolean isVisible = true;
@@ -258,6 +259,16 @@ public class MappedTerrain extends ATerrain implements ITerrain {
 		height /= MAX_PIXEL_COLOUR / 2f;
 		height *= MAX_HEIGHT;
 		return height;
+	}
+
+	@Override
+	public Texture2D getHeightMap() {
+		return heightMap;
+	}
+
+	@Override
+	public void setHeightMap(Texture2D heightMap) {
+		this.heightMap = heightMap;
 	}
 
 

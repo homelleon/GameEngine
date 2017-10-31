@@ -1,7 +1,7 @@
 //FRAGMENT SHADER - Terrain
 #version 430 core
 
-#define LIGHT_MAX 10 //max light source count
+#define LIGHT_MAX 10 // max light source count
 
 /*===== in ======*/
 in vec2 fs_textureCoords;

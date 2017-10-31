@@ -1,11 +1,6 @@
 package object.terrain.terrain;
 
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL30;
-import org.lwjgl.opengl.GL42;
-
 import object.camera.FreeCamera;
-import object.camera.ICamera;
 import object.terrain.generator.HeightsGenerator;
 import object.texture.Texture2D;
 import object.texture.terrain.TerrainTexturePack;
@@ -265,7 +260,7 @@ public class ProceduredTerrain extends ATerrain implements ITerrain {
 				indices[pointer++] = bottomRight;
 			}
 		}
-		return Loader.getInstance().getVertexLoader().loadToVAO(vertices, textureCoords, normals, indices);
+		return Loader.getInstance().getVertexLoader().loadToVAOwithTBO(vertices, textureCoords, indices);
 	}
 	
 	private Mesh generateWithProcedure(float amp, int oct, float rough, int seed) {
@@ -309,16 +304,7 @@ public class ProceduredTerrain extends ATerrain implements ITerrain {
 				indices[pointer++] = bottomRight;
 			}
 		}
-		return Loader.getInstance().getVertexLoader().loadToVAO(vertices, textureCoords, normals, indices);
-	}
-	
-	private Texture2D generateHeightMap() {
-		int size = 10;
-		Texture2D heightMap = Texture2D.create(size, size, 1, false);
-		GL42.glTexStorage2D(GL11.GL_TEXTURE_2D,	(int) (Math.log(size) / Math.log(2)), GL30.GL_RGBA32F, size, size);
-		
-		this.heightMap = heightMap;
-		return heightMap;
+		return Loader.getInstance().getVertexLoader().loadToVAOwithTBO(vertices, textureCoords, indices);
 	}
 
 	private float getHeight(int x, int z, HeightsGenerator generator) {
@@ -333,6 +319,16 @@ public class ProceduredTerrain extends ATerrain implements ITerrain {
 		Vector3f normal = new Vector3f(heightL - heightR, 2f, heightD - heightU);
 		normal.normalize();
 		return normal;
+	}
+
+	@Override
+	public Texture2D getHeightMap() {
+		return this.heightMap;
+	}
+	
+	@Override
+	public void setHeightMap(Texture2D heightMap) {
+		this.heightMap = heightMap;
 	}
 
 }

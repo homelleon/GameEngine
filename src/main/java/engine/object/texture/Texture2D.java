@@ -6,9 +6,9 @@ import static org.lwjgl.opengl.GL11.glDeleteTextures;
 import static org.lwjgl.opengl.GL11.glGenTextures;
 
 import org.lwjgl.opengl.GL11;
-import org.newdawn.slick.opengl.Texture;
-
 import org.lwjgl.opengl.GL13;
+import org.lwjgl.opengl.GL31;
+import org.newdawn.slick.opengl.Texture;
 
 import primitive.buffer.TextureBufferLoader;
 
@@ -23,7 +23,7 @@ public class Texture2D {
 	
 	public static Texture2D create(int width, int height, int numberOfRows, boolean hasTransparency) {
 		Texture2D texture = new Texture2D();
-		texture.id = GL11.glGenTextures();
+		texture.generate();
 		texture.width = width;
 		texture.height = height;
 		texture.numberOfRows = numberOfRows;
@@ -46,6 +46,15 @@ public class Texture2D {
 		glBindTexture(GL_TEXTURE_2D, id);
 	}
 	
+	public void bindAsBuffer() {
+		glBindTexture(GL31.GL_TEXTURE_BUFFER, id);
+	}
+	
+	public void bindAsBuffer(int location) {
+		active(location);
+		glBindTexture(GL31.GL_TEXTURE_BUFFER, id);
+	}
+	
 	public void bind(int location) {
 		active(location);
 		glBindTexture(GL_TEXTURE_2D, id);
@@ -61,6 +70,10 @@ public class Texture2D {
 	
 	public static void unbind() {
 		glBindTexture(GL_TEXTURE_2D, 0);
+	}
+	
+	public static void unbindAsBuffer() {
+		glBindTexture(GL31.GL_TEXTURE_BUFFER, 0);
 	}
 	
 	public static void noFilter() {
@@ -110,7 +123,7 @@ public class Texture2D {
 		this.hasTransparency = hasTransparency;
 	}
 	
-	private void active(int location) {
+	public static void active(int location) {
 		if(location >= 0 && location < 31) {
 			GL13.glActiveTexture(GL13.GL_TEXTURE0 + location);
 		} else {

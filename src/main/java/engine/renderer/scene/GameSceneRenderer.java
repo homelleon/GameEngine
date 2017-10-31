@@ -15,7 +15,6 @@ import manager.scene.IObjectManager;
 import map.objectMap.ObjectMapManager;
 import map.writer.ILevelMapWriter;
 import map.writer.LevelMapXMLWriter;
-import object.gui.element.object.GUIObject;
 import object.gui.group.IGUIGroup;
 import object.gui.gui.GUI;
 import object.gui.gui.IGUI;
@@ -27,6 +26,7 @@ import object.input.KeyboardGame;
 import object.input.MousePicker;
 import object.particle.master.ParticleMaster;
 import object.scene.IScene;
+import object.texture.Texture2D;
 import object.water.WaterFrameBuffers;
 import renderer.main.MainRenderer;
 import renderer.water.WaterRenderer;
@@ -79,13 +79,17 @@ public class GameSceneRenderer implements ISceneRenderer {
 		this.scene.setMousePicker(mousePicker);
 		this.controls = new Controls();
 		
-		//GUI text info
+		// GUI text info
 		String fontName = "candara";
 		fpsText = createFPSText(Math.round(1 / DisplayManager.getFrameTimeSeconds()), fontName);
 		fpsText.setColor(1, 0, 0);
 		coordsText = createPickerCoordsText(mousePicker, fontName);
 		coordsText.setColor(1, 0, 0);
 		List<GUITexture> textureList = new ArrayList<GUITexture>();
+		// debug texture
+		Texture2D heightMap = scene.getTerrains().get("Terrain1").getHeightMap();
+		GUITexture debugTexture = new GUITexture("debugTexture", heightMap, new Vector2f(0,0), new Vector2f(0.5f,0.5f));
+		textureList.add(debugTexture);
 		List<GUIText> textList = new ArrayList<GUIText>();
 		textList.add(fpsText);
 		textList.add(coordsText);
@@ -94,6 +98,7 @@ public class GameSceneRenderer implements ISceneRenderer {
 		IGUI statusInterface = new GUI(statusGUIName, textureList, textList);
 		scene.getUserInterface().getGroups().createEmpty(statusGroupName);
 		scene.getUserInterface().getGroups().get(statusGroupName).add(statusInterface);
+		
 	}
 
 	@Override

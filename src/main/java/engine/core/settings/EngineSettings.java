@@ -14,8 +14,8 @@ import org.lwjgl.util.vector.Vector4f;
 public class EngineSettings {
 
 	/* display settings */
-	public static final int DISPLAY_WIDTH = 1920; // 1920;
-	public static final int DISPLAY_HEIGHT = 1080; // 1080;
+	public static final int DISPLAY_WIDTH = 800; // 1920;
+	public static final int DISPLAY_HEIGHT = 600; // 1080;
 	public static final int FAR_PLANE = 100000;
 	public static final float NEAR_PLANE = 0.5f;
 	public static final int FPS_CAP = 90;
@@ -92,9 +92,9 @@ public class EngineSettings {
 	public final static float TESSELLATION_SHIFT = 0.1f;
 	
 	public final static float SCALE_XZ = 6000f;
-	public final static float SCALE_Y = 200f;
+	public final static float SCALE_Y = 1f;
 	
-	public final static int[] LOD_RANGES = {1750, 874, 386, 192, 100, 50, 25, 0};
+	public final static int[] LOD_RANGES = {1750, 874, 386, 192, 100, 50, 0, 0};
 //	public final static int[] LOD_RANGES = {500, 450, 350, 250, 150, 100, 50, 0};
 	public static int[] lod_morph_areas;
 

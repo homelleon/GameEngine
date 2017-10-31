@@ -1,8 +1,8 @@
 //VERTEX SHADER - Terrain
 #version 430 core
 
-#define LOD_MAX 8 //max level of distance count
-#define LIGHT_MAX 10 //max light source count
+#define LOD_MAX 8 // max level of distance count
+#define LIGHT_MAX 10 // max light source count
 
 /*===== in ======*/
 in vec3 in_position;
@@ -16,6 +16,7 @@ out vec3 tc_toCameraVector;
 out float tc_visibility;
 out vec4 tc_shadowCoords;
 out vec2 tc_textureCoords;
+out float tc_clipDistance;
 
 /*== uniforms ==*/
 uniform int lightCount;
@@ -162,7 +163,7 @@ vec2 morph(vec2 localPosition, int morph_area) {
 /*------------- main ---------------*/
 void main(void) {
 
-   vec3 localPosition = (localMatrix * vec4(in_position.x, in_position.y, in_position.z, 1.0)).xyz;
+   vec3 localPosition = (localMatrix * vec4(in_position, 1.0)).xyz;
 
    if(lod > 0.0) {
 	  localPosition.xz += morph(localPosition.xz, lod_morph_area[lod-1]);
@@ -175,7 +176,7 @@ void main(void) {
    
    tc_shadowCoords = toShadowMapSpace * vec4(worldPosition.x, 0.0, worldPosition.z, 1.0);
 
-   gl_ClipDistance[0] = dot(worldPosition, clipPlane);
+   tc_clipDistance = dot(worldPosition, clipPlane);
    
    vec4 positionRelativeToCam = viewMatrix * worldPosition;
 
@@ -193,7 +194,7 @@ void main(void) {
    
    float distance = length(positionRelativeToCam.xyz);
    tc_visibility = exp(-pow((distance * fogDensity), fogGradient));
-   tc_visibility = clamp(tc_visibility,0.0,1.0);
+   tc_visibility = clamp(tc_visibility, 0.0, 1.0);
    
    distance = distance - (shadowDistance - shadowTransitionDistance);
    distance = distance / shadowTransitionDistance;

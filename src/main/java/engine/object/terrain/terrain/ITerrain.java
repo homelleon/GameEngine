@@ -99,6 +99,10 @@ public interface ITerrain extends Nameable {
 	 * @return {@link String} value of height texture map name
 	 */
 	String getHeightMapName();
+	
+	Texture2D getHeightMap();
+	
+	void setHeightMap(Texture2D heightMap);
 
 	/**
 	 * Returns if terrain is procedurally generated or not.

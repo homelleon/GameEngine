@@ -3,30 +3,37 @@
 
 layout (vertices = 16) out;
 
+/*===== in ======*/
 in vec2 tc_textureCoords[];
 in vec3 tc_surfaceNormal[];
 in vec3 tc_toLightVector[];
 in vec3 tc_toCameraVector[];
 in float tc_visibility[];
 in vec4 tc_shadowCoords[];
+in float tc_clipDistance[];
 
+/*===== out =====*/
 out vec2 te_textureCoords[];
 out vec3 te_surfaceNormal[];
 out vec3 te_toLightVector[];
 out vec3 te_toCameraVector[];
 out float te_visibility[];
 out vec4 te_shadowCoords[];
+out float te_clipDistance[];
 
+/*== constants =*/
 const int AB = 2;
 const int BC = 3;
 const int CD = 0;
 const int DA = 1;
 
+/*== uniforms ===*/
 uniform int tessellationFactor;
 uniform float tessellationSlope;
 uniform float tessellationShift;
 uniform vec3 cameraPosition;
 
+/*-------- functions -----------*/
 float LodFactor(float dist) {
 
 	float tessellationLevel = max(0.0, tessellationFactor/pow(dist, tessellationSlope) + tessellationShift);
@@ -34,6 +41,7 @@ float LodFactor(float dist) {
 	return tessellationLevel;
 }
 
+/*------------- main ---------------*/
 void main() {
 	if(gl_InvocationID == 0) {
 
@@ -57,12 +65,14 @@ void main() {
 
 	}
 
+	// simply pass parameters
 	te_surfaceNormal[gl_InvocationID] = tc_surfaceNormal[gl_InvocationID];
 	te_toLightVector[gl_InvocationID] = tc_toLightVector[gl_InvocationID];
 	te_toCameraVector[gl_InvocationID] = tc_toCameraVector[gl_InvocationID];
 	te_textureCoords[gl_InvocationID] = tc_textureCoords[gl_InvocationID];
 	te_visibility[gl_InvocationID] = tc_visibility[gl_InvocationID];
 	te_shadowCoords[gl_InvocationID] = tc_shadowCoords[gl_InvocationID];
+	te_clipDistance[gl_InvocationID] = tc_clipDistance[gl_InvocationID];
 
 	gl_out[gl_InvocationID].gl_Position = gl_in[gl_InvocationID].gl_Position;
 }
