@@ -7,10 +7,8 @@
 /*===== in ======*/
 in vec3 in_position;
 in vec2 textureCoordinates;
-in vec3 normal;
 
 /*===== out =====*/
-out vec3 tc_surfaceNormal;
 out vec3 tc_toLightVector[LIGHT_MAX];
 out vec3 tc_toCameraVector;
 out float tc_visibility;
@@ -184,13 +182,11 @@ void main(void) {
 
    tc_textureCoords = localPosition.xz;
 
-   tc_surfaceNormal = texture(normalMap, tc_textureCoords).rgb;
-
    for(int i = 0; i < LIGHT_MAX; i++) {
-      tc_toLightVector[i] = lightPosition[i] - worldPosition.xyz;
+      tc_toLightVector[i] = lightPosition[i] - localPosition;
    }
 
-   tc_toCameraVector = (inverse(viewMatrix) * vec4(0.0,0.0,0.0,1.0)).xyz - worldPosition.xyz;
+   tc_toCameraVector = (inverse(viewMatrix) * vec4(0.0,0.0,0.0,1.0)).xyz - localPosition;
    
    float distance = length(positionRelativeToCam.xyz);
    tc_visibility = exp(-pow((distance * fogDensity), fogGradient));

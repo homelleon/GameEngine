@@ -72,21 +72,17 @@ public class Texture2D {
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 	
-	public static void unbindAsBuffer() {
-		glBindTexture(GL31.GL_TEXTURE_BUFFER, 0);
-	}
-	
-	public static void noFilter() {
+	public void noFilter() {
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
 	}
 	
-	public static void bilinearFilter() {
+	public void bilinearFilter() {
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
 	}
 	
-	public static void repeatWrap() {
+	public void repeatWrap() {
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
 	}

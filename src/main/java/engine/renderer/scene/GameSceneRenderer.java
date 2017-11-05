@@ -88,8 +88,11 @@ public class GameSceneRenderer implements ISceneRenderer {
 		List<GUITexture> textureList = new ArrayList<GUITexture>();
 		// debug texture
 		Texture2D heightMap = scene.getTerrains().get("Terrain1").getHeightMap();
-		GUITexture debugTexture = new GUITexture("debugTexture", heightMap, new Vector2f(0,0), new Vector2f(0.5f,0.5f));
-		textureList.add(debugTexture);
+		Texture2D normalMap = scene.getTerrains().get("Terrain1").getNormalMap();
+		GUITexture debugTexture1 = new GUITexture("debugTexture1", heightMap, new Vector2f(-0.5f, 0), new Vector2f(0.3f, 0.3f));
+		GUITexture debugTexture2 = new GUITexture("debugTexture2", normalMap, new Vector2f(0.5f, 0), new Vector2f(0.3f, 0.3f));
+		textureList.add(debugTexture1);
+		textureList.add(debugTexture2);
 		List<GUIText> textList = new ArrayList<GUIText>();
 		textList.add(fpsText);
 		textList.add(coordsText);

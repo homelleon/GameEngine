@@ -5,6 +5,7 @@ import java.util.Collection;
 import org.lwjgl.opengl.GL11;
 
 import object.gui.texture.GUITexture;
+import object.texture.Texture2D;
 import primitive.buffer.Loader;
 import primitive.buffer.VAO;
 import primitive.model.Mesh;

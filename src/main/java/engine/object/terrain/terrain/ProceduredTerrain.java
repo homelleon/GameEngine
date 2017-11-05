@@ -24,6 +24,7 @@ public class ProceduredTerrain extends ATerrain implements ITerrain {
 	private TerrainTexturePack texturePack;
 	private Texture2D blendMap;
 	private Texture2D heightMap;
+	private Texture2D normalMap;
 	
 	private String heightMapName;
 	private boolean isProcedureGenerated = true;
@@ -225,7 +226,7 @@ public class ProceduredTerrain extends ATerrain implements ITerrain {
 		heights = new float[VERTEX_COUNT][VERTEX_COUNT];
 		int count = VERTEX_COUNT * VERTEX_COUNT;
 		float[] vertices = new float[count * 3];
-		float[] normals = new float[count * 3];
+//		float[] normals = new float[count * 3];
 		float[] textureCoords = new float[count * 2];
 		int[] indices = new int[6 * (VERTEX_COUNT - 1) * (VERTEX_COUNT - 1)];
 		int vertexPointer = 0;
@@ -236,10 +237,10 @@ public class ProceduredTerrain extends ATerrain implements ITerrain {
 				heights[j][i] = height;
 				vertices[vertexPointer * 3 + 1] = height;
 				vertices[vertexPointer * 3 + 2] = i / ((float) VERTEX_COUNT - 1) * ITerrain.TERRAIN_SIZE;
-				Vector3f normal = calculateNormal(j, i, generator);
-				normals[vertexPointer * 3] = normal.x;
-				normals[vertexPointer * 3 + 1] = normal.y;
-				normals[vertexPointer * 3 + 2] = normal.z;
+//				Vector3f normal = calculateNormal(j, i, generator);
+//				normals[vertexPointer * 3] = normal.x;
+//				normals[vertexPointer * 3 + 1] = normal.y;
+//				normals[vertexPointer * 3 + 2] = normal.z;
 				textureCoords[vertexPointer * 2] = j / ((float) VERTEX_COUNT - 1);
 				textureCoords[vertexPointer * 2 + 1] = i / ((float) VERTEX_COUNT - 1);
 				vertexPointer++;
@@ -269,7 +270,7 @@ public class ProceduredTerrain extends ATerrain implements ITerrain {
 		heights = new float[VERTEX_COUNT][VERTEX_COUNT];
 		int count = VERTEX_COUNT * VERTEX_COUNT;
 		float[] vertices = new float[count * 3];
-		float[] normals = new float[count * 3];
+//		float[] normals = new float[count * 3];
 		float[] textureCoords = new float[count * 2];
 		int[] indices = new int[6 * (VERTEX_COUNT - 1) * (VERTEX_COUNT - 1)];
 		int vertexPointer = 0;
@@ -280,10 +281,10 @@ public class ProceduredTerrain extends ATerrain implements ITerrain {
 				heights[j][i] = height;
 				vertices[vertexPointer * 3 + 1] = height;
 				vertices[vertexPointer * 3 + 2] = i / ((float) VERTEX_COUNT - 1) * ITerrain.TERRAIN_SIZE;
-				Vector3f normal = calculateNormal(j, i, generator);
-				normals[vertexPointer * 3] = normal.x;
-				normals[vertexPointer * 3 + 1] = normal.y;
-				normals[vertexPointer * 3 + 2] = normal.z;
+//				Vector3f normal = calculateNormal(j, i, generator);
+//				normals[vertexPointer * 3] = normal.x;
+//				normals[vertexPointer * 3 + 1] = normal.y;
+//				normals[vertexPointer * 3 + 2] = normal.z;
 				textureCoords[vertexPointer * 2] = j / ((float) VERTEX_COUNT - 1);
 				textureCoords[vertexPointer * 2 + 1] = i / ((float) VERTEX_COUNT - 1);
 				vertexPointer++;
@@ -329,6 +330,16 @@ public class ProceduredTerrain extends ATerrain implements ITerrain {
 	@Override
 	public void setHeightMap(Texture2D heightMap) {
 		this.heightMap = heightMap;
+	}
+
+	@Override
+	public Texture2D getNormalMap() {
+		return normalMap;
+	}
+
+	@Override
+	public void setNormalMap(Texture2D normalMap) {
+		this.normalMap = normalMap;		
 	}
 
 }

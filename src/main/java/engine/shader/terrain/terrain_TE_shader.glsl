@@ -63,13 +63,14 @@ float interpolateFloat(float vector[gl_MaxPatchVertices], float u, float v) {
 /*------------- main ---------------*/
 void main() {
 
+	// tess coordinates
 	float u = gl_TessCoord.x;
 	float v = gl_TessCoord.y;
 
+	// interpolate all variables between main points
 	vec2 textureCoords = interpolate2D(te_textureCoords, u, v);
 	gs_textureCoords = textureCoords;
 
-	gs_surfaceNormal = interpolate3D(te_surfaceNormal, u, v);
 	gs_toLightVector = interpolate3D(te_toLightVector, u, v);
 	gs_toCameraVector = interpolate3D(te_toCameraVector, u, v);
 	gs_visibility = interpolateFloat(te_visibility, u, v);

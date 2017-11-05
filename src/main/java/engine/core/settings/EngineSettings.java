@@ -95,6 +95,7 @@ public class EngineSettings {
 	public final static float SCALE_Y = 1f;
 	
 	public final static int[] LOD_RANGES = {1750, 874, 386, 192, 100, 50, 0, 0};
+//	public final static int[] LOD_RANGES = {874, 386, 192, 100, 50, 0, 0, 0};
 //	public final static int[] LOD_RANGES = {500, 450, 350, 250, 150, 100, 50, 0};
 	public static int[] lod_morph_areas;
 

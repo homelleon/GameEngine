@@ -5,7 +5,6 @@
 
 /*===== in ======*/
 in vec2 fs_textureCoords;
-in vec3 fs_surfaceNormal;
 in vec3 fs_toLightVector[LIGHT_MAX];
 in vec3 fs_toCameraVector;
 in float fs_visibility;
@@ -68,8 +67,9 @@ void main(void) {
    vec4 bTextureColour = texture(bTexture,tiledCoords) * blendMapColour.b;
 
    vec4 totalColour = backgroundTextureColour + rTextureColour + gTextureColour + bTextureColour;
+   vec3 normal = texture(normalMap, fs_textureCoords).rgb;
 
-   vec3 unitNormal = normalize(fs_surfaceNormal);
+   vec3 unitNormal = normalize(normal);
    vec3 unitVectorToCamera = normalize(fs_toCameraVector);
    
    vec3 totalDiffuse = vec3(0.0);

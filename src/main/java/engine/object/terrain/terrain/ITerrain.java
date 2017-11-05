@@ -5,7 +5,6 @@ import object.camera.ICamera;
 import object.terrain.generator.HeightsGenerator;
 import object.texture.Texture2D;
 import object.texture.terrain.TerrainTexturePack;
-import primitive.buffer.PatchVAO;
 import primitive.model.Mesh;
 
 /**
@@ -103,6 +102,10 @@ public interface ITerrain extends Nameable {
 	Texture2D getHeightMap();
 	
 	void setHeightMap(Texture2D heightMap);
+
+	Texture2D getNormalMap();
+	
+	void setNormalMap(Texture2D normalMap);
 
 	/**
 	 * Returns if terrain is procedurally generated or not.

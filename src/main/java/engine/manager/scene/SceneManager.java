@@ -114,7 +114,7 @@ public class SceneManager implements ISceneManager {
 				scene.getAudioSources().getMaster());
 		ambientSource.setLooping(true);
 		ambientSource.setVolume(0.3f);
-		ambientSource.play();
+		// ambientSource.play();
 		ambientSource.setPosition(new Vector3f(400, 50, 400));
 
 		/*--------------WATER----------------*/

@@ -35,6 +35,8 @@ public class MappedTerrain extends ATerrain implements ITerrain {
 	private TerrainTexturePack texturePack;
 	private Texture2D blendMap;
 	private Texture2D heightMap;
+	private Texture2D normalMap;
+	
 	private String heightMapName;
 	private boolean isProcedureGenerated = false;
 	private boolean isVisible = true;
@@ -269,6 +271,16 @@ public class MappedTerrain extends ATerrain implements ITerrain {
 	@Override
 	public void setHeightMap(Texture2D heightMap) {
 		this.heightMap = heightMap;
+	}
+
+	@Override
+	public Texture2D getNormalMap() {
+		return normalMap;
+	}
+
+	@Override
+	public void setNormalMap(Texture2D normalMap) {
+		this.normalMap = normalMap;		
 	}
 
 

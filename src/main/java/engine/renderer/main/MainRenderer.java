@@ -78,19 +78,24 @@ public class MainRenderer implements IMainRenderer {
 		IEntityRenderer normalEntityRenderer = new NormalEntityRenderer(projectionMatrix);
 		IEntityRenderer decorEntityRenderer = new DecorEntityRenderer(projectionMatrix);
 		this.entityRendererManager = new EntityRendererManager();
-		this.entityRendererManager.addPair(texturedEntityRenderer, texturedEntities);
-		this.entityRendererManager.addPair(normalEntityRenderer, normalEntities);
-		this.entityRendererManager.addPair(decorEntityRenderer, decorEntities);
+		entityRendererManager.addPair(texturedEntityRenderer, texturedEntities);
+		entityRendererManager.addPair(normalEntityRenderer, normalEntities);
+		entityRendererManager.addPair(decorEntityRenderer, decorEntities);
 		this.terrainRenderer = new TerrainRenderer(projectionMatrix);
-		this.heightRenderer = new HeightMapRenderer(1024, scene.getTerrains().getAll().iterator().next().getModel().getVAO());
+		// height and normal map rendering
+		this.heightRenderer = new HeightMapRenderer(128, scene.getTerrains().getAll().iterator().next().getModel().getVAO());
 		heightRenderer.render();
-		this.normalMapRenderer = new NormalMapRenderer(heightRenderer.getHeightMap().getWidth());
-		this.normalMapRenderer.setStrength(4);
-		this.normalMapRenderer.render(heightRenderer.getHeightMap());
+		normalMapRenderer = new NormalMapRenderer(heightRenderer.getHeightMap().getWidth());
+		normalMapRenderer.setStrength(4);
+		normalMapRenderer.setHeightMap(heightRenderer.getHeightMap());
+		normalMapRenderer.render();
+		// setting height and normal map
 		scene.getTerrains().get("Terrain1").setHeightMap(heightRenderer.getHeightMap());
-		terrainRenderer.setNormalMap(this.normalMapRenderer.getNormalMap());
-		this.heightRenderer.clean();
-		this.normalMapRenderer.clean();
+		scene.getTerrains().get("Terrain1").setNormalMap(normalMapRenderer.getNormalMap());
+		// cleanup
+		heightRenderer.clean();
+		normalMapRenderer.clean();
+		
 		this.skyboxRenderer = new SkyboxRenderer(projectionMatrix);
 		this.voxelRenderer = new VoxelRenderer(projectionMatrix);
 		this.boundingRenderer = new BoundingRenderer(projectionMatrix);
