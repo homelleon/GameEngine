@@ -1,5 +1,6 @@
 //VERTEX SHADER - Entity
 #version 400 core
+#define LIGHT_MAX 10
 
 /*===== in ======*/
 in vec3 position;
@@ -10,7 +11,7 @@ in vec3 normal;
 out vec2 pass_textureCoordinates;
 out vec3 pass_normal;
 out vec3 surfaceNormal;
-out vec3 toLightVector[10];
+out vec3 toLightVector[LIGHT_MAX];
 out vec3 toCameraVector;
 out float fogVisibility;
 out vec4 shadowCoords;
@@ -19,12 +20,11 @@ out vec4 shadowCoords;
 uniform mat4 transformationMatrix;
 uniform mat4 projectionMatrix;
 uniform mat4 viewMatrix;
-uniform vec3 cameraPosition;
 uniform vec4 clipPlane;
+uniform vec3 cameraPosition;
 
 //light
-uniform vec3 lightPosition[10];
-uniform int lightCount;
+uniform vec3 lightPosition[LIGHT_MAX];
 uniform float usesFakeLighting;
 
 //shadows
@@ -49,7 +49,7 @@ void main(void) {
    shadowCoords = toShadowMapSpace * worldPosition;
    
    gl_ClipDistance[0] = dot(worldPosition, clipPlane);
-   
+
    vec4 positionRelativeToCam = viewMatrix * worldPosition;
    gl_Position = projectionMatrix * positionRelativeToCam;
       
@@ -61,11 +61,11 @@ void main(void) {
    
    vec3 actualNormal = normal;
    if(usesFakeLighting > 0.5) {
-      actualNormal = vec3(0.0,1.0,0.0);
+      actualNormal = vec3(0.0, 1.0, 0.0);
    }
 
-   surfaceNormal = (transformationMatrix * vec4(actualNormal,0.0)).xyz;
-   for(int i=0; i<lightCount; i++) {
+   surfaceNormal = (transformationMatrix * vec4(actualNormal, 0.0)).xyz;
+   for(int i=0; i < LIGHT_MAX; i++) {
       toLightVector[i] = lightPosition[i] - worldPosition.xyz; 
    }
    
@@ -79,5 +79,5 @@ void main(void) {
    distance = distance - (shadowDistance - shadowTransitionDistance);
    distance = distance / shadowTransitionDistance;
    shadowCoords.w = clamp(1.0 - distance, 0.0, 1.0);
-   
+
 }

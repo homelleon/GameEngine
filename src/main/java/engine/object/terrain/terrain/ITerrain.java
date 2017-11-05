@@ -17,7 +17,7 @@ import primitive.model.Mesh;
  */
 public interface ITerrain extends Nameable {
 	
-	public static final int TERRAIN_VERTEX_COUNT = 256;
+	public static final int TERRAIN_VERTEX_COUNT = 512;
 	public static final int TERRAIN_SIZE = 10000;
 	
 	public static final float TERRAIN_SCALE_XZ = 1f;

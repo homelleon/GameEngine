@@ -5,25 +5,18 @@ layout (quads, equal_spacing, cw) in;
 
 /*===== in ======*/
 in vec2 te_textureCoords[];
-in vec3 te_toLightVector[];
-in vec3 te_toCameraVector[];
 in float te_visibility[];
 in vec4 te_shadowCoords[];
-in float te_clipDistance[];
 
 /*===== out =====*/
 out vec2 gs_textureCoords;
-out vec3 gs_toLightVector;
-out vec3 gs_toCameraVector;
 out float gs_visibility;
 out vec4 gs_shadowCoords;
-out float gs_clipDistance;
 
 /*== uniforms ===*/
 // matrix and planes
 uniform mat4 worldMatrix;
 uniform mat4 localMatrix;
-uniform mat4 transformationMatrix;
 uniform vec4 clipPlane;
 // maps
 uniform sampler2D heightMap;
@@ -69,11 +62,8 @@ void main() {
 	vec2 textureCoords = interpolate2D(te_textureCoords, u, v);
 	gs_textureCoords = textureCoords;
 
-	gs_toLightVector = interpolate3D(te_toLightVector, u, v);
-	gs_toCameraVector = interpolate3D(te_toCameraVector, u, v);
 	gs_visibility = interpolateFloat(te_visibility, u, v);
 	gs_shadowCoords = interpolate4D(te_shadowCoords, u, v);
-	gs_clipDistance = interpolateFloat(te_clipDistance, u, v);
 
 	// position - interpolate and add heights
 	vec4 position =

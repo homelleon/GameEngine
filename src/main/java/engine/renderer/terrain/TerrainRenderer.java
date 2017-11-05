@@ -17,6 +17,7 @@ import primitive.buffer.VAO;
 import shader.terrain.TerrainShader;
 import tool.math.Maths;
 import tool.math.Matrix4f;
+import tool.math.vector.Vector2f;
 import tool.math.vector.Vector3f;
 
 public class TerrainRenderer {
@@ -26,11 +27,11 @@ public class TerrainRenderer {
 	public TerrainRenderer(Matrix4f projectionMatrix) {
 		this.shader = new TerrainShader();
 		shader.start();
+		shader.connectTextureUnits();
 		shader.loadProjectionMatrix(projectionMatrix);
 		shader.loadScale(EngineSettings.SCALE_Y);
 		shader.loadTessellationVariables(EngineSettings.TESSELLATION_FACTOR, EngineSettings.TESSELLATION_SLOPE, EngineSettings.TESSELLATION_SHIFT);
 		shader.loadLodMorphAreaArray(EngineSettings.lod_morph_areas);
-		shader.connectTextureUnits();
 		shader.stop();
 	}
 	
@@ -51,7 +52,6 @@ public class TerrainRenderer {
 				terrain.updateQuadTree(camera);
 			}
 			prepareTerrain(terrain);
-			loadModelMatrix(terrain);
 			for(Node node : terrain.getQuadTree().getChildren()) {
 				((TerrainNode) node).render(shader, terrain.getQuadTree().getVao());
 			}
@@ -73,7 +73,6 @@ public class TerrainRenderer {
 				EngineSettings.SHADOW_TRANSITION_DISTANCE, EngineSettings.SHADOW_PCF);
 		for (ITerrain terrain : terrains) {
 			prepareTerrain(terrain);
-			loadModelMatrix(terrain);
 			for(Node node : terrain.getQuadTree().getChildren()) {
 				((TerrainNode) node).render(shader, terrain.getQuadTree().getVao());
 			}
@@ -91,15 +90,15 @@ public class TerrainRenderer {
 	private void prepareTerrain(ITerrain terrain) {
 		TerrainQuadTree terrainTree = (TerrainQuadTree) terrain.getQuadTree();
 		VAO vao = terrainTree.getVao();
-		vao.bind(0, 1);
+		vao.bind(0);
 		bindTexture(terrain);
 		shader.loadShineVariables(1, 0);
 		shader.loadWorldMatrix(terrainTree.getWorldMatrix());
-		terrain.getTexturePack().getBackgroundTexture().repeatWrap();
 	}
 
 	private void bindTexture(ITerrain terrain) {
 		TerrainTexturePack texturePack = terrain.getTexturePack();
+		texturePack.getBackgroundTexture().bilinearFilter();
 		texturePack.getBackgroundTexture().bind(0);
 		texturePack.getRTexture().bind(1);
 		texturePack.getGTexture().bind(2);
@@ -110,14 +109,8 @@ public class TerrainRenderer {
 	}
 
 	private void unbindTexture() {
-		VAO.unbind(0, 1);
+		VAO.unbind(0);
 		Texture2D.unbind();
-	}
-
-	private void loadModelMatrix(ITerrain terrain) {
-		Matrix4f transformationMatrix = Maths
-				.createTransformationMatrix(new Vector3f(EngineSettings.SCALE_XZ, EngineSettings.SCALE_Y, EngineSettings.SCALE_XZ), 0, 0, 0, 1);
-		shader.loadTranformationMatrix(transformationMatrix);
 	}
 
 }

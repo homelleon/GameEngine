@@ -7,9 +7,11 @@ import static org.lwjgl.opengl.GL11.glGenTextures;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
+import org.lwjgl.opengl.GL14;
 import org.lwjgl.opengl.GL31;
 import org.newdawn.slick.opengl.Texture;
 
+import primitive.buffer.Loader;
 import primitive.buffer.TextureBufferLoader;
 
 public class Texture2D {
@@ -62,6 +64,7 @@ public class Texture2D {
 	
 	public void generate() {
 		id = glGenTextures();
+		Loader.getInstance().getTextureLoader().addTexture(this);
 	}
 	
 	public void delete() {
@@ -85,6 +88,11 @@ public class Texture2D {
 	public void repeatWrap() {
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
+	}
+	
+	public void mirrorRepeatWrap() {
+		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL14.GL_MIRRORED_REPEAT);
+		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL14.GL_MIRRORED_REPEAT);
 	}
 	
 	public int getId() {

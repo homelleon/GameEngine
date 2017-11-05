@@ -1,12 +1,13 @@
 //FRAGMENT SHADER - Entity
 #version 400 core
+#define LIGHT_MAX 10
 
 /*===== in ======*/
 
 //geometry
 in vec2 pass_textureCoordinates;
 in vec3 surfaceNormal;
-in vec3 toLightVector[10];
+in vec3 toLightVector[LIGHT_MAX];
 in vec3 toCameraVector;
 in vec4 shadowCoords;
 
@@ -28,9 +29,8 @@ uniform float shadowMapSize;
 uniform int shadowPCFCount;
 
 //light and colour
-uniform vec3 lightColor[10];
-uniform vec3 attenuation[10];
-uniform int lightCount;
+uniform vec3 lightColor[LIGHT_MAX];
+uniform vec3 attenuation[LIGHT_MAX];
 uniform float shineDamper;
 uniform float reflectivity;
 uniform vec3 skyColor;
@@ -51,7 +51,7 @@ void main(void) {
 	float texelSize = 1.0 / shadowMapSize;
     float total = 0.0;
 
-    for(int x=-shadowPCFCount; x<=shadowPCFCount; x++) {
+    for(int x = -shadowPCFCount; x <= shadowPCFCount; x++) {
    		 for(int y=-shadowPCFCount; y<=shadowPCFCount; y++) {
    				 float objectNearestLight = texture(shadowMap, shadowCoords.xy + vec2(x, y) * texelSize).r;
    			 	 if(shadowCoords.z > objectNearestLight + 0.001) {
@@ -70,7 +70,7 @@ void main(void) {
     vec3 totalDiffuse = vec3(0.0);
     vec3 totalSpecular = vec3(0.0);
 
-	for(int i=0;i<lightCount;i++) {
+	for(int i = 0; i < LIGHT_MAX; i++) {
 		float distance = length(toLightVector[i]);
 		float attFactor = attenuation[1].x + (attenuation[i].y * distance) + (attenuation[i].z * distance * distance);
 		vec3 unitLightVector = normalize(toLightVector[i]);

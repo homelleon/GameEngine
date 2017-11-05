@@ -15,9 +15,9 @@ void main(void) {
 
 	ivec2 xy = ivec2(gl_GlobalInvocationID.x, gl_GlobalInvocationID.y);
 
-	int offset = int(gl_WorkGroupID.y * 512 + gl_WorkGroupID.x);
+	int offset = int(gl_WorkGroupID.y * size + gl_WorkGroupID.x);
 
-	float height = texelFetchBuffer(positionMap, offset).y / 256;
+	float height = texelFetchBuffer(positionMap, offset).y;
 
 	vec4 TextureColor = vec4(height, height, height, 1.0);
 

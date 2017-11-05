@@ -5,19 +5,13 @@ layout (vertices = 16) out;
 
 /*===== in ======*/
 in vec2 tc_textureCoords[];
-in vec3 tc_toLightVector[];
-in vec3 tc_toCameraVector[];
 in float tc_visibility[];
 in vec4 tc_shadowCoords[];
-in float tc_clipDistance[];
 
 /*===== out =====*/
 out vec2 te_textureCoords[];
-out vec3 te_toLightVector[];
-out vec3 te_toCameraVector[];
 out float te_visibility[];
 out vec4 te_shadowCoords[];
-out float te_clipDistance[];
 
 /*== constants =*/
 const int AB = 2;
@@ -43,10 +37,10 @@ float LodFactor(float dist) {
 void main() {
 	if(gl_InvocationID == 0) {
 
-		vec3 abMid = vec3(gl_in[0].gl_Position + gl_in[3].gl_Position)/2.0;
-		vec3 bcMid = vec3(gl_in[3].gl_Position + gl_in[15].gl_Position)/2.0;
-		vec3 cdMid = vec3(gl_in[15].gl_Position + gl_in[12].gl_Position)/2.0;
-		vec3 daMid = vec3(gl_in[12].gl_Position + gl_in[0].gl_Position)/2.0;
+		vec3 abMid = vec3(gl_in[0].gl_Position + gl_in[3].gl_Position) / 2.0;
+		vec3 bcMid = vec3(gl_in[3].gl_Position + gl_in[15].gl_Position) / 2.0;
+		vec3 cdMid = vec3(gl_in[15].gl_Position + gl_in[12].gl_Position) / 2.0;
+		vec3 daMid = vec3(gl_in[12].gl_Position + gl_in[0].gl_Position) / 2.0;
 
 		float distanceAB = distance(abMid, cameraPosition);
 		float distanceBC = distance(bcMid, cameraPosition);
@@ -64,12 +58,9 @@ void main() {
 	}
 
 	// simply pass parameters
-	te_toLightVector[gl_InvocationID] = tc_toLightVector[gl_InvocationID];
-	te_toCameraVector[gl_InvocationID] = tc_toCameraVector[gl_InvocationID];
 	te_textureCoords[gl_InvocationID] = tc_textureCoords[gl_InvocationID];
 	te_visibility[gl_InvocationID] = tc_visibility[gl_InvocationID];
 	te_shadowCoords[gl_InvocationID] = tc_shadowCoords[gl_InvocationID];
-	te_clipDistance[gl_InvocationID] = tc_clipDistance[gl_InvocationID];
 
 	gl_out[gl_InvocationID].gl_Position = gl_in[gl_InvocationID].gl_Position;
 }

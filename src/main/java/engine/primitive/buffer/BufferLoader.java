@@ -78,13 +78,11 @@ public class BufferLoader {
 		return vao;
 	}
 	
-	public VAO loadPatchToVAO(float[] positions, float[] textureCoords, float[] normals, int patchSize) {
+	public VAO loadPatchToVAO(float[] positions, int patchSize) {
 		VAO vao = VAO.create();
 		this.vaos.add(vao);
 		vao.bind();
 		vao.createPatchAttribute(0, 3, positions, patchSize);
-		vao.createPatchAttribute(1, 2, textureCoords, patchSize);
-		vao.createPatchAttribute(2, 3, normals, patchSize);
 		VAO.unbind();
 		return vao;
 	}

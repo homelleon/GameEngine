@@ -14,7 +14,6 @@ import shader.gpgpu.HeightMapShader;
 public class HeightMapRenderer {
 	
 	private HeightMapShader shader;
-	private VAO vao;
 	private Texture2D heightMap;
 	private TBO positionMap;
 	private int size;
@@ -22,7 +21,6 @@ public class HeightMapRenderer {
 	
 	public HeightMapRenderer(int size, VAO vao) {
 		this.size = size;
-		this.vao = vao;		
 		
 		heightMap = Texture2D.create(size, size, 1, false);
 		heightMap.bind();

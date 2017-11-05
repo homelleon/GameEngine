@@ -83,10 +83,10 @@ public class MainRenderer implements IMainRenderer {
 		entityRendererManager.addPair(decorEntityRenderer, decorEntities);
 		this.terrainRenderer = new TerrainRenderer(projectionMatrix);
 		// height and normal map rendering
-		this.heightRenderer = new HeightMapRenderer(128, scene.getTerrains().getAll().iterator().next().getModel().getVAO());
+		this.heightRenderer = new HeightMapRenderer(512, scene.getTerrains().getAll().iterator().next().getModel().getVAO());
 		heightRenderer.render();
 		normalMapRenderer = new NormalMapRenderer(heightRenderer.getHeightMap().getWidth());
-		normalMapRenderer.setStrength(4);
+		normalMapRenderer.setStrength(10);
 		normalMapRenderer.setHeightMap(heightRenderer.getHeightMap());
 		normalMapRenderer.render();
 		// setting height and normal map

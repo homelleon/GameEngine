@@ -57,7 +57,6 @@ public class DecorEntityShader extends ShaderProgram {
 	public static final String UNIFORM_SPECULAR_MAP = "specularMap";
 	public static final String UNIFORM_SHADOW_MAP = "shadowMap";		
 	//light		
-	public static final String UNIFORM_LIGHT_COUNT = "lightCount";
 	public static final String UNIFORM_LIGHT_POSITION = "lightPosition";
 	public static final String UNIFORM_LIGHT_COLOR = "lightColor";
 	public static final String UNIFORM_ATTENUATION = "attenuation";
@@ -81,14 +80,15 @@ public class DecorEntityShader extends ShaderProgram {
 	@Override
 	protected void loadUniformLocations() {
 		//matrix
+//		super.addUniform(UNIFORM_CAMERA_POSITION);
 		super.addUniform(UNIFORM_TRANSFORMATION_MATRIX);
 		super.addUniform(UNIFORM_PROJECTION_MATRIX);
 		super.addUniform(UNIFORM_VIEW_MATRIX);
-		super.addUniform(UNIFORM_CAMERA_POSITION);
+
 		//shine variables
 		super.addUniform(UNIFORM_SHINE_DAMPER);
 		super.addUniform(UNIFORM_REFLECTIVITY);
-		super.addUniform(UNIFORM_REFLECTIVE_FACTOR);
+//		super.addUniform(UNIFORM_REFLECTIVE_FACTOR);
 		//boolean
 		super.addUniform(UNIFORM_USES_FAKE_LIGHTING);
 		super.addUniform(UNIFORM_USES_SPECULAR_MAP);
@@ -111,8 +111,7 @@ public class DecorEntityShader extends ShaderProgram {
 		super.addUniform(UNIFORM_DIFFUSE_MAP);
 		super.addUniform(UNIFORM_SPECULAR_MAP);
 		super.addUniform(UNIFORM_SHADOW_MAP);		
-		//light		
-		super.addUniform(UNIFORM_LIGHT_COUNT);		
+		//light			
 		for (int i = 0; i < EngineSettings.MAX_LIGHTS; i++) {
 			super.addUniform(UNIFORM_LIGHT_POSITION + "[" + i + "]");
 			super.addUniform(UNIFORM_LIGHT_COLOR + "[" + i + "]");
@@ -133,7 +132,7 @@ public class DecorEntityShader extends ShaderProgram {
 	public void loadCamera(ICamera camera) {
 		Matrix4f viewMatrix = Maths.createViewMatrix(camera);
 		super.loadMatrix(UNIFORM_VIEW_MATRIX, viewMatrix);
-		super.load3DVector(UNIFORM_CAMERA_POSITION, camera.getPosition());
+//		super.load3DVector(UNIFORM_CAMERA_POSITION, camera.getPosition());
 	}
 
 	public void loadViewMatrix(ICamera camera) {
@@ -190,7 +189,8 @@ public class DecorEntityShader extends ShaderProgram {
 	}
 
 	public void loadReflectiveFactor(float index) {
-		super.loadFloat(UNIFORM_REFLECTIVE_FACTOR, index);
+		// TODO
+//		super.loadFloat(UNIFORM_REFLECTIVE_FACTOR, index);
 	}
 
 	public void loadFogDensity(float density) {
@@ -198,7 +198,6 @@ public class DecorEntityShader extends ShaderProgram {
 	}
 
 	public void loadLights(Collection<ILight> lights) {
-		super.loadInt(UNIFORM_LIGHT_COUNT, EngineSettings.MAX_LIGHTS);
 		Iterator<ILight> iterator = lights.iterator();
 		for (int i = 0; i < EngineSettings.MAX_LIGHTS; i++) {
 			if (iterator.hasNext()) {

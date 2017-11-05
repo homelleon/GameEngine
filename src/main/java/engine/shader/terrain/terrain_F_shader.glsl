@@ -4,8 +4,6 @@
 #define LIGHT_MAX 10 // max light source count
 
 /*===== in ======*/
-in vec3 fs_normal;
-in vec3 fs_tangent;
 in vec2 fs_textureCoords;
 in vec3 fs_toLightVector[LIGHT_MAX];
 in vec3 fs_toCameraVector;
@@ -70,17 +68,7 @@ void main(void) {
 
    vec4 totalColour = backgroundTextureColour + rTextureColour + gTextureColour + bTextureColour;
 
-   // normal vector calculations
-   vec3 normal_TS = normalize(2.0 * texture(normalMap, fs_textureCoords).rgb - vec3(1.0));
-   vec3 bitangent = cross(normal_TS, fs_tangent);
-
-   mat3 normalMatrix = mat3(
-		   	   fs_tangent.x, bitangent.x, normal_TS.x,
-			   fs_tangent.y, bitangent.y, normal_TS.y,
-			   fs_tangent.z, bitangent.z, normal_TS.z
-		   );
-
-   vec3 unitNormal = normalize(normalMatrix * fs_normal);
+   vec3 unitNormal =  normalize(2.0 * texture(normalMap, fs_textureCoords).rgb + vec3(1.0));
    vec3 unitVectorToCamera = normalize(fs_toCameraVector);
    
    vec3 totalDiffuse = vec3(0.0);

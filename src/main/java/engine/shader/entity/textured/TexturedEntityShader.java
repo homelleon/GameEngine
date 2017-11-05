@@ -40,7 +40,7 @@ public class TexturedEntityShader extends ShaderProgram {
 	//boolean
 	public static final String UNIFORM_USES_FAKE_LIGHTING = "usesFakeLighting";
 	public static final String UNIFORM_USES_SPECULAR_MAP = "usesSpecularMap";
-	public static final String UNIFORM_USES_ALPHA_MAP = "usesAlpaMap";
+	public static final String UNIFORM_USES_ALPHA_MAP = "usesAlphaMap";
 	public static final String UNIFORM_IS_CHOSEN = "isChosen";
 	//shine variables
 	public static final String UNIFORM_SHINE_DAMPER = "shineDamper";
