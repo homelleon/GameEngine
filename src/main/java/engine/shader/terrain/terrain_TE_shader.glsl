@@ -5,7 +5,6 @@ layout (quads, equal_spacing, cw) in;
 
 /*===== in ======*/
 in vec2 te_textureCoords[];
-in vec3 te_surfaceNormal[];
 in vec3 te_toLightVector[];
 in vec3 te_toCameraVector[];
 in float te_visibility[];
@@ -14,7 +13,6 @@ in float te_clipDistance[];
 
 /*===== out =====*/
 out vec2 gs_textureCoords;
-out vec3 gs_surfaceNormal;
 out vec3 gs_toLightVector;
 out vec3 gs_toCameraVector;
 out float gs_visibility;

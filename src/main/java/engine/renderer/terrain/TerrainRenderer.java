@@ -91,7 +91,7 @@ public class TerrainRenderer {
 	private void prepareTerrain(ITerrain terrain) {
 		TerrainQuadTree terrainTree = (TerrainQuadTree) terrain.getQuadTree();
 		VAO vao = terrainTree.getVao();
-		vao.bind(0, 1, 2);
+		vao.bind(0, 1);
 		bindTexture(terrain);
 		shader.loadShineVariables(1, 0);
 		shader.loadWorldMatrix(terrainTree.getWorldMatrix());
@@ -110,13 +110,11 @@ public class TerrainRenderer {
 	}
 
 	private void unbindTexture() {
-		VAO.unbind(0, 1, 2);
+		VAO.unbind(0, 1);
 		Texture2D.unbind();
 	}
 
 	private void loadModelMatrix(ITerrain terrain) {
-//		Matrix4f transformationMatrix = Maths
-//				.createTransformationMatrix(new Vector3f(terrain.getX(), 0, terrain.getZ()), 0, 0, 0, 1);
 		Matrix4f transformationMatrix = Maths
 				.createTransformationMatrix(new Vector3f(EngineSettings.SCALE_XZ, EngineSettings.SCALE_Y, EngineSettings.SCALE_XZ), 0, 0, 0, 1);
 		shader.loadTranformationMatrix(transformationMatrix);

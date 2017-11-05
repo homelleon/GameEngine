@@ -5,7 +5,6 @@ layout (vertices = 16) out;
 
 /*===== in ======*/
 in vec2 tc_textureCoords[];
-in vec3 tc_surfaceNormal[];
 in vec3 tc_toLightVector[];
 in vec3 tc_toCameraVector[];
 in float tc_visibility[];
@@ -14,7 +13,6 @@ in float tc_clipDistance[];
 
 /*===== out =====*/
 out vec2 te_textureCoords[];
-out vec3 te_surfaceNormal[];
 out vec3 te_toLightVector[];
 out vec3 te_toCameraVector[];
 out float te_visibility[];
@@ -66,7 +64,6 @@ void main() {
 	}
 
 	// simply pass parameters
-	te_surfaceNormal[gl_InvocationID] = tc_surfaceNormal[gl_InvocationID];
 	te_toLightVector[gl_InvocationID] = tc_toLightVector[gl_InvocationID];
 	te_toCameraVector[gl_InvocationID] = tc_toCameraVector[gl_InvocationID];
 	te_textureCoords[gl_InvocationID] = tc_textureCoords[gl_InvocationID];

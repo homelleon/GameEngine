@@ -18,12 +18,10 @@ out float tc_clipDistance;
 
 /*== uniforms ==*/
 uniform int lightCount;
-uniform mat4 projectionMatrix;
 uniform mat4 viewMatrix;
 uniform vec3 lightPosition[LIGHT_MAX];
 
 uniform sampler2D heightMap;
-uniform sampler2D normalMap;
 
 uniform mat4 toShadowMapSpace;
 uniform float shadowDistance;

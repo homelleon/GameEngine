@@ -26,7 +26,6 @@ public class TerrainShader extends ShaderProgram {
 	private static final String ATTRIBUTE_OUT_BRIGHT_COLOR = "out_BrightColor";
 	private static final String ATTRIBUTE_POSITION = "in_position";
 	private static final String ATTRIBUTE_TEXTURE_COORDINATES = "textureCoordinates";
-	private static final String ATTRIBUTE_NORMAL = "normal";
 	//----uniforms
 	//matrix
 	private static final String UNIFORM_TRANSFORMATION_MATRIX = "transformationMatrix";
