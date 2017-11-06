@@ -7,7 +7,11 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
+import org.lwjgl.opengl.GL31;
 import org.lwjgl.opengl.GL40;
+import org.lwjgl.opengl.GL43;
+
+import object.texture.Texture2D;
 
 public class VAO {
 
@@ -71,6 +75,32 @@ public class VAO {
 		dataVbos.add(dataVbo);
 	}
 	
+	public void createSSBOAttribute(int attribute, int attrSize, float[] data) {
+		VBO dataVBO = VBO.create(GL43.GL_SHADER_STORAGE_BUFFER);
+		dataVBO.bind();
+		dataVBO.storeData(data);
+		dataVBO.bindBase(0);		
+		//GL20.glVertexAttribPointer(attribute, attrSize, GL11.GL_FLOAT, false, attrSize * BYTES_PER_FLOAT, 0);
+		dataVBO.unbind();
+		dataVbos.add(dataVBO);
+	}
+	
+	public void createTBOAttribute(int attribute, int attrSize, float[] data) {
+		VBO dataVBO = VBO.create(GL31.GL_TEXTURE_BUFFER);
+		dataVBO.bind();
+		dataVBO.storeData(data);
+		dataVBO.unbind();
+		dataVbos.add(dataVBO);
+	}
+	
+	public void createDispatchAttribute(int attribute, int attrSize, float[] data) {
+		VBO dataVBO = VBO.create(GL43.GL_DISPATCH_INDIRECT_BUFFER);
+		dataVBO.bind();
+		dataVBO.storeData(data);
+		dataVBO.unbind();
+		dataVbos.add(dataVBO);
+	}
+	
 
 	public void createIntAttribute(int attribute, int attrSize, int[] data) {
 		VBO dataVbo = VBO.create(GL15.GL_ARRAY_BUFFER);
@@ -79,6 +109,10 @@ public class VAO {
 		GL30.glVertexAttribIPointer(attribute, attrSize, GL11.GL_INT, attrSize * BYTES_PER_INT, 0);
 		dataVbo.unbind();
 		dataVbos.add(dataVbo);
+	}
+	
+	public List<VBO> getVBOs() {
+		return this.dataVbos;
 	}
 
 	public void delete() {

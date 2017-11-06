@@ -114,7 +114,7 @@ public class SceneManager implements ISceneManager {
 				scene.getAudioSources().getMaster());
 		ambientSource.setLooping(true);
 		ambientSource.setVolume(0.3f);
-		ambientSource.play();
+		// ambientSource.play();
 		ambientSource.setPosition(new Vector3f(400, 50, 400));
 
 		/*--------------WATER----------------*/
@@ -138,7 +138,7 @@ public class SceneManager implements ISceneManager {
 			.forEach(entity -> scene.getFrustumEntities().addEntityInNodes(entity));
 		scene.setCamera(new TargetCamera(cameraName, player1));
 		scene.setSun(new Light("Sun", 
-				new Vector3f(-1000000, 2000000, -1000000), 
+				new Vector3f(-1000000, 5000000, -1000000), 
 				new Vector3f(1.3f, 1.3f, 1.3f)));
 		scene.getLights().add(scene.getSun());
 		scene.getLights().add(new Light("Light1", new Vector3f(200, 2, 200), new Vector3f(10, 0, 0),

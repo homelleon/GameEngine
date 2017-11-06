@@ -164,11 +164,11 @@ public abstract class ShaderProgram {
 	protected void addUniform(String name) {		
 		int uniformLocation = this.getUniformLocation(name);
 		
-//		if (uniformLocation == 0xFFFFFFFF) {
-//			System.err.println(this.getClass().getName() + " Error: Could not find uniform: " + name);
-//			new Exception().printStackTrace();
-//			System.exit(1);
-//		}
+		if (uniformLocation == 0xFFFFFFFF) {
+			System.err.println(this.getClass().getName() + " Error: Could not find uniform: " + name);
+			new Exception().printStackTrace();
+			System.exit(1);
+		}
 		
 		this.unfiroms.put(name, uniformLocation);
 	}

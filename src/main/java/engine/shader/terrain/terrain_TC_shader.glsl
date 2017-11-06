@@ -3,30 +3,29 @@
 
 layout (vertices = 16) out;
 
+/*===== in ======*/
 in vec2 tc_textureCoords[];
-in vec3 tc_surfaceNormal[];
-in vec3 tc_toLightVector[];
-in vec3 tc_toCameraVector[];
 in float tc_visibility[];
 in vec4 tc_shadowCoords[];
 
+/*===== out =====*/
 out vec2 te_textureCoords[];
-out vec3 te_surfaceNormal[];
-out vec3 te_toLightVector[];
-out vec3 te_toCameraVector[];
 out float te_visibility[];
 out vec4 te_shadowCoords[];
 
+/*== constants =*/
 const int AB = 2;
 const int BC = 3;
 const int CD = 0;
 const int DA = 1;
 
+/*== uniforms ===*/
 uniform int tessellationFactor;
 uniform float tessellationSlope;
 uniform float tessellationShift;
 uniform vec3 cameraPosition;
 
+/*-------- functions -----------*/
 float LodFactor(float dist) {
 
 	float tessellationLevel = max(0.0, tessellationFactor/pow(dist, tessellationSlope) + tessellationShift);
@@ -34,13 +33,14 @@ float LodFactor(float dist) {
 	return tessellationLevel;
 }
 
+/*------------- main ---------------*/
 void main() {
 	if(gl_InvocationID == 0) {
 
-		vec3 abMid = vec3(gl_in[0].gl_Position + gl_in[3].gl_Position)/2.0;
-		vec3 bcMid = vec3(gl_in[3].gl_Position + gl_in[15].gl_Position)/2.0;
-		vec3 cdMid = vec3(gl_in[15].gl_Position + gl_in[12].gl_Position)/2.0;
-		vec3 daMid = vec3(gl_in[12].gl_Position + gl_in[0].gl_Position)/2.0;
+		vec3 abMid = vec3(gl_in[0].gl_Position + gl_in[3].gl_Position) / 2.0;
+		vec3 bcMid = vec3(gl_in[3].gl_Position + gl_in[15].gl_Position) / 2.0;
+		vec3 cdMid = vec3(gl_in[15].gl_Position + gl_in[12].gl_Position) / 2.0;
+		vec3 daMid = vec3(gl_in[12].gl_Position + gl_in[0].gl_Position) / 2.0;
 
 		float distanceAB = distance(abMid, cameraPosition);
 		float distanceBC = distance(bcMid, cameraPosition);
@@ -57,9 +57,7 @@ void main() {
 
 	}
 
-	te_surfaceNormal[gl_InvocationID] = tc_surfaceNormal[gl_InvocationID];
-	te_toLightVector[gl_InvocationID] = tc_toLightVector[gl_InvocationID];
-	te_toCameraVector[gl_InvocationID] = tc_toCameraVector[gl_InvocationID];
+	// simply pass parameters
 	te_textureCoords[gl_InvocationID] = tc_textureCoords[gl_InvocationID];
 	te_visibility[gl_InvocationID] = tc_visibility[gl_InvocationID];
 	te_shadowCoords[gl_InvocationID] = tc_shadowCoords[gl_InvocationID];

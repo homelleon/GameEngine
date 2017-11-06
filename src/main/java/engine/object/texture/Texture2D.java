@@ -6,10 +6,12 @@ import static org.lwjgl.opengl.GL11.glDeleteTextures;
 import static org.lwjgl.opengl.GL11.glGenTextures;
 
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL13;
+import org.lwjgl.opengl.GL14;
+import org.lwjgl.opengl.GL31;
 import org.newdawn.slick.opengl.Texture;
 
-import org.lwjgl.opengl.GL13;
-
+import primitive.buffer.Loader;
 import primitive.buffer.TextureBufferLoader;
 
 public class Texture2D {
@@ -23,7 +25,7 @@ public class Texture2D {
 	
 	public static Texture2D create(int width, int height, int numberOfRows, boolean hasTransparency) {
 		Texture2D texture = new Texture2D();
-		texture.id = GL11.glGenTextures();
+		texture.generate();
 		texture.width = width;
 		texture.height = height;
 		texture.numberOfRows = numberOfRows;
@@ -46,6 +48,15 @@ public class Texture2D {
 		glBindTexture(GL_TEXTURE_2D, id);
 	}
 	
+	public void bindAsBuffer() {
+		glBindTexture(GL31.GL_TEXTURE_BUFFER, id);
+	}
+	
+	public void bindAsBuffer(int location) {
+		active(location);
+		glBindTexture(GL31.GL_TEXTURE_BUFFER, id);
+	}
+	
 	public void bind(int location) {
 		active(location);
 		glBindTexture(GL_TEXTURE_2D, id);
@@ -53,6 +64,7 @@ public class Texture2D {
 	
 	public void generate() {
 		id = glGenTextures();
+		Loader.getInstance().getTextureLoader().addTexture(this);
 	}
 	
 	public void delete() {
@@ -63,19 +75,24 @@ public class Texture2D {
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 	
-	public static void noFilter() {
+	public void noFilter() {
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
 	}
 	
-	public static void bilinearFilter() {
+	public void bilinearFilter() {
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
 	}
 	
-	public static void repeatWrap() {
+	public void repeatWrap() {
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
+	}
+	
+	public void mirrorRepeatWrap() {
+		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL14.GL_MIRRORED_REPEAT);
+		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL14.GL_MIRRORED_REPEAT);
 	}
 	
 	public int getId() {
@@ -110,7 +127,7 @@ public class Texture2D {
 		this.hasTransparency = hasTransparency;
 	}
 	
-	private void active(int location) {
+	public static void active(int location) {
 		if(location >= 0 && location < 31) {
 			GL13.glActiveTexture(GL13.GL_TEXTURE0 + location);
 		} else {

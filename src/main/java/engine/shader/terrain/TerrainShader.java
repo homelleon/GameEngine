@@ -25,11 +25,8 @@ public class TerrainShader extends ShaderProgram {
 	private static final String ATTRIBUTE_OUT_COLOR = "out_Color";
 	private static final String ATTRIBUTE_OUT_BRIGHT_COLOR = "out_BrightColor";
 	private static final String ATTRIBUTE_POSITION = "in_position";
-	private static final String ATTRIBUTE_TEXTURE_COORDINATES = "textureCoordinates";
-	private static final String ATTRIBUTE_NORMAL = "normal";
 	//----uniforms
 	//matrix
-	private static final String UNIFORM_TRANSFORMATION_MATRIX = "transformationMatrix";
 	private static final String UNIFORM_PROJECTION_MATRIX = "projectionMatrix";
 	private static final String UNIFORM_VIEW_MATRIX = "viewMatrix";	
 	private static final String UNIFORM_LOCAL_MATRIX = "localMatrix";
@@ -90,14 +87,11 @@ public class TerrainShader extends ShaderProgram {
 		this.bindFragOutput(0, ATTRIBUTE_OUT_COLOR);
 		this.bindFragOutput(1, ATTRIBUTE_OUT_BRIGHT_COLOR);
 		this.bindAttribute(0, ATTRIBUTE_POSITION);
-		this.bindAttribute(1, ATTRIBUTE_TEXTURE_COORDINATES);
-		this.bindAttribute(2, ATTRIBUTE_NORMAL);
 	}
 
 	@Override
 	protected void loadUniformLocations() {
 		//matrix
-		this.addUniform(UNIFORM_TRANSFORMATION_MATRIX);
 		this.addUniform(UNIFORM_PROJECTION_MATRIX);
 		this.addUniform(UNIFORM_VIEW_MATRIX);
 		this.addUniform(UNIFORM_LOCAL_MATRIX);
@@ -139,7 +133,6 @@ public class TerrainShader extends ShaderProgram {
 		this.addUniform(UNIFORM_SHADOW_TRANSITION_DISTANCE);
 		this.addUniform(UNIFORM_SHADOW_PCF_COUNT);
 		//light
-		this.addUniform(UNIFORM_LIGHT_COUNT);
 		for (int i = 0; i < EngineSettings.MAX_LIGHTS; i++) {
 			this.addUniform(UNIFORM_LIGHT_POSITION + "[" + i + "]");
 			this.addUniform(UNIFORM_LIGHT_COLOR + "[" + i + "]");
@@ -164,10 +157,6 @@ public class TerrainShader extends ShaderProgram {
 
 	public void loadViewMatrix(Matrix4f viewMatrix) {
 		this.loadMatrix(UNIFORM_VIEW_MATRIX, viewMatrix);
-	}
-
-	public void loadTranformationMatrix(Matrix4f matrix) {
-		this.loadMatrix(UNIFORM_TRANSFORMATION_MATRIX, matrix);
 	}
 	
 	public void loadWorldMatrix(Matrix4f worldMatrix) {
@@ -234,7 +223,6 @@ public class TerrainShader extends ShaderProgram {
 	}
 
 	public void loadLights(Collection<ILight> lights) {
-		this.loadInt(UNIFORM_LIGHT_COUNT, EngineSettings.MAX_LIGHTS);
 		Iterator<ILight> iterator = lights.iterator();
 		for (int i = 0; i < EngineSettings.MAX_LIGHTS; i++) {
 			if (iterator.hasNext()) {

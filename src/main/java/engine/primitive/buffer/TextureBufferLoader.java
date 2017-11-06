@@ -212,6 +212,10 @@ public class TextureBufferLoader {
 		return new TextureData(buffer, width, height);
 	}
 	
+	public void addTexture(Texture2D texture) {
+		textures2D.put(texture.getName(), texture);
+	}
+	
 	public void clean() {
 		textures2D.values().forEach(Texture2D::delete);
 		textures3D.values().forEach(texture -> GL11.glDeleteTextures(texture));

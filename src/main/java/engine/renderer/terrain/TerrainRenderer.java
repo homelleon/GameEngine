@@ -17,23 +17,21 @@ import primitive.buffer.VAO;
 import shader.terrain.TerrainShader;
 import tool.math.Maths;
 import tool.math.Matrix4f;
+import tool.math.vector.Vector2f;
 import tool.math.vector.Vector3f;
 
 public class TerrainRenderer {
 
 	private TerrainShader shader;
-	private Texture2D heightMap;
-	private Texture2D normalMap;
 
 	public TerrainRenderer(Matrix4f projectionMatrix) {
-		this.heightMap = new Texture2D("heightMap", EngineSettings.TEXTURE_HEIGHT_MAP_PATH + "heightMap.png");
 		this.shader = new TerrainShader();
 		shader.start();
+		shader.connectTextureUnits();
 		shader.loadProjectionMatrix(projectionMatrix);
 		shader.loadScale(EngineSettings.SCALE_Y);
 		shader.loadTessellationVariables(EngineSettings.TESSELLATION_FACTOR, EngineSettings.TESSELLATION_SLOPE, EngineSettings.TESSELLATION_SHIFT);
 		shader.loadLodMorphAreaArray(EngineSettings.lod_morph_areas);
-		shader.connectTextureUnits();
 		shader.stop();
 	}
 	
@@ -54,7 +52,6 @@ public class TerrainRenderer {
 				terrain.updateQuadTree(camera);
 			}
 			prepareTerrain(terrain);
-			loadModelMatrix(terrain);
 			for(Node node : terrain.getQuadTree().getChildren()) {
 				((TerrainNode) node).render(shader, terrain.getQuadTree().getVao());
 			}
@@ -76,7 +73,6 @@ public class TerrainRenderer {
 				EngineSettings.SHADOW_TRANSITION_DISTANCE, EngineSettings.SHADOW_PCF);
 		for (ITerrain terrain : terrains) {
 			prepareTerrain(terrain);
-			loadModelMatrix(terrain);
 			for(Node node : terrain.getQuadTree().getChildren()) {
 				((TerrainNode) node).render(shader, terrain.getQuadTree().getVao());
 			}
@@ -94,43 +90,27 @@ public class TerrainRenderer {
 	private void prepareTerrain(ITerrain terrain) {
 		TerrainQuadTree terrainTree = (TerrainQuadTree) terrain.getQuadTree();
 		VAO vao = terrainTree.getVao();
-		vao.bind(0, 1, 2);
+		vao.bind(0);
 		bindTexture(terrain);
 		shader.loadShineVariables(1, 0);
 		shader.loadWorldMatrix(terrainTree.getWorldMatrix());
-		Texture2D.repeatWrap();
 	}
 
 	private void bindTexture(ITerrain terrain) {
 		TerrainTexturePack texturePack = terrain.getTexturePack();
+		texturePack.getBackgroundTexture().bilinearFilter();
 		texturePack.getBackgroundTexture().bind(0);
 		texturePack.getRTexture().bind(1);
 		texturePack.getGTexture().bind(2);
 		texturePack.getBTexture().bind(3);
 		terrain.getBlendMap().bind(4);
-		this.heightMap.bind(7);
-		this.normalMap.bind(8);
+		terrain.getHeightMap().bind(7);
+		terrain.getNormalMap().bind(8);
 	}
 
 	private void unbindTexture() {
-		VAO.unbind(0, 1, 2);
+		VAO.unbind(0);
 		Texture2D.unbind();
-	}
-
-	private void loadModelMatrix(ITerrain terrain) {
-//		Matrix4f transformationMatrix = Maths
-//				.createTransformationMatrix(new Vector3f(terrain.getX(), 0, terrain.getZ()), 0, 0, 0, 1);
-		Matrix4f transformationMatrix = Maths
-				.createTransformationMatrix(new Vector3f(EngineSettings.SCALE_XZ, EngineSettings.SCALE_Y, EngineSettings.SCALE_XZ), 0, 0, 0, 1);
-		shader.loadTranformationMatrix(transformationMatrix);
-	}
-	
-	public Texture2D getHeightMap() {
-		return this.heightMap;
-	}
-	
-	public void setNormalMap(Texture2D normalMap) {
-		this.normalMap = normalMap;
 	}
 
 }

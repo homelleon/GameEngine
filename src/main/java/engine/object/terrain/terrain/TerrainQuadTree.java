@@ -6,7 +6,6 @@ import core.settings.EngineSettings;
 import manager.octree.Node;
 import object.camera.ICamera;
 import primitive.buffer.Loader;
-import primitive.buffer.PatchVAO;
 import primitive.buffer.VAO;
 import tool.EngineUtils;
 import tool.math.Matrix4f;
@@ -21,9 +20,7 @@ public class TerrainQuadTree extends Node {
 	
 	public TerrainQuadTree(ICamera camera) {
 		float[] positions = this.generateVertexData();
-		float[] coordinates = this.generateVertexData2D();
-		float[] normals = this.generateNormalData();
-		this.vao = Loader.getInstance().getVertexLoader().loadPatchToVAO(positions, coordinates, normals, 16);
+		this.vao = Loader.getInstance().getVertexLoader().loadPatchToVAO(positions, 16);
 		
 		for(int i = 0; i < rootNodes; i++) {
 			for(int j = 0; j < rootNodes; j++) {
@@ -39,107 +36,6 @@ public class TerrainQuadTree extends Node {
 		for(Node node: getChildren()) {
 			((TerrainNode) node).updateQuadTree(camera);
 		}
-	}
-	
-	private float[] generateNormalData() {
-	Vector3f[] normals = new Vector3f[16];
-		
-		int index = 0;
-		
-		normals[index++] = new Vector3f(1, 1, 1);
-		normals[index++] = new Vector3f(1, 1, 1);
-		normals[index++] = new Vector3f(1, 1, 1);
-		normals[index++] = new Vector3f(1, 1, 1);
-		
-		normals[index++] = new Vector3f(1, 1, 1);
-		normals[index++] = new Vector3f(1, 1, 1);
-		normals[index++] = new Vector3f(1, 1, 1);
-		normals[index++] = new Vector3f(1, 1, 1);
-		
-		normals[index++] = new Vector3f(1, 1, 1);
-		normals[index++] = new Vector3f(1, 1, 1);
-		normals[index++] = new Vector3f(1, 1, 1);
-		normals[index++] = new Vector3f(1, 1, 1);
-		
-		normals[index++] = new Vector3f(1, 1, 1);
-		normals[index++] = new Vector3f(1, 1, 1);
-		normals[index++] = new Vector3f(1, 1, 1);
-		normals[index++] = new Vector3f(1, 1, 1);
-		
-		Object[] normArray = Stream.of(normals)
-				.flatMap(vertex -> Stream.of(vertex.x, vertex.y))
-				.toArray();
-		
-		float[] norms = EngineUtils.toFloatArray(normArray);
-		
-		return norms;
-	}
-	
-	private float[] generateCoordinateData() {
-		Vector2f[] coordinates = new Vector2f[16];
-		
-		int index = 0;
-		
-		coordinates[index++] = new Vector2f(0,0);
-		coordinates[index++] = new Vector2f(1,1);
-		coordinates[index++] = new Vector2f(0,0);
-		coordinates[index++] = new Vector2f(1,1);
-		
-		coordinates[index++] = new Vector2f(0,0);
-		coordinates[index++] = new Vector2f(1,1);
-		coordinates[index++] = new Vector2f(0,0);
-		coordinates[index++] = new Vector2f(1,1);
-		
-		coordinates[index++] = new Vector2f(0,0);
-		coordinates[index++] = new Vector2f(1,1);
-		coordinates[index++] = new Vector2f(0,0);
-		coordinates[index++] = new Vector2f(1,1);
-		
-		coordinates[index++] = new Vector2f(0,0);
-		coordinates[index++] = new Vector2f(1,1);
-		coordinates[index++] = new Vector2f(0,0);
-		coordinates[index++] = new Vector2f(1,1);
-		
-		Object[] coordArray = Stream.of(coordinates)
-				.flatMap(vertex -> Stream.of(vertex.x, vertex.y))
-				.toArray();
-		
-		float[] coords = EngineUtils.toFloatArray(coordArray);
-		
-		return coords;
-	}
-	
-	private float[] generateVertexData2D() {
-		Vector2f[] vertices = new Vector2f[16];
-		
-		int index = 0;
-		
-		vertices[index++] = new Vector2f(0, 0);
-		vertices[index++] = new Vector2f(0.333f, 0);
-		vertices[index++] = new Vector2f(0.666f, 0);
-		vertices[index++] = new Vector2f(1, 0);
-		
-		vertices[index++] = new Vector2f(0, 0.333f);
-		vertices[index++] = new Vector2f(0.333f, 0.333f);
-		vertices[index++] = new Vector2f(0.666f, 0.333f);
-		vertices[index++] = new Vector2f(1, 0.333f);
-		
-		vertices[index++] = new Vector2f(0, 0.666f);
-		vertices[index++] = new Vector2f(0.333f, 0.666f);
-		vertices[index++] = new Vector2f(0.666f, 0.666f);
-		vertices[index++] = new Vector2f(1, 0.666f);
-		
-		vertices[index++] = new Vector2f(0, 1);
-		vertices[index++] = new Vector2f(0.333f, 1);
-		vertices[index++] = new Vector2f(0.666f, 1);
-		vertices[index++] = new Vector2f(1, 1);
-		
-		Object[] positionArray = Stream.of(vertices)
-				.flatMap(vertex -> Stream.of(vertex.x, vertex.y))
-				.toArray();
-		
-		float[] positions = EngineUtils.toFloatArray(positionArray);
-		return positions;
 	}
 
 	private float[] generateVertexData() {

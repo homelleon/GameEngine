@@ -1,26 +1,26 @@
 //COMPUTE SHADER - heightMap
 #version 430 core
+#define TERRAIN_SIZE 128
+#extension GL_EXT_gpu_shader4 : enable
 
-#define VERTEX_COUNT 128
-
-layout (local_size_x = VERTEX_COUNT, local_size_y = VERTEX_COUNT, local_size_z = VERTEX_COUNT) in;
-layout (std140, binding = 0) uniform vec3 position[VERTEX_COUNT];
+layout (local_size_x = 1, local_size_y = 1) in;
 
 layout (binding = 0, rgba32f) uniform writeonly image2D heightMap;
 
+uniform samplerBuffer positionMap;
 uniform int size;
+uniform float scale;
 
 void main(void) {
 
-	ivec2 x = ivec2(gl_GlobalInvocationID.xy);
+	ivec2 xy = ivec2(gl_GlobalInvocationID.x, gl_GlobalInvocationID.y);
 
-	vec4 pos = imageLoad()
-	vec2 texCoord = gl_GlobalInvocationID.xy / float(size);
+	int offset = int(gl_WorkGroupID.y * size + gl_WorkGroupID.x);
 
-	float texelSize = 1.0 / size;
+	float height = texelFetchBuffer(positionMap, offset).y;
 
-	vec4 Color.a = position
+	vec4 TextureColor = vec4(height, height, height, 1.0);
 
-	imageStore(heightMap, x, Color);
+	imageStore(heightMap, xy, TextureColor);
 
 }

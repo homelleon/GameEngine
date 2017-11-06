@@ -36,7 +36,7 @@ void main(void) {
 	toCameraVector = cameraPosition - worldPosition.xyz;
 	fromLightVector = worldPosition.xyz - lightPosition;
 	
-	float distance = length(positionRelativeToCam.xyz);
+	float distance = length(positionRelativeToCam.xyz * tiling);
    	visibility = exp(-pow((distance*fogDensity),fogGradient));
    	visibility = clamp(visibility,0.0,1.0);
  
