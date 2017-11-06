@@ -1,10 +1,13 @@
 package object.terrain.terrain;
 
+import core.settings.EngineSettings;
+import object.GameObject;
 import object.camera.FreeCamera;
+import object.camera.ICamera;
 import object.terrain.generator.HeightsGenerator;
-import object.texture.Texture2D;
-import object.texture.terrain.TerrainTexturePack;
+import object.texture.material.TerrainMaterial;
 import primitive.buffer.Loader;
+import primitive.buffer.VBO;
 import primitive.model.Mesh;
 import tool.math.Maths;
 import tool.math.vector.Vector2f;
@@ -16,95 +19,46 @@ import tool.math.vector.Vector3f;
  * @author homelleon
  * @see ITerrain
  */
-public class ProceduredTerrain extends ATerrain implements ITerrain {
+public class ProceduredTerrain extends GameObject implements ITerrain {
 
 	private float x;
 	private float z;
-	private Mesh model;
-	private TerrainTexturePack texturePack;
-	private Texture2D blendMap;
-	private Texture2D heightMap;
-	private Texture2D normalMap;
-	
-	private String heightMapName;
-	private boolean isProcedureGenerated = true;
+	private VBO vbo;
+	private TerrainMaterial material;
 	private boolean isVisible = true;
-	private float amplitude;
-	private int octaves;
-	private float roughness;
-	private HeightsGenerator generator;
 
 	private float[][] heights;
 
-	/**
-	 * Constructs random terrain plane from input parameters by terrain
-	 * procedure generator.
-	 * 
-	 * @param name
-	 *            {@link String} value of terrain name
-	 * @param gridX
-	 *            {@link integer} value of x-roordinate with step = SIZE
-	 * @param gridZ
-	 *            {@link integer} value of z-roordinate with step = SIZE
-	 * @param loader
-	 *            {@link Loader} object used to load textures and verticies
-	 * @param texturePack
-	 *            {@link TerrainTexturePack} pack of 4 textures
-	 * @param blendMap
-	 *            {@link TerrainTexture} texture to define intensity of blending
-	 *            affect on surface
-	 * @param amplitude
-	 *            {@link Float} value of maximum and minimum height for terrain
-	 *            generation
-	 * @param octaves
-	 *            {@link Integer} value of point to point changes intensity for
-	 *            terrain generator
-	 * @param roughness
-	 *            {@link Float} value of terrain edges roughness for terrain
-	 *            generator
-	 * @see #Terrain(String, int, int, Loader, TerrainTexturePack,
-	 *      TerrainTexture, String)
-	 */
-	public ProceduredTerrain(String name, int gridX, int gridZ, TerrainTexturePack texturePack,
-			Texture2D blendMap, float amplitude, int octaves, float roughness) {
+	public ProceduredTerrain(String name, int gridX, int gridZ, TerrainMaterial material, VBO vbo, float[][] heights) {
+		super(name);
 		super(name, new FreeCamera("FreeCamera", new Vector3f(0,0,0)));
-		this.texturePack = texturePack;
-		this.blendMap = blendMap;
+		this.vbo = vbo;
 		this.x = gridX * ITerrain.TERRAIN_SIZE;
 		this.z = gridZ * ITerrain.TERRAIN_SIZE;
-		this.amplitude = amplitude;
-		this.octaves = octaves;
-		this.roughness = roughness;
-		this.model = generateWithProcedure(amplitude, octaves, roughness);
-	}
-	
-	public ProceduredTerrain(String name, int seed, int gridX, int gridZ, TerrainTexturePack texturePack,
-			Texture2D blendMap, float amplitude, int octaves, float roughness) {
-		super(name, new FreeCamera("FreeCamera", new Vector3f(0,0,0)));
-		this.texturePack = texturePack;
-		this.blendMap = blendMap;
-		this.x = gridX * ITerrain.TERRAIN_SIZE;
-		this.z = gridZ * ITerrain.TERRAIN_SIZE;
-		this.amplitude = amplitude;
-		this.octaves = octaves;
-		this.roughness = roughness;
-		this.model = generateWithProcedure(amplitude, octaves, roughness, seed);
-	}
-	
-	public ProceduredTerrain(String name, int gridX, int gridZ, TerrainTexturePack texturePack,
-			Texture2D blendMap, float amplitude, int octaves, float roughness, float[][] heights, Mesh model) {
-		super(name, new FreeCamera("FreeCamera", new Vector3f(0,0,0)));
-		this.texturePack = texturePack;
-		this.blendMap = blendMap;
-		this.x = gridX * ITerrain.TERRAIN_SIZE;
-		this.z = gridZ * ITerrain.TERRAIN_SIZE;
-		this.amplitude = amplitude;
-		this.octaves = octaves;
-		this.roughness = roughness;
+		this.material = material;
 		this.heights = heights;
-		this.model = model;
+		EngineSettings.lod_morph_areas = new int[EngineSettings.LOD_RANGES.length];
+		for(int i = 0; i < EngineSettings.LOD_RANGES.length; i++) {
+			if(EngineSettings.LOD_RANGES[i] == 0) {
+				EngineSettings.lod_morph_areas[i] = 0;
+			} else { 
+				EngineSettings.lod_morph_areas[i] = EngineSettings.LOD_RANGES[i] - (int) ((EngineSettings.SCALE_XZ / TerrainQuadTree.getRootNodes()) / Math.pow(2, i + 1));
+			}
+		}
+		addChild(new TerrainQuadTree(new FreeCamera("FreeCamera", new Vector3f(0,0,0))));
+//		this.model = generateWithProcedure(amplitude, octaves, roughness);
 	}
-
+	
+	@Override
+	public void updateQuadTree(ICamera camera) {
+		((TerrainQuadTree) getChildren().get(0)).updateQuadTree(camera);
+	}
+	
+	@Override
+	public TerrainQuadTree getQuadTree() {
+		return (TerrainQuadTree) this.getChildren().get(0);
+	}
+	
 	@Override
 	public float getSize() {
 		return ITerrain.TERRAIN_SIZE;
@@ -131,8 +85,8 @@ public class ProceduredTerrain extends ATerrain implements ITerrain {
 	}
 
 	@Override
-	public Mesh getModel() {
-		return model;
+	public VBO getVbo() {
+		return vbo;
 	}
 
 	@Override
@@ -143,41 +97,6 @@ public class ProceduredTerrain extends ATerrain implements ITerrain {
 	@Override
 	public void setVisible(boolean isVisible) {
 		this.isVisible = isVisible;
-	}
-
-	@Override
-	public TerrainTexturePack getTexturePack() {
-		return texturePack;
-	}
-
-	@Override
-	public Texture2D getBlendMap() {
-		return blendMap;
-	}
-
-	@Override
-	public String getHeightMapName() {
-		return heightMapName;
-	}
-
-	@Override
-	public boolean getIsProcedureGenerated() {
-		return isProcedureGenerated;
-	}
-
-	@Override
-	public float getAmplitude() {
-		return amplitude;
-	}
-
-	@Override
-	public int getOctaves() {
-		return octaves;
-	}
-
-	@Override
-	public float getRoughness() {
-		return roughness;
 	}
 
 	@Override
@@ -206,18 +125,15 @@ public class ProceduredTerrain extends ATerrain implements ITerrain {
 	}
 	
 	@Override
-	public HeightsGenerator getGenerator() {
-		return this.generator;
+	public TerrainMaterial getMaterial() {
+		return material;
 	}
-	
 
 	@Override
 	public ITerrain clone(String name) {
 		int gridX = (int) (this.x / ITerrain.TERRAIN_SIZE);
 		int gridZ = (int) (this.z / ITerrain.TERRAIN_SIZE);
-		return new ProceduredTerrain(name, gridX, gridZ, 
-				this.texturePack,this.blendMap, this.amplitude, 
-				this.octaves, this.roughness, this.heights, this.model);
+		return new ProceduredTerrain(name, gridX, gridZ, this.material, this.vbo, this.heights);
 	}
 
 	private Mesh generateWithProcedure(float amp, int oct, float rough) {
@@ -320,26 +236,6 @@ public class ProceduredTerrain extends ATerrain implements ITerrain {
 		Vector3f normal = new Vector3f(heightL - heightR, 2f, heightD - heightU);
 		normal.normalize();
 		return normal;
-	}
-
-	@Override
-	public Texture2D getHeightMap() {
-		return this.heightMap;
-	}
-	
-	@Override
-	public void setHeightMap(Texture2D heightMap) {
-		this.heightMap = heightMap;
-	}
-
-	@Override
-	public Texture2D getNormalMap() {
-		return normalMap;
-	}
-
-	@Override
-	public void setNormalMap(Texture2D normalMap) {
-		this.normalMap = normalMap;		
 	}
 
 }

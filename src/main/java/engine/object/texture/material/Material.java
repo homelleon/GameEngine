@@ -3,8 +3,7 @@ package object.texture.material;
 import object.texture.Texture2D;
 import tool.math.vector.Vector3f;
 
-public class Material 
-{
+public class Material {
 
 	private Texture2D diffuseMap;
 	private Texture2D normalMap;
@@ -25,145 +24,117 @@ public class Material
 
 	private boolean useFakeLighting = false;
 
-	public Material(String name) 
-	{
+	public Material(String name) {
 		this.name = name;
 	}
 	
-	public Material(String name, Texture2D diffuseMap) 
-	{
+	public Material(String name, Texture2D diffuseMap) {
 		this.diffuseMap = diffuseMap;
 		this.name = name;
 	}
 
-	public String getName() 
-	{
+	public String getName() {
 		return name;
 	}
 	
 
-	public Texture2D getDiffuseMap() 
-	{
+	public Texture2D getDiffuseMap() {
 		return diffuseMap;
 	}
 
-	public void setDiffuseMap(Texture2D diffuseMap) 
-	{
+	public void setDiffuseMap(Texture2D diffuseMap)	{
 		this.diffuseMap = diffuseMap;
 	}
 
-	public Texture2D getDisplaceMap() 
-	{
+	public Texture2D getDisplaceMap() {
 		return displaceMap;
 	}
 
-	public void setDisplaceMap(Texture2D displaceMap) 
-	{
+	public void setDisplaceMap(Texture2D displaceMap) {
 		this.displaceMap = displaceMap;
 	}
 
-	public Texture2D getAmbientMap() 
-	{
+	public Texture2D getAmbientMap() {
 		return ambientMap;
 	}
 
-	public void setAmbientMap(Texture2D ambientMap) 
-	{
+	public void setAmbientMap(Texture2D ambientMap) {
 		this.ambientMap = ambientMap;
 	}	
 
-	public Texture2D getSpecularMap() 
-	{
+	public Texture2D getSpecularMap() {
 		return specularMap;
 	}
 	
-	public void setSpecularMap(Texture2D specularMap) 
-	{
+	public void setSpecularMap(Texture2D specularMap) {
 		this.specularMap = specularMap;
 	}
 
-	public Texture2D getAlphaMap() 
-	{
+	public Texture2D getAlphaMap() {
 		return alphaMap;
 	}
 
-	public void setAlphaMap(Texture2D alphaMap) 
-	{
+	public void setAlphaMap(Texture2D alphaMap) {
 		this.alphaMap = alphaMap;
 	}
 
-	public Texture2D getNormalMap() 
-	{
+	public Texture2D getNormalMap() {
 		return normalMap;
 	}
 
-	public void setNormalMap(Texture2D normalMap) 
-	{
+	public void setNormalMap(Texture2D normalMap) {
 		this.normalMap = normalMap;
 	}
 
-	public boolean isUseFakeLighting() 
-	{
+	public boolean isUseFakeLighting() {
 		return useFakeLighting;
 	}
 
-	public void setUseFakeLighting(boolean useFakeLighting) 
-	{
+	public void setUseFakeLighting(boolean useFakeLighting) {
 		this.useFakeLighting = useFakeLighting;
 	}
 
-	public float getRefractiveFactor() 
-	{
+	public float getRefractiveFactor() {
 		return refractiveFactor;
 	}
 
-	public void setRefractiveFactor(float refractiveFactor) 
-	{
+	public void setRefractiveFactor(float refractiveFactor) {
 		this.refractiveFactor = refractiveFactor;
 	}
 
-	public float getRefractiveIndex() 
-	{
+	public float getRefractiveIndex() {
 		return refractiveIndex;
 	}
 
-	public void setRefractiveIndex(float refractiveIndex) 
-	{
+	public void setRefractiveIndex(float refractiveIndex) {
 		this.refractiveIndex = refractiveIndex;
 	}
 
-	public float getReflectiveFactor() 
-	{
+	public float getReflectiveFactor() {
 		return reflectiveFactor;
 	}
 
-	public void setReflectiveFactor(float reflectiveFactor) 
-	{
+	public void setReflectiveFactor(float reflectiveFactor) {
 		this.reflectiveFactor = reflectiveFactor;
 	}
 
-	public float getShininess() 
-	{
+	public float getShininess() {
 		return shininess;
 	}
 
-	public void setShininess(float shininess) 
-	{
+	public void setShininess(float shininess) {
 		this.shininess = shininess;
 	}
 
-	public float getReflectivity() 
-	{
+	public float getReflectivity() {
 		return reflectivity;
 	}
 
-	public void setReflectivity(float reflectivity) 
-	{
+	public void setReflectivity(float reflectivity) {
 		this.reflectivity = reflectivity;
 	}
 	
-	public Material clone(String name) 
-	{
+	public Material clone(String name) {
 		Material texture = new Material(name, this.diffuseMap);
 		texture.setNormalMap(normalMap);
 		texture.setDisplaceMap(displaceMap);
@@ -180,19 +151,16 @@ public class Material
 		return texture;
 	}
 
-	public Vector3f getColor() 
-	{
+	public Vector3f getColor() {
 		return color;
 	}
 
-	public void setColor(Vector3f color) 
-	{
+	public void setColor(Vector3f color) {
 		this.color = color;
 	}
 	
 	@Override
-	public boolean equals(Object obj) 
-	{
+	public boolean equals(Object obj) {
 		if(obj.hashCode() != this.hashCode()) 
 		{
 			return false;
@@ -221,8 +189,7 @@ public class Material
 	}
 	
 	@Override
-	public int hashCode() 
-	{
+	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + diffuseMap.hashCode();
@@ -240,13 +207,11 @@ public class Material
 		return result;
 	}
 
-	public void setEmission(float emission) 
-	{
+	public void setEmission(float emission) {
 		this.emission = emission;
 	}
 	
-	public float getEmission() 
-	{
+	public float getEmission() {
 		return this.emission;
 	}
 
