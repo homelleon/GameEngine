@@ -19,36 +19,49 @@ public class TerrainMaterial {
 		return texturePack;
 	}
 
-	public void setTexturePack(TerrainTexturePack texturePack) {
+	public TerrainMaterial setTexturePack(TerrainTexturePack texturePack) {
 		this.texturePack = texturePack;
+		return this;
 	}
 
 	public Texture2D getHeightMap() {
 		return heightMap;
 	}
 
-	public void setHeightMap(Texture2D heightMap) {
+	public TerrainMaterial setHeightMap(Texture2D heightMap) {
 		this.heightMap = heightMap;
+		return this;
 	}
 
 	public Texture2D getNormalMap() {
 		return normalMap;
 	}
 
-	public void setNormalMap(Texture2D normalMap) {
+	public TerrainMaterial setNormalMap(Texture2D normalMap) {
 		this.normalMap = normalMap;
+		return this;
 	}
 
 	public Texture2D getBlendMap() {
 		return blendMap;
 	}
 
-	public void setBlendMap(Texture2D blendMap) {
+	public TerrainMaterial setBlendMap(Texture2D blendMap) {
 		this.blendMap = blendMap;
+		return this;
 	}
 
 	public String getName() {
 		return name;
-	}	
+	}
+	
+	public TerrainMaterial clone(String name) {
+		TerrainMaterial material = new TerrainMaterial(name);
+		material.setTexturePack(texturePack);
+		material.setHeightMap(heightMap);
+		material.setNormalMap(normalMap);
+		material.setBlendMap(blendMap);
+		return material;
+	}
 
 }

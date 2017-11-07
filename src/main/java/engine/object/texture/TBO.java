@@ -35,16 +35,16 @@ public class TBO {
 	 * @return {@link TBO} texture buffer object
 	 */
 	public static TBO create(String name, VBO vbo, int storageType) {
-		TBO texture = new TBO();
-		texture.name = name;
-		texture.size = vbo.getSize();
+		TBO textureBuffer = new TBO();
+		textureBuffer.name = name;
+		textureBuffer.size = vbo.getSize();
 		GL15.glBindBuffer(GL_TEXTURE_BUFFER, vbo.getId());
-		texture.id = GL11.glGenTextures();
+		textureBuffer.id = GL11.glGenTextures();
 		GL11.glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 		GL31.glTexBuffer(GL_TEXTURE_BUFFER, storageType, vbo.getId());
 		GL15.glBindBuffer(GL_TEXTURE_BUFFER, 0);
-		unbind();
-		return texture;
+		textureBuffer.unbind();
+		return textureBuffer;
 	}
 	
 	private TBO(){}
@@ -70,7 +70,7 @@ public class TBO {
 		glDeleteTextures(id);
 	}
 	
-	public static void unbind() {
+	public void unbind() {
 		glBindTexture(GL_TEXTURE_BUFFER, 0);
 	}
 	

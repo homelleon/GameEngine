@@ -7,6 +7,7 @@ import java.util.List;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
+import org.lwjgl.opengl.GL31;
 import org.lwjgl.opengl.GL33;
 
 import object.bounding.BoundingBox;
@@ -30,8 +31,6 @@ public class BufferLoader {
 	 * List of vertex buffer objects.
 	 */
 	private List<VBO> vbos = new ArrayList<VBO>();
-	
-	private List<PatchVAO> patchVaos = new ArrayList<PatchVAO>();
 	
 	/**
 	 * Loads vertex positions, normals and indices attributes into the new
@@ -129,17 +128,13 @@ public class BufferLoader {
 		return new Mesh(vao, indices.length, sphere, box);
 	}
 	
-	public Mesh loadToVAOwithTBO(float[] positions, float[] textureCoords, int[] indices) {
-		VAO vao = VAO.create();
-		this.vaos.add(vao);
-		vao.bind();
-		vao.createIndexBuffer(indices);
-		vao.createTBOAttribute(0, 3, positions);
-		vao.createAttribute(1, 2, textureCoords);
-		VAO.unbind();
-		BoundingSphere sphere = new BoundingSphere(positions);
-		BoundingBox box = new BoundingBox(positions);
-		return new Mesh(vao, indices.length, sphere, box);
+	public VBO loadToVBOasTBO(float[] data) {
+		VBO vbo = VBO.create(GL31.GL_TEXTURE_BUFFER);
+		vbo.bind();
+		vbo.storeData(data);
+		vbo.unbind();
+		vbos.add(vbo);
+		return vbo;
 	}
 	
 	public Mesh loadToVAOwithDispatchInderect(float[] positions, float[] textureCoords, int[] indices) {
@@ -277,9 +272,6 @@ public class BufferLoader {
 		
 		if(!vbos.isEmpty()) {
 			vbos.forEach(VBO::delete);
-		}
-		if(!patchVaos.isEmpty()) {
-			patchVaos.forEach(PatchVAO::delete);
 		}
 	}
 

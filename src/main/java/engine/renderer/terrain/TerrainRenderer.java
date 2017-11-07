@@ -12,13 +12,11 @@ import object.terrain.terrain.ITerrain;
 import object.terrain.terrain.TerrainNode;
 import object.terrain.terrain.TerrainQuadTree;
 import object.texture.Texture2D;
+import object.texture.material.TerrainMaterial;
 import object.texture.terrain.TerrainTexturePack;
 import primitive.buffer.VAO;
 import shader.terrain.TerrainShader;
-import tool.math.Maths;
 import tool.math.Matrix4f;
-import tool.math.vector.Vector2f;
-import tool.math.vector.Vector3f;
 
 public class TerrainRenderer {
 
@@ -97,15 +95,16 @@ public class TerrainRenderer {
 	}
 
 	private void bindTexture(ITerrain terrain) {
-		TerrainTexturePack texturePack = terrain.getTexturePack();
+		TerrainMaterial material = terrain.getMaterial();
+		TerrainTexturePack texturePack = material.getTexturePack();
 		texturePack.getBackgroundTexture().bilinearFilter();
 		texturePack.getBackgroundTexture().bind(0);
 		texturePack.getRTexture().bind(1);
 		texturePack.getGTexture().bind(2);
 		texturePack.getBTexture().bind(3);
-		terrain.getBlendMap().bind(4);
-		terrain.getHeightMap().bind(7);
-		terrain.getNormalMap().bind(8);
+		material.getBlendMap().bind(4);
+		material.getHeightMap().bind(7);
+		material.getNormalMap().bind(8);
 	}
 
 	private void unbindTexture() {

@@ -40,7 +40,6 @@ public class ShadowMapMasterRenderer {
 	private Matrix4f offset = createOffset();
 
 	private ShadowMapEntityRenderer shadowEntityRenderer;
-	private ShadowMapTerrainRenderer shadowTerrainRenderer;
 
 	/**
 	 * Creates instances of the important objects needed for rendering the scene
@@ -58,7 +57,6 @@ public class ShadowMapMasterRenderer {
 		shadowBox = new ShadowBox(lightViewMatrix, camera);
 		shadowFbo = new ShadowFrameBuffer(EngineSettings.SHADOW_MAP_SIZE, EngineSettings.SHADOW_MAP_SIZE);
 		shadowEntityRenderer = new ShadowMapEntityRenderer(shader, projectionViewMatrix);
-		shadowTerrainRenderer = new ShadowMapTerrainRenderer(shader, projectionViewMatrix);
 	}
 
 	/**

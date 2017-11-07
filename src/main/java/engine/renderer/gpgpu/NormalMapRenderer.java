@@ -17,20 +17,23 @@ public class NormalMapRenderer {
 	private int size;
 	private float strength;
 	
-	public NormalMapRenderer(int size) {
+	public NormalMapRenderer(int size, float strength, Texture2D heightMap) {
 		this.size = size;
-		normalMap = Texture2D.create(size, size, 1, false);
-		normalMap.bind();
-		normalMap.bilinearFilter();
-		GL42.glTexStorage2D(GL11.GL_TEXTURE_2D,	(int) (Math.log(size) / Math.log(2)), GL30.GL_RGBA32F, size, size);
+		this.strength = strength;
+		this.heightMap = heightMap;
 		shader = new NormalMapShader();
 		shader.start();
 		shader.connectTextureUnits();
 		shader.stop();
 	}
 	
-	public void render() {		
-		shader.start();
+	public void render() {
+		normalMap = Texture2D.create(size, size, 1, false);
+		normalMap.bind();
+		normalMap.bilinearFilter();
+		GL42.glTexStorage2D(GL11.GL_TEXTURE_2D,	(int) (Math.log(size) / Math.log(2)), GL30.GL_RGBA32F, size, size);
+		
+		shader.start();		
 		shader.updateUniforms(size, strength);
 		GL42.glBindImageTexture(0, normalMap.getId(), 0, false, 0, GL15.GL_WRITE_ONLY, GL30.GL_RGBA32F);
 		heightMap.bind(0);
@@ -46,12 +49,14 @@ public class NormalMapRenderer {
 		return normalMap;
 	}
 	
-	public void setHeightMap(Texture2D heightMap) {
+	public NormalMapRenderer setHeightMap(Texture2D heightMap) {
 		this.heightMap = heightMap;
+		return this;
 	}
 	
-	public void setStrength(float strength) {
+	public NormalMapRenderer setStrength(float strength) {
 		this.strength = strength;
+		return this;
 	}
 	
 	public void clean() {

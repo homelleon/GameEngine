@@ -1,66 +1,66 @@
 package object.terrain.terrain.builder;
 
+import object.terrain.generator.TerrainGenerator;
 import object.terrain.terrain.ITerrain;
 import object.texture.Texture2D;
-import object.texture.terrain.TerrainTexturePack;
+import tool.math.vector.Vector2f;
 
-public abstract class TerrainBuilder {
+public class TerrainBuilder implements ITerrainBuilder {
 	
-	protected int gridX = 0;
-	protected int gridZ = 0;
-	protected TerrainTexturePack texturePack;
-	protected Texture2D blendTexture;
-	protected String heightTextureName;
-	protected float amplitude = 0;
-	protected int octaves = 0;
-	protected float roughness = 0;
-	protected int seed;
+	private int size = 128;
+	private int gridX = 0;
+	private int gridZ = 0;
+	private Texture2D heightMap;
+	private float amplitude = 0;
+	private int octaves = 0;
+	private float roughness = 0;
+
+	@Override
+	public ITerrainBuilder setHeightMap(Texture2D heightMap) {
+		this.heightMap = heightMap;
+		return this;
+	}
 	
 	public ITerrainBuilder setXPosition(int x) {
 		this.gridX = x;
-		return (ITerrainBuilder) this;
+		return this;
 	}
 	
 	public ITerrainBuilder setZPosition(int z) {
 		this.gridZ = z;
-		return (ITerrainBuilder) this;
-	}
-	
-	public ITerrainBuilder setTexturePack(TerrainTexturePack texturePack) {
-		this.texturePack = texturePack;
-		return (ITerrainBuilder) this;
-	}
-	
-	public ITerrainBuilder setBlendTexture(Texture2D texture) {
-		this.blendTexture = texture;
-		return (ITerrainBuilder) this;
-	}
-	
-	public ITerrainBuilder setHeightTextureName(String name) {
-		this.heightTextureName = name;
-		return (ITerrainBuilder) this;
+		return this;
 	}
 	
 	public ITerrainBuilder setAmplitude(float amplitude) {
 		this.amplitude = amplitude;
-		return (ITerrainBuilder) this;
+		return this;
 	}
 	
 	public ITerrainBuilder setOctaves(int octaves) {
 		this.octaves = octaves;
-		return (ITerrainBuilder) this;
+		return this;
 	}
 	
 	public ITerrainBuilder setRoughness(float roughness) {
 		this.roughness = roughness;
-		return (ITerrainBuilder) this;
+		return this;
+	}
+
+	@Override
+	public ITerrainBuilder setSize(int size) {
+		this.size = size;
+		return this;
 	}
 	
-	public  ITerrainBuilder setSeed(int seed) {
-		this.seed = seed;
-		return (ITerrainBuilder) this;
+	@Override
+	public ITerrain build(String name) {
+			TerrainGenerator generator;
+			if(heightMap != null) {
+				generator = new TerrainGenerator(size, new Vector2f(gridX, gridZ), heightMap);
+			} else {
+				generator = new TerrainGenerator(size, new Vector2f(gridX, gridZ), amplitude, octaves, roughness);
+			}
+			return generator.generate(name);
 	}
-	
-	public abstract ITerrain build(String name);
 	
 }

@@ -10,12 +10,8 @@ import java.util.stream.Stream;
 import core.settings.EngineSettings;
 import object.entity.entity.DecorEntity;
 import object.entity.entity.IEntity;
-import object.terrain.terrain.ITerrain;
-import object.terrain.terrain.MappedTerrain;
-import object.terrain.terrain.ProceduredTerrain;
 import object.texture.Texture2D;
 import object.texture.material.Material;
-import object.texture.terrain.TerrainTexturePack;
 import object.water.WaterTile;
 import primitive.buffer.Loader;
 import primitive.model.Mesh;
@@ -158,35 +154,6 @@ public class EngineUtils {
 			}
 		}
 		return waters;
-	}
-
-	public static MappedTerrain createMultiTexTerrain(String name, int x, int y, String basicTexture, String redTexture,
-			String greenTexture, String blueTexture, String blendTexture, String heightTexture, Loader loader) {
-		Texture2D backgroundTexture = loader.getTextureLoader().loadTexture(EngineSettings.TEXTURE_TERRAIN_PATH, basicTexture);
-		Texture2D rTexture = loader.getTextureLoader().loadTexture(EngineSettings.TEXTURE_TERRAIN_PATH, redTexture);
-		Texture2D gTexture = loader.getTextureLoader().loadTexture(EngineSettings.TEXTURE_TERRAIN_PATH, greenTexture);
-		Texture2D bTexture = loader.getTextureLoader().loadTexture(EngineSettings.TEXTURE_TERRAIN_PATH, blueTexture);
-
-		TerrainTexturePack texturePack = new TerrainTexturePack(backgroundTexture + "Pack", backgroundTexture, rTexture,
-				gTexture, bTexture);
-		Texture2D blendMap = loader.getTextureLoader().loadTexture(EngineSettings.TEXTURE_BLEND_MAP_PATH, blendTexture);
-		MappedTerrain terrain = new MappedTerrain(name, x, y, texturePack, blendMap, heightTexture);
-		return terrain;
-	}
-
-	public static ITerrain createMultiTexTerrain(String name, int x, int y, String basicTexture, String redTexture,
-			String greenTexture, String blueTexture, String blendTexture, float amplitude, int octaves, float roughness) {
-		Loader loader = Loader.getInstance();
-		Texture2D backgroundTexture = loader.getTextureLoader().loadTexture(EngineSettings.TEXTURE_TERRAIN_PATH, basicTexture);
-		Texture2D rTexture = loader.getTextureLoader().loadTexture(EngineSettings.TEXTURE_TERRAIN_PATH, redTexture);
-		Texture2D gTexture = loader.getTextureLoader().loadTexture(EngineSettings.TEXTURE_TERRAIN_PATH, greenTexture);
-		Texture2D bTexture = loader.getTextureLoader().loadTexture(EngineSettings.TEXTURE_TERRAIN_PATH, blueTexture);
-
-		TerrainTexturePack texturePack = new TerrainTexturePack(basicTexture + "Pack", backgroundTexture, rTexture,
-				gTexture, bTexture);
-		Texture2D blendMap = loader.getTextureLoader().loadTexture(EngineSettings.TEXTURE_BLEND_MAP_PATH, blendTexture);
-		ITerrain terrain = new ProceduredTerrain(name, x, y, texturePack, blendMap, amplitude, octaves, roughness);
-		return terrain;
 	}
 	
 	public static int[] toIntArray(Integer[] data) {

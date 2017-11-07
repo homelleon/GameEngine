@@ -11,8 +11,9 @@ import map.objectMap.ObjectMapManager;
 import map.raw.IRawManager;
 import object.entity.entity.builder.EntityBuilder;
 import object.entity.entity.builder.IEntityBuilder;
+import object.terrain.terrain.ITerrain;
 import object.terrain.terrain.builder.ITerrainBuilder;
-import object.terrain.terrain.builder.ProceduredTerrainBuilder;
+import object.terrain.terrain.builder.TerrainBuilder;
 import object.texture.Texture2D;
 import object.texture.terrain.TerrainTexturePack;
 import primitive.model.Model;
@@ -123,22 +124,22 @@ public class ModelMapXMLParser extends XMLParser implements IObjectParser<IObjec
 						int z = Integer.valueOf(XMLUtils.getAttributeValue(positionElement, XMLUtils.Z));
 						TerrainTexturePack terrainPack = this.rawMap.getTerrainTexturePack(terrainPackName);
 						Texture2D blendTexture = this.rawMap.getTexture(blendTextureName);
-						ITerrainBuilder terrainBuilder = new ProceduredTerrainBuilder();
+						
+						ITerrainBuilder terrainBuilder = new TerrainBuilder();
 						terrainBuilder
+							.setSize(512)
 							.setXPosition(x)
 							.setZPosition(z)
-							.setTexturePack(terrainPack)
-							.setBlendTexture(blendTexture)
 							.setAmplitude(amplitude)
 							.setOctaves(octaves)
 							.setRoughness(roughness);
-						if(this.seed != 0) {
-							terrainBuilder.setSeed(seed);
-						}
-						map.getTerrains().add(terrainBuilder.build(name));
-						if(this.seed == 0) {
-							this.seed = map.getTerrains().get(name).getGenerator().getSeed();
-						}
+						ITerrain terrain = terrainBuilder.build(name);
+						
+						terrain.getMaterial()
+							.setTexturePack(terrainPack)
+							.setBlendMap(blendTexture);
+						
+						map.getTerrains().add(terrain);
 						if (EngineDebug.hasDebugPermission()) {
 							EngineDebug.println(map.getTerrains().get(name).getName(),2);
 						}

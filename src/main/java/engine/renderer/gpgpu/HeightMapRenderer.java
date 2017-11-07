@@ -8,31 +8,34 @@ import org.lwjgl.opengl.GL43;
 
 import object.texture.TBO;
 import object.texture.Texture2D;
-import primitive.buffer.VAO;
+import primitive.buffer.VBO;
 import shader.gpgpu.HeightMapShader;
 
 public class HeightMapRenderer {
 	
 	private HeightMapShader shader;
 	private Texture2D heightMap;
-	private TBO positionMap;
+	private VBO vbo;
 	private int size;
 
 	
-	public HeightMapRenderer(int size, VAO vao) {
+	public HeightMapRenderer(int size, VBO vbo) {
 		this.size = size;
-		
+		this.vbo = vbo;
+		shader = new HeightMapShader();
+	}
+	
+	public void render() {
+		// prepare empty texture for height map
 		heightMap = Texture2D.create(size, size, 1, false);
 		heightMap.bind();
 		heightMap.bilinearFilter();
 		GL42.glTexStorage2D(GL11.GL_TEXTURE_2D, (int) (Math.log(size) / Math.log(2)), GL30.GL_RGBA32F, size, size);
 		
-		positionMap = TBO.create("positionMap", vao.getVBOs().get(0), GL30.GL_RGB32F);
-		shader = new HeightMapShader();
-	}
-	
-	public void render() {
-
+		// create texture buffer object from vertex buffer
+		TBO positionMap = TBO.create("positionMap", vbo, GL30.GL_RGB32F);
+		
+		// render height map texture
 		shader.start();
 		shader.loadMapSize(size);
 		positionMap.bind(1);
@@ -42,9 +45,14 @@ public class HeightMapRenderer {
 		GL42.glMemoryBarrier(GL43.GL_SHADER_STORAGE_BARRIER_BIT);
 		GL11.glFinish();
 		shader.stop();
+		
+		// setting filter for height map
 		heightMap.bind();
 		heightMap.bilinearFilter();
-		TBO.unbind();
+		
+		// delete texture buffer object
+		positionMap.unbind();
+		positionMap.delete();
 	}
 	
 	public Texture2D getHeightMap() {

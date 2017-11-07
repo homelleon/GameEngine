@@ -11,7 +11,7 @@ import primitive.buffer.VBO;
  * @author homelleon
  * 
  * @see MappedTerrain
- * @see ProceduredTerrain
+ * @see Terrain
  */
 public interface ITerrain extends Nameable {
 	
@@ -47,8 +47,6 @@ public interface ITerrain extends Nameable {
 	void setXPosition(int xPosition);
 	
 	void setZPosition(int zPosition);
-
-	VBO getVbo();
 	
 	TerrainMaterial getMaterial();
 

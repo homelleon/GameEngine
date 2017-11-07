@@ -11,8 +11,6 @@ import org.lwjgl.opengl.GL31;
 import org.lwjgl.opengl.GL40;
 import org.lwjgl.opengl.GL43;
 
-import object.texture.Texture2D;
-
 public class VAO {
 
 	private static final int BYTES_PER_FLOAT = 4;

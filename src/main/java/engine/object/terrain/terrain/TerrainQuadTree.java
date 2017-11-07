@@ -16,11 +16,11 @@ public class TerrainQuadTree extends Node {
 	
 	private static int rootNodes = 8;
 	private Matrix4f worldTransformationMatrix;
-	private VAO vao;
+	private VAO patchVao;
 	
 	public TerrainQuadTree(ICamera camera) {
 		float[] positions = this.generateVertexData();
-		this.vao = Loader.getInstance().getVertexLoader().loadPatchToVAO(positions, 16);
+		this.patchVao = Loader.getInstance().getVertexLoader().loadPatchToVAO(positions, 16);
 		
 		for(int i = 0; i < rootNodes; i++) {
 			for(int j = 0; j < rootNodes; j++) {
@@ -84,7 +84,7 @@ public class TerrainQuadTree extends Node {
 	}
 
 	public VAO getVao() {
-		return vao;
+		return patchVao;
 	}
 
 }

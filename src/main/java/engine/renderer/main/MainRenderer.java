@@ -29,8 +29,6 @@ import renderer.entity.IEntityRendererManager;
 import renderer.entity.NormalEntityRenderer;
 import renderer.entity.TexturedEntityRenderer;
 import renderer.environment.EnvironmentMapRenderer;
-import renderer.gpgpu.HeightMapRenderer;
-import renderer.gpgpu.NormalMapRenderer;
 import renderer.processor.ISceneProcessor;
 import renderer.processor.SceneProcessor;
 import renderer.shadow.ShadowMapMasterRenderer;
@@ -45,8 +43,6 @@ public class MainRenderer implements IMainRenderer {
 	private Matrix4f projectionMatrix;
 	private Matrix4f normalDistProjectionMatrix;
 	private Matrix4f lowDistProjectionMatrix;
-	private HeightMapRenderer heightRenderer;
-	private NormalMapRenderer normalMapRenderer;
 	private TerrainRenderer terrainRenderer;
 	private SkyboxRenderer skyboxRenderer;
 	private VoxelRenderer voxelRenderer;
@@ -82,19 +78,6 @@ public class MainRenderer implements IMainRenderer {
 		entityRendererManager.addPair(normalEntityRenderer, normalEntities);
 		entityRendererManager.addPair(decorEntityRenderer, decorEntities);
 		this.terrainRenderer = new TerrainRenderer(projectionMatrix);
-		// height and normal map rendering
-		this.heightRenderer = new HeightMapRenderer(512, scene.getTerrains().getAll().iterator().next().getModel().getVAO());
-		heightRenderer.render();
-		normalMapRenderer = new NormalMapRenderer(heightRenderer.getHeightMap().getWidth());
-		normalMapRenderer.setStrength(10);
-		normalMapRenderer.setHeightMap(heightRenderer.getHeightMap());
-		normalMapRenderer.render();
-		// setting height and normal map
-		scene.getTerrains().get("Terrain1").setHeightMap(heightRenderer.getHeightMap());
-		scene.getTerrains().get("Terrain1").setNormalMap(normalMapRenderer.getNormalMap());
-		// cleanup
-		heightRenderer.clean();
-		normalMapRenderer.clean();
 		
 		this.skyboxRenderer = new SkyboxRenderer(projectionMatrix);
 		this.voxelRenderer = new VoxelRenderer(projectionMatrix);
