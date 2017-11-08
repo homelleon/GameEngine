@@ -1,7 +1,7 @@
 package tool.xml.loader;
 
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -16,11 +16,13 @@ import org.xml.sax.SAXException;
  * @see IXMLLoader
  */
 public class XMLFileLoader implements IXMLLoader {
-
-	private File file;
+	
+	private InputStream stream;
 
 	public XMLFileLoader(String fullFileName) {
-		this.file = new File(fullFileName);
+		this.stream = Class.class.getResourceAsStream(fullFileName);
+		System.out.println(fullFileName);
+		System.out.println(stream);
 	}
 
 	@Override
@@ -30,7 +32,7 @@ public class XMLFileLoader implements IXMLLoader {
 
 		try {
 			DocumentBuilder builder = factory.newDocumentBuilder();
-			document = builder.parse(file);
+			document = builder.parse(stream);
 		} catch (SAXException | IOException | ParserConfigurationException e) {
 			e.printStackTrace();
 		}

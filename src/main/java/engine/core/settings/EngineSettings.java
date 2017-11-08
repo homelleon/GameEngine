@@ -14,8 +14,8 @@ import org.lwjgl.util.vector.Vector4f;
 public class EngineSettings {
 
 	/* display settings */
-	public static final int DISPLAY_WIDTH = 800; // 1920;
-	public static final int DISPLAY_HEIGHT = 600; // 1080;
+	public static final int DISPLAY_WIDTH = 1920; // 1920;
+	public static final int DISPLAY_HEIGHT = 1080; // 1080;
 	public static final int FAR_PLANE = 100000;
 	public static final float NEAR_PLANE = 0.5f;
 	public static final int FPS_CAP = 90;
@@ -106,7 +106,7 @@ public class EngineSettings {
 	/* path settings */
 	public final static String PROJECT_PATH = "src/main/java/";
 	public final static String RES_PATH = PROJECT_PATH + "resource/";
-	public final static String GAME_PATH = PROJECT_PATH + "game/";
+	public final static String GAME_PATH = PROJECT_PATH + "/game/";
 	public final static String SOURCE_PATH = PROJECT_PATH + "engine/";
 	public final static String OBJECT_PATH = SOURCE_PATH + "object/";
 	public final static String FONT_PATH = OBJECT_PATH + "font/";
@@ -126,13 +126,13 @@ public class EngineSettings {
 	public final static String TEXTURE_ALPHA_MAP_PATH = TEXTURE_PATH + "alphaMap/";
 
 	/* objects */
-	public final static String MAP_PATH = RES_PATH + "map/";
+	public final static String MAP_PATH = "/map/";
 	public final static String FONT_FILE_PATH = TEXTURE_PATH + "font/";
 
 	public final static String AUDIO_PATH = "object/audio/";
 	public final static String MODEL_PATH = RES_PATH + "model/";
-	public final static String TEXT_PATH = RES_PATH + "text/";
-	public final static String INTERFACE_PATH = RES_PATH + "interface/";
+	public final static String TEXT_PATH = "/text/";
+	public final static String INTERFACE_PATH = "/interface/";
 
 	/* shaders */
 	public final static String SHADERS_PATH = "/shader/";
@@ -155,7 +155,7 @@ public class EngineSettings {
 	public final static String SHADERS_ANIMATION_PATH = SHADERS_PATH + "animation/";
 	public final static String SHADERS_GPGPU_PATH = SHADERS_PATH + "gpgpu/";
 
-	public final static String SETTINGS_GAME_PATH = GAME_PATH + "main/";
+	public final static String SETTINGS_GAME_PATH = "/main/";
 
 	public final static String EXTENSION_PNG = ".png";
 	public final static String EXTENSION_TGA = ".tga";

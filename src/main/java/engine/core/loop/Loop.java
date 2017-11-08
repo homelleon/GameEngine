@@ -198,14 +198,10 @@ public class Loop implements ILoop {
 			EngineDebug.println("Loading models...");
 		}
 		String path = EngineSettings.MAP_PATH + name + EngineSettings.EXTENSION_XML;
-		if(new File(path).exists()) {
-			IXMLLoader xmlLoader = new XMLFileLoader(path);
-			IObjectParser<IObjectManager> mapParser = new ModelMapXMLParser(xmlLoader.load(), rawMap);
-			this.modelMap = mapParser.parse();
-			this.mapIsLoaded = true;
-		} else {
-			throw new NullPointerException("File " + path + " is not existed! Can't load model map!");
-		}
+		IXMLLoader xmlLoader = new XMLFileLoader(path);
+		IObjectParser<IObjectManager> mapParser = new ModelMapXMLParser(xmlLoader.load(), rawMap);
+		this.modelMap = mapParser.parse();
+		this.mapIsLoaded = true;
 	}
 
 	/**
@@ -222,17 +218,12 @@ public class Loop implements ILoop {
 			EngineDebug.printOpen("Level map");
 			EngineDebug.println("Loading level...");
 		}
-		String path = EngineSettings.MAP_PATH + name + EngineSettings.EXTENSION_XML;
-		if(new File(path).exists()) {
-			IXMLLoader xmlLoader = new XMLFileLoader(EngineSettings.MAP_PATH + name + EngineSettings.EXTENSION_XML);
-			IObjectParser<IObjectManager> mapParser = new LevelMapXMLParser(xmlLoader.load(), this.modelMap);
-			this.levelMap = mapParser.parse();
-			if (EngineDebug.hasDebugPermission()) {
-				EngineDebug.println("Total loaded entities: " + this.levelMap.getEntities().getAll().stream().count(), 2);
-				EngineDebug.println("Total loaded terrains: " + this.levelMap.getTerrains().getAll().stream().count(), 2);
-			}
-		} else {
-			throw new NullPointerException("File " + path + " is not existed! Can't load level map!");
+		IXMLLoader xmlLoader = new XMLFileLoader(EngineSettings.MAP_PATH + name + EngineSettings.EXTENSION_XML);
+		IObjectParser<IObjectManager> mapParser = new LevelMapXMLParser(xmlLoader.load(), this.modelMap);
+		this.levelMap = mapParser.parse();
+		if (EngineDebug.hasDebugPermission()) {
+			EngineDebug.println("Total loaded entities: " + this.levelMap.getEntities().getAll().stream().count(), 2);
+			EngineDebug.println("Total loaded terrains: " + this.levelMap.getTerrains().getAll().stream().count(), 2);
 		}
 	}
 	
@@ -242,14 +233,9 @@ public class Loop implements ILoop {
 			EngineDebug.printOpen("Raw map");
 			EngineDebug.println("Loading raws...");
 		}
-		String path = EngineSettings.MAP_PATH + name + EngineSettings.EXTENSION_XML;
-		if(new File(path).exists()) {
-			IXMLLoader xmlLoader = new XMLFileLoader(EngineSettings.MAP_PATH + name + EngineSettings.EXTENSION_XML);
-			IObjectParser<IRawManager> mapParser = new RawMapXMLParser(xmlLoader.load());
-			this.rawMap = mapParser.parse();
-		} else {
-			throw new NullPointerException("File " + path + " is not existed! Can't load raw map!");
-		}
+		IXMLLoader xmlLoader = new XMLFileLoader(EngineSettings.MAP_PATH + name + EngineSettings.EXTENSION_XML);
+		IObjectParser<IRawManager> mapParser = new RawMapXMLParser(xmlLoader.load());
+		this.rawMap = mapParser.parse();
 	}
 
 	/**

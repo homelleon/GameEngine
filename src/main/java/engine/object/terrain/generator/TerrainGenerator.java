@@ -1,12 +1,5 @@
 package object.terrain.generator;
 
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
-
-import core.settings.EngineSettings;
 import object.terrain.terrain.ITerrain;
 import object.terrain.terrain.Terrain;
 import object.texture.Texture2D;
@@ -16,8 +9,14 @@ import primitive.buffer.VBO;
 import renderer.gpgpu.HeightMapRenderer;
 import renderer.gpgpu.NormalMapRenderer;
 import tool.math.vector.Vector2f;
-import tool.math.vector.Vector3f;
 
+/**
+ * Generates terrain from height map or input value for generator.
+ * <br>Please, create new class for different terrain type.
+ * 
+ * @author homelleon
+ * @version 1.0
+ */
 public class TerrainGenerator {
 	
 	private static final float MAX_HEIGHT = 100;
@@ -27,17 +26,33 @@ public class TerrainGenerator {
 	private Texture2D normalMap;
 	private Vector2f position;
 	private boolean isProcedured = false;
-	private int size;
+	private int size = 128;
 	private float amplitude;
 	private int octaves;
 	private float roughness;
 	
+	/**
+	 * Construct terrain generator from height map.
+	 * 
+	 * @param size
+	 * @param position
+	 * @param heightMap
+	 */
 	public TerrainGenerator(int size, Vector2f position, Texture2D heightMap) {
 		this.size = size;
 		this.heightMap = heightMap;
 		this.position = position;
 	}
 	
+	/**
+	 * Construct terrain generator from input values.
+	 * 
+	 * @param size 
+	 * @param position
+	 * @param amplitude
+	 * @param octaves
+	 * @param roughness
+	 */
 	public TerrainGenerator(int size, Vector2f position, float amplitude, int octaves, float roughness) {
 		this.size = size;
 		this.amplitude = amplitude;
@@ -74,8 +89,8 @@ public class TerrainGenerator {
 		VBO vbo = Loader.getInstance().getVertexLoader().loadToVBOasTBO(heights1D);
 		
 		// generate height and normal map
-		heightMap = generateHeightMap(size, vbo);
-		normalMap = generateNormalMap(size, heightMap);
+		heightMap = generateHeightMap(size / 2, vbo);
+		normalMap = generateNormalMap(size / 2, heightMap);
 
 		TerrainMaterial material = getMaterial(name + "Material", heightMap, normalMap);
 		
@@ -94,7 +109,7 @@ public class TerrainGenerator {
 			}
 		}
 
-		normalMap = generateNormalMap(size, heightMap);
+		normalMap = generateNormalMap(size / 2, heightMap);
 
 		TerrainMaterial material = getMaterial(name + "Material", heightMap, normalMap);
 		
@@ -111,7 +126,8 @@ public class TerrainGenerator {
 		if (x < 0 || x >= heightMap.getHeight() || z < 0 || z >= heightMap.getHeight()) {
 			return 0;
 		}
-		float height = heightMap.getRGB(x, z);
+		// TODO: implement getRGB function
+		float height = 0; // heightMap.getRGB(x, z);
 		height += MAX_PIXEL_COLOUR / 2f;
 		height /= MAX_PIXEL_COLOUR / 2f;
 		height *= MAX_HEIGHT;
