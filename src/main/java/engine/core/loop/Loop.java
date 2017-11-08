@@ -46,7 +46,7 @@ public class Loop implements ILoop {
 	private DataEditorFrame frame;
 
 	private static Loop instance;
-	private static final String SETTINGS_NAME = "settings";
+	private static final String SETTINGS_NAME = "Settings";
 	
 	private ISceneRenderer sceneRenderer;
 

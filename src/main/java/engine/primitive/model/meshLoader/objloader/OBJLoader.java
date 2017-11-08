@@ -1,7 +1,7 @@
 package primitive.model.meshLoader.objloader;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
+import java.io.InputStreamReader;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
@@ -54,7 +54,8 @@ public class OBJLoader {
 			// load .mtl
 			if (mtlFile != null){
 				try{
-						mtlReader = new BufferedReader(new FileReader(path + "/" +  mtlFile));
+						InputStreamReader inputStream = new InputStreamReader(Class.class.getResourceAsStream(path + "/" +  mtlFile));
+						mtlReader = new BufferedReader(inputStream);
 						String line;
 						String currentMtl = "";
 						
@@ -111,7 +112,9 @@ public class OBJLoader {
 				
 			// load .obj
 			try{
-				meshReader = new BufferedReader(new FileReader(path + "/" + objFile + ".obj"));
+				System.out.println(path + objFile + ".obj");
+				InputStreamReader inputStream = new InputStreamReader(Class.class.getResourceAsStream(path + objFile + ".obj"));
+				meshReader = new BufferedReader(inputStream);
 				String line;
 				while((line = meshReader.readLine()) != null)
 				{

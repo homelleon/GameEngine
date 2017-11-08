@@ -59,25 +59,12 @@
 	<mapped>	
 	</mapped>
 	<procedure_generated>
-	<terrains>
-    <terrain 
-		id="1"
-		name="Terrain1"
-		model="defaultTerrain1">
-		
-    </terrain>
-    <terrain 
-		id="2"
-		name="Terrain2"
-		model="defaultTerrain2">
-		
-    </terrain>
-  </terrains>
 		<terrain 
 			id="1"
 			name="Terrain1"
 			terrain_pack="terrainPack"
 			blend_texture="terrainBlendMap"
+			size="512"
 			amplitude="20.0"
 			octave="5"
 			roughness="1.2">

@@ -34,7 +34,6 @@ public class ModelMapXMLParser extends XMLParser implements IObjectParser<IObjec
 
 	private IObjectManager modelMap;
 	private IRawManager rawMap;
-	private int seed = 0;
 
 	public ModelMapXMLParser(Document document, IRawManager rawMap) {
 		super(document);
@@ -115,7 +114,8 @@ public class ModelMapXMLParser extends XMLParser implements IObjectParser<IObjec
 						String ID = XMLUtils.getAttributeValue(terrainElement, XMLUtils.ID);
 						String name = XMLUtils.getAttributeValue(terrainElement, XMLUtils.NAME);
 						String terrainPackName = XMLUtils.getAttributeValue(terrainElement, XMLUtils.TERRAIN_PACK);
-						String blendTextureName = XMLUtils.getAttributeValue(terrainElement, XMLUtils.BLEND_TEXTURE);					
+						String blendTextureName = XMLUtils.getAttributeValue(terrainElement, XMLUtils.BLEND_TEXTURE);
+						int size = Integer.valueOf(XMLUtils.getAttributeValue(terrainElement, XMLUtils.SIZE));
 						Float amplitude = Float.valueOf(XMLUtils.getAttributeValue(terrainElement, XMLUtils.AMPLITUDE));
 						Integer octaves = Integer.valueOf(XMLUtils.getAttributeValue(terrainElement, XMLUtils.OCTAVE));
 						Float roughness = Float.valueOf(XMLUtils.getAttributeValue(terrainElement, XMLUtils.ROUGHTNESS));
@@ -127,7 +127,7 @@ public class ModelMapXMLParser extends XMLParser implements IObjectParser<IObjec
 						
 						ITerrainBuilder terrainBuilder = new TerrainBuilder();
 						terrainBuilder
-							.setSize(512)
+							.setSize(size)
 							.setXPosition(x)
 							.setZPosition(z)
 							.setAmplitude(amplitude)

@@ -1,6 +1,6 @@
 package manager.gui.font;
 
-import java.io.File;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,8 +25,9 @@ public class FontManager implements IFontManager {
 			font = fonts.get(name);
 		} else {
 			Loader loader = Loader.getInstance();
+			InputStreamReader fontStream = new InputStreamReader(Class.class.getResourceAsStream(EngineSettings.FONT_FILE_PATH + name + ".fnt"));
 			font = new FontType(name, loader.getTextureLoader().loadTexture(EngineSettings.FONT_FILE_PATH, name),
-					new File(EngineSettings.FONT_FILE_PATH + name + ".fnt"));
+					fontStream);
 			fonts.put(font.getName(), font);
 		}
 		return font;

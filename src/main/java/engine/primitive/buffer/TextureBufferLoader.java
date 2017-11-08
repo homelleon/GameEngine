@@ -1,6 +1,7 @@
 package primitive.buffer;
 
 import java.io.FileInputStream;
+import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.Map;
@@ -196,7 +197,8 @@ public class TextureBufferLoader {
 		int height = 0;
 		ByteBuffer buffer = null;
 		try {
-			FileInputStream in = new FileInputStream(fileName);
+			System.out.println(fileName);
+			InputStream in = Class.class.getResourceAsStream(fileName);
 			PNGDecoder decoder = new PNGDecoder(in);
 			width = decoder.getWidth();
 			height = decoder.getHeight();
@@ -225,8 +227,8 @@ public class TextureBufferLoader {
 	public static Texture loadOldTexture(String path) {
 		Texture texture = null;
 		try {
-			FileInputStream in = new FileInputStream(path);
-			texture = TextureLoader.getTexture("PNG", in);;
+			InputStream in = Class.class.getResourceAsStream(path);
+			texture = TextureLoader.getTexture("PNG", in);
 			in.close();
 			return texture;
 		} catch (Exception e) {
