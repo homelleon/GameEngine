@@ -7,9 +7,9 @@ import org.lwjgl.input.Mouse;
 
 import core.display.DisplayManager;
 import core.settings.EngineSettings;
+import input.KeyboardGame;
+import input.MouseGame;
 import object.entity.entity.TexturedEntity;
-import object.input.KeyboardGame;
-import object.input.MouseGame;
 import object.terrain.terrain.ITerrain;
 import primitive.model.Model;
 import tool.math.vector.Vector3f;

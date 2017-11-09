@@ -13,7 +13,7 @@ import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.PixelFormat;
 
 import core.settings.EngineSettings;
-import object.input.KeyboardGame;
+import input.KeyboardGame;
 import tool.dataEditor.menu.DataEditorFrame;
 
 /*

@@ -10,6 +10,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
+import core.debug.EngineDebug;
+
 /**
  * 
  * @author homelleon
@@ -21,8 +23,9 @@ public class XMLFileLoader implements IXMLLoader {
 
 	public XMLFileLoader(String fullFileName) {
 		this.stream = Class.class.getResourceAsStream(fullFileName);
-		System.out.println(fullFileName);
-		System.out.println(stream);
+		if(EngineDebug.hasDebugPermission()) {
+			EngineDebug.println(fullFileName);
+		}
 	}
 
 	@Override

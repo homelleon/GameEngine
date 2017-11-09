@@ -90,16 +90,14 @@ public abstract class ShaderProgram {
 		bindAttributes();
 		glLinkProgram(programID);
 
-		if(glGetProgrami(programID, GL_LINK_STATUS) == 0)
-		{
+		if(glGetProgrami(programID, GL_LINK_STATUS) == 0) {
 			System.out.println(this.getClass().getName() + " " + glGetProgramInfoLog(programID, 1024));
 			System.exit(1);
 		}
 		
 		glValidateProgram(programID);
 		
-		if(glGetProgrami(programID, GL_VALIDATE_STATUS) == 0)
-		{
+		if(glGetProgrami(programID, GL_VALIDATE_STATUS) == 0) {
 			System.err.println(this.getClass().getName() +  " " + glGetProgramInfoLog(programID, 1024));
 			System.exit(1);
 		}

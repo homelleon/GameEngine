@@ -1,4 +1,4 @@
-package object.input;
+package input;
 
 import object.scene.IScene;
 

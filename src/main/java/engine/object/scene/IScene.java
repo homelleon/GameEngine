@@ -2,6 +2,7 @@ package object.scene;
 
 import java.util.Collection;
 
+import input.MousePicker;
 import manager.entity.IFrustumEntityManager;
 import manager.gui.IGUIManager;
 import manager.scene.IObjectManager;
@@ -9,7 +10,6 @@ import manager.voxel.IChunkManager;
 import object.camera.ICamera;
 import object.entity.entity.IEntity;
 import object.entity.player.IPlayer;
-import object.input.MousePicker;
 import object.light.Light;
 import object.particle.ParticleSystem;
 import object.texture.Texture;

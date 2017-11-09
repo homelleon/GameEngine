@@ -2,6 +2,7 @@ package object.scene;
 
 import java.util.Collection;
 
+import input.MousePicker;
 import manager.audio.IAudioManager;
 import manager.entity.FrustumEntityManager;
 import manager.entity.IEntityManager;
@@ -20,7 +21,6 @@ import object.audio.master.IAudioMaster;
 import object.camera.ICamera;
 import object.entity.entity.IEntity;
 import object.entity.player.IPlayer;
-import object.input.MousePicker;
 import object.light.Light;
 import object.particle.ParticleSystem;
 import object.terrain.terrain.ITerrain;

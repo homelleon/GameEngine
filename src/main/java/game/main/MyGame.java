@@ -9,6 +9,8 @@ import core.EngineMain;
 import game.game.Game;
 import gameTools.GUIGroupBuilderTexture;
 import gameTools.IGUIGroupBuilderTexture;
+import input.KeyboardGame;
+import input.MouseGame;
 import object.bounding.BoundingQuad;
 import object.entity.entity.IEntity;
 import object.gui.element.button.GUIButton;
@@ -24,8 +26,6 @@ import object.gui.gui.IGUI;
 import object.gui.gui.builder.GUIBuilder;
 import object.gui.gui.builder.IGUIBuilder;
 import object.gui.system.IGUIMenuSystem;
-import object.input.KeyboardGame;
-import object.input.MouseGame;
 import tool.math.vector.Vector2f;
 import tool.math.vector.Vector3f;
 

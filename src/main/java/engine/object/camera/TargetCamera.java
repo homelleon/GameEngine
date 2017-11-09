@@ -5,9 +5,9 @@ import org.lwjgl.input.Mouse;
 
 import core.loop.Loop;
 import core.settings.EngineSettings;
+import input.KeyboardGame;
+import input.MouseGame;
 import object.entity.player.IPlayer;
-import object.input.KeyboardGame;
-import object.input.MouseGame;
 import tool.math.Maths;
 import tool.math.Matrix4f;
 import tool.math.vector.Vector3f;

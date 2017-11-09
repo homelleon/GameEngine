@@ -1,4 +1,4 @@
-package object.input;
+package input;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +11,7 @@ import org.lwjgl.util.vector.Vector4f;
 import core.settings.EngineSettings;
 import object.camera.ICamera;
 import object.entity.entity.IEntity;
+import object.entity.player.Player;
 import object.scene.IScene;
 import tool.math.Maths;
 import tool.math.Matrix4f;
@@ -287,6 +288,7 @@ public class MousePicker {
 		List<IEntity> pointedEntities = new ArrayList<IEntity>();
 		pointedEntities.addAll(
 			scene.getFrustumEntities().updateWithFrustum(scene.getFrustum(), camera, true).stream()
+				.filter(entity -> !(entity.getClass() == Player.class))
 				.filter(entity -> intersects(entity.getPosition(), entity.getSphereRadius()))
 //			.filter(entity -> {
 //				Vec3f min = entity.getModel().getRawModel().getBBox().getMin();

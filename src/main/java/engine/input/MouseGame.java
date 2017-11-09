@@ -1,4 +1,4 @@
-package object.input;
+package input;
 
 import org.lwjgl.input.Mouse;
 

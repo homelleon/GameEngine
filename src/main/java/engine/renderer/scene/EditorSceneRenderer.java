@@ -1,7 +1,7 @@
 package renderer.scene;
 
-import object.input.Controls;
-import object.input.IControls;
+import input.Controls;
+import input.IControls;
 import object.scene.IScene;
 import renderer.main.MainRenderer;
 

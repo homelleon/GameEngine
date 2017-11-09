@@ -16,7 +16,7 @@ import primitive.buffer.VBO;
 public interface ITerrain extends Nameable {
 	
 	public static final int TERRAIN_VERTEX_COUNT = 512;
-	public static final int TERRAIN_SIZE = 10000;
+	public static final int TERRAIN_SIZE = 6000;
 	
 	
 	TerrainQuadTree getQuadTree();
