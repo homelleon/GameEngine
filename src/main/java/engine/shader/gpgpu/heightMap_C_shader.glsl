@@ -1,6 +1,5 @@
 //COMPUTE SHADER - heightMap
 #version 430 core
-#define TERRAIN_SIZE 128
 #extension GL_EXT_gpu_shader4 : enable
 
 layout (local_size_x = 1, local_size_y = 1) in;

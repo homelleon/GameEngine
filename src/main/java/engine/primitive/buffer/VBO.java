@@ -50,6 +50,14 @@ public class VBO {
 		buffer.flip();
 		storeData(buffer);
 	}
+	
+	public void storeData(float[] data, int storageType) {
+		size = data.length;
+		FloatBuffer buffer = BufferUtils.createFloatBuffer(size);
+		buffer.put(data);
+		buffer.flip();
+		GL15.glBufferData(type, buffer, storageType);
+	}
 
 	public void storeData(int[] data) {
 		size = data.length;

@@ -7,6 +7,7 @@ import object.texture.material.TerrainMaterial;
 import primitive.buffer.Loader;
 import primitive.buffer.VBO;
 import renderer.gpgpu.HeightMapRenderer;
+import renderer.gpgpu.HeightPositionRenderer;
 import renderer.gpgpu.NormalMapRenderer;
 import tool.math.vector.Vector2f;
 
@@ -98,14 +99,22 @@ public class TerrainGenerator {
 	}
 	
 	private ITerrain generateHeightMapped(String name) {
+		
 		int VERTEX_COUNT = heightMap.getHeight();
+		
+		HeightPositionRenderer positionRenderer = new HeightPositionRenderer(heightMap);
+		positionRenderer.render();
+		
+		float[] heights1D = positionRenderer.getHeights();
+		
+		positionRenderer.clean();
 		
 		float[][] heights2D = new float[VERTEX_COUNT][VERTEX_COUNT];
 		
 		// create and store heights
 		for (int i = 0; i < VERTEX_COUNT; i++) {
 			for (int j = 0; j < VERTEX_COUNT; j++) {
-				heights2D[j][i] = getHeight(j, i, heightMap);
+				heights2D[j][i] = getHeight(i, j, heights1D);
 			}
 		}
 
@@ -122,12 +131,12 @@ public class TerrainGenerator {
 				.setNormalMap(normalMap);
 	}
 	
-	private float getHeight(int x, int z, Texture2D heightMap) {
-		if (x < 0 || x >= heightMap.getHeight() || z < 0 || z >= heightMap.getHeight()) {
+	private float getHeight(int x, int z, float[] heights) {
+		if (x < 0 || x >= heights.length || z < 0 || z >= heights.length) {
 			return 0;
 		}
 		// TODO: implement getRGB function
-		float height = 0; // heightMap.getRGB(x, z);
+		float height = heights[(int) (z * heights.length / 2 + x)]; // heightMap.getRGB(x, z);
 		height += MAX_PIXEL_COLOUR / 2f;
 		height /= MAX_PIXEL_COLOUR / 2f;
 		height *= MAX_HEIGHT;

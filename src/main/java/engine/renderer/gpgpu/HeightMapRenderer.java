@@ -36,9 +36,9 @@ public class HeightMapRenderer {
 		TBO positionMap = TBO.create("positionMap", vbo, GL30.GL_RGB32F);
 		
 		// render height map texture
+		positionMap.bind(1);
 		shader.start();
 		shader.loadMapSize(size);
-		positionMap.bind(1);
 		GL42.glBindImageTexture(0, heightMap.getId(), 0, false, 0, GL15.GL_WRITE_ONLY, GL30.GL_RGBA32F);
 		int workGroupCount = (int) (size);
 		GL43.glDispatchCompute(workGroupCount, workGroupCount, 1);

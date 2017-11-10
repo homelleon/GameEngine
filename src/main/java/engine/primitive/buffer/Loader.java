@@ -25,11 +25,11 @@ public class Loader {
 		return instance;
 	}
 	
-	private TextureBufferLoader textureLoader = new TextureBufferLoader();
+	private TextureObjectLoader textureLoader = new TextureObjectLoader();
 	private BufferLoader vertexLoader = new BufferLoader();
 
 	
-	public TextureBufferLoader getTextureLoader() {
+	public TextureObjectLoader getTextureLoader() {
 		return this.textureLoader;
 	}
 	

@@ -6,6 +6,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import core.debug.EngineDebug;
+import core.settings.EngineSettings;
 import manager.scene.IObjectManager;
 import map.objectMap.ObjectMapManager;
 import map.raw.IRawManager;
@@ -16,6 +17,7 @@ import object.terrain.terrain.builder.ITerrainBuilder;
 import object.terrain.terrain.builder.TerrainBuilder;
 import object.texture.Texture2D;
 import object.texture.terrain.TerrainTexturePack;
+import primitive.buffer.Loader;
 import primitive.model.Model;
 import tool.xml.XMLUtils;
 import tool.xml.parser.IObjectParser;
@@ -105,45 +107,46 @@ public class ModelMapXMLParser extends XMLParser implements IObjectParser<IObjec
 		NodeList terrainNodeList = node.getChildNodes();
 		for (int j = 0; j < terrainNodeList.getLength(); j++) {
 			Node terrainsNode = terrainNodeList.item(j);
-			if(XMLUtils.ifNodeIsElement(terrainsNode, XMLUtils.PROCEDURE_GENERATED)) {
-				NodeList proceduredNodeList = terrainsNode.getChildNodes();
-				for(int k = 0; k < proceduredNodeList.getLength(); k++) {
-					Node terrainNode = proceduredNodeList.item(k);
-					if(XMLUtils.ifNodeIsElement(terrainNode, XMLUtils.TERRAIN)) {
-						Element terrainElement = (Element) terrainNode;
-						String ID = XMLUtils.getAttributeValue(terrainElement, XMLUtils.ID);
-						String name = XMLUtils.getAttributeValue(terrainElement, XMLUtils.NAME);
-						String terrainPackName = XMLUtils.getAttributeValue(terrainElement, XMLUtils.TERRAIN_PACK);
-						String blendTextureName = XMLUtils.getAttributeValue(terrainElement, XMLUtils.BLEND_TEXTURE);
-						int size = Integer.valueOf(XMLUtils.getAttributeValue(terrainElement, XMLUtils.SIZE));
-						Float amplitude = Float.valueOf(XMLUtils.getAttributeValue(terrainElement, XMLUtils.AMPLITUDE));
-						Integer octaves = Integer.valueOf(XMLUtils.getAttributeValue(terrainElement, XMLUtils.OCTAVE));
-						Float roughness = Float.valueOf(XMLUtils.getAttributeValue(terrainElement, XMLUtils.ROUGHTNESS));
-						Element positionElement = XMLUtils.getChildElementByTag(terrainElement, XMLUtils.POSITION);
-						int x = Integer.valueOf(XMLUtils.getAttributeValue(positionElement, XMLUtils.X));
-						int z = Integer.valueOf(XMLUtils.getAttributeValue(positionElement, XMLUtils.Z));
-						TerrainTexturePack terrainPack = this.rawMap.getTerrainTexturePack(terrainPackName);
-						Texture2D blendTexture = this.rawMap.getTexture(blendTextureName);
-						
-						ITerrainBuilder terrainBuilder = new TerrainBuilder();
-						terrainBuilder
-							.setSize(size)
-							.setXPosition(x)
-							.setZPosition(z)
-							.setAmplitude(amplitude)
-							.setOctaves(octaves)
-							.setRoughness(roughness);
-						ITerrain terrain = terrainBuilder.build(name);
-						
-						terrain.getMaterial()
-							.setTexturePack(terrainPack)
-							.setBlendMap(blendTexture);
-						
-						map.getTerrains().add(terrain);
-						if (EngineDebug.hasDebugPermission()) {
-							EngineDebug.println(map.getTerrains().get(name).getName(),2);
-						}
+			if(XMLUtils.ifNodeIsElement(terrainsNode, XMLUtils.TERRAIN)) {
+				Element terrainElement = (Element) terrainsNode;
+				String ID = XMLUtils.getAttributeValue(terrainElement, XMLUtils.ID);
+				String name = XMLUtils.getAttributeValue(terrainElement, XMLUtils.NAME);
+				String terrainPackName = XMLUtils.getAttributeValue(terrainElement, XMLUtils.TERRAIN_PACK);
+				String blendTextureName = XMLUtils.getAttributeValue(terrainElement, XMLUtils.BLEND_TEXTURE);
+				String heightTextureName = XMLUtils.getAttributeValue(terrainElement, XMLUtils.HEIGHT_TEXTURE);
+				int size = Integer.valueOf(XMLUtils.getAttributeValue(terrainElement, XMLUtils.SIZE));
+				Float amplitude = Float.valueOf(XMLUtils.getAttributeValue(terrainElement, XMLUtils.AMPLITUDE));
+				Integer octaves = Integer.valueOf(XMLUtils.getAttributeValue(terrainElement, XMLUtils.OCTAVE));
+				Float roughness = Float.valueOf(XMLUtils.getAttributeValue(terrainElement, XMLUtils.ROUGHTNESS));
+				Element positionElement = XMLUtils.getChildElementByTag(terrainElement, XMLUtils.POSITION);
+				int x = Integer.valueOf(XMLUtils.getAttributeValue(positionElement, XMLUtils.X));
+				int z = Integer.valueOf(XMLUtils.getAttributeValue(positionElement, XMLUtils.Z));
+				TerrainTexturePack terrainPack = this.rawMap.getTerrainTexturePack(terrainPackName);
+				Texture2D blendTexture = this.rawMap.getTexture(blendTextureName);
+				
+				ITerrainBuilder terrainBuilder = new TerrainBuilder();
+				terrainBuilder
+					.setSize(size)
+					.setXPosition(x)
+					.setZPosition(z)
+					.setAmplitude(amplitude)
+					.setOctaves(octaves)
+					.setRoughness(roughness);
+				if(heightTextureName!= null) {
+					if(!heightTextureName.isEmpty() && !heightTextureName.equals("") && !heightTextureName.equalsIgnoreCase("null")) {
+						Texture2D heightMap = Loader.getInstance().getTextureLoader().loadTexture(EngineSettings.TEXTURE_HEIGHT_MAP_PATH, heightTextureName);
+						terrainBuilder.setHeightMap(heightMap);
 					}
+				}
+				ITerrain terrain = terrainBuilder.build(name);
+				
+				terrain.getMaterial()
+					.setTexturePack(terrainPack)
+					.setBlendMap(blendTexture);
+				
+				map.getTerrains().add(terrain);
+				if (EngineDebug.hasDebugPermission()) {
+					EngineDebug.println(map.getTerrains().get(name).getName(),2);
 				}
 			}
 		}

@@ -12,7 +12,7 @@ import org.lwjgl.opengl.GL31;
 import org.newdawn.slick.opengl.Texture;
 
 import primitive.buffer.Loader;
-import primitive.buffer.TextureBufferLoader;
+import primitive.buffer.TextureObjectLoader;
 
 public class Texture2D {
 	
@@ -37,7 +37,7 @@ public class Texture2D {
 	
 	
 	public Texture2D(String name, String file) {
-		Texture texture = TextureBufferLoader.loadOldTexture(file);
+		Texture texture = TextureObjectLoader.loadOldTexture(file);
 		this.name = name;
 		this.height = texture.getTextureHeight();
 		this.width = texture.getTextureWidth();

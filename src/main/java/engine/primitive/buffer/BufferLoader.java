@@ -9,6 +9,7 @@ import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL31;
 import org.lwjgl.opengl.GL33;
+import org.lwjgl.opengl.GL43;
 
 import object.bounding.BoundingBox;
 import object.bounding.BoundingSphere;
@@ -115,17 +116,12 @@ public class BufferLoader {
 		return new Mesh(vao, indices.length, sphere, box);
 	}
 	
-	public Mesh loadToVAOwithSSBO(float[] positions, float[] textureCoords, int[] indices) {
-		VAO vao = VAO.create();
-		this.vaos.add(vao);
-		vao.bind();
-		vao.createIndexBuffer(indices);
-		vao.createSSBOAttribute(0, 3, positions);
-		vao.createAttribute(1, 2, textureCoords);
-		VAO.unbind();
-		BoundingSphere sphere = new BoundingSphere(positions);
-		BoundingBox box = new BoundingBox(positions);
-		return new Mesh(vao, indices.length, sphere, box);
+	public VBO loadToVBOasSSBO(float[] data) {
+		VBO vbo = VBO.create(GL43.GL_SHADER_STORAGE_BUFFER);
+		vbo.storeData(data, GL15.GL_DYNAMIC_COPY);
+		vbo.unbind();
+		vbos.add(vbo);
+		return vbo;
 	}
 	
 	public VBO loadToVBOasTBO(float[] data) {
@@ -136,19 +132,6 @@ public class BufferLoader {
 		vbos.add(vbo);
 		return vbo;
 	}
-	
-	public Mesh loadToVAOwithDispatchInderect(float[] positions, float[] textureCoords, int[] indices) {
-		VAO vao = VAO.create();
-		this.vaos.add(vao);
-		vao.bind();
-		vao.createIndexBuffer(indices);
-		vao.createDispatchAttribute(0, 3, positions);
-		vao.createAttribute(1, 2, textureCoords);
-		VAO.unbind();
-		BoundingSphere sphere = new BoundingSphere(positions);
-		BoundingBox box = new BoundingBox(positions);
-		return new Mesh(vao, indices.length, sphere, box);
-	} 
 
 	/**
 	 * Loads verticies buffer object to use with verticies array object.

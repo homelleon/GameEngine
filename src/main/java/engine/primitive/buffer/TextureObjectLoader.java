@@ -1,6 +1,5 @@
 package primitive.buffer;
 
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.util.HashMap;
@@ -21,7 +20,7 @@ import de.matthiasmann.twl.utils.PNGDecoder.Format;
 import object.texture.Texture2D;
 import object.texture.TextureData;
 
-public class TextureBufferLoader {
+public class TextureObjectLoader {
 	
 	/**
 	 * Map of named textures indicies.

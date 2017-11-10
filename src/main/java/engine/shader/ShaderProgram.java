@@ -30,6 +30,8 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.opengl.GL31;
+import org.lwjgl.opengl.GL42;
+import org.lwjgl.opengl.GL43;
 import org.lwjgl.util.vector.Vector4f;
 
 import tool.math.Matrix4f;
@@ -171,6 +173,17 @@ public abstract class ShaderProgram {
 		this.unfiroms.put(name, uniformLocation);
 	}
 	
+	protected void addSSBO(String name) {
+		int bufferLocation = this.getSSBOStorageLocation(name);
+		
+		if (bufferLocation == 0xFFFFFFFF) {
+			System.err.println(this.getClass().getName() + " Error: Could not find uniform: " + name);
+			new Exception().printStackTrace();
+			System.exit(1);
+		}
+		this.unfiroms.put(name, bufferLocation);
+	}
+	
 	protected void addBlockUniform(String blockName, int valueType, String ...uniformNames) {
 		int uniformCount = uniformNames.length;
 		int blockLocation = this.getUnifromBlockLocation(blockName);
@@ -191,7 +204,12 @@ public abstract class ShaderProgram {
 	
 	protected UniformBlock getUniformBlock(String blockName) {
 		return this.blockUniforms.get(blockName);
-	}	
+	}
+	
+	protected void bindSSBO(int attribute, String variableName) {
+		int bufferLocation = this.getUniformLocation(variableName);
+		GL30.glBindBufferBase(programID, bufferLocation, attribute);
+	}
 
 	protected void loadInt(String name, int value) {
 		int uniformLocation = this.unfiroms.get(name);
@@ -236,16 +254,20 @@ public abstract class ShaderProgram {
 	
 	protected abstract void bindAttributes();
 
-	protected void bindAttribute(int attribue, String variableName) {
-		GL20.glBindAttribLocation(programID, attribue, variableName);
+	protected void bindAttribute(int attribute, String variableName) {
+		GL20.glBindAttribLocation(programID, attribute, variableName);
 	}
 
-	protected void bindFragOutput(int attachment, String variableName) {
-		GL30.glBindFragDataLocation(programID, attachment, variableName);
+	protected void bindFragOutput(int attribute, String variableName) {
+		GL30.glBindFragDataLocation(programID, attribute, variableName);
 	}
 	
 	private int getUniformLocation(String uniformName) {
 		return GL20.glGetUniformLocation(programID, uniformName);
+	}
+	
+	private int getSSBOStorageLocation(String bufferName) {
+		return GL43.glGetProgramResourceIndex(programID, GL43.GL_SHADER_STORAGE_BLOCK, bufferName);
 	}
 	
 	private int getUnifromBlockLocation(String uniformName) {
