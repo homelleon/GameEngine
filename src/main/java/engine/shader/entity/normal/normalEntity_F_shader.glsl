@@ -1,10 +1,12 @@
 //FRAGMENT SHADER - NM Entity
 #version 400 core
 
+#define LIGHT_MAX 10
+
 /*===== in ======*/
 //geometry
 in vec2 pass_textureCoordinates;
-in vec3 toLightVector[10];
+in vec3 toLightVector[LIGHT_MAX];
 in vec3 toCameraVector;
 in vec4 shadowCoords;
 
@@ -24,8 +26,8 @@ uniform sampler2D specularMap;
 uniform sampler2D alphaMap;
 
 //light and colour
-uniform vec3 lightColor[10];
-uniform vec3 attenuation[10];
+uniform vec3 lightColor[LIGHT_MAX];
+uniform vec3 attenuation[LIGHT_MAX];
 uniform float shineDamper;
 uniform float reflectivity;
 uniform vec3 skyColor;
@@ -45,7 +47,7 @@ void main(void) {
 
 	//transparent in diffuse texture
 	vec4 textureColour = texture(diffuseMap, pass_textureCoordinates);
-	if(textureColour.a<0.5) {
+	if(textureColour.a < 0.5) {
 		discard;
 	}
 
@@ -62,8 +64,8 @@ void main(void) {
     float texelSize = 1.0 / shadowMapSize;
     float total = 0.0;
    
-    for(int x=-shadowPCFCount; x<=shadowPCFCount; x++) {
-   		for(int y=-shadowPCFCount; y<=shadowPCFCount; y++) {
+    for(int x = -shadowPCFCount; x <= shadowPCFCount; x++) {
+   		for(int y = -shadowPCFCount; y <= shadowPCFCount; y++) {
    				float objectNearestLight = texture(shadowMap, shadowCoords.xy + vec2(x, y) * texelSize).r;
    				if(shadowCoords.z > objectNearestLight + 0.002) {
    					total += 1.0;
@@ -82,35 +84,42 @@ void main(void) {
 	
    vec3 totalDiffuse = vec3(0.0);
    vec3 totalSpecular = vec3(0.0);
-	
-   for(int i=0;i<lightCount;i++) {
+   vec4 mapInfo = vec4(0.0);
+   
+	if(usesSpecularMap > 0.5) {
+		mapInfo = normalize(texture(specularMap, pass_textureCoordinates));
+		if(mapInfo.g > 0.5) {
+			mapInfo.r *= shineDamper;
+		}
+	}
+   
+   for(int i = 0; i < LIGHT_MAX; i++) {
 		float distance = length(toLightVector[i]);
 		float attFactor = attenuation[i].x + (attenuation[i].y * distance) + (attenuation[i].z * distance * distance);
 		vec3 unitLightVector = normalize(toLightVector[i]);	
-		float nDotl = dot(unitNormal,unitLightVector);
-		float brightness = max(nDotl,0.0);
+		float nDotl = dot(unitNormal, unitLightVector);
+		float brightness = max(nDotl, 0.0);
+		brightness += mapInfo.r;
 		vec3 lightDirection = -unitLightVector;
-		vec3 reflectedLightDirection = reflect(lightDirection,unitNormal);
-		float specularFactor = dot(reflectedLightDirection , unitVectorToCamera);
-		specularFactor = max(specularFactor,0.0);
-		float dampedFactor = pow(specularFactor,shineDamper);
-		totalDiffuse = totalDiffuse + (brightness * lightColor[i])/attFactor;
-		totalSpecular = totalSpecular + (dampedFactor * reflectivity * lightColor[i])/attFactor;
+		vec3 reflectedLightDirection = reflect(lightDirection, unitNormal);
+		float specularFactor = dot(reflectedLightDirection, unitVectorToCamera);
+		specularFactor = max(specularFactor, 0.0);
+		float dampedFactor = pow(specularFactor, shineDamper);
+		totalDiffuse = totalDiffuse + (brightness * lightColor[i]) / attFactor;
+		totalSpecular = totalSpecular + (dampedFactor * reflectivity * lightColor[i]) / attFactor;
 	}
 	totalDiffuse = max(totalDiffuse * lightFactor, 0.4);
 
 	out_BrightColor = vec4(0.0);
+	
 	if(usesSpecularMap > 0.5) {
-		vec4 mapInfo = texture(specularMap, pass_textureCoordinates);
-		totalSpecular *= mapInfo.r;
 		if(mapInfo.g > 0.5) {
-			out_BrightColor = textureColour + vec4(totalSpecular,1.0);
-			totalDiffuse = vec3(1.0);
+			out_BrightColor = textureColour + vec4(totalSpecular, 1.0);
 		}
 	}
 
-	out_Color =  vec4(totalDiffuse,1.0) * textureColour + vec4(totalSpecular,1.0);
-	out_Color = mix(vec4(skyColor,1.0),out_Color, visibility);
+	out_Color = vec4(totalDiffuse, 1.0) * textureColour + vec4(totalSpecular, 1.0);
+	out_Color = mix(vec4(skyColor, 1.0), out_Color, visibility);
 	
 	if(isChosen) {
 		out_Color.r *= 3;

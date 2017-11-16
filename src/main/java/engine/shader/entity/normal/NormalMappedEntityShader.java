@@ -57,7 +57,6 @@ public class NormalMappedEntityShader extends ShaderProgram {
 	//clip plane
 	private static final String UNIFORM_CLIP_PLANE = "clipPlane";			
 	//light
-	private static final String UNIFORM_LIGHT_COUNT = "lightCount";
 	private static final String UNIFORM_LIGHT_POSITION_EYE_SPACE = "lightPositionEyeSpace";
 	private static final String UNIFORM_LIGHT_COLOR = "lightColor";
 	private static final String UNIFORM_ATTENUATION = "attenuation";
@@ -114,7 +113,6 @@ public class NormalMappedEntityShader extends ShaderProgram {
 		//clip plane
 		super.addUniform(UNIFORM_CLIP_PLANE);			
 		//light
-		super.addUniform(UNIFORM_LIGHT_COUNT);
 		for (int i = 0; i < EngineSettings.MAX_LIGHTS; i++) {
 			super.addUniform(UNIFORM_LIGHT_POSITION_EYE_SPACE + "[" + i + "]");
 			super.addUniform(UNIFORM_LIGHT_COLOR + "[" + i + "]");
@@ -195,7 +193,6 @@ public class NormalMappedEntityShader extends ShaderProgram {
 	}
 
 	public void loadLights(Collection<ILight> lights, Matrix4f viewMatrix) {
-		super.loadInt(UNIFORM_LIGHT_COUNT, EngineSettings.MAX_LIGHTS);
 		Iterator<ILight> iterator = lights.iterator();
 		for (int i = 0; i < EngineSettings.MAX_LIGHTS; i++) {
 			if (iterator.hasNext()) {

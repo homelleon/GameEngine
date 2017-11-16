@@ -20,6 +20,6 @@ void main(void) {
 	vec4 highlightColour2 = texture(highlightTexture2, textureCoords);
 	vec4 highlightColour4 = texture(highlightTexture4, textureCoords);
 	vec4 highlightColour8 = texture(highlightTexture8, textureCoords);
-	out_Colour = sceneColour + highlightColour2*0.4 + highlightColour4 + highlightColour8;
+	out_Colour = sceneColour + highlightColour2 * 0.4 + highlightColour4 + highlightColour8;
 
 }

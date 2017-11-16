@@ -1,12 +1,13 @@
 //FRAGMENT SHADER - Entity
 #version 400 core
 
+#define LIGHT_MAX 10
 /*===== in ======*/
 
 //geometry
 in vec2 pass_textureCoordinates;
 in vec3 surfaceNormal;
-in vec3 toLightVector[10];
+in vec3 toLightVector[LIGHT_MAX];
 in vec3 toCameraVector;
 in vec4 shadowCoords;
 in vec3 reflectedVector;
@@ -32,8 +33,8 @@ uniform float shadowMapSize;
 uniform int shadowPCFCount;
 
 //light and colour
-uniform vec3 lightColor[10];
-uniform vec3 attenuation[10];
+uniform vec3 lightColor[LIGHT_MAX];
+uniform vec3 attenuation[LIGHT_MAX];
 uniform int lightCount;
 uniform float shineDamper;
 uniform float reflectivity;
@@ -86,7 +87,7 @@ void main(void) {
     vec3 totalDiffuse = vec3(0.0);
     vec3 totalSpecular = vec3(0.0);
 
-	for(int i=0;i<lightCount;i++) {
+	for(int i = 0; i < LIGHT_MAX; i++) {
 		float distance = length(toLightVector[i]);
 		float attFactor = attenuation[1].x + (attenuation[i].y * distance) + (attenuation[i].z * distance * distance);
 		vec3 unitLightVector = normalize(toLightVector[i]);
@@ -97,7 +98,7 @@ void main(void) {
 		float specularFactor = dot(reflectedLightDirection, unitVectorToCamera);
 		specularFactor = max(specularFactor,0.0);
 		float dampedFactor = pow(specularFactor,shineDamper);
-		totalDiffuse = totalDiffuse + (brightness * lightColor[i])/attFactor;
+		totalDiffuse = totalDiffuse + (brightness * lightColor[i]) / attFactor;
 		totalSpecular = totalSpecular + (dampedFactor * reflectivity * lightColor[i])/attFactor;
 	}
 	totalDiffuse = max(totalDiffuse * lightFactor, 0.4);
@@ -107,7 +108,7 @@ void main(void) {
 		vec4 mapInfo = texture(specularMap, pass_textureCoordinates);
 		totalSpecular *= mapInfo.r;
 		if(mapInfo.g > 0.5) {
-			out_BrightColor = textureColour + vec4(totalSpecular,1.0);
+			out_BrightColor = textureColour + vec4(totalSpecular, 1.0);
 			totalDiffuse = vec3(1.0);
 		}
 	}

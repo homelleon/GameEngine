@@ -19,6 +19,7 @@ const float upperLimit = 30.0;
 
 /*------------- main ---------------*/
 void main(void) {
+	
     vec4 texture1 = texture(cubeMap, textureCoords);
     vec4 texture2 = texture(cubeMap2, textureCoords);
     vec4 finalColour = mix(texture1, texture2, blendFactor);

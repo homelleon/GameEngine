@@ -63,7 +63,6 @@ public class TexturedEntityShader extends ShaderProgram {
 	public static final String UNIFORM_SHADOW_TRANSITION_DISTANCE = "shadowTransitionDistance";
 	public static final String UNIFORM_SHADOW_PCF_COUNT = "shadowPCFCount";	
 	//light
-	public static final String UNIFORM_LIGHT_COUNT = "lightCount";
 	public static final String UNIFORM_LIGHT_POSITION = "lightPosition";
 	public static final String UNIFORM_LIGHT_COLOR = "lightColor";
 	public static final String UNIFORM_ATTENUATION = "attenuation";
@@ -123,7 +122,6 @@ public class TexturedEntityShader extends ShaderProgram {
 		super.addUniform(UNIFORM_SHADOW_TRANSITION_DISTANCE);
 		super.addUniform(UNIFORM_SHADOW_PCF_COUNT);	
 		//light
-		super.addUniform(UNIFORM_LIGHT_COUNT);
 		for (int i = 0; i < EngineSettings.MAX_LIGHTS; i++) {
 			super.addUniform(UNIFORM_LIGHT_POSITION + "[" + i + "]");
 			super.addUniform(UNIFORM_LIGHT_COLOR + "[" + i + "]");
@@ -220,7 +218,6 @@ public class TexturedEntityShader extends ShaderProgram {
 	}
 
 	public void loadLights(Collection<ILight> lights) {
-		super.loadInt(UNIFORM_LIGHT_COUNT, EngineSettings.MAX_LIGHTS);
 		Iterator<ILight> iterator = lights.iterator();
 		for (int i = 0; i < EngineSettings.MAX_LIGHTS; i++) {
 			if (iterator.hasNext()) {
