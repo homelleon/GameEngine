@@ -16,7 +16,7 @@ void main(void) {
 
 	int offset = int(gl_WorkGroupID.y * size + gl_WorkGroupID.x);
 
-	float height = texelFetchBuffer(positionMap, offset).y;
+	float height = texelFetchBuffer(positionMap, offset).y / 128;
 
 	vec4 TextureColor = vec4(height, height, height, 1.0);
 

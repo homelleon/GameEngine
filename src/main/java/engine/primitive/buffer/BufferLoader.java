@@ -118,6 +118,7 @@ public class BufferLoader {
 	
 	public VBO loadToVBOasSSBO(float[] data) {
 		VBO vbo = VBO.create(GL43.GL_SHADER_STORAGE_BUFFER);
+		vbo.bind();
 		vbo.storeData(data, GL15.GL_DYNAMIC_COPY);
 		vbo.unbind();
 		vbos.add(vbo);

@@ -30,7 +30,6 @@ public class Player extends TexturedEntity implements IPlayer {
 
 	public Player(String name, Collection<Model> modelList, Vector3f position, Vector3f rotation, float scale) {
 		super(name, modelList, position, rotation, scale);
-		this.typeID = EngineSettings.ENTITY_TYPE_NORMAL;
 	}
 
 	@Override

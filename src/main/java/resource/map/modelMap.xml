@@ -61,7 +61,7 @@
 		name="Terrain1"
 		terrain_pack="terrainPack"
 		blend_texture="terrainBlendMap"
-		height_texture=""
+		height_texture="heightMap"
 		size="1024"
 		amplitude="20.0"
 		octave="2"

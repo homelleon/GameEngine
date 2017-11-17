@@ -66,10 +66,10 @@ void main(void) {
    
     for(int x = -shadowPCFCount; x <= shadowPCFCount; x++) {
    		for(int y = -shadowPCFCount; y <= shadowPCFCount; y++) {
-   				float objectNearestLight = texture(shadowMap, shadowCoords.xy + vec2(x, y) * texelSize).r;
-   				if(shadowCoords.z > objectNearestLight + 0.002) {
-   					total += 1.0;
-   				}
+			float objectNearestLight = texture(shadowMap, shadowCoords.xy + vec2(x, y) * texelSize).r;
+			if(shadowCoords.z > objectNearestLight + 0.002) {
+				total += 1.0;
+			}
    		}
    }
    

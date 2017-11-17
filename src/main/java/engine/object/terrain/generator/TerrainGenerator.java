@@ -132,11 +132,11 @@ public class TerrainGenerator {
 	}
 	
 	private float getHeight(int x, int z, float[] heights) {
-		if (x < 0 || x >= heights.length || z < 0 || z >= heights.length) {
+		if (x < 0 || x >= Math.sqrt(heights.length) || z < 0 || z >= Math.sqrt(heights.length)) {
 			return 0;
 		}
 		// TODO: implement getRGB function
-		float height = heights[(int) (z * heights.length / 2 + x)]; // heightMap.getRGB(x, z);
+		float height = heights[(int) (z * Math.sqrt(heights.length)  + x)]; // heightMap.getRGB(x, z);
 		height += MAX_PIXEL_COLOUR / 2f;
 		height /= MAX_PIXEL_COLOUR / 2f;
 		height *= MAX_HEIGHT;

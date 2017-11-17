@@ -1,5 +1,6 @@
 package renderer.gpgpu;
 
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 
 import org.lwjgl.BufferUtils;
@@ -38,18 +39,21 @@ public class HeightPositionRenderer {
 	
 	public void render() {
 		int size =  heightMap.getHeight();
-		buffer = this.new HeightStructure(size);
-		VBO vbo = Loader.getInstance().getVertexLoader().loadToVBOasSSBO(buffer.heights);
-		vbo.bind();		
+		buffer = this.new HeightStructure(size * size);
+		VBO vbo = Loader.getInstance().getVertexLoader().loadToVBOasSSBO(buffer.heights);	
 		// compute
+		heightMap.bind(1);
 		vbo.bindBase(0);
-		heightMap.bind(1);	
-		GL43.glDispatchCompute(size / 2, size / 2, 1);
+		GL43.glDispatchCompute(size, size, 1);
 		GL42.glMemoryBarrier(GL43.GL_SHADER_STORAGE_BARRIER_BIT);
-		ByteBuffer byteBuffer = GL15.glMapBuffer(GL43.GL_SHADER_STORAGE_BUFFER, GL15.GL_WRITE_ONLY, null);
 		GL11.glFinish();
-		buffer.heights = byteBuffer.asFloatBuffer().array();		
+		ByteBuffer byteBuffer = GL15.glMapBuffer(GL43.GL_SHADER_STORAGE_BUFFER, GL15.GL_READ_ONLY, null);
+		for(int i = 0; i < size; i++) {
+			this.buffer.heights[i] = byteBuffer.getFloat(i);
+			System.out.println(this.buffer.heights[i]);
+		}
 		GL15.glUnmapBuffer(GL43.GL_SHADER_STORAGE_BUFFER);
+		System.exit(0);
 		shader.stop();
 	}
 	
