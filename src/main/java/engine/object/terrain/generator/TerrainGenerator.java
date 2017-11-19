@@ -20,9 +20,6 @@ import tool.math.vector.Vector2f;
  */
 public class TerrainGenerator {
 	
-	private static final float MAX_HEIGHT = 100;
-	private static final float MAX_PIXEL_COLOUR = 256 * 256 * 256;
-	
 	private Texture2D heightMap;
 	private Texture2D normalMap;
 	private Vector2f position;
@@ -137,9 +134,6 @@ public class TerrainGenerator {
 		}
 		// TODO: implement getRGB function
 		float height = heights[(int) (z * Math.sqrt(heights.length)  + x)]; // heightMap.getRGB(x, z);
-		height += MAX_PIXEL_COLOUR / 2f;
-		height /= MAX_PIXEL_COLOUR / 2f;
-		height *= MAX_HEIGHT;
 		return height;
 	}
 	

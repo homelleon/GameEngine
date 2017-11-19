@@ -78,7 +78,7 @@ public class VAO {
 		dataVBO.bind();
 		dataVBO.storeData(data);
 		dataVBO.bindBase(0);		
-		//GL20.glVertexAttribPointer(attribute, attrSize, GL11.GL_FLOAT, false, attrSize * BYTES_PER_FLOAT, 0);
+		GL20.glVertexAttribPointer(attribute, attrSize, GL11.GL_FLOAT, false, attrSize * BYTES_PER_FLOAT, 0);
 		dataVBO.unbind();
 		dataVbos.add(dataVBO);
 	}

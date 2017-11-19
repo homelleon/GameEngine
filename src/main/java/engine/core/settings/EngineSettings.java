@@ -154,6 +154,7 @@ public class EngineSettings {
 	public final static String SHADERS_BLOOM_PATH = SHADERS_POST_PROCESSING_PATH + "bloom/";
 	public final static String SHADERS_ANIMATION_PATH = SHADERS_PATH + "animation/";
 	public final static String SHADERS_GPGPU_PATH = SHADERS_PATH + "gpgpu/";
+	public final static String SHADERS_DEBUG = SHADERS_PATH + "debug/";
 
 	public final static String SETTINGS_GAME_PATH = "/main/";
 
