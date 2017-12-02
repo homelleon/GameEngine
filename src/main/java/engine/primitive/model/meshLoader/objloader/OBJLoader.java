@@ -26,7 +26,7 @@ public class OBJLoader {
 	private ArrayList<Vector2f> texCoords = new ArrayList<Vector2f>();
 
 	private Deque<MeshObject> objects = new ArrayDeque<MeshObject>();
-	private HashMap<String, Material> materials = new HashMap<String,Material>();
+	private HashMap<String, Material> materials = new HashMap<String, Material>();
 	private int currentSmoothingGroup;
 	private String materialname = null;
 	
@@ -44,117 +44,108 @@ public class OBJLoader {
 		this.generateTangents = generateTangents;
 	}
 	
-	public Mesh[] load(String path, String objFile, String mtlFile)
-	{
+	public Mesh[] load(String path, String objFile, String mtlFile) {
 		long time = System.currentTimeMillis();
 		
 			BufferedReader meshReader = null;
 			BufferedReader mtlReader = null;
 			
 			// load .mtl
-			if (mtlFile != null){
-				try{
+			if(mtlFile != null) {
+				try {
 						InputStreamReader inputStream = new InputStreamReader(Class.class.getResourceAsStream(path + "/" +  mtlFile));
 						mtlReader = new BufferedReader(inputStream);
 						String line;
 						String currentMtl = "";
 						
-						while((line = mtlReader.readLine()) != null){
+						while((line = mtlReader.readLine()) != null) {
 							
 							String[] tokens = line.split(" ");
 							tokens = Util.removeEmptyStrings(tokens);
 							
 							if(tokens.length == 0)
 								continue;
-							if(tokens[0].equals("newmtl")){
+							if(tokens[0].equals("newmtl")) {
 								Material material = new Material(tokens[1]);
 								materials.put(tokens[1], material);
 								currentMtl = tokens[1];
 							}
-							if(tokens[0].equals("Kd")){
-								if (tokens.length > 1){
+							if(tokens[0].equals("Kd")) {
+								if(tokens.length > 1) {
 									Vector3f color = new Vector3f(Float.valueOf(tokens[1]), Float.valueOf(tokens[2]), Float.valueOf(tokens[3]));
 									materials.get(currentMtl).setColor(color);
 								}
 							}
-							if(tokens[0].equals("map_Kd")){
-								if (tokens.length > 1){
+							if(tokens[0].equals("map_Kd")) {
+								if(tokens.length > 1){
 									materials.get(currentMtl).setDiffuseMap(new Texture2D("diffuseMap", path + "/" + tokens[1]));
 								}
 							}
-							if(tokens[0].equals("map_Ks")){
-								if (tokens.length > 1){
+							if(tokens[0].equals("map_Ks")) {
+								if(tokens.length > 1){
 									materials.get(currentMtl).setSpecularMap(new Texture2D("specularMap", path + "/" + tokens[1]));
 								}
 							}
-							if(tokens[0].equals("map_bump")){
-								if (tokens.length > 1){
+							if(tokens[0].equals("map_bump")) {
+								if(tokens.length > 1) {
 									materials.get(currentMtl).setNormalMap(new Texture2D("normalMap", path + "/" + tokens[1]));
 								}
 							}
-							if(tokens[0].equals("illum")){
-								if (tokens.length > 1)
+							if(tokens[0].equals("illum")) {
+								if(tokens.length > 1)
 									materials.get(currentMtl).setEmission(Float.valueOf(tokens[1]));
 							}
-							if(tokens[0].equals("Ns")){
-								if (tokens.length > 1)
+							if(tokens[0].equals("Ns")) {
+								if(tokens.length > 1)
 									materials.get(currentMtl).setShininess(Float.valueOf(tokens[1]));
 							}
 						}
 						mtlReader.close();
 					}
-				catch(Exception e)
-				{
+				catch(Exception e) {
 					e.printStackTrace();
 					System.exit(1);
 				}
 			}
 				
 			// load .obj
-			try{
+			try {
 				System.out.println(path + objFile + ".obj");
 				InputStreamReader inputStream = new InputStreamReader(Class.class.getResourceAsStream(path + objFile + ".obj"));
 				meshReader = new BufferedReader(inputStream);
 				String line;
-				while((line = meshReader.readLine()) != null)
-				{
+				while((line = meshReader.readLine()) != null) {
 					String[] tokens = line.split(" ");
 					tokens = Util.removeEmptyStrings(tokens);
 					if(tokens.length == 0 || tokens[0].equals("#"))
 						continue;
 					
-					if(tokens[0].equals("v"))
-					{
+					if(tokens[0].equals("v")) {
 						vertices.add(new Vertex(new Vector3f(Float.valueOf(tokens[1]),
 														  Float.valueOf(tokens[2]),
 														  Float.valueOf(tokens[3]))));
 					}
-					if(tokens[0].equals("vn"))
-					{
+					if(tokens[0].equals("vn")) {
 						normals.add(new Vector3f(Float.valueOf(tokens[1]),
 											  Float.valueOf(tokens[2]),
 											  Float.valueOf(tokens[3])));
 					}
-					if(tokens[0].equals("vt"))
-					{
+					if(tokens[0].equals("vt")) {
 						texCoords.add(new Vector2f(Float.valueOf(tokens[1]), Float.valueOf(tokens[2])));
 					}
-					if(tokens[0].equals("o"))
-					{
+					if(tokens[0].equals("o")) {
 						MeshObject object = new MeshObject();
 						object.setName(tokens[1]);
 						objects.add(new MeshObject());
 					}
-					if(tokens[0].equals("g"))
-					{
+					if(tokens[0].equals("g")) {
 						PolygonGroup polygonGroup = new PolygonGroup();	
 						if (tokens.length > 1)
 							polygonGroup.setName(tokens[1]);
 						if (objects.isEmpty()) objects.add(new MeshObject());
 						objects.peekLast().getPolygonGroups().add(polygonGroup);
 					}
-					if(tokens[0].equals("usemtl"))
-					{
+					if(tokens[0].equals("usemtl")) {
 						Polygon polygon = new Polygon();
 						materialname = tokens[1];
 						polygon.setMaterial(tokens[1]);
@@ -162,30 +153,27 @@ public class OBJLoader {
 							objects.peekLast().getPolygonGroups().add(new PolygonGroup());
 						objects.peekLast().getPolygonGroups().peekLast().getPolygons().add(polygon);
 					}
-					if(tokens[0].equals("s"))
-					{
-						if (objects.peekLast().getPolygonGroups().isEmpty()) {
+					if(tokens[0].equals("s")) {
+						if(objects.peekLast().getPolygonGroups().isEmpty()) {
 							objects.peekLast().getPolygonGroups().add(new PolygonGroup());
 						}
-						if(tokens[1].equals("off") || tokens[1].equals("0")){
+						if(tokens[1].equals("off") || tokens[1].equals("0")) {
 							currentSmoothingGroup = 0;
-							if (!objects.peekLast().getPolygonGroups().peekLast().getSmoothingGroups().containsKey(0)){
+							if(!objects.peekLast().getPolygonGroups().peekLast().getSmoothingGroups().containsKey(0)) {
 								objects.peekLast().getPolygonGroups().peekLast().getSmoothingGroups().put(currentSmoothingGroup, new SmoothingGroup());
 							}
-						}
-						else{
+						} else {
 							currentSmoothingGroup = Integer.valueOf(tokens[1]);
-							if (!objects.peekLast().getPolygonGroups().peekLast().getSmoothingGroups().containsKey(currentSmoothingGroup)){
+							if(!objects.peekLast().getPolygonGroups().peekLast().getSmoothingGroups().containsKey(currentSmoothingGroup)){
 								objects.peekLast().getPolygonGroups().peekLast().getSmoothingGroups().put(currentSmoothingGroup, new SmoothingGroup());
 							}
 						}
 					}
-					if(tokens[0].equals("f"))
-					{
+					if(tokens[0].equals("f")) {
 						if(objects.peekLast().getPolygonGroups().isEmpty())
 							objects.peekLast().getPolygonGroups().add(new PolygonGroup());
 						
-						if(objects.peekLast().getPolygonGroups().peekLast().getSmoothingGroups().isEmpty()){
+						if(objects.peekLast().getPolygonGroups().peekLast().getSmoothingGroups().isEmpty()) {
 							currentSmoothingGroup = 1;
 							objects.peekLast().getPolygonGroups().peekLast().getSmoothingGroups().put(currentSmoothingGroup, new SmoothingGroup());
 						}
@@ -193,19 +181,19 @@ public class OBJLoader {
 						if(objects.peekLast().getPolygonGroups().peekLast().getPolygons().isEmpty())
 							objects.peekLast().getPolygonGroups().peekLast().getPolygons().add(new Polygon());
 						
-						if (tokens.length == 4)
+						if(tokens.length == 4)
 							parseTriangleFace(tokens);
-						if (tokens.length == 5)
+						if(tokens.length == 5)
 							parseQuadFace(tokens);
 					}
 				}
 				meshReader.close();
 					
-				if (normals.isEmpty() && generateNormals){
-					for (MeshObject object : objects){
-						for (PolygonGroup polygonGroup : object.getPolygonGroups()){
-							for (Integer key : polygonGroup.getSmoothingGroups().keySet()){
-								if (frontface == Frontface.CW)
+				if(normals.isEmpty() && generateNormals) {
+					for(MeshObject object : objects) {
+						for(PolygonGroup polygonGroup : object.getPolygonGroups()) {
+							for(Integer key : polygonGroup.getSmoothingGroups().keySet()) {
+								if(frontface == Frontface.CW)
 									Util.generateNormalsCW(polygonGroup.getSmoothingGroups().get(key));
 								else
 									Util.generateNormalsCCW(polygonGroup.getSmoothingGroups().get(key));
@@ -216,9 +204,9 @@ public class OBJLoader {
 					
 				ArrayList<Mesh> meshes = new ArrayList<Mesh>();
 				
-				for(MeshObject object : objects){
-					for (PolygonGroup polygonGroup : object.getPolygonGroups()){
-						for (Polygon polygon : polygonGroup.getPolygons()){
+				for(MeshObject object : objects) {
+					for(PolygonGroup polygonGroup : object.getPolygonGroups()) {
+						for(Polygon polygon : polygonGroup.getPolygons()) {
 							
 							generatePolygon(polygonGroup.getSmoothingGroups(), polygon);
 							Mesh mesh = convert(polygon);						
@@ -234,8 +222,7 @@ public class OBJLoader {
 				
 				return meshes.toArray(meshArray);
 			}
-			catch(Exception e)
-			{
+			catch(Exception e) {
 				e.printStackTrace();
 				System.exit(1);
 			}
@@ -243,10 +230,9 @@ public class OBJLoader {
 		return null;
 	}
 	
-	private void parseTriangleFace(String[] tokens)
-	{
+	private void parseTriangleFace(String[] tokens) {
 		// vertex//normal
-		if (tokens[1].contains("//")){
+		if(tokens[1].contains("//")) {
 			
 			int[] vertexIndices = {Integer.parseInt(tokens[1].split("//")[0]) - 1,
 					      		   Integer.parseInt(tokens[2].split("//")[0]) - 1,
@@ -267,10 +253,10 @@ public class OBJLoader {
 			addToSmoothingGroup(objects.peekLast().getPolygonGroups().peekLast().getSmoothingGroups().get(currentSmoothingGroup),v0,v1,v2);
 		}
 		
-		else if (tokens[1].contains("/")){	
+		else if(tokens[1].contains("/")) {	
 			
 			// vertex/textureCoord/normal
-			if (tokens[1].split("/").length == 3){
+			if(tokens[1].split("/").length == 3) {
 
 				int[] vertexIndices = {Integer.parseInt(tokens[1].split("/")[0]) - 1,
 						      		   Integer.parseInt(tokens[2].split("/")[0]) - 1,
@@ -298,7 +284,7 @@ public class OBJLoader {
 			}
 			
 			// vertex/textureCoord
-			else{
+			else {
 
 				int[] vertexIndices = {Integer.parseInt(tokens[1].split("/")[0]) - 1,
 							  	 	   Integer.parseInt(tokens[2].split("/")[0]) - 1,
@@ -321,7 +307,7 @@ public class OBJLoader {
 		}
 	
 		// vertex
-		else{
+		else {
 			
 			int[] vertexIndices = {Integer.parseInt(tokens[1]) - 1,
 					      Integer.parseInt(tokens[2]) - 1,
@@ -337,10 +323,9 @@ public class OBJLoader {
 		}
 	}
 	
-	private void parseQuadFace(String[] tokens)
-	{
+	private void parseQuadFace(String[] tokens) {
 		// vertex//normal
-		if (tokens[1].contains("//")){
+		if(tokens[1].contains("//")) {
 			
 			int[] vertexIndices = {Integer.parseInt(tokens[1].split("//")[0]) - 1,
 						  		   Integer.parseInt(tokens[2].split("//")[0]) - 1,
@@ -367,10 +352,10 @@ public class OBJLoader {
 			addToSmoothingGroup(objects.peekLast().getPolygonGroups().peekLast().getSmoothingGroups().get(currentSmoothingGroup),v0,v1,v2,v3);
 		}
 		
-		else if (tokens[1].contains("/")){	
-			
+		else if(tokens[1].contains("/")) {	
+		
 			// vertex/textureCoord/normal
-			if (tokens[1].split("/").length == 3){
+			if(tokens[1].split("/").length == 3) {
 
 				int[] vertexIndices = {Integer.parseInt(tokens[1].split("/")[0]) - 1,
 									   Integer.parseInt(tokens[2].split("/")[0]) - 1,
@@ -406,7 +391,7 @@ public class OBJLoader {
 			}
 			
 			// vertex/textureCoord
-			else{
+			else {
 
 				int[] vertexIndices = {Integer.parseInt(tokens[1].split("/")[0]) - 1,
 						      		   Integer.parseInt(tokens[2].split("/")[0]) - 1,
@@ -435,7 +420,7 @@ public class OBJLoader {
 		}
 	
 		// vertex
-		else{
+		else {
 			
 			int[] vertexIndices = {Integer.parseInt(tokens[1]) - 1,
 					      		   Integer.parseInt(tokens[2]) - 1,
@@ -455,7 +440,7 @@ public class OBJLoader {
 		}
 	}
 	
-	private void addToSmoothingGroup(SmoothingGroup smoothingGroup, Vertex v0, Vertex v1, Vertex v2){
+	private void addToSmoothingGroup(SmoothingGroup smoothingGroup, Vertex v0, Vertex v1, Vertex v2) {
 		
 		int index0 = processVertex(smoothingGroup, v0);
 		int index1 = processVertex(smoothingGroup, v1);
@@ -470,8 +455,7 @@ public class OBJLoader {
 		smoothingGroup.getFaces().add(face);
 	}
 	
-	private void addToSmoothingGroup(SmoothingGroup smoothingGroup, Vertex v0, Vertex v1, Vertex v2, Vertex v3){
-		
+	private void addToSmoothingGroup(SmoothingGroup smoothingGroup, Vertex v0, Vertex v1, Vertex v2, Vertex v3) {
 		int index0 = processVertex(smoothingGroup, v0);
 		int index1 = processVertex(smoothingGroup, v1);
 		int index2 = processVertex(smoothingGroup, v2);
@@ -494,7 +478,7 @@ public class OBJLoader {
 	}
 	
 	private int processVertex(SmoothingGroup smoothingGroup, Vertex previousVertex) {
-		if (smoothingGroup.getVertices().contains(previousVertex)) {
+		if(smoothingGroup.getVertices().contains(previousVertex)) {
 			int index = smoothingGroup.getVertices().indexOf(previousVertex);
 			Vertex nextVertex = smoothingGroup.getVertices().get(index);
 			if(!hasSameNormalAndTexture(previousVertex, nextVertex)) {				
@@ -519,16 +503,16 @@ public class OBJLoader {
 		return v1.getNormal().equals(v2.getNormal()) && v1.getTextureCoord().equals(v2.getTextureCoord());
 	}
 	
-	private void generatePolygon(HashMap<Integer, SmoothingGroup> smoothingGroups, Polygon polygon){
+	private void generatePolygon(HashMap<Integer, SmoothingGroup> smoothingGroups, Polygon polygon) {
 		
-		for (Integer key : smoothingGroups.keySet()) {
-			for(Face face : smoothingGroups.get(key).getFaces()){
-				if (face.getMaterial() == polygon.getMaterial()){
-					if (!polygon.getVertices().contains(smoothingGroups.get(key).getVertices().get(face.getIndices()[0])))
+		for(Integer key : smoothingGroups.keySet()) {
+			for(Face face : smoothingGroups.get(key).getFaces()) {
+				if(face.getMaterial() == polygon.getMaterial()) {
+					if(!polygon.getVertices().contains(smoothingGroups.get(key).getVertices().get(face.getIndices()[0])))
 						polygon.getVertices().add(smoothingGroups.get(key).getVertices().get(face.getIndices()[0]));
-					if (!polygon.getVertices().contains(smoothingGroups.get(key).getVertices().get(face.getIndices()[1])))
+					if(!polygon.getVertices().contains(smoothingGroups.get(key).getVertices().get(face.getIndices()[1])))
 						polygon.getVertices().add(smoothingGroups.get(key).getVertices().get(face.getIndices()[1]));
-					if (!polygon.getVertices().contains(smoothingGroups.get(key).getVertices().get(face.getIndices()[2])))
+					if(!polygon.getVertices().contains(smoothingGroups.get(key).getVertices().get(face.getIndices()[2])))
 						polygon.getVertices().add(smoothingGroups.get(key).getVertices().get(face.getIndices()[2]));
 					
 					polygon.getIndices().add(polygon.getVertices().indexOf(smoothingGroups.get(key).getVertices().get(face.getIndices()[0])));
@@ -558,8 +542,7 @@ public class OBJLoader {
 		v2.setTangent(tangent);
 	}
 	
-	private Mesh convert(Polygon polygon){
-		
+	private Mesh convert(Polygon polygon) {		
 		Object[] positionObjectArray = new Object[polygon.getVertices().size()*3];
 		Object[] normalObjectArray = new Object[polygon.getVertices().size()*3];
 		Object[] textureObjectArray = new Object[polygon.getVertices().size()*2];
