@@ -8,8 +8,7 @@ public class MeshData{
 	private boolean isTangentSpace;
 	private boolean isInstanced;
 	
-	protected MeshData(Vertex[] vertices, int[] indices)
-	{
+	protected MeshData(Vertex[] vertices, int[] indices) {
 		this.vertices = vertices;
 		this.indices = indices;
 	}

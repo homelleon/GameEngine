@@ -8,7 +8,7 @@ public class MeshObject {
 	private Deque<PolygonGroup> polygonGroups;
 	private String name = "";
 	
-	protected MeshObject(){
+	protected MeshObject() {
 		polygonGroups = new ArrayDeque<PolygonGroup>();
 	}
 

@@ -9,7 +9,7 @@ public class PolygonGroup {
 	private HashMap<Integer,SmoothingGroup> smoothingGroups = new HashMap<Integer,SmoothingGroup>();
 	private String name = "";
 	
-	protected PolygonGroup(){
+	protected PolygonGroup() {
 		smoothingGroups = new HashMap<Integer,SmoothingGroup>();
 		polygons = new ArrayList<Polygon>();
 	}

@@ -7,7 +7,7 @@ public class SmoothingGroup {
 	private ArrayList<Face> faces;
 	private ArrayList<Vertex> vertices;
 	
-	protected SmoothingGroup(){
+	protected SmoothingGroup() {
 		faces = new ArrayList<Face>();
 		vertices = new ArrayList<Vertex>();
 	}

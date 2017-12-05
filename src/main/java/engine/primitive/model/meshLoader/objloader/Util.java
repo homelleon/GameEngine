@@ -9,13 +9,14 @@ import tool.math.vector.Vector3f;
 
 public class Util {
 
-	public static String [] removeEmptyStrings(String[] data)
-	{
+	public static String [] removeEmptyStrings(String[] data) {
 		ArrayList<String> result = new ArrayList<String>();
 		
-		for (int i = 0; i < data.length; i++)
-			if(!data[i].equals(""))
+		for (int i = 0; i < data.length; i++) {
+			if(!data[i].equals("")) {
 				result.add(data[i]);
+			}
+		}
 		
 		String[] res = new String[result.size()];
 		result.toArray(res);
@@ -23,22 +24,20 @@ public class Util {
 		return res;
 	}
 	
-	public static int[] toIntArray(Integer[] data)
-	{
+	public static int[] toIntArray(Integer[] data) {
 		int[] result = new int[data.length];
 		
-		for(int i=0; i < data.length; i++)
+		for(int i=0; i < data.length; i++) {
 			result[i] = data[i].intValue();
+		}
 		
 		return result;
 	}
 	
-	public static Vertex[] toVertexArray(FloatBuffer data)
-	{
+	public static Vertex[] toVertexArray(FloatBuffer data) {
 		Vertex[] vertices = new Vertex[data.limit() / Vertex.FLOATS];
 		
-		for(int i=0; i<vertices.length; i++)
-		{
+		for(int i=0; i<vertices.length; i++) {
 			vertices[i] = new Vertex();
 			vertices[i].setPos(new Vector3f(data.get(),data.get(),data.get()));
 			vertices[i].setTextureCoord(new Vector2f(data.get(),data.get()));
@@ -48,12 +47,10 @@ public class Util {
 		return vertices;
 	}
 	
-	public static Vertex[] toVertexArray(ArrayList<Vertex> data)
-	{
+	public static Vertex[] toVertexArray(ArrayList<Vertex> data) {
 		Vertex[] vertices = new Vertex[data.size()];
 		
-		for(int i=0; i<vertices.length; i++)
-		{
+		for(int i=0; i<vertices.length; i++) {
 			vertices[i] = new Vertex();
 			vertices[i].setPos(data.get(i).getPos());
 			vertices[i].setTextureCoord(data.get(i).getTextureCoord());
@@ -63,10 +60,8 @@ public class Util {
 		return vertices;
 	}
 	
-	public static void generateNormalsCW(Vertex[] vertices, int[] indices)
-	{
-	    for ( int i = 0; i < indices.length; i += 3 )
-	    {
+	public static void generateNormalsCW(Vertex[] vertices, int[] indices) {
+	    for ( int i = 0; i < indices.length; i += 3 ) {
 	    	Vector3f v0 = vertices[indices[i    ]].getPos();
 	    	Vector3f v1 = vertices[indices[i + 1]].getPos();
 	    	Vector3f v2 = vertices[indices[i + 2]].getPos();
@@ -78,16 +73,13 @@ public class Util {
 	        vertices[indices[i + 2]].setNormal(vertices[indices[i + 2]].getNormal().add(normal));
 	    }
 
-	    for ( int i = 0; i < vertices.length; ++i )
-	    {	
+	    for ( int i = 0; i < vertices.length; ++i ) {	
 	    	vertices[i].setNormal(vertices[i].getNormal().normalize());
 	    }       
 	}
 	
-	public static void generateNormalsCCW(Vertex[] vertices, int[] indices)
-	{
-	    for ( int i = 0; i < indices.length; i += 3 )
-	    {
+	public static void generateNormalsCCW(Vertex[] vertices, int[] indices)	{
+	    for ( int i = 0; i < indices.length; i += 3 ) {
 	    	Vector3f v0 = vertices[indices[i    ]].getPos();
 	    	Vector3f v1 = vertices[indices[i + 1]].getPos();
 	    	Vector3f v2 = vertices[indices[i + 2]].getPos();
@@ -99,14 +91,12 @@ public class Util {
 	        vertices[indices[i + 2]].setNormal(vertices[indices[i + 2]].getNormal().add(normal));
 	    }
 
-	    for ( int i = 0; i < vertices.length; ++i )
-	    {	
+	    for ( int i = 0; i < vertices.length; ++i ) {	
 	    	vertices[i].setNormal(vertices[i].getNormal().normalize());
 	    }       
 	}
 	
-	public static void generateNormalsCW(ArrayList<Vertex> vertices, ArrayList<Integer> indices)
-	{
+	public static void generateNormalsCW(ArrayList<Vertex> vertices, ArrayList<Integer> indices) {
 	    for ( int i = 0; i < indices.size(); i += 3 )
 	    {
 	    	Vector3f v0 = vertices.get(indices.get(i)).getPos();
@@ -120,16 +110,13 @@ public class Util {
 	        vertices.get(indices.get(i+2)).setNormal(vertices.get(indices.get(i+2)).getNormal().add(normal));
 	    }
 
-	    for ( int i = 0; i < vertices.size(); ++i )
-	    {	
+	    for ( int i = 0; i < vertices.size(); ++i ) {	
 	    	vertices.get(i).setNormal(vertices.get(i).getNormal().normalize());
 	    }       
 	}
 	
-	public static void generateNormalsCCW(ArrayList<Vertex> vertices, ArrayList<Integer> indices)
-	{
-	    for ( int i = 0; i < indices.size(); i += 3 )
-	    {
+	public static void generateNormalsCCW(ArrayList<Vertex> vertices, ArrayList<Integer> indices) {
+	    for ( int i = 0; i < indices.size(); i += 3 ) {
 	    	Vector3f v0 = vertices.get(indices.get(i)).getPos();
 	    	Vector3f v1 = vertices.get(indices.get(i+1)).getPos();
 	    	Vector3f v2 = vertices.get(indices.get(i+2)).getPos();
@@ -141,16 +128,13 @@ public class Util {
 	        vertices.get(indices.get(i+2)).setNormal(vertices.get(indices.get(i+2)).getNormal().add(normal));
 	    }
 
-	    for ( int i = 0; i < vertices.size(); ++i )
-	    {	
+	    for ( int i = 0; i < vertices.size(); ++i ) {	
 	    	vertices.get(i).setNormal(vertices.get(i).getNormal().normalize());
 	    }       
 	}
 	
-	public static void generateNormalsCW(SmoothingGroup smoothingGroup)
-	{
-	    for (Face face : smoothingGroup.getFaces())
-	    {
+	public static void generateNormalsCW(SmoothingGroup smoothingGroup)	{
+	    for (Face face : smoothingGroup.getFaces()) {
 	    	Vector3f v0 = smoothingGroup.getVertices().get(face.getIndices()[0]).getPos();
 	    	Vector3f v1 = smoothingGroup.getVertices().get(face.getIndices()[1]).getPos();
 	    	Vector3f v2 = smoothingGroup.getVertices().get(face.getIndices()[2]).getPos();
@@ -165,16 +149,13 @@ public class Util {
 	    			smoothingGroup.getVertices().get(face.getIndices()[2]).getNormal().add(normal));
 	    }
 
-	    for (Vertex vertex : smoothingGroup.getVertices())
-	    {	
+	    for (Vertex vertex : smoothingGroup.getVertices()) {	
 	    	vertex.setNormal(vertex.getNormal().normalize());
 	    }       
 	}
 	
-	public static void generateNormalsCCW(SmoothingGroup smoothingGroup)
-	{
-		  for (Face face : smoothingGroup.getFaces())
-		    {
+	public static void generateNormalsCCW(SmoothingGroup smoothingGroup) {
+		  for (Face face : smoothingGroup.getFaces()) {
 		    	Vector3f v0 = smoothingGroup.getVertices().get(face.getIndices()[0]).getPos();
 		    	Vector3f v1 = smoothingGroup.getVertices().get(face.getIndices()[1]).getPos();
 		    	Vector3f v2 = smoothingGroup.getVertices().get(face.getIndices()[2]).getPos();
@@ -189,17 +170,14 @@ public class Util {
 		    			smoothingGroup.getVertices().get(face.getIndices()[2]).getNormal().add(normal));
 		    }
 
-		    for (Vertex vertex : smoothingGroup.getVertices())
-		    {	
+		    for (Vertex vertex : smoothingGroup.getVertices()) {	
 		    	vertex.setNormal(vertex.getNormal().normalize());
 		    }     
 	}
 	
 	
-	public static void generateTangentsBitangents(MeshData mesh)
-	{
-		for ( int i = 0; i < mesh.getIndices().length; i += 3 )
-		{
+	public static void generateTangentsBitangents(MeshData mesh) {
+		for ( int i = 0; i < mesh.getIndices().length; i += 3 ) {
 		    	Vector3f v0 = mesh.getVertices()[mesh.getIndices()[i]].getPos();
 		    	Vector3f v1 = mesh.getVertices()[mesh.getIndices()[i+1]].getPos();
 		    	Vector3f v2 = mesh.getVertices()[mesh.getIndices()[i+2]].getPos();
@@ -252,15 +230,13 @@ public class Util {
 		    	mesh.getVertices()[mesh.getIndices()[i+2]].setBitangent(mesh.getVertices()[mesh.getIndices()[i+2]].getBitangent().add(bitangent));	
 		 }
 		
-		 for (Vertex vertex : mesh.getVertices())
-		    {	
+		 for (Vertex vertex : mesh.getVertices()) {	
 		    	vertex.setTangent(vertex.getTangent().normalize());
 		    	vertex.setBitangent(vertex.getBitangent().normalize());
 		    }
 	}
 	
-	public static Quaternion normalizePlane(Quaternion plane)
-	{
+	public static Quaternion normalizePlane(Quaternion plane) {
 		float mag;
 		mag = (float) Math.sqrt(plane.x * plane.x + plane.y * plane.y + plane.z * plane.z);
 		plane.setX(plane.x/mag);
@@ -271,8 +247,7 @@ public class Util {
 		return plane;
 	}
 	
-	public static Vector2f[] texCoordsFromFontMap(char x)
-	{
+	public static Vector2f[] texCoordsFromFontMap(char x) {
 		float x_ = (x%16)/16.0f;
 		float y_ = (x/16)/16.0f;
 		Vector2f[] texCoords = new Vector2f[4];

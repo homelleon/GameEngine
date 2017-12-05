@@ -8,7 +8,7 @@ public class Polygon {
 	private ArrayList<Integer> indices;
 	private String material = null;
 	
-	protected Polygon(){
+	protected Polygon() {
 		vertices = new ArrayList<Vertex>();
 		indices = new ArrayList<Integer>();
 	}
