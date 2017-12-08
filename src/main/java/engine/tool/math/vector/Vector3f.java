@@ -2,32 +2,28 @@ package tool.math.vector;
 
 import org.lwjgl.util.vector.Vector4f;
 
-import object.entity.entity.IEntity;
 import tool.math.Maths;
 import tool.math.Quaternion;
 
-public class Vector3f extends Vector implements Comparable {
+public class Vector3f extends Vector implements Comparable<Vector3f> {
 	
 	public float x;
 	public float y;
 	public float z;
 	
-	public Vector3f()
-	{
+	public Vector3f() {
 		this.setX(0);
 		this.setY(0);
 		this.setZ(0);
 	}
 	
-	public Vector3f(float x, float y, float z)
-	{
+	public Vector3f(float x, float y, float z) {
 		this.setX(x);
 		this.setY(y);
 		this.setZ(z);
 	}
 	
-	public Vector3f(Vector3f vector)
-	{
+	public Vector3f(Vector3f vector) {
 		this.setX(vector.x);
 		this.setY(vector.y);
 		this.setZ(vector.z);
@@ -39,8 +35,7 @@ public class Vector3f extends Vector implements Comparable {
 		this.setZ(plane.z);
 	}	
 	
-	public float length()
-	{
+	public float length() {
 		return (float) Math.sqrt(x*x + y*y + z*z);
 	}
 	
@@ -60,18 +55,15 @@ public class Vector3f extends Vector implements Comparable {
 		return this;
 	}
 	
-	public float dot(Vector3f vector)
-	{
+	public float dot(Vector3f vector) {
 		return x * vector.x + y * vector.y + z * vector.z;
 	}
 	
-	public static float dot(Vector3f left, Vector3f right)
-	{
+	public static float dot(Vector3f left, Vector3f right) {
 		return left.x * right.getX() + left.y * right.getY() + left.z * right.getZ();
 	}
 	
-	public Vector3f cross(Vector3f vector)
-	{
+	public Vector3f cross(Vector3f vector) {
 		float x = this.y * vector.z - this.z * vector.y;
 		float y = this.z * vector.x - this.x * vector.z;
 		float z = this.x * vector.y - this.y * vector.x;
@@ -100,8 +92,7 @@ public class Vector3f extends Vector implements Comparable {
 
 	}
 	
-	public Vector3f normalize()
-	{
+	public Vector3f normalize() {
 		float length = this.length();
 		
 		x /= length;
@@ -111,8 +102,7 @@ public class Vector3f extends Vector implements Comparable {
 		return this;
 	}
 	
-	public Vector3f normalize(Vector3f vector)
-	{
+	public Vector3f normalize(Vector3f vector) {
 		float length = this.length();
 		
 		vector.x /= length;
@@ -122,8 +112,7 @@ public class Vector3f extends Vector implements Comparable {
 		return vector;
 	}
 	
-	public Vector3f rotate(float angle, Vector3f axis)
-	{
+	public Vector3f rotate(float angle, Vector3f axis) {
 		float sinHalfAngle = (float)Math.sin(Math.toRadians(angle / 2));
 		float cosHalfAngle = (float)Math.cos(Math.toRadians(angle / 2));
 		
@@ -144,8 +133,7 @@ public class Vector3f extends Vector implements Comparable {
 		return this;
 	}
 	
-	public Vector3f add(Vector3f vector)
-	{
+	public Vector3f add(Vector3f vector) {
 		this.x = this.x + vector.x;
 		this.y = this.y + vector.y;
 		this.z = this.z + vector.z;
@@ -153,13 +141,11 @@ public class Vector3f extends Vector implements Comparable {
 		return this;
 	}
 	
-	public static Vector3f add(Vector3f left, Vector3f right)
-	{
+	public static Vector3f add(Vector3f left, Vector3f right) {
 		return new Vector3f(left.x + right.x, left.y + right.y, left.z + right.z);
 	}
 	
-	public Vector3f add(float value)
-	{
+	public Vector3f add(float value) {
 		this.x = this.x + value;
 		this.y = this.y + value;
 		this.z = this.z + value;
@@ -168,8 +154,7 @@ public class Vector3f extends Vector implements Comparable {
 	}
 	
 	
-	public Vector3f sub(Vector3f vector)
-	{
+	public Vector3f sub(Vector3f vector) {
 		this.x = this.x - vector.x;
 		this.y = this.y - vector.y;
 		this.z = this.z - vector.z;
@@ -177,8 +162,7 @@ public class Vector3f extends Vector implements Comparable {
 		return this;
 	}
 	
-	public Vector3f sub(float value)
-	{
+	public Vector3f sub(float value) {
 		this.x = this.x - value;
 		this.y = this.y - value;
 		this.z = this.z - value;
@@ -186,13 +170,11 @@ public class Vector3f extends Vector implements Comparable {
 		return this;
 	}
 	
-	public static Vector3f sub(Vector3f left, Vector3f right)
-	{
+	public static Vector3f sub(Vector3f left, Vector3f right) {
 		return new Vector3f(left.x - right.x, left.y - right.y, left.z - right.z);
 	}
 	
-	public Vector3f mul(Vector3f vector)
-	{
+	public Vector3f mul(Vector3f vector) {
 		this.x = this.x * vector.x;
 		this.y = this.y * vector.y;
 		this.z = this.z * vector.z;
@@ -200,40 +182,33 @@ public class Vector3f extends Vector implements Comparable {
 		return this;
 	}
 	
-	public Vector3f mul(float x, float y, float z)
-	{
+	public Vector3f mul(float x, float y, float z) {
 		return new Vector3f(this.x * x, this.y * y, this.z * z);
 	}
 	
-	public Vector3f mul(float value)
-	{
+	public Vector3f mul(float value) {
 		return new Vector3f(this.x * value, this.y * value, this.z * value);
 	}
 	
-	public Vector3f div(Vector3f vector)
-	{
+	public Vector3f div(Vector3f vector) {
 		return new Vector3f(this.x / vector.getX(), this.y / vector.getY(), this.getZ() / vector.getZ());
 	}
 	
-	public Vector3f div(float value)
-	{
+	public Vector3f div(float value) {
 		return new Vector3f(this.x / value, this.y / value, this.z / value);
 	}
 	
-	public Vector3f abs()
-	{
+	public Vector3f abs() {
 		return new Vector3f(Math.abs(x), Math.abs(y), Math.abs(z));
 	}
 	
-	public boolean equals(Vector3f v)
-	{
+	public boolean equals(Vector3f v) {
 		if (x == v.getX() && y == v.getY() && z == v.getZ())
 			return true;
 		else return false;
 	}
 	
-	public String toString()
-	{
+	public String toString() {
 		return "[" + this.x + "," + this.y + "," + this.z + "]";
 	}
 
@@ -262,10 +237,8 @@ public class Vector3f extends Vector implements Comparable {
 	}
 
 	@Override
-	public int compareTo(Object vector) {
+	public int compareTo(Vector3f vector) {
 		return Maths.compare(this, ((Vector3f) vector));
 	}
-	
-	
 	
 }
