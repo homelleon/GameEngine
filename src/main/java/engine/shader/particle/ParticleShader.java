@@ -16,6 +16,8 @@ public class ParticleShader extends ShaderProgram {
 	private static final String ATTRIBUTE_TEX_OFFSETS = "in_texOffsets";
 	private static final String ATTRIBUTE_BLEND_FACTOR = "in_blendFactor";
 	//----uniforms
+	// material
+	private static final String UNIFORM_PARTICLE_MAP = "particleMap";
 	private static final String UNIFORM_PROJECTION_MATRIX = "Projection";
 	private static final String UNIFORM_NUMBER_OF_ROWS = "numberOfRows";
 	
@@ -38,6 +40,11 @@ public class ParticleShader extends ShaderProgram {
 	protected void loadUniformLocations() {
 		super.addUniform(UNIFORM_NUMBER_OF_ROWS);
 		super.addUniform(UNIFORM_PROJECTION_MATRIX);
+		super.addUniform(UNIFORM_PARTICLE_MAP);
+	}
+	
+	public void connectTextureUnits() {
+		super.loadInt(UNIFORM_PARTICLE_MAP, 0);
 	}
 
 	public void loadNumberOfRows(float numberOfRows) {

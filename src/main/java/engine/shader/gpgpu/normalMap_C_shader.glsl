@@ -1,14 +1,18 @@
-//COMPUTE SHADER - normalMap
+// COMPUTE SHADER - normalMap
 #version 430 core
 
+// local groups
 layout (local_size_x = 16, local_size_y = 16) in;
 
-layout (binding = 0, rgba32f) uniform writeonly image2D normalMap;
+// material
+uniform sampler2D heightMap; 									   // in
+layout (binding = 0, rgba32f) uniform writeonly image2D normalMap; // out
 
-uniform sampler2D heightMap;
+// size
 uniform int N;
 uniform float strength;
 
+/* ------------- main --------------- */
 void main(void) {
 
 	ivec2 xy = ivec2(gl_GlobalInvocationID.xy);

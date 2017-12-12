@@ -1,20 +1,20 @@
-//FRAGMENT SHADER - Terrain
+// FRAGMENT SHADER - Terrain
 #version 430 core
-
 #define LIGHT_MAX 10 // max light source count
 
-/*===== in ======*/
+/* ===== in ====== */
 in vec2 fs_textureCoords;
 in vec3 fs_toLightVector[LIGHT_MAX];
 in vec3 fs_toCameraVector;
 in float fs_visibility;
 in vec4 fs_shadowCoords;
 
-/*===== out =====*/
+/* ===== out ===== */
 out vec4 out_Color;
 out vec4 out_BrightColor;
 
-/*== uniforms ==*/
+/* == uniforms == */
+// material
 uniform sampler2D backgroundTexture;
 uniform sampler2D rTexture;
 uniform sampler2D gTexture;
@@ -22,20 +22,23 @@ uniform sampler2D bTexture;
 uniform sampler2D blendMap;
 uniform sampler2D shadowMap;
 uniform sampler2D normalMap;
-uniform int lightCount;
 
 uniform int lod;
 
+// light
 uniform vec3 lightColor[LIGHT_MAX];
 uniform vec3 attenuation[LIGHT_MAX];
 uniform float shineDamper;
 uniform float reflectivity;
-uniform vec3 skyColour;
 
+// ambient variables
+uniform vec3 skyColor;
+
+// shadow variables
 uniform float shadowMapSize;
 uniform int shadowPCFCount;
 
-/*------------- main ---------------*/
+/* ------------- main --------------- */
 void main(void) {
 
    float totalTexels = (shadowPCFCount * 2.0 + 1.0) * (shadowPCFCount * 2.0 + 1.0);
@@ -43,8 +46,8 @@ void main(void) {
    float texelSize = 1.0 / shadowMapSize;
    float total = 0.0;
    
-   for(int x=-shadowPCFCount; x<=shadowPCFCount; x++) {
-   		for(int y=-shadowPCFCount; y<=shadowPCFCount; y++) {
+   for(int x = -shadowPCFCount; x <= shadowPCFCount; x++) {
+   		for(int y = -shadowPCFCount; y <= shadowPCFCount; y++) {
    				float objectNearestLight = texture(shadowMap, fs_shadowCoords.xy + vec2(x, y) * texelSize).r;
    				if(fs_shadowCoords.z > objectNearestLight) {
    					total += 1.0;
@@ -61,12 +64,12 @@ void main(void) {
    
    float backTextureAmount = 1 - (blendMapColour.r + blendMapColour.g + blendMapColour.b);
    vec2 tiledCoords = fs_textureCoords * 1000.0;
-   vec4 backgroundTextureColour = texture(backgroundTexture, tiledCoords) * backTextureAmount;
-   vec4 rTextureColour = texture(rTexture,tiledCoords) * blendMapColour.r;
-   vec4 gTextureColour = texture(gTexture,tiledCoords) * blendMapColour.g;
-   vec4 bTextureColour = texture(bTexture,tiledCoords) * blendMapColour.b;
+   vec4 backgroundTextureColor = texture(backgroundTexture, tiledCoords) * backTextureAmount;
+   vec4 rTextureColor = texture(rTexture,tiledCoords) * blendMapColour.r;
+   vec4 gTextureColor = texture(gTexture,tiledCoords) * blendMapColour.g;
+   vec4 bTextureColor = texture(bTexture,tiledCoords) * blendMapColour.b;
 
-   vec4 totalColour = backgroundTextureColour + rTextureColour + gTextureColour + bTextureColour;
+   vec4 totalColor = backgroundTextureColor + rTextureColor + gTextureColor + bTextureColor;
 
    vec3 unitNormal =  normalize(2.0 * texture(normalMap, fs_textureCoords).rgb + vec3(1.0));
    vec3 unitVectorToCamera = normalize(fs_toCameraVector);
@@ -90,8 +93,8 @@ void main(void) {
    }
    totalDiffuse = max(totalDiffuse * lightFactor, 0.4);
    
-   out_Color = vec4(totalDiffuse, 1.0) * totalColour + vec4(totalSpecular,1.0);
-   out_Color = mix(vec4(skyColour, 1.0), out_Color, fs_visibility);
+   out_Color = vec4(totalDiffuse, 1.0) * totalColor + vec4(totalSpecular,1.0);
+   out_Color = mix(vec4(skyColor, 1.0), out_Color, fs_visibility);
 
    out_BrightColor = vec4(0.0);
    

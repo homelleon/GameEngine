@@ -11,10 +11,10 @@ public class CombineShader extends ShaderProgram {
 	//----attributes
 	private static final String ATTRIBUTE_POSITION = "in_position";
 	//----uniforms
-	private static final String UNIFORM_COLOR_TEXTURE = "colorTexture";
-	private static final String UNIFORM_HIGHLIGHT_TEXTURE2 = "highlightTexture2";
-	private static final String UNIFORM_HIGHLIGHT_TEXTURE4 = "highlightTexture4";
-	private static final String UNIFORM_HIGHLIGHT_TEXTURE8 = "highlightTexture8";
+	private static final String UNIFORM_COLOR_MAP = "colorMap";
+	private static final String UNIFORM_HIGHLIGHT_TEXTURE2 = "highlightMap2";
+	private static final String UNIFORM_HIGHLIGHT_TEXTURE4 = "highlightMap4";
+	private static final String UNIFORM_HIGHLIGHT_TEXTURE8 = "highlightMap8";
 	
 	protected CombineShader() {
 		super();
@@ -30,14 +30,14 @@ public class CombineShader extends ShaderProgram {
 
 	@Override
 	protected void loadUniformLocations() {
-		super.addUniform(UNIFORM_COLOR_TEXTURE);
+		super.addUniform(UNIFORM_COLOR_MAP);
 		super.addUniform(UNIFORM_HIGHLIGHT_TEXTURE2);
 		super.addUniform(UNIFORM_HIGHLIGHT_TEXTURE4);
 		super.addUniform(UNIFORM_HIGHLIGHT_TEXTURE8);
 	}
 
 	protected void connectTextureUnits() {
-		super.loadInt(UNIFORM_COLOR_TEXTURE, 0);
+		super.loadInt(UNIFORM_COLOR_MAP, 0);
 		super.loadInt(UNIFORM_HIGHLIGHT_TEXTURE2, 1);
 		super.loadInt(UNIFORM_HIGHLIGHT_TEXTURE4, 2);
 		super.loadInt(UNIFORM_HIGHLIGHT_TEXTURE8, 3);

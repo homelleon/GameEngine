@@ -1,26 +1,26 @@
-//TESSELLATION EVALUATION SHADER - Terrain
+// TESSELLATION EVALUATION SHADER - Terrain
 #version 430
 
 layout (quads, equal_spacing, cw) in;
 
-/*===== in ======*/
+/* ===== in ====== */
 in vec2 te_textureCoords[];
 in float te_visibility[];
 in vec4 te_shadowCoords[];
 
-/*===== out =====*/
+/* ===== out ===== */
 out vec2 gs_textureCoords;
 out float gs_visibility;
 out vec4 gs_shadowCoords;
 
-/*== uniforms ===*/
+/* == uniforms === */
 // matrix and planes
 uniform vec4 clipPlane;
 // maps
 uniform sampler2D heightMap;
 uniform float scaleY;
 
-/*------ interpolate functions -------*/
+/* ------ interpolate functions ------- */
 vec4 interpolate4D(vec4 vector[gl_MaxPatchVertices], float u, float v) {
 	return ((1-u) * (1-v) * vector[12] +
 			u * (1-v) * vector[0] +
@@ -49,7 +49,7 @@ float interpolateFloat(float vector[gl_MaxPatchVertices], float u, float v) {
 			(1-u) * v * vector[15]);
 }
 
-/*------------- main ---------------*/
+/* ------------- main --------------- */
 void main() {
 
 	// tess coordinates

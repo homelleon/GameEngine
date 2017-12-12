@@ -1,16 +1,16 @@
-//VERTEX SHADER - GUI Texture
+// VERTEX SHADER - GUI Texture
 #version 140
 
-/*===== in ======*/
+/* ===== in ====== */
 in vec2 in_position;
 
-/*===== out =====*/
+/* ===== out ===== */
 out vec2 textureCoords;
 
-/*== uniforms ==*/
+/* == uniforms == */
 uniform mat4 Transformation;
 
-/*------------- main ---------------*/
+/* ------------- main --------------- */
 void main(void) {
 
 	gl_Position = Transformation * vec4(in_position, 0.0, 1.0);

@@ -1,10 +1,10 @@
-//FRAGMENT SHADER - Entity
+// FRAGMENT SHADER - Entity
 #version 400 core
-
 #define LIGHT_MAX 10
-/*===== in ======*/
 
-//geometry
+/* ===== in ====== */
+
+// geometry
 in vec2 pass_textureCoordinates;
 in vec3 surfaceNormal;
 in vec3 toLightVector[LIGHT_MAX];
@@ -12,41 +12,42 @@ in vec3 toCameraVector;
 in vec4 shadowCoords;
 in vec3 reflectedVector;
 in vec3 refractedVector;
-/*factors*/
+/* factors */
 in float fogVisibility;
 
-/*===== out =====*/
+/* ===== out ===== */
 out vec4 out_Color;
 out vec4 out_BrightColor;
 
-/*== uniforms ==*/
+/* == uniforms == */
+// material
 uniform sampler2D diffuseMap;
 uniform sampler2D specularMap;
 uniform sampler2D alphaMap;
 uniform samplerCube enviroMap;
-
-//shadows
-uniform float usesSpecularMap;
-uniform float usesAlphaMap;
 uniform sampler2D shadowMap;
+
+// boolean flags
+uniform float usesAlphaMap;
+uniform float usesSpecularMap;
+uniform bool isChosen;
+
+// shadow variables
 uniform float shadowMapSize;
 uniform int shadowPCFCount;
 
-//light and colour
+// light and color
 uniform vec3 lightColor[LIGHT_MAX];
 uniform vec3 attenuation[LIGHT_MAX];
-uniform int lightCount;
 uniform float shineDamper;
 uniform float reflectivity;
 uniform vec3 skyColor;
 
-//reflection and refraction
+// reflection and refraction
 uniform float reflectiveFactor;
 uniform float refractiveFactor;
 
-uniform bool isChosen;
-
-/*------------- main ---------------*/
+/* ------------- main --------------- */
 void main(void) {
 
 	//transparent in diffuse texture
@@ -55,7 +56,7 @@ void main(void) {
 		discard;
 	}
 
-	//transparent in alpha texture
+	// transparent in alpha texture
 	if(usesAlphaMap > 0.5) {
 		vec4 alphaColour = texture(alphaMap, pass_textureCoordinates);
 		if(alphaColour.r < 1) {

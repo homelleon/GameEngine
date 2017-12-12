@@ -1,31 +1,31 @@
-//FRAGMENT SHADER - NM Entity
+// FRAGMENT SHADER - NM Entity
 #version 400 core
 
 #define LIGHT_MAX 10
 
-/*===== in ======*/
-//geometry
+/* ===== in ====== */
+// geometry
 in vec2 pass_textureCoordinates;
 in vec3 toLightVector[LIGHT_MAX];
 in vec3 toCameraVector;
 in vec4 shadowCoords;
 
-//factors
+// factors
 in float visibility;
 
-/*===== out =====*/
+/* ===== out ===== */
 out vec4 out_Color;
 out vec4 out_BrightColor;
 
-/*=== uniforms ==*/
-//textures
+/* === uniforms == */
+// material
 uniform sampler2D diffuseMap;
 uniform sampler2D normalMap;
 uniform sampler2D shadowMap;
 uniform sampler2D specularMap;
 uniform sampler2D alphaMap;
 
-//light and colour
+// light and colour
 uniform vec3 lightColor[LIGHT_MAX];
 uniform vec3 attenuation[LIGHT_MAX];
 uniform float shineDamper;
@@ -35,14 +35,14 @@ uniform int lightCount;
 uniform float usesSpecularMap;
 uniform float usesAlphaMap;
 
-//shadows
+// shadows
 uniform float shadowMapSize;
 uniform int shadowPCFCount;
 
-//control
+// control
 uniform bool isChosen;
 
-/*------------- main ---------------*/
+/* ------------- main --------------- */
 void main(void) {
 
 	//transparent in diffuse texture

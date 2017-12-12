@@ -14,7 +14,11 @@ public class GUITextureShader extends ShaderProgram {
 	//----attributes
 	private static final String ATTRIBUTE_POSITION = "in_position";
 	//----uniforms
+	// matrices
 	private static final String UNIFORM_TRANSFORMATION_MATRIX = "Transformation";
+	// material
+	private static final String UNIFORM_GUI_MAP = "guiMap";
+	// color
 	private static final String UNIFORM_IS_MIX_COLORED = "isMixColored";
 	private static final String UNIFORM_MIX_COLOR = "mixColor";
 	
@@ -35,6 +39,11 @@ public class GUITextureShader extends ShaderProgram {
 		super.addUniform(UNIFORM_TRANSFORMATION_MATRIX);
 		super.addUniform(UNIFORM_IS_MIX_COLORED);
 		super.addUniform(UNIFORM_MIX_COLOR);
+		super.addUniform(UNIFORM_GUI_MAP);
+	}
+	
+	public void connectTextureUnits() {
+		super.loadInt(UNIFORM_GUI_MAP, 0);
 	}
 
 	public void loadTransformation(Matrix4f matrix) {

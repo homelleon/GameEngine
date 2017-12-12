@@ -1,17 +1,17 @@
-//VERTEX SHADER - Water
+// VERTEX SHADER - Water
 #version 400 core
 
-/*===== in ======*/
+/* ===== in ====== */
 in vec2 in_position;
 
-/*===== out =====*/
+/* ===== out ===== */
 out vec4 clipSpace;
 out vec2 textureCoords;
 out vec3 toCameraVector;
 out vec3 fromLightVector;
 out float visibility;
 
-/*== uniforms ==*/
+/* == uniforms == */
 uniform mat4 Projection;
 uniform mat4 View;
 uniform mat4 Model;
@@ -22,10 +22,10 @@ uniform float fogDensity;
 
 uniform float tiling;
 
-/*== constants ==*/
+/* == constants == */
 const float fogGradient = 10.0;
 
-/*------------- main ---------------*/
+/* ------------- main --------------- */
 void main(void) {
 
     vec4 worldPosition = Model * vec4(in_position.x, 0.0, in_position.y, 1.0);

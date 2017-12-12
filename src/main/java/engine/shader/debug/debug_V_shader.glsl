@@ -1,10 +1,10 @@
-//VERTEX SHADER - Debug
+// VERTEX SHADER - Debug
 #version 430 core
 
-/*===== in ======*/
+/* ===== in ====== */
 in vec2 in_position;
 
-/*== uniforms ==*/
+/* == uniforms == */
 uniform float uniform0;
 uniform float uniform1;
 
@@ -12,10 +12,10 @@ layout (std430) buffer attribute1 {
 	float data;
 };
 
-/*===== out =====*/
+/* ===== out ===== */
 out float fs_uniform;
 
-/*------------- main ---------------*/
+/* ------------- main --------------- */
 void main() {
 	
 	fs_uniform = data;

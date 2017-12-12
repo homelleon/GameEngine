@@ -1,33 +1,37 @@
-//FRAGMENT SHADER - Font
+// FRAGMENT SHADER - Font
 #version 330
 
-/*===== in ======*/
+/* ===== in ====== */
 in vec2 pass_textureCoordinates;
 
-/*===== out =====*/
+/* ===== out ===== */
 out vec4 out_Color;
 
-/*== uniforms ==*/
-uniform vec3 color;
-uniform sampler2D fontAtlas;
+/* == uniforms == */
+// material
+uniform sampler2D fontMap;
 
+// color
+uniform vec3 color;
+uniform vec3 outlineColor;
+
+// size
 uniform float width;
 uniform float edge;
-
+// border
 uniform float borderWidth;
 uniform float borderEdge;
 
+// material variables
 uniform vec2 offset;
 
-uniform vec3 outlineColor;
-
-/*------------- main ---------------*/
+/* ------------- main --------------- */
 void main(void) {
 
-	float distance = 1.0 - texture(fontAtlas, pass_textureCoordinates).a;
+	float distance = 1.0 - texture(fontMap, pass_textureCoordinates).a;
 	float alpha = 1.0 - smoothstep(width, width + edge, distance);
 	
-	float distance2 = 1.0 - texture(fontAtlas, pass_textureCoordinates + offset).a;
+	float distance2 = 1.0 - texture(fontMap, pass_textureCoordinates + offset).a;
 	float outlineAlpha = 1.0 - smoothstep(borderWidth, borderWidth + borderEdge, distance2);
 
 	float overallAlpha = alpha + (1.0 - alpha) * outlineAlpha;

@@ -46,7 +46,7 @@ public class TerrainShader extends ShaderProgram {
 	private static final String UNIFORM_SHINE_DAMPER = "shineDamper";
 	private static final String UNIFORM_REFLECTIVITY = "reflectivity";
 	//ambient variables
-	private static final String UNIFORM_SKY_COLOR = "skyColour";
+	private static final String UNIFORM_SKY_COLOR = "skyColor";
 	private static final String UNIFORM_FOG_DENSITY = "fogDensity";
 	//material
 	private static final String UNIFORM_BACKGROUND_TEXTURE = "backgroundTexture";
@@ -66,7 +66,6 @@ public class TerrainShader extends ShaderProgram {
 	private static final String UNIFORM_SHADOW_TRANSITION_DISTANCE = "shadowTransitionDistance";
 	private static final String UNIFORM_SHADOW_PCF_COUNT = "shadowPCFCount";
 	//light
-	private static final String UNIFORM_LIGHT_COUNT = "lightCount";
 	private static final String UNIFORM_LIGHT_POSITION = "lightPosition";
 	private static final String UNIFORM_LIGHT_COLOR = "lightColor";
 	private static final String UNIFORM_ATTENUATION = "attenuation";

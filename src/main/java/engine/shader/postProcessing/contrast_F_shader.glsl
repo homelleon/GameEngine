@@ -1,21 +1,21 @@
-//FRAGMENT SHADER - Contrast PostProcessing
+// FRAGMENT SHADER - Contrast PostProcessing
 #version 140
 
-/*===== in ======*/
+/* ===== in ====== */
 in vec2 textureCoords;
 
-/*===== out =====*/
+/* ===== out ===== */
 out vec4 out_Colour;
 
-/*== uniforms ==*/
-uniform sampler2D colourTexture;
+/* == uniforms == */
+uniform sampler2D colorMap;
 
 uniform float contrast;
 
-/*------------- main ---------------*/
+/* ------------- main --------------- */
 void main(void) {
 
-	out_Colour = texture(colourTexture, textureCoords);
+	out_Colour = texture(colorMap, textureCoords);
 	out_Colour.rgb = (out_Colour.rgb - 0.5) * (1.0 + contrast) + 0.5;
 
 }

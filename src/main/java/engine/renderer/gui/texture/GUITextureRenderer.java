@@ -8,7 +8,6 @@ import object.gui.texture.GUITexture;
 import primitive.buffer.Loader;
 import primitive.buffer.VAO;
 import primitive.model.Mesh;
-import primitive.texture.Texture2D;
 import shader.guiTexture.GUITextureShader;
 import tool.math.Maths;
 import tool.math.Matrix4f;
@@ -24,10 +23,13 @@ public class GUITextureRenderer {
 		float[] positions = { -1, 1, -1, -1, 1, 1, 1, -1 };
 		this.quad = Loader.getInstance().getVertexLoader().loadToVAO(positions, 2);
 		this.shader = new GUITextureShader();
+		this.shader.start();
+		this.shader.connectTextureUnits();
+		this.shader.stop();
 	}
 
 	public void render(Collection<GUITexture> textureList) {
-		this.shader.start();
+		shader.start();
 		VAO vao = this.quad.getVAO();
 		vao.bind(0);
 		GL11.glEnable(GL11.GL_BLEND);
@@ -39,8 +41,8 @@ public class GUITextureRenderer {
 				guiTexture.getTexture().bind(0);
 				Vector2f scale = new Vector2f(guiTexture.getScale().x, guiTexture.getScale().y);
 				Matrix4f matrix = Maths.createTransformationMatrix(guiTexture.getPosition(), scale);
-				this.shader.loadTransformation(matrix);
-				this.shader.loadMixColorVariables(guiTexture.isMixColored(), guiTexture.getMixColor());
+				shader.loadTransformation(matrix);
+				shader.loadMixColorVariables(guiTexture.isMixColored(), guiTexture.getMixColor());
 				GL11.glDrawArrays(GL11.GL_TRIANGLE_STRIP, 0, this.quad.getVertexCount());
 			}
 		}

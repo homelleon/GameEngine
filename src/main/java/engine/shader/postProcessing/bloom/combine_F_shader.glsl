@@ -1,25 +1,25 @@
-//FRAGMENT SHADER - Combine PostProcessing
+// FRAGMENT SHADER - Combine PostProcessing
 #version 150
 
-/*===== in ======*/
+/* ===== in ====== */
 in vec2 textureCoords;
 
-/*===== out =====*/
-out vec4 out_Colour;
+/* ===== out ===== */
+out vec4 out_Color;
 
-/*== uniforms ==*/
-uniform sampler2D colorTexture;
-uniform sampler2D highlightTexture2;
-uniform sampler2D highlightTexture4;
-uniform sampler2D highlightTexture8;
+/* == uniforms == */
+uniform sampler2D colorMap;
+uniform sampler2D highlightMap2;
+uniform sampler2D highlightMap4;
+uniform sampler2D highlightMap8;
 
-/*------------- main ---------------*/
+/* ------------- main --------------- */
 void main(void) {
 
-	vec4 sceneColour = texture(colorTexture, textureCoords);
-	vec4 highlightColour2 = texture(highlightTexture2, textureCoords);
-	vec4 highlightColour4 = texture(highlightTexture4, textureCoords);
-	vec4 highlightColour8 = texture(highlightTexture8, textureCoords);
-	out_Colour = sceneColour + highlightColour2 * 0.4 + highlightColour4 + highlightColour8;
+	vec4 sceneColor = texture(colorMap, textureCoords);
+	vec4 highlightColor2 = texture(highlightMap2, textureCoords);
+	vec4 highlightColor4 = texture(highlightMap4, textureCoords);
+	vec4 highlightColor8 = texture(highlightMap8, textureCoords);
+	out_Color = sceneColor + highlightColor2 * 0.4 + highlightColor4 + highlightColor8;
 
 }

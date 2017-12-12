@@ -2,7 +2,6 @@ package shader.debug;
 
 import core.settings.EngineSettings;
 import shader.ShaderProgram;
-import tool.math.Matrix4f;
 
 public class DebugShader extends ShaderProgram {
 	//----shaders

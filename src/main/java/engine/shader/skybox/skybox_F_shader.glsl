@@ -1,23 +1,23 @@
 //FRAGMENT SHADER - Skybox
 #version 400
 
-/*===== in ======*/
+/* ===== in ====== */
 in vec3 textureCoords;
 
-/*===== out =====*/
+/* ===== out ===== */
 out vec4 out_Color;
 
-/*== uniforms ==*/
+/* == uniforms == */
 uniform samplerCube cubeMap;
 uniform samplerCube cubeMap2;
 uniform float blendFactor;
 uniform vec3 fogColor;
 
-/*== constants ==*/
+/* == constants == */
 const float lowerLimit = 0.0;
 const float upperLimit = 30.0;
 
-/*------------- main ---------------*/
+/* ------------- main --------------- */
 void main(void) {
 	
     vec4 texture1 = texture(cubeMap, textureCoords);

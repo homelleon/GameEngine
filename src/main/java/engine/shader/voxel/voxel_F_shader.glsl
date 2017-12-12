@@ -1,7 +1,7 @@
-//FRAGMENT SHADER - Voxel
+// FRAGMENT SHADER - Voxel
 #version 400 core
 
-/*===== in ======*/
+/* ===== in ====== */
 in vec2 pass_textureCoords;
 in vec3 surfaceNormal;
 in vec3 toLightVector[10];
@@ -9,11 +9,11 @@ in vec3 toCameraVector;
 in float visibility;
 in vec4 shadowCoords;
 
-/*===== out =====*/
+/* ===== out ===== */
 out vec4 out_Color;
 out vec4 out_BrightColor;
 
-/*== uniforms ==*/
+/* == uniforms == */
 uniform sampler2D diffuseMap;
 uniform sampler2D specularMap;
 uniform float usesSpecularMap;
@@ -28,7 +28,7 @@ uniform int lightCount;
 uniform float shadowMapSize;
 uniform int shadowPCFCount;
 
-/*------------- main ---------------*/
+/* ------------- main --------------- */
 void main(void) {
 
 	vec4 textureColour = texture(diffuseMap, pass_textureCoords);

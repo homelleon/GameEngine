@@ -1,31 +1,31 @@
-//TESSELLATION CONTROL SHADER - Terrain
+// TESSELLATION CONTROL SHADER - Terrain
 #version 430
 
 layout (vertices = 16) out;
 
-/*===== in ======*/
+/* ===== in ====== */
 in vec2 tc_textureCoords[];
 in float tc_visibility[];
 in vec4 tc_shadowCoords[];
 
-/*===== out =====*/
+/* ===== out ===== */
 out vec2 te_textureCoords[];
 out float te_visibility[];
 out vec4 te_shadowCoords[];
 
-/*== constants =*/
+/* == constants = */
 const int AB = 2;
 const int BC = 3;
 const int CD = 0;
 const int DA = 1;
 
-/*== uniforms ===*/
+/* == uniforms === */
 uniform int tessellationFactor;
 uniform float tessellationSlope;
 uniform float tessellationShift;
 uniform vec3 cameraPosition;
 
-/*-------- functions -----------*/
+/* -------- functions ----------- */
 float LodFactor(float dist) {
 
 	float tessellationLevel = max(0.0, tessellationFactor/pow(dist, tessellationSlope) + tessellationShift);

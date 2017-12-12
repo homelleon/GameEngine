@@ -1,23 +1,23 @@
-//VERTEX SHADER - Particle
+// VERTEX SHADER - Particle
 #version 140
 
-/*===== in ======*/
+/* ===== in ====== */
 in vec2 in_position;
 
 in mat4 in_ModelView;
 in vec4 in_texOffsets;
 in float in_blendFactor;
 
-/*===== out =====*/
+/* ===== out ===== */
 out vec2 textureCoords1;
 out vec2 textureCoords2;
 out float blend;
 
-/*== uniforms ==*/
+/* == uniforms == */
 uniform mat4 Projection;
 uniform float numberOfRows;
 
-/*------------- main ---------------*/
+/* ------------- main --------------- */
 void main(void) {
 
 	vec2 textureCoords = in_position + vec2(0.5, 0.5);

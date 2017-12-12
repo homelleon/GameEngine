@@ -1,16 +1,16 @@
-//FRAGMENT SHADER - Debug
+// FRAGMENT SHADER - Debug
 #version 430 core
 
-/*===== in ======*/
+/* ===== in ====== */
 in float fs_uniform;
-/*== uniforms ==*/
+/* == uniforms == */
 uniform float uniform0;
 uniform float uniform1;
 
-/*===== out =====*/
+/* ===== out ===== */
 out vec4 out_colour;
 
-/*------------- main ---------------*/
+/* ------------- main --------------- */
 void main() {
 	
 	out_colour = vec4(fs_uniform, 0, 0, 1.0);

@@ -1,15 +1,19 @@
-//COMPUTE SHADER - heightMap
+// COMPUTE SHADER - heightMap
 #version 430 core
 #extension GL_EXT_gpu_shader4 : enable
 
+// local groups
 layout (local_size_x = 1, local_size_y = 1) in;
 
-layout (binding = 0, rgba32f) uniform writeonly image2D heightMap;
+// material
+uniform samplerBuffer positionMap;									// in
+layout (binding = 0, rgba32f) uniform writeonly image2D heightMap;	// out
 
-uniform samplerBuffer positionMap;
+// size
 uniform int size;
 uniform float scale;
 
+/* ------------- main --------------- */
 void main(void) {
 
 	ivec2 xy = ivec2(gl_GlobalInvocationID.x, gl_GlobalInvocationID.y);

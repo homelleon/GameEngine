@@ -1,22 +1,21 @@
-//VERTEX SHADER - NM Entity
+// VERTEX SHADER - NM Entity
 #version 400 core
-
 #define LIGHT_MAX 10
 
-/*==== in =====*/
+/* ==== in ===== */
 in vec3 in_position;
 in vec2 in_textureCoords;
 in vec3 in_normal;
 in vec3 in_tangent;
 
-/*==== out =====*/
+/* ==== out ===== */
 out vec2 pass_textureCoordinates;
 out vec3 toLightVector[LIGHT_MAX];
 out vec3 toCameraVector;
 out float visibility;
 out vec4 shadowCoords;
 
-/*=== uniforms ==*/
+/* === uniforms == */
 uniform mat4 Transformation;
 uniform mat4 Projection;
 uniform mat4 View;
@@ -24,19 +23,22 @@ uniform vec3 lightPositionEyeSpace[LIGHT_MAX];
 uniform vec4 clipPlane;
 uniform float usesFakeLighting;
 
+// shadow variables
 uniform mat4 toShadowMapSpace;
 uniform float shadowDistance;
 uniform float shadowTransitionDistance;
 
+// material variables
 uniform float numberOfRows;
 uniform vec2 offset;
 
+// ambient variables
 uniform float fogDensity;
 
-/*== constants ==*/
+/* == constants == */
 const float fogGradient = 2.0;
 
-/*------------- main ---------------*/
+/* ------------- main --------------- */
 void main(void) {
 	
 	vec4 worldPosition = Transformation * vec4(in_position, 1.0);

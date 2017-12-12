@@ -1,21 +1,26 @@
-//FRAGMENT SHADER - GUI Texture
+// FRAGMENT SHADER - GUI Texture
 #version 140
 
-/*===== in ======*/
+/* ===== in ====== */
 in vec2 textureCoords;
 
-/*===== out =====*/
+/* ===== out ===== */
 out vec4 out_Color;
 
-/*== uniforms ==*/
-uniform sampler2D guiTexture;
-uniform bool isMixColored;
+/* == uniforms == */
+// material
+uniform sampler2D guiMap;
+
+// color
 uniform vec3 mixColor;
 
-/*------------- main ---------------*/
+// boolean flag
+uniform bool isMixColored;
+
+/* ------------- main --------------- */
 void main(void) {
 
-	out_Color = texture(guiTexture, textureCoords);
+	out_Color = texture(guiMap, textureCoords);
 	if(isMixColored) {
 		out_Color.rgb = mix(out_Color.rgb, mixColor, 0.5);
 	}

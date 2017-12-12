@@ -1,17 +1,17 @@
-//VERTEX SHADER - Font
+// VERTEX SHADER - Font
 #version 330
 
-/*===== in ======*/
+/* ===== in ====== */
 in vec2 in_position;
 in vec2 in_textureCoords;
 
-/*===== out =====*/
+/* ===== out ===== */
 out vec2 pass_textureCoordinates;
 
-/*== uniforms ==*/
+/* == uniforms == */
 uniform vec2 translation;
 
-/*------------- main ---------------*/
+/* ------------- main --------------- */
 void main(void) {
 	
 	vec2 transp_translation = vec2(translation.x, 1 - (translation.y + 1.0) / 2.0);

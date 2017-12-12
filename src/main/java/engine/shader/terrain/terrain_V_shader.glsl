@@ -1,19 +1,18 @@
-//VERTEX SHADER - Terrain
+// VERTEX SHADER - Terrain
 #version 430 core
-
 #define LOD_MAX 8 // max level of distance count
 #define LIGHT_MAX 10 // max light source count
 
-/*===== in ======*/
+/* ===== in ====== */
 in vec3 in_position;
 
-/*===== out =====*/
+/* ===== out ===== */
 out float tc_visibility;
 out vec4 tc_shadowCoords;
 out vec2 tc_textureCoords;
 out float tc_clipDistance;
 
-/*== uniforms ==*/
+/* == uniforms == */
 uniform mat4 View;
 uniform mat4 Projection;
 uniform mat4 Local;
@@ -36,10 +35,10 @@ uniform vec2 location;
 
 uniform int lod_morph_area[LOD_MAX];
 
-/*== constants ==*/
+/* == constants == */
 const float fogGradient = 5.0;
 
-/*------------- functions ---------------*/
+/* ------------- functions --------------- */
 float morphLatitude(vec2 position) {
 
 	vec2 frac = position - location;
@@ -150,7 +149,7 @@ vec2 morph(vec2 localPosition, int morph_area) {
 	return morphing;
 }
 
-/*------------- main ---------------*/
+/* ------------- main --------------- */
 void main(void) {
 
    vec3 localPosition = (Local * vec4(in_position, 1.0)).xyz;
