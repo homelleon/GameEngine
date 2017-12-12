@@ -2,8 +2,8 @@ package object.animation;
 
 import object.animatedModel.AnimatedModel;
 import object.animatedModel.Joint;
-import object.texture.Texture;
 import primitive.buffer.VAO;
+import primitive.texture.Texture;
 import tool.MyFile;
 import tool.colladaParser.colladaLoader.ColladaLoader;
 import tool.colladaParser.dataStructures.AnimatedModelData;

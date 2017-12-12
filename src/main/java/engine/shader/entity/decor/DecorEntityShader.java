@@ -21,14 +21,14 @@ public class DecorEntityShader extends ShaderProgram {
 	//----attributes
 	public static final String ATTRIBUTE_OUT_COLOR = "out_Color";
 	public static final String ATTRIBUTE_OUT_BRIGHT_COLOR = "out_BrightColor";
-	public static final String ATTRIBUTE_POSITION = "position";
-	public static final String ATTRIBUTE_TEXTURE_COORDINATES = "textureCoordinates";
-	public static final String ATTRIBUTE_NORMAL = "normal";
+	public static final String ATTRIBUTE_POSITION = "in_position";
+	public static final String ATTRIBUTE_TEXTURE_COORDINATES = "in_textureCoords";
+	public static final String ATTRIBUTE_NORMAL = "in_normal";
 	//----unifroms
 	//matrix
-	public static final String UNIFORM_TRANSFORMATION_MATRIX = "transformationMatrix";
-	public static final String UNIFORM_PROJECTION_MATRIX = "projectionMatrix";
-	public static final String UNIFORM_VIEW_MATRIX = "viewMatrix";
+	public static final String UNIFORM_TRANSFORMATION_MATRIX = "Transformation";
+	public static final String UNIFORM_PROJECTION_MATRIX = "Projection";
+	public static final String UNIFORM_VIEW_MATRIX = "View";
 	public static final String UNIFORM_CAMERA_POSITION = "cameraPosition";
 	//shine variables
 	public static final String UNIFORM_SHINE_DAMPER = "shineDamper";

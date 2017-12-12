@@ -3,11 +3,11 @@ package map.raw;
 import java.util.List;
 
 import manager.primitive.IMeshManager;
-import object.texture.Texture2D;
-import object.texture.material.Material;
-import object.texture.terrain.TerrainTexturePack;
 import primitive.model.Mesh;
 import primitive.model.Model;
+import primitive.texture.Texture2D;
+import primitive.texture.material.Material;
+import primitive.texture.terrain.TerrainTexturePack;
 
 /**
  * Provides access for managing raw meshes, models, textures and materials.

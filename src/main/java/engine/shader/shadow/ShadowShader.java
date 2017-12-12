@@ -15,7 +15,7 @@ public class ShadowShader extends ShaderProgram {
 	private static final String ATTRIBUTE_TEXTURE_COORDINATES = "in_textureCoords";
 	//----uniforms
 	//matrix
-	private static final String UNIFORM_MVP_MATRIX = "mvpMatrix";
+	private static final String UNIFORM_MVP_MATRIX = "ModelViewProjection";
 	//texture coords variables
 	private static final String UNIFORM_OFFSET = "offset";
 	private static final String UNIFORM_NUMBER_OF_ROWS = "numberOfRows";

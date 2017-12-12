@@ -9,9 +9,9 @@ import org.lwjgl.util.vector.Vector4f;
 import object.camera.ICamera;
 import object.entity.entity.IEntity;
 import object.light.ILight;
-import object.scene.IScene;
 import object.terrain.terrain.ITerrain;
 import primitive.model.Model;
+import scene.IScene;
 import tool.math.Matrix4f;
 
 /**

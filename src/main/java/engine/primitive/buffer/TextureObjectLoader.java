@@ -17,8 +17,8 @@ import org.newdawn.slick.opengl.TextureLoader;
 import core.settings.EngineSettings;
 import de.matthiasmann.twl.utils.PNGDecoder;
 import de.matthiasmann.twl.utils.PNGDecoder.Format;
-import object.texture.Texture2D;
-import object.texture.TextureData;
+import primitive.texture.Texture2D;
+import primitive.texture.TextureData;
 
 public class TextureObjectLoader {
 	

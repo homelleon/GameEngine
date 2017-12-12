@@ -2,7 +2,7 @@ package core;
 
 import core.loop.Loop;
 import core.settings.EngineSettings;
-import object.scene.IScene;
+import scene.IScene;
 import core.loop.ILoop;
 
 /**

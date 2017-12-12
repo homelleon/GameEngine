@@ -1,6 +1,6 @@
-package object.texture.material;
+package primitive.texture.material;
 
-import object.texture.Texture2D;
+import primitive.texture.Texture2D;
 import tool.math.vector.Vector3f;
 
 public class Material {

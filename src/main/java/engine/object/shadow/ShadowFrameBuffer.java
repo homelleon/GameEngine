@@ -9,7 +9,7 @@ import org.lwjgl.opengl.GL14;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.opengl.GL32;
 
-import object.texture.Texture2D;
+import primitive.texture.Texture2D;
 
 /**
  * The frame buffer for the shadow pass. This class sets up the depth texture

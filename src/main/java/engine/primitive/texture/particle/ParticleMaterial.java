@@ -1,6 +1,6 @@
-package object.texture.particle;
+package primitive.texture.particle;
 
-import object.texture.Texture2D;
+import primitive.texture.Texture2D;
 
 public class ParticleMaterial {
 

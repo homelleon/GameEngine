@@ -7,10 +7,10 @@ import org.lwjgl.opengl.GL11;
 
 import object.camera.ICamera;
 import object.entity.entity.IEntity;
-import object.texture.material.Material;
 import primitive.buffer.VAO;
 import primitive.model.Mesh;
 import primitive.model.Model;
+import primitive.texture.material.Material;
 import shader.shadow.ShadowShader;
 import tool.math.Maths;
 import tool.math.Matrix4f;

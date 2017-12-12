@@ -2,9 +2,9 @@
 #version 400 core
 
 /*===== in ======*/
-in vec3 position;
-in vec2 textureCoordinates;
-in vec3 normal;
+in vec3 in_position;
+in vec2 in_textureCoords;
+in vec3 in_normal;
 
 /*===== out =====*/
 out vec2 pass_textureCoords;
@@ -15,9 +15,9 @@ out float visibility;
 out vec4 shadowCoords;
 
 /*== uniforms ==*/
-uniform mat4 transformationMatrix;
-uniform mat4 projectionMatrix;
-uniform mat4 viewMatrix;
+uniform mat4 Transformation;
+uniform mat4 Projection;
+uniform mat4 View;
 uniform vec3 lightPosition[10];
 uniform int lightCount;
 
@@ -40,30 +40,31 @@ const float fogGradient = 3.0;
 /*------------- main ---------------*/
 void main(void) {
 
-   vec4 worldPosition = transformationMatrix * vec4(position, 1.0);
+   vec4 worldPosition = Transformation * vec4(in_position, 1.0);
    shadowCoords = toShadowMapSpace * worldPosition;
    
    gl_ClipDistance[0] = dot(worldPosition, clipPlane);
    
-   vec4 positionRelativeToCam = viewMatrix * worldPosition;
-   gl_Position = projectionMatrix * positionRelativeToCam;
-   pass_textureCoords = (textureCoordinates / numberOfRows) + offset;
+   vec4 positionRelativeToCam = View * worldPosition;
+   gl_Position = Projection * positionRelativeToCam;
+   pass_textureCoords = (in_textureCoords / numberOfRows) + offset;
    
       
-   vec3 actualNormal = normal;
+   vec3 actualNormal = in_normal;
    if(usesFakeLighting > 0.5) {
       actualNormal = vec3(0.0,1.0,0.0);
    }
 
-   surfaceNormal = (transformationMatrix * vec4(actualNormal,0.0)).xyz;
-   for(int i=0;i<lightCount;i++) {
+   surfaceNormal = (Transformation * vec4(actualNormal,0.0)).xyz;
+   for(int i = 0; i < lightCount; i++) {
       toLightVector[i] = lightPosition[i] - worldPosition.xyz; 
    }
-   toCameraVector = (inverse(viewMatrix) * vec4(0.0,0.0,0.0,1.0)).xyz - worldPosition.xyz;
+   
+   toCameraVector = (inverse(View) * vec4(0.0,0.0,0.0,1.0)).xyz - worldPosition.xyz;
    
    float distance = length(positionRelativeToCam.xyz);
-   visibility = exp(-pow((distance*fogDensity),fogGradient));
-   visibility = clamp(visibility,0.0,1.0);
+   visibility = exp(-pow((distance * fogDensity), fogGradient));
+   visibility = clamp(visibility, 0.0, 1.0);
    
    distance = distance - (shadowDistance - shadowTransitionDistance);
    distance = distance / shadowTransitionDistance;

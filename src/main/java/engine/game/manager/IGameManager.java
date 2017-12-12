@@ -2,7 +2,7 @@ package game.manager;
 
 import manager.gui.text.IGUITextManager;
 import manager.gui.texture.IGUITextureManager;
-import object.scene.IScene;
+import scene.IScene;
 
 /**
  * 

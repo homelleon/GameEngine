@@ -27,10 +27,10 @@ public class TerrainShader extends ShaderProgram {
 	private static final String ATTRIBUTE_POSITION = "in_position";
 	//----uniforms
 	//matrix
-	private static final String UNIFORM_PROJECTION_MATRIX = "projectionMatrix";
-	private static final String UNIFORM_VIEW_MATRIX = "viewMatrix";	
-	private static final String UNIFORM_LOCAL_MATRIX = "localMatrix";
-	private static final String UNIFORM_WORLD_MATRIX = "worldMatrix";
+	private static final String UNIFORM_PROJECTION_MATRIX = "Projection";
+	private static final String UNIFORM_VIEW_MATRIX = "View";	
+	private static final String UNIFORM_LOCAL_MATRIX = "Local";
+	private static final String UNIFORM_WORLD_MATRIX = "World";
 	private static final String UNIFORM_CAMERA_POSITION = "cameraPosition"; 
 	//tessellation
 	private static final String UNIFORM_SCALE_Y = "scaleY";

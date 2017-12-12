@@ -9,8 +9,8 @@ import org.lwjgl.util.vector.Vector4f;
 import object.camera.ICamera;
 import object.entity.entity.IEntity;
 import object.light.ILight;
-import object.texture.Texture;
 import primitive.model.Model;
+import primitive.texture.Texture;
 import tool.math.Matrix4f;
 
 /**

@@ -1,4 +1,4 @@
-package object.texture;
+package primitive.texture;
 
 import static org.lwjgl.opengl.GL11.glBindTexture;
 import static org.lwjgl.opengl.GL11.glDeleteTextures;

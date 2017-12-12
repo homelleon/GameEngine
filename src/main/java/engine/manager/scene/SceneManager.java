@@ -15,11 +15,11 @@ import object.camera.TargetCamera;
 import object.entity.player.IPlayer;
 import object.entity.player.Player;
 import object.light.Light;
-import object.scene.IScene;
-import object.texture.material.Material;
 import object.water.WaterTile;
 import primitive.buffer.Loader;
 import primitive.model.Model;
+import primitive.texture.material.Material;
+import scene.IScene;
 import tool.EngineUtils;
 import tool.math.vector.Vector3f;
 
@@ -75,8 +75,8 @@ public class SceneManager implements ISceneManager {
 	
 	private void initializeGame(IScene scene) {
 		/*------------------PLAYER-----------------*/
-//		List<Model> cubeModels = EngineUtils.loadModels("xuchilbara", "xuchilbara_dif", true);
-		List<Model> cubeModels = EngineUtils.loadModels("cube", "Cube1");
+		List<Model> cubeModels = EngineUtils.loadModels("xuchilbara", "xuchilbara_dif", true);
+//		List<Model> cubeModels = EngineUtils.loadModels("cube", "Cube1");
 		if(EngineDebug.hasDebugPermission()) {
 			EngineDebug.println(cubeModels.get(0).getName(), 2);
 		}
@@ -85,22 +85,22 @@ public class SceneManager implements ISceneManager {
 				cubeModels, 
 				new Vector3f(100, 0, 10), 
 				new Vector3f(0, 0, 0), 
-				10.05f
+				0.2f
 		);
 		player1.setBaseName("xuchilbaraEntity");
 		player1.getModels().forEach(model -> {
 			Material material = model.getMaterial();
-//			material.getDiffuseMap().setHasTransparency(true);
+			material.getDiffuseMap().setHasTransparency(true);
 			material.setShininess(0.5f);
-//			material.setNormalMap(
-//				Loader.getInstance().getTextureLoader().loadTexture(
-//						EngineSettings.TEXTURE_NORMAL_MAP_PATH, "xuchilbara_n"));
-//			material.setSpecularMap(
-//					Loader.getInstance().getTextureLoader().loadTexture(
-//							EngineSettings.TEXTURE_SPECULAR_MAP_PATH, "xuchilbara_spec"));
-//			material.setAlphaMap(
-//					Loader.getInstance().getTextureLoader().loadTexture(
-//							EngineSettings.TEXTURE_ALPHA_MAP_PATH, "xuchilbara_o"));
+			material.setNormalMap(
+				Loader.getInstance().getTextureLoader().loadTexture(
+						EngineSettings.TEXTURE_NORMAL_MAP_PATH, "xuchilbara_n"));
+			material.setSpecularMap(
+					Loader.getInstance().getTextureLoader().loadTexture(
+							EngineSettings.TEXTURE_SPECULAR_MAP_PATH, "xuchilbara_spec"));
+			material.setAlphaMap(
+					Loader.getInstance().getTextureLoader().loadTexture(
+							EngineSettings.TEXTURE_ALPHA_MAP_PATH, "xuchilbara_o"));
 		});
 
 		/*--------------UI-------------------*/

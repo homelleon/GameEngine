@@ -1,9 +1,9 @@
-package object.texture.terrain.builder;
+package primitive.texture.terrain.builder;
 
 import core.settings.EngineSettings;
-import object.texture.Texture2D;
-import object.texture.terrain.TerrainTexturePack;
 import primitive.buffer.Loader;
+import primitive.texture.Texture2D;
+import primitive.texture.terrain.TerrainTexturePack;
 
 public class TerrainTexturePackBuilder implements ITerrainTexturePackBuilder {
 	

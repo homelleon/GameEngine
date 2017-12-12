@@ -15,8 +15,6 @@ out vec4 gs_shadowCoords;
 
 /*== uniforms ===*/
 // matrix and planes
-uniform mat4 worldMatrix;
-uniform mat4 localMatrix;
 uniform vec4 clipPlane;
 // maps
 uniform sampler2D heightMap;

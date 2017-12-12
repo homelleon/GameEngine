@@ -14,9 +14,9 @@ import org.lwjgl.opengl.GL30;
 import object.camera.CubeMapCamera;
 import object.camera.ICamera;
 import object.entity.entity.IEntity;
-import object.scene.IScene;
 import primitive.model.Model;
 import renderer.main.MainRenderer;
+import scene.IScene;
 
 public class EnvironmentMapRenderer {
 

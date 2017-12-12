@@ -1,8 +1,8 @@
-package object.scene;
+package scene;
 
 import java.util.Collection;
 
-import input.MousePicker;
+import control.MousePicker;
 import manager.entity.IFrustumEntityManager;
 import manager.gui.IGUIManager;
 import manager.scene.IObjectManager;
@@ -12,7 +12,7 @@ import object.entity.entity.IEntity;
 import object.entity.player.IPlayer;
 import object.light.Light;
 import object.particle.ParticleSystem;
-import object.texture.Texture;
+import primitive.texture.Texture;
 import tool.math.Frustum;
 
 /**

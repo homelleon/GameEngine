@@ -3,10 +3,10 @@ package object.camera;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
+import control.KeyboardGame;
+import control.MouseGame;
 import core.loop.Loop;
 import core.settings.EngineSettings;
-import input.KeyboardGame;
-import input.MouseGame;
 import object.entity.player.IPlayer;
 import tool.math.Maths;
 import tool.math.Matrix4f;

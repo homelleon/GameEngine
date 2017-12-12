@@ -3,8 +3,8 @@ package object.animatedModel;
 
 import object.animation.Animation;
 import object.animation.Animator;
-import object.texture.Texture;
 import primitive.buffer.VAO;
+import primitive.texture.Texture;
 import tool.math.Matrix4f;
 
 /**

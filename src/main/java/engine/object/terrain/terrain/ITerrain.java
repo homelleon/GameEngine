@@ -2,8 +2,8 @@ package object.terrain.terrain;
 
 import object.Nameable;
 import object.camera.ICamera;
-import object.texture.material.TerrainMaterial;
 import primitive.buffer.VBO;
+import primitive.texture.material.TerrainMaterial;
 
 /**
  * Terrain interface represents common landscape terrain methods.

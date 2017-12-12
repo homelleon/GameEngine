@@ -22,13 +22,13 @@ public class VoxelShader extends ShaderProgram {
 	//----attributes
 	private static final String ATTRIBUTE_OUT_COLOR = "out_Color";
 	private static final String ATTRIBUTE_OUT_BRIGHT_COLOR = "out_BrightColor";
-	private static final String ATTRIBUTE_POSITION = "position";
-	private static final String ATTRIBUTE_TEXTURE_COORDINATES = "textureCoordinates";
-	private static final String ATTRIBUTE_NORMAL = "normal";
+	private static final String ATTRIBUTE_POSITION = "in_position";
+	private static final String ATTRIBUTE_TEXTURE_COORDINATES = "in_textureCoords";
+	private static final String ATTRIBUTE_NORMAL = "in_normal";
 	//----uniforms
-	private static final String UNIFORM_TRANSFORMATION_MATRIX = "transformationMatrix";
-	private static final String UNIFORM_PROJECTION_MATRIX = "projectionMatrix";
-	private static final String UNIFORM_VIEW_MATRIX = "viewMatrix";
+	private static final String UNIFORM_TRANSFORMATION_MATRIX = "Transformation";
+	private static final String UNIFORM_PROJECTION_MATRIX = "Projection";
+	private static final String UNIFORM_VIEW_MATRIX = "View";
 	//material
 	private static final String UNIFORM_DIFFUSE_MAP= "diffuseMap";
 	private static final String UNIFORM_SPECULAR_MAP = "specularMap";		

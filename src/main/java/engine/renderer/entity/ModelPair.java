@@ -1,7 +1,7 @@
 package renderer.entity;
 
-import object.texture.material.Material;
 import primitive.model.Mesh;
+import primitive.texture.material.Material;
 
 public class ModelPair {
 	

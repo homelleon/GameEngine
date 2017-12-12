@@ -21,16 +21,16 @@ out vec4 fs_shadowCoords;
 
 
 /*== uniforms ===*/
-uniform mat4 projectionMatrix;
-uniform mat4 viewMatrix;
-uniform mat4 localMatrix;
-uniform mat4 worldMatrix;
+uniform mat4 Projection;
+uniform mat4 View;
+uniform mat4 Local;
+uniform mat4 World;
 uniform vec4 clipPlane;
 
 uniform vec3 lightPosition[LIGHT_MAX];
 
 /*-------- functions -----------*/
-void createVertex(int index, mat4 projectionViewMatrix) {
+void createVertex(int index, mat4 ProjectionView) {
 
 	fs_textureCoords = gs_textureCoords[index];
 	fs_visibility = gs_visibility[index];
@@ -40,11 +40,11 @@ void createVertex(int index, mat4 projectionViewMatrix) {
 
 	vec4 position = gl_in[index].gl_Position;
 	for(int i = 0; i < LIGHT_MAX; i++) {
-		fs_toLightVector[i] = lightPosition[i] - (projectionMatrix * position).xyz;
+		fs_toLightVector[i] = lightPosition[i] - (Projection * position).xyz;
 	}
-	fs_toCameraVector = (inverse(viewMatrix) * vec4(0.0,0.0,0.0,1.0)).xyz - (projectionMatrix * position).xyz;
+	fs_toCameraVector = (inverse(View) * vec4(0.0,0.0,0.0,1.0)).xyz - (Projection * position).xyz;
 
-	gl_Position = projectionViewMatrix * position;
+	gl_Position = ProjectionView * position;
 
 	EmitVertex();
 }
@@ -52,11 +52,11 @@ void createVertex(int index, mat4 projectionViewMatrix) {
 /*------------- main ---------------*/
 void main() {
 
-	mat4 projectionViewMatrix = projectionMatrix * viewMatrix;
+	mat4 ProjectionView = Projection * View;
 
 	// pass values
 	for(int i=0; i < gl_in.length(); i++) {
-		createVertex(i, projectionViewMatrix);
+		createVertex(i, ProjectionView);
 	}
 
 	EndPrimitive();

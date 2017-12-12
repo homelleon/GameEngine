@@ -10,12 +10,12 @@ import org.lwjgl.opengl.GL31;
 
 import object.camera.ICamera;
 import object.particle.particle.Particle;
-import object.texture.particle.ParticleMaterial;
 import primitive.buffer.BufferLoader;
 import primitive.buffer.Loader;
 import primitive.buffer.VAO;
 import primitive.buffer.VBO;
 import primitive.model.Mesh;
+import primitive.texture.particle.ParticleMaterial;
 import shader.particle.ParticleShader;
 import tool.math.Maths;
 import tool.math.Matrix4f;

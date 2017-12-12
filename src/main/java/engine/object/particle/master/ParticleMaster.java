@@ -10,7 +10,7 @@ import java.util.Map.Entry;
 import object.camera.ICamera;
 import object.particle.InsertionSort;
 import object.particle.particle.Particle;
-import object.texture.particle.ParticleMaterial;
+import primitive.texture.particle.ParticleMaterial;
 import renderer.particle.ParticleRenderer;
 import tool.math.Matrix4f;
 

@@ -1,4 +1,4 @@
-package object.texture;
+package primitive.texture;
 
 import java.io.InputStream;
 import java.nio.ByteBuffer;
@@ -13,7 +13,7 @@ import org.lwjgl.opengl.GLContext;
 
 import de.matthiasmann.twl.utils.PNGDecoder;
 import de.matthiasmann.twl.utils.PNGDecoder.Format;
-import object.texture.builder.TextureBuilder;
+import primitive.texture.builder.TextureBuilder;
 import tool.MyFile;
 
 public class TextureUtils {

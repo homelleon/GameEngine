@@ -5,7 +5,7 @@ import java.util.List;
 
 import object.camera.ICamera;
 import object.entity.entity.IEntity;
-import object.scene.IScene;
+import scene.IScene;
 import tool.math.Frustum;
 import tool.math.Matrix4f;
 

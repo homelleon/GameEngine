@@ -1,4 +1,4 @@
-package input;
+package control;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +12,7 @@ import core.settings.EngineSettings;
 import object.camera.ICamera;
 import object.entity.entity.IEntity;
 import object.entity.player.Player;
-import object.scene.IScene;
+import scene.IScene;
 import tool.math.Maths;
 import tool.math.Matrix4f;
 import tool.math.vector.Vector2f;

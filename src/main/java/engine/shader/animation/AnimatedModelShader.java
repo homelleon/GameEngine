@@ -31,7 +31,7 @@ public class AnimatedModelShader extends ShaderProgram {
 
 	@Override
 	public void loadUniformLocations() {
-		super.addUniform("projectionViewMatrix");
+		super.addUniform("ProjectionViewMatrix");
 		super.addUniform("lightDirection");
 		super.addUniform("diffuseMap");
 		for (int i = 0; i < EngineSettings.MAX_LIGHTS; i++) {
@@ -49,7 +49,7 @@ public class AnimatedModelShader extends ShaderProgram {
 	}
 
 	public void loadprojectionViewMatrix(Matrix4f projectionViewMatrix) {
-		super.loadMatrix("projectionViewMatrix", projectionViewMatrix);
+		super.loadMatrix("ProjectionViewMatrix", projectionViewMatrix);
 	}
 
 	public void loadLightDirection(Vector3f direction) {

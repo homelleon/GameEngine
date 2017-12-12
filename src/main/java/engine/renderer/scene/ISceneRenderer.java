@@ -1,7 +1,7 @@
 package renderer.scene;
 
-import object.scene.IScene;
 import renderer.main.MainRenderer;
+import scene.IScene;
 
 /**
  * 

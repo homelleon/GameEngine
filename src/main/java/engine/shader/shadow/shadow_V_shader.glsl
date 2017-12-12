@@ -9,7 +9,7 @@ in vec2 in_textureCoords;
 out vec2 textureCoords;
 
 /*== uniforms ==*/
-uniform mat4 mvpMatrix;
+uniform mat4 ModelViewProjection;
 
 uniform float numberOfRows;
 uniform vec2 offset;
@@ -17,7 +17,7 @@ uniform vec2 offset;
 /*------------- main ---------------*/
 void main(void) {
 
-	gl_Position = mvpMatrix * vec4(in_position, 1.0);
+	gl_Position = ModelViewProjection * vec4(in_position, 1.0);
 	textureCoords = (in_textureCoords / numberOfRows) + offset;
 
 }

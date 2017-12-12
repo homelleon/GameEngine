@@ -2,18 +2,18 @@
 #version 400 core
 
 /*===== in ======*/
-in vec3 position;
+in vec3 in_position;
 
 /*== uniforms ==*/
-uniform mat4 transformationMatrix;
-uniform mat4 projectionMatrix;
-uniform mat4 viewMatrix;
+uniform mat4 Transformation;
+uniform mat4 Projection;
+uniform mat4 View;
 
 /*------------- main ---------------*/
 void main(void) {
 
-   vec4 worldPosition = transformationMatrix * vec4(position, 1.0);
-   vec4 positionRelativeToCam = viewMatrix * worldPosition;
-   gl_Position = projectionMatrix * positionRelativeToCam; //no special transformations
+   vec4 worldPosition = Transformation * vec4(in_position, 1.0);
+   vec4 positionRelativeToCam = View * worldPosition;
+   gl_Position = Projection * positionRelativeToCam; //no special transformations
    
 }

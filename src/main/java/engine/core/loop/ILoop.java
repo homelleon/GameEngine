@@ -1,6 +1,6 @@
 package core.loop;
 
-import object.scene.IScene;
+import scene.IScene;
 import tool.dataEditor.menu.DataEditorFrame;
 
 /**

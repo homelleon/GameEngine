@@ -3,7 +3,7 @@ package object.terrain.terrain.builder;
 import core.debug.EngineDebug;
 import object.terrain.generator.TerrainGenerator;
 import object.terrain.terrain.ITerrain;
-import object.texture.Texture2D;
+import primitive.texture.Texture2D;
 import tool.math.vector.Vector2f;
 
 public class TerrainBuilder implements ITerrainBuilder {

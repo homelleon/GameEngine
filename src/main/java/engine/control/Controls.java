@@ -1,4 +1,4 @@
-package input;
+package control;
 
 import org.lwjgl.input.Keyboard;
 
@@ -7,8 +7,14 @@ import core.debug.EngineDebug;
 import core.loop.Loop;
 import core.settings.EngineSettings;
 import object.entity.entity.IEntity;
-import object.scene.IScene;
+import scene.IScene;
 
+/**
+ * Engine UI and object controls.
+ *  
+ * @author homelleon
+ * @version 1.0
+ */
 public class Controls implements IControls {
 
 	private final int ECHO = 3;

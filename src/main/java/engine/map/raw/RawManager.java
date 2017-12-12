@@ -5,11 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import object.texture.Texture2D;
-import object.texture.material.Material;
-import object.texture.terrain.TerrainTexturePack;
 import primitive.model.Mesh;
 import primitive.model.Model;
+import primitive.texture.Texture2D;
+import primitive.texture.material.Material;
+import primitive.texture.terrain.TerrainTexturePack;
 
 public class RawManager implements IRawManager {
 	

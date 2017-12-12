@@ -11,10 +11,10 @@ import object.light.ILight;
 import object.terrain.terrain.ITerrain;
 import object.terrain.terrain.TerrainNode;
 import object.terrain.terrain.TerrainQuadTree;
-import object.texture.Texture2D;
-import object.texture.material.TerrainMaterial;
-import object.texture.terrain.TerrainTexturePack;
 import primitive.buffer.VAO;
+import primitive.texture.Texture2D;
+import primitive.texture.material.TerrainMaterial;
+import primitive.texture.terrain.TerrainTexturePack;
 import shader.terrain.TerrainShader;
 import tool.math.Matrix4f;
 

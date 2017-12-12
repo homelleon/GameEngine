@@ -12,9 +12,9 @@ public class GUITextureShader extends ShaderProgram {
 	private static final String VERTEX_FILE = EngineSettings.SHADERS_GUI_PATH + "guiTexture_V_shader.glsl";
 	private static final String FRAGMENT_FILE = EngineSettings.SHADERS_GUI_PATH + "guiTexture_F_shader.glsl";
 	//----attributes
-	private static final String ATTRIBUTE_POSITION = "position";
+	private static final String ATTRIBUTE_POSITION = "in_position";
 	//----uniforms
-	private static final String UNIFORM_TRANSFORMATION_MATRIX = "transformationMatrix";
+	private static final String UNIFORM_TRANSFORMATION_MATRIX = "Transformation";
 	private static final String UNIFORM_IS_MIX_COLORED = "isMixColored";
 	private static final String UNIFORM_MIX_COLOR = "mixColor";
 	

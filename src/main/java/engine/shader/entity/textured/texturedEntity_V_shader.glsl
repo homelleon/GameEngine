@@ -4,9 +4,9 @@
 #define LIGHT_MAX 10
 
 /*===== in ======*/
-in vec3 position;
-in vec2 textureCoordinates;
-in vec3 normal;
+in vec3 in_position;
+in vec2 in_textureCoords;
+in vec3 in_normal;
 
 /*===== out =====*/
 out vec2 pass_textureCoordinates;
@@ -22,9 +22,9 @@ out vec3 reflectedVector;
 out vec3 refractedVector;
 
 /*=== uniforms ==*/
-uniform mat4 transformationMatrix;
-uniform mat4 projectionMatrix;
-uniform mat4 viewMatrix;
+uniform mat4 Transformation;
+uniform mat4 Projection;
+uniform mat4 View;
 
 uniform vec3 cameraPosition;
 uniform vec4 clipPlane;
@@ -57,18 +57,18 @@ const float fogGradient = 5.0;
 /*------------- main ---------------*/
 void main(void) {
 
-   vec4 worldPosition = transformationMatrix * vec4(position, 1.0);
+   vec4 worldPosition = Transformation * vec4(in_position, 1.0);
    shadowCoords = toShadowMapSpace * worldPosition;
    
    gl_ClipDistance[0] = dot(worldPosition, clipPlane);
    
-   vec4 positionRelativeToCam = viewMatrix * worldPosition;
-   gl_Position = projectionMatrix * positionRelativeToCam;
+   vec4 positionRelativeToCam = View * worldPosition;
+   gl_Position = Projection * positionRelativeToCam;
       
-   pass_textureCoordinates = (textureCoordinates / numberOfRows) + offset;
+   pass_textureCoordinates = (in_textureCoords / numberOfRows) + offset;
    
-   pass_normal = normal;
-   vec3 unitNormal = normalize(normal);
+   pass_normal = in_normal;
+   vec3 unitNormal = normalize(in_normal);
    vec3 viewVector = worldPosition.xyz - cameraPosition;
    
    if(reflectiveFactor > 0.0) {	   
@@ -79,22 +79,22 @@ void main(void) {
 	   refractedVector = refract(viewVector, unitNormal, 1.0/refractiveIndex);
    }
       
-   vec3 actualNormal = normal;
+   vec3 actualNormal = in_normal;
    if(usesFakeLighting > 0.5) {
       actualNormal = vec3(0.0,1.0,0.0);
    }
 
-   surfaceNormal = (transformationMatrix * vec4(actualNormal,0.0)).xyz;
+   surfaceNormal = (Transformation * vec4(actualNormal, 0.0)).xyz;
    for(int i = 0; i < LIGHT_MAX; i++) {
       toLightVector[i] = lightPosition[i] - worldPosition.xyz; 
    }
    
-   toCameraVector = (inverse(viewMatrix) * vec4(0.0,0.0,0.0,1.0)).xyz - worldPosition.xyz;
+   toCameraVector = (inverse(View) * vec4(0.0, 0.0, 0.0, 1.0)).xyz - worldPosition.xyz;
    
    float distance = length(positionRelativeToCam.xyz);
    
-   fogVisibility = exp(-pow((distance*fogDensity),fogGradient));
-   fogVisibility = clamp(fogVisibility,0.0,1.0);
+   fogVisibility = exp(-pow((distance * fogDensity), fogGradient));
+   fogVisibility = clamp(fogVisibility, 0.0, 1.0);
    
    distance = distance - (shadowDistance - shadowTransitionDistance);
    distance = distance / shadowTransitionDistance;

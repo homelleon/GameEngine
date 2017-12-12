@@ -1,7 +1,7 @@
 package object.gui.texture;
 
 import object.GameObject;
-import object.texture.Texture2D;
+import primitive.texture.Texture2D;
 import tool.math.vector.Vector2f;
 import tool.math.vector.Vector3f;
 

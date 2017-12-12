@@ -6,9 +6,9 @@ import org.lwjgl.opengl.GL30;
 import org.lwjgl.opengl.GL42;
 import org.lwjgl.opengl.GL43;
 
-import object.texture.TBO;
-import object.texture.Texture2D;
 import primitive.buffer.VBO;
+import primitive.texture.TBO;
+import primitive.texture.Texture2D;
 import shader.gpgpu.HeightMapShader;
 
 public class HeightMapRenderer {

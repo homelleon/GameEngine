@@ -4,8 +4,8 @@ import java.io.InputStreamReader;
 
 import core.settings.EngineSettings;
 import object.gui.text.GUIText;
-import object.texture.Texture2D;
 import primitive.buffer.Loader;
+import primitive.texture.Texture2D;
 
 /**
  * Represents a font. It holds the font's texture atlas as well as having the

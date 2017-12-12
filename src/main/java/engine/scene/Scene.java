@@ -1,8 +1,8 @@
-package object.scene;
+package scene;
 
 import java.util.Collection;
 
-import input.MousePicker;
+import control.MousePicker;
 import manager.audio.IAudioManager;
 import manager.entity.FrustumEntityManager;
 import manager.entity.IEntityManager;
@@ -24,7 +24,7 @@ import object.entity.player.IPlayer;
 import object.light.Light;
 import object.particle.ParticleSystem;
 import object.terrain.terrain.ITerrain;
-import object.texture.Texture;
+import primitive.texture.Texture;
 import tool.math.Frustum;
 import tool.math.vector.Vector3f;
 

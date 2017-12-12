@@ -11,8 +11,8 @@ public class FontShader extends ShaderProgram {
 	private static final String VERTEX_FILE = EngineSettings.SHADERS_FONT_PATH + "font_V_shader.glsl";
 	private static final String FRAGMENT_FILE = EngineSettings.SHADERS_FONT_PATH + "font_F_shader.glsl";
 	//----attributes
-	private static final String ATTRIBUTE_POSITION = "position";
-	private static final String ATTRIBUTE_TEXTURE_COORINATES = "textureCoordinates";
+	private static final String ATTRIBUTE_POSITION = "in_position";
+	private static final String ATTRIBUTE_TEXTURE_COORINATES = "in_textureCoords";
 	//----uniforms
 	private static final String UNIFORM_COLOR = "color";
 	private static final String UNIFORM_TRANSLATION = "translation";

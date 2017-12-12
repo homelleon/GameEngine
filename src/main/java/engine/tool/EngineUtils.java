@@ -10,8 +10,6 @@ import java.util.stream.Stream;
 import core.settings.EngineSettings;
 import object.entity.entity.DecorEntity;
 import object.entity.entity.IEntity;
-import object.texture.Texture2D;
-import object.texture.material.Material;
 import object.water.WaterTile;
 import primitive.buffer.Loader;
 import primitive.model.Mesh;
@@ -20,6 +18,8 @@ import primitive.model.meshLoader.normalMapObject.NormalMappedObjLoader;
 import primitive.model.meshLoader.object.ModelData;
 import primitive.model.meshLoader.object.OBJFileLoader;
 import primitive.model.meshLoader.objloader.OBJLoader;
+import primitive.texture.Texture2D;
+import primitive.texture.material.Material;
 import tool.math.vector.Vector3f;
 
 public class EngineUtils {

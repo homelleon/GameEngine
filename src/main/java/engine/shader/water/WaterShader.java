@@ -17,12 +17,12 @@ public class WaterShader extends ShaderProgram {
 	//----attributes
 	private final static String ATTRIBUTE_OUT_COLOR = "out_Color";
 	private final static String ATTRIBUTE_OUT_BRIGHT_COLOR = "out_BrightColor";
-	private final static String ATTRIBUTE_POSITION = "position";
+	private final static String ATTRIBUTE_POSITION = "in_position";
 	//----uniforms
 	//matrix
-	private final static String UNIFORM_PROJECTION_MATRIX = "projectionMatrix";
-	private final static String UNIFORM_VIEW_MATRIX = "viewMatrix";
-	private final static String UNIFORM_MODEL_MATRIX = "modelMatrix";
+	private final static String UNIFORM_PROJECTION_MATRIX = "Projection";
+	private final static String UNIFORM_VIEW_MATRIX = "View";
+	private final static String UNIFORM_MODEL_MATRIX = "Model";
 	private final static String UNIFORM_CAMERA_POSITION = "cameraPosition";	
 	//material
 	private final static String UNIFORM_NORMAL_MAP = "normalMap";

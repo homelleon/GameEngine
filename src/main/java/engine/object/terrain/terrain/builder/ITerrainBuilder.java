@@ -1,7 +1,7 @@
 package object.terrain.terrain.builder;
 
 import object.terrain.terrain.ITerrain;
-import object.texture.Texture2D;
+import primitive.texture.Texture2D;
 
 public interface ITerrainBuilder {
 	

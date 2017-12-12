@@ -1,6 +1,6 @@
-package object.texture.terrain.builder;
+package primitive.texture.terrain.builder;
 
-import object.texture.terrain.TerrainTexturePack;
+import primitive.texture.terrain.TerrainTexturePack;
 
 public interface ITerrainTexturePackBuilder {
 	

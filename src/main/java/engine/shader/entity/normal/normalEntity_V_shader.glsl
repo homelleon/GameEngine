@@ -4,10 +4,10 @@
 #define LIGHT_MAX 10
 
 /*==== in =====*/
-in vec3 position;
-in vec2 textureCoordinates;
-in vec3 normal;
-in vec3 tangent;
+in vec3 in_position;
+in vec2 in_textureCoords;
+in vec3 in_normal;
+in vec3 in_tangent;
 
 /*==== out =====*/
 out vec2 pass_textureCoordinates;
@@ -17,9 +17,9 @@ out float visibility;
 out vec4 shadowCoords;
 
 /*=== uniforms ==*/
-uniform mat4 transformationMatrix;
-uniform mat4 projectionMatrix;
-uniform mat4 viewMatrix;
+uniform mat4 Transformation;
+uniform mat4 Projection;
+uniform mat4 View;
 uniform vec3 lightPositionEyeSpace[LIGHT_MAX];
 uniform vec4 clipPlane;
 uniform float usesFakeLighting;
@@ -39,25 +39,25 @@ const float fogGradient = 2.0;
 /*------------- main ---------------*/
 void main(void) {
 	
-	vec4 worldPosition = transformationMatrix * vec4(position, 1.0);
+	vec4 worldPosition = Transformation * vec4(in_position, 1.0);
 	shadowCoords = toShadowMapSpace * worldPosition;
 	
 	gl_ClipDistance[0] = dot(worldPosition, clipPlane);
-	mat4 modelViewMatrix = viewMatrix * transformationMatrix;
-	vec4 positionRelativeToCam = modelViewMatrix * vec4(position, 1.0);
-	gl_Position = projectionMatrix * positionRelativeToCam;
+	mat4 ModelView = View * Transformation;
+	vec4 positionRelativeToCam = ModelView * vec4(in_position, 1.0);
+	gl_Position = Projection * positionRelativeToCam;
 	
-	pass_textureCoordinates = (textureCoordinates / numberOfRows) + offset;
+	pass_textureCoordinates = (in_textureCoords / numberOfRows) + offset;
 	
-	vec3 actualNormal = normal;
+	vec3 actualNormal = in_normal;
 	if(usesFakeLighting > 0.5) {
 	   actualNormal = vec3(0.0, 1.0, 0.0);
 	}
 	
-	vec3 surfaceNormal = (modelViewMatrix * vec4(actualNormal, 0.0)).xyz;
+	vec3 surfaceNormal = (ModelView * vec4(actualNormal, 0.0)).xyz;
 
 	vec3 norm = normalize(surfaceNormal);
-	vec3 tang = normalize((modelViewMatrix * vec4(tangent, 0.0)).xyz);
+	vec3 tang = normalize((ModelView * vec4(in_tangent, 0.0)).xyz);
 	vec3 bitang = normalize(cross(norm, tang));
 	
 	mat3 toTangentSpace = mat3(
@@ -66,15 +66,14 @@ void main(void) {
 		tang.z, bitang.z, norm.z
 	);
 	
-
-
 	for(int i = 0; i < LIGHT_MAX; i++) {
 		toLightVector[i] = toTangentSpace * (lightPositionEyeSpace[i] - positionRelativeToCam.xyz);
 	}
+	
 	toCameraVector = toTangentSpace * (-positionRelativeToCam.xyz);
 	
 	float distance = length(positionRelativeToCam.xyz);
-	visibility = exp(-pow((distance*fogDensity), fogGradient));
+	visibility = exp(-pow((distance * fogDensity), fogGradient));
 	visibility = clamp(visibility, 0.0, 1.0);
 
 	distance = distance - (shadowDistance - shadowTransitionDistance);

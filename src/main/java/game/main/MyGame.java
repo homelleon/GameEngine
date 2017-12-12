@@ -5,12 +5,12 @@ import java.util.stream.IntStream;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
+import control.KeyboardGame;
+import control.MouseGame;
 import core.EngineMain;
 import game.game.Game;
 import gameTools.GUIGroupBuilderTexture;
 import gameTools.IGUIGroupBuilderTexture;
-import input.KeyboardGame;
-import input.MouseGame;
 import object.bounding.BoundingQuad;
 import object.entity.entity.IEntity;
 import object.gui.element.button.GUIButton;

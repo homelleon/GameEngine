@@ -11,13 +11,13 @@ public class ParticleShader extends ShaderProgram {
 	private static final String VERTEX_FILE = EngineSettings.SHADERS_PARTICLE_PATH + "particle_V_shader.glsl";
 	private static final String FRAGMENT_FILE = EngineSettings.SHADERS_PARTICLE_PATH + "particle_F_shader.glsl";
 	//----attributes
-	private static final String ATTRIBUTE_POSITION = "position";
-	private static final String ATTRIBUTE_MODEL_VIEW_MATRIX = "modelViewMatrix";
-	private static final String ATTRIBUTE_TEX_OFFSETS = "texOffsets";
-	private static final String ATTRIBUTE_BLEND_FACTOR = "blendFactor";
+	private static final String ATTRIBUTE_POSITION = "in_position";
+	private static final String ATTRIBUTE_MODEL_VIEW_MATRIX = "in_ModelView";
+	private static final String ATTRIBUTE_TEX_OFFSETS = "in_texOffsets";
+	private static final String ATTRIBUTE_BLEND_FACTOR = "in_blendFactor";
 	//----uniforms
+	private static final String UNIFORM_PROJECTION_MATRIX = "Projection";
 	private static final String UNIFORM_NUMBER_OF_ROWS = "numberOfRows";
-	private static final String UNIFORM_PROJECTION_MATRIX = "projectionMatrix";
 	
 	public ParticleShader() {
 		super();

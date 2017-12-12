@@ -10,11 +10,11 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import core.debug.EngineDebug;
-import object.texture.Texture2D;
-import object.texture.material.Material;
 import primitive.buffer.BufferLoader;
 import primitive.buffer.Loader;
 import primitive.model.Mesh;
+import primitive.texture.Texture2D;
+import primitive.texture.material.Material;
 import tool.EngineUtils;
 import tool.math.vector.Vector2f;
 import tool.math.vector.Vector3f;

@@ -1,7 +1,7 @@
 package manager.scene;
 
-import object.scene.IScene;
 import primitive.buffer.Loader;
+import scene.IScene;
 
 /**
  * Temporal interface to initialize test objects.

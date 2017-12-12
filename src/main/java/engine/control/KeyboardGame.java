@@ -1,4 +1,4 @@
-package input;
+package control;
 
 import org.lwjgl.input.Keyboard;
 

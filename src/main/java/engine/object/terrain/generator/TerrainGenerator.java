@@ -2,10 +2,10 @@ package object.terrain.generator;
 
 import object.terrain.terrain.ITerrain;
 import object.terrain.terrain.Terrain;
-import object.texture.Texture2D;
-import object.texture.material.TerrainMaterial;
 import primitive.buffer.Loader;
 import primitive.buffer.VBO;
+import primitive.texture.Texture2D;
+import primitive.texture.material.TerrainMaterial;
 import renderer.gpgpu.HeightMapRenderer;
 import renderer.gpgpu.HeightPositionRenderer;
 import renderer.gpgpu.NormalMapRenderer;

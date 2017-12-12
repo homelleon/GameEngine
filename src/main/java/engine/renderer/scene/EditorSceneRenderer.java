@@ -1,9 +1,9 @@
 package renderer.scene;
 
-import input.Controls;
-import input.IControls;
-import object.scene.IScene;
+import control.Controls;
+import control.IControls;
 import renderer.main.MainRenderer;
+import scene.IScene;
 
 public class EditorSceneRenderer implements ISceneRenderer {
 	

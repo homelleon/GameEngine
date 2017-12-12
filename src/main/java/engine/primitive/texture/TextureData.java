@@ -1,4 +1,4 @@
-package object.texture;
+package primitive.texture;
 
 import java.nio.ByteBuffer;
 

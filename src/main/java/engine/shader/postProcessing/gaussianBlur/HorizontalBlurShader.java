@@ -9,7 +9,7 @@ public class HorizontalBlurShader extends ShaderProgram {
 	private static final String VERTEX_FILE = EngineSettings.SHADERS_BLUR_PATH + "horizontalBlur_V_shader.glsl";
 	private static final String FRAGMENT_FILE = EngineSettings.SHADERS_BLUR_PATH + "blur_F_shader.glsl";
 	//----attributes
-	private static final String ATTRIBUTE_POSITION = "position";
+	private static final String ATTRIBUTE_POSITION = "in_position";
 	//----uniforms
 	private static final String UNIFORM_TARGET_WIDTH = "targetWidth";
 	

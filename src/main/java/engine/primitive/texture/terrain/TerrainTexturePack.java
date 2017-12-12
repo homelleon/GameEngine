@@ -1,6 +1,6 @@
-package object.texture.terrain;
+package primitive.texture.terrain;
 
-import object.texture.Texture2D;
+import primitive.texture.Texture2D;
 
 public class TerrainTexturePack {
 

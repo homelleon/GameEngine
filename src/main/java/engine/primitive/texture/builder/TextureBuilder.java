@@ -1,8 +1,8 @@
-package object.texture.builder;
+package primitive.texture.builder;
 
-import object.texture.Texture;
-import object.texture.TextureData;
-import object.texture.TextureUtils;
+import primitive.texture.Texture;
+import primitive.texture.TextureData;
+import primitive.texture.TextureUtils;
 import tool.MyFile;
 
 public class TextureBuilder {

@@ -4,7 +4,7 @@ import core.display.DisplayManager;
 import core.settings.EngineSettings;
 import object.camera.ICamera;
 import object.particle.master.ParticleMaster;
-import object.texture.particle.ParticleMaterial;
+import primitive.texture.particle.ParticleMaterial;
 import tool.math.vector.Vector2f;
 import tool.math.vector.Vector3f;
 

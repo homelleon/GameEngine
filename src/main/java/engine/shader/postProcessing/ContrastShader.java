@@ -9,7 +9,7 @@ public class ContrastShader extends ShaderProgram {
 	private static final String VERTEX_FILE = EngineSettings.SHADERS_POST_PROCESSING_PATH + "contrast_V_shader.glsl";
 	private static final String FRAGMENT_FILE = EngineSettings.SHADERS_POST_PROCESSING_PATH + "contrast_F_shader.glsl";
 	//----attributes
-	private static final String ATTRIBUTE_POSITION = "position";
+	private static final String ATTRIBUTE_POSITION = "in_position";
 	//----uniforms
 	private static final String UNIFORM_CONTRAST = "contrast";
 	

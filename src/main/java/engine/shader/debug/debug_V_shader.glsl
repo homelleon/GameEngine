@@ -2,7 +2,7 @@
 #version 430 core
 
 /*===== in ======*/
-in vec2 position;
+in vec2 in_position;
 
 /*== uniforms ==*/
 uniform float uniform0;
@@ -19,6 +19,6 @@ out float fs_uniform;
 void main() {
 	
 	fs_uniform = data;
-	gl_Position = vec4(position, 0.0, 1.0);
+	gl_Position = vec4(in_position, 0.0, 1.0);
 }
 

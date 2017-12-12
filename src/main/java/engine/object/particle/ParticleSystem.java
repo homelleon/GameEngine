@@ -7,7 +7,7 @@ import org.lwjgl.util.vector.Vector4f;
 import core.display.DisplayManager;
 import object.GameObject;
 import object.particle.particle.Particle;
-import object.texture.particle.ParticleMaterial;
+import primitive.texture.particle.ParticleMaterial;
 import tool.math.Matrix4f;
 import tool.math.vector.Vector3f;
 

@@ -6,8 +6,8 @@ import java.util.List;
 import core.settings.EngineSettings;
 import object.particle.IParticleSystem;
 import object.particle.ParticleSystem;
-import object.texture.particle.ParticleMaterial;
 import primitive.buffer.Loader;
+import primitive.texture.particle.ParticleMaterial;
 import tool.manager.AbstractManager;
 import tool.math.vector.Vector3f;
 

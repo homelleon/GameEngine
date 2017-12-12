@@ -4,7 +4,7 @@ import core.settings.EngineSettings;
 import object.GameObject;
 import object.camera.FreeCamera;
 import object.camera.ICamera;
-import object.texture.material.TerrainMaterial;
+import primitive.texture.material.TerrainMaterial;
 import tool.math.Maths;
 import tool.math.vector.Vector2f;
 import tool.math.vector.Vector3f;

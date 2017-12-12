@@ -1,8 +1,9 @@
-package input;
+package control;
 
-import object.scene.IScene;
+import scene.IScene;
 
 /**
+ * Controls interface.
  * 
  * @author homelleon
  * @see Controls

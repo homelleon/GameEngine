@@ -15,7 +15,7 @@ public class BrightFilterShader extends ShaderProgram {
 	private static final String VERTEX_FILE = EngineSettings.SHADERS_BLOOM_PATH + "simple_V_shader.glsl";
 	private static final String FRAGMENT_FILE = EngineSettings.SHADERS_BLOOM_PATH + "brightFilter_F_shader.glsl";
 	//----attributes
-	private static final String ATTRIBUTE_POSITION = "position";
+	private static final String ATTRIBUTE_POSITION = "in_position";
 	
 	public BrightFilterShader() {
 		super();

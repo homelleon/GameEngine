@@ -2,7 +2,7 @@
 #version 400 core
 
 /*===== in ======*/
-in vec2 position;
+in vec2 in_position;
 
 /*===== out =====*/
 out vec4 clipSpace;
@@ -12,9 +12,9 @@ out vec3 fromLightVector;
 out float visibility;
 
 /*== uniforms ==*/
-uniform mat4 projectionMatrix;
-uniform mat4 viewMatrix;
-uniform mat4 modelMatrix;
+uniform mat4 Projection;
+uniform mat4 View;
+uniform mat4 Model;
 uniform vec3 cameraPosition;
 uniform vec3 lightPosition;
 
@@ -28,16 +28,16 @@ const float fogGradient = 10.0;
 /*------------- main ---------------*/
 void main(void) {
 
-    vec4 worldPosition = modelMatrix * vec4(position.x, 0.0, position.y, 1.0);
-    vec4 positionRelativeToCam = viewMatrix * worldPosition;
-    clipSpace = projectionMatrix * positionRelativeToCam;
+    vec4 worldPosition = Model * vec4(in_position.x, 0.0, in_position.y, 1.0);
+    vec4 positionRelativeToCam = View * worldPosition;
+    clipSpace = Projection * positionRelativeToCam;
 	gl_Position = clipSpace;
-	textureCoords = vec2(position.x/2.0 + 0.5, position.y/2 + 0.5) * tiling;
+	textureCoords = vec2(in_position.x / 2.0 + 0.5, in_position.y / 2 + 0.5) * tiling;
 	toCameraVector = cameraPosition - worldPosition.xyz;
 	fromLightVector = worldPosition.xyz - lightPosition;
 	
 	float distance = length(positionRelativeToCam.xyz * tiling);
-   	visibility = exp(-pow((distance*fogDensity),fogGradient));
+   	visibility = exp(-pow((distance * fogDensity), fogGradient));
    	visibility = clamp(visibility,0.0,1.0);
  
 }

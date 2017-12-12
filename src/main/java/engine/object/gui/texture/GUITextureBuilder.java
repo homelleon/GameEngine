@@ -1,8 +1,8 @@
 package object.gui.texture;
 
 import core.settings.EngineSettings;
-import object.texture.Texture2D;
 import primitive.buffer.Loader;
+import primitive.texture.Texture2D;
 import tool.math.vector.Vector2f;
 
 public class GUITextureBuilder implements IGUITextureBuilder {

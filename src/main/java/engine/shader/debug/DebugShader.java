@@ -10,7 +10,7 @@ public class DebugShader extends ShaderProgram {
 	private static final String FRAGMENT_FILE = EngineSettings.SHADERS_DEBUG + "debug_F_shader.glsl";
 	//----atributes
 	private static final String ATTRIBUTE_OUT_COLOR = "out_color";
-	private static final String ATTRIBUTE_POSITION = "position";
+	private static final String ATTRIBUTE_POSITION = "in_position";
 	private static final String ATTRIBUTE_ATTR1 = "attribute1";
 	private static final String ATTRIBUTE_ATTR2 = "attribute2";
 	//----uniforms

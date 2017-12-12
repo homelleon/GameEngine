@@ -16,10 +16,10 @@ public class SkyboxShader extends ShaderProgram {
 	private static final String VERTEX_FILE = EngineSettings.SHADERS_SKYBOX_PATH + "skybox_V_shader.glsl";
 	private static final String FRAGMENT_FILE = EngineSettings.SHADERS_SKYBOX_PATH + "skybox_F_shader.glsl";
 	//----attributes
-	private static final String ATTRIBUTE_POSITION = "position";
+	private static final String ATTRIBUTE_POSITION = "in_position";
 	//----uniforms
-	private static final String UNIFORM_PROJECTION_MATRIX = "projectionMatrix";
-	private static final String UNIFORM_VIEW_MATRIX = "viewMatrix";
+	private static final String UNIFORM_PROJECTION_MATRIX = "Projection";
+	private static final String UNIFORM_VIEW_MATRIX = "View";
 	private static final String UNIFORM_FOG_COLOR = "fogColor";
 	private static final String UNIFORM_BLEND_FACTOR = "blendFactor";
 	private static final String UNIFORM_CUBE_MAP = "cubeMap";

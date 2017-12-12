@@ -9,9 +9,9 @@ import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL42;
 import org.lwjgl.opengl.GL43;
 
-import object.texture.Texture2D;
 import primitive.buffer.Loader;
 import primitive.buffer.VBO;
+import primitive.texture.Texture2D;
 import renderer.debug.DebugRenderer;
 import shader.gpgpu.HeightPositionShader;
 
@@ -51,17 +51,17 @@ public class HeightPositionRenderer {
 		vbo.unbind();
 		shader.stop();
 		
-		// debugging
-		DebugRenderer debugRenderer = new DebugRenderer();
-		debugRenderer.addAttribute(vbo);
-		while(!Display.isCloseRequested()) {
-			if(Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
-				break;
-			}
-			debugRenderer.render();
-		}
-		debugRenderer.clean();
-		System.exit(0);
+//		// debugging
+//		DebugRenderer debugRenderer = new DebugRenderer();
+//		debugRenderer.addAttribute(vbo);
+//		while(!Display.isCloseRequested()) {
+//			if(Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
+//				break;
+//			}
+//			debugRenderer.render();
+//		}
+//		debugRenderer.clean();
+//		System.exit(0);
 	}
 	
 	public float[] getHeights() {

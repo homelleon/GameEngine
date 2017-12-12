@@ -14,10 +14,10 @@ out vec2 tc_textureCoords;
 out float tc_clipDistance;
 
 /*== uniforms ==*/
-uniform mat4 viewMatrix;
-uniform mat4 projectionMatrix;
-uniform mat4 localMatrix;
-uniform mat4 worldMatrix;
+uniform mat4 View;
+uniform mat4 Projection;
+uniform mat4 Local;
+uniform mat4 World;
 
 uniform sampler2D heightMap;
 
@@ -44,26 +44,26 @@ float morphLatitude(vec2 position) {
 
 	vec2 frac = position - location;
 
-	if(index == vec2(0,0)) {
+	if(index == vec2(0, 0)) {
 		float morph = frac.x - frac.y;
 		if(morph > 0) {
 			return morph;
 		}
 	}
 
-	if(index == vec2(1,0)) {
+	if(index == vec2(1, 0)) {
 		float morph = gap - frac.x - frac.y;
 		if(morph > 0) {
 			return morph;
 		}
 	}
-	if(index == vec2(0,1)) {
+	if(index == vec2(0, 1)) {
 		float morph = frac.x + frac.y - gap;
 		if(morph > 0) {
 			return -morph;
 		}
 	}
-	if(index == vec2(1,1)) {
+	if(index == vec2(1, 1)) {
 		float morph = frac.y - frac.x;
 		if(morph > 0) {
 			return -morph;
@@ -76,26 +76,26 @@ float morphLongitude(vec2 position) {
 
 	vec2 frac = position - location;
 
-	if(index == vec2(0,0)) {
+	if(index == vec2(0, 0)) {
 		float morph = frac.y - frac.x;
 		if(morph > 0) {
 			return -morph;
 		}
 	}
 
-	if(index == vec2(1,0)) {
+	if(index == vec2(1, 0)) {
 		float morph = frac.y - (gap - frac.x);
 		if(morph > 0) {
 			return morph;
 		}
 	}
-	if(index == vec2(0,1)) {
+	if(index == vec2(0, 1)) {
 		float morph = gap - frac.y - frac.x;
 		if(morph > 0) {
 			return -morph;
 		}
 	}
-	if(index == vec2(1,1)) {
+	if(index == vec2(1, 1)) {
 		float morph = frac.x - frac.y;
 		if(morph > 0) {
 			return morph;
@@ -105,28 +105,28 @@ float morphLongitude(vec2 position) {
 }
 
 vec2 morph(vec2 localPosition, int morph_area) {
-	vec2 morphing = vec2(0,0);
+	vec2 morphing = vec2(0, 0);
 
-	vec2 fixPointLatitude = vec2(0,0);
-	vec2 fixPointLongitude = vec2(0,0);
+	vec2 fixPointLatitude = vec2(0, 0);
+	vec2 fixPointLongitude = vec2(0, 0);
 	float distLatitude = 0;
 	float distLongitude = 0;
 
-	if(index == vec2(0,0)) {
-		fixPointLatitude = location + vec2(gap,0);
-		fixPointLongitude = location + vec2(0,gap);
+	if(index == vec2(0, 0)) {
+		fixPointLatitude = location + vec2(gap, 0);
+		fixPointLongitude = location + vec2(0, gap);
 	}
-	else if(index == vec2(1,0)) {
+	else if(index == vec2(1, 0)) {
 		fixPointLatitude = location;
-		fixPointLongitude = location + vec2(gap,gap);
+		fixPointLongitude = location + vec2(gap, gap);
 	}
-	else if(index == vec2(0,1)) {
-		fixPointLatitude = location + vec2(gap,gap);
+	else if(index == vec2(0, 1)) {
+		fixPointLatitude = location + vec2(gap, gap);
 		fixPointLongitude = location;
 	}
-	else if(index == vec2(1,1)) {
-		fixPointLatitude = location + vec2(0,gap);
-		fixPointLongitude = location + vec2(gap,0);
+	else if(index == vec2(1, 1)) {
+		fixPointLatitude = location + vec2(0, gap);
+		fixPointLongitude = location + vec2(gap, 0);
 	}
 
 	float planarFactor = 0;
@@ -136,10 +136,10 @@ vec2 morph(vec2 localPosition, int morph_area) {
 		planarFactor = cameraPosition.y / abs(scaleY);
 	}
 
-	distLatitude = length(cameraPosition - (worldMatrix *
-			vec4(fixPointLatitude.x, planarFactor, fixPointLatitude.y,1)).xyz);
-	distLongitude = length(cameraPosition - (worldMatrix *
-			vec4(fixPointLongitude.x, planarFactor, fixPointLongitude.y,1)).xyz);
+	distLatitude = length(cameraPosition - (World *
+			vec4(fixPointLatitude.x, planarFactor, fixPointLatitude.y, 1)).xyz);
+	distLongitude = length(cameraPosition - (World *
+			vec4(fixPointLongitude.x, planarFactor, fixPointLongitude.y, 1)).xyz);
 	if(distLatitude > morph_area) {
 		morphing.x = morphLatitude(localPosition.xy);
 	}
@@ -153,7 +153,7 @@ vec2 morph(vec2 localPosition, int morph_area) {
 /*------------- main ---------------*/
 void main(void) {
 
-   vec3 localPosition = (localMatrix * vec4(in_position, 1.0)).xyz;
+   vec3 localPosition = (Local * vec4(in_position, 1.0)).xyz;
 
    if(lod > 0.0) {
 	  localPosition.xz += morph(localPosition.xz, lod_morph_area[lod-1]);
@@ -162,11 +162,11 @@ void main(void) {
    float height = texture(heightMap, localPosition.xz).r;
    localPosition.y = height;
 
-   vec4 worldPosition =  (worldMatrix * vec4(localPosition, 1.0));
+   vec4 worldPosition =  (World * vec4(localPosition, 1.0));
    
    tc_shadowCoords = toShadowMapSpace * vec4(worldPosition.x, 0.0, worldPosition.z, 1.0);
    
-   vec4 positionRelativeToCam = viewMatrix * worldPosition;
+   vec4 positionRelativeToCam = View * worldPosition;
 
    gl_Position = worldPosition;
 
