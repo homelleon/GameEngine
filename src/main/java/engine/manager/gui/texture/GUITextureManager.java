@@ -10,12 +10,13 @@ import core.debug.EngineDebug;
 import object.gui.texture.GUITexture;
 
 /**
- * Graphic interface manager for controling and storing structured map and
- * arrays of graphic interfaces.
+ * Manages graphic user interface textures.
  * 
  * @author homelleon
  * @version 1.0
+ * 
  * @see IGUITextureManager
+ * @see GUITexture
  */
 
 public class GUITextureManager implements IGUITextureManager {

@@ -1,6 +1,5 @@
 package map.parser;
 
-import org.lwjgl.util.vector.Vector3f;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -10,10 +9,19 @@ import core.debug.EngineDebug;
 import manager.scene.IObjectManager;
 import map.objectMap.ObjectMapManager;
 import object.entity.entity.IEntity;
+import tool.math.vector.Vector3f;
 import tool.xml.XMLUtils;
 import tool.xml.parser.IObjectParser;
 import tool.xml.parser.XMLParser;
 
+/**
+ * Parser for creating manager relying on their positions and preloaded models from xml format.
+ * 
+ * @author homelleon
+ * @see XMLParser
+ * @see IObjectManager
+ * @see IObjectParser
+ */
 public class LevelMapXMLParser extends XMLParser implements IObjectParser<IObjectManager> {
 	
 	IObjectManager modelMap;
@@ -36,8 +44,9 @@ public class LevelMapXMLParser extends XMLParser implements IObjectParser<IObjec
 				}
 			}
 			if (EngineDebug.hasDebugPermission()) {
-				System.out.println("Loading complete!");
-				System.out.println("-------------------------");
+				EngineDebug.println("Level complete!");
+				EngineDebug.printClose("Level map");
+				EngineDebug.printBorder();
 			}
 		} else {
 			throw new NullPointerException("Incorrect parent element name of used level map file!");
@@ -47,7 +56,7 @@ public class LevelMapXMLParser extends XMLParser implements IObjectParser<IObjec
 
 	private void parseEntities(Node node, IObjectManager levelMap) {
 		if (EngineDebug.hasDebugPermission()) {
-			System.out.println("> Loading entities...");
+			EngineDebug.println("Loading entities...", 1);
 		}
 		Node entities = node;
 		NodeList entityList = entities.getChildNodes();
@@ -70,12 +79,12 @@ public class LevelMapXMLParser extends XMLParser implements IObjectParser<IObjec
 				entityClone.setScale(scale);
 				levelMap.getEntities().add(entityClone);
 				if (EngineDebug.hasDebugPermission()) {
-					System.out.println(">> " + levelMap.getEntities().get(name).getName());
+					EngineDebug.println(levelMap.getEntities().get(name).getName(), 2);
 				}
 			}
 		}
 		if (EngineDebug.hasDebugPermission()) {
-			System.out.println("> Succed!");
+			EngineDebug.println("Succed!", 1);
 		}
 	}
 }

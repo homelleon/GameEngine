@@ -4,12 +4,12 @@ import java.nio.FloatBuffer;
 import java.util.List;
 
 import org.lwjgl.BufferUtils;
-import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector3f;
 
 import tool.colladaParser.dataStructures.JointData;
 import tool.colladaParser.dataStructures.SkeletonData;
 import tool.colladaParser.xmlParser.XmlNode;
+import tool.math.Matrix4f;
+import tool.math.vector.Vector3f;
 
 public class SkeletonLoader {
 
@@ -50,7 +50,7 @@ public class SkeletonLoader {
 		matrix.transpose();
 		if (isRoot) {
 			// because in Blender z is up, but in our game y is up.
-			Matrix4f.mul(CORRECTION, matrix, matrix);
+			matrix.mul(CORRECTION);
 		}
 		jointCount++;
 		return new JointData(index, nameId, matrix);

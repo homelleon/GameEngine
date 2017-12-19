@@ -4,21 +4,21 @@ import java.util.Collection;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
-import org.lwjgl.util.vector.Vector3f;
 
+import control.KeyboardGame;
+import control.MouseGame;
 import core.display.DisplayManager;
 import core.settings.EngineSettings;
 import object.entity.entity.TexturedEntity;
-import object.input.KeyboardGame;
-import object.input.MouseGame;
-import object.model.textured.TexturedModel;
 import object.terrain.terrain.ITerrain;
+import primitive.model.Model;
+import tool.math.vector.Vector3f;
 
 public class Player extends TexturedEntity implements IPlayer {
 
 	private static final float MOVE_SPEED = 20;
 	private static final float RUN_SPEED = 100;
-	private static final float TURN_SPEED = 80;
+	private static final float TURN_SPEED = 50;
 	private static final float JUMP_POWER = 30;
 
 	private float currentForwardSpeed = 0;
@@ -26,14 +26,16 @@ public class Player extends TexturedEntity implements IPlayer {
 	private float currentTurnSpeed = 0;
 	private float upwardsSpeed = 0;
 
-	public boolean isInAir = false;
+	public volatile boolean isInAir = false;
 
-	public Player(String name, TexturedModel model, Vector3f position, Vector3f rotation, float scale) {
-		super(name, model, position, rotation, scale);
+	public Player(String name, Collection<Model> modelList, Vector3f position, Vector3f rotation, float scale) {
+		super(name, modelList, position, rotation, scale);
+		this.typeID = EngineSettings.ENTITY_TYPE_NORMAL;
 	}
 
 	@Override
-	public void move(Collection<ITerrain> terrains) {
+	public synchronized void move(Collection<ITerrain> terrains) {
+		this.isMoved = false;
 		checkInputs();
 		super.increaseRotation(0, currentTurnSpeed * DisplayManager.getFrameTimeSeconds(), 0);
 		float fowardDistance = currentForwardSpeed * DisplayManager.getFrameTimeSeconds();
@@ -77,10 +79,13 @@ public class Player extends TexturedEntity implements IPlayer {
 					&& (KeyboardGame.isKeyDown(EngineSettings.KEY_PLAYER_ACCELERATE)
 							|| Keyboard.isKeyDown(Keyboard.KEY_RSHIFT))) {
 				this.currentForwardSpeed = RUN_SPEED;
+				this.isMoved = true;
 			} else if (KeyboardGame.isKeyDown(EngineSettings.KEY_PLAYER_MOVE_FORWARD)) {
 				this.currentForwardSpeed = MOVE_SPEED;
+				this.isMoved = true;
 			} else if (KeyboardGame.isKeyDown(EngineSettings.KEY_PLAYER_MOVE_BACKWARD)) {
 				this.currentForwardSpeed = -MOVE_SPEED;
+				this.isMoved = true;
 			} else {
 				this.currentForwardSpeed = 0;
 			}
@@ -89,27 +94,33 @@ public class Player extends TexturedEntity implements IPlayer {
 					&& (KeyboardGame.isKeyDown(EngineSettings.KEY_PLAYER_ACCELERATE)
 							|| Keyboard.isKeyDown(Keyboard.KEY_RSHIFT))) {
 				this.currentStrafeSpeed = RUN_SPEED;
+				this.isMoved = true;
 			} else if ((KeyboardGame.isKeyDown(EngineSettings.KEY_PLAYER_MOVE_RIGHT))
 					&& (KeyboardGame.isKeyDown(EngineSettings.KEY_PLAYER_ACCELERATE)
 							|| Keyboard.isKeyDown(Keyboard.KEY_RSHIFT))) {
 				this.currentStrafeSpeed = -RUN_SPEED;
+				this.isMoved = true;
 			} else if (KeyboardGame.isKeyDown(EngineSettings.KEY_PLAYER_MOVE_LEFT)) {
 				this.currentStrafeSpeed = MOVE_SPEED;
+				this.isMoved = true;
 			} else if (KeyboardGame.isKeyDown(EngineSettings.KEY_PLAYER_MOVE_RIGHT)) {
 				this.currentStrafeSpeed = -MOVE_SPEED;
+				this.isMoved = true;
 			} else {
 				this.currentStrafeSpeed = 0;
 			}
 
 			if (KeyboardGame.isKeyDown(EngineSettings.KEY_PLAYER_JUMP)) {
 				jump();
+				this.isMoved = true;
 			}
 		}
 
 		if (!MouseGame.isPressed(MouseGame.MIDDLE_CLICK)) {
-			this.currentTurnSpeed = -TURN_SPEED * (Mouse.getX() - EngineSettings.DISPLAY_WIDTH / 2)
-					* EngineSettings.MOUSE_X_SPEED;
+			this.currentTurnSpeed = -TURN_SPEED * EngineSettings.MOUSE_X_SPEED * Mouse.getDX();
 			MouseGame.centerCoursor();
+		} else {
+			this.currentTurnSpeed = 0;
 		}
 	}
 

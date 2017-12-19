@@ -4,12 +4,12 @@ import java.io.IOException;
 
 import org.lwjgl.openal.AL10;
 import org.lwjgl.openal.AL11;
-import org.lwjgl.util.vector.Vector3f;
 
 import object.audio.master.AudioMaster;
 import object.audio.master.IAudioMaster;
 import object.audio.source.AudioSource;
 import object.audio.source.IAudioSource;
+import tool.math.vector.Vector3f;
 
 /**
  * Runnable test class for Audio Engine.

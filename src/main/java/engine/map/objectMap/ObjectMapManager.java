@@ -4,7 +4,7 @@ import manager.scene.IObjectManager;
 import manager.scene.AObjectManager;
 
 /**
- * Map that controls entity objects to load in the editor menu.
+ * Map that controls entity objects to load into the editor menu.
  * 
  * @author homelleon
  *

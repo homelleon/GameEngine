@@ -1,9 +1,9 @@
 package object.gui.text;
 
-import org.lwjgl.util.vector.Vector2f;
-import org.lwjgl.util.vector.Vector3f;
-
-import manager.gui.text.IGUITextManager;
+import object.GameObject;
+import primitive.buffer.VAO;
+import tool.math.vector.Vector2f;
+import tool.math.vector.Vector3f;
 
 /**
  * Represents a piece of text in the game.
@@ -12,14 +12,12 @@ import manager.gui.text.IGUITextManager;
  * @author homelleon
  *
  */
-public class GUIText {
-
-	private String name;
+public class GUIText extends GameObject {
 
 	private String textString;
 	private float fontSize;
 
-	private int textMeshVao;
+	private VAO textMeshVao;
 	private int vertexCount;
 	private Vector3f color = new Vector3f(0f, 0f, 0f);
 
@@ -40,7 +38,7 @@ public class GUIText {
 	private Vector3f outlineColor = new Vector3f(0f, 0f, 0f);
 	
 	private float transparency = 0;
-	private boolean isVisible = false;
+	private volatile boolean isVisible = false;
 
 	/**
 	 * Creates a new text, loads the text's quads into a VAO, and adds the text
@@ -69,7 +67,7 @@ public class GUIText {
 	 */
 	public GUIText(String name, String text, float fontSize, String fontName, Vector2f position, float maxLineLength,
 			boolean centered) {
-		this.name = name;
+		super(name);
 		this.textString = text;
 		this.fontSize = fontSize;
 		this.fontName = fontName;
@@ -77,6 +75,10 @@ public class GUIText {
 		this.maxLineLength = maxLineLength;
 		this.centered = centered;
 		makeFontSmooth();
+	}
+	
+	protected void changeText(String text) {
+		this.textString = text;
 	}
 
 	/**
@@ -93,7 +95,7 @@ public class GUIText {
 	 * 
 	 * @return {@link Float} value of current height
 	 */
-	public void setWidth(float width) {
+	public synchronized void setWidth(float width) {
 		this.width = width;
 	}
 
@@ -101,7 +103,7 @@ public class GUIText {
 		return edge;
 	}
 
-	public void setEdge(float edge) {
+	public synchronized void setEdge(float edge) {
 		this.edge = edge;
 	}
 
@@ -109,7 +111,7 @@ public class GUIText {
 		return borderWidth;
 	}
 
-	public void setBorderWidth(float borderWidth) {
+	public synchronized void setBorderWidth(float borderWidth) {
 		this.borderWidth = borderWidth;
 	}
 
@@ -117,7 +119,7 @@ public class GUIText {
 		return borderEdge;
 	}
 
-	public void setBorderEdge(float borderEdge) {
+	public synchronized void setBorderEdge(float borderEdge) {
 		this.borderEdge = borderEdge;
 	}
 
@@ -125,7 +127,7 @@ public class GUIText {
 		return offset;
 	}
 
-	public void setOffset(Vector2f offset) {
+	public synchronized void setOffset(Vector2f offset) {
 		this.offset = offset;
 	}
 
@@ -133,17 +135,8 @@ public class GUIText {
 		return this.outlineColor;
 	}
 
-	public void setOutlineColor(Vector3f outlineColor) {
+	public synchronized void setOutlineColor(Vector3f outlineColor) {
 		this.outlineColor = outlineColor;
-	}
-
-	/**
-	 * Returns name of interface text.
-	 * 
-	 * @return {@link String} value of current name
-	 */
-	public String getName() {
-		return this.name;
 	}
 
 	/**
@@ -163,8 +156,8 @@ public class GUIText {
 	 * @param b
 	 *            - blue value, between 0 and 1.
 	 */
-	public void setColor(float r, float g, float b) {
-		this.color.set(r, g, b);
+	public synchronized void setColor(float r, float g, float b) {
+		setColor(new Vector3f(r,g,b));
 	}
 
 	/**
@@ -173,8 +166,8 @@ public class GUIText {
 	 * @param color
 	 *            {@link Vecotr3f} value
 	 */
-	public void setColor(Vector3f color) {
-		this.color.set(color);
+	public synchronized void setColor(Vector3f color) {
+		this.color = color;
 	}
 
 	/**
@@ -200,7 +193,7 @@ public class GUIText {
 	 * @param position
 	 *            {@link Vector2f} value
 	 */
-	public void setPosition(Vector2f position) {
+	public synchronized void setPosition(Vector2f position) {
 		this.position = position;
 	}
 
@@ -218,7 +211,7 @@ public class GUIText {
 	 * @return the ID of the text's VAO, which contains all the vertex data for
 	 *         the quads on which the text will be rendered.
 	 */
-	public int getMesh() {
+	public VAO getMesh() {
 		return textMeshVao;
 	}
 
@@ -231,7 +224,7 @@ public class GUIText {
 	 * @param verticesCount
 	 *            - the total number of vertices in all of the quads.
 	 */
-	public void setMeshInfo(int vao, int verticesCount) {
+	public synchronized void setMeshInfo(VAO vao, int verticesCount) {
 		this.textMeshVao = vao;
 		this.vertexCount = verticesCount;
 	}
@@ -249,7 +242,7 @@ public class GUIText {
 	 * 
 	 * @param value boolean to set into visibility parameter
 	 */
-	public void setIsVisible(boolean value) {
+	public synchronized void setIsVisible(boolean value) {
 		this.isVisible = value;
 	}
 
@@ -268,7 +261,7 @@ public class GUIText {
 	 * 
 	 * @param value float of text transparency
 	 */
-	public void setTransparency(float value) {
+	public synchronized void setTransparency(float value) {
 		this.transparency = value;
 	}
 	
@@ -294,14 +287,14 @@ public class GUIText {
 	 * 
 	 * @param number
 	 */
-	public void setNumberOfLines(int number) {
+	public synchronized void setNumberOfLines(int number) {
 		this.numberOfLines = number;
 	}
 
 	/**
 	 * @return {@code true} if the text should be centered.
 	 */
-	public boolean isCentered() {
+	public synchronized boolean isCentered() {
 		return centered;
 	}
 
@@ -329,6 +322,10 @@ public class GUIText {
 		GUIText guiText = new GUIText(name, text, this.fontSize, this.fontName, this.position, this.maxLineLength, this.centered);
 		guiText.setColor(this.color);
 		return guiText;
+	}
+	
+	public void delete() {
+		this.textMeshVao.delete();
 	}
 
 	private void makeFontSmooth() {

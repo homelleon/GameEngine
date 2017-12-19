@@ -3,8 +3,6 @@ package object.gui.text.parser;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.lwjgl.util.vector.Vector2f;
-import org.lwjgl.util.vector.Vector3f;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -15,9 +13,11 @@ import core.settings.EngineSettings;
 import object.gui.text.GUIText;
 import object.gui.text.GUITextBuilder;
 import object.gui.text.IGUITextBuilder;
+import tool.math.vector.Vector2f;
+import tool.math.vector.Vector3f;
 import tool.xml.XMLUtils;
-import tool.xml.loader.XMLFileLoader;
 import tool.xml.loader.IXMLLoader;
+import tool.xml.loader.XMLFileLoader;
 import tool.xml.parser.IListParser;
 import tool.xml.parser.IObjectParser;
 import tool.xml.parser.XMLParser;
@@ -53,10 +53,6 @@ public class GUITextXMLParser extends XMLParser implements IListParser<GUIText> 
 				textList = createText(node);
 			}
 		}
-		if (EngineDebug.hasDebugPermission()) {
-			System.out.println("---");
-		}
-
 		return textList;
 	}
 
@@ -67,7 +63,7 @@ public class GUITextXMLParser extends XMLParser implements IListParser<GUIText> 
 	 */
 	private List<GUIText> createText(Node node) {
 		if (EngineDebug.hasDebugPermission()) {
-			System.out.println("> Loading GUI texts...");
+			EngineDebug.println("Loading GUI texts...", 1);
 		}
 
 		List<GUIText> textList = new ArrayList<GUIText>();
@@ -111,7 +107,7 @@ public class GUITextXMLParser extends XMLParser implements IListParser<GUIText> 
 				count++;
 				if (EngineDebug.hasDebugPermission()) {
 					if (count != Integer.valueOf(id)) {
-						System.err.println("error id order!");
+						EngineDebug.printError("error id order!");
 					}
 				}
 				IGUITextBuilder builder = new GUITextBuilder();
@@ -121,12 +117,12 @@ public class GUITextXMLParser extends XMLParser implements IListParser<GUIText> 
 				guiText.setColor(color);
 				textList.add(guiText);
 				if (EngineDebug.hasDebugPermission()) {
-					System.out.println(">> " + guiText.getName());
+					EngineDebug.println(guiText.getName(), 2);
 				}
 			}
 		}
 		if (EngineDebug.hasDebugPermission()) {
-			System.out.println("> Succed!");
+			EngineDebug.println("Succed!", 1);
 		}
 
 		return textList;

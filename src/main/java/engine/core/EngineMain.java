@@ -1,7 +1,8 @@
 package core;
 
 import core.loop.Loop;
-import object.scene.IScene;
+import core.settings.EngineSettings;
+import scene.IScene;
 import core.loop.ILoop;
 
 /**
@@ -12,8 +13,9 @@ import core.loop.ILoop;
  * @version 1.0
  * 
  */
-
 public class EngineMain {
+	
+	private static int wiredFrameMode = EngineSettings.WIRED_FRAME_NONE;
 
 	private static ILoop loopGame;
 
@@ -28,6 +30,9 @@ public class EngineMain {
 		loopGame.run();
 	}
 	
+	/**
+	 * Intialize stopping the engine.
+	 */
 	public static void exit() {
 		loopGame.exit();
 	}
@@ -58,6 +63,18 @@ public class EngineMain {
 	 */
 	public static boolean getIsEnginePaused() {
 		return loopGame.getIsScenePaused();
+	}
+	
+	public static int getWiredFrameMode() {
+		return wiredFrameMode;
+	}
+	
+	public static void switchWiredFrameMode() {
+		if(wiredFrameMode == EngineSettings.WIRED_FRAME_ENTITY_TERRAIN) {
+			wiredFrameMode = EngineSettings.WIRED_FRAME_NONE;
+		} else {
+			wiredFrameMode++;
+		}
 	}
 
 }

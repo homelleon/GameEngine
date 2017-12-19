@@ -1,0 +1,115 @@
+package renderer.terrain;
+
+import java.util.Collection;
+
+import org.lwjgl.util.vector.Vector4f;
+
+import core.settings.EngineSettings;
+import manager.octree.Node;
+import object.camera.ICamera;
+import object.light.ILight;
+import object.terrain.terrain.ITerrain;
+import object.terrain.terrain.TerrainNode;
+import object.terrain.terrain.TerrainQuadTree;
+import primitive.buffer.VAO;
+import primitive.texture.Texture2D;
+import primitive.texture.material.TerrainMaterial;
+import primitive.texture.terrain.TerrainTexturePack;
+import shader.terrain.TerrainShader;
+import tool.math.Matrix4f;
+
+public class TerrainRenderer {
+
+	private TerrainShader shader;
+
+	public TerrainRenderer(Matrix4f projectionMatrix) {
+		this.shader = new TerrainShader();
+		shader.start();
+		shader.connectTextureUnits();
+		shader.loadProjectionMatrix(projectionMatrix);
+		shader.loadScale(EngineSettings.SCALE_Y);
+		shader.loadTessellationVariables(EngineSettings.TESSELLATION_FACTOR, EngineSettings.TESSELLATION_SLOPE, EngineSettings.TESSELLATION_SHIFT);
+		shader.loadLodMorphAreaArray(EngineSettings.lod_morph_areas);
+		shader.stop();
+	}
+	
+	public void render(Collection<ITerrain> terrains, Vector4f clipPlane, Collection<ILight> lights,
+			ICamera camera, Matrix4f toShadowMapSpace) {
+		shader.start();
+		shader.loadClipPlane(clipPlane);
+		shader.loadSkyColour(EngineSettings.DISPLAY_RED, EngineSettings.DISPLAY_GREEN, EngineSettings.DISPLAY_BLUE);
+		shader.loadFogDensity(EngineSettings.FOG_DENSITY);
+		shader.loadLights(lights);
+		shader.loadViewMatrix(camera.getViewMatrix());
+		shader.loadCameraPosition(camera.getPosition());
+		shader.loadToShadowSpaceMatrix(toShadowMapSpace);
+		shader.loadShadowVariables(EngineSettings.SHADOW_DISTANCE, EngineSettings.SHADOW_MAP_SIZE,
+				EngineSettings.SHADOW_TRANSITION_DISTANCE, EngineSettings.SHADOW_PCF);
+		for (ITerrain terrain : terrains) {
+			if(camera.isMoved() || camera.isRotated()) {
+				terrain.updateQuadTree(camera);
+			}
+			prepareTerrain(terrain);
+			for(Node node : terrain.getQuadTree().getChildren()) {
+				((TerrainNode) node).render(shader, terrain.getQuadTree().getVao());
+			}
+			unbindTexture();
+		}
+
+		shader.stop();
+	}
+
+	public void renderLow(Collection<ITerrain> terrains, Collection<ILight> lights, ICamera camera) {
+		shader.start();
+		shader.loadClipPlane(EngineSettings.NO_CLIP);
+		shader.loadSkyColour(EngineSettings.DISPLAY_RED, EngineSettings.DISPLAY_GREEN, EngineSettings.DISPLAY_BLUE);
+		shader.loadFogDensity(EngineSettings.FOG_DENSITY);
+		shader.loadLights(lights);
+		shader.loadViewMatrix(camera.getViewMatrix());
+		shader.loadCameraPosition(camera.getPosition());
+		shader.loadShadowVariables(EngineSettings.SHADOW_DISTANCE, EngineSettings.SHADOW_MAP_SIZE,
+				EngineSettings.SHADOW_TRANSITION_DISTANCE, EngineSettings.SHADOW_PCF);
+		for (ITerrain terrain : terrains) {
+			prepareTerrain(terrain);
+			for(Node node : terrain.getQuadTree().getChildren()) {
+				((TerrainNode) node).render(shader, terrain.getQuadTree().getVao());
+			}
+			unbindTexture();
+
+		}
+
+		shader.stop();
+	}
+
+	public void clean() {
+		shader.clean();
+	}
+
+	private void prepareTerrain(ITerrain terrain) {
+		TerrainQuadTree terrainTree = (TerrainQuadTree) terrain.getQuadTree();
+		VAO vao = terrainTree.getVao();
+		vao.bind(0);
+		bindTexture(terrain);
+		shader.loadShineVariables(1, 0);
+		shader.loadWorldMatrix(terrainTree.getWorldMatrix());
+	}
+
+	private void bindTexture(ITerrain terrain) {
+		TerrainMaterial material = terrain.getMaterial();
+		TerrainTexturePack texturePack = material.getTexturePack();
+		texturePack.getBackgroundTexture().bilinearFilter();
+		texturePack.getBackgroundTexture().bind(0);
+		texturePack.getRTexture().bind(1);
+		texturePack.getGTexture().bind(2);
+		texturePack.getBTexture().bind(3);
+		material.getBlendMap().bind(4);
+		material.getHeightMap().bind(7);
+		material.getNormalMap().bind(8);
+	}
+
+	private void unbindTexture() {
+		VAO.unbind(0);
+		Texture2D.unbind();
+	}
+
+}

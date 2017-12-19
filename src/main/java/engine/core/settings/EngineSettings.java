@@ -14,11 +14,11 @@ import org.lwjgl.util.vector.Vector4f;
 public class EngineSettings {
 
 	/* display settings */
-	public static final int DISPLAY_WIDTH = 800; // 1920;
-	public static final int DISPLAY_HEIGHT = 600; // 1080;
-	public static final int FAR_PLANE = 10000;
+	public static final int DISPLAY_WIDTH = 1920; // 1920;
+	public static final int DISPLAY_HEIGHT = 1080; // 1080;
+	public static final int FAR_PLANE = 100000;
 	public static final float NEAR_PLANE = 0.5f;
-	public static final int FPS_CAP = 120;
+	public static final int FPS_CAP = 90;
 	public static final float FOV = 70;
 	public static final int MULTISAMPLE = 4;
 
@@ -70,8 +70,9 @@ public class EngineSettings {
 	public static final int KEY_EDITOR_CENTER_VIEW = Keyboard.KEY_HOME;
 
 	/* debug control */
-	public static final int KEY_DEBUG_BOUNDING_BOX = Keyboard.KEY_F2;
 	public static final int KEY_DEBUG_INFORMATION = Keyboard.KEY_F1;
+	public static final int KEY_DEBUG_BOUNDING_BOX = Keyboard.KEY_F2;
+	public static final int KEY_DEBUG_WIRED_FRAME = Keyboard.KEY_F3;
 
 	/* simulation settings */
 	public static final float GRAVITY = -50;
@@ -81,22 +82,35 @@ public class EngineSettings {
 	public static final int SHADOW_MAP_SIZE = 16384;
 	public static final float SHADOW_TRANSITION_DISTANCE = SHADOW_DISTANCE;
 	public static final int SHADOW_PCF = 2;
-	public static final float RENDERING_VIEW_DISTANCE = 800;
+	public static final float RENDERING_VIEW_DISTANCE = 500;
 	public static final float DETAIL_VIEW_DISTANCE = 150;
 	public static final int MAX_LIGHTS = 10;
+	
+	/* terrain settings */
+	public final static int TESSELLATION_FACTOR = 600;
+	public final static float TESSELLATION_SLOPE = 1.8f;
+	public final static float TESSELLATION_SHIFT = 0.1f;
+	
+	public final static float SCALE_XZ = 6000f;
+	public final static float SCALE_Y = 400f;
+	
+//	public final static int[] LOD_RANGES = {1750, 874, 386, 192, 100, 50, 0, 0};
+	public final static int[] LOD_RANGES = {4096, 2048, 1024, 512, 256, 64, 16, 0};
+//	public final static int[] LOD_RANGES = {500, 450, 350, 250, 150, 100, 50, 0};
+	public static int[] lod_morph_areas;
 
 	/* voxel settings */
 	public static final float VOXEL_BLOCK_SIZE = 5f;
 	public static final int VOXEL_CHUNK_SIZE = 8;
 
 	/* path settings */
-	public final static String PROJECT_PATH = "src/main/java/";
-	public final static String RES_PATH = PROJECT_PATH + "resource/";
+	public final static String PROJECT_PATH = "/";
+	public final static String RES_PATH = PROJECT_PATH;
 	public final static String GAME_PATH = PROJECT_PATH + "game/";
 	public final static String SOURCE_PATH = PROJECT_PATH + "engine/";
-	public final static String OBJECT_PATH = SOURCE_PATH + "object/";
+	public final static String OBJECT_PATH = PROJECT_PATH + "object/";
 	public final static String FONT_PATH = OBJECT_PATH + "font/";
-	public final static String TEXTURE_PATH = RES_PATH + "texture/";
+	public final static String TEXTURE_PATH = "/texture/";
 
 	/* texture */
 	public final static String TEXTURE_MODEL_PATH = TEXTURE_PATH + "model/";
@@ -109,20 +123,23 @@ public class EngineSettings {
 	public final static String TEXTURE_NORMAL_MAP_PATH = TEXTURE_PATH + "normalMap/";
 	public final static String TEXTURE_SKYBOX_PATH = TEXTURE_PATH + "skybox/";
 	public final static String TEXTURE_SPECULAR_MAP_PATH = TEXTURE_PATH + "specularMap/";
+	public final static String TEXTURE_ALPHA_MAP_PATH = TEXTURE_PATH + "alphaMap/";
 
 	/* objects */
-	public final static String MAP_PATH = RES_PATH + "map/";
+	public final static String MAP_PATH = "/map/";
 	public final static String FONT_FILE_PATH = TEXTURE_PATH + "font/";
 
 	public final static String AUDIO_PATH = "object/audio/";
 	public final static String MODEL_PATH = RES_PATH + "model/";
-	public final static String TEXT_PATH = RES_PATH + "text/";
-	public final static String INTERFACE_PATH = RES_PATH + "interface/";
+	public final static String TEXT_PATH = "/text/";
+	public final static String INTERFACE_PATH = "/interface/";
 
 	/* shaders */
 	public final static String SHADERS_PATH = "/shader/";
 	public final static String SHADERS_ENTITY_PATH = SHADERS_PATH + "entity/";
-	public final static String SHADERS_NORMAL_MAP_PATH = SHADERS_ENTITY_PATH;
+	public final static String SHADERS_ENTITY_TEXTURED_PATH = SHADERS_ENTITY_PATH + "textured/";
+	public final static String SHADERS_ENTITY_NORMAL_PATH = SHADERS_ENTITY_PATH + "normal/";
+	public final static String SHADERS_ENTITY_DECOR_PATH = SHADERS_ENTITY_PATH + "decor/";
 	public final static String SHADERS_BOUNDING_PATH = SHADERS_PATH + "bounding/";
 	public final static String SHADERS_TERRAIN_PATH = SHADERS_PATH + "terrain/";
 	public final static String SHADERS_VOXEL_PATH = SHADERS_PATH + "voxel/";
@@ -136,8 +153,10 @@ public class EngineSettings {
 	public final static String SHADERS_BLUR_PATH = SHADERS_POST_PROCESSING_PATH + "gaussianBlur/";
 	public final static String SHADERS_BLOOM_PATH = SHADERS_POST_PROCESSING_PATH + "bloom/";
 	public final static String SHADERS_ANIMATION_PATH = SHADERS_PATH + "animation/";
+	public final static String SHADERS_GPGPU_PATH = SHADERS_PATH + "gpgpu/";
+	public final static String SHADERS_DEBUG = SHADERS_PATH + "debug/";
 
-	public final static String SETTINGS_GAME_PATH = GAME_PATH + "main/";
+	public final static String SETTINGS_GAME_PATH = "/main/";
 
 	public final static String EXTENSION_PNG = ".png";
 	public final static String EXTENSION_TGA = ".tga";
@@ -160,11 +179,20 @@ public class EngineSettings {
 	/* entity type */
 	public final static int ENTITY_TYPE_SIMPLE = 0;
 	public final static int ENTITY_TYPE_NORMAL = 1;
-	public final static int ENTITY_TYPE_DETAIL = 2;
+	public final static int ENTITY_TYPE_DECORATE = 2;
 
 	/* bounding box type */
 	public final static int BOUNDING_BOX_MIN_MAX = 0;
 	public final static int BOUNDING_BOX_DIAM = 1;
 	public final static int BOUNDING_BOX_RADIUS = 2;
+	
+	public final static int ENGINE_MODE_GAME = 0;
+	public final static int ENGINE_MODE_EDITOR = 1;
+	
+	/* wired frame modes */
+	public static final int WIRED_FRAME_NONE = 0;
+	public static final int WIRED_FRAME_ENTITY = 1;
+	public static final int WIRED_FRAME_TERRAIN = 2;
+	public static final int WIRED_FRAME_ENTITY_TERRAIN = 3;
 
 }

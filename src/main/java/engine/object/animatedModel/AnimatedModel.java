@@ -1,11 +1,11 @@
 package object.animatedModel;
 
-import org.lwjgl.util.vector.Matrix4f;
 
 import object.animation.Animation;
 import object.animation.Animator;
-import object.openglObject.Vao;
-import object.texture.Texture;
+import primitive.buffer.VAO;
+import primitive.texture.Texture;
+import tool.math.Matrix4f;
 
 /**
  * 
@@ -22,7 +22,7 @@ import object.texture.Texture;
 public class AnimatedModel {
 
 	// skin
-	private final Vao model;
+	private final VAO model;
 	private final Texture texture;
 
 	// skeleton
@@ -53,7 +53,7 @@ public class AnimatedModel {
 	 *            this entity.
 	 * 
 	 */
-	public AnimatedModel(Vao model, Texture texture, Joint rootJoint, int jointCount) {
+	public AnimatedModel(VAO model, Texture texture, Joint rootJoint, int jointCount) {
 		this.model = model;
 		this.texture = texture;
 		this.rootJoint = rootJoint;
@@ -65,7 +65,7 @@ public class AnimatedModel {
 	/**
 	 * @return The VAO containing all the mesh data for this entity.
 	 */
-	public Vao getModel() {
+	public VAO getVAO() {
 		return model;
 	}
 

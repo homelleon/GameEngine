@@ -1,10 +1,9 @@
 package object.gui.texture;
 
-import org.lwjgl.util.vector.Vector2f;
-import org.newdawn.slick.opengl.Texture;
-
 import core.settings.EngineSettings;
-import renderer.loader.Loader;
+import primitive.buffer.Loader;
+import primitive.texture.Texture2D;
+import tool.math.vector.Vector2f;
 
 public class GUITextureBuilder implements IGUITextureBuilder {
 
@@ -33,7 +32,7 @@ public class GUITextureBuilder implements IGUITextureBuilder {
 	@Override
 	public GUITexture build(String name) {
 		Loader loader = Loader.getInstance();
-		Texture texture = loader.getTextureLoader().loadGUITexture(EngineSettings.TEXTURE_INTERFACE_PATH, this.textureName);
+		Texture2D texture = loader.getTextureLoader().loadGUITexture(EngineSettings.TEXTURE_INTERFACE_PATH, this.textureName);
 		return new GUITexture(name, texture, this.position, this.scale);
 	}
 

@@ -1,13 +1,19 @@
 package manager.gui.font;
 
-import java.io.File;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
 
 import core.settings.EngineSettings;
 import object.gui.font.FontType;
-import renderer.loader.Loader;
+import primitive.buffer.Loader;
 
+/**
+ * Manages GUI fonts.
+ * 
+ * @author homelleon
+ *
+ */
 public class FontManager implements IFontManager {
 
 	private Map<String, FontType> fonts = new HashMap<String, FontType>();
@@ -19,8 +25,9 @@ public class FontManager implements IFontManager {
 			font = fonts.get(name);
 		} else {
 			Loader loader = Loader.getInstance();
+			InputStreamReader fontStream = new InputStreamReader(Class.class.getResourceAsStream(EngineSettings.FONT_FILE_PATH + name + ".fnt"));
 			font = new FontType(name, loader.getTextureLoader().loadTexture(EngineSettings.FONT_FILE_PATH, name),
-					new File(EngineSettings.FONT_FILE_PATH + name + ".fnt"));
+					fontStream);
 			fonts.put(font.getName(), font);
 		}
 		return font;

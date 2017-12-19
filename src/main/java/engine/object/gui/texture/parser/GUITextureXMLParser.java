@@ -3,7 +3,6 @@ package object.gui.texture.parser;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.lwjgl.util.vector.Vector2f;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -12,6 +11,7 @@ import org.w3c.dom.NodeList;
 import core.debug.EngineDebug;
 import object.gui.texture.GUITexture;
 import object.gui.texture.GUITextureBuilder;
+import tool.math.vector.Vector2f;
 import tool.xml.XMLUtils;
 import tool.xml.parser.IListParser;
 import tool.xml.parser.XMLParser;
@@ -32,16 +32,13 @@ public class GUITextureXMLParser extends XMLParser implements IListParser<GUITex
 			if (XMLUtils.ifNodeIsElement(node, XMLUtils.GUI_TEXTURES)) {
 				textureList = createTexture(node);
 			}
-		}		
-		if (EngineDebug.hasDebugPermission()) {
-			System.out.println("---");
 		}
 		return textureList;
 	}
 
 	private List<GUITexture> createTexture(Node node) {
 		if (EngineDebug.hasDebugPermission()) {
-			System.out.println("> Loading GUI textures...");
+			EngineDebug.println("Loading GUI textures...", 1);
 		}
 		List<GUITexture> textureList = new ArrayList<GUITexture>();
 		Node guiTextures = node;
@@ -65,7 +62,7 @@ public class GUITextureXMLParser extends XMLParser implements IListParser<GUITex
 				count++;
 				if (EngineDebug.hasDebugPermission()) {
 					if (count != Integer.valueOf(id)) {
-						System.err.println("error id order!");
+						EngineDebug.printError("error id order!");
 					}
 				}
 				GUITexture guiTexture =	new GUITextureBuilder()
@@ -75,12 +72,12 @@ public class GUITextureXMLParser extends XMLParser implements IListParser<GUITex
 					   .build(name);
 				textureList.add(guiTexture);
 				if (EngineDebug.hasDebugPermission()) {
-					System.out.println(">> " + guiTexture.getName());
+					EngineDebug.println(guiTexture.getName(), 2);
 				}
 			}
 		}
 		if (EngineDebug.hasDebugPermission()) {
-			System.out.println("> Succed!");
+			EngineDebug.println("Succed!", 1);
 		}
 		return textureList;
 	}

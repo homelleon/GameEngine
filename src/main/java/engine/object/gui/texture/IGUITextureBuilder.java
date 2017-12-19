@@ -1,6 +1,6 @@
 package object.gui.texture;
 
-import org.lwjgl.util.vector.Vector2f;
+import tool.math.vector.Vector2f;
 
 public interface IGUITextureBuilder {
 

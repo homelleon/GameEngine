@@ -1,8 +1,7 @@
 package object.bounding;
 
-import org.lwjgl.util.vector.Vector3f;
-
 import tool.math.Maths;
+import tool.math.vector.Vector3f;
 
 public class BoundingSphere {
 

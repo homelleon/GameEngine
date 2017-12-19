@@ -1,11 +1,10 @@
 package shader.animation;
 
-import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector3f;
-
 import core.settings.EngineSettings;
-import renderer.object.animation.AnimatedModelRenderer;
+import renderer.animation.AnimatedModelRenderer;
 import shader.ShaderProgram;
+import tool.math.Matrix4f;
+import tool.math.vector.Vector3f;
 
 public class AnimatedModelShader extends ShaderProgram {
 
@@ -13,13 +12,8 @@ public class AnimatedModelShader extends ShaderProgram {
 												// skeleton
 	private static final int DIFFUSE_TEX_UNIT = 0;
 
-	private static final String VERTEX_SHADER = EngineSettings.SHADERS_ANIMATION_PATH + "animatedEntityVertexShader.glsl";
-	private static final String FRAGMENT_SHADER = EngineSettings.SHADERS_ANIMATION_PATH + "animatedEntityFragmentShader.glsl";
-
-	private int location_projectionViewMatrix;
-	private int location_lightDirection;
-	private int location_jointTransforms[];
-	private int location_diffuseMap;
+	private static final String VERTEX_SHADER = EngineSettings.SHADERS_ANIMATION_PATH + "animatedEntity_V_shader.glsl";
+	private static final String FRAGMENT_SHADER = EngineSettings.SHADERS_ANIMATION_PATH + "animatedEntity_F_shader.glsl";
 
 	/**
 	 * Creates the shader program for the {@link AnimatedModelRenderer} by
@@ -28,17 +22,20 @@ public class AnimatedModelShader extends ShaderProgram {
 	 * the diffuse texture will be sampled from texture unit 0.
 	 */
 	public AnimatedModelShader() {
-		super(VERTEX_SHADER, FRAGMENT_SHADER);
+		super();
+		addVertexShader(VERTEX_SHADER);
+		addFragmentShader(FRAGMENT_SHADER);
+		compileShader();
 		connectTextureUnits();
 	}
 
 	@Override
-	protected void getAllUniformLocations() {
-		this.location_projectionViewMatrix = super.getUniformLocation("projectionViewMatrix");
-		this.location_lightDirection = super.getUniformLocation("lightDirection");
-		this.location_diffuseMap = super.getUniformLocation("diffuseMap");
+	public void loadUniformLocations() {
+		super.addUniform("ProjectionViewMatrix");
+		super.addUniform("lightDirection");
+		super.addUniform("diffuseMap");
 		for (int i = 0; i < EngineSettings.MAX_LIGHTS; i++) {
-			this.location_jointTransforms[i] = super.getUniformLocation("jointTransforms[" + i + "]");
+			super.addUniform("jointTransforms[" + i + "]");
 		}
 	}
 
@@ -52,20 +49,20 @@ public class AnimatedModelShader extends ShaderProgram {
 	}
 
 	public void loadprojectionViewMatrix(Matrix4f projectionViewMatrix) {
-		super.loadMatrix(location_projectionViewMatrix, projectionViewMatrix);
+		super.loadMatrix("ProjectionViewMatrix", projectionViewMatrix);
 	}
 
 	public void loadLightDirection(Vector3f direction) {
-		super.loadVector(location_lightDirection, direction);
+		super.load3DVector("lightDirection", direction);
 	}
 
 	private void loadDisffuseMap() {
-		super.loadInt(location_diffuseMap, DIFFUSE_TEX_UNIT);
+		super.loadInt("diffuseMap", DIFFUSE_TEX_UNIT);
 	}
 
 	public void loadJointTransforms(Matrix4f[] jointTransforms) {
 		for (int i = 0; i < MAX_JOINTS; i++) {
-			super.loadMatrix(location_jointTransforms[i], jointTransforms[i]);
+			super.loadMatrix("jointTransforms["+i+"]", jointTransforms[i]);
 		}
 	}
 

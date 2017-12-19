@@ -4,7 +4,7 @@ import object.particle.IParticleSystem;
 import tool.manager.IManager;
 
 /**
- * Interface to store and control paricle systems.
+ * Provide access for storing and controlling paricle systems.
  * 
  * @author homelleon
  *

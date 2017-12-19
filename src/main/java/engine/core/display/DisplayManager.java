@@ -12,10 +12,9 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.PixelFormat;
 
+import control.KeyboardGame;
 import core.settings.EngineSettings;
-import frame.IFrame;
-import frame.FrameEditor;
-import object.input.KeyboardGame;
+import tool.dataEditor.menu.DataEditorFrame;
 
 /*
  *  Display Manager - Менеджер дисплея приложения
@@ -23,23 +22,37 @@ import object.input.KeyboardGame;
  *  
  */
 
+/**
+ * Engine display manager for display control.
+ * 
+ * @author homelleon
+ *
+ */
 public class DisplayManager {
 
-	private static long lastFrameTime; // Время прошло с запуска окна
-	private static float delta; // текущее время окна
-	private static int height; // высота окна
-	private static int width; // ширина окна
+	private static long lastFrameTime; 		// Time from last start
+	private static float delta; 			// Current display time
+	private static int height; 				// Display height size
+	private static int width; 				// Display width size
+	private static int majorVersion = 4;	// Major version of GLSL 
+	private static int minorVersion = 3;	// Minor version of GLSL
 
+	/**
+	 * Creates display in new frame. 
+	 */
 	public static void createDisplay() {
-		createDisplay(EngineSettings.DISPLAY_GAME_MODE);
+		createDisplay(null);
 	}
 
-	// конструктор с указанием режима приложения
-	public static void createDisplay(int mode) {
-
-		if (mode == EngineSettings.DISPLAY_EDIT_MODE) {
+	/**
+	 * Creates display in predefined editor frame.
+	 * 
+	 * @param frame {@link DataEditorFrame} object to render display
+	 */
+	public static void createDisplay(DataEditorFrame frame) {
+		
+		if (frame != null) {
 			// режим редактирования
-			IFrame frame = new FrameEditor("Editor");
 			width = frame.getWidth() / 2;
 			height = frame.getHeight() / 2;
 			Canvas canvas = new Canvas();
@@ -48,34 +61,33 @@ public class DisplayManager {
 			canvas.setVisible(true);
 			canvas.setSize(width, height);
 
-			ContextAttribs attribs = new ContextAttribs(3, 3)
+			ContextAttribs attribs = new ContextAttribs(majorVersion, minorVersion)
 					.withForwardCompatible(true)
 					.withProfileCore(true);
-
 			try {
 				Display.setDisplayMode(new DisplayMode(width, height));
 				Display.create(new PixelFormat().withDepthBits(24), attribs);
 
-				frame.getDisplayPanel().add(canvas);
+				frame.getScreenPanel().add(canvas);
 
 				Display.setParent(canvas);
-				Display.setTitle("EditMode");
+				Display.setTitle("OutWorldMind Engine - EditMode");
 			} catch (LWJGLException e) {
 				e.printStackTrace();
 			}
-
-		} else if (mode == EngineSettings.DISPLAY_GAME_MODE) {
+			
+		} else if (frame == null) {
 			// режим игры
 			width = EngineSettings.DISPLAY_WIDTH;
 			height = EngineSettings.DISPLAY_HEIGHT;
-			ContextAttribs attribs = new ContextAttribs(3, 3).withForwardCompatible(true).withProfileCore(true);
-
+			ContextAttribs attribs = new ContextAttribs(majorVersion, minorVersion)
+					.withForwardCompatible(true)
+					.withProfileCore(true);
 			try {
 				Display.setDisplayModeAndFullscreen(new DisplayMode(width, height));
 				Display.create(new PixelFormat().withDepthBits(24), attribs);
 				Display.setFullscreen(true);
-				Display.setTitle("MyGame");
-
+				Display.setTitle("OutWorldMind Engine");
 			} catch (LWJGLException e) {
 				e.printStackTrace();
 			}
@@ -86,6 +98,9 @@ public class DisplayManager {
 		lastFrameTime = getCurrentTime();
 	}
 
+	/**
+	 * Updates display and keyboard.
+	 */
 	public static void updateDisplay() {
 		Display.sync(EngineSettings.FPS_CAP);
 		KeyboardGame.update();
@@ -95,10 +110,18 @@ public class DisplayManager {
 		lastFrameTime = currentFrameTime;
 	}
 
+	/**
+	 * Gets number of frames per second.
+	 *  
+	 * @return float value of FPS
+	 */
 	public static float getFrameTimeSeconds() {
 		return delta;
 	}
 
+	/**
+	 * Closes display.
+	 */
 	public static void closeDisplay() {
 		Display.destroy();
 	}
@@ -107,10 +130,20 @@ public class DisplayManager {
 		return Sys.getTime() * 1000 / Sys.getTimerResolution();
 	}
 
+	/**
+	 * Gets display height.
+	 * 
+	 * @return int value of display height
+	 */
 	public static int getHeight() {
 		return height;
 	}
 
+	/**
+	 * Gets display width.
+	 * 
+	 * @return int value of display width
+	 */
 	public static int getWidth() {
 		return width;
 	}

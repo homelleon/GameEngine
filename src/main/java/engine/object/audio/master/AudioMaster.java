@@ -7,9 +7,9 @@ import org.lwjgl.LWJGLException;
 import org.lwjgl.openal.AL;
 import org.lwjgl.openal.AL10;
 import org.lwjgl.util.WaveData;
-import org.lwjgl.util.vector.Vector3f;
 
 import core.settings.EngineSettings;
+import tool.math.vector.Vector3f;
 
 /**
  * Class of 3 dimentional sound engine storeing audio buffers in the map.

@@ -1,14 +1,17 @@
 package manager.gui.group;
 
 import java.util.Collection;
-import java.util.List;
 
 import object.gui.group.IGUIGroup;
 
 /**
+ * Provide access to GUI groups.
  * 
  * @author homelleon
+ * 
  * @see GUIGroupManager
+ * @see GUIGroup
+ * @see GUI
  */
 public interface IGUIGroupManager {
 

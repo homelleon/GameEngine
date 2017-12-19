@@ -4,10 +4,11 @@ import object.gui.texture.GUITexture;
 import tool.manager.IManager;
 
 /**
- * Interface to store and control graphic interfaces.
+ * Provide storing and controlling graphic user interface textures.
  * 
  * @author homelleon
  * @see GUITextureManager
+ * @see GUITexture
  */
 
 public interface IGUITextureManager extends IManager<GUITexture> {}

@@ -5,8 +5,7 @@ import java.util.Collection;
 import object.water.WaterTile;
 
 /**
- * Water manager for controling and storing structured map and arrays of water
- * tiles.
+ * Provides access to managing water tiles.
  * 
  * @author homelleon
  * @version 1.0

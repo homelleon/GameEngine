@@ -1,22 +1,18 @@
 package tool.math;
 
-import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector2f;
-import org.lwjgl.util.vector.Vector3f;
-
 import object.camera.ICamera;
 import object.entity.entity.IEntity;
 import object.terrain.terrain.ITerrain;
-import tool.math.vector.IVectorBuilder3;
-import tool.math.vector.VectorBuilder3f;
+import tool.math.vector.Vector2f;
+import tool.math.vector.Vector3f;
 
 public class Maths {
 
 	public static Matrix4f createTransformationMatrix(Vector2f translation, Vector2f scale) {
 		Matrix4f matrix = new Matrix4f();
 		matrix.setIdentity();
-		Matrix4f.translate(translation, matrix, matrix);
-		Matrix4f.scale(new Vector3f(scale.x, scale.y, 1f), matrix, matrix);
+		matrix.translate(translation);
+		matrix.scale(new Vector3f(scale.x, scale.y, 1f));
 		return matrix;
 	}
 
@@ -30,29 +26,40 @@ public class Maths {
 
 	public static Matrix4f createTransformationMatrix(Vector3f translation, float rx, float ry, float rz, float scale) {
 		Matrix4f matrix = new Matrix4f();
-		matrix.setIdentity();
-		Matrix4f.translate(translation, matrix, matrix);
-		Matrix4f.rotate((float) Math.toRadians(rx), new Vector3f(1, 0, 0), matrix, matrix);
-		Matrix4f.rotate((float) Math.toRadians(ry), new Vector3f(0, 1, 0), matrix, matrix);
-		Matrix4f.rotate((float) Math.toRadians(rz), new Vector3f(0, 0, 1), matrix, matrix);
-		Matrix4f.scale(new Vector3f(scale, scale, scale), matrix, matrix);
+		matrix.translate(translation);
+		matrix.rotate((float) Math.toRadians(rx), new Vector3f(1, 0, 0));
+		matrix.rotate((float) Math.toRadians(ry), new Vector3f(0, 1, 0));
+		matrix.rotate((float) Math.toRadians(rz), new Vector3f(0, 0, 1));
+		matrix.scale(new Vector3f(scale, scale, scale));
 		return matrix;
 	}
 
 	public static Matrix4f createViewMatrix(ICamera camera) {
 		Matrix4f viewMatrix = new Matrix4f();
 		viewMatrix.setIdentity();
-		Matrix4f.rotate((float) Math.toRadians(camera.getPitch()), new Vector3f(1, 0, 0), viewMatrix, viewMatrix);
-		Matrix4f.rotate((float) Math.toRadians(camera.getYaw()), new Vector3f(0, 1, 0), viewMatrix, viewMatrix);
-		Matrix4f.rotate((float) Math.toRadians(camera.getRoll()), new Vector3f(0, 0, 1), viewMatrix, viewMatrix);
+		viewMatrix.rotate((float) Math.toRadians(camera.getPitch()), new Vector3f(1, 0, 0));
+		viewMatrix.rotate((float) Math.toRadians(camera.getYaw()), new Vector3f(0, 1, 0));
+		viewMatrix.rotate((float) Math.toRadians(camera.getRoll()), new Vector3f(0, 0, 1));
 		Vector3f cameraPos = camera.getPosition();
 		Vector3f negativeCameraPos = new Vector3f(-cameraPos.x, -cameraPos.y, -cameraPos.z);
-		Matrix4f.translate(negativeCameraPos, viewMatrix, viewMatrix);
+		viewMatrix.translate(negativeCameraPos);
 		return viewMatrix;
 	}
 
 	public static float sqr(float a) {
 		return a * a;
+	}
+	
+	public static int sqr(int a) {
+		return a * a;
+	}
+	
+	public static float cube(float a) {
+		return a * a * a;
+	}
+	
+	public static int cube(int a) {
+		return a * a * a;
 	}
 
 	public static void swapFloat(float a, float b) {
@@ -184,7 +191,11 @@ public class Maths {
 	 */
 
 	public static int tailOfDivisionNoReminder(int value1, int value2) {
-		return value1 - (int) Math.floor(value1 / value2) * value2;
+		if(value2 == 0) {
+			return 0;
+		} else {
+			return value1 - (int) Math.floor(value1 / value2) * value2;
+		}
 	}
 
 	public static boolean pointIsOnRay(Vector3f point, Vector3f ray) {
@@ -218,8 +229,8 @@ public class Maths {
 		
 	}
 	
-	public static int compareTo(Vector2f a, Vector2f b) {
-		if(a == b) {
+	public static int compare(Vector2f a, Vector2f b) {
+		if(a == b || ((a.x == b.x) && (a.y == b.y))) {
 			return 0;
 		} else if(a.x == b.x) {
 			if(a.y < b.y) {return -1;}
@@ -227,6 +238,23 @@ public class Maths {
 			return -1;
 		}
 		return 1;
-}
+	}
+
+	public static int compare(Vector3f a, Vector3f b) {
+		if(a == b || ((a.x == b.x) && (a.y == b.y) && (a.z == b.z))) {
+			return 0;
+		} else if(a.x == b.x) {
+			if(a.z == b.z) {
+				if(a.y < b.y) {
+					return -1;
+				}
+			} else if(a.z < b.z) {
+				return -1;
+			}
+		} else if(a.x < b.x) {
+			return -1;
+		}
+		return 1;
+	}
 
 }

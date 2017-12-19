@@ -1,7 +1,7 @@
 package object.camera;
 
-import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector3f;
+import tool.math.Matrix4f;
+import tool.math.vector.Vector3f;
 
 /**
  * Class that allows to set a world camera.
@@ -16,13 +16,13 @@ import org.lwjgl.util.vector.Vector3f;
 
 // TODO: need two interfaces for camera and cube camera
 
-public interface ICamera {
+ public interface ICamera {
 
 	/**
 	 * 
 	 * @return String vlaue of camera name
 	 */
-	public String getName(); // вернуть имя
+	 String getName(); // вернуть имя
 
 	/**
 	 * Method sets current camera position in 3 dimentional space.
@@ -34,7 +34,7 @@ public interface ICamera {
 	 * @param posZ
 	 *            float value of z-coordinate of the camera
 	 */
-	public void setPosition(float posX, float posY, float posZ); // установить
+	 void setPosition(float posX, float posY, float posZ); // установить
 																	// позицию
 
 	/**
@@ -43,7 +43,7 @@ public interface ICamera {
 	 * @param anglePitch
 	 *            float value of pitch angle
 	 */
-	public void setPitch(float anglePitch); // установить тангаж камеры
+	 void setPitch(float anglePitch); // установить тангаж камеры
 
 	/**
 	 * Method sets yaw angle of the camera.
@@ -51,45 +51,53 @@ public interface ICamera {
 	 * @param angleYaw
 	 *            float value of yaw angle
 	 */
-	public void setYaw(float angleYaw); // установить рысканье камеры
+	 void setYaw(float angleYaw); // установить рысканье камеры
 
 	/**
 	 * Method that starts movement calculation.
 	 */
-	public void move(); // движение камеры
+	 void move(); // движение камеры
 
 	/**
 	 * Method returns current position of camera in 3 dimentional space.
 	 * 
-	 * @return Vector3f value of current position
+	 * @return Vec3f value of current position
 	 */
-	public Vector3f getPosition(); // вернуть позицию камеры
+	 Vector3f getPosition(); // вернуть позицию камеры
 
 	/**
 	 * Method returns current pitch angle of the camera.
 	 * 
 	 * @return float value of current pitch angle
 	 */
-	public float getPitch(); // вернуть тангаж камеры
+	 float getPitch(); // вернуть тангаж камеры
 
 	/**
 	 * Method invert pitch angle to opposite.
 	 */
-	public void invertPitch(); // инвертировать тангаж камеры
+	 void invertPitch(); // инвертировать тангаж камеры
 
 	/**
 	 * Method returns current yaw angle of the camera.
 	 * 
 	 * @return float value of current yaw angle
 	 */
-	public float getYaw(); // вернуть рысканье камеры
+	 float getYaw(); // вернуть рысканье камеры
 
 	/**
 	 * Method returns current roll angle of the camera.
 	 * 
 	 * @return float value of current roll angle
 	 */
-	public float getRoll(); // вернуть крен камеры
+	 float getRoll(); // вернуть крен камеры
+	
+	 boolean isMoved();
+	 
+	 boolean isRotated();
+	 
+	 void setRotated(boolean isRotated);
+
+	 void setMoved(boolean isMoved);
 
 	/**
 	 * Method switch between different angle faces changing pitch and yaw angle.
@@ -97,23 +105,23 @@ public interface ICamera {
 	 * @param faceIndex
 	 *            int value of the face count number
 	 */
-	public void switchToFace(int faceIndex); // переключить повороты камеры
+	 void switchToFace(int faceIndex); // переключить повороты камеры
 
 	/**
 	 * 
 	 * @return Matrix4f value of current view matrix
 	 */
-	public Matrix4f getViewMatrix();
+	 Matrix4f getViewMatrix();
 
 	/**
 	 * 
 	 * @return Matrix4f value of current projection matrix
 	 */
-	public Matrix4f getProjectionMatrix();
+	 Matrix4f getProjectionMatrix();
 
 	/**
 	 * 
 	 * @return Matrix4f value of current projection-view matrix
 	 */
-	public Matrix4f getProjectionViewMatrix();
+	 Matrix4f getProjectionViewMatrix();
 }

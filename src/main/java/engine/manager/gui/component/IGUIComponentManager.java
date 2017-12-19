@@ -17,7 +17,7 @@ import object.gui.texture.GUITexture;
 public interface IGUIComponentManager {
 
 	/**
-	 * Returns {@link IGUITextureManager} that controlls user interface
+	 * Gets {@link IGUITextureManager} that controlls user interface
 	 * textures ({@link GUITexture}).
 	 * 
 	 * @return {@link IGUITextureManager} value
@@ -25,7 +25,7 @@ public interface IGUIComponentManager {
 	IGUITextureManager getTextures();
 
 	/**
-	 * Returns {@link IGUITextManager} that controlls user interface
+	 * Gets {@link IGUITextManager} that controlls user interface
 	 * texts ({@link GuiText})
 	 * 
 	 * @return {@link IGUITextManager} value

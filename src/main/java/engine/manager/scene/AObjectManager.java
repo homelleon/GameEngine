@@ -13,7 +13,14 @@ import manager.terrain.TerrainManager;
 import manager.water.IWaterManager;
 import manager.water.WaterManager;
 import object.audio.master.IAudioMaster;
+import object.terrain.terrain.ITerrain;
 
+/**
+ * Abstact class of engine objects manager.
+ * 
+ * @author homelleon
+ * 
+ */
 public abstract class AObjectManager {
 	
 	protected IEntityManager entityManager;

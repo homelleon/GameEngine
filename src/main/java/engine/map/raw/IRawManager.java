@@ -2,33 +2,60 @@ package map.raw;
 
 import java.util.List;
 
-import object.model.raw.RawModel;
-import object.model.textured.TexturedModel;
-import object.texture.model.ModelTexture;
-import object.texture.terrain.pack.TerrainTexturePack;
-import object.texture.terrain.texture.TerrainTexture;
+import manager.primitive.IMeshManager;
+import primitive.model.Mesh;
+import primitive.model.Model;
+import primitive.texture.Texture2D;
+import primitive.texture.material.Material;
+import primitive.texture.terrain.TerrainTexturePack;
 
+/**
+ * Provides access for managing raw meshes, models, textures and materials.
+ * 
+ * @author homelleon
+ * @version 1.0
+ * @see RawManager
+ */
 public interface IRawManager {
 	
-	void addRawModel(RawModel model);
-	List<RawModel> getRawModels();
-	RawModel getRawModel(String name);
+	/**
+	 * Adds mesh array.
+	 * 
+	 * @param meshes {@link Mesh} array
+	 */
+	void addMeshGroup(Mesh[] meshes);
 	
-	void addModelTexture(ModelTexture texture);
-	List<ModelTexture> getModelTextures();
-	ModelTexture getModelTexture(String name);
+	/**
+	 * Gets list of mesh arrays.
+	 * 
+	 * @return {@link List}<{@link Mesh}[]> - list of mesh arrays
+	 */
+	List<Mesh[]> getMeshGroups();
+	
+	/**
+	 * Gets mesh array with defined name.
+	 * 
+	 * @param name {@link String} value of mesh array
+	 * 
+	 * @return {@link Mesh} array
+	 */
+	Mesh[] getMeshGroup(String name);
+	
+	void addTexture(Texture2D texture);
+	List<Texture2D> getTextures();
+	Texture2D getTexture(String name);
+	
+	void addMaterial(Material texture);
+	List<Material> getMaterials();
+	Material getMaterial(String name);
 	
 	void addTerrainTexturePack(TerrainTexturePack texturePack);
 	List<TerrainTexturePack> getTerrainTexturePacks();
 	TerrainTexturePack getTerrainTexturePack(String name);
 	
-	void addTerrainTexture(TerrainTexture terrainTexture);
-	List<TerrainTexture> getTerrainTextures();
-	TerrainTexture getTerrainTexture(String name);
-	
-	void addTexturedModel(TexturedModel model);
-	List<TexturedModel> getTexturedModels();
-	TexturedModel getTexturedModel(String name);
+	void addModelGroup(Model[] models);
+	List<Model[]> getModelGroups();
+	Model[] getModelGroup(String name);
 	
 	void clean();
 

@@ -8,7 +8,7 @@ public class GameCore {
 	/**
 	 * Loads game logics.
 	 * <p>
-	 * Put here class name of your game in return.<br>
+	 * Put class name of your game as return object.<br>
 	 * Don't forget to add import for your class.
 	 * 
 	 * @return GameInterface game
