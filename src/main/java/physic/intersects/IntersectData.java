@@ -2,7 +2,7 @@ package intersects;
 
 import java.util.List;
 
-import org.lwjgl.util.vector.Vector3f;
+import tool.math.vector.Vector3f;
 
 public class IntersectData {
 	

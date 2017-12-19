@@ -1,10 +1,11 @@
 package object.entity.entity;
 
-import org.lwjgl.util.vector.Vector3f;
+import java.util.Collection;
 
 import core.settings.EngineSettings;
-import object.entity.BaseEntity;
-import object.model.textured.TexturedModel;
+import object.entity.AEntity;
+import primitive.model.Model;
+import tool.math.vector.Vector3f;
 
 /*
  * EntityTextured - объект с текстурой
@@ -18,7 +19,7 @@ import object.model.textured.TexturedModel;
  *
  */
 
-public class NormalMappedEntity extends BaseEntity implements IEntity {
+public class NormalMappedEntity extends AEntity implements IEntity {
 	
 	/**
 	 * 
@@ -30,8 +31,8 @@ public class NormalMappedEntity extends BaseEntity implements IEntity {
 	 * @param rotZ
 	 * @param scale
 	 */
-	public NormalMappedEntity(String name, TexturedModel model, Vector3f position, Vector3f rotation, float scale) {
-		super(name, EngineSettings.ENTITY_TYPE_NORMAL, model, position, rotation, scale);
+	public NormalMappedEntity(String name, Collection<Model> modelList, Vector3f position, Vector3f rotation, float scale) {
+		super(name, EngineSettings.ENTITY_TYPE_NORMAL, modelList, position, rotation, scale);
 	}
 	
 	/**
@@ -43,13 +44,14 @@ public class NormalMappedEntity extends BaseEntity implements IEntity {
 	 * @param rotation
 	 * @param scale
 	 */
-	public NormalMappedEntity(String name, TexturedModel model, int textureIndex, Vector3f position, Vector3f rotation, float scale) {
-		super(name, EngineSettings.ENTITY_TYPE_NORMAL, model, textureIndex, position, rotation, scale);
+	public NormalMappedEntity(String name, Collection<Model> modelList, int textureIndex, Vector3f position, Vector3f rotation, float scale) {
+		super(name, EngineSettings.ENTITY_TYPE_NORMAL, modelList, textureIndex, position, rotation, scale);
 	} 
 	
 	@Override
 	public IEntity clone(String name) {
-		IEntity entity = new NormalMappedEntity(name, this.model, this.position, this.rotation, this.scale);
+		IEntity entity = new NormalMappedEntity(name, this.models, this.textureIndex, new Vector3f(this.position), new Vector3f(this.rotation), this.scale);
+		entity.setBaseName(this.getName());
 		return entity;
 	}
 

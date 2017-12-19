@@ -4,7 +4,7 @@ import object.light.ILight;
 import tool.manager.AbstractManager;
 
 /**
- * Light manager for controling and storing structured map and arrays of lights.
+ * Manages scene lights.
  * 
  * @author homelleon
  * @version 1.0

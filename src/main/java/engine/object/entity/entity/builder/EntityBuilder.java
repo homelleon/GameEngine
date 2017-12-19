@@ -1,22 +1,25 @@
 package object.entity.entity.builder;
 
-import org.lwjgl.util.vector.Vector3f;
+import java.util.ArrayList;
+import java.util.List;
 
 import object.entity.entity.IEntity;
 import object.entity.entity.NormalMappedEntity;
 import object.entity.entity.TexturedEntity;
-import object.model.textured.TexturedModel;
+import primitive.model.Model;
+import tool.math.vector.Vector3f;
 
 public class EntityBuilder implements IEntityBuilder {
 	
-	private TexturedModel model;
+	private List<Model> models = new ArrayList<Model>();
 	private float scale = 1.0f;
 	private Vector3f position = new Vector3f(0,0,0);
 	private Vector3f rotation = new Vector3f(0,0,0);
+	private int textureIndex = 0;
 	
 	@Override
-	public IEntityBuilder setModel(TexturedModel model) {
-		this.model = model;
+	public IEntityBuilder setModel(Model model) {
+		this.models.add(model);
 		return this;
 	}
 
@@ -37,14 +40,20 @@ public class EntityBuilder implements IEntityBuilder {
 		this.rotation = rotation;
 		return this;
 	}
+	
+	@Override
+	public IEntityBuilder setTextureIndex(int index) {
+		this.textureIndex = index;
+		return this;
+	}
 
 	@Override
 	public IEntity build(String name) {
-		if(model!= null) {
-			if(model.getTexture().getNormalMap()!= 0) {
-				return new NormalMappedEntity(name, model, position, rotation, scale);
+		if(!models.isEmpty()) {
+			if(models.get(0).getMaterial().getNormalMap()!= null) {
+				return new NormalMappedEntity(name, models, textureIndex, position, rotation, scale);
 			} else {
-				return new TexturedEntity(name, model, position, rotation, scale);
+				return new TexturedEntity(name, models, textureIndex, position, rotation, scale);
 			}
 		} else {
 			throw new NullPointerException("No model defined for entity builder!");

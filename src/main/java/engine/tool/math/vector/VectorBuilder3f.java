@@ -1,9 +1,7 @@
 package tool.math.vector;
 
-import org.lwjgl.util.vector.Vector3f;
-
 /**
- * Builder class for Vector3f with float values.
+ * Builder class for Vec3f with float values.
  * 
  * @author homelleon
  * @version 1.0

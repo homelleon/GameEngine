@@ -1,20 +1,17 @@
 package object.terrain.terrain.builder;
 
 import object.terrain.terrain.ITerrain;
-import object.texture.terrain.pack.TerrainTexturePack;
-import object.texture.terrain.texture.TerrainTexture;
+import primitive.texture.Texture2D;
 
 public interface ITerrainBuilder {
 	
+	ITerrainBuilder setSize(int size);
 	ITerrainBuilder setXPosition(int x);
 	ITerrainBuilder setZPosition(int y);
-	ITerrainBuilder setTexturePack(TerrainTexturePack texturePack);
-	ITerrainBuilder setBlendTexture(TerrainTexture texture);
-	ITerrainBuilder setHeightTextureName(String name);
+	ITerrainBuilder setHeightMap(Texture2D heightMap);
 	ITerrainBuilder setAmplitude(float amplitude);
 	ITerrainBuilder setOctaves(int octaves);
 	ITerrainBuilder setRoughness(float roughness);
-	ITerrainBuilder setSeed(int seed);
 	ITerrain build(String name);
 
 }

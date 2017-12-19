@@ -5,41 +5,42 @@ import shader.ShaderProgram;
 
 public class CombineShader extends ShaderProgram {
 
-	/*
-	 * CombineShader - шейдер для объединения других фильтров постобработки
-	 * 03.02.17 ------------------------------
-	 */
-
-	private static final String VERTEX_FILE = EngineSettings.SHADERS_BLOOM_PATH + "simpleVertexShader.glsl";
-	private static final String FRAGMENT_FILE = EngineSettings.SHADERS_BLOOM_PATH + "combineFragmentShader.glsl";
-
-	private int location_colourTexture;
-	private int location_highlightTexture2;
-	private int location_highlightTexture4;
-	private int location_highlightTexture8;
-
+	//----shaders
+	private static final String VERTEX_FILE = EngineSettings.SHADERS_BLOOM_PATH + "simple_V_shader.glsl";
+	private static final String FRAGMENT_FILE = EngineSettings.SHADERS_BLOOM_PATH + "combine_F_shader.glsl";
+	//----attributes
+	private static final String ATTRIBUTE_POSITION = "in_position";
+	//----uniforms
+	private static final String UNIFORM_COLOR_MAP = "colorMap";
+	private static final String UNIFORM_HIGHLIGHT_TEXTURE2 = "highlightMap2";
+	private static final String UNIFORM_HIGHLIGHT_TEXTURE4 = "highlightMap4";
+	private static final String UNIFORM_HIGHLIGHT_TEXTURE8 = "highlightMap8";
+	
 	protected CombineShader() {
-		super(VERTEX_FILE, FRAGMENT_FILE);
-	}
-
-	@Override
-	protected void getAllUniformLocations() {
-		location_colourTexture = super.getUniformLocation("colourTexture");
-		location_highlightTexture2 = super.getUniformLocation("highlightTexture2");
-		location_highlightTexture4 = super.getUniformLocation("highlightTexture4");
-		location_highlightTexture8 = super.getUniformLocation("highlightTexture8");
-	}
-
-	protected void connectTextureUnits() {
-		super.loadInt(location_colourTexture, 0);
-		super.loadInt(location_highlightTexture2, 1);
-		super.loadInt(location_highlightTexture4, 2);
-		super.loadInt(location_highlightTexture8, 3);
+		super();
+		addVertexShader(VERTEX_FILE);
+		addFragmentShader(FRAGMENT_FILE);
+		compileShader();
 	}
 
 	@Override
 	protected void bindAttributes() {
-		super.bindAttribute(0, "position");
+		super.bindAttribute(0, ATTRIBUTE_POSITION);
+	}
+
+	@Override
+	protected void loadUniformLocations() {
+		super.addUniform(UNIFORM_COLOR_MAP);
+		super.addUniform(UNIFORM_HIGHLIGHT_TEXTURE2);
+		super.addUniform(UNIFORM_HIGHLIGHT_TEXTURE4);
+		super.addUniform(UNIFORM_HIGHLIGHT_TEXTURE8);
+	}
+
+	protected void connectTextureUnits() {
+		super.loadInt(UNIFORM_COLOR_MAP, 0);
+		super.loadInt(UNIFORM_HIGHLIGHT_TEXTURE2, 1);
+		super.loadInt(UNIFORM_HIGHLIGHT_TEXTURE4, 2);
+		super.loadInt(UNIFORM_HIGHLIGHT_TEXTURE8, 3);
 	}
 
 }

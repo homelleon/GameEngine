@@ -1,10 +1,11 @@
 package object.gui.font;
 
-import java.io.File;
+import java.io.InputStreamReader;
 
 import core.settings.EngineSettings;
 import object.gui.text.GUIText;
-import renderer.loader.Loader;
+import primitive.buffer.Loader;
+import primitive.texture.Texture2D;
 
 /**
  * Represents a font. It holds the font's texture atlas as well as having the
@@ -16,7 +17,7 @@ import renderer.loader.Loader;
 public class FontType {
 
 	private String name;
-	private int textureAtlas;
+	private Texture2D textureAtlas;
 	private TextMeshCreator meshCreator;
 
 	/**
@@ -29,7 +30,7 @@ public class FontType {
 	 *            - the font file containing information about each character in
 	 *            the texture atlas.
 	 */
-	public FontType(String name, int textureAtlas, File fontFile) {
+	public FontType(String name, Texture2D textureAtlas, InputStreamReader fontFile) {
 		this.name = name;
 		this.textureAtlas = textureAtlas;
 		this.meshCreator = new TextMeshCreator(fontFile);
@@ -45,14 +46,15 @@ public class FontType {
 	 *            {@link Loader} value
 	 */
 	public FontType(String name, Loader loader) {
+		InputStreamReader fontStream = new InputStreamReader(Class.class.getResourceAsStream(EngineSettings.FONT_FILE_PATH + name + ".fnt"));
 		new FontType(name, loader.getTextureLoader().loadTexture(EngineSettings.FONT_FILE_PATH, name),
-				new File(EngineSettings.FONT_FILE_PATH + name + ".fnt"));
+				fontStream);
 	}
 
 	/**
 	 * @return The font texture atlas.
 	 */
-	public int getTextureAtlas() {
+	public Texture2D getTextureAtlas() {
 		return textureAtlas;
 	}
 

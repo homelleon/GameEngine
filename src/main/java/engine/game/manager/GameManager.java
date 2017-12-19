@@ -7,7 +7,7 @@ import core.EngineMain;
 import manager.gui.text.IGUITextManager;
 import manager.gui.texture.IGUITextureManager;
 import object.gui.gui.IGUI;
-import object.scene.IScene;
+import scene.IScene;
 
 public class GameManager implements IGameManager {
 

@@ -4,36 +4,31 @@ import java.util.stream.IntStream;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
-import org.lwjgl.util.vector.Vector2f;
-import org.lwjgl.util.vector.Vector3f;
 
+import control.KeyboardGame;
+import control.MouseGame;
 import core.EngineMain;
 import game.game.Game;
-import gameTools.GUIGroupBuilderTexture;
-import gameTools.IGUIGroupBuilderTexture;
 import object.bounding.BoundingQuad;
-import object.entity.entity.IEntity;
+import object.gui.element.button.GUIButton;
+import object.gui.element.button.IAction;
+import object.gui.element.button.IGUIAnimation;
+import object.gui.element.button.IGUIButton;
+import object.gui.element.button.IVectorInjectable;
+import object.gui.element.menu.GUIMenu;
+import object.gui.element.menu.IGUIMenu;
+import object.gui.element.object.GUIObject;
 import object.gui.group.IGUIGroup;
-import object.gui.gui.IGUI;
 import object.gui.gui.builder.GUIBuilder;
 import object.gui.gui.builder.IGUIBuilder;
-import object.gui.pattern.button.GUIButton;
-import object.gui.pattern.button.IAction;
-import object.gui.pattern.button.IGUIAnimation;
-import object.gui.pattern.button.IGUIButton;
-import object.gui.pattern.button.IVectorInjectable;
-import object.gui.pattern.menu.GUIMenu;
-import object.gui.pattern.menu.IGUIMenu;
-import object.gui.pattern.object.GUIObject;
 import object.gui.system.IGUIMenuSystem;
-import object.input.KeyboardGame;
-import object.input.MouseGame;
+import tool.math.vector.Vector2f;
+import tool.math.vector.Vector3f;
 
 public class MyGame extends Game {
 	
 	private String guiGroupName = "help";
 	private IGUIGroup helpGroup;
-	private IGUI hintsUI;
 	private boolean buttonScale = false;
 	private boolean keyboardUsed = false;
 	private IGUIGroup coursorAimGroup;
@@ -47,22 +42,15 @@ public class MyGame extends Game {
 	@Override
 	public void __onStart() {
 		super.__onStart();
-		//PE10.initialize();
-		//world1 = PE10.peCreateWorld(new Vector3f(0,0,0), new Vector3f(0,0,0));
 		
 		//--------help hints GUI-------------//
 		IGUIBuilder helpGUIBuilder = new GUIBuilder(this.gameManager.getScene().getUserInterface().getComponent());
-		helpGUIBuilder.setText("inputHintsText",this.gameManager.getTexts().get("inputHints"));
+		helpGUIBuilder.setText("inputHintsText", this.gameManager.getTexts().get("inputHints"));
 		this.helpGroup = this.gameManager.getScene().getUserInterface().getGroups().createEmpty(guiGroupName);
 		this.helpGroup.add(helpGUIBuilder.build("help"));
 		helpGUIBuilder = new GUIBuilder(this.gameManager.getScene().getUserInterface().getComponent());
-		helpGUIBuilder.setText("versionText",this.gameManager.getTexts().get("version"));
+		helpGUIBuilder.setText("versionText", this.gameManager.getTexts().get("version"));
 		this.helpGroup.add(helpGUIBuilder.build("version"));
-		//-------sign GUI-------------//
-		IGUIGroupBuilderTexture groupBuilder = new GUIGroupBuilderTexture(this.gameManager.getScene().getUserInterface())
-				.setTextureName("Sign");
-		IGUIGroup signGroup = groupBuilder.build("sign");
-		((GUIObject) signGroup).show();
 		
 		//-----------button GUI--------------//		
 		menuSystem = this.gameManager.getScene().getUserInterface().getMenus();
@@ -89,11 +77,6 @@ public class MyGame extends Game {
 		buttonGUIBuilder.setTexture("button2Texture", gameManager.getScene().getUserInterface()
 				.getComponent().getTextures().get("Button").clone("btnTexture2"));
 		
-		System.out.println(gameManager.getScene().getUserInterface()
-		.getComponent().getTextures().get("Button").getTexture().getHeight());
-		System.out.println(gameManager.getScene().getUserInterface()
-				.getComponent().getTextures().get("Button").getTexture().getWidth());
-		
 		buttonGUIBuilder.setText("button2Text", gameManager.getScene().getUserInterface()
 				.getComponent().getTexts().get("menu").clone("startText", "Start"));
 		IGUIGroup buttonGroup2 = this.gameManager.getScene().getUserInterface().getGroups().createEmpty("button2");
@@ -111,21 +94,20 @@ public class MyGame extends Game {
 		BoundingQuad bQuad = new BoundingQuad(new Vector2f(-0.41f,-0.05f), new Vector2f(0.45f,0.2f)); 
 		
 		IGUIButton button1 = new GUIButton("menuButton1", buttonGroup1);
-		button1.setBoundingArea(bQuad, true);
+		button1.setBoundingArea(bQuad.clone(), false);
 		
 		button1.move(new Vector2f(0,0.4f));
 		
 		IGUIButton button2 = new GUIButton("menuButton2", buttonGroup2);
-		button2.setBoundingArea(bQuad, false);
+		button2.setBoundingArea(bQuad.clone(), false);
 		
 		IGUIButton button3 = new GUIButton("menuButton3", buttonGroup3);
-		button3.setBoundingArea(bQuad, true);
+		button3.setBoundingArea(bQuad.clone(), false);
 		button3.move(new Vector2f(0,-0.4f));
 		
 		mainMenu.add((GUIObject) button1);
 		mainMenu.add((GUIObject) button2);
 		mainMenu.add((GUIObject) button3);
-		IEntity entity = this.gameManager.getScene().getEntities().get("player1");
 		
 		IGUIAnimation<IGUIButton> buttonAnimation = (button, time, vector)-> {
 			IVectorInjectable injection = (vec) -> {
@@ -248,10 +230,6 @@ public class MyGame extends Game {
 		button3.setUseAction(action3);
 		button3.setSelectedAction(actionSelect3);
 		button3.setDeselectedAction(actionDeselect3);
-		
-		//PE10.peAttachBody(tree1, PE10.BODY_3D_SPHERE, world1);
-		//PE10.peAttachBody(tree2, PE10.BODY_3D_SPHERE, world1);
-		//PE10.peAttachBody(tree3, PE10.BODY_3D_SPHERE, world1);
 	}
 	
 	/**
@@ -289,19 +267,19 @@ public class MyGame extends Game {
 			if(!this.buttonScale && !this.keyboardUsed) {
 				menuSystem.getActivated().getAllButtons().stream()
 				.filter(button -> button.getIsMouseOver(
-						this.gameManager.getScene().getMousePicker().getCurrentScreanPoint()))
+						this.gameManager.getScene().getMousePicker().getCurrentScreenPoint()))
 				.filter(button -> !button.getIsSelected())
 				.forEach(button -> button.select());
 				
 				menuSystem.getActivated().getAllButtons().stream()
 				.filter(button -> !button.getIsMouseOver(
-						this.gameManager.getScene().getMousePicker().getCurrentScreanPoint()))
+						this.gameManager.getScene().getMousePicker().getCurrentScreenPoint()))
 				.filter(button -> button.getIsSelected())
 				.forEach(button -> button.deselect());
 				if(MouseGame.isOncePressed(MouseGame.LEFT_CLICK)) {
 					menuSystem.getActivated().getAllButtons().stream()
 						.filter(button -> button.getIsMouseOver(
-								this.gameManager.getScene().getMousePicker().getCurrentScreanPoint()))
+								this.gameManager.getScene().getMousePicker().getCurrentScreenPoint()))
 						.forEach(button -> {
 							button.use();
 							this.buttonScale = true;

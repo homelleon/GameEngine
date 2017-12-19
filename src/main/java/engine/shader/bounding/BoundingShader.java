@@ -1,51 +1,59 @@
 package shader.bounding;
 
-import org.lwjgl.util.vector.Matrix4f;
 
 import core.settings.EngineSettings;
 import object.camera.ICamera;
 import shader.ShaderProgram;
 import tool.math.Maths;
+import tool.math.Matrix4f;
 
 public class BoundingShader extends ShaderProgram {
-
-	public static final String VERTEX_FILE = EngineSettings.SHADERS_BOUNDING_PATH + "boundVertexShader.glsl";
-	public static final String FRAGMENT_FILE = EngineSettings.SHADERS_BOUNDING_PATH + "boundFragmentShader.glsl";
-
-	private int location_transformationMatrix; // матрица трансформации
-	private int location_projectionMatrix; // проективная матрица
-	private int location_viewMatrix; // видовая матрица
-
+	//----shaders
+	private static final String VERTEX_FILE = EngineSettings.SHADERS_BOUNDING_PATH + "bound_V_shader.glsl";
+	private static final String FRAGMENT_FILE = EngineSettings.SHADERS_BOUNDING_PATH + "bound_F_shader.glsl";
+	//----attributes
+	private static final String ATTRIBUTE_OUT_COLOR = "out_Color";
+	private static final String ATTRIBUTE_POSITION = "in_position";
+	private static final String ATTRIBUTE_TEXTURE_COORDINATES = "in_textureCoords";
+	private static final String ATTRIBUTE_NORMAL = "in_normal";
+	//----uniforms
+	private static final String UNIFORM_TRANSFORMATION_MATRIX = "Transformation";
+	private static final String UNIFORM_PROJECTION_MATRIX = "Projection";
+	private static final String UNIFORM_VIEW_MATRIX = "View";
+	
 	public BoundingShader() {
-		super(VERTEX_FILE, FRAGMENT_FILE);
+		super();
+		addVertexShader(VERTEX_FILE);
+		addFragmentShader(FRAGMENT_FILE);
+		compileShader();
 	}
 
 	@Override
-	protected void getAllUniformLocations() {
-		location_transformationMatrix = super.getUniformLocation("transformationMatrix");
-		location_projectionMatrix = super.getUniformLocation("projectionMatrix");
-		location_viewMatrix = super.getUniformLocation("viewMatrix");
+	protected void loadUniformLocations() {
+		super.addUniform(UNIFORM_TRANSFORMATION_MATRIX);
+		super.addUniform(UNIFORM_PROJECTION_MATRIX);
+		super.addUniform(UNIFORM_VIEW_MATRIX);
 	}
 
 	@Override
 	protected void bindAttributes() {
-		super.bindFragOutput(0, "out_Color");
-		super.bindAttribute(0, "position");
-		super.bindAttribute(1, "textureCoordinates");
-		super.bindAttribute(2, "normal");
+		super.bindFragOutput(0, ATTRIBUTE_OUT_COLOR);
+		super.bindAttribute(0, ATTRIBUTE_POSITION);
+		super.bindAttribute(1, ATTRIBUTE_TEXTURE_COORDINATES);
+		super.bindAttribute(2, ATTRIBUTE_NORMAL);
 	}
 
 	public void loadTranformationMatrix(Matrix4f matrix) {
-		super.loadMatrix(location_transformationMatrix, matrix);
+		super.loadMatrix(UNIFORM_TRANSFORMATION_MATRIX, matrix);
 	}
 
 	public void loadViewMatrix(ICamera camera) {
 		Matrix4f viewMatrix = Maths.createViewMatrix(camera);
-		super.loadMatrix(location_viewMatrix, viewMatrix);
+		super.loadMatrix(UNIFORM_VIEW_MATRIX, viewMatrix);
 	}
 
 	public void loadProjectionMatrix(Matrix4f projection) {
-		super.loadMatrix(location_projectionMatrix, projection);
+		super.loadMatrix(UNIFORM_PROJECTION_MATRIX, projection);
 	}
 
 }

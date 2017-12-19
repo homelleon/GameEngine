@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src/main/java/engine"/>
+	<classpathentry kind="src" path="src/test/java/engine"/>
 	<classpathentry kind="src" path="src/main/java/resource"/>
 	<classpathentry kind="src" path="src/main/java/game"/>
 	<classpathentry kind="src" path="src/main/java/editor"/>

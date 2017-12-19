@@ -1,10 +1,9 @@
 package object.audio.source;
 
-import org.lwjgl.util.vector.Vector3f;
-
 import object.Nameable;
 import object.audio.master.AudioMaster;
 import object.audio.master.IAudioMaster;
+import tool.math.vector.Vector3f;
 
 /**
  * Interface of sound or music source in 3 dimentional space.
@@ -78,7 +77,7 @@ public interface IAudioSource extends Nameable {
 	 * change in all 3 directions.
 	 * 
 	 * @param speed
-	 *            Vector3f - 3 dimentional speed value
+	 *            Vec3f - 3 dimentional speed value
 	 * @see #setPosition(Vector3f)
 	 */
 	public void setVelocity(Vector3f speed); // установить скорость аудио
@@ -126,7 +125,7 @@ public interface IAudioSource extends Nameable {
 	 * Change position of audio source in 3 dimentional space.
 	 * 
 	 * @param position
-	 *            Vector3f representation of value to set
+	 *            Vec3f representation of value to set
 	 * @see #setVelocity(Vector3f)
 	 */
 	public void setPosition(Vector3f position); // установить позицию звука

@@ -3,7 +3,7 @@ package manager.gui.font;
 import object.gui.font.FontType;
 
 /**
- * Implement access into fonts array.
+ * Provides access to manage GUI fonts.
  * 
  * @author homelleon
  * @see FontManager

@@ -3,9 +3,6 @@ package shader.voxel;
 import java.util.Collection;
 import java.util.Iterator;
 
-import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector2f;
-import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 
 import core.settings.EngineSettings;
@@ -13,160 +10,186 @@ import object.camera.ICamera;
 import object.light.ILight;
 import shader.ShaderProgram;
 import tool.math.Maths;
+import tool.math.Matrix4f;
+import tool.math.vector.Vector2f;
+import tool.math.vector.Vector3f;
 
 public class VoxelShader extends ShaderProgram {
 
-	public static final String VERTEX_FILE = EngineSettings.SHADERS_VOXEL_PATH + "voxelVertexShader.glsl";
-	public static final String FRAGMENT_FILE = EngineSettings.SHADERS_VOXEL_PATH + "voxelFragmentShader.glsl";
-
-	private int location_transformationMatrix;
-	private int location_projectionMatrix;
-	private int location_viewMatrix;
-	private int location_lightCount;
-	private int location_lightPosition[];
-	private int location_lightColour[];
-	private int location_attenuation[];
-	private int location_shineDamper;
-	private int location_reflectivity;
-	private int location_useFakeLighting;
-	private int location_skyColour;
-	private int location_numberOfRows;
-	private int location_offset;
-	private int location_plane;
-	private int location_fogDensity;
-	private int location_toShadowMapSpace;
-	private int location_shadowMap;
-	private int location_shadowDistance;
-	private int location_shadowMapSize;
-	private int location_shadowTransitionDistance;
-	private int location_shadowPCFCount;
-	private int location_specularMap;
-	private int location_usesSpecularMap;
-	private int location_modelTexture;
-
+	//----shaders
+	private static final String VERTEX_FILE = EngineSettings.SHADERS_VOXEL_PATH + "voxel_V_shader.glsl";
+	private static final String FRAGMENT_FILE = EngineSettings.SHADERS_VOXEL_PATH + "voxel_F_shader.glsl";
+	//----attributes
+	private static final String ATTRIBUTE_OUT_COLOR = "out_Color";
+	private static final String ATTRIBUTE_OUT_BRIGHT_COLOR = "out_BrightColor";
+	private static final String ATTRIBUTE_POSITION = "in_position";
+	private static final String ATTRIBUTE_TEXTURE_COORDINATES = "in_textureCoords";
+	private static final String ATTRIBUTE_NORMAL = "in_normal";
+	//----uniforms
+	private static final String UNIFORM_TRANSFORMATION_MATRIX = "Transformation";
+	private static final String UNIFORM_PROJECTION_MATRIX = "Projection";
+	private static final String UNIFORM_VIEW_MATRIX = "View";
+	//material
+	private static final String UNIFORM_DIFFUSE_MAP= "diffuseMap";
+	private static final String UNIFORM_SPECULAR_MAP = "specularMap";		
+	private static final String UNIFORM_SHADOW_MAP = "shadowMap";
+	//shine variables
+	private static final String UNIFORM_SHINE_DAMPER = "shineDamper";
+	private static final String UNIFORM_REFLECTIVITY = "reflectivity";
+	//boolean
+	private static final String UNIFORM_USES_FAKE_LIGHTING = "usesFakeLighting";
+	private static final String UNIFORM_USES_SPECULAR_MAP = "usesSpecularMap";
+	//ambient variables
+	private static final String UNIFORM_SKY_COLOR = "skyColor";
+	private static final String UNIFORM_FOG_DENSITY = "fogDensity";
+	//texture coords varibales
+	private static final String UNIFORM_NUMBER_OF_ROWS = "numberOfRows";
+	private static final String UNIFORM_OFFSET = "offset";
+	//clip plane
+	private static final String UNIFORM_CLIP_PLANE = "clipPlane";
+	//shadow varibales
+	private static final String UNIFORM_TO_SHADOW_MAP_SPACE = "toShadowMapSpace";		
+	private static final String UNIFORM_SHADOW_DISTANCE = "shadowDistance";
+	private static final String UNIFORM_SADOW_MAP_SIZE = "shadowMapSize";
+	private static final String UNIFORM_SHADOW_TRANSITION_DISTANCE = "shadowTransitionDistance";
+	private static final String UNIFORM_SHADOW_PCF_COUNT = "shadowPCFCount";	
+	//light
+	private static final String UNIFORM_LIGHT_COUNT = "lightCount";
+	private static final String UNIFORM_LIGHT_POSITION = "lightPosition";
+	private static final String UNIFORM_LIGHT_COLOR = "lightColor";
+	private static final String UNIFORM_ATTENUATION = "attenuation";
+	
 	public VoxelShader() {
-		super(VERTEX_FILE, FRAGMENT_FILE);
-	}
-
-	@Override
-	protected void getAllUniformLocations() {
-		location_transformationMatrix = super.getUniformLocation("transformationMatrix");
-		location_projectionMatrix = super.getUniformLocation("projectionMatrix");
-		location_viewMatrix = super.getUniformLocation("viewMatrix");
-		location_shineDamper = super.getUniformLocation("shineDamper");
-		location_reflectivity = super.getUniformLocation("reflectivity");
-		location_useFakeLighting = super.getUniformLocation("useFakeLighting");
-		location_skyColour = super.getUniformLocation("skyColour");
-		location_numberOfRows = super.getUniformLocation("numberOfRows");
-		location_offset = super.getUniformLocation("offset");
-		location_plane = super.getUniformLocation("plane");
-		location_fogDensity = super.getUniformLocation("fogDensity");
-		location_toShadowMapSpace = super.getUniformLocation("toShadowMapSpace");
-		location_shadowMap = super.getUniformLocation("shadowMap");
-		location_shadowDistance = super.getUniformLocation("shadowDistance");
-		location_shadowMapSize = super.getUniformLocation("shadowMapSize");
-		location_shadowTransitionDistance = super.getUniformLocation("shadowTransitionDistance");
-		location_shadowPCFCount = super.getUniformLocation("shadowPCFCount");
-		location_specularMap = super.getUniformLocation("specularMap");
-		location_usesSpecularMap = super.getUniformLocation("usesSpecularMap");
-		location_modelTexture = super.getUniformLocation("modelTexture");
-
-		location_lightCount = super.getUniformLocation("lightCount");
-		location_lightPosition = new int[EngineSettings.MAX_LIGHTS];
-		location_lightColour = new int[EngineSettings.MAX_LIGHTS];
-		location_attenuation = new int[EngineSettings.MAX_LIGHTS];
-		for (int i = 0; i < EngineSettings.MAX_LIGHTS; i++) {
-			location_lightPosition[i] = super.getUniformLocation("lightPosition[" + i + "]");
-			location_lightColour[i] = super.getUniformLocation("lightColour[" + i + "]");
-			location_attenuation[i] = super.getUniformLocation("attenuation[" + i + "]");
-		}
+		super();
+		addVertexShader(VERTEX_FILE);
+		addFragmentShader(FRAGMENT_FILE);
+		compileShader();
 	}
 
 	@Override
 	protected void bindAttributes() {
-		super.bindFragOutput(0, "out_Color");
-		super.bindFragOutput(1, "out_BrightColor");
-		super.bindAttribute(0, "position");
-		super.bindAttribute(1, "textureCoordinates");
-		super.bindAttribute(2, "normal");
+		super.bindFragOutput(0, ATTRIBUTE_OUT_COLOR);
+		super.bindFragOutput(1, ATTRIBUTE_OUT_BRIGHT_COLOR);
+		super.bindAttribute(0, ATTRIBUTE_POSITION);
+		super.bindAttribute(1, ATTRIBUTE_TEXTURE_COORDINATES);
+		super.bindAttribute(2, ATTRIBUTE_NORMAL);
+	}
+
+	@Override
+	protected void loadUniformLocations() {
+		//matrix
+		super.addUniform(UNIFORM_TRANSFORMATION_MATRIX);
+		super.addUniform(UNIFORM_PROJECTION_MATRIX);
+		super.addUniform(UNIFORM_VIEW_MATRIX);
+		//material
+		super.addUniform(UNIFORM_DIFFUSE_MAP);
+		super.addUniform(UNIFORM_SPECULAR_MAP);		
+		super.addUniform(UNIFORM_SHADOW_MAP);
+		//shine variables
+		super.addUniform(UNIFORM_SHINE_DAMPER);
+		super.addUniform(UNIFORM_REFLECTIVITY);
+		//boolean
+		super.addUniform(UNIFORM_USES_FAKE_LIGHTING);
+		super.addUniform(UNIFORM_USES_SPECULAR_MAP);
+		//ambient variables
+		super.addUniform(UNIFORM_SKY_COLOR);
+		super.addUniform(UNIFORM_FOG_DENSITY);
+		//texture coords varibales
+		super.addUniform(UNIFORM_NUMBER_OF_ROWS);
+		super.addUniform(UNIFORM_OFFSET);
+		//clip plane
+		super.addUniform(UNIFORM_CLIP_PLANE);
+		//shadow varibales
+		super.addUniform(UNIFORM_TO_SHADOW_MAP_SPACE);		
+		super.addUniform(UNIFORM_SHADOW_DISTANCE);
+		super.addUniform(UNIFORM_SADOW_MAP_SIZE);
+		super.addUniform(UNIFORM_SHADOW_TRANSITION_DISTANCE);
+		super.addUniform(UNIFORM_SHADOW_PCF_COUNT);	
+		//light
+		super.addUniform(UNIFORM_LIGHT_COUNT);
+		for (int i = 0; i < EngineSettings.MAX_LIGHTS; i++) {
+			super.addUniform(UNIFORM_LIGHT_POSITION + "[" + i + "]");
+			super.addUniform(UNIFORM_LIGHT_COLOR + "[" + i + "]");
+			super.addUniform(UNIFORM_ATTENUATION + "[" + i + "]");
+		}
 	}
 
 	public void connectTextureUnits() {
-		super.loadInt(location_modelTexture, 0);
-		super.loadInt(location_specularMap, 1);
-		super.loadInt(location_shadowMap, 5);
-	}
-
-	public void loadUsesSpecularMap(boolean useMap) {
-		super.loadBoolean(location_usesSpecularMap, useMap);
-	}
-
-	public void loadShadowVariables(float shadowDistance, float size, float transitionDistance, int pcfCount) {
-		super.loadFloat(location_shadowDistance, shadowDistance);
-		super.loadFloat(location_shadowMapSize, size);
-		super.loadFloat(location_shadowTransitionDistance, transitionDistance);
-		super.loadInt(location_shadowPCFCount, pcfCount);
-	}
-
-	public void loadToShadowSpaceMatrix(Matrix4f matrix) {
-		super.loadMatrix(location_toShadowMapSpace, matrix);
-	}
-
-	public void loadClipPlane(Vector4f plane) {
-		super.load4DVector(location_plane, plane);
-	}
-
-	public void loadSkyColour(float r, float g, float b) {
-		super.loadVector(location_skyColour, new Vector3f(r, g, b));
-	}
-
-	public void loadFakeLightingVariable(boolean useFake) {
-		super.loadBoolean(location_useFakeLighting, useFake);
-	}
-
-	public void loadShineVariables(float damper, float reflectivity) {
-		super.loadFloat(location_shineDamper, damper);
-		super.loadFloat(location_reflectivity, reflectivity);
-	}
-
-	public void loadFogDensity(float density) {
-		super.loadFloat(location_fogDensity, density);
+		super.loadInt(UNIFORM_DIFFUSE_MAP, 0);
+		super.loadInt(UNIFORM_SPECULAR_MAP, 4);
+		super.loadInt(UNIFORM_SHADOW_MAP, 6);
 	}
 
 	public void loadViewMatrix(ICamera camera) {
 		Matrix4f viewMatrix = Maths.createViewMatrix(camera);
-		super.loadMatrix(location_viewMatrix, viewMatrix);
+		super.loadMatrix(UNIFORM_VIEW_MATRIX, viewMatrix);
 	}
 
 	public void loadProjectionMatrix(Matrix4f projection) {
-		super.loadMatrix(location_projectionMatrix, projection);
+		super.loadMatrix(UNIFORM_PROJECTION_MATRIX, projection);
 	}
 
 	public void loadTranformationMatrix(Matrix4f matrix) {
-		super.loadMatrix(location_transformationMatrix, matrix);
+		super.loadMatrix(UNIFORM_TRANSFORMATION_MATRIX, matrix);
+	}
+
+	public void loadUsesSpecularMap(boolean useMap) {
+		super.loadBoolean(UNIFORM_USES_SPECULAR_MAP, useMap);
+	}
+
+	public void loadShadowVariables(float shadowDistance, float size, float transitionDistance, int pcfCount) {
+		super.loadFloat(UNIFORM_SHADOW_DISTANCE, shadowDistance);
+		super.loadFloat(UNIFORM_SADOW_MAP_SIZE, size);
+		super.loadFloat(UNIFORM_SHADOW_TRANSITION_DISTANCE, transitionDistance);
+		super.loadInt(UNIFORM_SHADOW_PCF_COUNT, pcfCount);
+	}
+
+	public void loadToShadowSpaceMatrix(Matrix4f matrix) {
+		super.loadMatrix(UNIFORM_TO_SHADOW_MAP_SPACE, matrix);
+	}
+
+	public void loadClipPlane(Vector4f plane) {
+		super.load4DVector(UNIFORM_CLIP_PLANE, plane);
+	}
+
+	public void loadSkyColour(float r, float g, float b) {
+		super.load3DVector(UNIFORM_SKY_COLOR, new Vector3f(r, g, b));
+	}
+
+	public void loadFakeLightingVariable(boolean useFake) {
+		super.loadBoolean(UNIFORM_USES_FAKE_LIGHTING, useFake);
+	}
+
+	public void loadShineVariables(float damper, float reflectivity) {
+		super.loadFloat(UNIFORM_SHINE_DAMPER, damper);
+		super.loadFloat(UNIFORM_REFLECTIVITY, reflectivity);
+	}
+
+	public void loadFogDensity(float density) {
+		super.loadFloat(UNIFORM_FOG_DENSITY, density);
 	}
 
 	public void loadNumberOfRows(int numberOfRows) {
-		super.loadFloat(location_numberOfRows, numberOfRows);
+		super.loadFloat(UNIFORM_NUMBER_OF_ROWS, numberOfRows);
 	}
 
 	public void loadOffset(float x, float y) {
-		super.load2DVector(location_offset, new Vector2f(x, y));
+		super.load2DVector(UNIFORM_OFFSET, new Vector2f(x, y));
 	}
 
 	public void loadLights(Collection<ILight> lights) {
-		super.loadInt(location_lightCount, EngineSettings.MAX_LIGHTS);
+		super.loadInt(UNIFORM_LIGHT_COUNT, EngineSettings.MAX_LIGHTS);
 		Iterator<ILight> iterator = lights.iterator();
 		for (int i = 0; i < EngineSettings.MAX_LIGHTS; i++) {
 			if (iterator.hasNext()) {
 				ILight light = iterator.next();
-				super.loadVector(location_lightPosition[i], light.getPosition());
-				super.loadVector(location_lightColour[i], light.getColour());
-				super.loadVector(location_attenuation[i], light.getAttenuation());
+				super.load3DVector(UNIFORM_LIGHT_POSITION + "[" + i + "]", light.getPosition());
+				super.load3DVector(UNIFORM_LIGHT_COLOR + "[" + i + "]", light.getColor());
+				super.load3DVector(UNIFORM_ATTENUATION + "[" + i + "]", light.getAttenuation());
 			} else {
-				super.loadVector(location_lightPosition[i], new Vector3f(0, 0, 0));
-				super.loadVector(location_lightColour[i], new Vector3f(0, 0, 0));
-				super.loadVector(location_attenuation[i], new Vector3f(1, 0, 0));
+				super.load3DVector(UNIFORM_LIGHT_POSITION + "[" + i + "]", new Vector3f(0, 0, 0));
+				super.load3DVector(UNIFORM_LIGHT_COLOR + "[" + i + "]", new Vector3f(0, 0, 0));
+				super.load3DVector(UNIFORM_ATTENUATION + "[" + i + "]", new Vector3f(1, 0, 0));
 			}
 		}
 

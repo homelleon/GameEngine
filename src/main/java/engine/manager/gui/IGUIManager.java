@@ -5,7 +5,7 @@ import manager.gui.group.IGUIGroupManager;
 import object.gui.system.IGUIMenuSystem;
 
 /**
- * UI Manager Interface.
+ * Porvide access to graphic user interface.
  * 
  * @author homelleon
  * @see GUIManager
@@ -13,19 +13,19 @@ import object.gui.system.IGUIMenuSystem;
 public interface IGUIManager {
 
 	/**
-	 * Initialize ui manager.
+	 * Initialize user interface manager.
 	 */
 	void initialize();
 	
 	/**
-	 * Gets GUI group manager.
+	 * Gets graphic user interface group manager.
 	 * 
 	 * @return {@link IGUIGroupManager} object
 	 */
 	IGUIGroupManager getGroups();
 	
 	/**
-	 * Gets GUI menu system interface.
+	 * Gets graphic user interface menu system.
 	 * 
 	 * @return {@link IGUIMenuSystem} tool
 	 */
@@ -45,7 +45,7 @@ public interface IGUIManager {
 	void render();
 
 	/**
-	 * Clean all ui groups.
+	 * Clean all graphic user interface groups.
 	 */
 	void cleanAll();
 

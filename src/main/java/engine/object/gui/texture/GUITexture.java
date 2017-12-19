@@ -1,37 +1,34 @@
 package object.gui.texture;
 
-import org.lwjgl.util.vector.Vector2f;
-import org.lwjgl.util.vector.Vector3f;
-import org.newdawn.slick.opengl.Texture;
+import object.GameObject;
+import primitive.texture.Texture2D;
+import tool.math.vector.Vector2f;
+import tool.math.vector.Vector3f;
 
-public class GUITexture {
+public class GUITexture extends GameObject {
 
 	private String name;
 	private boolean isVisible = false;
 
-	private Texture texture;
+	private Texture2D texture;
 	private Vector2f position;
 	private Vector2f scale;
 	private Vector3f mixColor = new Vector3f(1,0,0);
 	private boolean isMixColored = false;
 	private float transparency = 0;
 
-	public GUITexture(String name, Texture texture, Vector2f position, Vector2f scale) {
-		this.name = name;
+	public GUITexture(String name, Texture2D texture, Vector2f position, Vector2f scale) {
+		super(name);
 		this.texture = texture;
 		this.position = position;
 		this.scale = scale;
 	}
 
-	public String getName() {
-		return name;
-	}
-
-	public Texture getTexture() {
+	public Texture2D getTexture() {
 		return this.texture;
 	}
 
-	public void setPosition(Vector2f position) {
+	public synchronized void setPosition(Vector2f position) {
 		this.position = position;
 	}
 
@@ -43,7 +40,7 @@ public class GUITexture {
 		return this.scale;
 	}
 	
-	public void setMixColor(Vector3f color) {
+	public synchronized void setMixColor(Vector3f color) {
 		this.mixColor = color;
 	}
 	
@@ -59,7 +56,7 @@ public class GUITexture {
 		this.isMixColored = isMixColored;
 	}
 	
-	public void increaseScale(Vector2f scale) {
+	public synchronized void increaseScale(Vector2f scale) {
 		this.scale = new Vector2f(this.scale.x + scale.x, this.scale.y + scale.y);
 	}
 	
@@ -86,7 +83,7 @@ public class GUITexture {
 		return this.isVisible;
 	}
 
-	public void setIsVisible(boolean value) {
+	public synchronized void setIsVisible(boolean value) {
 		this.isVisible = value;
 	}
 	

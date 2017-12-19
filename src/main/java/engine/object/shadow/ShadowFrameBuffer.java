@@ -9,6 +9,8 @@ import org.lwjgl.opengl.GL14;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.opengl.GL32;
 
+import primitive.texture.Texture2D;
+
 /**
  * The frame buffer for the shadow pass. This class sets up the depth texture
  * which can be rendered to during the shadow render pass, producing a shadow
@@ -22,7 +24,7 @@ public class ShadowFrameBuffer {
 	private final int WIDTH;
 	private final int HEIGHT;
 	private int fbo;
-	private int shadowMap;
+	private Texture2D shadowMap;
 
 	/**
 	 * Initialises the frame buffer and shadow map of a certain size.
@@ -43,7 +45,7 @@ public class ShadowFrameBuffer {
 	 */
 	public void cleanUp() {
 		GL30.glDeleteFramebuffers(fbo);
-		GL11.glDeleteTextures(shadowMap);
+		shadowMap.delete();
 	}
 
 	/**
@@ -65,7 +67,7 @@ public class ShadowFrameBuffer {
 	/**
 	 * @return The ID of the shadow map texture.
 	 */
-	public int getShadowMap() {
+	public Texture2D getShadowMap() {
 		return shadowMap;
 	}
 
@@ -118,16 +120,18 @@ public class ShadowFrameBuffer {
 	 *            - the height of the texture.
 	 * @return The ID of the depth texture.
 	 */
-	private static int createDepthBufferAttachment(int width, int height) {
-		int texture = GL11.glGenTextures();
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture);
-		GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL14.GL_DEPTH_COMPONENT16, width, height, 0, GL11.GL_DEPTH_COMPONENT,
+	private static Texture2D createDepthBufferAttachment(int width, int height) 
+	{
+		Texture2D texture = Texture2D.create(width, height, 1, false);
+		texture.bind();
+		GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL14.GL_DEPTH_COMPONENT16, 
+				width, height, 0, GL11.GL_DEPTH_COMPONENT,
 				GL11.GL_FLOAT, (ByteBuffer) null);
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL12.GL_CLAMP_TO_EDGE);
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL12.GL_CLAMP_TO_EDGE);
-		GL32.glFramebufferTexture(GL30.GL_FRAMEBUFFER, GL30.GL_DEPTH_ATTACHMENT, texture, 0);
+		GL32.glFramebufferTexture(GL30.GL_FRAMEBUFFER, GL30.GL_DEPTH_ATTACHMENT, texture.getId(), 0);
 		return texture;
 	}
 }

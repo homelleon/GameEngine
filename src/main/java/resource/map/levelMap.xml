@@ -70,5 +70,15 @@
 					y="14.3"
 					z="50.0" />
 	    </entity>
+	    <entity 
+			id="8"
+			name="Spartan"
+			model="spartanEntity"
+			scale="1.0">
+				<position 
+					x="120.0"
+					y="0.0"
+					z="100.0" />
+	    </entity>
   </entities>
 </level_map>

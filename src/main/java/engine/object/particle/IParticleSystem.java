@@ -1,8 +1,7 @@
 package object.particle;
 
-import org.lwjgl.util.vector.Vector3f;
-
 import object.Nameable;
+import tool.math.vector.Vector3f;
 
 public interface IParticleSystem extends Nameable {
 

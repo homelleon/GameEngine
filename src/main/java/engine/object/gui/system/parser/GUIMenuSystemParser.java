@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.w3c.dom.Document;
 
-import object.gui.pattern.menu.IGUIMenu;
+import object.gui.element.menu.IGUIMenu;
 import tool.xml.parser.IListParser;
 import tool.xml.parser.XMLParser;
 

@@ -1,15 +1,14 @@
 package object.bounding;
 
-import org.lwjgl.util.vector.Vector3f;
-
-import object.model.raw.RawModel;
-import renderer.loader.Loader;
+import primitive.buffer.Loader;
+import primitive.model.Mesh;
+import tool.math.vector.Vector3f;
 
 public class BoundingBox {
 
 	Vector3f min;
 	Vector3f max;
-	RawModel model;
+	Mesh model;
 
 	public BoundingBox(float[] positions) {
 		Vector3f minPoint = new Vector3f(0, 0, 0);
@@ -87,7 +86,7 @@ public class BoundingBox {
 		return this.max;
 	}
 
-	public RawModel getModel() {
+	public Mesh getModel() {
 		return this.model;
 	}
 

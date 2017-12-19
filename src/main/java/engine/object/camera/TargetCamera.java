@@ -1,112 +1,65 @@
 package object.camera;
 
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
-import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector3f;
 
+import control.KeyboardGame;
+import control.MouseGame;
+import core.loop.Loop;
 import core.settings.EngineSettings;
 import object.entity.player.IPlayer;
-import object.input.MouseGame;
+import tool.math.Maths;
+import tool.math.Matrix4f;
+import tool.math.vector.Vector3f;
 
-public class TargetCamera implements ICamera {
+public class TargetCamera extends BaseCamera implements ICamera {
 
 	/*
 	 * CameraPlayer - камера для игрока
 	 * 
 	 */
 
-	private static final float maxDistanceFromPlayer = 100;
-	private static final float minDistanceFromPlayer = 0;
-	private static final float maxPitch = 90;
-	private static final float minPitch = -90;
+	private final float maxDistanceFromPlayer = 100;
+	private final float minDistanceFromPlayer = 0;
+	private final float maxPitch = 90;
+	private final float minPitch = -90;
+	private final float maxYOffset = 80;
+	private final float minYOffset = -10;
+	private final float maxXOffset = 10;
+	private final float minXOffset = -10;
+	
+	private final float offsetSpeed = 0.5f;
 
 	private float distanceFromPlayer = 50;
 	private float angleAroundPlayer = 0;
-
-	private Vector3f position = new Vector3f(0, 0, 0);
-
-	private float pitch = 20;
-	private float yaw = 0;
-	private float roll;
-
-	private String name;
+	
+	private float moveOffsetY = 5;
+	private float moveOffsetX = 0;
 
 	private IPlayer player;
 
-	public boolean perspectiveMode = false;
-	public boolean isUnderWater = false;
-
-	@Override
-	public String getName() {
-		return name;
-	}
-
-	public TargetCamera(IPlayer player) {
-		this.player = player;
-		this.name = "NoName";
-	}
-
-	public TargetCamera(IPlayer player, String name) {
+	public TargetCamera(String name, IPlayer player) {
+		super(name, new Vector3f(0,0,0));
 		this.player = player;
 		this.name = name;
-	}
-
-	@Override
-	public void setPosition(float posX, float posY, float posZ) {
-		this.position.x = posX;
-		this.position.y = posY;
-		this.position.z = posZ;
-	}
-
-	// установить тангаж
-	@Override
-	public void setPitch(float anglePitch) {
-		this.pitch = anglePitch;
-	}
-
-	// установить рысканье
-	@Override
-	public void setYaw(float angleYaw) {
-		this.yaw = angleYaw;
+		if(Loop.getInstance().getEditMode()) {
+			this.angleAroundPlayer = 180;
+		}
 	}
 
 	@Override
 	public void move() {
+		super.move();
+		if(player.isMoved()) {
+			this.isMoved = true;
+		}
 		calculateZoom();
 		calculatePitchAndAngle();
+		calculateOffset();
 		float horizontalDistance = calculateHorizontalDistance();
 		float verticalDistance = calculateVerticalDistance();
 		calculateCameraPosition(horizontalDistance, verticalDistance);
-		this.yaw = 180 - ((player).getRotation().getY() + angleAroundPlayer);
-	}
-
-	@Override
-	public Vector3f getPosition() {
-		return position;
-	}
-
-	// вернуть тангаж
-	@Override
-	public float getPitch() {
-		return pitch;
-	}
-
-	// инвертировать тангаж
-	@Override
-	public void invertPitch() {
-		this.pitch = -pitch;
-	}
-
-	// вернуть рысканье
-	@Override
-	public float getYaw() {
-		return yaw;
-	}
-
-	// вернуть крен
-	@Override
-	public float getRoll() {
-		return roll;
+		this.yaw = 180 - (player.getRotation().getY() + angleAroundPlayer);
 	}
 
 	// вычислить позицию камеры относительно игрока
@@ -114,9 +67,9 @@ public class TargetCamera implements ICamera {
 		float theta = player.getRotation().getY() + angleAroundPlayer;
 		float offsetX = (float) (horizDistance * Math.sin(Math.toRadians(theta)));
 		float offsetZ = (float) (horizDistance * Math.cos(Math.toRadians(theta)));
-		position.x = player.getPosition().x - offsetX;
-		position.z = player.getPosition().z - offsetZ;
-		position.y = player.getPosition().y + 5 + verticDistance;
+		position.x = (float) (player.getPosition().x - offsetX + moveOffsetX * Math.sin(player.getRotation().getY()));
+		position.z = (float) (player.getPosition().z - offsetZ + moveOffsetX * Math.cos(player.getRotation().getY()));
+		position.y = player.getPosition().y + moveOffsetY + verticDistance;
 	}
 
 	private float calculateHorizontalDistance() {
@@ -126,6 +79,33 @@ public class TargetCamera implements ICamera {
 	private float calculateVerticalDistance() {
 		return (float) (distanceFromPlayer * Math.sin(Math.toRadians(pitch)));
 	}
+	
+	private void calculateOffset() {
+		if(Loop.getInstance().getEditMode()) {
+			if(MouseGame.isPressed(MouseGame.RIGHT_CLICK)) {
+				this.moveOffsetX = 0;
+				this.moveOffsetY = 0;
+				this.pitch = 0;
+				this.angleAroundPlayer = 180;
+			}
+			if(KeyboardGame.isKeyDown(Keyboard.KEY_UP) && this.moveOffsetY < maxYOffset) {
+				this.moveOffsetY += this.offsetSpeed;
+				this.isMoved = true;
+			}
+			if(KeyboardGame.isKeyDown(Keyboard.KEY_DOWN) && this.moveOffsetY > minYOffset) {
+				this.moveOffsetY -= this.offsetSpeed;
+				this.isMoved = true;
+			}
+			if(KeyboardGame.isKeyDown(Keyboard.KEY_LEFT) && this.moveOffsetX > minXOffset) {
+				this.moveOffsetX -= this.offsetSpeed;
+				this.isMoved = true;
+			}
+			if(KeyboardGame.isKeyDown(Keyboard.KEY_RIGHT) && this.moveOffsetX < maxXOffset) {
+				this.moveOffsetX += this.offsetSpeed;
+				this.isMoved = true;
+			}
+		}
+	}
 
 	// вычислить масштаб приближения камеры относительно игрока
 	private void calculateZoom() {
@@ -133,12 +113,16 @@ public class TargetCamera implements ICamera {
 		if (((distanceFromPlayer < maxDistanceFromPlayer) && (zoomLevel < 0))
 				|| ((distanceFromPlayer > minDistanceFromPlayer) && (zoomLevel > 0))) {
 			distanceFromPlayer -= zoomLevel;
+			this.isMoved = true;
 		}
 	}
 
 	private void calculatePitchAndAngle() {
-		if (!Mouse.isButtonDown(2)) {
-			float pitchChange = (Mouse.getY() - EngineSettings.DISPLAY_HEIGHT / 2) * EngineSettings.MOUSE_Y_SPEED;
+		float pitchChange = 0;
+		float angleChange = 0;
+		if ((!Loop.getInstance().getEditMode() && !MouseGame.isPressed(MouseGame.MIDDLE_CLICK))||
+				(Loop.getInstance().getEditMode() && MouseGame.isPressed(MouseGame.MIDDLE_CLICK))) {
+			pitchChange = Mouse.getDY() * EngineSettings.MOUSE_Y_SPEED;
 
 			if ((pitch < maxPitch) || (pitch > minPitch)) {
 				pitch -= pitchChange;
@@ -146,10 +130,13 @@ public class TargetCamera implements ICamera {
 		}
 
 		if (MouseGame.isPressed(MouseGame.MIDDLE_CLICK)) {
-			float angleChange = (Mouse.getX() - EngineSettings.DISPLAY_WIDTH / 2) * EngineSettings.MOUSE_X_SPEED;
-			angleAroundPlayer = -angleChange;
-		} else {
+			angleChange = Mouse.getDX() * EngineSettings.MOUSE_X_SPEED;
+			angleAroundPlayer += -angleChange;
+		} else if(!Loop.getInstance().getEditMode()) {
 			angleAroundPlayer = 0;
+		}
+		if((pitchChange != 0) || (angleChange !=0)) {
+			this.isRotated = true;
 		}
 	}
 
@@ -162,40 +149,9 @@ public class TargetCamera implements ICamera {
 		}
 	}
 
-	// переключить повороты камеры
-	@Override
-	public void switchToFace(int faceIndex) {
-		switch (faceIndex) {
-		case 0:
-			pitch = 0;
-			yaw = 90;
-			break;
-		case 1:
-			pitch = 0;
-			yaw = -90;
-			break;
-		case 2:
-			pitch = -90;
-			yaw = 180;
-			break;
-		case 3:
-			pitch = 90;
-			yaw = 180;
-			break;
-		case 4:
-			pitch = 0;
-			yaw = 180;
-			break;
-		case 5:
-			pitch = 0;
-			yaw = 0;
-			break;
-		}
-	}
-
 	@Override
 	public Matrix4f getViewMatrix() {
-		return null;
+		return Maths.createViewMatrix(this);
 	}
 
 	@Override
@@ -206,6 +162,12 @@ public class TargetCamera implements ICamera {
 	@Override
 	public Matrix4f getProjectionViewMatrix() {
 		return null;
+	}
+
+	@Override
+	public void switchToFace(int faceIndex) {
+		// do nothing
+		
 	}
 
 }

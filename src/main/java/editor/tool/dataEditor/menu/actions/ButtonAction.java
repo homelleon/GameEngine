@@ -6,6 +6,9 @@ import javax.swing.AbstractAction;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 
+import core.loop.Loop;
+import tool.dataEditor.DataEditorMain;
+
 public class ButtonAction extends AbstractAction  {
 
 	/**
@@ -23,42 +26,35 @@ public class ButtonAction extends AbstractAction  {
 		JButton button = (JButton) e.getSource();
 		switch(button.getName()) {
 			case "exit":
-				this.exit();
+				DataEditorMain.exit();
 				break;
 			case "save":
-				this.save();
+				this.println("Saving...");
 				break;
 			case "add":
-				this.add();
+				this.println("Adding...");
+				break;
+			case "texture":
+				this.println("Loading texture...");
+				break;
+			case "normal texture":
+				this.println("Loading normal texture...");
+				break;
+			case "specular texture":
+				this.println("Loading specular texture...");
 				break;
 			case "edit":
-				this.edit();
+				this.println("Editing...");
 				break;
 			case "remove":
-				this.remove();
+				this.println("Removing...");
 				break;
 		}
 		
 	}
 	
-	private void save() {
-		System.out.println("Saving...");
-	}
-	
-	private void add() {
-		System.out.println("Adding...");
-	}
-	
-	private void remove() {
-		System.out.println("Removing...");
-	}
-	
-	private void edit() {
-		System.out.println("Editing...");
-	}
-	
-	private void exit() {
-		this.mainFrame.dispose();
+	private void println(String text) {
+		System.out.println(text);
 	}
 
 }

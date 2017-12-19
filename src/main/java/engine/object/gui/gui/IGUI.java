@@ -2,12 +2,11 @@ package object.gui.gui;
 
 import java.util.List;
 
-import org.lwjgl.util.vector.Vector2f;
-
 import object.Moveable;
-import object.gui.Hideable;
+import object.gui.element.object.IGUIObject;
 import object.gui.text.GUIText;
 import object.gui.texture.GUITexture;
+import tool.math.vector.Vector2f;
 
 /**
  * User interafce to represent connection between enigine and user.
@@ -17,14 +16,7 @@ import object.gui.texture.GUITexture;
  * @see GUI
  *
  */
-public interface IGUI extends Hideable, Moveable<Vector2f> {
-
-	/**
-	 * Returns name of user interface object.
-	 * 
-	 * @return {@link String} value
-	 */
-	String getName();
+public interface IGUI extends IGUIObject, Moveable<Vector2f> {
 
 	/**
 	 * Gets list of all user interface texts.

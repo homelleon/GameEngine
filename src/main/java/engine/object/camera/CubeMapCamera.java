@@ -1,9 +1,9 @@
 package object.camera;
 
-import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector3f;
+import tool.math.Matrix4f;
+import tool.math.vector.Vector3f;
 
-public class CubeMapCamera implements ICamera {
+public class CubeMapCamera extends BaseCamera implements ICamera {
 
 	/*
 	 * CameraCubeMap - камера для записи кубической текстуры окружения
@@ -19,29 +19,16 @@ public class CubeMapCamera implements ICamera {
 	private Matrix4f viewMatrix = new Matrix4f();
 	private Matrix4f projectionViewMatrix = new Matrix4f();
 
-	private Vector3f position = new Vector3f(0, 0, 0);
-
-	private float pitch = 0;
-	private float yaw;
-	private float roll = 0;
-
-	private String name = "CubeCamera";
-
-	public CubeMapCamera(Vector3f position) {
+	public CubeMapCamera(String name, Vector3f position) {
+		super(name, position);
+		this.pitch = 0;
 		this.position = position;
 		createProjectionMatrix();
 	}
-
+	
 	@Override
-	public void setPosition(float posX, float posY, float posZ) {
-		this.position.x = posX;
-		this.position.y = posY;
-		this.position.z = posZ;
-	}
-
-	@Override
-	public Vector3f getPosition() {
-		return position;
+	public void move() {
+		// nothing
 	}
 
 	@Override
@@ -99,12 +86,12 @@ public class CubeMapCamera implements ICamera {
 		float x_scale = y_scale / ASPECT_RATIO;
 		float frustum_length = FAR_PLANE - NEAR_PLANE;
 
-		projectionMatrix.m00 = x_scale;
-		projectionMatrix.m11 = y_scale;
-		projectionMatrix.m22 = -((FAR_PLANE + NEAR_PLANE) / frustum_length);
-		projectionMatrix.m23 = -1;
-		projectionMatrix.m32 = -((2 * NEAR_PLANE * FAR_PLANE) / frustum_length);
-		projectionMatrix.m33 = 0;
+		projectionMatrix.m[0][0] = x_scale;
+		projectionMatrix.m[1][1] = y_scale;
+		projectionMatrix.m[2][2] = -((FAR_PLANE + NEAR_PLANE) / frustum_length);
+		projectionMatrix.m[2][3] = -1;
+		projectionMatrix.m[3][2] = -((2 * NEAR_PLANE * FAR_PLANE) / frustum_length);
+		projectionMatrix.m[3][3] = 0;
 	}
 
 	/**
@@ -113,59 +100,13 @@ public class CubeMapCamera implements ICamera {
 	 */
 	private void updateViewMatrix() {
 		viewMatrix.setIdentity();
-		Matrix4f.rotate((float) Math.toRadians(180), new Vector3f(0, 0, 1), viewMatrix, viewMatrix);
-		Matrix4f.rotate((float) Math.toRadians(pitch), new Vector3f(1, 0, 0), viewMatrix, viewMatrix);
-		Matrix4f.rotate((float) Math.toRadians(yaw), new Vector3f(0, 1, 0), viewMatrix, viewMatrix);
+		viewMatrix.rotate(new Vector3f(0, 0, 180));
+		viewMatrix.rotate(new Vector3f(pitch, 0, 0));
+		viewMatrix.rotate(new Vector3f(0, yaw, 0));
 		Vector3f negativeCameraPos = new Vector3f(-position.x, -position.y, -position.z);
-		Matrix4f.translate(negativeCameraPos, viewMatrix, viewMatrix);
+		viewMatrix.translate(negativeCameraPos);
 
-		Matrix4f.mul(projectionMatrix, viewMatrix, projectionViewMatrix);
-	}
-
-	@Override
-	public String getName() {
-		return this.name;
-	}
-
-	// установить тангаж
-	@Override
-	public void setPitch(float anglePitch) {
-		this.pitch = anglePitch;
-	}
-
-	// установить рысканье
-	@Override
-	public void setYaw(float angleYaw) {
-		this.yaw = angleYaw;
-	}
-
-	@Override
-	public void move() {
-		// nothing
-	}
-
-	// вернуть тангаж
-	@Override
-	public float getPitch() {
-		return pitch;
-	}
-
-	// инвертировать тангаж
-	@Override
-	public void invertPitch() {
-		this.pitch = -pitch;
-	}
-
-	// вернуть рыскание
-	@Override
-	public float getYaw() {
-		return yaw;
-	}
-
-	// вернуть крен
-	@Override
-	public float getRoll() {
-		return roll;
+		projectionMatrix.mul(viewMatrix);
 	}
 
 }

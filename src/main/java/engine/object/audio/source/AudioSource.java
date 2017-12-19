@@ -1,9 +1,9 @@
 package object.audio.source;
 
 import org.lwjgl.openal.AL10;
-import org.lwjgl.util.vector.Vector3f;
 
 import object.audio.master.IAudioMaster;
+import tool.math.vector.Vector3f;
 
 /**
  * Simple type of Audio Source using name, sourceId, fileName to represent the
@@ -62,7 +62,7 @@ public class AudioSource implements IAudioSource {
 	 * @param maxDistance
 	 *            int value of maximum distance that audio source has effect
 	 * @param position
-	 *            Vector3f value of audio source position in 3 dimentional space
+	 *            Vec3f value of audio source position in 3 dimentional space
 	 * @param master
 	 *            AudioMaster object needed to check same audio files and store
 	 *            audio source with same audio track in the same list of auido
@@ -81,7 +81,6 @@ public class AudioSource implements IAudioSource {
 			master.loadSound(file);
 		}
 		this.fileName = file;
-		this.position = position;
 		this.setPosition(position);
 	}
 

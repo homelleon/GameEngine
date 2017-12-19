@@ -1,6 +1,6 @@
 package object.gui.font;
 
-import java.io.File;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +15,7 @@ public class TextMeshCreator {
 
 	private MetaFile metaData;
 
-	protected TextMeshCreator(File metaFile) {
+	protected TextMeshCreator(InputStreamReader metaFile) {
 		metaData = new MetaFile(metaFile);
 	}
 

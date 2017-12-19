@@ -20,7 +20,7 @@ public interface IGame {
 	public void __onUpdate();
 
 	/**
-	 * Relize game events on engine update event on pause.
+	 * Realize game events on engine update event on pause.
 	 */
 	public void __onUpdateWithPause();
 

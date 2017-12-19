@@ -18,7 +18,10 @@ public class PreviewPanel extends JPanel {
 		verticalBox.add(new JLabel("preview"));
 		verticalBox.add(screen);
 		this.add(verticalBox);
-		
+	}
+	
+	public JPanel getScreen() {
+		return this.screen;
 	}
 
 }

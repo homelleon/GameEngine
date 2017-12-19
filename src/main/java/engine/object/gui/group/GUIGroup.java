@@ -5,10 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.lwjgl.util.vector.Vector2f;
-
+import object.gui.element.object.GUIObject;
 import object.gui.gui.IGUI;
-import object.gui.pattern.object.GUIObject;
+import tool.math.vector.Vector2f;
 
 public class GUIGroup extends GUIObject implements IGUIGroup {
 

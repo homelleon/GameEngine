@@ -1,9 +1,8 @@
 package bodies;
 
-import org.lwjgl.util.vector.Vector3f;
-
 import intersects.IntersectData;
 import object.entity.entity.IEntity;
+import tool.math.vector.Vector3f;
 
 public abstract class BodyBasic {
 	

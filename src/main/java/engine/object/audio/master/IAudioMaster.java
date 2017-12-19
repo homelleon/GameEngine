@@ -2,7 +2,7 @@ package object.audio.master;
 
 import java.util.Map;
 
-import org.lwjgl.util.vector.Vector3f;
+import tool.math.vector.Vector3f;
 
 /**
  * Interface that describe tools to manage the audio used in OpenAL library
@@ -14,7 +14,9 @@ import org.lwjgl.util.vector.Vector3f;
  */
 public interface IAudioMaster {
 
-	/** Initialization of Audio Master creating OpenAL context. */
+	/** 
+	 * Initialization of Audio Master creating OpenAL context. 
+	 */
 	void init();
 
 	/**
@@ -38,7 +40,7 @@ public interface IAudioMaster {
 	 * Setting position of user in 3 dimentional space.
 	 * 
 	 * @param position
-	 *            Vector3f value of position in 3 dimentional space
+	 *            Vec3f value of position in 3 dimentional space
 	 */
 	void setListenerData(Vector3f position);
 

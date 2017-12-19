@@ -1,8 +1,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>GameEngine</groupId>
+  <groupId>homelleon</groupId>
   <artifactId>GameEngine</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>0.0.1</version>
   <build>
     <sourceDirectory>engine</sourceDirectory>
     <resources>
@@ -36,37 +36,26 @@
       </plugin>
     </plugins>
   </build>
+  
+  <properties>
+	<lwjgl.version>3.1.2</lwjgl.version>
+  </properties>
+  
   <dependencies>
-  	<dependency>
-  		<groupId>im.bci</groupId>
-  		<artifactId>pngdecoder</artifactId>
-  	</dependency>
-  	<dependency>
-  		<groupId>org.lwjgl.lwjgl</groupId>
-  		<artifactId>lwjgl</artifactId>
-  	</dependency>
   	<dependency>
   		<groupId>org.lwjgl.lwjgl</groupId>
   		<artifactId>lwjgl_util</artifactId>
+  		<version>2.9.3</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>im.bci</groupId>
+  		<artifactId>pngdecoder</artifactId>
+  		<version>0.12</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>org.lwjgl</groupId>
+  		<artifactId>lwjgl-stb</artifactId>
+  		<version>${lwjgl.version}</version>
   	</dependency>
   </dependencies>
-  <dependencyManagement>
-  	<dependencies>
-  		<dependency>
-  			<groupId>im.bci</groupId>
-  			<artifactId>pngdecoder</artifactId>
-  			<version>0.13</version>
-  		</dependency>
-  		<dependency>
-  			<groupId>org.lwjgl.lwjgl</groupId>
-  			<artifactId>lwjgl</artifactId>
-  			<version>2.9.3</version>
-  		</dependency>
-  		<dependency>
-  			<groupId>org.lwjgl.lwjgl</groupId>
-  			<artifactId>lwjgl_util</artifactId>
-  			<version>2.9.3</version>
-  		</dependency>
-  	</dependencies>
-  </dependencyManagement>
 </project>

@@ -2,15 +2,15 @@ package core.loop;
 
 import java.io.File;
 
-import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 
+import control.MouseGame;
 import core.GameCore;
 import core.debug.EngineDebug;
 import core.display.DisplayManager;
 import core.settings.EngineSettings;
 import core.settings.GameSettings;
-import core.settings.parser.SettingsXMLParser;
+import core.settings.SettingsXMLParser;
 import game.game.IGame;
 import manager.scene.IObjectManager;
 import manager.scene.ISceneManager;
@@ -21,12 +21,13 @@ import map.parser.RawMapXMLParser;
 import map.raw.IRawManager;
 import object.audio.master.AudioMaster;
 import object.audio.master.IAudioMaster;
-import object.input.MouseGame;
-import object.scene.IScene;
-import object.scene.Scene;
-import renderer.loader.Loader;
-import renderer.object.main.MainRenderer;
-import renderer.scene.SceneRenderer;
+import primitive.buffer.Loader;
+import renderer.scene.EditorSceneRenderer;
+import renderer.scene.GameSceneRenderer;
+import renderer.scene.ISceneRenderer;
+import scene.IScene;
+import scene.Scene;
+import tool.dataEditor.menu.DataEditorFrame;
 import tool.xml.loader.IXMLLoader;
 import tool.xml.loader.XMLFileLoader;
 import tool.xml.parser.IObjectParser;
@@ -40,13 +41,14 @@ import tool.xml.parser.IObjectParser;
  * @see ILoop
  */
 public class Loop implements ILoop {
+	
+	private boolean isEditMode = false;
+	private DataEditorFrame frame;
 
 	private static Loop instance;
-	private static final String SETTINGS_NAME = "settings";
-
-	private Loader loader;
-	private MainRenderer renderer;
-	private SceneRenderer sceneRenderer;
+	private static final String SETTINGS_NAME = "Settings";
+	
+	private ISceneRenderer sceneRenderer;
 
 	private ISceneManager sceneManager;
 
@@ -61,8 +63,7 @@ public class Loop implements ILoop {
 	private boolean isPaused = false;
 	private boolean isExit = false;
 
-	private Loop() {
-	}
+	private Loop() {}
 
 	public static Loop getInstance() {
 		if (instance == null) {
@@ -70,26 +71,49 @@ public class Loop implements ILoop {
 		}
 		return instance;
 	}
+	
+	@Override
+	public void setEditMode(boolean value) {
+		this.isEditMode = value;
+	}
+	
+	@Override
+	public boolean getEditMode() {
+		return this.isEditMode;
+	}
+	
+	@Override
+	public void setDisplayFrame(DataEditorFrame frame) {
+		this.frame = frame;
+	}
 
 	/**
 	 * Initilize display, load game settings and setup scene objects.
 	 * 
 	 * @see #prepare()
 	 */
-	private void initialize() {
+	private void initializeGameMode() {
 		DisplayManager.createDisplay();
 		/*--------------PRE LOAD TOOLS-------------*/
-		this.loader = Loader.getInstance();
-
 		loadGameSettings();
 		if (!this.mapIsLoaded) {
 			loadModelMap("defaultModelMap");
 		}
 		IAudioMaster audioMaster = new AudioMaster();
 		this.scene = new Scene(levelMap, audioMaster);
-		this.sceneRenderer = new SceneRenderer();
+		this.sceneRenderer = new GameSceneRenderer();
 		this.sceneManager = new SceneManager();
-		sceneManager.init(scene, loader);
+		sceneManager.init(scene, EngineSettings.ENGINE_MODE_GAME);
+	}
+	
+	private void initializeEditorMode() {
+		DisplayManager.createDisplay(frame);
+		frame.pack();
+		/*--------------PRE LOAD TOOLS-------------*/
+		this.scene = new Scene();
+		this.sceneRenderer = new EditorSceneRenderer();
+		this.sceneManager = new SceneManager();
+		sceneManager.init(scene, EngineSettings.ENGINE_MODE_EDITOR);
 	}
 
 	@Override
@@ -114,23 +138,31 @@ public class Loop implements ILoop {
 	 * start.
 	 */
 	private void prepare() {
-		initialize();
+		if(isEditMode) {
+			initializeEditorMode();
+		} else {
+			initializeGameMode();
+		}
 		sceneRenderer.initialize(scene);
-		MouseGame.initilize(10);
-		MouseGame.switchCoursorVisibility();
-		this.game = GameCore.loadGame();
-		game.__onStart();
+		MouseGame.initilize(3);
+		if(!isEditMode) {
+			MouseGame.switchCoursorVisibility();
+			this.game = GameCore.loadGame();
+			game.__onStart();
+		}
 	}
 
 	/**
 	 * Updates game events, mouse settings, display and render scene.
 	 */
 	private void update() {
-		game.__onUpdateWithPause();
-		if (!this.isPaused) {
-			game.__onUpdate();
+		if(!isEditMode) {
+			game.__onUpdateWithPause();
+			if (!this.isPaused) {
+				game.__onUpdate();
+			}
 		}
-		sceneRenderer.render(loader, isPaused);
+		sceneRenderer.render(isPaused);
 		MouseGame.update();
 		DisplayManager.updateDisplay();
 	}
@@ -141,11 +173,13 @@ public class Loop implements ILoop {
 	 */
 	private void clean() {
 		this.scene.clean();
-		this.loader.clean();
+		Loader.getInstance().clean();
 		this.sceneRenderer.clean();
-		this.levelMap.clean();
-		this.modelMap.clean();
-		this.rawMap.clean();
+		if(!isEditMode) {
+			this.levelMap.clean();
+			this.modelMap.clean();
+			this.rawMap.clean();
+		}
 		DisplayManager.closeDisplay();
 	}
 
@@ -159,17 +193,15 @@ public class Loop implements ILoop {
 	 */
 	private void loadModelMap(String name) {
 		if (EngineDebug.hasDebugPermission()) {
-			System.out.println("Loading models...");
+			EngineDebug.printBorder();
+			EngineDebug.printOpen("Model map");
+			EngineDebug.println("Loading models...");
 		}
 		String path = EngineSettings.MAP_PATH + name + EngineSettings.EXTENSION_XML;
-		if(new File(path).exists()) {
-			IXMLLoader xmlLoader = new XMLFileLoader(path);
-			IObjectParser<IObjectManager> mapParser = new ModelMapXMLParser(xmlLoader.load(), rawMap);
-			this.modelMap = mapParser.parse();
-			this.mapIsLoaded = true;
-		} else {
-			throw new NullPointerException("File " + path + " is not existed! Can't load model map!");
-		}
+		IXMLLoader xmlLoader = new XMLFileLoader(path);
+		IObjectParser<IObjectManager> mapParser = new ModelMapXMLParser(xmlLoader.load(), rawMap);
+		this.modelMap = mapParser.parse();
+		this.mapIsLoaded = true;
 	}
 
 	/**
@@ -182,30 +214,28 @@ public class Loop implements ILoop {
 	 */
 	private void loadLevelMap(String name) {
 		if (EngineDebug.hasDebugPermission()) {
-			System.out.println("Loading objects...");
+			EngineDebug.printBorder();
+			EngineDebug.printOpen("Level map");
+			EngineDebug.println("Loading level...");
 		}
-		String path = EngineSettings.MAP_PATH + name + EngineSettings.EXTENSION_XML;
-		if(new File(path).exists()) {
-			IXMLLoader xmlLoader = new XMLFileLoader(EngineSettings.MAP_PATH + name + EngineSettings.EXTENSION_XML);
-			IObjectParser<IObjectManager> mapParser = new LevelMapXMLParser(xmlLoader.load(), this.modelMap);
-			this.levelMap = mapParser.parse();
-		} else {
-			throw new NullPointerException("File " + path + " is not existed! Can't load level map!");
+		IXMLLoader xmlLoader = new XMLFileLoader(EngineSettings.MAP_PATH + name + EngineSettings.EXTENSION_XML);
+		IObjectParser<IObjectManager> mapParser = new LevelMapXMLParser(xmlLoader.load(), this.modelMap);
+		this.levelMap = mapParser.parse();
+		if (EngineDebug.hasDebugPermission()) {
+			EngineDebug.println("Total loaded entities: " + this.levelMap.getEntities().getAll().stream().count(), 2);
+			EngineDebug.println("Total loaded terrains: " + this.levelMap.getTerrains().getAll().stream().count(), 2);
 		}
 	}
 	
 	private void loadRawMap(String name) {
 		if (EngineDebug.hasDebugPermission()) {
-			System.out.println("Loading raws...");
+			EngineDebug.printBorder();
+			EngineDebug.printOpen("Raw map");
+			EngineDebug.println("Loading raws...");
 		}
-		String path = EngineSettings.MAP_PATH + name + EngineSettings.EXTENSION_XML;
-		if(new File(path).exists()) {
-			IXMLLoader xmlLoader = new XMLFileLoader(EngineSettings.MAP_PATH + name + EngineSettings.EXTENSION_XML);
-			IObjectParser<IRawManager> mapParser = new RawMapXMLParser(xmlLoader.load());
-			this.rawMap = mapParser.parse();
-		} else {
-			throw new NullPointerException("File " + path + " is not existed! Can't load raw map!");
-		}
+		IXMLLoader xmlLoader = new XMLFileLoader(EngineSettings.MAP_PATH + name + EngineSettings.EXTENSION_XML);
+		IObjectParser<IRawManager> mapParser = new RawMapXMLParser(xmlLoader.load());
+		this.rawMap = mapParser.parse();
 	}
 
 	/**
@@ -217,19 +247,21 @@ public class Loop implements ILoop {
 	 */
 	private void loadGameSettings() {
 		if (EngineDebug.hasDebugPermission()) {
-			System.out.println("Loading game settings...");
+			EngineDebug.printBorder();
+			EngineDebug.printOpen("Game Settings");
+			EngineDebug.println("Loading game settings...");
 		}
 		IXMLLoader xmlLoader = new XMLFileLoader(
 				EngineSettings.SETTINGS_GAME_PATH + SETTINGS_NAME + EngineSettings.EXTENSION_XML);
 		IObjectParser<GameSettings> settingsParser = new SettingsXMLParser(xmlLoader.load());
 		GameSettings settings = settingsParser.parse();
 		if (EngineDebug.hasDebugPermission()) {
-			System.out.println("> " + settings.getRawMapName());
-			System.out.println("> " + settings.getModelMapName());
-			System.out.println("> " + settings.getLevelMapName());
-		}
-		if (EngineDebug.hasDebugPermission()) {
-			System.out.println("Loading complete...");
+			EngineDebug.println(settings.getRawMapName(), 1);
+			EngineDebug.println(settings.getModelMapName(), 1);
+			EngineDebug.println(settings.getLevelMapName(), 1);
+			EngineDebug.println("Loading complete...");
+			EngineDebug.printClose("Game Settings");
+			EngineDebug.printBorder();
 		}
 		loadRawMap(settings.getRawMapName());
 		loadModelMap(settings.getModelMapName());
@@ -239,16 +271,6 @@ public class Loop implements ILoop {
 	@Override
 	public IScene getScene() {
 		return this.scene;
-	}
-
-	@Override
-	public void setTerrainWiredFrame(boolean value) {
-		this.renderer.setTerrainWiredFrame(value);
-	}
-
-	@Override
-	public void setEntityWiredFrame(boolean value) {
-		this.renderer.setEntityWiredFrame(value);
 	}
 
 	@Override

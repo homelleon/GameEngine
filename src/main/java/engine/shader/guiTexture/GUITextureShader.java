@@ -1,43 +1,58 @@
 package shader.guiTexture;
 
-import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector3f;
 
 import core.settings.EngineSettings;
 import shader.ShaderProgram;
+import tool.math.Matrix4f;
+import tool.math.vector.Vector3f;
 
 public class GUITextureShader extends ShaderProgram {
-
-	private static final String VERTEX_FILE = EngineSettings.SHADERS_GUI_PATH + "guiTextureVertexShader.glsl";
-	private static final String FRAGMENT_FILE = EngineSettings.SHADERS_GUI_PATH + "guiTextureFragmentShader.glsl";
-
-	private int location_transformationMatrix;
-	private int location_mixColor;
-	private int location_isMixColored;
-
+	
+	//----shaders
+	private static final String VERTEX_FILE = EngineSettings.SHADERS_GUI_PATH + "guiTexture_V_shader.glsl";
+	private static final String FRAGMENT_FILE = EngineSettings.SHADERS_GUI_PATH + "guiTexture_F_shader.glsl";
+	//----attributes
+	private static final String ATTRIBUTE_POSITION = "in_position";
+	//----uniforms
+	// matrices
+	private static final String UNIFORM_TRANSFORMATION_MATRIX = "Transformation";
+	// material
+	private static final String UNIFORM_GUI_MAP = "guiMap";
+	// color
+	private static final String UNIFORM_IS_MIX_COLORED = "isMixColored";
+	private static final String UNIFORM_MIX_COLOR = "mixColor";
+	
 	public GUITextureShader() {
-		super(VERTEX_FILE, FRAGMENT_FILE);
+		super();
+		addVertexShader(VERTEX_FILE);
+		addFragmentShader(FRAGMENT_FILE);
+		compileShader();
+	}
+	
+	@Override
+	protected void bindAttributes() {
+		super.bindAttribute(0, ATTRIBUTE_POSITION);
+	}
+
+	@Override
+	protected void loadUniformLocations() {
+		super.addUniform(UNIFORM_TRANSFORMATION_MATRIX);
+		super.addUniform(UNIFORM_IS_MIX_COLORED);
+		super.addUniform(UNIFORM_MIX_COLOR);
+		super.addUniform(UNIFORM_GUI_MAP);
+	}
+	
+	public void connectTextureUnits() {
+		super.loadInt(UNIFORM_GUI_MAP, 0);
 	}
 
 	public void loadTransformation(Matrix4f matrix) {
-		super.loadMatrix(location_transformationMatrix, matrix);
+		super.loadMatrix(UNIFORM_TRANSFORMATION_MATRIX, matrix);
 	}
 	
 	public void loadMixColorVariables(boolean isMixColored, Vector3f color) {
-		super.loadBoolean(location_isMixColored, isMixColored);
-		super.loadVector(location_mixColor, color);
-	}
-
-	@Override
-	protected void getAllUniformLocations() {
-		location_transformationMatrix = super.getUniformLocation("transformationMatrix");
-		location_isMixColored = super.getUniformLocation("isMixColored");
-		location_mixColor = super.getUniformLocation("mixColor");
-	}
-
-	@Override
-	protected void bindAttributes() {
-		super.bindAttribute(0, "position");
+		super.loadBoolean(UNIFORM_IS_MIX_COLORED, isMixColored);
+		super.load3DVector(UNIFORM_MIX_COLOR, color);
 	}
 
 }

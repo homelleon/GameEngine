@@ -1,6 +1,7 @@
 package core.loop;
 
-import object.scene.IScene;
+import scene.IScene;
+import tool.dataEditor.menu.DataEditorFrame;
 
 /**
  * Runnable looping interaface for main game initialization and external
@@ -13,7 +14,28 @@ import object.scene.IScene;
  *
  */
 public interface ILoop extends Runnable {
-
+	
+	/**
+	 * Sets edit mode.
+	 * 
+	 * @param value boolean to switch edit mode.
+	 */
+	public void setEditMode(boolean value);
+	
+	/**
+	 * Gets if the edit mode is on.
+	 * 
+	 * @return true if edit mode is on<br>
+	 * 		   false if edit mode is off
+	 */
+	public boolean getEditMode();
+	
+	/**
+	 * Sets frame for  
+	 * @param frame
+	 */
+	public void setDisplayFrame(DataEditorFrame frame);
+	
 	/**
 	 * Method to start main looping process.
 	 * <p>
@@ -21,40 +43,14 @@ public interface ILoop extends Runnable {
 	 * escape button is pressed. After that it clean all objects variables.
 	 */
 	@Override
-	void run(); // запуск
+	void run();
 
 	/**
 	 * Returns scene for external scene objects control.
 	 * 
 	 * @return Scene value
 	 */
-	IScene getScene(); // вернуть игровую сцену
-
-	/**
-	 * Switch visualization of rendering terrain between normal and wired frame
-	 * mode.
-	 * 
-	 * @param value
-	 *            {@link Boolean} variable to change visualization mode<br>
-	 *            if true - sets wrired frame mode<br>
-	 *            if flase - sets normal mode
-	 * 
-	 * @see #setEntityWiredFrame(boolean)
-	 */
-	void setTerrainWiredFrame(boolean value); // показать сетку ландшафта
-
-	/**
-	 * Switch visualization of rendering entities between normal and wired frame
-	 * mode.
-	 * 
-	 * @param value
-	 *            {@link Boolean} variable to change visualization mode<br>
-	 *            if true - sets wrired frame mode<br>
-	 *            if flase - sets normal mode
-	 * 
-	 * @see #setTerrainWiredFrame(boolean)
-	 */
-	void setEntityWiredFrame(boolean value); // показать сетку объектов
+	IScene getScene();
 
 	/**
 	 * Turns scene pause mode on or off
@@ -64,7 +60,7 @@ public interface ILoop extends Runnable {
 	 *            if true - sets pause mode on<br>
 	 *            if false - sets pause mode off<br>
 	 */
-	void setScenePaused(boolean value); // установка паузы для сцены
+	void setScenePaused(boolean value);
 
 	/**
 	 * Returns boolean varialbe to check if scene object was paused.

@@ -4,6 +4,7 @@ import java.awt.Dimension;
 
 import javax.swing.Box;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.JRootPane;
 
 import tool.dataEditor.menu.actions.ButtonAction;
@@ -37,9 +38,13 @@ public class DataEditorFrame extends JFrame {
 	}
 	
 	private void setupFrame() {
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		this.setPreferredSize(new Dimension(800, 600));
 		this.getRootPane().setWindowDecorationStyle(JRootPane.INFORMATION_DIALOG);
+	}
+	
+	public JPanel getScreenPanel() {
+		return this.previewPanel.getScreen();
 	}
 
 	private void initializeElemets() {

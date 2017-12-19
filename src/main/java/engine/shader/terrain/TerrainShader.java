@@ -3,156 +3,238 @@ package shader.terrain;
 import java.util.Collection;
 import java.util.Iterator;
 
-import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 
 import core.settings.EngineSettings;
-import object.camera.ICamera;
 import object.light.ILight;
 import shader.ShaderProgram;
-import tool.math.Maths;
+import tool.math.Matrix4f;
+import tool.math.vector.Vector2f;
+import tool.math.vector.Vector3f;
 
 public class TerrainShader extends ShaderProgram {
-
-	public static final String VERTEX_FILE = EngineSettings.SHADERS_TERRAIN_PATH + "terrainVertexShader.glsl";
-	public static final String FRAGMENT_FILE = EngineSettings.SHADERS_TERRAIN_PATH + "terrainFragmentShader.glsl";
-
-	private int location_transformationMatrix;
-	private int location_projectionMatrix;
-	private int location_viewMatrix;
-	private int location_lightCount;
-	private int location_lightPosition[];
-	private int location_lightColour[];
-	private int location_attenuation[];
-	private int loaction_shineDamper;
-	private int loaction_reflectivity;
-	private int location_skyColour;
-	private int location_backgroundTexture;
-	private int location_rTexture;
-	private int location_gTexture;
-	private int location_bTexture;
-	private int location_blendMap;
-	private int location_plane;
-	private int location_fogDensity;
-	private int location_toShadowMapSpace;
-	private int location_shadowMap;
-	private int location_shadowDistance;
-	private int location_shadowMapSize;
-	private int location_shadowTransitionDistance;
-	private int location_shadowPCFCount;
-
+	
+	//----shaders
+	private static final String VERTEX_FILE = EngineSettings.SHADERS_TERRAIN_PATH + "terrain_V_shader.glsl";
+	private static final String FRAGMENT_FILE = EngineSettings.SHADERS_TERRAIN_PATH + "terrain_F_shader.glsl";
+	private static final String GEOMETRY_SHADER = EngineSettings.SHADERS_TERRAIN_PATH + "terrain_G_shader.glsl";
+	private static final String TESSELLATION_EVALUATION_SHADER = EngineSettings.SHADERS_TERRAIN_PATH + "terrain_TE_shader.glsl";
+	private static final String TESSELLATION_CONTROL_SHADER = EngineSettings.SHADERS_TERRAIN_PATH + "terrain_TC_shader.glsl";
+	
+	//----attributes
+	private static final String ATTRIBUTE_OUT_COLOR = "out_Color";
+	private static final String ATTRIBUTE_OUT_BRIGHT_COLOR = "out_BrightColor";
+	private static final String ATTRIBUTE_POSITION = "in_position";
+	//----uniforms
+	//matrix
+	private static final String UNIFORM_PROJECTION_MATRIX = "Projection";
+	private static final String UNIFORM_VIEW_MATRIX = "View";	
+	private static final String UNIFORM_LOCAL_MATRIX = "Local";
+	private static final String UNIFORM_WORLD_MATRIX = "World";
+	private static final String UNIFORM_CAMERA_POSITION = "cameraPosition"; 
+	//tessellation
+	private static final String UNIFORM_SCALE_Y = "scaleY";
+	private static final String UNIFORM_INDEX = "index";
+	private static final String UNIFORM_GAP = "gap";
+	private static final String UNIFORM_LEVEL_OF_DISTANCE = "lod";
+	private static final String UNIFORM_LOCATION = "location";
+	private static final String UNIFORM_TESSELLATION_FACTOR = "tessellationFactor";
+	private static final String UNIFORM_TESSELLATION_SLOPE = "tessellationSlope";
+	private static final String UNIFORM_TESSELLATION_SHIFT = "tessellationShift";
+	private static final String UNIFORM_LOD_MORPH_AREA = "lod_morph_area";
+	//shine varibles
+	private static final String UNIFORM_SHINE_DAMPER = "shineDamper";
+	private static final String UNIFORM_REFLECTIVITY = "reflectivity";
+	//ambient variables
+	private static final String UNIFORM_SKY_COLOR = "skyColor";
+	private static final String UNIFORM_FOG_DENSITY = "fogDensity";
+	//material
+	private static final String UNIFORM_BACKGROUND_TEXTURE = "backgroundTexture";
+	private static final String UNIFORM_RED_TEXTURE = "rTexture";
+	private static final String UNIFORM_GREEN_TEXTURE = "gTexture";
+	private static final String UNIFORM_BLUE_TEXTURE = "bTexture";
+	private static final String UNIFORM_BLEND_MAP = "blendMap";
+	private static final String UNIFORM_SHADOW_MAP = "shadowMap";
+	private static final String UNIFORM_HEIGHT_MAP = "heightMap";
+	private static final String UNIFORM_NORMAL_MAP = "normalMap";
+	//clip plane
+	private static final String UNIFORM_CLIP_PLANE = "clipPlane";
+	//shadow variables
+	private static final String UNIFORM_TO_SHADOW_MAP_SPACE = "toShadowMapSpace";		
+	private static final String UNIFORM_SHADOW_DISTANCE = "shadowDistance";
+	private static final String UNIFORM_SHADOW_MAP_SIZE = "shadowMapSize";
+	private static final String UNIFORM_SHADOW_TRANSITION_DISTANCE = "shadowTransitionDistance";
+	private static final String UNIFORM_SHADOW_PCF_COUNT = "shadowPCFCount";
+	//light
+	private static final String UNIFORM_LIGHT_POSITION = "lightPosition";
+	private static final String UNIFORM_LIGHT_COLOR = "lightColor";
+	private static final String UNIFORM_ATTENUATION = "attenuation";
+	
+	
 	public TerrainShader() {
-		super(VERTEX_FILE, FRAGMENT_FILE);
+		super();
+		this.addVertexShader(VERTEX_FILE);
+		this.addFragmentShader(FRAGMENT_FILE);
+		this.addGeometryShader(GEOMETRY_SHADER);
+		this.addTessellationEvaluationShader(TESSELLATION_EVALUATION_SHADER);
+		this.addTessellationControlShader(TESSELLATION_CONTROL_SHADER);
+		this.compileShader();
 	}
 
 	@Override
 	protected void bindAttributes() {
-		super.bindFragOutput(0, "out_Color");
-		super.bindFragOutput(1, "out_BrightColor");
-		super.bindAttribute(0, "position");
-		super.bindAttribute(1, "textureCoordinates");
-		super.bindAttribute(2, "normal");
+		this.bindFragOutput(0, ATTRIBUTE_OUT_COLOR);
+		this.bindFragOutput(1, ATTRIBUTE_OUT_BRIGHT_COLOR);
+		this.bindAttribute(0, ATTRIBUTE_POSITION);
 	}
 
 	@Override
-	protected void getAllUniformLocations() {
-		location_transformationMatrix = super.getUniformLocation("transformationMatrix");
-		location_projectionMatrix = super.getUniformLocation("projectionMatrix");
-		location_viewMatrix = super.getUniformLocation("viewMatrix");
-		loaction_shineDamper = super.getUniformLocation("shineDamper");
-		loaction_reflectivity = super.getUniformLocation("reflectivity");
-		location_skyColour = super.getUniformLocation("skyColour");
-		location_backgroundTexture = super.getUniformLocation("backgroundTexture");
-		location_rTexture = super.getUniformLocation("rTexture");
-		location_gTexture = super.getUniformLocation("gTexture");
-		location_bTexture = super.getUniformLocation("bTexture");
-		location_blendMap = super.getUniformLocation("blendMap");
-		location_plane = super.getUniformLocation("plane");
-		location_fogDensity = super.getUniformLocation("fogDensity");
-		location_toShadowMapSpace = super.getUniformLocation("toShadowMapSpace");
-		location_shadowMap = super.getUniformLocation("shadowMap");
-		location_shadowDistance = super.getUniformLocation("shadowDistance");
-		location_shadowMapSize = super.getUniformLocation("shadowMapSize");
-		location_shadowTransitionDistance = super.getUniformLocation("shadowTransitionDistance");
-		location_shadowPCFCount = super.getUniformLocation("shadowPCFCount");
-
-		location_lightCount = super.getUniformLocation("lightCount");
-		location_lightPosition = new int[EngineSettings.MAX_LIGHTS];
-		location_lightColour = new int[EngineSettings.MAX_LIGHTS];
-		location_attenuation = new int[EngineSettings.MAX_LIGHTS];
+	protected void loadUniformLocations() {
+		//matrix
+		this.addUniform(UNIFORM_PROJECTION_MATRIX);
+		this.addUniform(UNIFORM_VIEW_MATRIX);
+		this.addUniform(UNIFORM_LOCAL_MATRIX);
+		this.addUniform(UNIFORM_WORLD_MATRIX);
+		this.addUniform(UNIFORM_CAMERA_POSITION);
+		//tessellation
+		this.addUniform(UNIFORM_SCALE_Y);
+		this.addUniform(UNIFORM_INDEX);
+		this.addUniform(UNIFORM_GAP);
+		this.addUniform(UNIFORM_LEVEL_OF_DISTANCE);
+		this.addUniform(UNIFORM_LOCATION);
+		this.addUniform(UNIFORM_TESSELLATION_FACTOR);
+		this.addUniform(UNIFORM_TESSELLATION_SLOPE);
+		this.addUniform(UNIFORM_TESSELLATION_SHIFT);
+		for(int i = 0; i < 8; i++) {
+			this.addUniform(UNIFORM_LOD_MORPH_AREA + "[" + i + "]");
+		}	
+		//shine varibles
+		this.addUniform(UNIFORM_SHINE_DAMPER);
+		this.addUniform(UNIFORM_REFLECTIVITY);
+		//ambient variables
+		this.addUniform(UNIFORM_SKY_COLOR);
+		this.addUniform(UNIFORM_FOG_DENSITY);
+		//material
+		this.addUniform(UNIFORM_BACKGROUND_TEXTURE);
+		this.addUniform(UNIFORM_RED_TEXTURE);
+		this.addUniform(UNIFORM_GREEN_TEXTURE);
+		this.addUniform(UNIFORM_BLUE_TEXTURE);
+		this.addUniform(UNIFORM_BLEND_MAP);
+		this.addUniform(UNIFORM_SHADOW_MAP);
+		this.addUniform(UNIFORM_HEIGHT_MAP);
+		this.addUniform(UNIFORM_NORMAL_MAP);
+		//clip plane
+		this.addUniform(UNIFORM_CLIP_PLANE);
+		//shadow variables
+		this.addUniform(UNIFORM_TO_SHADOW_MAP_SPACE);		
+		this.addUniform(UNIFORM_SHADOW_DISTANCE);
+		this.addUniform(UNIFORM_SHADOW_MAP_SIZE);
+		this.addUniform(UNIFORM_SHADOW_TRANSITION_DISTANCE);
+		this.addUniform(UNIFORM_SHADOW_PCF_COUNT);
+		//light
 		for (int i = 0; i < EngineSettings.MAX_LIGHTS; i++) {
-			location_lightPosition[i] = super.getUniformLocation("lightPosition[" + i + "]");
-			location_lightColour[i] = super.getUniformLocation("lightColour[" + i + "]");
-			location_attenuation[i] = super.getUniformLocation("attenuation[" + i + "]");
+			this.addUniform(UNIFORM_LIGHT_POSITION + "[" + i + "]");
+			this.addUniform(UNIFORM_LIGHT_COLOR + "[" + i + "]");
+			this.addUniform(UNIFORM_ATTENUATION + "[" + i + "]");
 		}
 	}
 
 	public void connectTextureUnits() {
-		super.loadInt(location_backgroundTexture, 0);
-		super.loadInt(location_rTexture, 1);
-		super.loadInt(location_gTexture, 2);
-		super.loadInt(location_bTexture, 3);
-		super.loadInt(location_blendMap, 4);
-		super.loadInt(location_shadowMap, 5);
+		this.loadInt(UNIFORM_BACKGROUND_TEXTURE, 0);
+		this.loadInt(UNIFORM_RED_TEXTURE, 1);
+		this.loadInt(UNIFORM_GREEN_TEXTURE, 2);
+		this.loadInt(UNIFORM_BLUE_TEXTURE, 3);
+		this.loadInt(UNIFORM_BLEND_MAP, 4);
+		this.loadInt(UNIFORM_SHADOW_MAP, 6);
+		this.loadInt(UNIFORM_HEIGHT_MAP, 7);
+		this.loadInt(UNIFORM_NORMAL_MAP, 8);
+	}
+
+	public void loadProjectionMatrix(Matrix4f projection) {
+		this.loadMatrix(UNIFORM_PROJECTION_MATRIX, projection);
+	}
+
+	public void loadViewMatrix(Matrix4f viewMatrix) {
+		this.loadMatrix(UNIFORM_VIEW_MATRIX, viewMatrix);
+	}
+	
+	public void loadWorldMatrix(Matrix4f worldMatrix) {
+		this.loadMatrix(UNIFORM_WORLD_MATRIX, worldMatrix);
+	}
+	
+	public void loadLocalMatrix(Matrix4f localMatrix) {
+		this.loadMatrix(UNIFORM_LOCAL_MATRIX, localMatrix);
+	}
+	
+	public void loadCameraPosition(Vector3f position) {
+		this.load3DVector(UNIFORM_CAMERA_POSITION, position);
 	}
 
 	public void loadToShadowSpaceMatrix(Matrix4f matrix) {
-		super.loadMatrix(location_toShadowMapSpace, matrix);
-	}
-
-	public void loadShadowVariables(float shadowDistance, float size, float transitionDistance, int pcfCount) {
-		super.loadFloat(location_shadowDistance, shadowDistance);
-		super.loadFloat(location_shadowMapSize, size);
-		super.loadFloat(location_shadowTransitionDistance, transitionDistance);
-		super.loadInt(location_shadowPCFCount, pcfCount);
+		this.loadMatrix(UNIFORM_TO_SHADOW_MAP_SPACE, matrix);
 	}
 
 	public void loadClipPlane(Vector4f clipPlane) {
-		super.load4DVector(location_plane, clipPlane);
+		this.load4DVector(UNIFORM_CLIP_PLANE, clipPlane);
+	}
+
+	public void loadShadowVariables(float shadowDistance, float size, float transitionDistance, int pcfCount) {
+		this.loadFloat(UNIFORM_SHADOW_DISTANCE, shadowDistance);
+		this.loadFloat(UNIFORM_SHADOW_MAP_SIZE, size);
+		this.loadFloat(UNIFORM_SHADOW_TRANSITION_DISTANCE, transitionDistance);
+		this.loadInt(UNIFORM_SHADOW_PCF_COUNT, pcfCount);
 	}
 
 	public void loadSkyColour(float r, float g, float b) {
-		super.loadVector(location_skyColour, new Vector3f(r, g, b));
+		this.load3DVector(UNIFORM_SKY_COLOR, new Vector3f(r, g, b));
 	}
 
 	public void loadShineVariables(float damper, float reflectivity) {
-		super.loadFloat(loaction_shineDamper, damper);
-		super.loadFloat(loaction_reflectivity, reflectivity);
+		this.loadFloat(UNIFORM_SHINE_DAMPER, damper);
+		this.loadFloat(UNIFORM_REFLECTIVITY, reflectivity);
 	}
 
 	public void loadFogDensity(float density) {
-		super.loadFloat(location_fogDensity, density);
+		this.loadFloat(UNIFORM_FOG_DENSITY, density);
 	}
-
-	public void loadTranformationMatrix(Matrix4f matrix) {
-		super.loadMatrix(location_transformationMatrix, matrix);
+	
+	public void loadScale(float scaleY){
+		this.loadFloat(UNIFORM_SCALE_Y, scaleY);
+	}
+	
+	public void loadLoDVariables(int lod, Vector2f index, float gap, Vector2f location) {
+		this.loadInt(UNIFORM_LEVEL_OF_DISTANCE, lod);
+		this.load2DVector(UNIFORM_INDEX, index);
+		this.loadFloat(UNIFORM_GAP, gap);
+		this.load2DVector(UNIFORM_LOCATION, location);
+	}
+	
+	public void loadLodMorphAreaArray(int[] lodMorphAreas) {
+		for(int i = 0; i < 8; i++) {
+			this.loadInt(UNIFORM_LOD_MORPH_AREA + "[" + i + "]", lodMorphAreas[i]);
+		}
+	}
+	
+	public void loadTessellationVariables(int factor, float slope, float shift) {
+		this.loadInt(UNIFORM_TESSELLATION_FACTOR, factor);
+		this.loadFloat(UNIFORM_TESSELLATION_SLOPE, slope);
+		this.loadFloat(UNIFORM_TESSELLATION_SHIFT, shift);
 	}
 
 	public void loadLights(Collection<ILight> lights) {
-		super.loadInt(location_lightCount, EngineSettings.MAX_LIGHTS);
 		Iterator<ILight> iterator = lights.iterator();
 		for (int i = 0; i < EngineSettings.MAX_LIGHTS; i++) {
 			if (iterator.hasNext()) {
 				ILight light = iterator.next();
-				super.loadVector(location_lightPosition[i], light.getPosition());
-				super.loadVector(location_lightColour[i], light.getColour());
-				super.loadVector(location_attenuation[i], light.getAttenuation());
+				this.load3DVector(UNIFORM_LIGHT_POSITION + "[" + i + "]", light.getPosition());
+				this.load3DVector(UNIFORM_LIGHT_COLOR + "[" + i + "]", light.getColor());
+				this.load3DVector(UNIFORM_ATTENUATION + "[" + i + "]", light.getAttenuation());
 			} else {
-				super.loadVector(location_lightPosition[i], new Vector3f(0, 0, 0));
-				super.loadVector(location_lightColour[i], new Vector3f(0, 0, 0));
-				super.loadVector(location_attenuation[i], new Vector3f(1, 0, 0));
+				this.load3DVector(UNIFORM_LIGHT_POSITION + "[" + i + "]", new Vector3f(0, 0, 0));
+				this.load3DVector(UNIFORM_LIGHT_COLOR + "[" + i + "]", new Vector3f(0, 0, 0));
+				this.load3DVector(UNIFORM_ATTENUATION + "[" + i + "]", new Vector3f(1, 0, 0));
 			}
 		}
 	}
-
-	public void loadViewMatrix(ICamera camera) {
-		Matrix4f viewMatrix = Maths.createViewMatrix(camera);
-		super.loadMatrix(location_viewMatrix, viewMatrix);
-	}
-
-	public void loadProjectionMatrix(Matrix4f projection) {
-		super.loadMatrix(location_projectionMatrix, projection);
-	}
-
+	
 }

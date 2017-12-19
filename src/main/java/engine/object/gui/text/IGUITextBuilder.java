@@ -1,6 +1,6 @@
 package object.gui.text;
 
-import org.lwjgl.util.vector.Vector2f;
+import tool.math.vector.Vector2f;
 
 public interface IGUITextBuilder {
 

@@ -10,8 +10,7 @@ import core.debug.EngineDebug;
 import object.terrain.terrain.ITerrain;
 
 /**
- * Terrain manager for controling and storing structured map and arrays of
- * terrains.
+ * Manages structured terrains.
  * 
  * @author homelleon
  * @version 1.0

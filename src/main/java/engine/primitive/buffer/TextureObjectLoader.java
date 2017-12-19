@@ -1,0 +1,243 @@
+package primitive.buffer;
+
+import java.io.InputStream;
+import java.nio.ByteBuffer;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.lwjgl.opengl.EXTTextureFilterAnisotropic;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL13;
+import org.lwjgl.opengl.GL14;
+import org.lwjgl.opengl.GL30;
+import org.lwjgl.opengl.GLContext;
+import org.newdawn.slick.opengl.Texture;
+import org.newdawn.slick.opengl.TextureLoader;
+
+import core.settings.EngineSettings;
+import de.matthiasmann.twl.utils.PNGDecoder;
+import de.matthiasmann.twl.utils.PNGDecoder.Format;
+import primitive.texture.Texture2D;
+import primitive.texture.TextureData;
+
+public class TextureObjectLoader {
+	
+	/**
+	 * Map of named textures indicies.
+	 */
+	private Map<String, Texture2D> textures2D = new HashMap<String, Texture2D>();
+	private Map<String, Integer> textures3D = new HashMap<String, Integer>();
+	
+
+	/**
+	 * Loads texture into video buffer using texture path and texture name
+	 * parameters.
+	 * 
+	 * @param folder
+	 *            {@link String} value of texture location name
+	 * @param fileName
+	 *            {@link String} value of texture file name
+	 * 
+	 * @return {@link Integer} value of texture ordered number in video buffer
+	 */
+	public Texture2D loadTexture(String folder, String fileName) {
+		return loadTexture(folder, fileName, "PNG");
+	}
+
+	public Texture2D loadTexture(String path, String fileName, String format) {
+		Texture2D texture = null;
+		float bias;
+		if (path == EngineSettings.FONT_FILE_PATH) {
+			bias = 0;
+		} else {
+			bias = -2.4f;
+		}
+
+		String extension = EngineSettings.EXTENSION_PNG;
+
+		switch (format) {
+		case "PNG":
+			extension = EngineSettings.EXTENSION_PNG;
+			break;
+		case "TGA":
+			extension = EngineSettings.EXTENSION_TGA;
+			break;
+		case "JPG":
+			extension = EngineSettings.EXTENSION_JPG;
+			throw new TypeNotPresentException("JPG file is not supported!", null);
+		default:
+			throw new TypeNotPresentException("Uknown file extention!", null);
+		}
+
+		texture = new Texture2D(fileName, path + fileName + extension);
+		
+		GL30.glGenerateMipmap(GL11.GL_TEXTURE_2D);
+		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR_MIPMAP_LINEAR);
+		GL11.glTexParameterf(GL11.GL_TEXTURE_2D, GL14.GL_TEXTURE_LOD_BIAS, bias);
+		if (GLContext.getCapabilities().GL_EXT_texture_filter_anisotropic) {
+			float amount = Math.min(4f,
+					GL11.glGetFloat(EXTTextureFilterAnisotropic.GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT));
+			GL11.glTexParameterf(GL11.GL_TEXTURE_2D, EXTTextureFilterAnisotropic.GL_TEXTURE_MAX_ANISOTROPY_EXT,
+					amount);
+		} else {
+			System.out.println("Anisotropic filtering is not supported");
+		}
+		
+		textures2D.put(fileName, texture);
+		return texture;
+	}
+	
+	public Texture2D loadGUITexture(String path, String fileName) {
+		return this.loadGUITexture(path, fileName, "PNG");
+	}
+	
+	public Texture2D loadGUITexture(String path, String fileName, String format) {
+		Texture2D texture = null;
+		float bias;
+		if (path == EngineSettings.FONT_FILE_PATH) {
+			bias = 0;
+		} else {
+			bias = -2.4f;
+		}
+
+		String extension = EngineSettings.EXTENSION_PNG;
+
+		switch (format) {
+		case "PNG":
+			extension = EngineSettings.EXTENSION_PNG;
+			break;
+		case "TGA":
+			extension = EngineSettings.EXTENSION_TGA;
+			break;
+		case "JPG":
+			extension = EngineSettings.EXTENSION_JPG;
+			throw new TypeNotPresentException("JPG file is not supported!", null);
+		default:
+			throw new TypeNotPresentException("Uknown file extention!", null);
+		}
+		texture = new Texture2D(fileName, path + fileName + extension);
+		GL30.glGenerateMipmap(GL11.GL_TEXTURE_2D);
+		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR_MIPMAP_LINEAR);
+		GL11.glTexParameterf(GL11.GL_TEXTURE_2D, GL14.GL_TEXTURE_LOD_BIAS, bias);
+		if (GLContext.getCapabilities().GL_EXT_texture_filter_anisotropic) {
+			float amount = Math.min(4f,
+					GL11.glGetFloat(EXTTextureFilterAnisotropic.GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT));
+			GL11.glTexParameterf(GL11.GL_TEXTURE_2D, EXTTextureFilterAnisotropic.GL_TEXTURE_MAX_ANISOTROPY_EXT,
+					amount);
+		} else {
+			System.out.println("Anisotropic filtering is not supported");
+		}
+		
+		textures2D.put(fileName, texture);
+		return texture;
+	}
+
+	/**
+	 * Gets texture name by its identification number (ordered number) in video
+	 * buffer.
+	 * 
+	 * @param id
+	 *            {@link Integer} value of texture ordered number in video
+	 *            buffer
+	 * @return {@link String} value of texture name
+	 */
+	public String getTextureByID(int id) {
+		String name = null;
+		for (String key : textures2D.keySet()) {
+			if (textures2D.get(key).equals(id)) {
+				name = key;
+				break;
+			}
+		}
+		return name;
+	}
+	
+	/**
+	 * Loads cubic texture of cube map into video buffer.
+	 * 
+	 * @param path
+	 *            {@link String} value of texture location name
+	 * @param textureFiles
+	 *            {@link String} array of 6 flat textures name
+	 * 
+	 * @return {@link Integer} ordered number of texture in video buffer
+	 */
+	public int loadCubeMap(String path, String[] textureFiles) {
+		int texID = GL11.glGenTextures();
+		GL13.glActiveTexture(GL13.GL_TEXTURE0);
+		GL11.glBindTexture(GL13.GL_TEXTURE_CUBE_MAP, texID);
+
+		for (int i = 0; i < textureFiles.length; i++) {
+			TextureData data = decodeTextureFile(path + textureFiles[i] + ".png");
+			GL11.glTexImage2D(GL13.GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL11.GL_RGBA, data.getWidth(),
+					data.getHeight(), 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, data.getBuffer());
+		}
+		GL11.glTexParameteri(GL13.GL_TEXTURE_CUBE_MAP, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
+		GL11.glTexParameteri(GL13.GL_TEXTURE_CUBE_MAP, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
+		textures3D.put(path, texID);
+		return texID;
+	}
+
+	/**
+	 * Loads voxel cubic texture of cube map into video buffer.
+	 * 
+	 * @param path
+	 *            {@link String} value of texture location name
+	 * @param textureFiles
+	 *            {@link String} array of 6 flat textures name
+	 * @return
+	 */
+	public int loadCubeVoxelMap(String path, String[] textureFiles) {
+		return this.loadCubeMap(path, textureFiles);
+	}
+
+	private TextureData decodeTextureFile(String fileName) {
+		int width = 0;
+		int height = 0;
+		ByteBuffer buffer = null;
+		try {
+			System.out.println(fileName);
+			InputStream in = Class.class.getResourceAsStream(fileName);
+			PNGDecoder decoder = new PNGDecoder(in);
+			width = decoder.getWidth();
+			height = decoder.getHeight();
+			buffer = ByteBuffer.allocateDirect(4 * width * height);
+			decoder.decode(buffer, width * 4, Format.RGBA);
+			buffer.flip();
+			in.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.err.println("Tried to load texture " + fileName + ", didn't work");
+			System.exit(-1);
+		}
+		return new TextureData(buffer, width, height);
+	}
+	
+	public void addTexture(Texture2D texture) {
+		textures2D.put(texture.getName(), texture);
+	}
+	
+	public void clean() {
+		textures2D.values().forEach(Texture2D::delete);
+		textures3D.values().forEach(texture -> GL11.glDeleteTextures(texture));
+	}
+	
+	//TODO: need to be deleted and refactored (temper function)
+	public static Texture loadOldTexture(String path) {
+		Texture texture = null;
+		try {
+			InputStream in = Class.class.getResourceAsStream(path);
+			texture = TextureLoader.getTexture("PNG", in);
+			in.close();
+			return texture;
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.err.println("Tried to load texture " + path + ", didn't work");
+			System.exit(-1);
+		}
+		return texture;
+		
+	}
+
+
+}

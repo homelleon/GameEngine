@@ -3,12 +3,11 @@ package bodies;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.lwjgl.util.vector.Vector3f;
-
 import intersects.IntersectData;
 import object.entity.entity.IEntity;
 import physicMain.PE10;
 import tool.math.Maths;
+import tool.math.vector.Vector3f;
 
 public class Body3DSphere extends BodyBasic implements IBody {
 

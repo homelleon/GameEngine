@@ -7,7 +7,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import object.gui.Hideable;
-import object.gui.pattern.menu.IGUIMenu;
+import object.gui.element.menu.IGUIMenu;
 
 /**
  * Realizes unique system of storage and accessig the graphic user interface menus.
@@ -24,7 +24,9 @@ public class GUIMenuSystem implements IGUIMenuSystem {
 	private boolean isVisible = false;
 	
 	public static IGUIMenuSystem getInstace() {
-		if(instance == null) {instance = new GUIMenuSystem();}
+		if(instance == null) {
+			instance = new GUIMenuSystem();
+		}
 		return instance;
 	}
 	
@@ -80,16 +82,18 @@ public class GUIMenuSystem implements IGUIMenuSystem {
 	
 	@Override
 	public void show(String name) {
-		if(this.menus.containsKey(name)) {this.menus.get(name).show();}
-		else {
+		if(this.menus.containsKey(name)) {
+			this.menus.get(name).show();
+		} else {
 			throw new NullPointerException("There is no menu with "+ name + " in menu system!");
 		}
 	}
 	
 	@Override
 	public void hide(String name) {
-		if(this.menus.containsKey(name)) {this.menus.get(name).hide();}
-		else {
+		if(this.menus.containsKey(name)) {
+			this.menus.get(name).hide();
+		} else {
 			throw new NullPointerException("There is no menu with "+ name + " in menu system!");
 		}
 	}
@@ -108,8 +112,11 @@ public class GUIMenuSystem implements IGUIMenuSystem {
 
 	@Override
 	public void switchVisibility() {
-		if(this.isVisible) {this.hide();}
-		else {this.show();}
+		if(this.isVisible) {
+			this.hide();
+		} else {
+			this.show();
+		}
 	}
 
 	@Override

@@ -8,26 +8,35 @@ import manager.gui.group.IGUIGroupManager;
 import object.gui.system.GUIMenuSystem;
 import object.gui.system.IGUIMenuSystem;
 
+/**
+ * Main graphic user interface manager that includes texture and text managers.
+ * 
+ * @author homelleon
+ *
+ */
 public class GUIManager implements IGUIManager {
 
-	private static final String GUI_FILE_NAME = "interface";
+	private static final String GUI_FILE_NAME = "Interface";
 
-	IGUIComponentManager componentManager;
-	IGUIMenuSystem menuSystem;
-	IGUIGroupManager groupManager;
+	private IGUIComponentManager componentManager;
+	private IGUIMenuSystem menuSystem;
+	private IGUIGroupManager groupManager;
 	
 
 	@Override
 	public void initialize() {
 		if (EngineDebug.hasDebugPermission()) {
-			System.out.println("Loading User Interface...");
+			EngineDebug.printBorder();
+			EngineDebug.printOpen("GUI Manager");
+			EngineDebug.println("Loading User Interface...");
 		}
 		this.componentManager = new GUIComponentManager(GUI_FILE_NAME);
 		this.menuSystem = GUIMenuSystem.getInstace();
 		this.groupManager = new GUIGroupManager(this.componentManager);
 		if (EngineDebug.hasDebugPermission()) {
-			System.out.println("Loading complete!");
-			System.out.println("-------------------------");
+			EngineDebug.println("Loading complete!");
+			EngineDebug.printClose("GUI Manager");
+			EngineDebug.printBorder();
 		}
 	}
 	
@@ -53,8 +62,12 @@ public class GUIManager implements IGUIManager {
 
 	@Override
 	public void cleanAll() {
-		this.menuSystem.clean();
-		this.groupManager.clean();
+		if(this.menuSystem != null) {
+			this.menuSystem.clean();
+		}
+		if(this.groupManager != null) {
+			this.groupManager.clean();
+		}
 	}
 
 }
