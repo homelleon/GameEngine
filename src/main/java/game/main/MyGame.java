@@ -9,10 +9,7 @@ import control.KeyboardGame;
 import control.MouseGame;
 import core.EngineMain;
 import game.game.Game;
-import gameTools.GUIGroupBuilderTexture;
-import gameTools.IGUIGroupBuilderTexture;
 import object.bounding.BoundingQuad;
-import object.entity.entity.IEntity;
 import object.gui.element.button.GUIButton;
 import object.gui.element.button.IAction;
 import object.gui.element.button.IGUIAnimation;
@@ -22,7 +19,6 @@ import object.gui.element.menu.GUIMenu;
 import object.gui.element.menu.IGUIMenu;
 import object.gui.element.object.GUIObject;
 import object.gui.group.IGUIGroup;
-import object.gui.gui.IGUI;
 import object.gui.gui.builder.GUIBuilder;
 import object.gui.gui.builder.IGUIBuilder;
 import object.gui.system.IGUIMenuSystem;
@@ -33,7 +29,6 @@ public class MyGame extends Game {
 	
 	private String guiGroupName = "help";
 	private IGUIGroup helpGroup;
-	private IGUI hintsUI;
 	private boolean buttonScale = false;
 	private boolean keyboardUsed = false;
 	private IGUIGroup coursorAimGroup;
@@ -47,8 +42,6 @@ public class MyGame extends Game {
 	@Override
 	public void __onStart() {
 		super.__onStart();
-		//PE10.initialize();
-		//world1 = PE10.peCreateWorld(new Vec3f(0,0,0), new Vec3f(0,0,0));
 		
 		//--------help hints GUI-------------//
 		IGUIBuilder helpGUIBuilder = new GUIBuilder(this.gameManager.getScene().getUserInterface().getComponent());
@@ -115,7 +108,6 @@ public class MyGame extends Game {
 		mainMenu.add((GUIObject) button1);
 		mainMenu.add((GUIObject) button2);
 		mainMenu.add((GUIObject) button3);
-		IEntity entity = this.gameManager.getScene().getEntities().get("player1");
 		
 		IGUIAnimation<IGUIButton> buttonAnimation = (button, time, vector)-> {
 			IVectorInjectable injection = (vec) -> {
@@ -238,10 +230,6 @@ public class MyGame extends Game {
 		button3.setUseAction(action3);
 		button3.setSelectedAction(actionSelect3);
 		button3.setDeselectedAction(actionDeselect3);
-		
-		//PE10.peAttachBody(tree1, PE10.BODY_3D_SPHERE, world1);
-		//PE10.peAttachBody(tree2, PE10.BODY_3D_SPHERE, world1);
-		//PE10.peAttachBody(tree3, PE10.BODY_3D_SPHERE, world1);
 	}
 	
 	/**

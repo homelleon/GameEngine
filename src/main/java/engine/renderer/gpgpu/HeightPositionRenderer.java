@@ -51,7 +51,7 @@ public class HeightPositionRenderer {
 		vbo.unbind();
 		shader.stop();
 		
-//		// debugging
+		// debugging
 //		DebugRenderer debugRenderer = new DebugRenderer();
 //		debugRenderer.addAttribute(vbo);
 //		while(!Display.isCloseRequested()) {

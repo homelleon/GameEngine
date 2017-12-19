@@ -20,6 +20,6 @@ void main(void) {
 
 	int index = int(gl_WorkGroupID.x);
 	height[index] = texture(heightMap, textureCoord).r;
-	height[index] = 10;
+	height[index] = 50;
 
 }
