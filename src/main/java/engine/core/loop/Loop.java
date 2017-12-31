@@ -1,7 +1,5 @@
 package core.loop;
 
-import java.io.File;
-
 import org.lwjgl.opengl.Display;
 
 import control.MouseGame;
@@ -66,20 +64,19 @@ public class Loop implements ILoop {
 	private Loop() {}
 
 	public static Loop getInstance() {
-		if (instance == null) {
+		if (instance == null)
 			instance = new Loop();
-		}
 		return instance;
 	}
 	
 	@Override
 	public void setEditMode(boolean value) {
-		this.isEditMode = value;
+		isEditMode = value;
 	}
 	
 	@Override
 	public boolean getEditMode() {
-		return this.isEditMode;
+		return isEditMode;
 	}
 	
 	@Override
@@ -96,13 +93,12 @@ public class Loop implements ILoop {
 		DisplayManager.createDisplay();
 		/*--------------PRE LOAD TOOLS-------------*/
 		loadGameSettings();
-		if (!this.mapIsLoaded) {
+		if (!mapIsLoaded) 
 			loadModelMap("defaultModelMap");
-		}
 		IAudioMaster audioMaster = new AudioMaster();
-		this.scene = new Scene(levelMap, audioMaster);
-		this.sceneRenderer = new GameSceneRenderer();
-		this.sceneManager = new SceneManager();
+		scene = new Scene(levelMap, audioMaster);
+		sceneRenderer = new GameSceneRenderer();
+		sceneManager = new SceneManager();
 		sceneManager.init(scene, EngineSettings.ENGINE_MODE_GAME);
 	}
 	
@@ -110,27 +106,27 @@ public class Loop implements ILoop {
 		DisplayManager.createDisplay(frame);
 		frame.pack();
 		/*--------------PRE LOAD TOOLS-------------*/
-		this.scene = new Scene();
-		this.sceneRenderer = new EditorSceneRenderer();
-		this.sceneManager = new SceneManager();
+		scene = new Scene();
+		sceneRenderer = new EditorSceneRenderer();
+		sceneManager = new SceneManager();
 		sceneManager.init(scene, EngineSettings.ENGINE_MODE_EDITOR);
 	}
 
 	@Override
 	public void run() {
 		prepare();
+		sceneRenderer.render(true);
 		while (!Display.isCloseRequested()) {
-			if (this.isExit) {
-				break;
-			}
+			if (isExit) break;			
 			update();
 		}
+		
 		clean();
 	}
 	
 	@Override
 	public void exit() {
-		this.isExit = true;
+		isExit = true;
 	}
 
 	/**
@@ -138,14 +134,16 @@ public class Loop implements ILoop {
 	 * start.
 	 */
 	private void prepare() {
-		if(isEditMode) {
+		if (isEditMode) {
 			initializeEditorMode();
 		} else {
 			initializeGameMode();
 		}
+		
 		sceneRenderer.initialize(scene);
 		MouseGame.initilize(3);
-		if(!isEditMode) {
+		
+		if (!isEditMode) {
 			MouseGame.switchCoursorVisibility();
 			this.game = GameCore.loadGame();
 			game.__onStart();
@@ -156,12 +154,14 @@ public class Loop implements ILoop {
 	 * Updates game events, mouse settings, display and render scene.
 	 */
 	private void update() {
-		if(!isEditMode) {
+		if (!isEditMode) {
 			game.__onUpdateWithPause();
+			
 			if (!this.isPaused) {
 				game.__onUpdate();
 			}
 		}
+		
 		sceneRenderer.render(isPaused);
 		MouseGame.update();
 		DisplayManager.updateDisplay();
@@ -172,14 +172,16 @@ public class Loop implements ILoop {
 	 * exit the application.
 	 */
 	private void clean() {
-		this.scene.clean();
+		scene.clean();
 		Loader.getInstance().clean();
-		this.sceneRenderer.clean();
+		sceneRenderer.clean();
+		
 		if(!isEditMode) {
-			this.levelMap.clean();
-			this.modelMap.clean();
-			this.rawMap.clean();
+			levelMap.clean();
+			modelMap.clean();
+			rawMap.clean();
 		}
+		
 		DisplayManager.closeDisplay();
 	}
 
@@ -197,11 +199,12 @@ public class Loop implements ILoop {
 			EngineDebug.printOpen("Model map");
 			EngineDebug.println("Loading models...");
 		}
+		
 		String path = EngineSettings.MAP_PATH + name + EngineSettings.EXTENSION_XML;
 		IXMLLoader xmlLoader = new XMLFileLoader(path);
 		IObjectParser<IObjectManager> mapParser = new ModelMapXMLParser(xmlLoader.load(), rawMap);
-		this.modelMap = mapParser.parse();
-		this.mapIsLoaded = true;
+		modelMap = mapParser.parse();
+		mapIsLoaded = true;
 	}
 
 	/**
@@ -218,12 +221,13 @@ public class Loop implements ILoop {
 			EngineDebug.printOpen("Level map");
 			EngineDebug.println("Loading level...");
 		}
+		
 		IXMLLoader xmlLoader = new XMLFileLoader(EngineSettings.MAP_PATH + name + EngineSettings.EXTENSION_XML);
 		IObjectParser<IObjectManager> mapParser = new LevelMapXMLParser(xmlLoader.load(), this.modelMap);
-		this.levelMap = mapParser.parse();
+		levelMap = mapParser.parse();
 		if (EngineDebug.hasDebugPermission()) {
-			EngineDebug.println("Total loaded entities: " + this.levelMap.getEntities().getAll().stream().count(), 2);
-			EngineDebug.println("Total loaded terrains: " + this.levelMap.getTerrains().getAll().stream().count(), 2);
+			EngineDebug.println("Total loaded entities: " + levelMap.getEntities().getAll().stream().count(), 2);
+			EngineDebug.println("Total loaded terrains: " + levelMap.getTerrains().getAll().stream().count(), 2);
 		}
 	}
 	
@@ -233,9 +237,10 @@ public class Loop implements ILoop {
 			EngineDebug.printOpen("Raw map");
 			EngineDebug.println("Loading raws...");
 		}
+		
 		IXMLLoader xmlLoader = new XMLFileLoader(EngineSettings.MAP_PATH + name + EngineSettings.EXTENSION_XML);
 		IObjectParser<IRawManager> mapParser = new RawMapXMLParser(xmlLoader.load());
-		this.rawMap = mapParser.parse();
+		rawMap = mapParser.parse();
 	}
 
 	/**
@@ -251,10 +256,12 @@ public class Loop implements ILoop {
 			EngineDebug.printOpen("Game Settings");
 			EngineDebug.println("Loading game settings...");
 		}
+		
 		IXMLLoader xmlLoader = new XMLFileLoader(
 				EngineSettings.SETTINGS_GAME_PATH + SETTINGS_NAME + EngineSettings.EXTENSION_XML);
 		IObjectParser<GameSettings> settingsParser = new SettingsXMLParser(xmlLoader.load());
 		GameSettings settings = settingsParser.parse();
+		
 		if (EngineDebug.hasDebugPermission()) {
 			EngineDebug.println(settings.getRawMapName(), 1);
 			EngineDebug.println(settings.getModelMapName(), 1);
@@ -263,6 +270,7 @@ public class Loop implements ILoop {
 			EngineDebug.printClose("Game Settings");
 			EngineDebug.printBorder();
 		}
+		
 		loadRawMap(settings.getRawMapName());
 		loadModelMap(settings.getModelMapName());
 		loadLevelMap(settings.getLevelMapName());
@@ -270,19 +278,19 @@ public class Loop implements ILoop {
 
 	@Override
 	public IScene getScene() {
-		return this.scene;
+		return scene;
 	}
 
 	@Override
 	public void setScenePaused(boolean value) {
 		MouseGame.centerCoursor();
 		MouseGame.switchCoursorVisibility();
-		this.isPaused = value;
+		isPaused = value;
 	}
 
 	@Override
 	public boolean getIsScenePaused() {
-		return this.isPaused;
+		return isPaused;
 	}
 
 }

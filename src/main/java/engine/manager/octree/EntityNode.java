@@ -46,17 +46,17 @@ public class EntityNode extends Node {
 	}
 	
 	public synchronized void addEntity(IEntity entity) {
-		this.positionedEntityMap.put(entity.getPosition(), entity.getName());
-		this.namedEntityMap.put(entity.getName(), entity);
+		positionedEntityMap.put(entity.getPosition(), entity.getName());
+		namedEntityMap.put(entity.getName(), entity);
 		entity.setParentNode(this);
 	}
 	
 	public NavigableMap<Vector3f, String> getPositionedEntities() {
-		return this.positionedEntityMap;
+		return positionedEntityMap;
 	}
 	
 	public Map<String, IEntity> getNamedEntities() {
-		return this.namedEntityMap;
+		return namedEntityMap;
 	}
 	
 	public boolean isBounding(IEntity entity) {
@@ -65,11 +65,11 @@ public class EntityNode extends Node {
 	}
 	
 	public boolean removeEntity(String name) {
-		if(this.namedEntityMap.containsKey(name)) {
-			IEntity entity = this.namedEntityMap.get(name);
-			if(this.positionedEntityMap.containsKey(entity.getPosition())) {
-				this.positionedEntityMap.remove(entity.getPosition());
-				this.namedEntityMap.remove(name);
+		if(namedEntityMap.containsKey(name)) {
+			IEntity entity = namedEntityMap.get(name);
+			if(positionedEntityMap.containsKey(entity.getPosition())) {
+				positionedEntityMap.remove(entity.getPosition());
+				namedEntityMap.remove(name);
 				entity.removeParentNode();
 				return true;
 			} else {
@@ -81,8 +81,8 @@ public class EntityNode extends Node {
 	}
 	
 	public void clean() {
-		this.positionedEntityMap.clear();
-		this.namedEntityMap.clear();
+		positionedEntityMap.clear();
+		namedEntityMap.clear();
 	}
 
 }

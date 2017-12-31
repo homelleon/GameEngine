@@ -39,7 +39,7 @@ public class DebugRenderer {
 		
 		positionVAO.bind(0);
 		for(int i = 0; i < attributes.size(); i++) {
-			attributes.get(i).bindBase(i + 1);
+			attributes.get(i).bindBase(i);
 		}
 		GL11.glDrawArrays(GL11.GL_TRIANGLE_STRIP, 0, 3);
 		VAO.unbind();

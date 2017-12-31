@@ -28,8 +28,8 @@ public class TerrainQuadTree extends Node {
 			}
 		}
 		this.worldTransformationMatrix = new Matrix4f();
-		this.worldTransformationMatrix.translate(new Vector3f(-EngineSettings.SCALE_XZ / 2f, 0, -EngineSettings.SCALE_XZ / 2f));
-		this.worldTransformationMatrix.scale(new Vector3f(EngineSettings.SCALE_XZ, EngineSettings.SCALE_Y, EngineSettings.SCALE_XZ));
+		this.worldTransformationMatrix.translate(new Vector3f(-EngineSettings.TERRAIN_SCALE_XZ / 2f, 0, -EngineSettings.TERRAIN_SCALE_XZ / 2f));
+		this.worldTransformationMatrix.scale(new Vector3f(EngineSettings.TERRAIN_SCALE_XZ, EngineSettings.TERRAIN_SCALE_Y, EngineSettings.TERRAIN_SCALE_XZ));
 	}
 	
 	public void updateQuadTree(ICamera camera) {

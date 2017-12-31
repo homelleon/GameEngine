@@ -6,8 +6,8 @@
 // local groups
 layout (local_size_x = 1) in;
 
-// material
-uniform sampler2D heightMap;				// in
+uniform sampler2D heightMap;								// in
+
 // buffer
 layout (std430) buffer positionBuffer {		// out
 	float height[];
@@ -16,10 +16,8 @@ layout (std430) buffer positionBuffer {		// out
 /* ------------- main --------------- */
 void main(void) {
 
-	vec2 textureCoord = gl_WorkGroupID.xy;
-
-	int index = int(gl_WorkGroupID.x);
+	uint index = gl_WorkGroupID.x * gl_NumWorkGroups.x + gl_WorkGroupID.y;
+	vec2 textureCoord = vec2(float(gl_GlobalInvocationID.x) / gl_NumWorkGroups.x, float(gl_GlobalInvocationID.y) / gl_NumWorkGroups.y);
 	height[index] = texture(heightMap, textureCoord).r;
-	height[index] = 50;
 
 }

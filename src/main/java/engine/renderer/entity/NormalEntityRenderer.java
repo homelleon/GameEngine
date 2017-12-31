@@ -7,7 +7,6 @@ import java.util.Map;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector4f;
 
-import core.debug.EngineDebug;
 import core.settings.EngineSettings;
 import object.camera.ICamera;
 import object.entity.entity.IEntity;
@@ -51,6 +50,7 @@ public class NormalEntityRenderer implements IEntityRenderer {
 				entities.get(model).forEach(entity -> {
 					prepareInstance(entity);
 					GL11.glDrawElements(GL11.GL_TRIANGLES, model.getMesh().getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
+					GL11.glFlush();
 				});
 				unbindTexturedModel();
 			});
@@ -64,7 +64,7 @@ public class NormalEntityRenderer implements IEntityRenderer {
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 		shader.start();
 		shader.loadClipPlane(EngineSettings.NO_CLIP);
-		shader.loadSkyColour(EngineSettings.DISPLAY_RED, EngineSettings.DISPLAY_GREEN, EngineSettings.DISPLAY_BLUE);
+		shader.loadSkyColour(EngineSettings.RED, EngineSettings.GREEN, EngineSettings.BLUE);
 		shader.loadFogDensity(EngineSettings.FOG_DENSITY);
 		entities.keySet()
 			.forEach(model -> {
@@ -126,7 +126,7 @@ public class NormalEntityRenderer implements IEntityRenderer {
 
 	private void prepare(Vector4f clipPlane, Collection<ILight> lights, ICamera camera) {
 		shader.loadClipPlane(clipPlane);
-		shader.loadSkyColour(EngineSettings.DISPLAY_RED, EngineSettings.DISPLAY_GREEN, EngineSettings.DISPLAY_BLUE);
+		shader.loadSkyColour(EngineSettings.RED, EngineSettings.GREEN, EngineSettings.BLUE);
 		Matrix4f viewMatrix = Maths.createViewMatrix(camera);
 
 		shader.loadLights(lights, viewMatrix);

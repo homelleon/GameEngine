@@ -28,7 +28,7 @@ public class EditorSceneRenderer implements ISceneRenderer {
 	private void checkInputs() {}
 
 	private void renderToScreen() {
-		mainRenderer.renderScene(scene);
+		mainRenderer.render(scene);
 	}
 
 	private void move() {

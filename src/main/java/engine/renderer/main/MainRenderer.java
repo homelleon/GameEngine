@@ -15,7 +15,6 @@ import core.debug.EngineDebug;
 import core.settings.EngineSettings;
 import object.camera.ICamera;
 import object.entity.entity.IEntity;
-import object.light.ILight;
 import object.terrain.terrain.ITerrain;
 import primitive.model.Model;
 import primitive.texture.Texture;
@@ -23,7 +22,6 @@ import primitive.texture.Texture2D;
 import renderer.bounding.BoundingRenderer;
 import renderer.entity.DecorEntityRenderer;
 import renderer.entity.EntityRendererManager;
-import renderer.entity.IEntityRenderer;
 import renderer.entity.IEntityRendererManager;
 import renderer.entity.NormalEntityRenderer;
 import renderer.entity.TexturedEntityRenderer;
@@ -41,8 +39,8 @@ import tool.openGL.OGLUtils;
 public class MainRenderer implements IMainRenderer {
 
 	private Matrix4f projectionMatrix;
-	private Matrix4f normalDistProjectionMatrix;
-	private Matrix4f lowDistProjectionMatrix;
+	private Matrix4f projectionNormalMatrix;
+	private Matrix4f projectionLowMatrix;
 	private TerrainRenderer terrainRenderer;
 	private SkyboxRenderer skyboxRenderer;
 	private VoxelRenderer voxelRenderer;
@@ -66,61 +64,64 @@ public class MainRenderer implements IMainRenderer {
 
 	public MainRenderer(IScene scene) {
 		OGLUtils.cullBackFaces(true);
-		this.normalDistProjectionMatrix = createProjectionMatrix(EngineSettings.FAR_PLANE);
-		this.lowDistProjectionMatrix = createProjectionMatrix(100);
-		projectionMatrix = normalDistProjectionMatrix;
+		projectionNormalMatrix = createProjectionMatrix(EngineSettings.FAR_PLANE);
+		projectionLowMatrix = createProjectionMatrix(100);
+		projectionMatrix = projectionNormalMatrix;
 		
-		IEntityRenderer texturedEntityRenderer = new TexturedEntityRenderer(projectionMatrix);
-		IEntityRenderer normalEntityRenderer = new NormalEntityRenderer(projectionMatrix);
-		IEntityRenderer decorEntityRenderer = new DecorEntityRenderer(projectionMatrix);
-		this.entityRendererManager = new EntityRendererManager();
-		entityRendererManager.addPair(texturedEntityRenderer, texturedEntities);
-		entityRendererManager.addPair(normalEntityRenderer, normalEntities);
-		entityRendererManager.addPair(decorEntityRenderer, decorEntities);
-		this.terrainRenderer = new TerrainRenderer(projectionMatrix);
+		entityRendererManager = new EntityRendererManager()
+			.addPair(new TexturedEntityRenderer(projectionMatrix), texturedEntities)
+			.addPair(new NormalEntityRenderer(projectionMatrix), normalEntities)
+			.addPair(new DecorEntityRenderer(projectionMatrix), decorEntities);
 		
-		this.skyboxRenderer = new SkyboxRenderer(projectionMatrix);
-		this.voxelRenderer = new VoxelRenderer(projectionMatrix);
-		this.boundingRenderer = new BoundingRenderer(projectionMatrix);
-		this.shadowMapRenderer = new ShadowMapMasterRenderer(scene.getCamera());
-		this.enviroRenderer = new EnvironmentMapRenderer();
-		this.processor = new SceneProcessor();
-	}
-
-	@Override
-	public void renderScene(IScene scene, Vector4f clipPlane) {
-		renderScene(scene, clipPlane, false);
+		terrainRenderer = new TerrainRenderer(projectionMatrix);
+		
+		skyboxRenderer = new SkyboxRenderer(projectionMatrix);
+		voxelRenderer = new VoxelRenderer(projectionMatrix);
+		boundingRenderer = new BoundingRenderer(projectionMatrix);
+		shadowMapRenderer = new ShadowMapMasterRenderer(scene.getCamera());
+		enviroRenderer = new EnvironmentMapRenderer();
+		processor = new SceneProcessor();
 	}
 	
 	@Override
-	public void renderScene(IScene scene) {
-		scene.getEntities().getAll()
-			.forEach(entity -> processEntityByType(entity.getType(), entity));
-		renderEditorScene(scene);
+	public void render(IScene scene) {
+		scene.getEntities().getAll().forEach(this::processEntity);
+		renderEditorSceneObjects(scene);
 	}
 
 	@Override
-	public void renderScene(IScene scene, Vector4f clipPlane, boolean isLowDistance) {
-		scene.getTerrains().getAll().forEach(terrain -> processor.processTerrain(terrain, terrains));
-		this.environmentMap = scene.getEnvironmentMap();
-		this.prepareFrustumEntities(scene, isLowDistance);
-		if (this.environmentDynamic) {
+	public void render(IScene scene, Vector4f clipPlane) {
+		render(scene, clipPlane, false);
+	}
+
+	@Override
+	public void render(IScene scene, Vector4f clipPlane, boolean isLowDistance) {
+		scene.getTerrains().getAll().forEach(this::processTerrain);
+		environmentMap = scene.getEnvironmentMap();
+		processEntities(scene, isLowDistance, scene.getCamera().isMoved());
+		
+		if (environmentDynamic) {
 			environmentRendered = false;
 		}
+		
 		if (!environmentRendered) {
 			enviroRenderer.render(scene, this, scene.getEntities().get("Cuby4"));
-			this.environmentRendered = true;
+			environmentRendered = true;
 		}
-		render(scene, clipPlane, isLowDistance);
+		
+		renderSceneObjects(scene, clipPlane, isLowDistance);
 	}
 
 	@Override
-	public void renderLowQualityScene(Map<Model, List<IEntity>> entities, Collection<ITerrain> terrains,
-			Collection<ILight> lights, ICamera camera) {
-		this.entityRendererManager.render(null, lights, camera, null, null, true);
-		terrainRenderer.renderLow(terrains, lights, camera);
+	public void renderCubemap(IScene scene, IEntity shinyEntity, ICamera camera) {
+		scene.getEntities().delete(shinyEntity.getName());
+		processEntities(scene, true, true);
+		
+		entityRendererManager.render(null, scene.getLights().getAll(), camera, null, null, true);
+		terrainRenderer.renderLow(terrains, scene.getLights().getAll(), camera);
 		skyboxRenderer.render(camera);
-		this.cleanScene();
+		
+		cleanSceneObjects();
 	}
 
 	/**
@@ -130,88 +131,79 @@ public class MainRenderer implements IMainRenderer {
 	 * @param clipPlane {@link Vector4f} clipping plane
 	 * @param isLowDistance 
 	 */
-	private void render(IScene scene, Vector4f clipPlane, boolean isLowDistance) {
+	private void renderSceneObjects(IScene scene, Vector4f clipPlane, boolean isLowDistance) {
 		prepare();
-
-		if (EngineDebug.getBoundingVisibility() != EngineDebug.BOUNDING_NONE) {
-			boundingRenderer.render(texturedEntities, normalEntities, decorEntities, scene.getCamera());
-		}
 		
-		if(EngineMain.getWiredFrameMode() == EngineSettings.WIRED_FRAME_ENTITY || 
-				EngineMain.getWiredFrameMode() == EngineSettings.WIRED_FRAME_ENTITY_TERRAIN) {
+		if (EngineDebug.getBoundingVisibility() != EngineDebug.BOUNDING_NONE)
+			boundingRenderer.render(texturedEntities, normalEntities, decorEntities, scene.getCamera());
+		
+		if (EngineMain.getWiredFrameMode() == EngineSettings.WIRED_FRAME_ENTITY || 
+				EngineMain.getWiredFrameMode() == EngineSettings.WIRED_FRAME_ENTITY_TERRAIN)
 			OGLUtils.doWiredFrame(true);
-		}
-		Matrix4f shadowMapSpaceMatrix = shadowMapRenderer.getToShadowMapSpaceMatrix();
-		this.entityRendererManager.render(clipPlane, scene.getLights().getAll(), scene.getCamera(), shadowMapSpaceMatrix, environmentMap, false);
+		
+		Matrix4f shadowMapMatrix = shadowMapRenderer.getToShadowMapMatrix();
+		entityRendererManager.render(clipPlane, scene.getLights().getAll(), scene.getCamera(), 
+				shadowMapMatrix, environmentMap, false);
+		
 		OGLUtils.doWiredFrame(false);
-		voxelRenderer.render(scene.getChunks(), clipPlane, scene.getLights().getAll(), scene.getCamera(), shadowMapSpaceMatrix,
-				scene.getFrustum());
-		if(EngineMain.getWiredFrameMode() == EngineSettings.WIRED_FRAME_TERRAIN || 
-				EngineMain.getWiredFrameMode() == EngineSettings.WIRED_FRAME_ENTITY_TERRAIN) {
-			OGLUtils.doWiredFrame(true);
-		}
-		terrainRenderer.render(terrains, clipPlane, scene.getLights().getAll(), scene.getCamera(), shadowMapSpaceMatrix);
-		OGLUtils.doWiredFrame(false);
-
+		
+		voxelRenderer.render(scene.getChunks(), clipPlane, scene.getLights().getAll(), scene.getCamera(), 
+				shadowMapMatrix, scene.getFrustum());
+		terrainRenderer.render(terrains, clipPlane, scene.getLights().getAll(), scene.getCamera(), 
+				shadowMapMatrix);
 		skyboxRenderer.render(scene.getCamera());	
-		this.cleanScene();
+		
+		cleanSceneObjects();
 	}
 	
-	private void renderEditorScene(IScene scene) {
+	private void renderEditorSceneObjects(IScene scene) {
 		prepare();
-		Matrix4f shadowMapSpaceMatrix = shadowMapRenderer.getToShadowMapSpaceMatrix();
-		this.entityRendererManager.render(EngineSettings.NO_CLIP, scene.getLights().getAll(), scene.getCamera(), shadowMapSpaceMatrix, null, false);
-		this.cleanScene();
+		Matrix4f shadowMapMatrix = shadowMapRenderer.getToShadowMapMatrix();
+		entityRendererManager.render(EngineSettings.NO_CLIP, scene.getLights().getAll(), scene.getCamera(), 
+				shadowMapMatrix, null, false);
+		cleanSceneObjects();
 	}
 
 	@Override
-	public void renderShadowMap(IScene scene) {
-		scene.getTerrains().getAll()
-			.forEach(terrain -> processor.processTerrain(terrain, terrains));
-		prepareShadowFrustumEntities(scene);
+	public void renderShadows(IScene scene) {
+		processShadowEntities(scene, scene.getCamera().isMoved());
 		shadowMapRenderer.render(decorEntities, terrains, scene.getSun(), scene.getCamera());
-		this.cleanScene();
+		cleanSceneObjects();
 	}
 
 	private void prepare() {
 		OGLUtils.depthTest(true);
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
-		GL11.glClearColor(EngineSettings.DISPLAY_RED, EngineSettings.DISPLAY_GREEN, EngineSettings.DISPLAY_BLUE, 1);
+		GL11.glClearColor(EngineSettings.RED, EngineSettings.GREEN, EngineSettings.BLUE, 1);
 		getShadowMapTexture().bind(6);
 	}
 	
-	private void prepareFrustumEntities(IScene scene, boolean isLowDistance) {
-		List<IEntity> frustumEntities = new ArrayList<IEntity>();
-		if(isLowDistance) {
-			frustumEntities = scene.getFrustumEntities().prepareFrustumLowEntities(scene, this.lowDistProjectionMatrix);
-		} else {
-			frustumEntities = scene.getFrustumEntities().prepareFrustumHighEntities(scene, this.normalDistProjectionMatrix);
-		}
-		frustumEntities.parallelStream()
-			.forEach(entity -> 
-				processEntityByType(entity.getType(), entity));
+	private void processEntities(IScene scene, boolean isLowDistance, boolean isToRebuild) {
+		List<IEntity> frustumEntities = isLowDistance ?
+			scene.getFrustumEntities().processLowEntities(scene, projectionLowMatrix, isToRebuild) :
+			scene.getFrustumEntities().processHighEntities(scene, projectionNormalMatrix, isToRebuild);
+		frustumEntities.parallelStream().forEach(this::processEntity);
 	}
 	
-	private void prepareShadowFrustumEntities(IScene scene) {
-		List<IEntity> frustumEntities = new ArrayList<IEntity>();
-		frustumEntities = scene.getFrustumEntities().prepareShadowFrustumEntities(scene, shadowMapRenderer.getToShadowMapSpaceMatrix());
-		frustumEntities.parallelStream()
-			.forEach(entity -> 
-				processEntityByType(EngineSettings.ENTITY_TYPE_DECORATE, entity));
+	private void processShadowEntities(IScene scene, boolean isToRebuild) {
+		List<IEntity> frustumEntities = 
+				scene.getFrustumEntities().prepareShadowEntities(
+						scene, shadowMapRenderer.getToShadowMapMatrix(), isToRebuild);
+		frustumEntities.parallelStream().forEach(entity -> processEntity(EngineSettings.ENTITY_TYPE_DECORATE, entity));
 	}
 	
-	private void cleanScene() {
-		this.texturedEntities.clear();
-		this.normalEntities.clear();
-		this.decorEntities.clear();
-		this.terrains.clear();
+	private void cleanSceneObjects() {
+		texturedEntities.clear();
+		normalEntities.clear();
+		decorEntities.clear();
+		terrains.clear();
 	}
 
 	@Override
 	public void clean() {
-		this.entityRendererManager.clean();
-		this.terrainRenderer.clean();
-		this.shadowMapRenderer.clean();
+		entityRendererManager.clean();
+		terrainRenderer.clean();
+		shadowMapRenderer.clean();
 	}
 	
 	private Matrix4f createProjectionMatrix(float farPlane) {
@@ -239,7 +231,15 @@ public class MainRenderer implements IMainRenderer {
 		return shadowMapRenderer.getShadowMap();
 	}
 	
-	private synchronized void processEntityByType(int type, IEntity entity) {
+	private void processTerrain(ITerrain terrain) {
+		processor.processTerrain(terrain, terrains);
+	}
+	
+	private void processEntity(IEntity entity) {
+		processEntity(entity.getType(), entity);
+	}
+	
+	private synchronized void processEntity(int type, IEntity entity) {
 		switch(type) {
 		 	case EngineSettings.ENTITY_TYPE_SIMPLE:
 		 		processor.processEntity(entity, texturedEntities);

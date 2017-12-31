@@ -22,10 +22,10 @@ import tool.math.Matrix4f;
  */
 public interface IEntityRendererManager {
 	
-	void addPair(IEntityRenderer renderer, Map<Model, List<IEntity>> enitties);
+	IEntityRendererManager addPair(IEntityRenderer renderer, Map<Model, List<IEntity>> entities);
 	
-	void render(Vector4f clipPlane, Collection<ILight> lights,
-			ICamera camera, Matrix4f toShadowMapSpace, Texture environmentMap, boolean isLowDetailed);
+	void render(Vector4f clipPlane, Collection<ILight> lights, ICamera camera, 
+			Matrix4f toShadowMapSpace, Texture environmentMap, boolean isLowDetailed);
 	
 	void clean();
 

@@ -22,11 +22,10 @@ public abstract class BaseCamera {
 	protected String name;
 
 	protected boolean isUnderWater = false;
-	protected boolean isMoved = false;
-	protected boolean isRotated = false;
+	protected boolean isMoved = true;
 
 	protected BaseCamera(String name, Vector3f position) {
-		this.setPosition(position);
+		setPosition(position);
 		this.name = name;
 	}
 	
@@ -36,9 +35,9 @@ public abstract class BaseCamera {
 
 	// установить позицию камеры
 	public void setPosition(float posX, float posY, float posZ) {
-		this.position.x = posX;
-		this.position.y = posY;
-		this.position.z = posZ;
+		position.x = posX;
+		position.y = posY;
+		position.z = posZ;
 	}
 	
 	public void setPosition(Vector3f position) {
@@ -56,20 +55,19 @@ public abstract class BaseCamera {
 	}
 
 	public void increaseRotation(float dx, float dy, float dz) {
-		this.roll += dx;
-		this.yaw += dy;
-		this.pitch += dz;
+		roll += dx;
+		yaw += dy;
+		pitch += dz;
 	}
 
 	public void increasePosition(float dx, float dy, float dz) {
-		this.position.x += dx;
-		this.position.y += dy;
-		this.position.z += dz;
+		position.x += dx;
+		position.y += dy;
+		position.z += dz;
 	}
 
 	public void move() {
-		this.isMoved = false;
-		this.isRotated = false;
+		isMoved = false;
 	}
 
 	public Vector3f getPosition() {
@@ -111,14 +109,6 @@ public abstract class BaseCamera {
 
 	public void setMoved(boolean isMoved) {
 		this.isMoved = isMoved;
-	}
-
-	public boolean isRotated() {
-		return isRotated;
-	}
-
-	public void setRotated(boolean isRotated) {
-		this.isRotated = isRotated;
 	}
 
 

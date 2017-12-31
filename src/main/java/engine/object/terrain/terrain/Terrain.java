@@ -35,7 +35,7 @@ public class Terrain extends GameObject implements ITerrain {
 			if(EngineSettings.LOD_RANGES[i] == 0) {
 				EngineSettings.lod_morph_areas[i] = 0;
 			} else { 
-				EngineSettings.lod_morph_areas[i] = EngineSettings.LOD_RANGES[i] - (int) ((EngineSettings.SCALE_XZ / TerrainQuadTree.getRootNodes()) / Math.pow(2, i + 1));
+				EngineSettings.lod_morph_areas[i] = EngineSettings.LOD_RANGES[i] - (int) ((EngineSettings.TERRAIN_SCALE_XZ / TerrainQuadTree.getRootNodes()) / Math.pow(2, i + 1));
 			}
 		}
 		addChild(new TerrainQuadTree(new FreeCamera("FreeCamera", new Vector3f(0,0,0))));

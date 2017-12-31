@@ -34,7 +34,7 @@ public class Player extends TexturedEntity implements IPlayer {
 	}
 
 	@Override
-	public synchronized void move(Collection<ITerrain> terrains) {
+	public void move(Collection<ITerrain> terrains) {
 		this.isMoved = false;
 		checkInputs();
 		super.increaseRotation(0, currentTurnSpeed * DisplayManager.getFrameTimeSeconds(), 0);

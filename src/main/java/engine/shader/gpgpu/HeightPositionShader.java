@@ -21,13 +21,12 @@ public class HeightPositionShader extends ShaderProgram {
 	@Override
 	protected void loadUniformLocations() {
 		addUniform(UNIFORM_HEIGHT_MAP);
-		//addSSBO(ATTRIBUTE_SSBO);
+		addSSBO(ATTRIBUTE_SSBO);
 	}
 
 	@Override
 	protected void bindAttributes() {
-		bindAttribute(0, ATTRIBUTE_SSBO);
-		//super.bindSSBO(0, ATTRIBUTE_SSBO);
+		bindSSBO(0, ATTRIBUTE_SSBO);
 	}
 	
 	public void connectTextureUnits() {

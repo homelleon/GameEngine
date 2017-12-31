@@ -20,8 +20,9 @@ public class EntityRendererManager implements IEntityRendererManager {
 			new HashMap<IEntityRenderer, Map<Model, List<IEntity>>>();
 	
 	@Override
-	public void addPair(IEntityRenderer renderer, Map<Model, List<IEntity>> enitties) {
+	public EntityRendererManager addPair(IEntityRenderer renderer, Map<Model, List<IEntity>> enitties) {
 		this.entityRenderers.put(renderer, enitties);
+		return this;
 	}
 	
 	@Override

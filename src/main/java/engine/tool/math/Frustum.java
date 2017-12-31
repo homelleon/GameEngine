@@ -127,14 +127,14 @@ public class Frustum {
 	public boolean sphereInFrustumAndDsitance(Vector3f position, float radius, 
 			float startClipDistance, float endClipDistance, ICamera camera) {
 		float distance = Maths.distance2Points(position, camera.getPosition());
-		if(distance < startClipDistance || distance > endClipDistance) {
+		
+		if (distance < startClipDistance || distance > endClipDistance)
 			return false;
-		}
+		
 		for (int p = 0; p < 6; p++) {
-			if (plane[p][0] * position.x + plane[p][1] * position.y + plane[p][2] * position.z
-					+ plane[p][3] <= -radius) {
+			if (plane[p][0] * position.x + plane[p][1] * position.y + 
+					plane[p][2] * position.z + plane[p][3] <= -radius)
 				return false;
-			}
 		}
 		return true;
 	}
@@ -142,10 +142,10 @@ public class Frustum {
 	public float distanceSphereInFrustum(Vector3f position, float radius) {
 		float distance = 0;
 		for (int p = 0; p < 6; p++) {
-			distance = plane[p][0] * position.x + plane[p][1] * position.y + plane[p][2] * position.z + plane[p][3];
-			if (distance <= -radius) {
-				return 0;
-			}		
+			distance = plane[p][0] * position.x + plane[p][1] * position.y + 
+					plane[p][2] * position.z + plane[p][3];
+			if (distance <= -radius)
+				return 0;	
 		}
 		return distance + radius;
 	}

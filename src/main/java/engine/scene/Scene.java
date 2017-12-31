@@ -65,14 +65,14 @@ public class Scene extends AObjectManager implements IScene {
 		this.getLights().addAll(levelMap.getLights().getAll());
 		this.getAudioSources().getMaster().init();
 		this.getAudioSources().addAll(levelMap.getAudioSources().getAll());
-		Vector3f voxelGridPosition = this.spreadPointOnHeights(new Vector3f(0,0,0));
+		Vector3f voxelGridPosition = this.spreadPointOnHeights(new Vector3f(0, 0, 0));
 		this.chunkManager = new ChunkManager(CHUNK_WORLD_SIZE, voxelGridPosition);		
-		chunkManager.getChunk(1).getBlock(0,5,5).setIsActive(false);
-		chunkManager.getChunk(1).getBlock(0,4,5).setIsActive(false);
-		chunkManager.getChunk(1).getBlock(0,5,6).setIsActive(false);
+		chunkManager.getChunk(1).getBlock(0, 5, 5).setIsActive(false);
+		chunkManager.getChunk(1).getBlock(0, 4, 5).setIsActive(false);
+		chunkManager.getChunk(1).getBlock(0, 5, 6).setIsActive(false);
 		this.frustum = new Frustum();
 		this.frustumManager = new FrustumEntityManager(this.frustum);
-		this.frustumManager.rebuildNodes(this.getEntities().getAll(), ITerrain.TERRAIN_SIZE);
+		this.frustumManager.rebuildNodes(this.getEntities().getAll());
 	}
 	
 	@Override
@@ -82,12 +82,12 @@ public class Scene extends AObjectManager implements IScene {
 
 	@Override
 	public Texture getEnvironmentMap() {
-		return this.environmentMap;
+		return environmentMap;
 	}
 
 	@Override
 	public IPlayer getPlayer() {
-		return this.player;
+		return player;
 	}
 
 	@Override
@@ -97,7 +97,7 @@ public class Scene extends AObjectManager implements IScene {
 
 	@Override
 	public ICamera getCamera() {
-		return this.camera;
+		return camera;
 	}
 
 	@Override
@@ -107,7 +107,7 @@ public class Scene extends AObjectManager implements IScene {
 
 	@Override
 	public Light getSun() {
-		return this.sun;
+		return sun;
 	}
 
 	@Override
@@ -120,7 +120,7 @@ public class Scene extends AObjectManager implements IScene {
 	 */
 	@Override
 	public IEntityManager getEntities() {
-		return this.entityManager;
+		return entityManager;
 	}
 
 	/*
@@ -129,7 +129,7 @@ public class Scene extends AObjectManager implements IScene {
 
 	@Override
 	public ITerrainManager getTerrains() {
-		return this.terrainManager;
+		return terrainManager;
 	}
 
 	/*
@@ -138,7 +138,7 @@ public class Scene extends AObjectManager implements IScene {
 
 	@Override
 	public IWaterManager getWaters() {
-		return this.waterManager;
+		return waterManager;
 	}
 
 	/*
@@ -147,7 +147,7 @@ public class Scene extends AObjectManager implements IScene {
 
 	@Override
 	public IChunkManager getChunks() {
-		return this.chunkManager;
+		return chunkManager;
 	}
 
 	/*
@@ -156,7 +156,7 @@ public class Scene extends AObjectManager implements IScene {
 
 	@Override
 	public IParticleManager getParticles() {
-		return this.particleManager;
+		return particleManager;
 	}
 
 	/*
@@ -165,7 +165,7 @@ public class Scene extends AObjectManager implements IScene {
 
 	@Override
 	public ILightManager getLights() {
-		return this.lightManager;
+		return lightManager;
 	}
 
 	/*
@@ -174,17 +174,17 @@ public class Scene extends AObjectManager implements IScene {
 
 	@Override
 	public IAudioManager getAudioSources() {
-		return this.audioManager;
+		return audioManager;
 	}
 
 	@Override
 	public IGUIManager getUserInterface() {
-		return this.uiManager;
+		return uiManager;
 	}
 
 	@Override
 	public MousePicker getMousePicker() {
-		return this.mousePicker;
+		return mousePicker;
 	}
 
 	@Override
@@ -199,24 +199,25 @@ public class Scene extends AObjectManager implements IScene {
 
 	@Override
 	public Frustum getFrustum() {
-		return this.frustum;
+		return frustum;
 	}
 
 	private Vector3f spreadPointOnHeights(Vector3f position) {
 		float terrainHeight = 0;
-		for (ITerrain terrain : this.terrainManager.getAll()) {
+		for (ITerrain terrain : terrainManager.getAll()) {
 			terrainHeight += terrain.getHeightOfTerrain(position.x, position.z);
 		}
 		position.setY(terrainHeight);
 		return position;
 	}
+	
 	@Override
 	public void spreadEntitiesOnHeights(Collection<IEntity> entityList) {
 		if (!entityList.isEmpty()) {
 			for (IEntity entity : entityList) {
 				float terrainHeight = 0;
 
-				for (ITerrain terrain : this.terrainManager.getAll()) {
+				for (ITerrain terrain : terrainManager.getAll()) {
 					terrainHeight += terrain.getHeightOfTerrain(entity.getPosition().x, entity.getPosition().z);
 				}
 				entity.setPosition(new Vector3f(entity.getPosition().x, terrainHeight, entity.getPosition().z));
@@ -230,7 +231,7 @@ public class Scene extends AObjectManager implements IScene {
 			for (ParticleSystem partilceSystem : particleSystems) {
 				float terrainHeight = 0;
 
-				for (ITerrain terrain : this.terrainManager.getAll()) {
+				for (ITerrain terrain : terrainManager.getAll()) {
 					terrainHeight += terrain.getHeightOfTerrain(partilceSystem.getPosition().x, partilceSystem.getPosition().z);
 				}
 				partilceSystem.setPosition(new Vector3f(partilceSystem.getPosition().x, terrainHeight, partilceSystem.getPosition().z));
@@ -241,19 +242,20 @@ public class Scene extends AObjectManager implements IScene {
 	@Override
 	public void clean() {
 		super.clean();
-		this.environmentMap.delete();
-		if(this.chunkManager != null) {
-			this.chunkManager.clearAll();
-		}
-		if(this.uiManager != null) {
-			this.uiManager.cleanAll();
-		}
-		if(this.frustumManager != null) {
-			this.frustumManager.clean();
-		}
-		if(this.audioManager != null) {
-			this.audioManager.clean();
-		}
+		environmentMap.delete();
+		
+		if (chunkManager != null)
+			chunkManager.clearAll();
+		
+		if (uiManager != null)
+			uiManager.cleanAll();
+		
+		if (frustumManager != null)
+			frustumManager.clean();
+		
+		if (audioManager != null)
+			audioManager.clean();
+		
 	}
 
 }

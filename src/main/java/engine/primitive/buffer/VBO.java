@@ -30,6 +30,10 @@ public class VBO {
 	public void bindBase(int layout) {
 		GL30.glBindBufferBase(type, layout, vboId);
 	}
+	
+	public void unbindBase(int layout) {
+		GL30.glBindBufferBase(type, layout, 0);
+	}
 
 	public void unbind() {
 		GL15.glBindBuffer(type, 0);

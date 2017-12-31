@@ -92,7 +92,7 @@ public class ShadowMapMasterRenderer {
 	 * 
 	 * @return The to-shadow-map-space matrix.
 	 */
-	public Matrix4f getToShadowMapSpaceMatrix() {
+	public Matrix4f getToShadowMapMatrix() {
 		return Matrix4f.mul(offset, projectionViewMatrix);
 	}
 

@@ -118,7 +118,7 @@ public class VoxelRenderer {
 			ICamera camera, Matrix4f toShadowMapSpace, Frustum frustum) {
 		shader.start();
 		shader.loadClipPlane(clipPlane);
-		shader.loadSkyColour(EngineSettings.DISPLAY_RED, EngineSettings.DISPLAY_GREEN, EngineSettings.DISPLAY_BLUE);
+		shader.loadSkyColour(EngineSettings.RED, EngineSettings.GREEN, EngineSettings.BLUE);
 		shader.loadFogDensity(EngineSettings.FOG_DENSITY);
 		shader.loadLights(lights);
 		shader.loadViewMatrix(camera);
@@ -160,7 +160,7 @@ public class VoxelRenderer {
 	}
 
 	
-	private synchronized void drawElements(int face) {
+	private void drawElements(int face) {
 		GL12.glDrawRangeElements(GL11.GL_TRIANGLES, 0, 6, 6,
 				GL11.GL_UNSIGNED_INT, 24 * face);
 	}

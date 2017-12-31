@@ -88,11 +88,11 @@ public class TexturedEntityRenderer implements IEntityRenderer {
 	 */
 	public void renderHigh(Map<Model, List<IEntity>> entities, Vector4f clipPlane, Collection<ILight> lights,
 			ICamera camera, Matrix4f toShadowMapSpace, Texture environmentMap) {
-		if(!entities.isEmpty()) {
+		if (!entities.isEmpty()) {
 			this.environmentMap = environmentMap;
 			shader.start();
 			shader.loadClipPlane(clipPlane);
-			shader.loadSkyColour(EngineSettings.DISPLAY_RED, EngineSettings.DISPLAY_GREEN, EngineSettings.DISPLAY_BLUE);
+			shader.loadSkyColour(EngineSettings.RED, EngineSettings.GREEN, EngineSettings.BLUE);
 			shader.loadFogDensity(EngineSettings.FOG_DENSITY);
 			shader.loadLights(lights);
 			shader.loadCamera(camera);
@@ -104,6 +104,7 @@ public class TexturedEntityRenderer implements IEntityRenderer {
 				entityList.forEach(entity -> {
 						prepareInstance(entity);
 						GL11.glDrawElements(GL11.GL_TRIANGLES, model.getMesh().getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
+						GL11.glFlush();
 				});
 				unbindTexturedModel();
 			});
@@ -133,7 +134,7 @@ public class TexturedEntityRenderer implements IEntityRenderer {
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 		shader.start();
 		shader.loadClipPlane(EngineSettings.NO_CLIP);
-		shader.loadSkyColour(EngineSettings.DISPLAY_RED, EngineSettings.DISPLAY_GREEN, EngineSettings.DISPLAY_BLUE);
+		shader.loadSkyColour(EngineSettings.RED, EngineSettings.GREEN, EngineSettings.BLUE);
 		shader.loadFogDensity(EngineSettings.FOG_DENSITY);
 		shader.loadLights(lights);
 		shader.loadCamera(camera);

@@ -18,14 +18,14 @@ import tool.math.Matrix4f;
 public interface IFrustumEntityManager {
 	
 	void addEntityInNodes(IEntity entity);
-	void rebuildNodes(Collection<IEntity> entities, int size);
+	void rebuildNodes(Collection<IEntity> entities);
 	List<IEntity> updateWithFrustum(Frustum frustum, ICamera camera, boolean isLowDetail);
-	List<IEntity> prepareFrustumHighEntities(IScene scene, Matrix4f projectionMatrix);
-	List<IEntity> prepareFrustumLowEntities(IScene scene, Matrix4f projectionMatrix);
-	List<IEntity> prepareShadowFrustumEntities(IScene scene, Matrix4f shadowMapSpaceMatrix);
-	List<IEntity> getFrustumHighEntities();
-	List<IEntity> getFrustumLowEntities();
-	List<IEntity> getFrustumShadowEntities();
+	List<IEntity> processHighEntities(IScene scene, Matrix4f projectionMatrix, boolean toRebuild);
+	List<IEntity> processLowEntities(IScene scene, Matrix4f projectionMatrix, boolean toRebuild);
+	List<IEntity> prepareShadowEntities(IScene scene, Matrix4f shadowMapSpaceMatrix, boolean toRebuild);
+	List<IEntity> getHighEntities();
+	List<IEntity> getLowEntities();
+	List<IEntity> getShadowEntities();
 	void clean();
 
 }

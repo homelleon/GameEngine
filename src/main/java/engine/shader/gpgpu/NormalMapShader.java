@@ -9,7 +9,7 @@ public class NormalMapShader extends ShaderProgram {
 	private static final String COMPUTE_FILE = EngineSettings.SHADERS_GPGPU_PATH + "normalMap_C_shader.glsl";
 	//---uniforms
 	// parameters
-	private static final String UNIFORM_N = "N";
+	private static final String UNIFORM_SIZE = "size";
 	private static final String UNIFORM_STRENGTH = "strength";
 	// materials
 	private static final String UNIFORM_HEIGHT_MAP = "heightMap";
@@ -22,7 +22,7 @@ public class NormalMapShader extends ShaderProgram {
 
 	@Override
 	protected void loadUniformLocations() {
-		addUniform(UNIFORM_N);
+		addUniform(UNIFORM_SIZE);
 		addUniform(UNIFORM_STRENGTH);
 		addUniform(UNIFORM_HEIGHT_MAP);
 	}
@@ -34,8 +34,8 @@ public class NormalMapShader extends ShaderProgram {
 		super.loadInt(UNIFORM_HEIGHT_MAP, 0);
 	}
 	
-	public void updateUniforms(int n, float strength) {
-		super.loadInt(UNIFORM_N, n);
+	public void updateUniforms(int size, float strength) {
+		super.loadInt(UNIFORM_SIZE, size);
 		super.loadFloat(UNIFORM_STRENGTH, strength);
 	}
 

@@ -62,22 +62,22 @@ public class GameSceneRenderer implements ISceneRenderer {
 	@Override
 	public void initialize(IScene scene) {
 		this.scene = scene;
-		this.mainRenderer = new MainRenderer(scene);
+		mainRenderer = new MainRenderer(scene);
 		ParticleMaster.init(mainRenderer.getProjectionMatrix());
-		this.multisampleFbo = new Fbo(Display.getWidth(), Display.getHeight());
-		this.outputFbo = new Fbo(Display.getWidth(), Display.getHeight(), Fbo.DEPTH_TEXTURE);
-		this.outputFbo2 = new Fbo(Display.getWidth(), Display.getHeight(), Fbo.DEPTH_TEXTURE);
+		multisampleFbo = new Fbo(Display.getWidth(), Display.getHeight());
+		outputFbo = new Fbo(Display.getWidth(), Display.getHeight(), Fbo.DEPTH_TEXTURE);
+		outputFbo2 = new Fbo(Display.getWidth(), Display.getHeight(), Fbo.DEPTH_TEXTURE);
 		PostProcessing.isBloomed = true;
 		PostProcessing.isBlured = true;
 		PostProcessing.init();
 
-		this.waterFBOs = new WaterFrameBuffers();
+		waterFBOs = new WaterFrameBuffers();
 		WaterShader waterShader = new WaterShader();
-		this.waterRenderer = new WaterRenderer(waterShader, mainRenderer.getProjectionMatrix(), waterFBOs);
+		waterRenderer = new WaterRenderer(waterShader, mainRenderer.getProjectionMatrix(), waterFBOs);
 
-		this.mousePicker = new MousePicker(scene.getCamera(), mainRenderer.getProjectionMatrix());
-		this.scene.setMousePicker(mousePicker);
-		this.controls = new Controls();
+		mousePicker = new MousePicker(scene.getCamera(), mainRenderer.getProjectionMatrix());
+		scene.setMousePicker(mousePicker);
+		controls = new Controls();
 		
 		// GUI text info
 		String fontName = "candara";
@@ -101,16 +101,14 @@ public class GameSceneRenderer implements ISceneRenderer {
 		IGUI statusInterface = new GUI(statusGUIName, textureList, textList);
 		scene.getUserInterface().getGroups().createEmpty(statusGroupName);
 		scene.getUserInterface().getGroups().get(statusGroupName).add(statusInterface);
-		
 	}
 
 	@Override
 	public void render(boolean isPaused) {
 		checkInputs();
-		if (!isPaused) {
+		if (!isPaused) 
 			move();
-		}
-		mainRenderer.renderShadowMap(scene);
+		mainRenderer.renderShadows(scene);
 		renderParticles();
 		renderWaterSurface();
 		renderToScreen();
@@ -126,12 +124,14 @@ public class GameSceneRenderer implements ISceneRenderer {
 			mapWriter.write(map);
 			EngineMain.pauseEngine(false);
 		}
+		
 		IGUIGroup statusGUIGroup = scene.getUserInterface().getGroups().get(statusGroupName);
-		if(EngineDebug.hasHardDebugPermission()) {
-			if(!statusGUIGroup.getIsVisible())
+		
+		if (EngineDebug.hasHardDebugPermission()) {
+			if (!statusGUIGroup.getIsVisible())
 				statusGUIGroup.show();
 		} else {
-			if(statusGUIGroup.getIsVisible())
+			if (statusGUIGroup.getIsVisible())
 				statusGUIGroup.hide();
 		}
 	}
@@ -140,7 +140,7 @@ public class GameSceneRenderer implements ISceneRenderer {
 		waterFBOs.unbindCurrentFrameBuffer();
 		multisampleFbo.bindFrameBuffer();
 		OGLUtils.clipDistance(true);
-		mainRenderer.renderScene(scene, new Vector4f(0, 1, 0, 15));
+		mainRenderer.render(scene, new Vector4f(0, 1, 0, 15));
 		ParticleMaster.renderParticles(scene.getCamera());
 		OGLUtils.clipDistance(false);		
 		waterRenderer.render(scene.getWaters().getAll(), scene.getCamera(), scene.getSun());
@@ -164,15 +164,15 @@ public class GameSceneRenderer implements ISceneRenderer {
 		float distance = 2 * (scene.getCamera().getPosition().y - scene.getWaters().getByName("Water").getHeight());
 		scene.getCamera().getPosition().y -= distance;
 		scene.getCamera().invertPitch();
-		mainRenderer.renderScene(scene, new Vector4f(0, 1, 0, -scene.getWaters().getByName("Water").getHeight()),
-				true);
+		mainRenderer.render(scene,
+				new Vector4f(0, 1, 0, -scene.getWaters().getByName("Water").getHeight()), true);
 		scene.getCamera().getPosition().y += distance;
 		scene.getCamera().invertPitch();
 	}
 
 	private void renderWaterRefraction() {
 		waterFBOs.bindRefractionFrameBuffer();
-		mainRenderer.renderScene(scene, new Vector4f(0, -1, 0, scene.getWaters().getByName("Water").getHeight() + 1f),
+		mainRenderer.render(scene, new Vector4f(0, -1, 0, scene.getWaters().getByName("Water").getHeight() + 1f),
 				false);
 	}
 
@@ -210,15 +210,14 @@ public class GameSceneRenderer implements ISceneRenderer {
 		controls.update(scene);
 		scene.getPlayer().move(scene.getTerrains().getAll());
 		scene.getCamera().move();
-		if(scene.getPlayer().isMoved()) {
+		if (scene.getPlayer().isMoved())
 			scene.getFrustumEntities().addEntityInNodes(scene.getPlayer());
-		}
 		scene.getAudioSources().getMaster().setListenerData(scene.getCamera().getPosition());
 	}
 
 	@Override
 	public MainRenderer getMainRenderer() {
-		return this.mainRenderer;
+		return mainRenderer;
 	}
 
 	@Override

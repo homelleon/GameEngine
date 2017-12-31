@@ -92,10 +92,6 @@ import tool.math.vector.Vector3f;
 	 float getRoll(); // вернуть крен камеры
 	
 	 boolean isMoved();
-	 
-	 boolean isRotated();
-	 
-	 void setRotated(boolean isRotated);
 
 	 void setMoved(boolean isMoved);
 

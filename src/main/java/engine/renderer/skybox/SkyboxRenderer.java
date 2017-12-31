@@ -91,11 +91,12 @@ public class SkyboxRenderer {
 	public void render(ICamera camera) {
 		shader.start();
 		shader.loadViewMatrix(camera);
-		shader.loadFogColour(EngineSettings.DISPLAY_RED, EngineSettings.DISPLAY_GREEN, EngineSettings.DISPLAY_BLUE);
+		shader.loadFogColour(EngineSettings.RED, EngineSettings.GREEN, EngineSettings.BLUE);
 		VAO vao = cube.getVAO();
 		vao.bind(0);
 		bindTextures();
 		GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, cube.getVertexCount());
+		GL11.glFlush();
 		VAO.unbind(0);
 		shader.stop();
 

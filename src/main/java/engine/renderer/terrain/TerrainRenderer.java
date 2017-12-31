@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import org.lwjgl.util.vector.Vector4f;
 
+import core.EngineMain;
 import core.settings.EngineSettings;
 import manager.octree.Node;
 import object.camera.ICamera;
@@ -17,6 +18,7 @@ import primitive.texture.material.TerrainMaterial;
 import primitive.texture.terrain.TerrainTexturePack;
 import shader.terrain.TerrainShader;
 import tool.math.Matrix4f;
+import tool.openGL.OGLUtils;
 
 public class TerrainRenderer {
 
@@ -27,7 +29,7 @@ public class TerrainRenderer {
 		shader.start();
 		shader.connectTextureUnits();
 		shader.loadProjectionMatrix(projectionMatrix);
-		shader.loadScale(EngineSettings.SCALE_Y);
+		shader.loadScale(EngineSettings.TERRAIN_SCALE_Y);
 		shader.loadTessellationVariables(EngineSettings.TESSELLATION_FACTOR, EngineSettings.TESSELLATION_SLOPE, EngineSettings.TESSELLATION_SHIFT);
 		shader.loadLodMorphAreaArray(EngineSettings.lod_morph_areas);
 		shader.stop();
@@ -35,9 +37,15 @@ public class TerrainRenderer {
 	
 	public void render(Collection<ITerrain> terrains, Vector4f clipPlane, Collection<ILight> lights,
 			ICamera camera, Matrix4f toShadowMapSpace) {
+		
+		if (EngineMain.getWiredFrameMode() == EngineSettings.WIRED_FRAME_TERRAIN || 
+				EngineMain.getWiredFrameMode() == EngineSettings.WIRED_FRAME_ENTITY_TERRAIN) {
+			OGLUtils.doWiredFrame(true);
+		}
+		
 		shader.start();
 		shader.loadClipPlane(clipPlane);
-		shader.loadSkyColour(EngineSettings.DISPLAY_RED, EngineSettings.DISPLAY_GREEN, EngineSettings.DISPLAY_BLUE);
+		shader.loadSkyColour(EngineSettings.RED, EngineSettings.GREEN, EngineSettings.BLUE);
 		shader.loadFogDensity(EngineSettings.FOG_DENSITY);
 		shader.loadLights(lights);
 		shader.loadViewMatrix(camera.getViewMatrix());
@@ -46,7 +54,7 @@ public class TerrainRenderer {
 		shader.loadShadowVariables(EngineSettings.SHADOW_DISTANCE, EngineSettings.SHADOW_MAP_SIZE,
 				EngineSettings.SHADOW_TRANSITION_DISTANCE, EngineSettings.SHADOW_PCF);
 		for (ITerrain terrain : terrains) {
-			if(camera.isMoved() || camera.isRotated()) {
+			if(camera.isMoved()) {
 				terrain.updateQuadTree(camera);
 			}
 			prepareTerrain(terrain);
@@ -57,12 +65,14 @@ public class TerrainRenderer {
 		}
 
 		shader.stop();
+		
+		OGLUtils.doWiredFrame(false);
 	}
 
 	public void renderLow(Collection<ITerrain> terrains, Collection<ILight> lights, ICamera camera) {
 		shader.start();
 		shader.loadClipPlane(EngineSettings.NO_CLIP);
-		shader.loadSkyColour(EngineSettings.DISPLAY_RED, EngineSettings.DISPLAY_GREEN, EngineSettings.DISPLAY_BLUE);
+		shader.loadSkyColour(EngineSettings.RED, EngineSettings.GREEN, EngineSettings.BLUE);
 		shader.loadFogDensity(EngineSettings.FOG_DENSITY);
 		shader.loadLights(lights);
 		shader.loadViewMatrix(camera.getViewMatrix());

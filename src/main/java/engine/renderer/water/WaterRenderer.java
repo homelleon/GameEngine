@@ -5,7 +5,6 @@ import java.util.Collection;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 
-import core.EngineMain;
 import core.display.DisplayManager;
 import core.settings.EngineSettings;
 import object.camera.ICamera;
@@ -21,7 +20,6 @@ import shader.water.WaterShader;
 import tool.math.Maths;
 import tool.math.Matrix4f;
 import tool.math.vector.Vector3f;
-import tool.openGL.OGLUtils;
 
 public class WaterRenderer {
 
@@ -47,7 +45,7 @@ public class WaterRenderer {
 		shader.start();
 		shader.connectTextureUnits();
 		shader.loadFogDensity(EngineSettings.FOG_DENSITY);
-		shader.loadSkyColour(EngineSettings.DISPLAY_RED, EngineSettings.DISPLAY_GREEN, EngineSettings.DISPLAY_BLUE);
+		shader.loadSkyColour(EngineSettings.RED, EngineSettings.GREEN, EngineSettings.BLUE);
 		shader.loadProjectionMatrix(projectionMatrix);
 		shader.stop();
 		setUpVAO();
@@ -62,6 +60,7 @@ public class WaterRenderer {
 			shader.loadTilingSize(tile.getTilingSize());
 			shader.loadWaveStrength(tile.getWaveStrength());
 			GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, quad.getVertexCount());
+			GL11.glFlush();
 		}
 		unbind();
 	}

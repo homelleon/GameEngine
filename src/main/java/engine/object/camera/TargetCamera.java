@@ -136,7 +136,7 @@ public class TargetCamera extends BaseCamera implements ICamera {
 			angleAroundPlayer = 0;
 		}
 		if((pitchChange != 0) || (angleChange !=0)) {
-			this.isRotated = true;
+			this.isMoved = true;
 		}
 	}
 

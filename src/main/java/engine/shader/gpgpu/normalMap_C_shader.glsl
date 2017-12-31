@@ -9,25 +9,25 @@ uniform sampler2D heightMap; 									   // in
 layout (binding = 0, rgba32f) uniform writeonly image2D normalMap; // out
 
 // size
-uniform int N;
+uniform int size;
 uniform float strength;
 
 /* ------------- main --------------- */
 void main(void) {
 
 	ivec2 xy = ivec2(gl_GlobalInvocationID.xy);
-	vec2 texCoord = gl_GlobalInvocationID.xy / float(N);
+	vec2 textureCoord = gl_GlobalInvocationID.xy / float(size);
 
-	float texelSize = 1.0 / N;
+	float texelSize = 1.0 / size;
 
-	float z0 = texture(heightMap, texCoord + vec2(-texelSize, -texelSize)).r;
-	float z1 = texture(heightMap, texCoord + vec2(0, -texelSize)).r;
-	float z2 = texture(heightMap, texCoord + vec2(texelSize, -texelSize)).r;
-	float z3 = texture(heightMap, texCoord + vec2(-texelSize, 0)).r;
-	float z4 = texture(heightMap, texCoord + vec2(texelSize, 0)).r;
-	float z5 = texture(heightMap, texCoord + vec2(-texelSize, texelSize)).r;
-	float z6 = texture(heightMap, texCoord + vec2(0, texelSize)).r;
-	float z7 = texture(heightMap, texCoord + vec2(texelSize, texelSize)).r;
+	float z0 = texture(heightMap, textureCoord + vec2(-texelSize, -texelSize)).r;
+	float z1 = texture(heightMap, textureCoord + vec2(0, -texelSize)).r;
+	float z2 = texture(heightMap, textureCoord + vec2(texelSize, -texelSize)).r;
+	float z3 = texture(heightMap, textureCoord + vec2(-texelSize, 0)).r;
+	float z4 = texture(heightMap, textureCoord + vec2(texelSize, 0)).r;
+	float z5 = texture(heightMap, textureCoord + vec2(-texelSize, texelSize)).r;
+	float z6 = texture(heightMap, textureCoord + vec2(0, texelSize)).r;
+	float z7 = texture(heightMap, textureCoord + vec2(texelSize, texelSize)).r;
 
 	vec3 normal = vec3(0,0,0);
 

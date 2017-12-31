@@ -77,16 +77,18 @@ public class SceneManager implements ISceneManager {
 		/*------------------PLAYER-----------------*/
 		List<Model> cubeModels = EngineUtils.loadModels("xuchilbara", "xuchilbara_dif", true);
 //		List<Model> cubeModels = EngineUtils.loadModels("cube", "Cube1");
-		if(EngineDebug.hasDebugPermission()) {
+		
+		if (EngineDebug.hasDebugPermission())
 			EngineDebug.println(cubeModels.get(0).getName(), 2);
-		}
+		
 		IPlayer player1 = new Player(
 				playerName, 
 				cubeModels, 
-				new Vector3f(100, 0, 10), 
+				new Vector3f(50, 0, 50), 
 				new Vector3f(0, 0, 0), 
 				0.2f
 		);
+		
 		player1.setBaseName("xuchilbaraEntity");
 		player1.getModels().forEach(model -> {
 			Material material = model.getMaterial();
@@ -150,9 +152,9 @@ public class SceneManager implements ISceneManager {
 		scene.getAudioSources().add(ambientSource);
 		scene.getWaters().addAll(waterList);
 		scene.getParticles().addAll(ParticleManager.createParticleSystem());
-		if(EngineDebug.hasDebugPermission()) {
+		
+		if (EngineDebug.hasDebugPermission())
 			EngineDebug.println("Total loaded entities: " + scene.getEntities().getAll().stream().count(), 2);
-		}
 
 		scene.spreadEntitiesOnHeights(scene.getEntities().getAll());
 		//scene.getEntities().get("Cuby4").getModel().getTexture().setReflectiveFactor(1.2f);

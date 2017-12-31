@@ -116,7 +116,7 @@ public class BufferLoader {
 		return new Mesh(vao, indices.length, sphere, box);
 	}
 	
-	public VBO loadToVBOasSSBO(float[] data) {
+	public VBO loadToSSBO(float[] data) {
 		VBO vbo = VBO.create(GL43.GL_SHADER_STORAGE_BUFFER);
 		vbo.bind();
 		vbo.storeData(data, GL15.GL_DYNAMIC_COPY);

@@ -44,6 +44,7 @@ public class GUITextureRenderer {
 				shader.loadTransformation(matrix);
 				shader.loadMixColorVariables(guiTexture.isMixColored(), guiTexture.getMixColor());
 				GL11.glDrawArrays(GL11.GL_TRIANGLE_STRIP, 0, this.quad.getVertexCount());
+				GL11.glFlush();
 			}
 		}
 

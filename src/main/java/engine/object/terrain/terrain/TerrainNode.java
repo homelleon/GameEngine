@@ -38,21 +38,21 @@ public class TerrainNode extends Node {
 		this.localTransformationMatrix.scale(localScaling);
 		
 		
-		this.worldTransformationMatrix.translate(new Vector3f(-EngineSettings.SCALE_XZ / 2f, 0, -EngineSettings.SCALE_XZ / 2f));
-		this.worldTransformationMatrix.scale(new Vector3f(EngineSettings.SCALE_XZ, EngineSettings.SCALE_Y, EngineSettings.SCALE_XZ));
+		this.worldTransformationMatrix.translate(new Vector3f(-EngineSettings.TERRAIN_SCALE_XZ / 2f, 0, -EngineSettings.TERRAIN_SCALE_XZ / 2f));
+		this.worldTransformationMatrix.scale(new Vector3f(EngineSettings.TERRAIN_SCALE_XZ, EngineSettings.TERRAIN_SCALE_Y, EngineSettings.TERRAIN_SCALE_XZ));
 		
 		this.computeWorldPosition();
 		this.updateQuadTree(camera);		
 	}
 	
 	public void computeWorldPosition() {
-		Vector2f loc = new Vector2f(location).add(gap / 2f).mul(EngineSettings.SCALE_XZ).sub(EngineSettings.SCALE_XZ / 2f);
+		Vector2f loc = new Vector2f(location).add(gap / 2f).mul(EngineSettings.TERRAIN_SCALE_XZ).sub(EngineSettings.TERRAIN_SCALE_XZ / 2f);
 		this.worldPosition = new Vector3f(loc.getX(), 0, loc.getY());
 	}
 	
 	public void updateQuadTree(ICamera camera) {
-		if(camera.getPosition().getY() > EngineSettings.SCALE_Y) {
-			this.worldPosition.setY(EngineSettings.SCALE_Y);
+		if(camera.getPosition().getY() > EngineSettings.TERRAIN_SCALE_Y) {
+			this.worldPosition.setY(EngineSettings.TERRAIN_SCALE_Y);
 		} else {
 			this.worldPosition.setY(camera.getPosition().getY());
 		}

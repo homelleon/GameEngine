@@ -70,7 +70,7 @@ public class EngineMain {
 	}
 	
 	public static void switchWiredFrameMode() {
-		if(wiredFrameMode == EngineSettings.WIRED_FRAME_ENTITY_TERRAIN) {
+		if (wiredFrameMode == EngineSettings.WIRED_FRAME_ENTITY_TERRAIN) {
 			wiredFrameMode = EngineSettings.WIRED_FRAME_NONE;
 		} else {
 			wiredFrameMode++;
