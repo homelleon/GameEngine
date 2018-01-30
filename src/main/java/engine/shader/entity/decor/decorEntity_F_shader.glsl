@@ -73,7 +73,7 @@ void main(void) {
 
 	for(int i = 0; i < LIGHT_MAX; i++) {
 		float distance = length(toLightVector[i]);
-		float attFactor = attenuation[1].x + (attenuation[i].y * distance) + (attenuation[i].z * distance * distance);
+		float attFactor = attenuation[i].x + (attenuation[i].y * distance) + (attenuation[i].z * distance * distance);
 		vec3 unitLightVector = normalize(toLightVector[i]);
 		float nDot1 = dot(unitNormal,unitLightVector);
 		float brightness = max(nDot1, 0.0);

@@ -79,7 +79,7 @@ void main(void) {
    
    for(int i = 0; i < LIGHT_MAX; i++) {
      float distance = length(fs_toLightVector[i]);
-     float attFactor = attenuation[1].x + (attenuation[i].y * distance) + (attenuation[i].z * distance * distance);
+     float attFactor = attenuation[i].x + (attenuation[i].y * distance) + (attenuation[i].z * distance * distance);
      vec3 unitLightVector = normalize(fs_toLightVector[i]);
      float nDot1 = dot(unitNormal, unitLightVector);
      float brightness = max(nDot1, 0.0);
@@ -93,7 +93,7 @@ void main(void) {
    }
    totalDiffuse = max(totalDiffuse * lightFactor, 0.4);
    
-   out_Color = vec4(totalDiffuse, 1.0) * totalColor + vec4(totalSpecular,1.0);
+   out_Color = vec4(totalDiffuse, 1.0) * totalColor + vec4(totalSpecular, 1.0);
    out_Color = mix(vec4(skyColor, 1.0), out_Color, fs_visibility);
 
    out_BrightColor = vec4(0.0);
