@@ -127,7 +127,7 @@ public class NormalEntityRenderer implements IEntityRenderer {
 	private void prepare(Vector4f clipPlane, Collection<ILight> lights, ICamera camera) {
 		shader.loadClipPlane(clipPlane);
 		shader.loadSkyColour(EngineSettings.RED, EngineSettings.GREEN, EngineSettings.BLUE);
-		Matrix4f viewMatrix = Maths.createViewMatrix(camera);
+		Matrix4f viewMatrix = camera.getViewMatrix();
 
 		shader.loadLights(lights, viewMatrix);
 		shader.loadViewMatrix(viewMatrix);

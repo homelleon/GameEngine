@@ -138,18 +138,23 @@ public class SceneManager implements ISceneManager {
 		scene.getEntities().getAll()
 			.forEach(entity -> scene.getFrustumEntities().addEntityInNodes(entity));
 		scene.setCamera(new TargetCamera(cameraName, player1));
+		
+		// light
 		scene.setSun(new Light("Sun", 
 				new Vector3f(-1000000, 5000000, -1000000), 
-				new Vector3f(1.3f, 1.3f, 1.3f),
-				new Vector3f(1f, 0, 0)));
+				new Vector3f(Vector3f.fromRGB(255, 255, 255)),
+				new Vector3f(0.5f, 0, 0)));
 		scene.getLights().add(scene.getSun());
-		scene.getLights().add(new Light("Light1", new Vector3f(200, 2, 200), new Vector3f(10, 0, 0),
-				new Vector3f(0, 0, 1.0f)));
-		scene.getLights().add(
-				new Light("Light2", 
-						new Vector3f(20, 2, 20), 
-						new Vector3f(0, 5, 0), 
-						new Vector3f(0, 0, 1.0f)));
+		
+		scene.getLights().add(new Light("Light1", 
+				new Vector3f(25, 100, 50), 
+				new Vector3f(Vector3f.fromRGB(255, 0, 0)),
+				new Vector3f(0, 0, 0.0002f)));
+		scene.getLights().add(new Light("Light2", 
+				new Vector3f(20, 100, 20), 
+				new Vector3f(Vector3f.fromRGB(0, 255, 0)), 
+				new Vector3f(0, 0, 0.0002f)));
+		
 		scene.getAudioSources().add(ambientSource);
 		scene.getWaters().addAll(waterList);
 		scene.getParticles().addAll(ParticleManager.createParticleSystem());

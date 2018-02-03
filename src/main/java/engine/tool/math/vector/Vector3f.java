@@ -33,7 +33,16 @@ public class Vector3f extends Vector implements Comparable<Vector3f> {
 		this.setX(plane.x);
 		this.setY(plane.y);
 		this.setZ(plane.z);
-	}	
+	}
+	
+	public static Vector3f fromRGB(float r, float g, float b) {
+		float colorSize = 255;
+		r /= colorSize;
+		g /= colorSize;
+		b /= colorSize;
+		
+		return new Vector3f(r, g, b);		
+	}
 	
 	public float length() {
 		return (float) Math.sqrt(x*x + y*y + z*z);
