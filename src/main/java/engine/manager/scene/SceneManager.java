@@ -86,7 +86,7 @@ public class SceneManager implements ISceneManager {
 				cubeModels, 
 				new Vector3f(50, 0, 50), 
 				new Vector3f(0, 0, 0), 
-				0.2f
+				0.05f
 		);
 		
 		player1.setBaseName("xuchilbaraEntity");
@@ -143,7 +143,7 @@ public class SceneManager implements ISceneManager {
 		scene.setSun(new Light("Sun", 
 				new Vector3f(-1000000, 5000000, -1000000), 
 				new Vector3f(Vector3f.fromRGB(255, 255, 255)),
-				new Vector3f(0.5f, 0, 0)));
+				new Vector3f(0.8f, 0, 0)));
 		scene.getLights().add(scene.getSun());
 		
 		scene.getLights().add(new Light("Light1", 

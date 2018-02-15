@@ -91,8 +91,9 @@ public class Scene extends AObjectManager implements IScene {
 	}
 
 	@Override
-	public void setPlayer(IPlayer player) {
+	public Scene setPlayer(IPlayer player) {
 		this.player = player;
+		return this;
 	}
 
 	@Override
@@ -101,8 +102,9 @@ public class Scene extends AObjectManager implements IScene {
 	}
 
 	@Override
-	public void setCamera(ICamera camera) {
+	public Scene setCamera(ICamera camera) {
 		this.camera = camera;
+		return this;
 	}
 
 	@Override
@@ -111,8 +113,9 @@ public class Scene extends AObjectManager implements IScene {
 	}
 
 	@Override
-	public void setSun(Light sun) {
+	public Scene setSun(Light sun) {
 		this.sun = sun;
+		return this;
 	}
 
 	/*
@@ -188,13 +191,15 @@ public class Scene extends AObjectManager implements IScene {
 	}
 
 	@Override
-	public void setMousePicker(MousePicker mousePicker) {
+	public Scene setMousePicker(MousePicker mousePicker) {
 		this.mousePicker = mousePicker;
+		return this;
 	}
 	
 	@Override
-	public void setFrustum(Frustum frustum) {
+	public Scene setFrustum(Frustum frustum) {
 		this.frustum = frustum;
+		return this;
 	}
 
 	@Override
@@ -212,7 +217,7 @@ public class Scene extends AObjectManager implements IScene {
 	}
 	
 	@Override
-	public void spreadEntitiesOnHeights(Collection<IEntity> entityList) {
+	public Scene spreadEntitiesOnHeights(Collection<IEntity> entityList) {
 		if (!entityList.isEmpty()) {
 			for (IEntity entity : entityList) {
 				float terrainHeight = 0;
@@ -223,10 +228,11 @@ public class Scene extends AObjectManager implements IScene {
 				entity.setPosition(new Vector3f(entity.getPosition().x, terrainHeight, entity.getPosition().z));
 			}
 		}
+		return this;
 	}
 
 	@Override
-	public void spreadParitclesOnHeights(Collection<ParticleSystem> particleSystems) {
+	public Scene spreadParitclesOnHeights(Collection<ParticleSystem> particleSystems) {
 		if (!particleSystems.isEmpty()) {
 			for (ParticleSystem partilceSystem : particleSystems) {
 				float terrainHeight = 0;
@@ -237,6 +243,7 @@ public class Scene extends AObjectManager implements IScene {
 				partilceSystem.setPosition(new Vector3f(partilceSystem.getPosition().x, terrainHeight, partilceSystem.getPosition().z));
 			}
 		}
+		return this;
 	}
 
 	@Override

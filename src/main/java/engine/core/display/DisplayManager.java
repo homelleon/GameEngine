@@ -84,9 +84,9 @@ public class DisplayManager {
 					.withForwardCompatible(true)
 					.withProfileCore(true);
 			try {
-				Display.setDisplayModeAndFullscreen(new DisplayMode(width, height));
-				Display.create(new PixelFormat().withDepthBits(24), attribs);
+				Display.setDisplayMode(new DisplayMode(width, height));
 				Display.setFullscreen(true);
+				Display.create(new PixelFormat().withDepthBits(24), attribs);
 				Display.setTitle("OutWorldMind Engine");
 			} catch (LWJGLException e) {
 				e.printStackTrace();

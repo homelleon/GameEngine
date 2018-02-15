@@ -48,7 +48,7 @@ public interface IScene extends IObjectManager {
 	 * @param player
 	 *            {@link IPlayer} value to set
 	 */
-	void setPlayer(IPlayer player);
+	IScene setPlayer(IPlayer player);
 
 	/**
 	 * Returns current camera object.
@@ -63,7 +63,7 @@ public interface IScene extends IObjectManager {
 	 * @param camera
 	 *            {@link ICamera} value ot set
 	 */
-	void setCamera(ICamera camera);
+	IScene setCamera(ICamera camera);
 
 	/**
 	 * Returns light object used for the Sun.
@@ -77,7 +77,7 @@ public interface IScene extends IObjectManager {
 	 * 
 	 * @param sun
 	 */
-	void setSun(Light sun);
+	IScene setSun(Light sun);
 
 
 	/**
@@ -107,20 +107,20 @@ public interface IScene extends IObjectManager {
 	 * @param picker
 	 *            {@link MousePicker} value
 	 */
-	void setMousePicker(MousePicker picker);
+	IScene setMousePicker(MousePicker picker);
 	
-	void setFrustum(Frustum frustum);
+	IScene setFrustum(Frustum frustum);
 	
 	Frustum getFrustum();
 
 	/**
 	 * Spreads all entities on the surface of terrain's height.
 	 */
-	void spreadEntitiesOnHeights(Collection<IEntity> entityList);
+	IScene spreadEntitiesOnHeights(Collection<IEntity> entityList);
 
 	/**
 	 * Spreads all particles on the surface of terrain's height.
 	 */
-	void spreadParitclesOnHeights(Collection<ParticleSystem> particleSystems);
+	IScene spreadParitclesOnHeights(Collection<ParticleSystem> particleSystems);
 
 }
