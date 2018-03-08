@@ -36,13 +36,13 @@ void createVertex(int index, mat4 ProjectionView) {
 
 	gl_ClipDistance[0] = dot(gl_in[index].gl_Position, clipPlane);
 
-	vec4 position = gl_in[index].gl_Position;
-	for(int i = 0; i < LIGHT_MAX; i++) {
-		fs_toLightVector[i] = lightPosition[i] - (Projection * position).xyz;
+	vec4 worldPosition = gl_in[index].gl_Position;
+	for (int i = 0; i < LIGHT_MAX; i++) {
+		fs_toLightVector[i] = lightPosition[i] - worldPosition.xyz;
 	}
-	fs_toCameraVector = (inverse(View) * vec4(0.0,0.0,0.0,1.0)).xyz - (Projection * position).xyz;
+	fs_toCameraVector = (inverse(View) * vec4(0.0, 0.0, 0.0, 1.0)).xyz - worldPosition.xyz;
 
-	gl_Position = ProjectionView * position;
+	gl_Position = ProjectionView * worldPosition;
 
 	EmitVertex();
 }

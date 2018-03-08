@@ -90,11 +90,11 @@ public class Terrain extends GameObject implements ITerrain {
 	public float getHeightOfTerrain(float worldX, float worldZ) {
 		float terrainX = worldX - this.x;
 		float terrainZ = worldZ - this.z;
-		float gridSquareSize = ITerrain.TERRAIN_SIZE / ((float) heights.length - 1);
+		float gridSquareSize = EngineSettings.TERRAIN_SCALE_XZ / ((float) heights.length - 1);
 		int gridX = (int) Math.floor(terrainX / gridSquareSize);
 		int gridZ = (int) Math.floor(terrainZ / gridSquareSize);
 		if (gridX >= heights.length - 1 || gridZ >= heights.length - 1 || gridX < 0 || gridZ < 0) {
-			return 0;
+			return EngineSettings.TERRAIN_SCALE_Y / 2;
 		}
 		float xCoord = (terrainX % gridSquareSize) / gridSquareSize;
 		float zCoord = (terrainZ % gridSquareSize) / gridSquareSize;

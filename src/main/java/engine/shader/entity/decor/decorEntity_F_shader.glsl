@@ -103,7 +103,6 @@ void main(void) {
 
 	out_Color = mix(vec4(skyColor, 1.0), out_Color, fogVisibility);
 
-
 	if(isChosen) {
 		out_Color.r *= 3;
 	}

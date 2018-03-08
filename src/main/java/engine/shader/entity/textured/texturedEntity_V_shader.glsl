@@ -70,12 +70,12 @@ void main(void) {
    vec3 unitNormal = normalize(in_normal);
    vec3 viewVector = worldPosition.xyz - cameraPosition;
    
-   if(reflectiveFactor > 0.0) {	   
+   if (reflectiveFactor > 0.0) {
 	   reflectedVector = reflect(viewVector, unitNormal);
    }
    
-   if(refractiveFactor > 0.0) {
-	   refractedVector = refract(viewVector, unitNormal, 1.0/refractiveIndex);
+   if (refractiveFactor > 0.0) {
+	   refractedVector = refract(viewVector, unitNormal, 1.0 / refractiveIndex);
    }
       
    vec3 actualNormal = in_normal;
@@ -84,7 +84,8 @@ void main(void) {
    }
 
    surfaceNormal = (Transformation * vec4(actualNormal, 0.0)).xyz;
-   for(int i = 0; i < LIGHT_MAX; i++) {
+
+   for (int i = 0; i < LIGHT_MAX; i++) {
       toLightVector[i] = lightPosition[i] - worldPosition.xyz; 
    }
    

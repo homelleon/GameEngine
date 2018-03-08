@@ -63,7 +63,7 @@
 		blend_texture="terrainBlendMap"
 		height_texture="heightMap"
 		size="1024"
-		amplitude="20.0"
+		amplitude="200.0"
 		octave="2"
 		roughness="0.8">
 			<position

@@ -63,12 +63,11 @@ public class TerrainManager implements ITerrainManager {
 	
 	@Override
 	public boolean delete(String name) {
-		if(this.terrains.containsKey(name)) {
-			this.terrains.remove(name);
-			return true;
-		} else {
+		if (!this.terrains.containsKey(name)) {
 			return false;
 		}
+		this.terrains.remove(name);
+		return true;
 	}
 
 	@Override

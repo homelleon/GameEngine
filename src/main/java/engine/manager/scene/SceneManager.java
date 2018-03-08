@@ -75,8 +75,8 @@ public class SceneManager implements ISceneManager {
 	
 	private void initializeGame(IScene scene) {
 		/*------------------PLAYER-----------------*/
-		List<Model> cubeModels = EngineUtils.loadModels("xuchilbara", "xuchilbara_dif", true);
-//		List<Model> cubeModels = EngineUtils.loadModels("cube", "Cube1");
+//		List<Model> cubeModels = EngineUtils.loadModels("xuchilbara", "xuchilbara_dif", true);
+		List<Model> cubeModels = EngineUtils.loadModels("cube", "Cube1");
 		
 		if (EngineDebug.hasDebugPermission())
 			EngineDebug.println(cubeModels.get(0).getName(), 2);
@@ -86,23 +86,23 @@ public class SceneManager implements ISceneManager {
 				cubeModels, 
 				new Vector3f(50, 0, 50), 
 				new Vector3f(0, 0, 0), 
-				0.05f
+				1.05f
 		);
 		
 		player1.setBaseName("xuchilbaraEntity");
 		player1.getModels().forEach(model -> {
 			Material material = model.getMaterial();
-			material.getDiffuseMap().setHasTransparency(true);
+//			material.getDiffuseMap().setHasTransparency(true);
 			material.setShininess(0.5f);
-			material.setNormalMap(
-				Loader.getInstance().getTextureLoader().loadTexture(
-						EngineSettings.TEXTURE_NORMAL_MAP_PATH, "xuchilbara_n"));
-			material.setSpecularMap(
-					Loader.getInstance().getTextureLoader().loadTexture(
-							EngineSettings.TEXTURE_SPECULAR_MAP_PATH, "xuchilbara_spec"));
-			material.setAlphaMap(
-					Loader.getInstance().getTextureLoader().loadTexture(
-							EngineSettings.TEXTURE_ALPHA_MAP_PATH, "xuchilbara_o"));
+//			material.setNormalMap(
+//				Loader.getInstance().getTextureLoader().loadTexture(
+//						EngineSettings.TEXTURE_NORMAL_MAP_PATH, "xuchilbara_n"));
+//			material.setSpecularMap(
+//					Loader.getInstance().getTextureLoader().loadTexture(
+//							EngineSettings.TEXTURE_SPECULAR_MAP_PATH, "xuchilbara_spec"));
+//			material.setAlphaMap(
+//					Loader.getInstance().getTextureLoader().loadTexture(
+//							EngineSettings.TEXTURE_ALPHA_MAP_PATH, "xuchilbara_o"));
 		});
 
 		/*--------------UI-------------------*/
@@ -141,17 +141,17 @@ public class SceneManager implements ISceneManager {
 		
 		// light
 		scene.setSun(new Light("Sun", 
-				new Vector3f(-1000000, 5000000, -1000000), 
+				new Vector3f(-10000, 1000, -10000),
 				new Vector3f(Vector3f.fromRGB(255, 255, 255)),
-				new Vector3f(0.8f, 0, 0)));
+				new Vector3f(1.0f, 0, 0)));
 		scene.getLights().add(scene.getSun());
 		
 		scene.getLights().add(new Light("Light1", 
-				new Vector3f(25, 100, 50), 
+				new Vector3f(25, 0, 50), 
 				new Vector3f(Vector3f.fromRGB(255, 0, 0)),
 				new Vector3f(0, 0, 0.0002f)));
 		scene.getLights().add(new Light("Light2", 
-				new Vector3f(20, 100, 20), 
+				new Vector3f(20, 0, 20), 
 				new Vector3f(Vector3f.fromRGB(0, 255, 0)), 
 				new Vector3f(0, 0, 0.0002f)));
 		

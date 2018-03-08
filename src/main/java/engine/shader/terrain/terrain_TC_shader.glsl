@@ -35,8 +35,8 @@ float LodFactor(float dist) {
 
 /*------------- main ---------------*/
 void main() {
-	if(gl_InvocationID == 0) {
 
+	if (gl_InvocationID == 0) {
 		vec3 abMid = vec3(gl_in[0].gl_Position + gl_in[3].gl_Position) / 2.0;
 		vec3 bcMid = vec3(gl_in[3].gl_Position + gl_in[15].gl_Position) / 2.0;
 		vec3 cdMid = vec3(gl_in[15].gl_Position + gl_in[12].gl_Position) / 2.0;
@@ -54,7 +54,6 @@ void main() {
 
 		gl_TessLevelInner[0] = (gl_TessLevelOuter[BC] + gl_TessLevelOuter[DA]) / 4;
 		gl_TessLevelInner[1] = (gl_TessLevelOuter[AB] + gl_TessLevelOuter[CD]) / 4;
-
 	}
 
 	// simply pass parameters
