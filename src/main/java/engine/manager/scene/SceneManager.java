@@ -141,7 +141,7 @@ public class SceneManager implements ISceneManager {
 		
 		// light
 		scene.setSun(new Light("Sun", 
-				new Vector3f(-10000, 1000, -10000),
+				new Vector3f(10000, 100000, 10000),
 				new Vector3f(Vector3f.fromRGB(255, 255, 255)),
 				new Vector3f(1.0f, 0, 0)));
 		scene.getLights().add(scene.getSun());

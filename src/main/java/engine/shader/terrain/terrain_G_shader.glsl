@@ -38,9 +38,9 @@ void createVertex(int index, mat4 ProjectionView) {
 
 	vec4 worldPosition = gl_in[index].gl_Position;
 	for (int i = 0; i < LIGHT_MAX; i++) {
-		fs_toLightVector[i] = lightPosition[i] - worldPosition.xyz;
+		fs_toLightVector[i] = lightPosition[i] - (Projection * worldPosition).xyz;
 	}
-	fs_toCameraVector = (inverse(View) * vec4(0.0, 0.0, 0.0, 1.0)).xyz - worldPosition.xyz;
+	fs_toCameraVector = (inverse(View) * vec4(0.0, 0.0, 0.0, 1.0)).xyz - (Projection * worldPosition).xyz;
 
 	gl_Position = ProjectionView * worldPosition;
 
