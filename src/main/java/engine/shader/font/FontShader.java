@@ -2,6 +2,7 @@ package shader.font;
 
 import core.settings.EngineSettings;
 import shader.ShaderProgram;
+import tool.math.vector.Color;
 import tool.math.vector.Vector2f;
 import tool.math.vector.Vector3f;
 
@@ -66,11 +67,11 @@ public class FontShader extends ShaderProgram {
 		super.load2DVector(UNIFORM_OFFSET, offset);
 	}
 
-	public void loadOutLineColour(Vector3f colour) {
-		super.load3DVector(UNIFORM_OUTLINE_COLOR, colour);
+	public void loadOutLineColor(Color color) {
+		super.loadColor(UNIFORM_OUTLINE_COLOR, color);
 	}
 
-	public void loadColour(Vector3f colour) {
-		super.load3DVector(UNIFORM_COLOR, colour);
+	public void loadColor(Color color) {
+		super.loadColor(UNIFORM_COLOR, color);
 	}
 }

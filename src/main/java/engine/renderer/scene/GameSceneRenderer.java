@@ -147,7 +147,7 @@ public class GameSceneRenderer implements ISceneRenderer {
 		multisampleFbo.unbindFrameBuffer();
 		multisampleFbo.resolveToFbo(GL30.GL_COLOR_ATTACHMENT0, outputFbo);
 		multisampleFbo.resolveToFbo(GL30.GL_COLOR_ATTACHMENT1, outputFbo2);
-		PostProcessing.doPostProcessing(outputFbo.getColourTexture(), outputFbo2.getColourTexture());
+		PostProcessing.doPostProcessing(outputFbo.getColorTexture(), outputFbo2.getColorTexture());
 		renderGUI();
 		mousePicker.update();
 	}

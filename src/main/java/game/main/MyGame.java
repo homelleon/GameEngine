@@ -22,6 +22,7 @@ import object.gui.group.IGUIGroup;
 import object.gui.gui.builder.GUIBuilder;
 import object.gui.gui.builder.IGUIBuilder;
 import object.gui.system.IGUIMenuSystem;
+import tool.math.vector.Color;
 import tool.math.vector.Vector2f;
 import tool.math.vector.Vector3f;
 
@@ -126,7 +127,7 @@ public class MyGame extends Game {
 				.flatMap(gui -> gui.getTextures().stream())
 				.forEach(texture -> {
 					texture.setMixColored(true);
-					texture.setMixColor(new Vector3f(1,0,0));
+					texture.setMixColor(new Color(255, 0, 0));
 				});
 			injection.inject(vector);
 			injection.inject(new Vector2f(-vector.x, -vector.y));
@@ -152,7 +153,7 @@ public class MyGame extends Game {
 				.flatMap(gui -> gui.getTextures().stream())
 				.forEach(texture -> {
 					texture.setMixColored(true);
-					texture.setMixColor(new Vector3f(0,0,1));
+					texture.setMixColor(new Color(0, 0, 255));
 				});
 			injection.inject(vector);
 		};

@@ -12,7 +12,7 @@
 			<max_length>1</max_length>
 			<centered>true</centered>
 			<color>
-				<r>1</r>
+				<r>255</r>
 				<g>0</g>
 				<b>0</b>
 			</color>
@@ -29,7 +29,7 @@
 			<max_length>0.44f</max_length>
 			<centered>false</centered>
 			<color>
-				<r>1</r>
+				<r>255</r>
 				<g>0</g>
 				<b>0</b>
 			</color>
@@ -46,7 +46,7 @@
 			<centered>true</centered>
 			<color>
 				<r>0</r>
-				<g>1</g>
+				<g>255</g>
 				<b>0</b>
 			</color>
 		</GUIText>

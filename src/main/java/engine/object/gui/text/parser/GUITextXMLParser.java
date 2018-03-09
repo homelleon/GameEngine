@@ -13,8 +13,8 @@ import core.settings.EngineSettings;
 import object.gui.text.GUIText;
 import object.gui.text.GUITextBuilder;
 import object.gui.text.IGUITextBuilder;
+import tool.math.vector.Color;
 import tool.math.vector.Vector2f;
-import tool.math.vector.Vector3f;
 import tool.xml.XMLUtils;
 import tool.xml.loader.IXMLLoader;
 import tool.xml.loader.XMLFileLoader;
@@ -99,7 +99,6 @@ public class GUITextXMLParser extends XMLParser implements IListParser<GUIText> 
 						b = Float.valueOf(colorNode.getChildNodes().item(0).getNodeValue());
 					}
 				}
-				Vector3f color = new Vector3f(r, g, b);
 				IXMLLoader xmlLoader = new XMLFileLoader(
 						EngineSettings.TEXT_PATH + path + EngineSettings.EXTENSION_XML);
 				IObjectParser<String> textParser = new TextXMLParser(xmlLoader.load());
@@ -114,7 +113,7 @@ public class GUITextXMLParser extends XMLParser implements IListParser<GUIText> 
 				builder.setContent(text).setFontSize(size).setFontName(fontName).setPosition(position)
 						.setLineMaxSize(maxLength).setCentered(isCentered);
 				GUIText guiText = builder.build(name);
-				guiText.setColor(color);
+				guiText.setColor(new Color(r, g, b));
 				textList.add(guiText);
 				if (EngineDebug.hasDebugPermission()) {
 					EngineDebug.println(guiText.getName(), 2);

@@ -18,6 +18,7 @@ import primitive.texture.material.TerrainMaterial;
 import primitive.texture.terrain.TerrainTexturePack;
 import shader.terrain.TerrainShader;
 import tool.math.Matrix4f;
+import tool.math.vector.Color;
 import tool.openGL.OGLUtils;
 
 public class TerrainRenderer {
@@ -45,7 +46,7 @@ public class TerrainRenderer {
 		
 		shader.start();
 		shader.loadClipPlane(clipPlane);
-		shader.loadSkyColour(EngineSettings.RED, EngineSettings.GREEN, EngineSettings.BLUE);
+		shader.loadSkyColor(new Color(EngineSettings.RED, EngineSettings.GREEN, EngineSettings.BLUE));
 		shader.loadFogDensity(EngineSettings.FOG_DENSITY);
 		shader.loadLights(lights);
 		shader.loadViewMatrix(camera.getViewMatrix());
@@ -72,7 +73,7 @@ public class TerrainRenderer {
 	public void renderLow(Collection<ITerrain> terrains, Collection<ILight> lights, ICamera camera) {
 		shader.start();
 		shader.loadClipPlane(EngineSettings.NO_CLIP);
-		shader.loadSkyColour(EngineSettings.RED, EngineSettings.GREEN, EngineSettings.BLUE);
+		shader.loadSkyColor(new Color(EngineSettings.RED, EngineSettings.GREEN, EngineSettings.BLUE));
 		shader.loadFogDensity(EngineSettings.FOG_DENSITY);
 		shader.loadLights(lights);
 		shader.loadViewMatrix(camera.getViewMatrix());

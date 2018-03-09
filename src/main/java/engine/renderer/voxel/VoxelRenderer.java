@@ -24,6 +24,7 @@ import shader.voxel.VoxelShader;
 import tool.math.Frustum;
 import tool.math.Maths;
 import tool.math.Matrix4f;
+import tool.math.vector.Color;
 import tool.math.vector.Vector3f;
 import tool.math.vector.Vector3i;
 import tool.openGL.OGLUtils;
@@ -118,7 +119,7 @@ public class VoxelRenderer {
 			ICamera camera, Matrix4f toShadowMapSpace, Frustum frustum) {
 		shader.start();
 		shader.loadClipPlane(clipPlane);
-		shader.loadSkyColour(EngineSettings.RED, EngineSettings.GREEN, EngineSettings.BLUE);
+		shader.loadSkyColor(new Color(EngineSettings.RED, EngineSettings.GREEN, EngineSettings.BLUE));
 		shader.loadFogDensity(EngineSettings.FOG_DENSITY);
 		shader.loadLights(lights);
 		shader.loadViewMatrix(camera);

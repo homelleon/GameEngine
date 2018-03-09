@@ -69,12 +69,12 @@ public class GUITextRenderer {
 	private void renderText(GUIText text) {
 		VAO textMeshVao = text.getMesh();
 		textMeshVao.bind(0,1);
-		this.shader.loadColour(text.getColor());
+		this.shader.loadColor(text.getColor());
 		this.shader.loadTranslation(text.getPosition());
 		this.shader.loadWidthAndEdge(text.getWidth(), text.getEdge());
 		this.shader.loadBorderWidthAndEdge(text.getBorderWidth(), text.getBorderEdge());
 		this.shader.loadOffset(text.getOffset());
-		this.shader.loadOutLineColour(text.getOutlineColor());
+		this.shader.loadOutLineColor(text.getOutlineColor());
 		GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, text.getVertexCount());
 		VAO.unbind(0,1);
 	}

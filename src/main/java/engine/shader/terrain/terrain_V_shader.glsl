@@ -163,7 +163,7 @@ void main(void) {
 
    vec4 worldPosition = World * vec4(localPosition, 1.0);
    
-   tc_shadowCoords = toShadowMapSpace * vec4(worldPosition.x, 0.0, worldPosition.z, 1.0);
+   tc_shadowCoords = toShadowMapSpace * worldPosition;
    
    vec4 positionRelativeToCam = View * worldPosition;
 

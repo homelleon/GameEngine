@@ -2,6 +2,7 @@ package object.gui.text;
 
 import object.GameObject;
 import primitive.buffer.VAO;
+import tool.math.vector.Color;
 import tool.math.vector.Vector2f;
 import tool.math.vector.Vector3f;
 
@@ -19,7 +20,7 @@ public class GUIText extends GameObject {
 
 	private VAO textMeshVao;
 	private int vertexCount;
-	private Vector3f color = new Vector3f(0f, 0f, 0f);
+	private Color color = new Color(0f, 0f, 0f);
 
 	private Vector2f position;
 	private float maxLineLength;
@@ -35,7 +36,7 @@ public class GUIText extends GameObject {
 	private float borderEdge = 0.4f;
 
 	private Vector2f offset = new Vector2f(0f, 0f);
-	private Vector3f outlineColor = new Vector3f(0f, 0f, 0f);
+	private Color outlineColor = new Color(0f, 0f, 0f);
 	
 	private float transparency = 0;
 	private volatile boolean isVisible = false;
@@ -131,11 +132,11 @@ public class GUIText extends GameObject {
 		this.offset = offset;
 	}
 
-	public Vector3f getOutlineColor() {
+	public Color getOutlineColor() {
 		return this.outlineColor;
 	}
 
-	public synchronized void setOutlineColor(Vector3f outlineColor) {
+	public void setOutlineColor(Color outlineColor) {
 		this.outlineColor = outlineColor;
 	}
 
@@ -156,8 +157,8 @@ public class GUIText extends GameObject {
 	 * @param b
 	 *            - blue value, between 0 and 1.
 	 */
-	public synchronized void setColor(float r, float g, float b) {
-		setColor(new Vector3f(r,g,b));
+	public void setColor(float r, float g, float b) {
+		setColor(new Color(r,g,b));
 	}
 
 	/**
@@ -166,15 +167,15 @@ public class GUIText extends GameObject {
 	 * @param color
 	 *            {@link Vecotr3f} value
 	 */
-	public synchronized void setColor(Vector3f color) {
+	public void setColor(Color color) {
 		this.color = color;
 	}
 
 	/**
 	 * @return the colour of the text.
 	 */
-	public Vector3f getColor() {
-		return this.color;
+	public Color getColor() {
+		return color;
 	}
 
 	/**

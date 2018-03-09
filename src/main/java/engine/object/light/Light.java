@@ -1,6 +1,7 @@
 package object.light;
 
 import object.GameObject;
+import tool.math.vector.Color;
 import tool.math.vector.Vector3f;
 
 /**
@@ -12,7 +13,7 @@ import tool.math.vector.Vector3f;
 public class Light extends GameObject implements ILight {
 
 	private Vector3f position;
-	private Vector3f color;
+	private Color color;
 	private Vector3f attenuation = new Vector3f(0.5f, 0, 0);
 
 	/**
@@ -23,7 +24,7 @@ public class Light extends GameObject implements ILight {
 	 * @param position {@link Vector3f}
 	 * @param color {@link Vector3f}
 	 */
-	public Light(String name, Vector3f position, Vector3f color) {
+	public Light(String name, Vector3f position, Color color) {
 		super(name);
 		this.position = position;
 		this.color = color;
@@ -41,7 +42,7 @@ public class Light extends GameObject implements ILight {
 	 * @param color {@link Vector3f}
 	 * @param attenuation {@link Vector3f}
 	 */
-	public Light(String name, Vector3f position, Vector3f color, Vector3f attenuation) {
+	public Light(String name, Vector3f position, Color color, Vector3f attenuation) {
 		super(name);
 		this.position = position;
 		this.color = color;
@@ -65,12 +66,12 @@ public class Light extends GameObject implements ILight {
 	}
 
 	@Override
-	public Vector3f getColor() {
+	public Color getColor() {
 		return color;
 	}
 
 	@Override
-	public void setColor(Vector3f color) {
+	public void setColor(Color color) {
 		this.color = color;
 	}
 

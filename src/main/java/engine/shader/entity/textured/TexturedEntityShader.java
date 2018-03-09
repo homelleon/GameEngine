@@ -11,6 +11,7 @@ import object.light.ILight;
 import shader.ShaderProgram;
 import tool.math.Maths;
 import tool.math.Matrix4f;
+import tool.math.vector.Color;
 import tool.math.vector.Vector2f;
 import tool.math.vector.Vector3f;
 
@@ -185,8 +186,8 @@ public class TexturedEntityShader extends ShaderProgram {
 		super.load2DVector(UNIFORM_OFFSET, new Vector2f(x, y));
 	}
 
-	public void loadSkyColour(float r, float g, float b) {
-		super.load3DVector(UNIFORM_SKY_COLOR, new Vector3f(r, g, b));
+	public void loadSkyColor(Color color) {
+		super.loadColor(UNIFORM_SKY_COLOR, color);
 	}
 
 	public void loadFakeLightingVariable(boolean useFake) {
@@ -223,11 +224,11 @@ public class TexturedEntityShader extends ShaderProgram {
 			if (iterator.hasNext()) {
 				ILight light = iterator.next();
 				super.load3DVector(UNIFORM_LIGHT_POSITION + "[" + i + "]", light.getPosition());
-				super.load3DVector(UNIFORM_LIGHT_COLOR + "[" + i + "]", light.getColor());
+				super.loadColor(UNIFORM_LIGHT_COLOR + "[" + i + "]", light.getColor());
 				super.load3DVector(UNIFORM_ATTENUATION + "[" + i + "]", light.getAttenuation());
 			} else {
 				super.load3DVector(UNIFORM_LIGHT_POSITION + "[" + i + "]", new Vector3f(0, 0, 0));
-				super.load3DVector(UNIFORM_LIGHT_COLOR + "[" + i + "]", new Vector3f(0, 0, 0));
+				super.loadColor(UNIFORM_LIGHT_COLOR + "[" + i + "]", new Color(0, 0, 0));
 				super.load3DVector(UNIFORM_ATTENUATION + "[" + i + "]", new Vector3f(1, 0, 0));
 			}
 		}

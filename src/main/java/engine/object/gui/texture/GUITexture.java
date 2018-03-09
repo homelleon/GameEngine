@@ -2,18 +2,17 @@ package object.gui.texture;
 
 import object.GameObject;
 import primitive.texture.Texture2D;
+import tool.math.vector.Color;
 import tool.math.vector.Vector2f;
-import tool.math.vector.Vector3f;
 
 public class GUITexture extends GameObject {
 
-	private String name;
 	private boolean isVisible = false;
 
 	private Texture2D texture;
 	private Vector2f position;
 	private Vector2f scale;
-	private Vector3f mixColor = new Vector3f(1,0,0);
+	private Color mixColor = new Color(255, 0, 0);
 	private boolean isMixColored = false;
 	private float transparency = 0;
 
@@ -40,11 +39,11 @@ public class GUITexture extends GameObject {
 		return this.scale;
 	}
 	
-	public synchronized void setMixColor(Vector3f color) {
+	public void setMixColor(Color color) {
 		this.mixColor = color;
 	}
 	
-	public Vector3f getMixColor() {
+	public Color getMixColor() {
 		return this.mixColor;
 	}
 
@@ -52,11 +51,11 @@ public class GUITexture extends GameObject {
 		return this.isMixColored;
 	}
 
-	public synchronized void setMixColored(boolean isMixColored) {
+	public void setMixColored(boolean isMixColored) {
 		this.isMixColored = isMixColored;
 	}
 	
-	public synchronized void increaseScale(Vector2f scale) {
+	public void increaseScale(Vector2f scale) {
 		this.scale = new Vector2f(this.scale.x + scale.x, this.scale.y + scale.y);
 	}
 	
@@ -83,7 +82,7 @@ public class GUITexture extends GameObject {
 		return this.isVisible;
 	}
 
-	public synchronized void setIsVisible(boolean value) {
+	public void setIsVisible(boolean value) {
 		this.isVisible = value;
 	}
 	

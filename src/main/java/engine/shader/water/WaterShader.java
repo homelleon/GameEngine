@@ -7,7 +7,7 @@ import object.light.Light;
 import shader.ShaderProgram;
 import tool.math.Maths;
 import tool.math.Matrix4f;
-import tool.math.vector.Vector3f;
+import tool.math.vector.Color;
 
 public class WaterShader extends ShaderProgram {
 
@@ -105,7 +105,7 @@ public class WaterShader extends ShaderProgram {
 	}
 
 	public void loadLight(Light sun) {
-		super.load3DVector(UNIFORM_LIGHT_COLOR, sun.getColor());
+		super.loadColor(UNIFORM_LIGHT_COLOR, sun.getColor());
 		super.load3DVector(UNIFORM_LIGHT_POSITION, sun.getPosition());
 	}
 
@@ -121,8 +121,8 @@ public class WaterShader extends ShaderProgram {
 		super.loadFloat(UNIFORM_WAVE_STRENGTH, strength);
 	}
 
-	public void loadSkyColour(float r, float g, float b) {
-		super.load3DVector(UNIFORM_SKY_COLOR, new Vector3f(r, g, b));
+	public void loadSkyColor(Color color) {
+		super.loadColor(UNIFORM_SKY_COLOR, color);
 	}
 
 	public void loadFogDensity(float density) {

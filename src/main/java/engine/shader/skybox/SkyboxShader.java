@@ -8,6 +8,7 @@ import object.camera.ICamera;
 import shader.ShaderProgram;
 import tool.math.Maths;
 import tool.math.Matrix4f;
+import tool.math.vector.Color;
 import tool.math.vector.Vector3f;
 
 public class SkyboxShader extends ShaderProgram {
@@ -72,8 +73,8 @@ public class SkyboxShader extends ShaderProgram {
 		super.loadMatrix(UNIFORM_VIEW_MATRIX, matrix);
 	}
 
-	public void loadFogColour(float r, float g, float b) {
-		super.load3DVector(UNIFORM_FOG_COLOR, new Vector3f(r, g, b));
+	public void loadFogColor(Color color) {
+		super.loadColor(UNIFORM_FOG_COLOR, color);
 	}
 
 	public void loadBlendFactor(float blend) {

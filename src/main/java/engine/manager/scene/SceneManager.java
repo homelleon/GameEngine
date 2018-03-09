@@ -21,6 +21,7 @@ import primitive.model.Model;
 import primitive.texture.material.Material;
 import scene.IScene;
 import tool.EngineUtils;
+import tool.math.vector.Color;
 import tool.math.vector.Vector3f;
 
 /**
@@ -67,9 +68,10 @@ public class SceneManager implements ISceneManager {
 		scene.setPlayer(player1);
 		scene.getEntities().add(player1);
 		scene.setCamera(new TargetCamera(cameraName, player1));
-		scene.setSun(new Light("Sun", 
+		scene.setSun(new Light("Sun",
 				new Vector3f(1000, 5000, 1000), 
-				new Vector3f(1.3f, 1.3f, 1.3f)));
+				new Color(255, 255, 255),
+				new Vector3f(1.0f, 0, 0)));
 		scene.getLights().add(scene.getSun());
 	}
 	
@@ -141,18 +143,19 @@ public class SceneManager implements ISceneManager {
 		
 		// light
 		scene.setSun(new Light("Sun", 
-				new Vector3f(10000, 100000, 10000),
-				new Vector3f(Vector3f.fromRGB(255, 255, 255)),
+				new Vector3f(10000, 8000, 10000),
+				new Color(255, 255, 255),
 				new Vector3f(1.0f, 0, 0)));
 		scene.getLights().add(scene.getSun());
 		
 		scene.getLights().add(new Light("Light1", 
 				new Vector3f(25, 0, 50), 
-				new Vector3f(Vector3f.fromRGB(255, 0, 0)),
+				new Color(255, 0, 0),
 				new Vector3f(0, 0, 0.0002f)));
+		
 		scene.getLights().add(new Light("Light2", 
-				new Vector3f(20, 0, 20), 
-				new Vector3f(Vector3f.fromRGB(0, 255, 0)), 
+				new Vector3f(20, 0, 20),
+				new Color(0, 255, 0), 
 				new Vector3f(0, 0, 0.0002f)));
 		
 		scene.getAudioSources().add(ambientSource);

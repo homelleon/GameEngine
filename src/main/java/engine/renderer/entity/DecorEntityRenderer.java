@@ -21,6 +21,7 @@ import renderer.main.IMainRenderer;
 import shader.entity.decor.DecorEntityShader;
 import tool.math.Maths;
 import tool.math.Matrix4f;
+import tool.math.vector.Color;
 import tool.math.vector.Vector2f;
 import tool.openGL.OGLUtils;
 
@@ -89,7 +90,7 @@ public class DecorEntityRenderer implements IEntityRenderer {
 		if(!entities.isEmpty()) {
 			shader.start();
 			shader.loadClipPlane(clipPlane);
-			shader.loadSkyColour(EngineSettings.RED, EngineSettings.GREEN, EngineSettings.BLUE);
+			shader.loadSkyColor(new Color(EngineSettings.RED, EngineSettings.GREEN, EngineSettings.BLUE));
 			shader.loadFogDensity(EngineSettings.FOG_DENSITY);
 			shader.loadLights(lights);
 			shader.loadCamera(camera);
@@ -131,7 +132,7 @@ public class DecorEntityRenderer implements IEntityRenderer {
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 		shader.start();
 		shader.loadClipPlane(EngineSettings.NO_CLIP);
-		shader.loadSkyColour(EngineSettings.RED, EngineSettings.GREEN, EngineSettings.BLUE);
+		shader.loadSkyColor(new Color(EngineSettings.RED, EngineSettings.GREEN, EngineSettings.BLUE));
 		shader.loadFogDensity(EngineSettings.FOG_DENSITY);
 		shader.loadLights(lights);
 		shader.loadCamera(camera);

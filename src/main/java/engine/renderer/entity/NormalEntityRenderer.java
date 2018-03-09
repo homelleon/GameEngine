@@ -19,6 +19,7 @@ import primitive.texture.material.Material;
 import shader.entity.normal.NormalMappedEntityShader;
 import tool.math.Maths;
 import tool.math.Matrix4f;
+import tool.math.vector.Color;
 import tool.math.vector.Vector2f;
 import tool.openGL.OGLUtils;
 
@@ -64,7 +65,7 @@ public class NormalEntityRenderer implements IEntityRenderer {
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 		shader.start();
 		shader.loadClipPlane(EngineSettings.NO_CLIP);
-		shader.loadSkyColour(EngineSettings.RED, EngineSettings.GREEN, EngineSettings.BLUE);
+		shader.loadSkyColor(new Color(EngineSettings.RED, EngineSettings.GREEN, EngineSettings.BLUE));
 		shader.loadFogDensity(EngineSettings.FOG_DENSITY);
 		entities.keySet()
 			.forEach(model -> {
@@ -126,7 +127,7 @@ public class NormalEntityRenderer implements IEntityRenderer {
 
 	private void prepare(Vector4f clipPlane, Collection<ILight> lights, ICamera camera) {
 		shader.loadClipPlane(clipPlane);
-		shader.loadSkyColour(EngineSettings.RED, EngineSettings.GREEN, EngineSettings.BLUE);
+		shader.loadSkyColor(new Color(EngineSettings.RED, EngineSettings.GREEN, EngineSettings.BLUE));
 		Matrix4f viewMatrix = camera.getViewMatrix();
 
 		shader.loadLights(lights, viewMatrix);

@@ -14,17 +14,17 @@ import org.lwjgl.util.vector.Vector4f;
 public class EngineSettings {
 
 	/* display settings */
-	public static final int DISPLAY_WIDTH = 1024; // 1920;
-	public static final int DISPLAY_HEIGHT = 768; // 1080;
+	public static final int DISPLAY_WIDTH = 1920; // 1920;
+	public static final int DISPLAY_HEIGHT = 1080; // 1080;
 	public static final int FAR_PLANE = 100000;
 	public static final float NEAR_PLANE = 0.5f;
 	public static final int FPS_CAP = 90;
 	public static final float FOV = 70;
 	public static final int MULTISAMPLE = 4;
 
-	public static final float RED = 0.4f;
-	public static final float GREEN = 0.5f;
-	public static final float BLUE = 0.55f;
+	public static final float RED = 102f;
+	public static final float GREEN = 127f;
+	public static final float BLUE = 140f;
 
 	public static final float DISPLAY_CONTRAST = 0.8f;
 

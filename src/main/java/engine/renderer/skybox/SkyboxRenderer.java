@@ -12,6 +12,7 @@ import primitive.buffer.VAO;
 import primitive.model.Mesh;
 import shader.skybox.SkyboxShader;
 import tool.math.Matrix4f;
+import tool.math.vector.Color;
 
 public class SkyboxRenderer {
 
@@ -91,7 +92,7 @@ public class SkyboxRenderer {
 	public void render(ICamera camera) {
 		shader.start();
 		shader.loadViewMatrix(camera);
-		shader.loadFogColour(EngineSettings.RED, EngineSettings.GREEN, EngineSettings.BLUE);
+		shader.loadFogColor(new Color(EngineSettings.RED, EngineSettings.GREEN, EngineSettings.BLUE));
 		VAO vao = cube.getVAO();
 		vao.bind(0);
 		bindTextures();

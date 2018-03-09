@@ -19,6 +19,7 @@ import primitive.texture.Texture2D;
 import shader.water.WaterShader;
 import tool.math.Maths;
 import tool.math.Matrix4f;
+import tool.math.vector.Color;
 import tool.math.vector.Vector3f;
 
 public class WaterRenderer {
@@ -45,7 +46,7 @@ public class WaterRenderer {
 		shader.start();
 		shader.connectTextureUnits();
 		shader.loadFogDensity(EngineSettings.FOG_DENSITY);
-		shader.loadSkyColour(EngineSettings.RED, EngineSettings.GREEN, EngineSettings.BLUE);
+		shader.loadSkyColor(new Color(EngineSettings.RED, EngineSettings.GREEN, EngineSettings.BLUE));
 		shader.loadProjectionMatrix(projectionMatrix);
 		shader.stop();
 		setUpVAO();

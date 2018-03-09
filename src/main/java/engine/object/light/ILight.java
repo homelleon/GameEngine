@@ -1,6 +1,7 @@
 package object.light;
 
 import object.Nameable;
+import tool.math.vector.Color;
 import tool.math.vector.Vector3f;
 
 /**
@@ -38,15 +39,15 @@ public interface ILight extends Nameable {
 	/**
 	 * Gets current light color value.
 	 * 
-	 * @return {@link Vector3f} value
+	 * @return {@link Color} value
 	 */
-	public Vector3f getColor();
+	public Color getColor();
 	
 	/**
 	 * Sets color for current light source.
 	 * 
-	 * @param color {@link Vector3f} value
+	 * @param color {@link Color} value
 	 */
-	public void setColor(Vector3f color);
+	public void setColor(Color color);
 
 }
