@@ -10,7 +10,7 @@ import core.settings.EngineSettings;
 import manager.octree.EntityNode;
 import object.camera.ICamera;
 import object.entity.entity.IEntity;
-import scene.IScene;
+import scene.Scene;
 import tool.math.Frustum;
 import tool.math.Maths;
 import tool.math.Matrix4f;
@@ -112,7 +112,7 @@ public class FrustumEntityManager implements IFrustumEntityManager {
 	}
 
 	@Override
-	public List<IEntity> processHighEntities(IScene scene, Matrix4f projectionMatrix, boolean toRebuild) {
+	public List<IEntity> processHighEntities(Scene scene, Matrix4f projectionMatrix, boolean toRebuild) {
 		if (toRebuild) {
 			Matrix4f projectionViewMatrix = Matrix4f.mul(projectionMatrix, scene.getCamera().getViewMatrix()); 
 			frustumHighEntities = prepareEntities(scene, projectionViewMatrix, false);
@@ -121,7 +121,7 @@ public class FrustumEntityManager implements IFrustumEntityManager {
 	}
 	
 	@Override
-	public List<IEntity> processLowEntities(IScene scene, Matrix4f projectionMatrix, boolean toRebuild) {
+	public List<IEntity> processLowEntities(Scene scene, Matrix4f projectionMatrix, boolean toRebuild) {
 		if (toRebuild) {
 			Matrix4f projectionViewMatrix = Matrix4f.mul(projectionMatrix, scene.getCamera().getViewMatrix());		
 			frustumLowEntities = prepareEntities(scene, projectionViewMatrix, true);
@@ -130,14 +130,14 @@ public class FrustumEntityManager implements IFrustumEntityManager {
 	}
 
 	@Override
-	public List<IEntity> prepareShadowEntities(IScene scene, Matrix4f shadowMapMatrix, boolean toRebuild) {
+	public List<IEntity> prepareShadowEntities(Scene scene, Matrix4f shadowMapMatrix, boolean toRebuild) {
 		if (toRebuild) {
 			frustumShadowEntities = prepareEntities(scene, shadowMapMatrix, false);
 		}
 		return frustumShadowEntities;
 	}
 	
-	private List<IEntity> prepareEntities(IScene scene, Matrix4f projectionMatrix, boolean isLowDetail) {
+	private List<IEntity> prepareEntities(Scene scene, Matrix4f projectionMatrix, boolean isLowDetail) {
 		frustum.extractFrustum(projectionMatrix);
 		return updateWithFrustum(frustum, scene.getCamera(), isLowDetail);
 	}

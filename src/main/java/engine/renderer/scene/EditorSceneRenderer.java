@@ -3,16 +3,16 @@ package renderer.scene;
 import control.Controls;
 import control.IControls;
 import renderer.main.MainRenderer;
-import scene.IScene;
+import scene.Scene;
 
 public class EditorSceneRenderer implements ISceneRenderer {
 	
 	private MainRenderer mainRenderer;
-	private IScene scene;
+	private Scene scene;
 	private IControls controls;
 
 	@Override
-	public void initialize(IScene scene) {
+	public void initialize(Scene scene) {
 		this.scene = scene;
 		this.mainRenderer = new MainRenderer(scene);
 		this.controls = new Controls();

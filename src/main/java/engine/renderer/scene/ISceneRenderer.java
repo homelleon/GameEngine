@@ -1,7 +1,7 @@
 package renderer.scene;
 
 import renderer.main.MainRenderer;
-import scene.IScene;
+import scene.Scene;
 
 /**
  * 
@@ -11,7 +11,7 @@ import scene.IScene;
  */
 public interface ISceneRenderer {
 	
-	public void initialize(IScene scene);
+	public void initialize(Scene scene);
 
 	public void render(boolean isPaused);
 	

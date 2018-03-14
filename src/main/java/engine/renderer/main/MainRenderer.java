@@ -32,7 +32,7 @@ import renderer.shadow.ShadowMapMasterRenderer;
 import renderer.skybox.SkyboxRenderer;
 import renderer.terrain.TerrainRenderer;
 import renderer.voxel.VoxelRenderer;
-import scene.IScene;
+import scene.Scene;
 import tool.math.Matrix4f;
 import tool.openGL.OGLUtils;
 
@@ -62,7 +62,7 @@ public class MainRenderer implements IMainRenderer {
 	private Map<Model, List<IEntity>> decorEntities = new HashMap<Model, List<IEntity>>();
 	private Collection<ITerrain> terrains = new ArrayList<ITerrain>();
 
-	public MainRenderer(IScene scene) {
+	public MainRenderer(Scene scene) {
 		OGLUtils.cullBackFaces(true);
 		projectionNormalMatrix = createProjectionMatrix(EngineSettings.FAR_PLANE);
 		projectionLowMatrix = createProjectionMatrix(100);
@@ -84,18 +84,18 @@ public class MainRenderer implements IMainRenderer {
 	}
 	
 	@Override
-	public void render(IScene scene) {
+	public void render(Scene scene) {
 		scene.getEntities().getAll().forEach(this::processEntity);
 		renderEditorSceneObjects(scene);
 	}
 
 	@Override
-	public void render(IScene scene, Vector4f clipPlane) {
+	public void render(Scene scene, Vector4f clipPlane) {
 		render(scene, clipPlane, false);
 	}
 
 	@Override
-	public void render(IScene scene, Vector4f clipPlane, boolean isLowDistance) {
+	public void render(Scene scene, Vector4f clipPlane, boolean isLowDistance) {
 		scene.getTerrains().getAll().forEach(this::processTerrain);
 		environmentMap = scene.getEnvironmentMap();
 		processEntities(scene, isLowDistance, scene.getCamera().isMoved());
@@ -113,7 +113,7 @@ public class MainRenderer implements IMainRenderer {
 	}
 
 	@Override
-	public void renderCubemap(IScene scene, IEntity shinyEntity, ICamera camera) {
+	public void renderCubemap(Scene scene, IEntity shinyEntity, ICamera camera) {
 		scene.getEntities().delete(shinyEntity.getName());
 		processEntities(scene, true, true);
 		
@@ -131,7 +131,7 @@ public class MainRenderer implements IMainRenderer {
 	 * @param clipPlane {@link Vector4f} clipping plane
 	 * @param isLowDistance 
 	 */
-	private void renderSceneObjects(IScene scene, Vector4f clipPlane, boolean isLowDistance) {
+	private void renderSceneObjects(Scene scene, Vector4f clipPlane, boolean isLowDistance) {
 		prepare();
 		
 		if (EngineDebug.getBoundingVisibility() != EngineDebug.BOUNDING_NONE)
@@ -156,7 +156,7 @@ public class MainRenderer implements IMainRenderer {
 		cleanSceneObjects();
 	}
 	
-	private void renderEditorSceneObjects(IScene scene) {
+	private void renderEditorSceneObjects(Scene scene) {
 		prepare();
 		Matrix4f shadowMapMatrix = shadowMapRenderer.getToShadowMapMatrix();
 		entityRendererManager.render(EngineSettings.NO_CLIP, scene.getLights().getAll(), scene.getCamera(), 
@@ -165,7 +165,7 @@ public class MainRenderer implements IMainRenderer {
 	}
 
 	@Override
-	public void renderShadows(IScene scene) {
+	public void renderShadows(Scene scene) {
 		processShadowEntities(scene, scene.getCamera().isMoved());
 		shadowMapRenderer.render(decorEntities, terrains, scene.getSun(), scene.getCamera());
 		cleanSceneObjects();
@@ -178,14 +178,14 @@ public class MainRenderer implements IMainRenderer {
 		getShadowMapTexture().bind(6);
 	}
 	
-	private void processEntities(IScene scene, boolean isLowDistance, boolean doRebuild) {
+	private void processEntities(Scene scene, boolean isLowDistance, boolean doRebuild) {
 		List<IEntity> frustumEntities = isLowDistance ?
 			scene.getFrustumEntities().processLowEntities(scene, projectionLowMatrix, doRebuild) :
 			scene.getFrustumEntities().processHighEntities(scene, projectionNormalMatrix, doRebuild);
 		frustumEntities.stream().forEach(this::processEntity);
 	}
 	
-	private void processShadowEntities(IScene scene, boolean doRebuild) {
+	private void processShadowEntities(Scene scene, boolean doRebuild) {
 		List<IEntity> frustumEntities = 
 				scene.getFrustumEntities().prepareShadowEntities(
 						scene, shadowMapRenderer.getToShadowMapMatrix(), doRebuild);

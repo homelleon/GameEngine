@@ -12,7 +12,7 @@ import core.settings.EngineSettings;
 import object.camera.ICamera;
 import object.entity.entity.IEntity;
 import object.entity.player.Player;
-import scene.IScene;
+import scene.Scene;
 import tool.math.Maths;
 import tool.math.Matrix4f;
 import tool.math.vector.Vector2f;
@@ -283,7 +283,7 @@ public class MousePicker {
 		return new Vector2f(x, y);
 	}
 
-	public IEntity chooseObjectByRay(IScene scene) {
+	public IEntity chooseObjectByRay(Scene scene) {
 		IEntity pickedEntity = null;
 		List<IEntity> pointedEntities = new ArrayList<IEntity>();
 		pointedEntities.addAll(

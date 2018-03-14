@@ -1,6 +1,6 @@
 package control;
 
-import scene.IScene;
+import scene.Scene;
 
 /**
  * Controls interface.
@@ -10,6 +10,6 @@ import scene.IScene;
  */
 public interface IControls {
 
-	void update(IScene scene);
+	void update(Scene scene);
 
 }

@@ -1,7 +1,7 @@
 package manager.scene;
 
 import primitive.buffer.Loader;
-import scene.IScene;
+import scene.Scene;
 
 /**
  * Temporal interface to initialize test objects.
@@ -20,6 +20,6 @@ public interface ISceneManager {
 	 * @param loader
 	 *            {@link Loader} value
 	 */
-	public void init(IScene scene, int mode);
+	public void init(Scene scene, int mode);
 
 }

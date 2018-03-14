@@ -7,7 +7,7 @@ import core.debug.EngineDebug;
 import core.loop.Loop;
 import core.settings.EngineSettings;
 import object.entity.entity.IEntity;
-import scene.IScene;
+import scene.Scene;
 
 /**
  * Engine UI and object controls.
@@ -25,7 +25,7 @@ public class Controls implements IControls {
 	}
 
 	@Override
-	public void update(IScene scene) {
+	public void update(Scene scene) {
 		debugControls();
 		pointedEntitiesControls(scene);
 		sceneControls();
@@ -59,7 +59,7 @@ public class Controls implements IControls {
 		
 	}
 
-	private void pointedEntitiesControls(IScene scene) {
+	private void pointedEntitiesControls(Scene scene) {
 		/* intersection of entities with mouse ray */
 		// TODO: make class for control
 		if (MouseGame.isOncePressed(MouseGame.LEFT_CLICK)) {

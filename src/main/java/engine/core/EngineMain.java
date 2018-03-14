@@ -1,9 +1,9 @@
 package core;
 
+import core.loop.ILoop;
 import core.loop.Loop;
 import core.settings.EngineSettings;
-import scene.IScene;
-import core.loop.ILoop;
+import scene.Scene;
 
 /**
  * Main engine class. Contains main method to create {@link Loop} and run
@@ -42,7 +42,7 @@ public class EngineMain {
 	 * 
 	 * @return Scene object
 	 */
-	public static IScene getScene() {
+	public static Scene getScene() {
 		return loopGame.getScene();
 	}
 	

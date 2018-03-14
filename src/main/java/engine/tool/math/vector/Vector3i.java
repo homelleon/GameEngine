@@ -1,6 +1,6 @@
 package tool.math.vector;
 
-public class Vector3i {
+public class Vector3i extends Vector {
 
 	public int x;
 	public int y;
@@ -15,6 +15,11 @@ public class Vector3i {
 	@Override
 	public String toString() {
 		return "Vector3i" + "[" + x + "," + y + "," + z + "]";
+	}
+	
+	@Override
+	public Vector3i clone() {
+		return new Vector3i(x, y, z);		
 	}
 
 }

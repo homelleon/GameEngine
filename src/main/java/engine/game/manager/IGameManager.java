@@ -2,7 +2,7 @@ package game.manager;
 
 import manager.gui.text.IGUITextManager;
 import manager.gui.texture.IGUITextureManager;
-import scene.IScene;
+import scene.Scene;
 
 /**
  * 
@@ -16,7 +16,7 @@ public interface IGameManager {
 	 * 
 	 * @return {@link IScene} object
 	 */
-	IScene getScene();
+	Scene getScene();
 	
 	/**
 	 * Gets texture manager.

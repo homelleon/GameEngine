@@ -10,11 +10,11 @@ import object.camera.CubeMapCamera;
 import object.camera.ICamera;
 import object.entity.entity.IEntity;
 import renderer.main.MainRenderer;
-import scene.IScene;
+import scene.Scene;
 
 public class EnvironmentMapRenderer {
 	
-	public void render(IScene scene, MainRenderer renderer, IEntity shinyEntity) {
+	public void render(Scene scene, MainRenderer renderer, IEntity shinyEntity) {
 		ICamera cubeCamera = new CubeMapCamera("shinyCubeMap", shinyEntity.getPosition());
 		int fbo = GL30.glGenFramebuffers();
 		GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, fbo);

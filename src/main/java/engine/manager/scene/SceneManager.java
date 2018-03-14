@@ -19,7 +19,7 @@ import object.water.WaterTile;
 import primitive.buffer.Loader;
 import primitive.model.Model;
 import primitive.texture.material.Material;
-import scene.IScene;
+import scene.Scene;
 import tool.EngineUtils;
 import tool.math.vector.Color;
 import tool.math.vector.Vector3f;
@@ -36,7 +36,7 @@ public class SceneManager implements ISceneManager {
 	private String cameraName = "cameraMain";
 
 	@Override
-	public void init(IScene scene, int mode) {
+	public void init(Scene scene, int mode) {
 		switch(mode) {
 			case EngineSettings.ENGINE_MODE_GAME:
 				initializeGame(scene);
@@ -47,7 +47,7 @@ public class SceneManager implements ISceneManager {
 		}
 	}
 	
-	private void initializeEditor(IScene scene) {
+	private void initializeEditor(Scene scene) {
 		List<Model> cubeModels = EngineUtils.loadModels("xuchilbara", "xuchilbara_dif", true);
 		IPlayer player1 = new Player(
 				playerName, 
@@ -75,7 +75,7 @@ public class SceneManager implements ISceneManager {
 		scene.getLights().add(scene.getSun());
 	}
 	
-	private void initializeGame(IScene scene) {
+	private void initializeGame(Scene scene) {
 		/*------------------PLAYER-----------------*/
 //		List<Model> cubeModels = EngineUtils.loadModels("xuchilbara", "xuchilbara_dif", true);
 		List<Model> cubeModels = EngineUtils.loadModels("cube", "Cube1");

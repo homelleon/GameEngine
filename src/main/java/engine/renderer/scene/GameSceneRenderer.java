@@ -29,7 +29,7 @@ import object.water.WaterFrameBuffers;
 import primitive.texture.Texture2D;
 import renderer.main.MainRenderer;
 import renderer.water.WaterRenderer;
-import scene.IScene;
+import scene.Scene;
 import shader.postProcessing.Fbo;
 import shader.postProcessing.PostProcessing;
 import shader.water.WaterShader;
@@ -52,7 +52,7 @@ public class GameSceneRenderer implements ISceneRenderer {
 	private Fbo outputFbo;
 	private Fbo outputFbo2;
 	private MousePicker mousePicker;
-	private IScene scene;
+	private Scene scene;
 	private IControls controls;
 	GUIText fpsText;
 	GUIText coordsText;
@@ -60,7 +60,7 @@ public class GameSceneRenderer implements ISceneRenderer {
 	private String statusGroupName = "statusGroup";
 
 	@Override
-	public void initialize(IScene scene) {
+	public void initialize(Scene scene) {
 		this.scene = scene;
 		mainRenderer = new MainRenderer(scene);
 		ParticleMaster.init(mainRenderer.getProjectionMatrix());

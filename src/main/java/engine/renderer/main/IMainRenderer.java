@@ -4,7 +4,7 @@ import org.lwjgl.util.vector.Vector4f;
 
 import object.camera.ICamera;
 import object.entity.entity.IEntity;
-import scene.IScene;
+import scene.Scene;
 import tool.math.Matrix4f;
 
 /**
@@ -18,7 +18,7 @@ import tool.math.Matrix4f;
  */
 public interface IMainRenderer {
 	
-	public void render(IScene scene);
+	public void render(Scene scene);
 
 	/**
 	 * Rendering all objects of scene.
@@ -34,7 +34,7 @@ public interface IMainRenderer {
 	 *            {@link Boolean} value to define if low quality scene need to
 	 *            be rendered
 	 */
-	public void render(IScene scene, Vector4f clipPlane, boolean isLowDistance);
+	public void render(Scene scene, Vector4f clipPlane, boolean isLowDistance);
 
 	/**
 	 * Method renders all object of the scene.
@@ -44,14 +44,14 @@ public interface IMainRenderer {
 	 * @param clipPlane
 	 *            {@link Vector4f} value of clipping plane matrix
 	 */
-	public void render(IScene scene, Vector4f clipPlane);
+	public void render(Scene scene, Vector4f clipPlane);
 
 	/**
 	 * 
 	 * @param scene
 	 *            {@link IScene} value
 	 */
-	public void renderShadows(IScene scene);
+	public void renderShadows(Scene scene);
 
 	/**
 	 * Method cleans all shaders and rendering objects.
@@ -65,7 +65,7 @@ public interface IMainRenderer {
 	 * @param lights
 	 * @param camera
 	 */
-	void renderCubemap(IScene scene, IEntity shinyEntity, ICamera camera);
+	void renderCubemap(Scene scene, IEntity shinyEntity, ICamera camera);
 
 	/**
 	 * 

@@ -241,4 +241,9 @@ public class Vector3f extends Vector implements Comparable<Vector3f> {
 		return Maths.compare(this, ((Vector3f) vector));
 	}
 	
+	@Override
+	public Vector3f clone() {
+		return new Vector3f(x, y, z);		
+	}
+	
 }

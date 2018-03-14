@@ -28,7 +28,7 @@ import primitive.texture.Texture;
 import tool.math.Frustum;
 import tool.math.vector.Vector3f;
 
-public class Scene extends AObjectManager implements IScene {
+public class Scene extends AObjectManager {
 
 	private final static int CHUNK_WORLD_SIZE = 2;
 	private IPlayer player;
@@ -75,44 +75,36 @@ public class Scene extends AObjectManager implements IScene {
 		this.frustumManager.rebuildNodes(this.getEntities().getAll());
 	}
 	
-	@Override
 	public IFrustumEntityManager getFrustumEntities() {
 		return frustumManager;
 	}
 
-	@Override
 	public Texture getEnvironmentMap() {
 		return environmentMap;
 	}
 
-	@Override
 	public IPlayer getPlayer() {
 		return player;
 	}
 
-	@Override
 	public Scene setPlayer(IPlayer player) {
 		this.player = player;
 		return this;
 	}
 
-	@Override
 	public ICamera getCamera() {
 		return camera;
 	}
 
-	@Override
 	public Scene setCamera(ICamera camera) {
 		this.camera = camera;
 		return this;
 	}
 
-	@Override
 	public Light getSun() {
 		return sun;
 	}
 
-	@Override
 	public Scene setSun(Light sun) {
 		this.sun = sun;
 		return this;
@@ -148,7 +140,6 @@ public class Scene extends AObjectManager implements IScene {
 	 * @VoxelGrids
 	 */
 
-	@Override
 	public IChunkManager getChunks() {
 		return chunkManager;
 	}
@@ -180,29 +171,24 @@ public class Scene extends AObjectManager implements IScene {
 		return audioManager;
 	}
 
-	@Override
 	public IGUIManager getUserInterface() {
 		return uiManager;
 	}
 
-	@Override
 	public MousePicker getMousePicker() {
 		return mousePicker;
 	}
 
-	@Override
 	public Scene setMousePicker(MousePicker mousePicker) {
 		this.mousePicker = mousePicker;
 		return this;
 	}
 	
-	@Override
 	public Scene setFrustum(Frustum frustum) {
 		this.frustum = frustum;
 		return this;
 	}
 
-	@Override
 	public Frustum getFrustum() {
 		return frustum;
 	}
@@ -216,7 +202,6 @@ public class Scene extends AObjectManager implements IScene {
 		return position;
 	}
 	
-	@Override
 	public Scene spreadEntitiesOnHeights(Collection<IEntity> entityList) {
 		if (!entityList.isEmpty()) {
 			for (IEntity entity : entityList) {
@@ -231,7 +216,6 @@ public class Scene extends AObjectManager implements IScene {
 		return this;
 	}
 
-	@Override
 	public Scene spreadParitclesOnHeights(Collection<ParticleSystem> particleSystems) {
 		if (!particleSystems.isEmpty()) {
 			for (ParticleSystem partilceSystem : particleSystems) {

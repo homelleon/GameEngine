@@ -23,7 +23,6 @@ import primitive.buffer.Loader;
 import renderer.scene.EditorSceneRenderer;
 import renderer.scene.GameSceneRenderer;
 import renderer.scene.ISceneRenderer;
-import scene.IScene;
 import scene.Scene;
 import tool.dataEditor.menu.DataEditorFrame;
 import tool.xml.loader.IXMLLoader;
@@ -50,7 +49,7 @@ public class Loop implements ILoop {
 
 	private ISceneManager sceneManager;
 
-	private IScene scene;
+	private Scene scene;
 	private IObjectManager modelMap;
 	private IObjectManager levelMap;
 	private IRawManager rawMap;
@@ -277,7 +276,7 @@ public class Loop implements ILoop {
 	}
 
 	@Override
-	public IScene getScene() {
+	public Scene getScene() {
 		return scene;
 	}
 

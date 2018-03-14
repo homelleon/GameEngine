@@ -1,6 +1,6 @@
 package core.loop;
 
-import scene.IScene;
+import scene.Scene;
 import tool.dataEditor.menu.DataEditorFrame;
 
 /**
@@ -50,7 +50,7 @@ public interface ILoop extends Runnable {
 	 * 
 	 * @return Scene value
 	 */
-	IScene getScene();
+	Scene getScene();
 
 	/**
 	 * Turns scene pause mode on or off

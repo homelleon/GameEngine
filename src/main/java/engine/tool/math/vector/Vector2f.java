@@ -129,4 +129,9 @@ public class Vector2f extends Vector {
 		this.y = y;
 	}
 	
+	@Override
+	public Vector2f clone() {
+		return new Vector2f(x, y);		
+	}
+	
 }

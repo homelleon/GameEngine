@@ -7,11 +7,11 @@ import core.EngineMain;
 import manager.gui.text.IGUITextManager;
 import manager.gui.texture.IGUITextureManager;
 import object.gui.gui.IGUI;
-import scene.IScene;
+import scene.Scene;
 
 public class GameManager implements IGameManager {
 
-	IScene scene;
+	Scene scene;
 	protected IGUITextManager textManager;
 	protected IGUITextureManager textureManager;	
 
@@ -23,7 +23,7 @@ public class GameManager implements IGameManager {
 	}
 
 	@Override
-	public IScene getScene() {
+	public Scene getScene() {
 		return this.scene;
 	}
 
