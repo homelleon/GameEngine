@@ -28,7 +28,7 @@ public class EntityRendererManager implements IEntityRendererManager {
 	@Override
 	public void render(Vector4f clipPlane, Collection<ILight> lights, ICamera camera, Matrix4f toShadowMapSpace,
 			Texture environmentMap, boolean isLowDetailed) {
-		if(isLowDetailed) {
+		if (isLowDetailed) {
 			entityRenderers.forEach((renderer, entities) -> 
 				renderer.renderLow(entities, lights, camera, toShadowMapSpace));
 		} else {

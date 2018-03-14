@@ -75,15 +75,15 @@ public class FrustumEntityManager implements IFrustumEntityManager {
 	
 	@Override
 	public List<IEntity> updateWithFrustum(Frustum frustum, ICamera camera, boolean isLowDetail) {		
-		return entityNodes.parallelStream()
+		return entityNodes.stream()
 				.filter(node -> !node.getNamedEntities().isEmpty())
-				.filter(node -> checkVisibity(node.getPosition(), frustum, camera, NODE_CHECK_RADIUS))
+				.filter(node -> checkVisibility(node.getPosition(), frustum, camera, NODE_CHECK_RADIUS))
 				.flatMap(node -> node.getNamedEntities().values().stream())
 				.filter(entity -> checkVisibility(entity, frustum, camera, isLowDetail))
 				.collect(Collectors.toList());
 	}
 	
-	private boolean checkVisibity(Vector3f position, Frustum frustum, ICamera camera, float radius) {
+	private boolean checkVisibility(Vector3f position, Frustum frustum, ICamera camera, float radius) {
 		float distance1 = 0;
 		float distance2 = radius;
 		float distance = Maths.distance2Points(position, camera.getPosition());
@@ -131,7 +131,7 @@ public class FrustumEntityManager implements IFrustumEntityManager {
 
 	@Override
 	public List<IEntity> prepareShadowEntities(IScene scene, Matrix4f shadowMapMatrix, boolean toRebuild) {
-		if(toRebuild) {
+		if (toRebuild) {
 			frustumShadowEntities = prepareEntities(scene, shadowMapMatrix, false);
 		}
 		return frustumShadowEntities;

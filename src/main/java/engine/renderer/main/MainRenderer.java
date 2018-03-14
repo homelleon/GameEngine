@@ -178,17 +178,17 @@ public class MainRenderer implements IMainRenderer {
 		getShadowMapTexture().bind(6);
 	}
 	
-	private void processEntities(IScene scene, boolean isLowDistance, boolean isToRebuild) {
+	private void processEntities(IScene scene, boolean isLowDistance, boolean doRebuild) {
 		List<IEntity> frustumEntities = isLowDistance ?
-			scene.getFrustumEntities().processLowEntities(scene, projectionLowMatrix, isToRebuild) :
-			scene.getFrustumEntities().processHighEntities(scene, projectionNormalMatrix, isToRebuild);
+			scene.getFrustumEntities().processLowEntities(scene, projectionLowMatrix, doRebuild) :
+			scene.getFrustumEntities().processHighEntities(scene, projectionNormalMatrix, doRebuild);
 		frustumEntities.stream().forEach(this::processEntity);
 	}
 	
-	private void processShadowEntities(IScene scene, boolean isToRebuild) {
+	private void processShadowEntities(IScene scene, boolean doRebuild) {
 		List<IEntity> frustumEntities = 
 				scene.getFrustumEntities().prepareShadowEntities(
-						scene, shadowMapRenderer.getToShadowMapMatrix(), isToRebuild);
+						scene, shadowMapRenderer.getToShadowMapMatrix(), doRebuild);
 		frustumEntities.stream().forEach(entity -> processEntity(EngineSettings.ENTITY_TYPE_DECORATE, entity));
 	}
 	

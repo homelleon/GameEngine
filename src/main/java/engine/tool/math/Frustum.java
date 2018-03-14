@@ -149,5 +149,16 @@ public class Frustum {
 		}
 		return distance + radius;
 	}
+	
+	@Override
+	public String toString() {
+		String total = "";
+		for (int i = 0; i < plane[0].length; i++) {
+			for (int j = 0; j < plane.length; j++) {
+				total += "[" + j + "][" + i + "]" + plane[j][i];
+			}
+		}
+		return total;
+	}
 
 }

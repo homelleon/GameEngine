@@ -82,9 +82,9 @@ public class GameSceneRenderer implements ISceneRenderer {
 		// GUI text info
 		String fontName = "candara";
 		fpsText = createFPSText(Math.round(1 / DisplayManager.getFrameTimeSeconds()), fontName);
-		fpsText.setColor(1, 0, 0);
+		fpsText.setColor(255, 0, 0);
 		coordsText = createPickerCoordsText(mousePicker, fontName);
-		coordsText.setColor(1, 0, 0);
+		coordsText.setColor(255, 0, 0);
 		List<GUITexture> textureList = new ArrayList<GUITexture>();
 		// debug texture
 		Texture2D heightMap = scene.getTerrains().get("Terrain1").getMaterial().getHeightMap();
@@ -210,8 +210,17 @@ public class GameSceneRenderer implements ISceneRenderer {
 		controls.update(scene);
 		scene.getPlayer().move(scene.getTerrains().getAll());
 		scene.getCamera().move();
-		if (scene.getPlayer().isMoved())
-			scene.getFrustumEntities().addEntityInNodes(scene.getPlayer());
+		if (scene.getPlayer().isMoved()) {
+			recalcuteEntityNodesChildren();
+			moveSoundListener();
+		}		
+	}
+	
+	private void recalcuteEntityNodesChildren() {
+		scene.getFrustumEntities().addEntityInNodes(scene.getPlayer());
+	}
+	
+	private void moveSoundListener() {
 		scene.getAudioSources().getMaster().setListenerData(scene.getCamera().getPosition());
 	}
 
