@@ -2,10 +2,10 @@ package shader.particle;
 
 
 import core.settings.EngineSettings;
-import shader.ShaderProgram;
+import shader.Shader;
 import tool.math.Matrix4f;
 
-public class ParticleShader extends ShaderProgram {
+public class ParticleShader extends Shader {
 	
 	//----shaders
 	private static final String VERTEX_FILE = EngineSettings.SHADERS_PARTICLE_PATH + "particle_V_shader.glsl";
@@ -22,7 +22,7 @@ public class ParticleShader extends ShaderProgram {
 	private static final String UNIFORM_NUMBER_OF_ROWS = "numberOfRows";
 	
 	public ParticleShader() {
-		super();
+		super(Shader.PARTICLE);
 		addVertexShader(VERTEX_FILE);
 		addFragmentShader(FRAGMENT_FILE);
 		compileShader();

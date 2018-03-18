@@ -8,14 +8,14 @@ import org.lwjgl.util.vector.Vector4f;
 import core.settings.EngineSettings;
 import object.camera.ICamera;
 import object.light.ILight;
-import shader.ShaderProgram;
+import shader.Shader;
 import tool.math.Maths;
 import tool.math.Matrix4f;
 import tool.math.vector.Color;
 import tool.math.vector.Vector2f;
 import tool.math.vector.Vector3f;
 
-public class DecorEntityShader extends ShaderProgram {
+public class DecorEntityShader extends Shader {
 	//----shaders
 	public static final String VERTEX_FILE = EngineSettings.SHADERS_ENTITY_DECOR_PATH + "decorEntity_V_shader.glsl";
 	public static final String FRAGMENT_FILE = EngineSettings.SHADERS_ENTITY_DECOR_PATH + "decorEntity_F_shader.glsl";
@@ -63,7 +63,7 @@ public class DecorEntityShader extends ShaderProgram {
 	public static final String UNIFORM_ATTENUATION = "attenuation";
 	
 	public DecorEntityShader() {
-		super();
+		super(Shader.DECOR_ENTITY);
 		addVertexShader(VERTEX_FILE);
 		addFragmentShader(FRAGMENT_FILE);
 		compileShader();

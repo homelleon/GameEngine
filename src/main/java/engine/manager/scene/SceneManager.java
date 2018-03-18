@@ -12,14 +12,15 @@ import manager.particle.ParticleManager;
 import object.audio.source.AudioSource;
 import object.audio.source.IAudioSource;
 import object.camera.TargetCamera;
-import object.entity.player.IPlayer;
-import object.entity.player.Player;
+import object.entity.Player;
 import object.light.Light;
 import object.water.WaterTile;
 import primitive.buffer.Loader;
 import primitive.model.Model;
 import primitive.texture.material.Material;
 import scene.Scene;
+import shader.Shader;
+import shader.ShaderPool;
 import tool.EngineUtils;
 import tool.math.vector.Color;
 import tool.math.vector.Vector3f;
@@ -49,8 +50,10 @@ public class SceneManager implements ISceneManager {
 	
 	private void initializeEditor(Scene scene) {
 		List<Model> cubeModels = EngineUtils.loadModels("xuchilbara", "xuchilbara_dif", true);
-		IPlayer player1 = new Player(
-				playerName, 
+		Shader playerShader = ShaderPool.getInstance().get(Shader.ENTITY);
+		Player player1 = new Player(
+				playerName,
+				playerShader,
 				cubeModels, 
 				new Vector3f(0, 0, 0), 
 				new Vector3f(0, 0, 0), 
@@ -83,8 +86,10 @@ public class SceneManager implements ISceneManager {
 		if (EngineDebug.hasDebugPermission())
 			EngineDebug.println(cubeModels.get(0).getName(), 2);
 		
-		IPlayer player1 = new Player(
-				playerName, 
+		Shader playerShader = ShaderPool.getInstance().get(Shader.ENTITY);
+		Player player1 = new Player(
+				playerName,
+				playerShader,
 				cubeModels, 
 				new Vector3f(50, 0, 50), 
 				new Vector3f(0, 0, 0), 

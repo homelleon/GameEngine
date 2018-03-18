@@ -16,12 +16,6 @@ import control.KeyboardGame;
 import core.settings.EngineSettings;
 import tool.dataEditor.menu.DataEditorFrame;
 
-/*
- *  Display Manager - Менеджер дисплея приложения
- *  01.02.17
- *  
- */
-
 /**
  * Engine display manager for display control.
  * 

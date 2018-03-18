@@ -2,11 +2,11 @@ package shader.guiTexture;
 
 
 import core.settings.EngineSettings;
-import shader.ShaderProgram;
+import shader.Shader;
 import tool.math.Matrix4f;
 import tool.math.vector.Color;
 
-public class GUITextureShader extends ShaderProgram {
+public class GUITextureShader extends Shader {
 	
 	//----shaders
 	private static final String VERTEX_FILE = EngineSettings.SHADERS_GUI_PATH + "guiTexture_V_shader.glsl";
@@ -23,7 +23,7 @@ public class GUITextureShader extends ShaderProgram {
 	private static final String UNIFORM_MIX_COLOR = "mixColor";
 	
 	public GUITextureShader() {
-		super();
+		super(Shader.GUI_TEXTURE);
 		addVertexShader(VERTEX_FILE);
 		addFragmentShader(FRAGMENT_FILE);
 		compileShader();

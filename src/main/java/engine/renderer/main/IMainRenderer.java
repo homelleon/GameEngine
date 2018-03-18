@@ -3,7 +3,7 @@ package renderer.main;
 import org.lwjgl.util.vector.Vector4f;
 
 import object.camera.ICamera;
-import object.entity.entity.IEntity;
+import object.entity.Entity;
 import scene.Scene;
 import tool.math.Matrix4f;
 
@@ -65,7 +65,7 @@ public interface IMainRenderer {
 	 * @param lights
 	 * @param camera
 	 */
-	void renderCubemap(Scene scene, IEntity shinyEntity, ICamera camera);
+	void renderCubemap(Scene scene, Entity shinyEntity, ICamera camera);
 
 	/**
 	 * 

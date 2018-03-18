@@ -8,8 +8,7 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import core.settings.EngineSettings;
-import object.entity.entity.DecorEntity;
-import object.entity.entity.IEntity;
+import object.entity.Entity;
 import object.water.WaterTile;
 import primitive.buffer.Loader;
 import primitive.model.Mesh;
@@ -20,6 +19,8 @@ import primitive.model.meshLoader.object.OBJFileLoader;
 import primitive.model.meshLoader.objloader.OBJLoader;
 import primitive.texture.Texture2D;
 import primitive.texture.material.Material;
+import shader.Shader;
+import shader.ShaderPool;
 import tool.math.vector.Vector3f;
 
 public class EngineUtils {
@@ -113,7 +114,7 @@ public class EngineUtils {
 		return model;
 	}
 
-	public static List<IEntity> createObjectField(float x, float z, float r, float sizeNoise, float density) {
+	public static List<Entity> createObjectField(float x, float z, float r, float sizeNoise, float density) {
 		Model objectModel = loadModel("spartan", "spartan");
 		objectModel.getMaterial().getDiffuseMap().setNumberOfRows(1);
 		objectModel.getMaterial().setShininess(1);
@@ -126,6 +127,7 @@ public class EngineUtils {
 		int radius = (int) (r * density);
 		float invDensity = 1 / density;
 		Random random = new Random();
+		Shader unitShader = ShaderPool.getInstance().get(Shader.DECOR_ENTITY); 
 		
 		return IntStream.range(0, radius).parallel()
 				.mapToObj(j -> IntStream.range(0, radius).parallel()
@@ -135,8 +137,16 @@ public class EngineUtils {
 							int zSeed = random.nextInt(20);
 							int textIndexSeed = random.nextInt(1);
 							float noise = 0.06f + (float) random.nextInt(10) / 500;
-							IEntity fieldEntity = new DecorEntity("field" + String.valueOf(i) + "-" + String.valueOf(j), Stream.of(objectModel).collect(Collectors.toList()), textIndexSeed,
-									new Vector3f(x + invDensity * i, 0, z + invDensity * j), new Vector3f(0, 0, 0), noise);
+							Entity fieldEntity = new Entity(
+									"field" + String.valueOf(i) + "-" + String.valueOf(j),
+									unitShader,
+									Stream.of(objectModel).collect(Collectors.toList()), 
+									textIndexSeed,
+									new Vector3f(
+											x + invDensity * i, 
+											0, 
+											z + invDensity * j), 
+									new Vector3f(0, 0, 0), noise);
 							fieldEntity.setBaseName("fieldEntity");
 							return fieldEntity;
 						}))

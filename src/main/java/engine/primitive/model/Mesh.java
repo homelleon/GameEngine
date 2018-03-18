@@ -23,7 +23,7 @@ public class Mesh {
 	public Mesh(String name, Mesh mesh) {
 		this.vao = mesh.getVAO();
 		this.vertexCount = mesh.getVertexCount();
-		this.sphere = mesh.getBSphere();
+		this.sphere = mesh.getBoundSphere();
 		this.box = mesh.getBBox();
 		this.name = name;
 	}
@@ -49,7 +49,7 @@ public class Mesh {
 		return this.vertexCount;
 	}
 
-	public BoundingSphere getBSphere() {
+	public BoundingSphere getBoundSphere() {
 		return this.sphere;
 	}
 
@@ -72,7 +72,7 @@ public class Mesh {
 		if(rawModel.getVAO() == this.getVAO() &&
 				rawModel.getVertexCount() == this.getVertexCount() &&
 				rawModel.getBBox() == this.getBBox() &&
-				rawModel.getBSphere() == this.getBSphere()) 
+				rawModel.getBoundSphere() == this.getBoundSphere()) 
 		{
 			return true;
 		} else {

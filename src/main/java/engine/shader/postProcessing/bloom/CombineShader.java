@@ -1,9 +1,9 @@
 package shader.postProcessing.bloom;
 
 import core.settings.EngineSettings;
-import shader.ShaderProgram;
+import shader.Shader;
 
-public class CombineShader extends ShaderProgram {
+public class CombineShader extends Shader {
 
 	//----shaders
 	private static final String VERTEX_FILE = EngineSettings.SHADERS_BLOOM_PATH + "simple_V_shader.glsl";
@@ -16,8 +16,8 @@ public class CombineShader extends ShaderProgram {
 	private static final String UNIFORM_HIGHLIGHT_TEXTURE4 = "highlightMap4";
 	private static final String UNIFORM_HIGHLIGHT_TEXTURE8 = "highlightMap8";
 	
-	protected CombineShader() {
-		super();
+	public CombineShader() {
+		super(Shader.POST_COMBINE);
 		addVertexShader(VERTEX_FILE);
 		addFragmentShader(FRAGMENT_FILE);
 		compileShader();

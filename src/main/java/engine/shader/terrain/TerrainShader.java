@@ -7,13 +7,13 @@ import org.lwjgl.util.vector.Vector4f;
 
 import core.settings.EngineSettings;
 import object.light.ILight;
-import shader.ShaderProgram;
+import shader.Shader;
 import tool.math.Matrix4f;
 import tool.math.vector.Color;
 import tool.math.vector.Vector2f;
 import tool.math.vector.Vector3f;
 
-public class TerrainShader extends ShaderProgram {
+public class TerrainShader extends Shader {
 	
 	//----shaders
 	private static final String VERTEX_FILE = EngineSettings.SHADERS_TERRAIN_PATH + "terrain_V_shader.glsl";
@@ -73,7 +73,7 @@ public class TerrainShader extends ShaderProgram {
 	
 	
 	public TerrainShader() {
-		super();
+		super(Shader.TERRAIN);
 		this.addVertexShader(VERTEX_FILE);
 		this.addFragmentShader(FRAGMENT_FILE);
 		this.addGeometryShader(GEOMETRY_SHADER);

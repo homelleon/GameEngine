@@ -38,7 +38,31 @@ import tool.math.vector.Color;
 import tool.math.vector.Vector2f;
 import tool.math.vector.Vector3f;
 
-public abstract class ShaderProgram {
+public abstract class Shader {
+	
+	public static final int NONE = -1;
+	public static final int DEBUG = 1;
+	public static final int ENTITY = 2;
+	public static final int TERRAIN = 3;
+	public static final int PARTICLE = 4;
+	public static final int GUI_TEXTURE = 5;
+	public static final int FONT = 6;
+	public static final int SKYBOX = 7;
+	public static final int WATER = 8;
+	public static final int BOUNDING = 9;
+	public static final int SHADOW = 10;
+	public static final int POST_BRIGHT_FILTER = 11;
+	public static final int POST_COMBINE = 12;
+	public static final int POST_BLUR_H = 13;
+	public static final int POST_BLUR_V = 14;
+	public static final int POST_CONTRAST = 15;
+	public static final int GPGPU_HEIGHT_MAP = 16;
+	public static final int GPGPU_HEIGHT_POSITION = 17;
+	public static final int GPGPU_NORMAL_MAP = 18;
+	public static final int ANIMATED = 19;
+	public static final int VOXEL = 20;
+	public static final int NORMAL_ENTITY = 21;
+	public static final int DECOR_ENTITY = 22;
 
 	private int programID;
 	private int vertexShaderID;
@@ -47,13 +71,15 @@ public abstract class ShaderProgram {
 	private int tessControlShaderID;
 	private int tessEvaluationShaderID;
 	private int computeShaderID;
+	private int type = -1;
 	
 	private Map<String, Integer> unfiroms;
 	private Map<String, UniformBlock> blockUniforms;
 	
 	private static FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer(16);
 
-	public ShaderProgram() {
+	protected Shader(int type) {
+		this.type = type;
 		this.unfiroms = new HashMap<String, Integer>();
 		programID = GL20.glCreateProgram();
 		if (programID == 0)
@@ -86,6 +112,10 @@ public abstract class ShaderProgram {
 		GL20.glDeleteShader(tessEvaluationShaderID);
 		GL20.glDeleteShader(computeShaderID);
 		GL20.glDeleteProgram(programID);
+	}
+	
+	public int getType() {
+		return type;
 	}
 	
 	protected void compileShader()	{

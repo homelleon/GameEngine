@@ -13,7 +13,7 @@ import bodies.Body3DMesh;
 import bodies.Body3DPyramid;
 import bodies.Body3DSphere;
 import bodies.IBody;
-import object.entity.entity.IEntity;
+import object.entity.Entity;
 import physicMain.PE10;
 
 /*
@@ -52,7 +52,7 @@ public class WorldG extends WorldB implements IWorld {
 	}
 	
 	@Override
-	public int attachToEntity(IEntity entity, int bodyType) {
+	public int attachToEntity(Entity entity, int bodyType) {
 		IBody body = null;
 		switch(bodyType) {
 			case PE10.BODY_2D_CIRCLE: 

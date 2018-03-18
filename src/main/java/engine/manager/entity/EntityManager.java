@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import object.entity.entity.IEntity;
+import object.entity.Entity;
 import tool.manager.AbstractManager;
 
 /**
@@ -19,13 +19,13 @@ import tool.manager.AbstractManager;
  * @see AbstactManager
  * 
  */
-public class EntityManager extends AbstractManager<IEntity> implements IEntityManager {
+public class EntityManager extends AbstractManager<Entity> implements IEntityManager {
 
-	private List<IEntity> pointedEntities = new ArrayList<IEntity>();
-	private List<IEntity> editorEntities = new ArrayList<IEntity>();
+	private List<Entity> pointedEntities = new ArrayList<Entity>();
+	private List<Entity> editorEntities = new ArrayList<Entity>();
 	
 	@Override
-	public void addPointedList(Collection<IEntity> pointedList) {
+	public void addPointedList(Collection<Entity> pointedList) {
 		pointedList.forEach(entity -> {
 			entity.setChosen(true);
 			this.pointedEntities.add(entity);
@@ -33,14 +33,14 @@ public class EntityManager extends AbstractManager<IEntity> implements IEntityMa
 	}
 
 	@Override
-	public void setEditorList(List<IEntity> editorList) {
+	public void setEditorList(List<Entity> editorList) {
 		if (editorList != null) {
 			this.editorEntities = editorList;
 		}
 	}
 
 	@Override
-	public void addPointed(IEntity entity) {
+	public void addPointed(Entity entity) {
 		if (entity != null) {
 			entity.setChosen(true);
 			this.pointedEntities.add(entity);
@@ -48,22 +48,22 @@ public class EntityManager extends AbstractManager<IEntity> implements IEntityMa
 	}
 
 	@Override
-	public void addForEditor(IEntity entity) {
+	public void addForEditor(Entity entity) {
 		this.editorEntities.add(entity);
 	}
 
 	@Override
-	public List<IEntity> getPointed() {
+	public List<Entity> getPointed() {
 		return this.pointedEntities;
 	}
 
 	@Override
-	public List<IEntity> getForEditor() {
+	public List<Entity> getForEditor() {
 		return this.editorEntities;
 	}
 
 	@Override
-	public IEntity getForEditorByIndex(int index) {
+	public Entity getForEditorByIndex(int index) {
 		return this.editorEntities.get(index);
 	}
 

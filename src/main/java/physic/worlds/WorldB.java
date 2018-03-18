@@ -8,7 +8,7 @@ import org.lwjgl.util.vector.Vector3f;
 
 import bodies.IBody;
 import intersects.IntersectData;
-import object.entity.entity.IEntity;
+import object.entity.Entity;
 
 public abstract class WorldB {
 	
@@ -42,7 +42,7 @@ public abstract class WorldB {
 		return isSucced;
 	}
 	
-	protected int attachToEntity(IEntity entity, int bodyType) {
+	protected int attachToEntity(Entity entity, int bodyType) {
 		return 0;
 	}
 	

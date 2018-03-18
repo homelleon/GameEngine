@@ -1,9 +1,9 @@
 package shader.postProcessing.gaussianBlur;
 
 import core.settings.EngineSettings;
-import shader.ShaderProgram;
+import shader.Shader;
 
-public class VerticalBlurShader extends ShaderProgram {
+public class VerticalBlurShader extends Shader {
 	
 	//----shaders
 	private static final String VERTEX_FILE = EngineSettings.SHADERS_BLUR_PATH + "verticalBlur_V_shader.glsl";
@@ -13,8 +13,8 @@ public class VerticalBlurShader extends ShaderProgram {
 	//----uniforms
 	private static final String UNIFORM_TARGET_HEIGHT = "targetHeight";
 	
-	protected VerticalBlurShader() {
-		super();
+	public VerticalBlurShader() {
+		super(Shader.POST_BLUR_V);
 		addVertexShader(VERTEX_FILE);
 		addFragmentShader(FRAGMENT_FILE);
 		compileShader();

@@ -1,7 +1,7 @@
 package bodies;
 
 import intersects.IntersectData;
-import object.entity.entity.IEntity;
+import object.entity.Entity;
 import physicMain.PE10;
 import tool.math.vector.Vector3f;
 
@@ -48,12 +48,12 @@ public class Body2DTriangle extends BodyBasic implements IBody {
 		return data;		
 	}
 	
-	public void attachEntity(IEntity entity) {
+	public void attachEntity(Entity entity) {
 		super.attachEntity(entity);
 	}
 	
 	@Override
-	public IEntity getEntity() {
+	public Entity getEntity() {
 		return super.getEntity();
 	}
 	

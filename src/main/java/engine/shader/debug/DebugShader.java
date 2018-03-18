@@ -1,9 +1,9 @@
 package shader.debug;
 
 import core.settings.EngineSettings;
-import shader.ShaderProgram;
+import shader.Shader;
 
-public class DebugShader extends ShaderProgram {
+public class DebugShader extends Shader {
 	//----shaders
 	private static final String VERTEX_FILE = EngineSettings.SHADERS_DEBUG + "debug_V_shader.glsl";
 	private static final String FRAGMENT_FILE = EngineSettings.SHADERS_DEBUG + "debug_F_shader.glsl";
@@ -17,7 +17,7 @@ public class DebugShader extends ShaderProgram {
 	private static final String UNIFORM_UN1 = "uniform1";
 	
 	public DebugShader() {
-		super();
+		super(Shader.DEBUG);
 		addVertexShader(VERTEX_FILE);
 		addFragmentShader(FRAGMENT_FILE);
 		compileShader();

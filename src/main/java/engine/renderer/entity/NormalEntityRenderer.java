@@ -9,7 +9,7 @@ import org.lwjgl.util.vector.Vector4f;
 
 import core.settings.EngineSettings;
 import object.camera.ICamera;
-import object.entity.entity.IEntity;
+import object.entity.Entity;
 import object.light.ILight;
 import primitive.buffer.VAO;
 import primitive.model.Mesh;
@@ -37,7 +37,7 @@ public class NormalEntityRenderer implements IEntityRenderer {
 	}
 
 	@Override
-	public void renderHigh(Map<Model, List<IEntity>> entities, Vector4f clipPlane, Collection<ILight> lights,
+	public void renderHigh(Map<Model, List<Entity>> entities, Vector4f clipPlane, Collection<ILight> lights,
 			ICamera camera, Matrix4f toShadowMapSpace, Texture environmentMap) {
 		if(!entities.isEmpty()) {
 			shader.start();
@@ -60,7 +60,7 @@ public class NormalEntityRenderer implements IEntityRenderer {
 	}
 	
 	@Override
-	public void renderLow(Map<Model, List<IEntity>> entities, Collection<ILight> lights, ICamera camera, Matrix4f toShadowMapSpace) {
+	public void renderLow(Map<Model, List<Entity>> entities, Collection<ILight> lights, ICamera camera, Matrix4f toShadowMapSpace) {
 		GL11.glClearColor(1, 1, 1, 1);
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 		shader.start();
@@ -116,7 +116,7 @@ public class NormalEntityRenderer implements IEntityRenderer {
 		VAO.unbind(0, 1, 2, 3);
 	}
 
-	private void prepareInstance(IEntity entity) {
+	private void prepareInstance(Entity entity) {
 		Matrix4f transformationMatrix = Maths.createTransformationMatrix(entity.getPosition(), entity.getRotation().getX(),
 				entity.getRotation().getY(), entity.getRotation().getZ(), entity.getScale());
 		shader.loadTransformationMatrix(transformationMatrix);

@@ -1,9 +1,9 @@
 package shader.gpgpu;
 
 import core.settings.EngineSettings;
-import shader.ShaderProgram;
+import shader.Shader;
 
-public class NormalMapShader extends ShaderProgram {
+public class NormalMapShader extends Shader {
 	
 	//---shaders
 	private static final String COMPUTE_FILE = EngineSettings.SHADERS_GPGPU_PATH + "normalMap_C_shader.glsl";
@@ -15,7 +15,7 @@ public class NormalMapShader extends ShaderProgram {
 	private static final String UNIFORM_HEIGHT_MAP = "heightMap";
 	
 	public NormalMapShader() {
-		super();
+		super(Shader.GPGPU_NORMAL_MAP);
 		addComputeShader(COMPUTE_FILE);
 		compileShader();
 	}

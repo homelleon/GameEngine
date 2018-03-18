@@ -1,33 +1,25 @@
 package object.entity;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import core.settings.EngineSettings;
 import manager.octree.EntityNode;
-import object.GameObject;
-import object.entity.entity.IEntity;
 import primitive.model.Model;
+import scene.Drawable;
+import shader.Shader;
 import tool.math.vector.Vector2f;
 import tool.math.vector.Vector3f;
 
-public abstract class AEntity extends GameObject {
+public class Entity extends Drawable<Vector3f> {
 	
-	protected List<Model> models = new ArrayList<Model>(); // текстурная модель
 	protected String baseName;
-	protected Vector3f position; // позиция
-	protected Vector3f rotation; // повороты
-	protected float scale = 1f; // масштаб
-	protected float radius; // радицс
-	protected boolean isVisible = true; // видимый
-	protected boolean isChosen = false; // выбранный
+	protected float radius;
+	protected boolean isVisible = true;
+	protected boolean isChosen = false;
 	protected boolean isMoved = false;
 	protected EntityNode parent = null;
 
-	protected int textureIndex = 0; // индекс текстуры
-	protected int typeID = EngineSettings.ENTITY_TYPE_SIMPLE; // тип объекта
-
+	protected int textureIndex = 0;
 	/**
 	 * 
 	 * @param name
@@ -39,11 +31,9 @@ public abstract class AEntity extends GameObject {
 	 * @param rotZ
 	 * @param scale
 	 */
-	public AEntity(String name, int typeID, Collection<Model> modelList, Vector3f position, Vector3f rotation, float scale) {
-		super(name);
-		this.typeID = typeID;
-		this.models.addAll(modelList);
-		this.radius = this.models.get(0).getMesh().getBSphere().getRadius() * scale;
+	public Entity(String name, Shader shader, List<Model> models, Vector3f position, Vector3f rotation, float scale) {
+		super(name, shader, models);
+		this.radius = this.models.get(0).getMesh().getBoundSphere().getRadius() * scale;
 		this.position = position;
 		this.rotation = rotation;
 		this.scale = scale;
@@ -61,12 +51,10 @@ public abstract class AEntity extends GameObject {
 	 * @param rotZ
 	 * @param scale
 	 */
-	public AEntity(String name, int typeID, Collection<Model> modelList, int textureIndex, Vector3f position, Vector3f rotation, float scale) {
-		super(name);
-		this.typeID = typeID;
+	public Entity(String name, Shader shader, Collection<Model> models, int textureIndex, Vector3f position, Vector3f rotation, float scale) {
+		super(name, shader, models);
 		this.textureIndex = textureIndex;
-		this.models.addAll(modelList);
-		this.radius = this.models.get(0).getMesh().getBSphere().getRadius() * scale;
+		this.radius = this.models.get(0).getMesh().getBoundSphere().getRadius() * scale;
 		this.position = position;
 		this.rotation = rotation;
 		this.scale = scale;
@@ -81,7 +69,7 @@ public abstract class AEntity extends GameObject {
 	 }
 	 
 	 public boolean removeParentNode() {
-		 if(hasParent()) {
+		 if (hasParent()) {
 			 this.parent = null;
 			 return true;
 		 } else {
@@ -105,7 +93,7 @@ public abstract class AEntity extends GameObject {
 		return isVisible;
 	}
 
-	public synchronized void setVisible(boolean isVisible) {
+	public void setVisible(boolean isVisible) {
 		this.isVisible = isVisible;
 	}
 	
@@ -117,25 +105,25 @@ public abstract class AEntity extends GameObject {
 		return new Vector2f(xOffset, yOffset);
 	}
 
-	public synchronized void increasePosition(float dx, float dy, float dz) {
+	public void increasePosition(float dx, float dy, float dz) {
 		this.position.x += dx;
 		this.position.y += dy;
 		this.position.z += dz;
 	}
 
-	public synchronized void move(float forwardSpeed, float strafeSpeed) {
+	public void move(float forwardSpeed, float strafeSpeed) {
 		this.isMoved = false;
 		if(forwardSpeed > 0 || strafeSpeed > 0) {
 			this.isMoved = true;
 		}
-		float dx = (float) (forwardSpeed * Math.sin(Math.toRadians(this.rotation.getY()))
-				+ (strafeSpeed * Math.sin(Math.toRadians(this.rotation.getY() + 90))));
-		float dz = (float) (forwardSpeed * Math.cos(Math.toRadians(this.rotation.getY()))
-				+ (strafeSpeed * Math.cos(Math.toRadians(this.rotation.getY() + 90))));
+		float dx = (float) (forwardSpeed * Math.sin(Math.toRadians(((Vector3f)this.rotation).getY()))
+				+ (strafeSpeed * Math.sin(Math.toRadians(((Vector3f) this.rotation).getY() + 90))));
+		float dz = (float) (forwardSpeed * Math.cos(Math.toRadians(((Vector3f) this.rotation).getY()))
+				+ (strafeSpeed * Math.cos(Math.toRadians(((Vector3f) this.rotation).getY() + 90))));
 		increasePosition(dx, 0, dz);
 	}
 
-	public synchronized void increaseRotation(float dx, float dy, float dz) {
+	public void increaseRotation(float dx, float dy, float dz) {
 		this.rotation.x += dx;
 		this.rotation.y += dy;
 		this.rotation.z += dz;
@@ -148,50 +136,22 @@ public abstract class AEntity extends GameObject {
 	public void setBaseName(String name) {
 		this.baseName = name;
 	}
-
-	public int getType() {
-		return this.typeID;
-	}
-
-	public List<Model> getModels() {
-		return models;
-	}
-
-	public void addModel(Model model) {
-		this.models.add(model);
-	}
-
-	public Vector3f getPosition() {
-		return position;
-	}
-
-	public synchronized void setPosition(Vector3f position) {
-		this.position = position;
-	}
-
-	public synchronized void setRotation(Vector3f rotation) {
-		this.rotation = rotation;
-		
-	}
-
-	public Vector3f getRotation() {
-		return this.rotation;
-	}
-
-	public float getScale() {
-		return scale;
-	}
-
-	public synchronized void setScale(float scale) {
-		this.scale = scale;
-		this.radius =  models.get(0).getMesh().getBSphere().getRadius() * scale;
+	
+	@Override
+	public Entity setScale(float scale) {
+		this.radius =  models.get(0).getMesh().getBoundSphere().getRadius() * scale;
+		return (Entity) super.setScale(scale);
 	}
 
 	public float getSphereRadius() {
 		return this.radius;
 	}
 	
-	public abstract IEntity clone(String name);
+	public Entity clone(String name) {
+		Entity entity = new Entity(name, shader, models, this.textureIndex, new Vector3f((Vector3f) this.position), new Vector3f(this.rotation), this.scale);
+		entity.setBaseName(this.getName());
+		return entity;
+	}
 
 	public boolean isMoved() {
 		return isMoved;
@@ -202,7 +162,7 @@ public abstract class AEntity extends GameObject {
 	}
 	
 	public void delete() {
-		if(this.parent != null) {
+		if (this.parent != null) {
 			this.parent.removeEntity(this.getName());
 			this.parent = null;
 		}

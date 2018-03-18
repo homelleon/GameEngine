@@ -7,7 +7,7 @@ import control.KeyboardGame;
 import control.MouseGame;
 import core.loop.Loop;
 import core.settings.EngineSettings;
-import object.entity.player.IPlayer;
+import object.entity.Player;
 import tool.math.Maths;
 import tool.math.Matrix4f;
 import tool.math.vector.Vector3f;
@@ -36,9 +36,9 @@ public class TargetCamera extends BaseCamera implements ICamera {
 	private float moveOffsetY = 5;
 	private float moveOffsetX = 0;
 
-	private IPlayer player;
+	private Player player;
 
-	public TargetCamera(String name, IPlayer player) {
+	public TargetCamera(String name, Player player) {
 		super(name, new Vector3f(0,0,0));
 		this.player = player;
 		this.name = name;

@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.NavigableMap;
 import java.util.TreeMap;
 
-import object.entity.entity.IEntity;
+import object.entity.Entity;
 import tool.math.Maths;
 import tool.math.vector.Vector3f;
 
@@ -21,7 +21,7 @@ public class EntityNode extends Node {
 	public static final float BIG_RADIUS = (float) Math.sqrt(2 * RADIUS * RADIUS);
 	private Vector3f position = new Vector3f(0,0,0);
 	private NavigableMap<Vector3f, String> positionedEntityMap = new TreeMap<Vector3f, String>();
-	private Map<String, IEntity> namedEntityMap = new HashMap<String, IEntity>();
+	private Map<String, Entity> namedEntityMap = new HashMap<String, Entity>();
 
 	public EntityNode(Vector3f position) {
 		super();
@@ -45,7 +45,7 @@ public class EntityNode extends Node {
 		this.position = position;
 	}
 	
-	public synchronized void addEntity(IEntity entity) {
+	public synchronized void addEntity(Entity entity) {
 		positionedEntityMap.put(entity.getPosition(), entity.getName());
 		namedEntityMap.put(entity.getName(), entity);
 		entity.setParentNode(this);
@@ -55,18 +55,18 @@ public class EntityNode extends Node {
 		return positionedEntityMap;
 	}
 	
-	public Map<String, IEntity> getNamedEntities() {
+	public Map<String, Entity> getNamedEntities() {
 		return namedEntityMap;
 	}
 	
-	public boolean isBounding(IEntity entity) {
+	public boolean isBounding(Entity entity) {
 		float distance = Maths.distance2Points(this.position, entity.getPosition());
 		return distance <= BIG_RADIUS;
 	}
 	
 	public boolean removeEntity(String name) {
 		if(namedEntityMap.containsKey(name)) {
-			IEntity entity = namedEntityMap.get(name);
+			Entity entity = namedEntityMap.get(name);
 			if(positionedEntityMap.containsKey(entity.getPosition())) {
 				positionedEntityMap.remove(entity.getPosition());
 				namedEntityMap.remove(name);

@@ -5,9 +5,9 @@ import java.util.Map;
 
 import org.lwjgl.util.vector.Vector3f;
 
-import object.entity.entity.IEntity;
-import worlds.WorldG;
+import object.entity.Entity;
 import worlds.IWorld;
+import worlds.WorldG;
 
 /* 
  * 
@@ -101,7 +101,7 @@ public class PE10 {
 	}
 	
 	//TODO Implement worlds.add method and attaching with body of certain type
-	public static int peAttachBody(IEntity entity, int type, int worldID) {
+	public static int peAttachBody(Entity entity, int type, int worldID) {
 		int id = -1;
 		if(!peErrNoInit()) {
 			if(!peErrNoIDWorld(worldID)) {

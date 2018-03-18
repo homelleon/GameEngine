@@ -86,7 +86,7 @@ public class RawMapXMLParser extends XMLParser implements IObjectParser<IRawMana
 				objLoader.clean();
 				
 				Mesh[] meshes = new Mesh[meshesBase.length];
-				for(int i=0; i < meshesBase.length; i++) {
+				for (int i=0; i < meshesBase.length; i++) {
 					meshes[i] = meshesBase[i].clone(name);
 				}
 				

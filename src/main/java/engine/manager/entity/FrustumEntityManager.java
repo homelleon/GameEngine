@@ -9,7 +9,7 @@ import core.debug.EngineDebug;
 import core.settings.EngineSettings;
 import manager.octree.EntityNode;
 import object.camera.ICamera;
-import object.entity.entity.IEntity;
+import object.entity.Entity;
 import scene.Scene;
 import tool.math.Frustum;
 import tool.math.Maths;
@@ -21,16 +21,16 @@ public class FrustumEntityManager implements IFrustumEntityManager {
 	private static float NODE_CHECK_RADIUS = EngineSettings.RENDERING_VIEW_DISTANCE + EntityNode.RADIUS;
 	private List<EntityNode> entityNodes = new ArrayList<EntityNode>();
 	private Frustum frustum;
-	private List<IEntity> frustumHighEntities = new ArrayList<IEntity>();
-	private List<IEntity> frustumLowEntities = new ArrayList<IEntity>();
-	private List<IEntity> frustumShadowEntities = new ArrayList<IEntity>();
+	private List<Entity> frustumHighEntities = new ArrayList<Entity>();
+	private List<Entity> frustumLowEntities = new ArrayList<Entity>();
+	private List<Entity> frustumShadowEntities = new ArrayList<Entity>();
 
 	public FrustumEntityManager(Frustum frustum) {
 		this.frustum = frustum;
 	}
 	
 	@Override
-	public void rebuildNodes(Collection<IEntity> entities) {
+	public void rebuildNodes(Collection<Entity> entities) {
 		if (EngineDebug.hasDebugPermission()) {
 			EngineDebug.printBorder();
 			EngineDebug.printOpen("Entity nodes");
@@ -47,7 +47,7 @@ public class FrustumEntityManager implements IFrustumEntityManager {
 	}
 	
 	@Override
-	public void addEntityInNodes(IEntity entity) {
+	public void addEntityInNodes(Entity entity) {
 		if (entity.hasParent()) {
 			EntityNode parent = entity.getParentNode();
 			parent.removeEntity(entity.getName());
@@ -74,7 +74,7 @@ public class FrustumEntityManager implements IFrustumEntityManager {
 	}
 	
 	@Override
-	public List<IEntity> updateWithFrustum(Frustum frustum, ICamera camera, boolean isLowDetail) {		
+	public List<Entity> updateWithFrustum(Frustum frustum, ICamera camera, boolean isLowDetail) {		
 		return entityNodes.stream()
 				.filter(node -> !node.getNamedEntities().isEmpty())
 				.filter(node -> checkVisibility(node.getPosition(), frustum, camera, NODE_CHECK_RADIUS))
@@ -92,16 +92,12 @@ public class FrustumEntityManager implements IFrustumEntityManager {
 				frustum.sphereInFrustum(position, EntityNode.BIG_RADIUS);
 	}
 	
-	private boolean checkVisibility(IEntity entity, Frustum frustum, ICamera camera, boolean isLowDetail) {
+	private boolean checkVisibility(Entity entity, Frustum frustum, ICamera camera, boolean isLowDetail) {
 		float distance1 = 0;
 		float distance2 = EngineSettings.RENDERING_VIEW_DISTANCE;
 		
 		if (isLowDetail) {
 			distance2 /= 2;
-		}
-		
-		if (entity.getType() == EngineSettings.ENTITY_TYPE_DECORATE) {
-			distance2 /= 4;
 		}
 		
 		float distance = Maths.distance2Points(entity.getPosition(), camera.getPosition());
@@ -112,7 +108,7 @@ public class FrustumEntityManager implements IFrustumEntityManager {
 	}
 
 	@Override
-	public List<IEntity> processHighEntities(Scene scene, Matrix4f projectionMatrix, boolean toRebuild) {
+	public List<Entity> processHighEntities(Scene scene, Matrix4f projectionMatrix, boolean toRebuild) {
 		if (toRebuild) {
 			Matrix4f projectionViewMatrix = Matrix4f.mul(projectionMatrix, scene.getCamera().getViewMatrix()); 
 			frustumHighEntities = prepareEntities(scene, projectionViewMatrix, false);
@@ -121,7 +117,7 @@ public class FrustumEntityManager implements IFrustumEntityManager {
 	}
 	
 	@Override
-	public List<IEntity> processLowEntities(Scene scene, Matrix4f projectionMatrix, boolean toRebuild) {
+	public List<Entity> processLowEntities(Scene scene, Matrix4f projectionMatrix, boolean toRebuild) {
 		if (toRebuild) {
 			Matrix4f projectionViewMatrix = Matrix4f.mul(projectionMatrix, scene.getCamera().getViewMatrix());		
 			frustumLowEntities = prepareEntities(scene, projectionViewMatrix, true);
@@ -130,30 +126,30 @@ public class FrustumEntityManager implements IFrustumEntityManager {
 	}
 
 	@Override
-	public List<IEntity> prepareShadowEntities(Scene scene, Matrix4f shadowMapMatrix, boolean toRebuild) {
+	public List<Entity> prepareShadowEntities(Scene scene, Matrix4f shadowMapMatrix, boolean toRebuild) {
 		if (toRebuild) {
 			frustumShadowEntities = prepareEntities(scene, shadowMapMatrix, false);
 		}
 		return frustumShadowEntities;
 	}
 	
-	private List<IEntity> prepareEntities(Scene scene, Matrix4f projectionMatrix, boolean isLowDetail) {
+	private List<Entity> prepareEntities(Scene scene, Matrix4f projectionMatrix, boolean isLowDetail) {
 		frustum.extractFrustum(projectionMatrix);
 		return updateWithFrustum(frustum, scene.getCamera(), isLowDetail);
 	}
 
 	@Override
-	public List<IEntity> getHighEntities() {
+	public List<Entity> getHighEntities() {
 		return frustumHighEntities;
 	}
 	
 	@Override
-	public List<IEntity> getLowEntities() {
+	public List<Entity> getLowEntities() {
 		return frustumLowEntities;
 	}
 
 	@Override
-	public List<IEntity> getShadowEntities() {
+	public List<Entity> getShadowEntities() {
 		return frustumShadowEntities;
 	}
 

@@ -1,9 +1,14 @@
 package object.entity.entity.builder;
 
-import object.entity.entity.IEntity;
+import object.entity.Entity;
 import primitive.model.Model;
 import tool.math.vector.Vector3f;
 
+/**
+ * 
+ * @author homelleon
+ * @see EntityBuilder
+ */
 public interface IEntityBuilder {
 	
 	public IEntityBuilder setModel(Model model);
@@ -16,6 +21,6 @@ public interface IEntityBuilder {
 	
 	public IEntityBuilder setTextureIndex(int index);
 
-	public IEntity build(String name);
+	public Entity build(String name);
 
 }

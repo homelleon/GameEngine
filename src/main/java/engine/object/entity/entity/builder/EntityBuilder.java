@@ -3,10 +3,10 @@ package object.entity.entity.builder;
 import java.util.ArrayList;
 import java.util.List;
 
-import object.entity.entity.IEntity;
-import object.entity.entity.NormalMappedEntity;
-import object.entity.entity.TexturedEntity;
+import object.entity.Entity;
 import primitive.model.Model;
+import shader.Shader;
+import shader.ShaderPool;
 import tool.math.vector.Vector3f;
 
 public class EntityBuilder implements IEntityBuilder {
@@ -48,13 +48,13 @@ public class EntityBuilder implements IEntityBuilder {
 	}
 
 	@Override
-	public IEntity build(String name) {
-		if(!models.isEmpty()) {
-			if(models.get(0).getMaterial().getNormalMap()!= null) {
-				return new NormalMappedEntity(name, models, textureIndex, position, rotation, scale);
-			} else {
-				return new TexturedEntity(name, models, textureIndex, position, rotation, scale);
-			}
+	public Entity build(String name) {
+		if (!models.isEmpty()) {
+			int shaderType = models.get(0).getMaterial().getNormalMap()!= null ?
+				Shader.NORMAL_ENTITY :
+				Shader.ENTITY;
+			Shader shader = ShaderPool.getInstance().get(shaderType);
+			return new Entity(name, shader, models, textureIndex, position, rotation, scale);
 		} else {
 			throw new NullPointerException("No model defined for entity builder!");
 		}

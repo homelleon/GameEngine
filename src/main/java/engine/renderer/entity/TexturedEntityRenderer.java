@@ -10,7 +10,7 @@ import org.lwjgl.util.vector.Vector4f;
 
 import core.settings.EngineSettings;
 import object.camera.ICamera;
-import object.entity.entity.IEntity;
+import object.entity.Entity;
 import object.light.ILight;
 import object.light.Light;
 import primitive.buffer.VAO;
@@ -19,7 +19,7 @@ import primitive.model.Model;
 import primitive.texture.Texture;
 import primitive.texture.material.Material;
 import renderer.main.IMainRenderer;
-import shader.entity.textured.TexturedEntityShader;
+import shader.entity.textured.EntityShader;
 import tool.math.Maths;
 import tool.math.Matrix4f;
 import tool.math.vector.Color;
@@ -41,7 +41,7 @@ import tool.openGL.OGLUtils;
  */
 public class TexturedEntityRenderer implements IEntityRenderer {
 
-	private TexturedEntityShader shader;
+	private EntityShader shader;
 	private Texture environmentMap;
 
 	/**
@@ -56,7 +56,7 @@ public class TexturedEntityRenderer implements IEntityRenderer {
 	 */
 
 	public TexturedEntityRenderer(Matrix4f projectionMatrix) {
-		this.shader = new TexturedEntityShader();
+		this.shader = new EntityShader();
 		shader.start();
 		shader.loadProjectionMatrix(projectionMatrix);
 		shader.connectTextureUnits();
@@ -87,7 +87,7 @@ public class TexturedEntityRenderer implements IEntityRenderer {
 	 * @see ICamera
 	 * @see Texture
 	 */
-	public void renderHigh(Map<Model, List<IEntity>> entities, Vector4f clipPlane, Collection<ILight> lights,
+	public void renderHigh(Map<Model, List<Entity>> entities, Vector4f clipPlane, Collection<ILight> lights,
 			ICamera camera, Matrix4f toShadowMapSpace, Texture environmentMap) {
 		if (!entities.isEmpty()) {
 			this.environmentMap = environmentMap;
@@ -130,7 +130,7 @@ public class TexturedEntityRenderer implements IEntityRenderer {
 	 * @see Light
 	 * @see ICamera
 	 */
-	public void renderLow(Map<Model, List<IEntity>> entities, Collection<ILight> lights, ICamera camera, Matrix4f toShadowMapSpace) {
+	public void renderLow(Map<Model, List<Entity>> entities, Collection<ILight> lights, ICamera camera, Matrix4f toShadowMapSpace) {
 		GL11.glClearColor(1, 1, 1, 1);
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 		shader.start();
@@ -220,10 +220,10 @@ public class TexturedEntityRenderer implements IEntityRenderer {
 	 * Prepare entity shader for each entity used as value.
 	 * 
 	 * @param entity
-	 *            -{@link IEntity} used to prepare entity shader
+	 *            -{@link Entity} used to prepare entity shader
 	 */
 
-	private void prepareInstance(IEntity entity) {
+	private void prepareInstance(Entity entity) {
 		Matrix4f transformationMatrix = Maths.createTransformationMatrix(entity.getPosition(), entity.getRotation().getX(),
 				entity.getRotation().getY(), entity.getRotation().getZ(), entity.getScale());
 		shader.loadTranformationMatrix(transformationMatrix);

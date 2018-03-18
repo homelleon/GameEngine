@@ -14,7 +14,7 @@ import core.EngineMain;
 import core.debug.EngineDebug;
 import core.settings.EngineSettings;
 import object.camera.ICamera;
-import object.entity.entity.IEntity;
+import object.entity.Entity;
 import object.terrain.terrain.ITerrain;
 import primitive.model.Model;
 import primitive.texture.Texture;
@@ -33,6 +33,7 @@ import renderer.skybox.SkyboxRenderer;
 import renderer.terrain.TerrainRenderer;
 import renderer.voxel.VoxelRenderer;
 import scene.Scene;
+import shader.Shader;
 import tool.math.Matrix4f;
 import tool.openGL.OGLUtils;
 
@@ -57,9 +58,9 @@ public class MainRenderer implements IMainRenderer {
 	private boolean environmentDynamic = false;
 	private boolean environmentRendered = false;
 
-	private Map<Model, List<IEntity>> texturedEntities = new HashMap<Model, List<IEntity>>();
-	private Map<Model, List<IEntity>> normalEntities = new HashMap<Model, List<IEntity>>();
-	private Map<Model, List<IEntity>> decorEntities = new HashMap<Model, List<IEntity>>();
+	private Map<Model, List<Entity>> texturedEntities = new HashMap<Model, List<Entity>>();
+	private Map<Model, List<Entity>> normalEntities = new HashMap<Model, List<Entity>>();
+	private Map<Model, List<Entity>> decorEntities = new HashMap<Model, List<Entity>>();
 	private Collection<ITerrain> terrains = new ArrayList<ITerrain>();
 
 	public MainRenderer(Scene scene) {
@@ -113,7 +114,7 @@ public class MainRenderer implements IMainRenderer {
 	}
 
 	@Override
-	public void renderCubemap(Scene scene, IEntity shinyEntity, ICamera camera) {
+	public void renderCubemap(Scene scene, Entity shinyEntity, ICamera camera) {
 		scene.getEntities().delete(shinyEntity.getName());
 		processEntities(scene, true, true);
 		
@@ -179,14 +180,14 @@ public class MainRenderer implements IMainRenderer {
 	}
 	
 	private void processEntities(Scene scene, boolean isLowDistance, boolean doRebuild) {
-		List<IEntity> frustumEntities = isLowDistance ?
+		List<Entity> frustumEntities = isLowDistance ?
 			scene.getFrustumEntities().processLowEntities(scene, projectionLowMatrix, doRebuild) :
 			scene.getFrustumEntities().processHighEntities(scene, projectionNormalMatrix, doRebuild);
 		frustumEntities.stream().forEach(this::processEntity);
 	}
 	
 	private void processShadowEntities(Scene scene, boolean doRebuild) {
-		List<IEntity> frustumEntities = 
+		List<Entity> frustumEntities = 
 				scene.getFrustumEntities().prepareShadowEntities(
 						scene, shadowMapRenderer.getToShadowMapMatrix(), doRebuild);
 		frustumEntities.stream().forEach(entity -> processEntity(EngineSettings.ENTITY_TYPE_DECORATE, entity));
@@ -235,19 +236,19 @@ public class MainRenderer implements IMainRenderer {
 		processor.processTerrain(terrain, terrains);
 	}
 	
-	private void processEntity(IEntity entity) {
-		processEntity(entity.getType(), entity);
+	private void processEntity(Entity entity) {
+		processEntity(entity.getShader().getType(), entity);
 	}
 	
-	private synchronized void processEntity(int type, IEntity entity) {
+	private synchronized void processEntity(int type, Entity entity) {
 		switch(type) {
-		 	case EngineSettings.ENTITY_TYPE_SIMPLE:
+		 	case Shader.ENTITY:
 		 		processor.processEntity(entity, texturedEntities);
 		 		break;
-		 	case EngineSettings.ENTITY_TYPE_DECORATE:
+		 	case Shader.DECOR_ENTITY:
 		 		processor.processEntity(entity, decorEntities);
 		 		break;
-		 	case EngineSettings.ENTITY_TYPE_NORMAL:
+		 	case Shader.NORMAL_ENTITY:
 		 		processor.processEntity(entity, normalEntities);
 		 		break;
 		}

@@ -19,8 +19,8 @@ import manager.voxel.IChunkManager;
 import manager.water.IWaterManager;
 import object.audio.master.IAudioMaster;
 import object.camera.ICamera;
-import object.entity.entity.IEntity;
-import object.entity.player.IPlayer;
+import object.entity.Entity;
+import object.entity.Player;
 import object.light.Light;
 import object.particle.ParticleSystem;
 import object.terrain.terrain.ITerrain;
@@ -31,7 +31,7 @@ import tool.math.vector.Vector3f;
 public class Scene extends AObjectManager {
 
 	private final static int CHUNK_WORLD_SIZE = 2;
-	private IPlayer player;
+	private Player player;
 	private ICamera camera;
 	private Light sun;
 	private Frustum frustum;
@@ -83,11 +83,11 @@ public class Scene extends AObjectManager {
 		return environmentMap;
 	}
 
-	public IPlayer getPlayer() {
+	public Player getPlayer() {
 		return player;
 	}
 
-	public Scene setPlayer(IPlayer player) {
+	public Scene setPlayer(Player player) {
 		this.player = player;
 		return this;
 	}
@@ -202,9 +202,9 @@ public class Scene extends AObjectManager {
 		return position;
 	}
 	
-	public Scene spreadEntitiesOnHeights(Collection<IEntity> entityList) {
+	public Scene spreadEntitiesOnHeights(Collection<Entity> entityList) {
 		if (!entityList.isEmpty()) {
-			for (IEntity entity : entityList) {
+			for (Entity entity : entityList) {
 				float terrainHeight = 0;
 
 				for (ITerrain terrain : terrainManager.getAll()) {

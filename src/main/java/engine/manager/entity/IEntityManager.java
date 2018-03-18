@@ -3,7 +3,7 @@ package manager.entity;
 import java.util.Collection;
 import java.util.List;
 
-import object.entity.entity.IEntity;
+import object.entity.Entity;
 import tool.manager.IManager;
 
 /**
@@ -13,13 +13,13 @@ import tool.manager.IManager;
  * @version 1.0
  * @see EntityManager
  */
-public interface IEntityManager extends IManager<IEntity> {
+public interface IEntityManager extends IManager<Entity> {
 	
 	/**
 	 * Add list of entities chosen by player.
 	 * 
 	 * @param pointedList
-	 *            {@link Collection}<{@link IEntity}> value of {@link IEntity}
+	 *            {@link Collection}<{@link Entity}> value of {@link Entity}
 	 *            list
 	 * 
 	 * @see #addAll(Collection)
@@ -27,48 +27,48 @@ public interface IEntityManager extends IManager<IEntity> {
 	 * @see #getAll()
 	 * @see #get(String)
 	 */
-	void addPointedList(Collection<IEntity> pointedList);
+	void addPointedList(Collection<Entity> pointedList);
 
 	/**
 	 * Set default entities for editor list.
 	 * 
 	 * @param editorList
-	 *            {@link Collection}<{@link IEntity}> value of {@link IEntity}
+	 *            {@link Collection}<{@link Entity}> value of {@link Entity}
 	 *            list
 	 * @see #addForEditor(IEntity)
 	 * 
 	 */
-	void setEditorList(List<IEntity> editorList);
+	void setEditorList(List<Entity> editorList);
 
 	/**
 	 * Add one entity chosen by player into the pointed entity array.
 	 * 
 	 * @param entity
-	 *            {@link IEntity} value
+	 *            {@link Entity} value
 	 */
-	void addPointed(IEntity entity);
+	void addPointed(Entity entity);
 
 	/**
 	 * Add one entity in array of default entities for editor menu.
 	 * 
 	 * @param entity
-	 *            {@link IEntity} value
+	 *            {@link Entity} value
 	 */
-	void addForEditor(IEntity entity);
+	void addForEditor(Entity entity);
 
 	/**
 	 * Returns list of entities chosen by player.
 	 * 
-	 * @return {@link List}<{@link IEntity}> value of entities chosen by player
+	 * @return {@link List}<{@link Entity}> value of entities chosen by player
 	 */
-	List<IEntity> getPointed();
+	List<Entity> getPointed();
 
 	/**
 	 * Returns list of default entities for editor menu.
 	 * 
-	 * @return {@link List}<{@link IEntity}> value of entities for editor menu
+	 * @return {@link List}<{@link Entity}> value of entities for editor menu
 	 */
-	List<IEntity> getForEditor();
+	List<Entity> getForEditor();
 
 	/**
 	 * Returns entity of defalut entity from entity array for editor menu chosen
@@ -76,7 +76,7 @@ public interface IEntityManager extends IManager<IEntity> {
 	 * 
 	 * @return {@link IEntity} value
 	 */
-	IEntity getForEditorByIndex(int index);
+	Entity getForEditorByIndex(int index);
 
 	/**
 	 * Clear array of entities chosen by player.

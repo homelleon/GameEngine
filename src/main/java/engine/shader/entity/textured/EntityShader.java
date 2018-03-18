@@ -8,14 +8,14 @@ import org.lwjgl.util.vector.Vector4f;
 import core.settings.EngineSettings;
 import object.camera.ICamera;
 import object.light.ILight;
-import shader.ShaderProgram;
+import shader.Shader;
 import tool.math.Maths;
 import tool.math.Matrix4f;
 import tool.math.vector.Color;
 import tool.math.vector.Vector2f;
 import tool.math.vector.Vector3f;
 
-public class TexturedEntityShader extends ShaderProgram {
+public class EntityShader extends Shader {
 	
 	//----shaders
 	public static final String VERTEX_FILE = EngineSettings.SHADERS_ENTITY_TEXTURED_PATH + "texturedEntity_V_shader.glsl";
@@ -68,8 +68,8 @@ public class TexturedEntityShader extends ShaderProgram {
 	public static final String UNIFORM_LIGHT_COLOR = "lightColor";
 	public static final String UNIFORM_ATTENUATION = "attenuation";
 	
-	public TexturedEntityShader() {
-		super();
+	public EntityShader() {
+		super(Shader.ENTITY);
 		addVertexShader(VERTEX_FILE);
 		addFragmentShader(FRAGMENT_FILE);
 		compileShader();

@@ -1,7 +1,7 @@
 package tool.math;
 
 import object.camera.ICamera;
-import object.entity.entity.IEntity;
+import object.entity.Entity;
 import object.terrain.terrain.ITerrain;
 import tool.math.vector.Vector2f;
 import tool.math.vector.Vector3f;
@@ -114,13 +114,8 @@ public class Maths {
 
 		return distance2Points(point, vecH);
 	}
-
-	/* distance from camera to entity */
-	public static float distanceFromCamera(IEntity entity, ICamera camera) {
-		return distance2Points(entity.getPosition(), camera.getPosition());
-	}
 	
-	public static float distanceFromCameraWithRadius(IEntity entity, ICamera camera) {
+	public static float distanceFromCameraWithRadius(Entity entity, ICamera camera) {
 		return (distance2Points(entity.getPosition(), camera.getPosition()) - entity.getSphereRadius());
 	}
 

@@ -29,7 +29,7 @@ public class AudioManager extends AbstractManager<IAudioSource> implements IAudi
 	public void clean() {
 		this.elements.values().forEach(IAudioSource::delete);
 		super.clean();
-		if(this.audioMaster!= null) {
+		if (this.audioMaster!= null) {
 			this.audioMaster.clear();
 		}
 	}

@@ -1,12 +1,11 @@
 package shader.font;
 
 import core.settings.EngineSettings;
-import shader.ShaderProgram;
+import shader.Shader;
 import tool.math.vector.Color;
 import tool.math.vector.Vector2f;
-import tool.math.vector.Vector3f;
 
-public class FontShader extends ShaderProgram {
+public class FontShader extends Shader {
 	
 	//----shaders
 	private static final String VERTEX_FILE = EngineSettings.SHADERS_FONT_PATH + "font_V_shader.glsl";
@@ -25,7 +24,7 @@ public class FontShader extends ShaderProgram {
 	private static final String UNIFORM_OUTLINE_COLOR = "outlineColor";
 	
 	public FontShader() {
-		super();
+		super(Shader.FONT);
 		addVertexShader(VERTEX_FILE);
 		addFragmentShader(FRAGMENT_FILE);
 		compileShader();

@@ -3,11 +3,11 @@ package shader.bounding;
 
 import core.settings.EngineSettings;
 import object.camera.ICamera;
-import shader.ShaderProgram;
+import shader.Shader;
 import tool.math.Maths;
 import tool.math.Matrix4f;
 
-public class BoundingShader extends ShaderProgram {
+public class BoundingShader extends Shader {
 	//----shaders
 	private static final String VERTEX_FILE = EngineSettings.SHADERS_BOUNDING_PATH + "bound_V_shader.glsl";
 	private static final String FRAGMENT_FILE = EngineSettings.SHADERS_BOUNDING_PATH + "bound_F_shader.glsl";
@@ -22,7 +22,7 @@ public class BoundingShader extends ShaderProgram {
 	private static final String UNIFORM_VIEW_MATRIX = "View";
 	
 	public BoundingShader() {
-		super();
+		super(Shader.BOUNDING);
 		addVertexShader(VERTEX_FILE);
 		addFragmentShader(FRAGMENT_FILE);
 		compileShader();

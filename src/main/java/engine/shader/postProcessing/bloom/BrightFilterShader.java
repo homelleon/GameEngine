@@ -1,7 +1,7 @@
 package shader.postProcessing.bloom;
 
 import core.settings.EngineSettings;
-import shader.ShaderProgram;
+import shader.Shader;
 
 /*
  *  BrightFilterShader - шейдер фильтра €ркости.
@@ -9,7 +9,7 @@ import shader.ShaderProgram;
  * ------------------------------
 */
 
-public class BrightFilterShader extends ShaderProgram {
+public class BrightFilterShader extends Shader {
 	
 	//----shaders
 	private static final String VERTEX_FILE = EngineSettings.SHADERS_BLOOM_PATH + "simple_V_shader.glsl";
@@ -18,7 +18,7 @@ public class BrightFilterShader extends ShaderProgram {
 	private static final String ATTRIBUTE_POSITION = "in_position";
 	
 	public BrightFilterShader() {
-		super();
+		super(Shader.POST_BRIGHT_FILTER);
 		addVertexShader(VERTEX_FILE);
 		addFragmentShader(FRAGMENT_FILE);
 		compileShader();

@@ -6,7 +6,7 @@ import core.EngineMain;
 import core.debug.EngineDebug;
 import core.loop.Loop;
 import core.settings.EngineSettings;
-import object.entity.entity.IEntity;
+import object.entity.Entity;
 import scene.Scene;
 
 /**
@@ -64,7 +64,7 @@ public class Controls implements IControls {
 		// TODO: make class for control
 		if (MouseGame.isOncePressed(MouseGame.LEFT_CLICK)) {
 			if(!Loop.getInstance().getEditMode()) {
-				IEntity pointedEntity = scene.getMousePicker().chooseObjectByRay(scene);
+				Entity pointedEntity = scene.getMousePicker().chooseObjectByRay(scene);
 				if (pointedEntity != null && !scene.getEntities().getPointed().contains(pointedEntity)) {
 					scene.getEntities().addPointed(pointedEntity);
 				}

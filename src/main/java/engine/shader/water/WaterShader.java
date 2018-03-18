@@ -4,12 +4,12 @@ package shader.water;
 import core.settings.EngineSettings;
 import object.camera.ICamera;
 import object.light.Light;
-import shader.ShaderProgram;
+import shader.Shader;
 import tool.math.Maths;
 import tool.math.Matrix4f;
 import tool.math.vector.Color;
 
-public class WaterShader extends ShaderProgram {
+public class WaterShader extends Shader {
 
 	//----shaders
 	private final static String VERTEX_FILE = EngineSettings.SHADERS_WATER_PATH + "water_V_shader.glsl";
@@ -43,7 +43,7 @@ public class WaterShader extends ShaderProgram {
 	private final static String UNIFORM_LIGHT_POSITION = "lightPosition";
 	
 	public WaterShader() {
-		super();
+		super(Shader.WATER);
 		addVertexShader(VERTEX_FILE);
 		addFragmentShader(FRAGMENT_FILE);
 		compileShader();

@@ -3,6 +3,7 @@ package object.audio.source;
 import org.lwjgl.openal.AL10;
 
 import object.audio.master.IAudioMaster;
+import scene.Subject;
 import tool.math.vector.Vector3f;
 
 /**
@@ -14,13 +15,11 @@ import tool.math.vector.Vector3f;
  *
  */
 
-public class AudioSource implements IAudioSource {
-
-	private String name; // имя аудио
-	private int sourceId; // ID аудио
-	private String fileName; // расположение файла
-	private IAudioMaster master; // аудио-мастер
-	private Vector3f position; // позиция аудио-источника
+public class AudioSource extends Subject implements IAudioSource {
+	
+	private int sourceId;
+	private String fileName;
+	private IAudioMaster master;
 
 	/**
 	 * Constructor of AudioSource object without changing position value.
@@ -40,6 +39,7 @@ public class AudioSource implements IAudioSource {
 	 *      IAudioMaster)
 	 */
 	public AudioSource(String name, String file, int maxDistance, IAudioMaster master) {
+		super(name);
 		sourceId = AL10.alGenSources();
 		AL10.alSourcef(sourceId, AL10.AL_ROLLOFF_FACTOR, 1);
 		AL10.alSourcef(sourceId, AL10.AL_REFERENCE_DISTANCE, 6);
@@ -71,6 +71,7 @@ public class AudioSource implements IAudioSource {
 	 * @see #AudioSourceSimple(String, String, int, IAudioMaster)
 	 */
 	public AudioSource(String name, String file, int maxDistance, Vector3f position, IAudioMaster master) {
+		super(name);
 		sourceId = AL10.alGenSources();
 		AL10.alSourcef(sourceId, AL10.AL_ROLLOFF_FACTOR, 1);
 		AL10.alSourcef(sourceId, AL10.AL_REFERENCE_DISTANCE, 6);
@@ -150,7 +151,7 @@ public class AudioSource implements IAudioSource {
 
 	@Override
 	public Vector3f getPosition() {
-		return this.position;
+		return (Vector3f) position;
 	}
 
 }

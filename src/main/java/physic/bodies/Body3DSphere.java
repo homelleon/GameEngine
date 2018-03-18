@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import intersects.IntersectData;
-import object.entity.entity.IEntity;
+import object.entity.Entity;
 import physicMain.PE10;
 import tool.math.Maths;
 import tool.math.vector.Vector3f;
@@ -46,12 +46,12 @@ public class Body3DSphere extends BodyBasic implements IBody {
 		super.update();
 	}
 	
-	public void attachEntity(IEntity entity) {
+	public void attachEntity(Entity entity) {
 		super.attachEntity(entity);
 	}
 	
 	@Override
-	public IEntity getEntity() {
+	public Entity getEntity() {
 		return super.getEntity();
 	}
 	

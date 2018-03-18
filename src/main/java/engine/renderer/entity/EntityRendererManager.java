@@ -8,7 +8,7 @@ import java.util.Map;
 import org.lwjgl.util.vector.Vector4f;
 
 import object.camera.ICamera;
-import object.entity.entity.IEntity;
+import object.entity.Entity;
 import object.light.ILight;
 import primitive.model.Model;
 import primitive.texture.Texture;
@@ -16,11 +16,11 @@ import tool.math.Matrix4f;
 
 public class EntityRendererManager implements IEntityRendererManager {
 	
-	private Map<IEntityRenderer, Map<Model, List<IEntity>>> entityRenderers = 
-			new HashMap<IEntityRenderer, Map<Model, List<IEntity>>>();
+	private Map<IEntityRenderer, Map<Model, List<Entity>>> entityRenderers = 
+			new HashMap<IEntityRenderer, Map<Model, List<Entity>>>();
 	
 	@Override
-	public EntityRendererManager addPair(IEntityRenderer renderer, Map<Model, List<IEntity>> enitties) {
+	public EntityRendererManager addPair(IEntityRenderer renderer, Map<Model, List<Entity>> enitties) {
 		this.entityRenderers.put(renderer, enitties);
 		return this;
 	}

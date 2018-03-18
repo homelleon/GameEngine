@@ -2,11 +2,11 @@ package shader.animation;
 
 import core.settings.EngineSettings;
 import renderer.animation.AnimatedModelRenderer;
-import shader.ShaderProgram;
+import shader.Shader;
 import tool.math.Matrix4f;
 import tool.math.vector.Vector3f;
 
-public class AnimatedModelShader extends ShaderProgram {
+public class AnimatedModelShader extends Shader {
 
 	private static final int MAX_JOINTS = 50;// max number of joints in a
 												// skeleton
@@ -22,7 +22,7 @@ public class AnimatedModelShader extends ShaderProgram {
 	 * the diffuse texture will be sampled from texture unit 0.
 	 */
 	public AnimatedModelShader() {
-		super();
+		super(Shader.ANIMATED);
 		addVertexShader(VERTEX_SHADER);
 		addFragmentShader(FRAGMENT_SHADER);
 		compileShader();

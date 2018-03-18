@@ -10,8 +10,8 @@ import org.lwjgl.util.vector.Vector4f;
 
 import core.settings.EngineSettings;
 import object.camera.ICamera;
-import object.entity.entity.IEntity;
-import object.entity.player.Player;
+import object.entity.Entity;
+import object.entity.Player;
 import scene.Scene;
 import tool.math.Maths;
 import tool.math.Matrix4f;
@@ -283,9 +283,9 @@ public class MousePicker {
 		return new Vector2f(x, y);
 	}
 
-	public IEntity chooseObjectByRay(Scene scene) {
-		IEntity pickedEntity = null;
-		List<IEntity> pointedEntities = new ArrayList<IEntity>();
+	public Entity chooseObjectByRay(Scene scene) {
+		Entity pickedEntity = null;
+		List<Entity> pointedEntities = new ArrayList<Entity>();
 		pointedEntities.addAll(
 			scene.getFrustumEntities().updateWithFrustum(scene.getFrustum(), camera, true).stream()
 				.filter(entity -> !(entity.getClass() == Player.class))
@@ -311,7 +311,7 @@ public class MousePicker {
 		float midDist = 0;
 		int index = -1;
 		for (int i = 0; i < pointedEntities.size(); i++) {
-			midDist = Maths.distanceFromCamera(pointedEntities.get(i), this.camera);
+			midDist = Maths.distance2Points(pointedEntities.get(i).getPosition(), this.camera.getPosition());
 			if (midDist <= distance) {
 				distance = midDist;
 				index = i;

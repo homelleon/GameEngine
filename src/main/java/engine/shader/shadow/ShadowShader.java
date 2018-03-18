@@ -1,11 +1,11 @@
 package shader.shadow;
 
 import core.settings.EngineSettings;
-import shader.ShaderProgram;
+import shader.Shader;
 import tool.math.Matrix4f;
 import tool.math.vector.Vector2f;
 
-public class ShadowShader extends ShaderProgram {
+public class ShadowShader extends Shader {
 	
 	//----shaders
 	private static final String VERTEX_FILE = EngineSettings.SHADERS_SHADOW_PATH + "shadow_V_shader.glsl";
@@ -21,7 +21,7 @@ public class ShadowShader extends ShaderProgram {
 	private static final String UNIFORM_NUMBER_OF_ROWS = "numberOfRows";
 	
 	public ShadowShader() {
-		super();
+		super(Shader.SHADOW);
 		addVertexShader(VERTEX_FILE);
 		addFragmentShader(FRAGMENT_FILE);
 		compileShader();

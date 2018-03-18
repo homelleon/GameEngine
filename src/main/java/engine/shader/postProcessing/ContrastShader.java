@@ -1,9 +1,9 @@
 package shader.postProcessing;
 
 import core.settings.EngineSettings;
-import shader.ShaderProgram;
+import shader.Shader;
 
-public class ContrastShader extends ShaderProgram {
+public class ContrastShader extends Shader {
 	
 	//----shaders
 	private static final String VERTEX_FILE = EngineSettings.SHADERS_POST_PROCESSING_PATH + "contrast_V_shader.glsl";
@@ -14,7 +14,7 @@ public class ContrastShader extends ShaderProgram {
 	private static final String UNIFORM_CONTRAST = "contrast";
 	
 	public ContrastShader() {
-		super();
+		super(Shader.POST_CONTRAST);
 		addVertexShader(VERTEX_FILE);
 		addFragmentShader(FRAGMENT_FILE);
 		compileShader();

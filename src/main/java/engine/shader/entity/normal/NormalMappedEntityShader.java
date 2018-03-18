@@ -7,13 +7,13 @@ import org.lwjgl.util.vector.Vector4f;
 
 import core.settings.EngineSettings;
 import object.light.ILight;
-import shader.ShaderProgram;
+import shader.Shader;
 import tool.math.Matrix4f;
 import tool.math.vector.Color;
 import tool.math.vector.Vector2f;
 import tool.math.vector.Vector3f;
 
-public class NormalMappedEntityShader extends ShaderProgram {
+public class NormalMappedEntityShader extends Shader {
 	//----shaders
 	private static final String VERTEX_FILE = EngineSettings.SHADERS_ENTITY_NORMAL_PATH + "normalEntity_V_shader.glsl";
 	private static final String FRAGMENT_FILE = EngineSettings.SHADERS_ENTITY_NORMAL_PATH + "normalEntity_F_shader.glsl";
@@ -63,7 +63,7 @@ public class NormalMappedEntityShader extends ShaderProgram {
 	private static final String UNIFORM_ATTENUATION = "attenuation";
 	
 	public NormalMappedEntityShader() {
-		super();
+		super(Shader.NORMAL_ENTITY);
 		addVertexShader(VERTEX_FILE);
 		addFragmentShader(FRAGMENT_FILE);
 		compileShader();

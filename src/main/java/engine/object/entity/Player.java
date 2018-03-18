@@ -1,6 +1,7 @@
-package object.entity.player;
+package object.entity;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -9,12 +10,12 @@ import control.KeyboardGame;
 import control.MouseGame;
 import core.display.DisplayManager;
 import core.settings.EngineSettings;
-import object.entity.entity.TexturedEntity;
 import object.terrain.terrain.ITerrain;
 import primitive.model.Model;
+import shader.Shader;
 import tool.math.vector.Vector3f;
 
-public class Player extends TexturedEntity implements IPlayer {
+public class Player extends Entity {
 
 	private static final float MOVE_SPEED = 20;
 	private static final float RUN_SPEED = 100;
@@ -28,12 +29,10 @@ public class Player extends TexturedEntity implements IPlayer {
 
 	public volatile boolean isInAir = false;
 
-	public Player(String name, Collection<Model> modelList, Vector3f position, Vector3f rotation, float scale) {
-		super(name, modelList, position, rotation, scale);
-//		this.typeID = EngineSettings.ENTITY_TYPE_NORMAL;
+	public Player(String name, Shader shader, List<Model> modelList, Vector3f position, Vector3f rotation, float scale) {
+		super(name, shader, modelList, position, rotation, scale);
 	}
 
-	@Override
 	public void move(Collection<ITerrain> terrains) {
 		this.isMoved = false;
 		checkInputs();

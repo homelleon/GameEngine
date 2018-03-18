@@ -1,18 +1,18 @@
 package renderer.bounding;
 
-import object.entity.entity.IEntity;
+import object.entity.Entity;
 import primitive.model.Mesh;
 
 public class EntityModelPair {
 	
-	private IEntity entity;
+	private Entity entity;
 	private Mesh model;
 	
 	public EntityModelPair(Mesh model) {
 		this.model = model;
 	}
 	
-	public IEntity getEntity() {
+	public Entity getEntity() {
 		return this.entity;
 	}
 	
@@ -20,7 +20,7 @@ public class EntityModelPair {
 		return this.model;
 	}
 	
-	public EntityModelPair setEntity(IEntity entity) {
+	public EntityModelPair setEntity(Entity entity) {
 		this.entity = entity;
 		return this;
 	}

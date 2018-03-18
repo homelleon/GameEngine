@@ -1,6 +1,6 @@
 package worlds;
 
-import object.entity.entity.IEntity;
+import object.entity.Entity;
 
 public interface IWorld {
 	
@@ -8,7 +8,7 @@ public interface IWorld {
 	boolean removeBody(int bodyID);
 	boolean hasGravity();
 	void setGravity(float value);
-	int attachToEntity(IEntity entity, int bodyType);
+	int attachToEntity(Entity entity, int bodyType);
 	float getGravity();
 	void update();
 	void delete();
