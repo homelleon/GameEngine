@@ -34,6 +34,7 @@ import renderer.terrain.TerrainRenderer;
 import renderer.voxel.VoxelRenderer;
 import scene.Scene;
 import shader.Shader;
+import shader.ShaderPool;
 import tool.math.Matrix4f;
 import tool.openGL.OGLUtils;
 
@@ -190,7 +191,7 @@ public class MainRenderer implements IMainRenderer {
 		List<Entity> frustumEntities = 
 				scene.getFrustumEntities().prepareShadowEntities(
 						scene, shadowMapRenderer.getToShadowMapMatrix(), doRebuild);
-		frustumEntities.stream().forEach(entity -> processEntity(EngineSettings.ENTITY_TYPE_DECORATE, entity));
+		frustumEntities.stream().forEach(entity -> processEntity(Shader.DECOR_ENTITY, entity));
 	}
 	
 	private void cleanSceneObjects() {
@@ -205,6 +206,7 @@ public class MainRenderer implements IMainRenderer {
 		entityRendererManager.clean();
 		terrainRenderer.clean();
 		shadowMapRenderer.clean();
+		ShaderPool.getInstance().clean();
 	}
 	
 	private Matrix4f createProjectionMatrix(float farPlane) {

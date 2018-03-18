@@ -175,12 +175,7 @@ public class EngineSettings {
 	public final static int DISPLAY_DEBUG_MODE = 0;
 	public final static int DISPLAY_EDIT_MODE = 1;
 	public final static int DISPLAY_GAME_MODE = 2;
-
-	/* entity type */
-	public final static int ENTITY_TYPE_SIMPLE = 0;
-	public final static int ENTITY_TYPE_NORMAL = 1;
-	public final static int ENTITY_TYPE_DECORATE = 2;
-
+	
 	/* bounding box type */
 	public final static int BOUNDING_BOX_MIN_MAX = 0;
 	public final static int BOUNDING_BOX_DIAM = 1;
