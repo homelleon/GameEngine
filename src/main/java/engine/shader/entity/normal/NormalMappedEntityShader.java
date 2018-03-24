@@ -6,7 +6,7 @@ import java.util.Iterator;
 import org.lwjgl.util.vector.Vector4f;
 
 import core.settings.EngineSettings;
-import object.light.ILight;
+import object.light.Light;
 import shader.Shader;
 import tool.math.Matrix4f;
 import tool.math.vector.Color;
@@ -193,11 +193,11 @@ public class NormalMappedEntityShader extends Shader {
 		super.loadFloat(UNIFORM_REFLECTIVITY, reflectivity);
 	}
 
-	public void loadLights(Collection<ILight> lights, Matrix4f viewMatrix) {
-		Iterator<ILight> iterator = lights.iterator();
+	public void loadLights(Collection<Light> lights, Matrix4f viewMatrix) {
+		Iterator<Light> iterator = lights.iterator();
 		for (int i = 0; i < EngineSettings.MAX_LIGHTS; i++) {
 			if (iterator.hasNext()) {
-				ILight light = iterator.next();
+				Light light = iterator.next();
 				super.load3DVector(UNIFORM_LIGHT_POSITION_EYE_SPACE + "[" + i + "]", getEyeSpacePosition(light, viewMatrix));
 				super.loadColor(UNIFORM_LIGHT_COLOR + "[" + i + "]", light.getColor());
 				super.load3DVector(UNIFORM_ATTENUATION + "[" + i + "]", light.getAttenuation());
@@ -209,7 +209,7 @@ public class NormalMappedEntityShader extends Shader {
 		}
 	}
 
-	private Vector3f getEyeSpacePosition(ILight light, Matrix4f viewMatrix) {
+	private Vector3f getEyeSpacePosition(Light light, Matrix4f viewMatrix) {
 		Vector3f position = light.getPosition();
 		Vector4f eyeSpacePos = new Vector4f(position.x, position.y, position.z, 1f);
 		eyeSpacePos = viewMatrix.transform(eyeSpacePos);

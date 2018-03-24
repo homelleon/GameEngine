@@ -12,7 +12,6 @@ import core.debug.EngineDebug;
 import core.settings.EngineSettings;
 import object.gui.text.GUIText;
 import object.gui.text.GUITextBuilder;
-import object.gui.text.IGUITextBuilder;
 import tool.math.vector.Color;
 import tool.math.vector.Vector2f;
 import tool.xml.XMLUtils;
@@ -109,7 +108,7 @@ public class GUITextXMLParser extends XMLParser implements IListParser<GUIText> 
 						EngineDebug.printError("error id order!");
 					}
 				}
-				IGUITextBuilder builder = new GUITextBuilder();
+				GUITextBuilder builder = new GUITextBuilder();
 				builder.setContent(text).setFontSize(size).setFontName(fontName).setPosition(position)
 						.setLineMaxSize(maxLength).setCentered(isCentered);
 				GUIText guiText = builder.build(name);

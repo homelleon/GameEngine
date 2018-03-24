@@ -3,23 +3,27 @@ package manager.octree;
 import java.util.ArrayList;
 import java.util.List;
 
+import scene.Subject;
+import tool.math.vector.Vector;
+
 /**
  * Common node class of any tree system.
  * 
  * @author homelleon
  */
-public class Node {
+public class Node<T extends Vector> extends Subject<T> {
 	
-	private Node parent;
-	private List<Node> children;
+	private Node<T> parent;
+	private List<Node<T>> children;
 	private boolean isLeaf;
 	
 	/**
 	 * Constucts node and initialize its children.
 	 */
-	public Node() {
+	public Node(String name) {
+		super(name);
 		this.isLeaf = true;
-		this.setChildren(new ArrayList<Node>());
+		this.setChildren(new ArrayList<Node<T>>());
 	}
 	
 	/**
@@ -27,7 +31,7 @@ public class Node {
 	 * 
 	 * @param child
 	 */
-	public void addChild(Node child) {
+	public void addChild(Node<T> child) {
 		if(this.isLeaf) {
 			this.isLeaf = false;
 		}
@@ -40,7 +44,7 @@ public class Node {
 	 * 
 	 * @return {@link Node} object
 	 */
-	public Node getParent() {
+	public Node<T> getParent() {
 		return parent;
 	}
 
@@ -49,7 +53,7 @@ public class Node {
 	 * 
 	 * @param parent {@link Node} object
 	 */
-	public void setParent(Node parent) {
+	public void setParent(Node<T> parent) {
 		this.parent = parent;
 	}
 
@@ -58,7 +62,7 @@ public class Node {
 	 * 
 	 * @return {@link List}<{@link Node}> array of children nodes
 	 */
-	public List<Node> getChildren() {
+	public List<Node<T>> getChildren() {
 		return children;
 	}
 
@@ -67,7 +71,7 @@ public class Node {
 	 * 
 	 * @param children {@link List}<{@link Node}> array of nodes
 	 */
-	public void setChildren(List<Node> children) {
+	public void setChildren(List<Node<T>> children) {
 		this.children = children;
 	}
 	

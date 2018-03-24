@@ -19,12 +19,11 @@ import tool.manager.AbstractManager;
  * @see AbstactManager
  * 
  */
-public class EntityManager extends AbstractManager<Entity> implements IEntityManager {
+public class EntityManager extends AbstractManager<Entity> {
 
 	private List<Entity> pointedEntities = new ArrayList<Entity>();
 	private List<Entity> editorEntities = new ArrayList<Entity>();
 	
-	@Override
 	public void addPointedList(Collection<Entity> pointedList) {
 		pointedList.forEach(entity -> {
 			entity.setChosen(true);
@@ -32,14 +31,12 @@ public class EntityManager extends AbstractManager<Entity> implements IEntityMan
 		});
 	}
 
-	@Override
 	public void setEditorList(List<Entity> editorList) {
 		if (editorList != null) {
 			this.editorEntities = editorList;
 		}
 	}
-
-	@Override
+	
 	public void addPointed(Entity entity) {
 		if (entity != null) {
 			entity.setChosen(true);
@@ -47,34 +44,28 @@ public class EntityManager extends AbstractManager<Entity> implements IEntityMan
 		}
 	}
 
-	@Override
 	public void addForEditor(Entity entity) {
 		this.editorEntities.add(entity);
 	}
 
-	@Override
 	public List<Entity> getPointed() {
 		return this.pointedEntities;
 	}
 
-	@Override
 	public List<Entity> getForEditor() {
 		return this.editorEntities;
 	}
 
-	@Override
 	public Entity getForEditorByIndex(int index) {
 		return this.editorEntities.get(index);
 	}
 
-	@Override
 	public void clearPointed() {
 		this.pointedEntities
 			.forEach(entity -> entity.setChosen(false));
 		this.pointedEntities.clear();
 	}
 
-	@Override
 	public void clean() {
 		super.clean();
 		this.pointedEntities.clear();

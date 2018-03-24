@@ -7,12 +7,12 @@ import java.util.Map;
 import org.lwjgl.opengl.GL11;
 
 import core.settings.EngineSettings;
-import object.camera.ICamera;
+import object.camera.Camera;
 import object.entity.Entity;
 import object.light.Light;
 import object.shadow.ShadowBox;
 import object.shadow.ShadowFrameBuffer;
-import object.terrain.terrain.ITerrain;
+import object.terrain.Terrain;
 import primitive.model.Model;
 import primitive.texture.Texture2D;
 import shader.shadow.ShadowShader;
@@ -52,7 +52,7 @@ public class ShadowMapMasterRenderer {
 	 * @param camera
 	 *            - the camera being used in the scene.
 	 */
-	public ShadowMapMasterRenderer(ICamera camera) {
+	public ShadowMapMasterRenderer(Camera camera) {
 		shader = new ShadowShader();
 		shadowBox = new ShadowBox(lightViewMatrix, camera);
 		shadowFbo = new ShadowFrameBuffer(EngineSettings.SHADOW_MAP_SIZE, EngineSettings.SHADOW_MAP_SIZE);
@@ -74,12 +74,13 @@ public class ShadowMapMasterRenderer {
 	 * @param sun
 	 *            - the light acting as the sun in the scene.
 	 */
-	public void render(Map<Model, List<Entity>> entities, Collection<ITerrain> terrains, Light sun, ICamera camera) {
+	public void render(Map<Model, List<Entity>> entities, Map<Model, List<Entity>> normalEntities, Collection<Terrain> terrains, Light sun, Camera camera) {
 		shadowBox.update();
 		Vector3f sunPosition = sun.getPosition();
 		Vector3f lightDirection = new Vector3f(-sunPosition.x, -sunPosition.y, -sunPosition.z);
 		prepare(lightDirection, shadowBox);
 		shadowEntityRenderer.render(entities, camera);
+		shadowEntityRenderer.render(normalEntities, camera);
 		//shadowTerrainRenderer.render(terrains);
 		finish();
 	}

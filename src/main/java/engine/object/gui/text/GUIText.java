@@ -1,10 +1,13 @@
 package object.gui.text;
 
-import object.GameObject;
+import org.lwjgl.system.CallbackI.V;
+
 import primitive.buffer.VAO;
+import scene.Drawable;
+import shader.Shader;
+import shader.ShaderPool;
 import tool.math.vector.Color;
 import tool.math.vector.Vector2f;
-import tool.math.vector.Vector3f;
 
 /**
  * Represents a piece of text in the game.
@@ -13,7 +16,7 @@ import tool.math.vector.Vector3f;
  * @author homelleon
  *
  */
-public class GUIText extends GameObject {
+public class GUIText extends Drawable<Vector2f> {
 
 	private String textString;
 	private float fontSize;
@@ -22,7 +25,6 @@ public class GUIText extends GameObject {
 	private int vertexCount;
 	private Color color = new Color(0f, 0f, 0f);
 
-	private Vector2f position;
 	private float maxLineLength;
 	private int numberOfLines;
 
@@ -68,7 +70,7 @@ public class GUIText extends GameObject {
 	 */
 	public GUIText(String name, String text, float fontSize, String fontName, Vector2f position, float maxLineLength,
 			boolean centered) {
-		super(name);
+		super(name, ShaderPool.getInstance().get(Shader.FONT), null);
 		this.textString = text;
 		this.fontSize = fontSize;
 		this.fontName = fontName;
@@ -185,27 +187,6 @@ public class GUIText extends GameObject {
 	 */
 	public int getNumberOfLines() {
 		return numberOfLines;
-	}
-
-	/**
-	 * Sets position of top-left corner of the text in sceen-space.<br>
-	 * (0, 0) is the top left corner of the screen, (1, 1) is the bottom right.
-	 * 
-	 * @param position
-	 *            {@link Vector2f} value
-	 */
-	public synchronized void setPosition(Vector2f position) {
-		this.position = position;
-	}
-
-	/**
-	 * @return {@link Vector2f} value of the position of the top-left corner of
-	 *         the text in screen-space.<br>
-	 * 		(0, 0) is the top left corner of the screen, (1, 1) is the bottom
-	 *         right.
-	 */
-	public Vector2f getPosition() {
-		return position;
 	}
 
 	/**

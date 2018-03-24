@@ -6,8 +6,8 @@ import java.util.Iterator;
 import org.lwjgl.util.vector.Vector4f;
 
 import core.settings.EngineSettings;
-import object.camera.ICamera;
-import object.light.ILight;
+import object.camera.Camera;
+import object.light.Light;
 import shader.Shader;
 import tool.math.Maths;
 import tool.math.Matrix4f;
@@ -142,7 +142,7 @@ public class EntityShader extends Shader {
 		super.loadMatrix(UNIFORM_TRANSFORMATION_MATRIX, matrix);
 	}
 
-	public void loadViewMatrix(ICamera camera) {
+	public void loadViewMatrix(Camera camera) {
 		Matrix4f viewMatrix = Maths.createViewMatrix(camera);
 		super.loadMatrix(UNIFORM_VIEW_MATRIX, viewMatrix);
 	}
@@ -212,17 +212,17 @@ public class EntityShader extends Shader {
 		super.loadFloat(UNIFORM_FOG_DENSITY, density);
 	}
 
-	public void loadCamera(ICamera camera) {
+	public void loadCamera(Camera camera) {
 		Matrix4f viewMatrix = Maths.createViewMatrix(camera);
 		super.loadMatrix(UNIFORM_VIEW_MATRIX, viewMatrix);
 		super.load3DVector(UNIFORM_CAMERA_POSITION, camera.getPosition());
 	}
 
-	public void loadLights(Collection<ILight> lights) {
-		Iterator<ILight> iterator = lights.iterator();
+	public void loadLights(Collection<Light> lights) {
+		Iterator<Light> iterator = lights.iterator();
 		for (int i = 0; i < EngineSettings.MAX_LIGHTS; i++) {
 			if (iterator.hasNext()) {
-				ILight light = iterator.next();
+				Light light = iterator.next();
 				super.load3DVector(UNIFORM_LIGHT_POSITION + "[" + i + "]", light.getPosition());
 				super.loadColor(UNIFORM_LIGHT_COLOR + "[" + i + "]", light.getColor());
 				super.load3DVector(UNIFORM_ATTENUATION + "[" + i + "]", light.getAttenuation());

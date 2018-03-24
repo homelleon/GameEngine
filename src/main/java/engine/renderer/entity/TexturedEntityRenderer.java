@@ -9,9 +9,8 @@ import org.lwjgl.opengl.GL13;
 import org.lwjgl.util.vector.Vector4f;
 
 import core.settings.EngineSettings;
-import object.camera.ICamera;
+import object.camera.Camera;
 import object.entity.Entity;
-import object.light.ILight;
 import object.light.Light;
 import primitive.buffer.VAO;
 import primitive.model.Mesh;
@@ -84,11 +83,11 @@ public class TexturedEntityRenderer implements IEntityRenderer {
 	 * 
 	 * @see IEntity
 	 * @see Light
-	 * @see ICamera
+	 * @see Camera
 	 * @see Texture
 	 */
-	public void renderHigh(Map<Model, List<Entity>> entities, Vector4f clipPlane, Collection<ILight> lights,
-			ICamera camera, Matrix4f toShadowMapSpace, Texture environmentMap) {
+	public void render(Map<Model, List<Entity>> entities, Vector4f clipPlane, Collection<Light> lights,
+			Camera camera, Matrix4f toShadowMapSpace, Texture environmentMap) {
 		if (!entities.isEmpty()) {
 			this.environmentMap = environmentMap;
 			shader.start();
@@ -130,7 +129,7 @@ public class TexturedEntityRenderer implements IEntityRenderer {
 	 * @see Light
 	 * @see ICamera
 	 */
-	public void renderLow(Map<Model, List<Entity>> entities, Collection<ILight> lights, ICamera camera, Matrix4f toShadowMapSpace) {
+	public void render(Map<Model, List<Entity>> entities, Collection<Light> lights, Camera camera, Matrix4f toShadowMapSpace) {
 		GL11.glClearColor(1, 1, 1, 1);
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 		shader.start();
@@ -225,7 +224,7 @@ public class TexturedEntityRenderer implements IEntityRenderer {
 
 	private void prepareInstance(Entity entity) {
 		Matrix4f transformationMatrix = Maths.createTransformationMatrix(entity.getPosition(), entity.getRotation().getX(),
-				entity.getRotation().getY(), entity.getRotation().getZ(), entity.getScale());
+				entity.getRotation().getY(), entity.getRotation().getZ(), entity.getScale().getX());
 		shader.loadTranformationMatrix(transformationMatrix);
 		Vector2f textureOffset = entity.getTextureOffset();
 		shader.loadOffset(textureOffset.x, textureOffset.y);

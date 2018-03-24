@@ -7,11 +7,11 @@ import org.lwjgl.util.vector.Vector4f;
 import core.EngineMain;
 import core.settings.EngineSettings;
 import manager.octree.Node;
-import object.camera.ICamera;
-import object.light.ILight;
-import object.terrain.terrain.ITerrain;
-import object.terrain.terrain.TerrainNode;
-import object.terrain.terrain.TerrainQuadTree;
+import object.camera.Camera;
+import object.light.Light;
+import object.terrain.Terrain;
+import object.terrain.TerrainNode;
+import object.terrain.TerrainQuadTree;
 import primitive.buffer.VAO;
 import primitive.texture.Texture2D;
 import primitive.texture.material.TerrainMaterial;
@@ -36,8 +36,8 @@ public class TerrainRenderer {
 		shader.stop();
 	}
 	
-	public void render(Collection<ITerrain> terrains, Vector4f clipPlane, Collection<ILight> lights,
-			ICamera camera, Matrix4f toShadowMapSpace) {
+	public void render(Collection<Terrain> terrains, Vector4f clipPlane, Collection<Light> lights,
+			Camera camera, Matrix4f toShadowMapSpace) {
 		
 		if (EngineMain.getWiredFrameMode() == EngineSettings.WIRED_FRAME_TERRAIN || 
 				EngineMain.getWiredFrameMode() == EngineSettings.WIRED_FRAME_ENTITY_TERRAIN) {
@@ -54,7 +54,7 @@ public class TerrainRenderer {
 		shader.loadToShadowSpaceMatrix(toShadowMapSpace);
 		shader.loadShadowVariables(EngineSettings.SHADOW_DISTANCE, EngineSettings.SHADOW_MAP_SIZE,
 				EngineSettings.SHADOW_TRANSITION_DISTANCE, EngineSettings.SHADOW_PCF);
-		for (ITerrain terrain : terrains) {
+		for (Terrain terrain : terrains) {
 			if(camera.isMoved()) {
 				terrain.updateQuadTree(camera);
 			}
@@ -70,7 +70,7 @@ public class TerrainRenderer {
 		OGLUtils.doWiredFrame(false);
 	}
 
-	public void renderLow(Collection<ITerrain> terrains, Collection<ILight> lights, ICamera camera) {
+	public void render(Collection<Terrain> terrains, Collection<Light> lights, Camera camera) {
 		shader.start();
 		shader.loadClipPlane(EngineSettings.NO_CLIP);
 		shader.loadSkyColor(new Color(EngineSettings.RED, EngineSettings.GREEN, EngineSettings.BLUE));
@@ -80,7 +80,7 @@ public class TerrainRenderer {
 		shader.loadCameraPosition(camera.getPosition());
 		shader.loadShadowVariables(EngineSettings.SHADOW_DISTANCE, EngineSettings.SHADOW_MAP_SIZE,
 				EngineSettings.SHADOW_TRANSITION_DISTANCE, EngineSettings.SHADOW_PCF);
-		for (ITerrain terrain : terrains) {
+		for (Terrain terrain : terrains) {
 			prepareTerrain(terrain);
 			for(Node node : terrain.getQuadTree().getChildren()) {
 				((TerrainNode) node).render(shader, terrain.getQuadTree().getVao());
@@ -96,7 +96,7 @@ public class TerrainRenderer {
 		shader.clean();
 	}
 
-	private void prepareTerrain(ITerrain terrain) {
+	private void prepareTerrain(Terrain terrain) {
 		TerrainQuadTree terrainTree = (TerrainQuadTree) terrain.getQuadTree();
 		VAO vao = terrainTree.getVao();
 		vao.bind(0);
@@ -105,7 +105,7 @@ public class TerrainRenderer {
 		shader.loadWorldMatrix(terrainTree.getWorldMatrix());
 	}
 
-	private void bindTexture(ITerrain terrain) {
+	private void bindTexture(Terrain terrain) {
 		TerrainMaterial material = terrain.getMaterial();
 		TerrainTexturePack texturePack = material.getTexturePack();
 		texturePack.getBackgroundTexture().bilinearFilter();

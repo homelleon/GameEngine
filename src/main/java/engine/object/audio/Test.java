@@ -5,10 +5,6 @@ import java.io.IOException;
 import org.lwjgl.openal.AL10;
 import org.lwjgl.openal.AL11;
 
-import object.audio.master.AudioMaster;
-import object.audio.master.IAudioMaster;
-import object.audio.source.AudioSource;
-import object.audio.source.IAudioSource;
 import tool.math.vector.Vector3f;
 
 /**
@@ -24,11 +20,11 @@ import tool.math.vector.Vector3f;
 public class Test {
 
 	public static void main(String[] args) throws IOException, InterruptedException {
-		IAudioMaster master = new AudioMaster();
+		AudioMaster master = new AudioMaster();
 		master.init();
 		master.setListenerData(new Vector3f(0, 0, 0));
 		AL10.alDistanceModel(AL11.AL_LINEAR_DISTANCE_CLAMPED);
-		IAudioSource source = new AudioSource("audio1", "forest.wav", 20, master);
+		AudioSource source = new AudioSource("audio1", "forest.wav", 20, master);
 		source.setLooping(true);
 		source.play();
 

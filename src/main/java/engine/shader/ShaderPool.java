@@ -4,10 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
 
-import shader.animation.AnimatedModelShader;
 import shader.bounding.BoundingShader;
 import shader.debug.DebugShader;
-import shader.entity.decor.DecorEntityShader;
 import shader.entity.normal.NormalMappedEntityShader;
 import shader.entity.textured.EntityShader;
 import shader.font.FontShader;
@@ -52,7 +50,6 @@ public class ShaderPool {
 			new DebugShader(),
 			new EntityShader(),
 			new NormalMappedEntityShader(),
-			new DecorEntityShader(),
 			new TerrainShader(),
 			new GUITextureShader(),
 			new FontShader(),
@@ -68,7 +65,6 @@ public class ShaderPool {
 			new HeightMapShader(),
 			new HeightPositionShader(),
 			new NormalMapShader(),
-//			new AnimatedModelShader(),
 			new VoxelShader()
 		}; 
 		

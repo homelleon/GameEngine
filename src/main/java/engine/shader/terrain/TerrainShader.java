@@ -6,7 +6,7 @@ import java.util.Iterator;
 import org.lwjgl.util.vector.Vector4f;
 
 import core.settings.EngineSettings;
-import object.light.ILight;
+import object.light.Light;
 import shader.Shader;
 import tool.math.Matrix4f;
 import tool.math.vector.Color;
@@ -222,11 +222,11 @@ public class TerrainShader extends Shader {
 		this.loadFloat(UNIFORM_TESSELLATION_SHIFT, shift);
 	}
 
-	public void loadLights(Collection<ILight> lights) {
-		Iterator<ILight> iterator = lights.iterator();
+	public void loadLights(Collection<Light> lights) {
+		Iterator<Light> iterator = lights.iterator();
 		for (int i = 0; i < EngineSettings.MAX_LIGHTS; i++) {
 			if (iterator.hasNext()) {
-				ILight light = iterator.next();
+				Light light = iterator.next();
 				this.load3DVector(UNIFORM_LIGHT_POSITION + "[" + i + "]", light.getPosition());
 				this.loadColor(UNIFORM_LIGHT_COLOR + "[" + i + "]", light.getColor());
 				this.load3DVector(UNIFORM_ATTENUATION + "[" + i + "]", light.getAttenuation());

@@ -36,4 +36,12 @@ public class VectorBuilder3i implements IVectorBuilder3<Integer, Vector3i> {
 		return new Vector3i(x,y,z);
 	}
 
+	@Override
+	public IVectorBuilder3<Integer, Vector3i> set(Integer x, Integer y, Integer z) {
+		this.x = x;
+		this.y = y;
+		this.z = z;
+		return this;
+	}
+
 }

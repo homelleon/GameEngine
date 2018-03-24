@@ -15,33 +15,15 @@ import tool.math.vector.Vector3f;
  * @author homelleon
  *
  */
-public class EntityNode extends Node {
+public class EntityNode extends Node<Vector3f> {
 	
 	public static final float RADIUS = 100f;
 	public static final float BIG_RADIUS = (float) Math.sqrt(2 * RADIUS * RADIUS);
-	private Vector3f position = new Vector3f(0,0,0);
 	private NavigableMap<Vector3f, String> positionedEntityMap = new TreeMap<Vector3f, String>();
 	private Map<String, Entity> namedEntityMap = new HashMap<String, Entity>();
 
 	public EntityNode(Vector3f position) {
-		super();
-		this.position = position;
-	}
-	/**
-	 * Gets current node position in world space.
-	 * 
-	 * @return {@link Vector3f} 3-dimentional position
-	 */
-	public Vector3f getPosition() {
-		return position;
-	}
-
-	/**
-	 * Sets node position in world space.
-	 * 
-	 * @param position {@link Vector3f} value in 3 dimentions
-	 */
-	public void setPosition(Vector3f position) {
+		super("entityNode");
 		this.position = position;
 	}
 	

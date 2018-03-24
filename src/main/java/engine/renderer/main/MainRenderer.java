@@ -6,21 +6,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector4f;
 
 import core.EngineMain;
 import core.debug.EngineDebug;
 import core.settings.EngineSettings;
-import object.camera.ICamera;
+import object.camera.Camera;
 import object.entity.Entity;
-import object.terrain.terrain.ITerrain;
+import object.terrain.Terrain;
 import primitive.model.Model;
 import primitive.texture.Texture;
 import primitive.texture.Texture2D;
 import renderer.bounding.BoundingRenderer;
-import renderer.entity.DecorEntityRenderer;
 import renderer.entity.EntityRendererManager;
 import renderer.entity.IEntityRendererManager;
 import renderer.entity.NormalEntityRenderer;
@@ -41,8 +39,6 @@ import tool.openGL.OGLUtils;
 public class MainRenderer implements IMainRenderer {
 
 	private Matrix4f projectionMatrix;
-	private Matrix4f projectionNormalMatrix;
-	private Matrix4f projectionLowMatrix;
 	private TerrainRenderer terrainRenderer;
 	private SkyboxRenderer skyboxRenderer;
 	private VoxelRenderer voxelRenderer;
@@ -61,19 +57,15 @@ public class MainRenderer implements IMainRenderer {
 
 	private Map<Model, List<Entity>> texturedEntities = new HashMap<Model, List<Entity>>();
 	private Map<Model, List<Entity>> normalEntities = new HashMap<Model, List<Entity>>();
-	private Map<Model, List<Entity>> decorEntities = new HashMap<Model, List<Entity>>();
-	private Collection<ITerrain> terrains = new ArrayList<ITerrain>();
+	private Collection<Terrain> terrains = new ArrayList<Terrain>();
 
 	public MainRenderer(Scene scene) {
 		OGLUtils.cullBackFaces(true);
-		projectionNormalMatrix = createProjectionMatrix(EngineSettings.FAR_PLANE);
-		projectionLowMatrix = createProjectionMatrix(100);
-		projectionMatrix = projectionNormalMatrix;
+		projectionMatrix = new Matrix4f().makeProjectionMatrix(EngineSettings.NEAR_PLANE, EngineSettings.FAR_PLANE, EngineSettings.FOV);
 		
 		entityRendererManager = new EntityRendererManager()
 			.addPair(new TexturedEntityRenderer(projectionMatrix), texturedEntities)
-			.addPair(new NormalEntityRenderer(projectionMatrix), normalEntities)
-			.addPair(new DecorEntityRenderer(projectionMatrix), decorEntities);
+			.addPair(new NormalEntityRenderer(projectionMatrix), normalEntities);
 		
 		terrainRenderer = new TerrainRenderer(projectionMatrix);
 		
@@ -93,14 +85,9 @@ public class MainRenderer implements IMainRenderer {
 
 	@Override
 	public void render(Scene scene, Vector4f clipPlane) {
-		render(scene, clipPlane, false);
-	}
-
-	@Override
-	public void render(Scene scene, Vector4f clipPlane, boolean isLowDistance) {
 		scene.getTerrains().getAll().forEach(this::processTerrain);
 		environmentMap = scene.getEnvironmentMap();
-		processEntities(scene, isLowDistance, scene.getCamera().isMoved());
+		processEntities(scene, scene.getCamera().isMoved());
 		
 		if (environmentDynamic) {
 			environmentRendered = false;
@@ -111,16 +98,16 @@ public class MainRenderer implements IMainRenderer {
 			environmentRendered = true;
 		}
 		
-		renderSceneObjects(scene, clipPlane, isLowDistance);
+		renderSceneObjects(scene, clipPlane);
 	}
 
 	@Override
-	public void renderCubemap(Scene scene, Entity shinyEntity, ICamera camera) {
+	public void renderCubemap(Scene scene, Entity shinyEntity, Camera camera) {
 		scene.getEntities().delete(shinyEntity.getName());
-		processEntities(scene, true, true);
+		processEntities(scene, true);
 		
-		entityRendererManager.render(null, scene.getLights().getAll(), camera, null, null, true);
-		terrainRenderer.renderLow(terrains, scene.getLights().getAll(), camera);
+		entityRendererManager.render(null, scene.getLights().getAll(), camera, null, null);
+		terrainRenderer.render(terrains, scene.getLights().getAll(), camera);
 		skyboxRenderer.render(camera);
 		
 		cleanSceneObjects();
@@ -133,11 +120,11 @@ public class MainRenderer implements IMainRenderer {
 	 * @param clipPlane {@link Vector4f} clipping plane
 	 * @param isLowDistance 
 	 */
-	private void renderSceneObjects(Scene scene, Vector4f clipPlane, boolean isLowDistance) {
+	private void renderSceneObjects(Scene scene, Vector4f clipPlane) {
 		prepare();
 		
 		if (EngineDebug.getBoundingVisibility() != EngineDebug.BOUNDING_NONE)
-			boundingRenderer.render(texturedEntities, normalEntities, decorEntities, scene.getCamera());
+			boundingRenderer.render(texturedEntities, normalEntities, scene.getCamera());
 		
 		if (EngineMain.getWiredFrameMode() == EngineSettings.WIRED_FRAME_ENTITY || 
 				EngineMain.getWiredFrameMode() == EngineSettings.WIRED_FRAME_ENTITY_TERRAIN)
@@ -145,7 +132,7 @@ public class MainRenderer implements IMainRenderer {
 		
 		Matrix4f shadowMapMatrix = shadowMapRenderer.getToShadowMapMatrix();
 		entityRendererManager.render(clipPlane, scene.getLights().getAll(), scene.getCamera(), 
-				shadowMapMatrix, environmentMap, false);
+				shadowMapMatrix, environmentMap);
 		
 		OGLUtils.doWiredFrame(false);
 		
@@ -162,14 +149,14 @@ public class MainRenderer implements IMainRenderer {
 		prepare();
 		Matrix4f shadowMapMatrix = shadowMapRenderer.getToShadowMapMatrix();
 		entityRendererManager.render(EngineSettings.NO_CLIP, scene.getLights().getAll(), scene.getCamera(), 
-				shadowMapMatrix, null, false);
+				shadowMapMatrix, null);
 		cleanSceneObjects();
 	}
 
 	@Override
 	public void renderShadows(Scene scene) {
 		processShadowEntities(scene, scene.getCamera().isMoved());
-		shadowMapRenderer.render(decorEntities, terrains, scene.getSun(), scene.getCamera());
+		shadowMapRenderer.render(texturedEntities, normalEntities, terrains, scene.getSun(), scene.getCamera());
 		cleanSceneObjects();
 	}
 
@@ -180,10 +167,8 @@ public class MainRenderer implements IMainRenderer {
 		getShadowMapTexture().bind(6);
 	}
 	
-	private void processEntities(Scene scene, boolean isLowDistance, boolean doRebuild) {
-		List<Entity> frustumEntities = isLowDistance ?
-			scene.getFrustumEntities().processLowEntities(scene, projectionLowMatrix, doRebuild) :
-			scene.getFrustumEntities().processHighEntities(scene, projectionNormalMatrix, doRebuild);
+	private void processEntities(Scene scene, boolean doRebuild) {
+		List<Entity> frustumEntities = scene.getFrustumEntities().processEntities(scene, projectionMatrix, doRebuild);
 		frustumEntities.stream().forEach(this::processEntity);
 	}
 	
@@ -191,13 +176,12 @@ public class MainRenderer implements IMainRenderer {
 		List<Entity> frustumEntities = 
 				scene.getFrustumEntities().prepareShadowEntities(
 						scene, shadowMapRenderer.getToShadowMapMatrix(), doRebuild);
-		frustumEntities.stream().forEach(entity -> processEntity(Shader.DECOR_ENTITY, entity));
+		frustumEntities.stream().forEach(this::processEntity);
 	}
 	
 	private void cleanSceneObjects() {
 		texturedEntities.clear();
 		normalEntities.clear();
-		decorEntities.clear();
 		terrains.clear();
 	}
 
@@ -207,22 +191,6 @@ public class MainRenderer implements IMainRenderer {
 		terrainRenderer.clean();
 		shadowMapRenderer.clean();
 		ShaderPool.getInstance().clean();
-	}
-	
-	private Matrix4f createProjectionMatrix(float farPlane) {
-		Matrix4f currProjectionMatrix = new Matrix4f();		
-		float aspectRatio = (float) Display.getWidth() / (float) Display.getHeight();
-		float y_scale = (float) (1f / Math.tan(Math.toRadians(EngineSettings.FOV / 2f)));
-		float x_scale = y_scale / aspectRatio;
-		float frustrum_length = farPlane - EngineSettings.NEAR_PLANE;
-
-		currProjectionMatrix.m[0][0] = x_scale;
-		currProjectionMatrix.m[1][1] = y_scale;
-		currProjectionMatrix.m[2][2] = -((farPlane + EngineSettings.NEAR_PLANE) / frustrum_length);
-		currProjectionMatrix.m[2][3] = -1;
-		currProjectionMatrix.m[3][2] = -((2 * EngineSettings.NEAR_PLANE * farPlane) / frustrum_length);
-		currProjectionMatrix.m[3][3] = 0;
-		return currProjectionMatrix;
 	}
 
 	@Override
@@ -234,7 +202,7 @@ public class MainRenderer implements IMainRenderer {
 		return shadowMapRenderer.getShadowMap();
 	}
 	
-	private void processTerrain(ITerrain terrain) {
+	private void processTerrain(Terrain terrain) {
 		processor.processTerrain(terrain, terrains);
 	}
 	
@@ -246,9 +214,6 @@ public class MainRenderer implements IMainRenderer {
 		switch(type) {
 		 	case Shader.ENTITY:
 		 		processor.processEntity(entity, texturedEntities);
-		 		break;
-		 	case Shader.DECOR_ENTITY:
-		 		processor.processEntity(entity, decorEntities);
 		 		break;
 		 	case Shader.NORMAL_ENTITY:
 		 		processor.processEntity(entity, normalEntities);

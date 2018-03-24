@@ -7,9 +7,9 @@ import java.util.Map;
 
 import org.lwjgl.util.vector.Vector4f;
 
-import object.camera.ICamera;
+import object.camera.Camera;
 import object.entity.Entity;
-import object.light.ILight;
+import object.light.Light;
 import primitive.model.Model;
 import primitive.texture.Texture;
 import tool.math.Matrix4f;
@@ -20,22 +20,16 @@ public class EntityRendererManager implements IEntityRendererManager {
 			new HashMap<IEntityRenderer, Map<Model, List<Entity>>>();
 	
 	@Override
-	public EntityRendererManager addPair(IEntityRenderer renderer, Map<Model, List<Entity>> enitties) {
-		this.entityRenderers.put(renderer, enitties);
+	public EntityRendererManager addPair(IEntityRenderer renderer, Map<Model, List<Entity>> enities) {
+		this.entityRenderers.put(renderer, enities);
 		return this;
 	}
 	
 	@Override
-	public void render(Vector4f clipPlane, Collection<ILight> lights, ICamera camera, Matrix4f toShadowMapSpace,
-			Texture environmentMap, boolean isLowDetailed) {
-		if (isLowDetailed) {
-			entityRenderers.forEach((renderer, entities) -> 
-				renderer.renderLow(entities, lights, camera, toShadowMapSpace));
-		} else {
-			entityRenderers.forEach((renderer, entities) -> 
-				renderer.renderHigh(entities, clipPlane, lights, camera, 
-						toShadowMapSpace, environmentMap));
-		}
+	public void render(Vector4f clipPlane, Collection<Light> lights, Camera camera, Matrix4f toShadowMapSpace,
+			Texture environmentMap) {
+		entityRenderers.forEach((renderer, entities) -> 
+			renderer.render(entities, clipPlane, lights, camera, toShadowMapSpace, environmentMap));
 	}
 
 	@Override

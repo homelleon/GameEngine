@@ -2,7 +2,7 @@ package shader.bounding;
 
 
 import core.settings.EngineSettings;
-import object.camera.ICamera;
+import object.camera.Camera;
 import shader.Shader;
 import tool.math.Maths;
 import tool.math.Matrix4f;
@@ -47,7 +47,7 @@ public class BoundingShader extends Shader {
 		super.loadMatrix(UNIFORM_TRANSFORMATION_MATRIX, matrix);
 	}
 
-	public void loadViewMatrix(ICamera camera) {
+	public void loadViewMatrix(Camera camera) {
 		Matrix4f viewMatrix = Maths.createViewMatrix(camera);
 		super.loadMatrix(UNIFORM_VIEW_MATRIX, viewMatrix);
 	}

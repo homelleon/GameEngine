@@ -3,27 +3,25 @@ package scene;
 import java.util.Collection;
 
 import control.MousePicker;
-import manager.audio.IAudioManager;
+import manager.AudioManager;
+import manager.LightManager;
+import manager.ParticleManager;
+import manager.TerrainManager;
+import manager.WaterManager;
+import manager.entity.EntityManager;
 import manager.entity.FrustumEntityManager;
-import manager.entity.IEntityManager;
-import manager.entity.IFrustumEntityManager;
 import manager.gui.GUIManager;
 import manager.gui.IGUIManager;
-import manager.light.ILightManager;
-import manager.particle.IParticleManager;
 import manager.scene.AObjectManager;
 import manager.scene.IObjectManager;
-import manager.terrain.ITerrainManager;
 import manager.voxel.ChunkManager;
-import manager.voxel.IChunkManager;
-import manager.water.IWaterManager;
-import object.audio.master.IAudioMaster;
-import object.camera.ICamera;
+import object.audio.AudioMaster;
+import object.camera.Camera;
 import object.entity.Entity;
 import object.entity.Player;
 import object.light.Light;
 import object.particle.ParticleSystem;
-import object.terrain.terrain.ITerrain;
+import object.terrain.Terrain;
 import primitive.texture.Texture;
 import tool.math.Frustum;
 import tool.math.vector.Vector3f;
@@ -32,7 +30,7 @@ public class Scene extends AObjectManager {
 
 	private final static int CHUNK_WORLD_SIZE = 2;
 	private Player player;
-	private ICamera camera;
+	private Camera camera;
 	private Light sun;
 	private Frustum frustum;
 
@@ -40,19 +38,19 @@ public class Scene extends AObjectManager {
 	private Texture environmentMap = Texture.newEmptyCubeMap(128);
 	private MousePicker mousePicker;
 
-	private IChunkManager chunkManager;
+	private ChunkManager chunkManager;
 	private IGUIManager uiManager = new GUIManager();
-	private IFrustumEntityManager frustumManager;
+	private FrustumEntityManager frustumManager;
 	
 	public Scene() {
 		super();
 	}
 
-	public Scene(IAudioMaster audioMaster) {
+	public Scene(AudioMaster audioMaster) {
 		super(audioMaster);
 	}
 
-	public Scene(IObjectManager levelMap, IAudioMaster audioMaster) {
+	public Scene(IObjectManager levelMap, AudioMaster audioMaster) {
 		super(audioMaster);
 		initialize(levelMap);
 	}
@@ -75,7 +73,7 @@ public class Scene extends AObjectManager {
 		this.frustumManager.rebuildNodes(this.getEntities().getAll());
 	}
 	
-	public IFrustumEntityManager getFrustumEntities() {
+	public FrustumEntityManager getFrustumEntities() {
 		return frustumManager;
 	}
 
@@ -92,11 +90,11 @@ public class Scene extends AObjectManager {
 		return this;
 	}
 
-	public ICamera getCamera() {
+	public Camera getCamera() {
 		return camera;
 	}
 
-	public Scene setCamera(ICamera camera) {
+	public Scene setCamera(Camera camera) {
 		this.camera = camera;
 		return this;
 	}
@@ -114,7 +112,7 @@ public class Scene extends AObjectManager {
 	 * @Enitites
 	 */
 	@Override
-	public IEntityManager getEntities() {
+	public EntityManager getEntities() {
 		return entityManager;
 	}
 
@@ -123,7 +121,7 @@ public class Scene extends AObjectManager {
 	 */
 
 	@Override
-	public ITerrainManager getTerrains() {
+	public TerrainManager getTerrains() {
 		return terrainManager;
 	}
 
@@ -132,7 +130,7 @@ public class Scene extends AObjectManager {
 	 */
 
 	@Override
-	public IWaterManager getWaters() {
+	public WaterManager getWaters() {
 		return waterManager;
 	}
 
@@ -140,7 +138,7 @@ public class Scene extends AObjectManager {
 	 * @VoxelGrids
 	 */
 
-	public IChunkManager getChunks() {
+	public ChunkManager getChunks() {
 		return chunkManager;
 	}
 
@@ -149,7 +147,7 @@ public class Scene extends AObjectManager {
 	 */
 
 	@Override
-	public IParticleManager getParticles() {
+	public ParticleManager getParticles() {
 		return particleManager;
 	}
 
@@ -158,7 +156,7 @@ public class Scene extends AObjectManager {
 	 */
 
 	@Override
-	public ILightManager getLights() {
+	public LightManager getLights() {
 		return lightManager;
 	}
 
@@ -167,7 +165,7 @@ public class Scene extends AObjectManager {
 	 */
 
 	@Override
-	public IAudioManager getAudioSources() {
+	public AudioManager getAudioSources() {
 		return audioManager;
 	}
 
@@ -195,7 +193,7 @@ public class Scene extends AObjectManager {
 
 	private Vector3f spreadPointOnHeights(Vector3f position) {
 		float terrainHeight = 0;
-		for (ITerrain terrain : terrainManager.getAll()) {
+		for (Terrain terrain : terrainManager.getAll()) {
 			terrainHeight += terrain.getHeightOfTerrain(position.x, position.z);
 		}
 		position.setY(terrainHeight);
@@ -207,7 +205,7 @@ public class Scene extends AObjectManager {
 			for (Entity entity : entityList) {
 				float terrainHeight = 0;
 
-				for (ITerrain terrain : terrainManager.getAll()) {
+				for (Terrain terrain : terrainManager.getAll()) {
 					terrainHeight += terrain.getHeightOfTerrain(entity.getPosition().x, entity.getPosition().z);
 				}
 				entity.setPosition(new Vector3f(entity.getPosition().x, terrainHeight, entity.getPosition().z));
@@ -221,7 +219,7 @@ public class Scene extends AObjectManager {
 			for (ParticleSystem partilceSystem : particleSystems) {
 				float terrainHeight = 0;
 
-				for (ITerrain terrain : terrainManager.getAll()) {
+				for (Terrain terrain : terrainManager.getAll()) {
 					terrainHeight += terrain.getHeightOfTerrain(partilceSystem.getPosition().x, partilceSystem.getPosition().z);
 				}
 				partilceSystem.setPosition(new Vector3f(partilceSystem.getPosition().x, terrainHeight, partilceSystem.getPosition().z));

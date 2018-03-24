@@ -4,7 +4,7 @@ package shader.skybox;
 import core.EngineMain;
 import core.display.DisplayManager;
 import core.settings.EngineSettings;
-import object.camera.ICamera;
+import object.camera.Camera;
 import shader.Shader;
 import tool.math.Maths;
 import tool.math.Matrix4f;
@@ -61,7 +61,7 @@ public class SkyboxShader extends Shader {
 		super.loadMatrix(UNIFORM_PROJECTION_MATRIX, matrix);
 	}
 
-	public void loadViewMatrix(ICamera camera) {
+	public void loadViewMatrix(Camera camera) {
 		Matrix4f matrix = Maths.createViewMatrix(camera);
 		matrix.m[3][0] = 0;
 		matrix.m[3][1] = 0;

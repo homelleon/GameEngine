@@ -3,7 +3,7 @@ package object.camera;
 import tool.math.Matrix4f;
 import tool.math.vector.Vector3f;
 
-public class CubeMapCamera extends BaseCamera implements ICamera {
+public class CubeMapCamera extends Camera {
 
 	/*
 	 * CameraCubeMap - камера для записи кубической текстуры окружения

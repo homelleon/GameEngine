@@ -28,7 +28,7 @@ import tool.math.vector.VectorBuilder3i;
  * @version 1.0.1
  *
  */
-public class ChunkManager implements IChunkManager {
+public class ChunkManager {
 
 	private List<Chunk> chunks = new ArrayList<Chunk>();
 	private int size;
@@ -48,17 +48,14 @@ public class ChunkManager implements IChunkManager {
 			.forEach(block -> block.setIsActive(true));
 	}
 
-	@Override
 	public void addChunk() {
 		chunks.add(new Chunk());
 	}
 
-	@Override
 	public void deleteChunk() {
 		chunks.remove(chunks.size() - 1);
 	}
 
-	@Override
 	public Vector3f getChunkPosition(Vector3i indexPosition) {
 		float step = EngineSettings.VOXEL_CHUNK_SIZE * EngineSettings.VOXEL_BLOCK_SIZE;
 		IVectorBuilder3<Float, Vector3f> vecBuilder = new VectorBuilder3f();
@@ -69,7 +66,6 @@ public class ChunkManager implements IChunkManager {
 					.build();
 	}
 
-	@Override
 	public Vector3f getChunkPositionByChunkIndex(int chunkIndex) {
 		float step = EngineSettings.VOXEL_CHUNK_SIZE * EngineSettings.VOXEL_BLOCK_SIZE;
 		int x = (int) Math.floor(chunkIndex / Maths.sqr(size));
@@ -83,7 +79,6 @@ public class ChunkManager implements IChunkManager {
 					.build();
 	}
 	
-	@Override
 	public Vector3f getChunkPositionByGeneralIndex(int generalIndex) {
 		float step = EngineSettings.VOXEL_CHUNK_SIZE * EngineSettings.VOXEL_BLOCK_SIZE;
 		int x = (int) Math.floor(generalIndex / (Math.pow(EngineSettings.VOXEL_CHUNK_SIZE, 3) *  Math.pow(size,2)));
@@ -100,7 +95,6 @@ public class ChunkManager implements IChunkManager {
 				.build();
 	}
 
-	@Override
 	public Vector3f getBlockPosition(int chunkIndex, Vector3i indexPosition) {
 		float step = EngineSettings.VOXEL_BLOCK_SIZE;
 		Vector3f chunkPosition = getChunkPositionByChunkIndex(chunkIndex);
@@ -112,7 +106,6 @@ public class ChunkManager implements IChunkManager {
 					.build();
 	}
 	
-	@Override
 	public Vector3f getBlockPositionByGeneralIndex(int generalIndex) {
 		int x = (int) Math.floor(generalIndex / Math.pow(EngineSettings.VOXEL_CHUNK_SIZE, 2));
 		int y = (int) Math.floor(generalIndex / EngineSettings.VOXEL_CHUNK_SIZE);
@@ -135,7 +128,6 @@ public class ChunkManager implements IChunkManager {
 				.build();
 	}
 	
-	@Override
 	public Vector3f getBlockPosition(int chunkIndex, int blockIndex) {
 		return getBlockPosition(chunkIndex, getBlockIndexPosition(blockIndex));
 	}
@@ -155,7 +147,6 @@ public class ChunkManager implements IChunkManager {
 				.build();
 	}
 
-	@Override
 	public Vector3i getChunkIndexVector(int chunkIndex) {
 		int x = (int) Math.floor(chunkIndex / Maths.sqr(size));
 		int y = (int) Math.floor(chunkIndex / size);
@@ -168,7 +159,6 @@ public class ChunkManager implements IChunkManager {
 					.build();
 	}
 	
-	@Override
 	public Vector3i getBlockIndexVectorByGenerealIndex(int generalIndex) {
 		int x = (int) Math.floor(generalIndex / Math.pow(EngineSettings.VOXEL_CHUNK_SIZE, 2));
 		int y = (int) Math.floor(generalIndex / EngineSettings.VOXEL_CHUNK_SIZE);
@@ -181,34 +171,28 @@ public class ChunkManager implements IChunkManager {
 					.build();
 	}
 
-	@Override
 	public boolean isChunkExist(int chunkIndex) {
 		return chunkIndex >= 0 && chunkIndex < this.chunks.size() ? true : false;
 	}
 
-	@Override
 	public boolean isChunkExist(Vector3i indexPosition) {
 		int index = indexPosition.x * size * size + indexPosition.y * size + indexPosition.z;
 		return index >= 0 && index < this.chunks.size() ? true : false;
 	}
 
-	@Override
 	public Chunk getChunk(Vector3i indexPosition) {
 		return chunks.get(indexPosition.x * size * size + indexPosition.y * size + indexPosition.z);
 	}
 
-	@Override
 	public Chunk getChunk(int chunkIndex) {
 		return chunks.get(chunkIndex);
 	}
 	
-	@Override
 	public Chunk getChunkByGeneralIndex(int generalIndex) {
 		int index = (int) Math.floor(generalIndex / (Math.pow(EngineSettings.VOXEL_CHUNK_SIZE, 3)));
 		return getChunk(index);
 	}
 	
-	@Override
 	public Block getBlockByGeneralIndex(int generalIndex) {
 		int chunkIndex = (int) Math.floor(generalIndex / (Math.pow(EngineSettings.VOXEL_CHUNK_SIZE, 3)));
 		Chunk chunk = getChunk(chunkIndex);
@@ -216,12 +200,10 @@ public class ChunkManager implements IChunkManager {
 		return block;
 	}
 
-	@Override
 	public int getSize() {
 		return size;
 	}
 
-	@Override
 	public void clearAll() {
 		chunks.clear();
 	}

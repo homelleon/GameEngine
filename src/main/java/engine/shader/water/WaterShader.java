@@ -2,7 +2,7 @@ package shader.water;
 
 
 import core.settings.EngineSettings;
-import object.camera.ICamera;
+import object.camera.Camera;
 import object.light.Light;
 import shader.Shader;
 import tool.math.Maths;
@@ -94,7 +94,7 @@ public class WaterShader extends Shader {
 		super.loadMatrix(UNIFORM_PROJECTION_MATRIX, projection);
 	}
 
-	public void loadViewMatrix(ICamera camera) {
+	public void loadViewMatrix(Camera camera) {
 		Matrix4f viewMatrix = Maths.createViewMatrix(camera);
 		super.loadMatrix(UNIFORM_VIEW_MATRIX, viewMatrix);
 		super.load3DVector(UNIFORM_CAMERA_POSITION, camera.getPosition());

@@ -9,7 +9,7 @@ import tool.math.Maths;
 import tool.math.Matrix4f;
 import tool.math.vector.Vector3f;
 
-public class FreeCamera extends BaseCamera implements ICamera {
+public class FreeCamera extends Camera {
 
 	public FreeCamera(String name, Vector3f position) {
 		super(name, position);

@@ -1,19 +1,12 @@
 package manager.scene;
 
-import manager.audio.AudioManager;
-import manager.audio.IAudioManager;
+import manager.AudioManager;
+import manager.LightManager;
+import manager.ParticleManager;
+import manager.TerrainManager;
+import manager.WaterManager;
 import manager.entity.EntityManager;
-import manager.entity.IEntityManager;
-import manager.light.ILightManager;
-import manager.light.LightManager;
-import manager.particle.IParticleManager;
-import manager.particle.ParticleManager;
-import manager.terrain.ITerrainManager;
-import manager.terrain.TerrainManager;
-import manager.water.IWaterManager;
-import manager.water.WaterManager;
-import object.audio.master.IAudioMaster;
-import object.terrain.terrain.ITerrain;
+import object.audio.AudioMaster;
 
 /**
  * Abstact class of engine objects manager.
@@ -23,12 +16,12 @@ import object.terrain.terrain.ITerrain;
  */
 public abstract class AObjectManager {
 	
-	protected IEntityManager entityManager;
-	protected ITerrainManager terrainManager;
-	protected IParticleManager particleManager;
-	protected IAudioManager audioManager;
-	protected ILightManager lightManager;
-	protected IWaterManager waterManager;
+	protected EntityManager entityManager;
+	protected TerrainManager terrainManager;
+	protected ParticleManager particleManager;
+	protected AudioManager audioManager;
+	protected LightManager lightManager;
+	protected WaterManager waterManager;
 	
 	protected AObjectManager() {
 		this.entityManager = new EntityManager();
@@ -39,7 +32,7 @@ public abstract class AObjectManager {
 		this.waterManager = new WaterManager();
 	}
 	
-	protected AObjectManager(IAudioMaster master) {
+	protected AObjectManager(AudioMaster master) {
 		this.entityManager = new EntityManager();
 		this.terrainManager = new TerrainManager();
 		this.particleManager = new ParticleManager();
@@ -48,27 +41,27 @@ public abstract class AObjectManager {
 		this.waterManager = new WaterManager();
 	}
 
-	public IEntityManager getEntities() {
+	public EntityManager getEntities() {
 		return this.entityManager;
 	}
 
-	public ITerrainManager getTerrains() {
+	public TerrainManager getTerrains() {
 		return this.terrainManager;
 	}
 	
-	public IParticleManager getParticles() {
+	public ParticleManager getParticles() {
 		return this.particleManager;
 	}
 	
-	public IAudioManager getAudioSources() {
+	public AudioManager getAudioSources() {
 		return this.audioManager;
 	}
 	
-	public ILightManager getLights() {
+	public LightManager getLights() {
 		return this.lightManager;
 	}
 	
-	public IWaterManager getWaters() {
+	public WaterManager getWaters() {
 		return this.waterManager;
 	}
 	

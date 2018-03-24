@@ -2,6 +2,7 @@ package tool.math;
 
 import java.nio.FloatBuffer;
 
+import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Vector4f;
 
 import tool.math.vector.Vector2f;
@@ -203,6 +204,22 @@ public class Matrix4f {
 		m[2][0] = 0; 				 	  m[2][1] = 0; 		 	   m[2][2] = zFar/(zFar-zNear);	m[2][3] = zFar*zNear /(zFar-zNear);
 		m[3][0] = 0; 				 	  m[3][1] = 0; 		 	   m[3][2] = 1; 				m[3][3] = 1;
 	
+		return this;
+	}
+	
+	public Matrix4f makeProjectionMatrix(float nearPlane, float farPlane, float fov) {
+		this.setIdentity();
+		float aspectRatio = (float) Display.getWidth() / (float) Display.getHeight();
+		float y_scale = (float) (1f / Math.tan(Math.toRadians(fov / 2f)));
+		float x_scale = y_scale / aspectRatio;
+		float frustrum_length = farPlane - nearPlane;
+
+		this.m[0][0] = x_scale;
+		this.m[1][1] = y_scale;
+		this.m[2][2] = -((farPlane + nearPlane) / frustrum_length);
+		this.m[2][3] = -1;
+		this.m[3][2] = -((2 * nearPlane * farPlane) / frustrum_length);
+		this.m[3][3] = 0;
 		return this;
 	}
 	

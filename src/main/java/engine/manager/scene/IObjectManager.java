@@ -1,12 +1,12 @@
 package manager.scene;
 
-import manager.audio.IAudioManager;
-import manager.entity.IEntityManager;
-import manager.light.ILightManager;
-import manager.particle.IParticleManager;
-import manager.terrain.ITerrainManager;
-import manager.water.IWaterManager;
-import map.objectMap.ObjectMapManager;
+import manager.AudioManager;
+import manager.LightManager;
+import manager.ObjectMapManager;
+import manager.ParticleManager;
+import manager.TerrainManager;
+import manager.WaterManager;
+import manager.entity.EntityManager;
 
 /**
  * Provide access to manages game objects through its managers.
@@ -18,17 +18,17 @@ import map.objectMap.ObjectMapManager;
  */
 public interface IObjectManager {
 	
-	IEntityManager getEntities();
+	EntityManager getEntities();
 
-	ITerrainManager getTerrains();
+	TerrainManager getTerrains();
 	
-	IParticleManager getParticles();
+	ParticleManager getParticles();
 	
-	IAudioManager getAudioSources();	
+	AudioManager getAudioSources();	
 	
-	ILightManager getLights();
+	LightManager getLights();
 	
-	IWaterManager getWaters();
+	WaterManager getWaters();
 	
 	void clean();
 	

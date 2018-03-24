@@ -8,13 +8,12 @@ import org.lwjgl.openal.AL11;
 
 import core.debug.EngineDebug;
 import core.settings.EngineSettings;
-import manager.particle.ParticleManager;
-import object.audio.source.AudioSource;
-import object.audio.source.IAudioSource;
+import manager.ParticleManager;
+import object.audio.AudioSource;
 import object.camera.TargetCamera;
 import object.entity.Player;
 import object.light.Light;
-import object.water.WaterTile;
+import object.water.Water;
 import primitive.buffer.Loader;
 import primitive.model.Model;
 import primitive.texture.material.Material;
@@ -118,7 +117,7 @@ public class SceneManager implements ISceneManager {
 
 		/*--------------AUDIO----------------*/
 		AL10.alDistanceModel(AL11.AL_LINEAR_DISTANCE_CLAMPED);
-		IAudioSource ambientSource = new AudioSource("birds", "forest.wav", 1000,
+		AudioSource ambientSource = new AudioSource("birds", "forest.wav", 1000,
 				scene.getAudioSources().getMaster());
 		ambientSource.setLooping(true);
 		ambientSource.setVolume(0.3f);
@@ -126,8 +125,8 @@ public class SceneManager implements ISceneManager {
 		ambientSource.setPosition(new Vector3f(400, 50, 400));
 
 		/*--------------WATER----------------*/
-		List<WaterTile> waterList = new ArrayList<WaterTile>();
-		WaterTile water = new WaterTile("Water", 0, 0, -4, 10000);
+		List<Water> waterList = new ArrayList<Water>();
+		Water water = new Water("Water", 0, 0, -4, 10000);
 		waterList.add(water);
 		waterList.forEach(waterTile -> {
 				waterTile.setTilingSize(0.05f);

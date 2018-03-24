@@ -2,7 +2,7 @@ package object.gui.text;
 
 import tool.math.vector.Vector2f;
 
-public class GUITextBuilder implements IGUITextBuilder {
+public class GUITextBuilder {
 	
 	private String text;
 	private String fontName;
@@ -11,43 +11,36 @@ public class GUITextBuilder implements IGUITextBuilder {
 	private float lineSize;
 	private boolean isCentered;
 
-	@Override
-	public IGUITextBuilder setContent(String text) {
+	public GUITextBuilder setContent(String text) {
 		this.text = text;
 		return this;
 	}
 
-	@Override
-	public IGUITextBuilder setFontName(String fontName) {
+	public GUITextBuilder setFontName(String fontName) {
 		this.fontName = fontName;
 		return this;
 	}
 
-	@Override
-	public IGUITextBuilder setFontSize(float fontSize) {
+	public GUITextBuilder setFontSize(float fontSize) {
 		this.fontSize = fontSize;
 		return this;
 	}
 
-	@Override
-	public IGUITextBuilder setPosition(Vector2f position) {
+	public GUITextBuilder setPosition(Vector2f position) {
 		this.position = position;
 		return this;
 	}
 
-	@Override
-	public IGUITextBuilder setLineMaxSize(float lineSize) {
+	public GUITextBuilder setLineMaxSize(float lineSize) {
 		this.lineSize = lineSize;
 		return this;
 	}
 
-	@Override
-	public IGUITextBuilder setCentered(boolean value) {
+	public GUITextBuilder setCentered(boolean value) {
 		this.isCentered = value;
 		return this;
 	}
 
-	@Override
 	public GUIText build(String name) {
 		return new GUIText(name, text, fontSize, fontName, position, lineSize, isCentered);
 	}

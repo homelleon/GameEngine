@@ -3,15 +3,14 @@ package manager.octree;
 import tool.math.vector.Vector3f;
 import tool.math.vector.Vector3i;
 
-public class VoxelOctree extends Node {
+public class VoxelOctree extends Node<Vector3f> {
 	
 	private float voxelSize = 5f;
 	private int nodeSize = 8;
 	private int visualLevel = 2;
-	private Vector3f position;
 	
 	public VoxelOctree(Vector3f position) {
-		super();
+		super("voxelOctree");
 		this.position = position;
 		for(int x = 0; x < nodeSize; x++) {
 			for(int y = 0; y < nodeSize; y++) {

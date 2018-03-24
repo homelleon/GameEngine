@@ -1,23 +1,24 @@
 package object.gui.texture;
 
-import object.GameObject;
 import primitive.texture.Texture2D;
+import scene.Drawable;
+import shader.Shader;
+import shader.ShaderPool;
 import tool.math.vector.Color;
 import tool.math.vector.Vector2f;
 
-public class GUITexture extends GameObject {
+public class GUITexture extends Drawable<Vector2f> {
 
 	private boolean isVisible = false;
 
 	private Texture2D texture;
-	private Vector2f position;
 	private Vector2f scale;
 	private Color mixColor = new Color(255, 0, 0);
 	private boolean isMixColored = false;
 	private float transparency = 0;
 
 	public GUITexture(String name, Texture2D texture, Vector2f position, Vector2f scale) {
-		super(name);
+		super(name, ShaderPool.getInstance().get(Shader.GUI_TEXTURE), null);
 		this.texture = texture;
 		this.position = position;
 		this.scale = scale;
@@ -26,15 +27,7 @@ public class GUITexture extends GameObject {
 	public Texture2D getTexture() {
 		return this.texture;
 	}
-
-	public synchronized void setPosition(Vector2f position) {
-		this.position = position;
-	}
-
-	public Vector2f getPosition() {
-		return this.position;
-	}
-
+	
 	public Vector2f getScale() {
 		return this.scale;
 	}

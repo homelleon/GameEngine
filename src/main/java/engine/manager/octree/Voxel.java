@@ -3,7 +3,7 @@ package manager.octree;
 import tool.math.vector.Vector3f;
 import tool.math.vector.Vector3i;
 
-public class Voxel extends Node {
+public class Voxel extends Node<Vector3f> {
 	
 	private boolean isActive;
 	private Vector3i location;
@@ -12,7 +12,7 @@ public class Voxel extends Node {
 	private int nodeSize;
 	
 	public Voxel(int nodeSize, Vector3i location, Vector3f parentPosition, int parentVisualLevel) {
-		super();
+		super("voxel");
 		this.nodeSize = nodeSize;
 		this.currentVisualLevel = parentVisualLevel - 1;
 		if(currentVisualLevel > 0) {
@@ -39,10 +39,6 @@ public class Voxel extends Node {
 
 	public Vector3i getLocation() {
 		return location;
-	}
-
-	public Vector3f getPosition() {
-		return position;
 	}
 
 }

@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import object.entity.Entity;
-import object.terrain.terrain.ITerrain;
+import object.terrain.Terrain;
 import primitive.model.Model;
 
 /**
@@ -15,7 +15,7 @@ import primitive.model.Model;
  */
 public interface ISceneProcessor {
 
-	public void processTerrain(ITerrain terrain, Collection<ITerrain> terrains);
+	public void processTerrain(Terrain terrain, Collection<Terrain> terrains);
 
 	public void processEntity(Entity entity, Map<Model, List<Entity>> entities);
 

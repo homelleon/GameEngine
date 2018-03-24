@@ -8,8 +8,8 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL31;
 
-import object.camera.ICamera;
-import object.particle.particle.Particle;
+import object.camera.Camera;
+import object.particle.Particle;
 import primitive.buffer.BufferLoader;
 import primitive.buffer.Loader;
 import primitive.buffer.VAO;
@@ -52,7 +52,7 @@ public class ParticleRenderer {
 		shader.stop();
 	}
 
-	public void render(Map<ParticleMaterial, List<Particle>> particles, ICamera camera) {
+	public void render(Map<ParticleMaterial, List<Particle>> particles, Camera camera) {
 		Matrix4f viewMatrix = Maths.createViewMatrix(camera);
 		prepare();
 		for (ParticleMaterial texture : particles.keySet()) {

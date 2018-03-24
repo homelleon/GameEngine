@@ -8,9 +8,9 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector4f;
 
 import core.settings.EngineSettings;
-import object.camera.ICamera;
+import object.camera.Camera;
 import object.entity.Entity;
-import object.light.ILight;
+import object.light.Light;
 import primitive.buffer.VAO;
 import primitive.model.Mesh;
 import primitive.model.Model;
@@ -37,12 +37,14 @@ public class NormalEntityRenderer implements IEntityRenderer {
 	}
 
 	@Override
-	public void renderHigh(Map<Model, List<Entity>> entities, Vector4f clipPlane, Collection<ILight> lights,
-			ICamera camera, Matrix4f toShadowMapSpace, Texture environmentMap) {
+	public void render(Map<Model, List<Entity>> entities, Vector4f clipPlane, Collection<Light> lights,
+			Camera camera, Matrix4f toShadowMapSpace, Texture environmentMap) {
 		if(!entities.isEmpty()) {
 			shader.start();
 			shader.loadFogDensity(EngineSettings.FOG_DENSITY);
-			shader.loadToShadowSpaceMatrix(toShadowMapSpace);
+			if (toShadowMapSpace != null) {
+				shader.loadToShadowSpaceMatrix(toShadowMapSpace);
+			}
 			shader.loadShadowVariables(EngineSettings.SHADOW_DISTANCE, EngineSettings.SHADOW_MAP_SIZE,
 					EngineSettings.SHADOW_TRANSITION_DISTANCE, EngineSettings.SHADOW_PCF);
 			prepare(clipPlane, lights, camera);
@@ -60,7 +62,7 @@ public class NormalEntityRenderer implements IEntityRenderer {
 	}
 	
 	@Override
-	public void renderLow(Map<Model, List<Entity>> entities, Collection<ILight> lights, ICamera camera, Matrix4f toShadowMapSpace) {
+	public void render(Map<Model, List<Entity>> entities, Collection<Light> lights, Camera camera, Matrix4f toShadowMapSpace) {
 		GL11.glClearColor(1, 1, 1, 1);
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 		shader.start();
@@ -118,15 +120,17 @@ public class NormalEntityRenderer implements IEntityRenderer {
 
 	private void prepareInstance(Entity entity) {
 		Matrix4f transformationMatrix = Maths.createTransformationMatrix(entity.getPosition(), entity.getRotation().getX(),
-				entity.getRotation().getY(), entity.getRotation().getZ(), entity.getScale());
+				entity.getRotation().getY(), entity.getRotation().getZ(), entity.getScale().getX());
 		shader.loadTransformationMatrix(transformationMatrix);
 		Vector2f textureOffset = entity.getTextureOffset();
 		shader.loadOffset(textureOffset.x, textureOffset.y);
 		shader.loadManipulationVariables(entity.isChosen());
 	}
 
-	private void prepare(Vector4f clipPlane, Collection<ILight> lights, ICamera camera) {
-		shader.loadClipPlane(clipPlane);
+	private void prepare(Vector4f clipPlane, Collection<Light> lights, Camera camera) {
+		if (clipPlane != null)
+			shader.loadClipPlane(clipPlane);
+		
 		shader.loadSkyColor(new Color(EngineSettings.RED, EngineSettings.GREEN, EngineSettings.BLUE));
 		Matrix4f viewMatrix = camera.getViewMatrix();
 

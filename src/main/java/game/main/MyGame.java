@@ -8,7 +8,7 @@ import org.lwjgl.input.Mouse;
 import control.KeyboardGame;
 import control.MouseGame;
 import core.EngineMain;
-import game.game.Game;
+import core.game.Game;
 import object.bounding.BoundingQuad;
 import object.gui.element.button.GUIButton;
 import object.gui.element.button.IAction;

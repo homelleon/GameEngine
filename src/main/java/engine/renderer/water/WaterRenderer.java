@@ -7,10 +7,10 @@ import org.lwjgl.opengl.GL13;
 
 import core.display.DisplayManager;
 import core.settings.EngineSettings;
-import object.camera.ICamera;
+import object.camera.Camera;
 import object.light.Light;
 import object.water.WaterFrameBuffers;
-import object.water.WaterTile;
+import object.water.Water;
 import primitive.buffer.Loader;
 import primitive.buffer.TextureObjectLoader;
 import primitive.buffer.VAO;
@@ -52,9 +52,9 @@ public class WaterRenderer {
 		setUpVAO();
 	}
 
-	public void render(Collection<WaterTile> water, ICamera camera, Light sun) {
+	public void render(Collection<Water> water, Camera camera, Light sun) {
 		prepareRender(camera, sun);
-		for (WaterTile tile : water) {
+		for (Water tile : water) {
 			Matrix4f modelMatrix = Maths.createTransformationMatrix(
 					new Vector3f(tile.getX(), tile.getHeight(), tile.getZ()), 0, 0, 0, tile.getSize());
 			shader.loadModelMatrix(modelMatrix);
@@ -66,7 +66,7 @@ public class WaterRenderer {
 		unbind();
 	}
 
-	private void prepareRender(ICamera camera, Light sun) {
+	private void prepareRender(Camera camera, Light sun) {
 		shader.start();
 		shader.loadViewMatrix(camera);
 		moveFactor += WAVE_SPEED * DisplayManager.getFrameTimeSeconds();

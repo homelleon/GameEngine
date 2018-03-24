@@ -6,24 +6,23 @@ import control.MouseGame;
 import core.GameCore;
 import core.debug.EngineDebug;
 import core.display.DisplayManager;
+import core.game.IGame;
 import core.settings.EngineSettings;
 import core.settings.GameSettings;
 import core.settings.SettingsXMLParser;
-import game.game.IGame;
+import manager.RawManager;
 import manager.scene.IObjectManager;
 import manager.scene.ISceneManager;
 import manager.scene.SceneManager;
-import map.parser.LevelMapXMLParser;
-import map.parser.ModelMapXMLParser;
-import map.parser.RawMapXMLParser;
-import map.raw.IRawManager;
-import object.audio.master.AudioMaster;
-import object.audio.master.IAudioMaster;
+import object.audio.AudioMaster;
 import primitive.buffer.Loader;
 import renderer.scene.EditorSceneRenderer;
 import renderer.scene.GameSceneRenderer;
 import renderer.scene.ISceneRenderer;
 import scene.Scene;
+import scene.parser.LevelMapXMLParser;
+import scene.parser.ModelMapXMLParser;
+import scene.parser.RawMapXMLParser;
 import tool.dataEditor.menu.DataEditorFrame;
 import tool.xml.loader.IXMLLoader;
 import tool.xml.loader.XMLFileLoader;
@@ -52,7 +51,7 @@ public class Loop implements ILoop {
 	private Scene scene;
 	private IObjectManager modelMap;
 	private IObjectManager levelMap;
-	private IRawManager rawMap;
+	private RawManager rawMap;
 
 	private IGame game;
 
@@ -94,7 +93,7 @@ public class Loop implements ILoop {
 		loadGameSettings();
 		if (!mapIsLoaded) 
 			loadModelMap("defaultModelMap");
-		IAudioMaster audioMaster = new AudioMaster();
+		AudioMaster audioMaster = new AudioMaster();
 		scene = new Scene(levelMap, audioMaster);
 		sceneRenderer = new GameSceneRenderer();
 		sceneManager = new SceneManager();
@@ -238,7 +237,7 @@ public class Loop implements ILoop {
 		}
 		
 		IXMLLoader xmlLoader = new XMLFileLoader(EngineSettings.MAP_PATH + name + EngineSettings.EXTENSION_XML);
-		IObjectParser<IRawManager> mapParser = new RawMapXMLParser(xmlLoader.load());
+		IObjectParser<RawManager> mapParser = new RawMapXMLParser(xmlLoader.load());
 		rawMap = mapParser.parse();
 	}
 

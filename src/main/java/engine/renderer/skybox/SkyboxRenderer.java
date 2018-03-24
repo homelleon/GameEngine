@@ -6,7 +6,7 @@ import org.lwjgl.opengl.GL13;
 import core.EngineMain;
 import core.display.DisplayManager;
 import core.settings.EngineSettings;
-import object.camera.ICamera;
+import object.camera.Camera;
 import primitive.buffer.Loader;
 import primitive.buffer.VAO;
 import primitive.model.Mesh;
@@ -89,7 +89,7 @@ public class SkyboxRenderer {
 		shader.stop();
 	}
 
-	public void render(ICamera camera) {
+	public void render(Camera camera) {
 		shader.start();
 		shader.loadViewMatrix(camera);
 		shader.loadFogColor(new Color(EngineSettings.RED, EngineSettings.GREEN, EngineSettings.BLUE));

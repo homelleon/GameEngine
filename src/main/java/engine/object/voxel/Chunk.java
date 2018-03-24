@@ -1,7 +1,6 @@
 package object.voxel;
 
 import core.settings.EngineSettings;
-import manager.voxel.IChunkManager;
 import tool.math.Maths;
 import tool.math.vector.Vector3i;
 

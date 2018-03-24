@@ -1,6 +1,6 @@
 package object.light;
 
-import object.GameObject;
+import scene.Subject;
 import tool.math.vector.Color;
 import tool.math.vector.Vector3f;
 
@@ -10,9 +10,8 @@ import tool.math.vector.Vector3f;
  * @author homelleon
  *
  */
-public class Light extends GameObject implements ILight {
+public class Light extends Subject<Vector3f> {
 
-	private Vector3f position;
 	private Color color;
 	private Vector3f attenuation = new Vector3f(0.5f, 0, 0);
 
@@ -50,27 +49,14 @@ public class Light extends GameObject implements ILight {
 
 	}
 	
-	@Override
 	public Vector3f getAttenuation() {
 		return attenuation;
 	}
-	
-	@Override
-	public Vector3f getPosition() {
-		return position;
-	}
-	
-	@Override
-	public void setPosition(Vector3f position) {
-		this.position = position;
-	}
 
-	@Override
 	public Color getColor() {
 		return color;
 	}
 
-	@Override
 	public void setColor(Color color) {
 		this.color = color;
 	}

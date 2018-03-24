@@ -12,7 +12,7 @@ import tool.math.Maths;
 import tool.math.Matrix4f;
 import tool.math.vector.Vector3f;
 
-public class TargetCamera extends BaseCamera implements ICamera {
+public class TargetCamera extends Camera {
 
 	/*
 	 * CameraPlayer - камера для игрока

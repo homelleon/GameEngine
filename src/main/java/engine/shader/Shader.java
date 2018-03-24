@@ -62,7 +62,6 @@ public abstract class Shader {
 	public static final int ANIMATED = 19;
 	public static final int VOXEL = 20;
 	public static final int NORMAL_ENTITY = 21;
-	public static final int DECOR_ENTITY = 22;
 
 	private int programID;
 	private int vertexShaderID;

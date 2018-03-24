@@ -6,8 +6,8 @@ import java.util.Iterator;
 import org.lwjgl.util.vector.Vector4f;
 
 import core.settings.EngineSettings;
-import object.camera.ICamera;
-import object.light.ILight;
+import object.camera.Camera;
+import object.light.Light;
 import shader.Shader;
 import tool.math.Maths;
 import tool.math.Matrix4f;
@@ -121,7 +121,7 @@ public class VoxelShader extends Shader {
 		super.loadInt(UNIFORM_SHADOW_MAP, 6);
 	}
 
-	public void loadViewMatrix(ICamera camera) {
+	public void loadViewMatrix(Camera camera) {
 		Matrix4f viewMatrix = Maths.createViewMatrix(camera);
 		super.loadMatrix(UNIFORM_VIEW_MATRIX, viewMatrix);
 	}
@@ -178,12 +178,12 @@ public class VoxelShader extends Shader {
 		super.load2DVector(UNIFORM_OFFSET, new Vector2f(x, y));
 	}
 
-	public void loadLights(Collection<ILight> lights) {
+	public void loadLights(Collection<Light> lights) {
 		super.loadInt(UNIFORM_LIGHT_COUNT, EngineSettings.MAX_LIGHTS);
-		Iterator<ILight> iterator = lights.iterator();
+		Iterator<Light> iterator = lights.iterator();
 		for (int i = 0; i < EngineSettings.MAX_LIGHTS; i++) {
 			if (iterator.hasNext()) {
-				ILight light = iterator.next();
+				Light light = iterator.next();
 				super.load3DVector(UNIFORM_LIGHT_POSITION + "[" + i + "]", light.getPosition());
 				super.loadColor(UNIFORM_LIGHT_COLOR + "[" + i + "]", light.getColor());
 				super.load3DVector(UNIFORM_ATTENUATION + "[" + i + "]", light.getAttenuation());

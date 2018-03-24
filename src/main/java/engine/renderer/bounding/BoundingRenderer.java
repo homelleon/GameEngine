@@ -5,7 +5,7 @@ import java.util.Map;
 
 import org.lwjgl.opengl.GL11;
 
-import object.camera.ICamera;
+import object.camera.Camera;
 import object.entity.Entity;
 import primitive.buffer.VAO;
 import primitive.model.Mesh;
@@ -27,12 +27,18 @@ public class BoundingRenderer {
 		shader.stop();
 	}
 
-	public void render(Map<Model, List<Entity>> entities, Map<Model, List<Entity>> normalEntities, 
-			Map<Model, List<Entity>> decorEntities, ICamera camera) {
+	public void render(Map<Model, List<Entity>> entities, Map<Model, List<Entity>> normalEntities, Camera camera) {
 		checkWiredFrameOn(boundingWiredFrame);
 		shader.start();
 		shader.loadViewMatrix(camera);
 		
+		drawBoundings(entities);
+		drawBoundings(normalEntities);
+		shader.stop();
+		checkWiredFrameOff(boundingWiredFrame);
+	}
+	
+	private void drawBoundings(Map<Model, List<Entity>> entities) {
 		for (Model model : entities.keySet()) {
 			Mesh bModel = model.getMesh().getBBox().getModel();
 			prepareModel(bModel);
@@ -43,30 +49,6 @@ public class BoundingRenderer {
 			});
 			unbindModel();
 		}
-		
-		for (Model model : normalEntities.keySet()) {
-			Mesh bModel = model.getMesh().getBBox().getModel();
-			prepareModel(bModel);
-			for (Entity entity : normalEntities.get(model)) {
-				prepareInstance(entity);
-				GL11.glDrawElements(GL11.GL_TRIANGLES, bModel.getVertexCount(),
-						GL11.GL_UNSIGNED_INT, 0);
-			}
-			unbindModel();
-		}
-		
-		for (Model model : decorEntities.keySet()) {
-			Mesh bModel = model.getMesh().getBBox().getModel();
-			prepareModel(bModel);
-			for (Entity entity : decorEntities.get(model)) {
-				prepareInstance(entity);
-				GL11.glDrawElements(GL11.GL_TRIANGLES, bModel.getVertexCount(),
-						GL11.GL_UNSIGNED_INT, 0);
-			}
-			unbindModel();
-		}
-		shader.stop();
-		checkWiredFrameOff(boundingWiredFrame);
 	}
 
 	public Mesh prepareModel(Mesh model) {
@@ -81,7 +63,7 @@ public class BoundingRenderer {
 
 	public void prepareInstance(Entity entity) {
 		Matrix4f transformationMatrix = Maths.createTransformationMatrix(entity.getPosition(), entity.getRotation().getX(),
-				entity.getRotation().getY(), entity.getRotation().getZ(), entity.getScale());
+				entity.getRotation().getY(), entity.getRotation().getZ(), entity.getScale().getX());
 		shader.loadTranformationMatrix(transformationMatrix);
 	}
 

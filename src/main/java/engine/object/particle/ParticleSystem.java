@@ -5,15 +5,14 @@ import java.util.Random;
 import org.lwjgl.util.vector.Vector4f;
 
 import core.display.DisplayManager;
-import object.GameObject;
-import object.particle.particle.Particle;
 import primitive.texture.particle.ParticleMaterial;
+import scene.Drawable;
+import shader.Shader;
+import shader.ShaderPool;
 import tool.math.Matrix4f;
 import tool.math.vector.Vector3f;
 
-public class ParticleSystem extends GameObject implements IParticleSystem {
-
-	private String name;
+public class ParticleSystem extends Drawable<Vector3f> {
 
 	private float pps, averageSpeed, gravityComplient, averageLifeLength, averageScale;
 
@@ -29,7 +28,7 @@ public class ParticleSystem extends GameObject implements IParticleSystem {
 
 	public ParticleSystem(String name, ParticleMaterial texture, float pps, float speed, float gravityComplient,
 			float lifeLength, float scale) {
-		super(name);
+		super(name, ShaderPool.getInstance().get(Shader.PARTICLE), null);
 		this.pps = pps;
 		this.averageSpeed = speed;
 		this.gravityComplient = gravityComplient;
@@ -39,7 +38,6 @@ public class ParticleSystem extends GameObject implements IParticleSystem {
 		this.position = new Vector3f(0, 0, 0);
 	}
 
-	@Override
 	public void setDirection(Vector3f direction, float deviation) {
 		this.direction = new Vector3f(direction);
 		this.directionDeviation = (float) (deviation * Math.PI);
@@ -49,32 +47,18 @@ public class ParticleSystem extends GameObject implements IParticleSystem {
 		randomRotation = true;
 	}
 
-	@Override
 	public void setSpeedError(float error) {
 		this.speedError = error * averageSpeed;
 	}
 
-	@Override
 	public void setLifeError(float error) {
 		this.lifeError = error * averageLifeLength;
 	}
 
-	@Override
 	public void setScaleError(float error) {
 		this.scaleError = error * averageScale;
 	}
 
-	@Override
-	public void setPosition(Vector3f position) {
-		this.position = position;
-	}
-
-	@Override
-	public Vector3f getPosition() {
-		return position;
-	}
-
-	@Override
 	public void generateParticles() {
 		float delta = DisplayManager.getFrameTimeSeconds();
 		float particlesToCreate = pps * delta;

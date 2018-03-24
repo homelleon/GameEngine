@@ -10,7 +10,7 @@ import control.KeyboardGame;
 import control.MouseGame;
 import core.display.DisplayManager;
 import core.settings.EngineSettings;
-import object.terrain.terrain.ITerrain;
+import object.terrain.Terrain;
 import primitive.model.Model;
 import shader.Shader;
 import tool.math.vector.Vector3f;
@@ -33,7 +33,7 @@ public class Player extends Entity {
 		super(name, shader, modelList, position, rotation, scale);
 	}
 
-	public void move(Collection<ITerrain> terrains) {
+	public void move(Collection<Terrain> terrains) {
 		this.isMoved = false;
 		checkInputs();
 		super.increaseRotation(0, currentTurnSpeed * DisplayManager.getFrameTimeSeconds(), 0);
@@ -54,7 +54,7 @@ public class Player extends Entity {
 		super.increasePosition(0, upwardsSpeed * DisplayManager.getFrameTimeSeconds(), 0);
 
 		float terrainHeight = 0;
-		for (ITerrain terrain : terrains) {
+		for (Terrain terrain : terrains) {
 			terrainHeight += terrain.getHeightOfTerrain(super.getPosition().x, super.getPosition().z);
 		}
 

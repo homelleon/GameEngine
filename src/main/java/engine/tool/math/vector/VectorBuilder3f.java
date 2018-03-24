@@ -35,5 +35,13 @@ public class VectorBuilder3f implements IVectorBuilder3<Float, Vector3f> {
 	public Vector3f build() {
 		return new Vector3f(x,y,z);
 	}
+
+	@Override
+	public IVectorBuilder3<Float, Vector3f> set(Float x, Float y, Float z) {
+		this.x = x;
+		this.y = y;
+		this.z = z;
+		return this;
+	}
 	
 }

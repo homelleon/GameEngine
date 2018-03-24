@@ -10,7 +10,7 @@ package tool.math.vector;
  * @see VectorBuilder3f
  * @see VectorBuilder3i
  */
-public interface IVectorBuilder3<T,R> {
+public interface IVectorBuilder3<T, R> {
 	
 	/**
 	 * Sets x coordinate for vector.
@@ -18,7 +18,7 @@ public interface IVectorBuilder3<T,R> {
 	 * @param x <T> value of coordinate
 	 * @return builder
 	 */
-	IVectorBuilder3<T,R> setX(T x);
+	IVectorBuilder3<T, R> setX(T x);
 	
 	/**
 	 * Sets y coordinate for vector.
@@ -26,7 +26,7 @@ public interface IVectorBuilder3<T,R> {
 	 * @param y <T> value of coordinate
 	 * @return builder
 	 */
-	IVectorBuilder3<T,R> setY(T y);
+	IVectorBuilder3<T, R> setY(T y);
 	
 	/**
 	 * Sets z coordinate for vector.
@@ -34,7 +34,9 @@ public interface IVectorBuilder3<T,R> {
 	 * @param z <T> value of coordinate
 	 * @return builder
 	 */
-	IVectorBuilder3<T,R> setZ(T z);
+	IVectorBuilder3<T, R> setZ(T z);
+	
+	IVectorBuilder3<T, R> set(T x, T y, T z);
 	
 	/**
 	 * Constracts vector by initialied paramethers.

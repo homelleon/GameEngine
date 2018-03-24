@@ -1,8 +1,8 @@
 package tool.math;
 
-import object.camera.ICamera;
+import object.camera.Camera;
 import object.entity.Entity;
-import object.terrain.terrain.ITerrain;
+import object.terrain.Terrain;
 import tool.math.vector.Vector2f;
 import tool.math.vector.Vector3f;
 
@@ -34,7 +34,7 @@ public class Maths {
 		return matrix;
 	}
 
-	public static Matrix4f createViewMatrix(ICamera camera) {
+	public static Matrix4f createViewMatrix(Camera camera) {
 		Matrix4f viewMatrix = new Matrix4f();
 		viewMatrix.setIdentity();
 		viewMatrix.rotate((float) Math.toRadians(camera.getPitch()), new Vector3f(1, 0, 0));
@@ -115,12 +115,12 @@ public class Maths {
 		return distance2Points(point, vecH);
 	}
 	
-	public static float distanceFromCameraWithRadius(Entity entity, ICamera camera) {
+	public static float distanceFromCameraWithRadius(Entity entity, Camera camera) {
 		return (distance2Points(entity.getPosition(), camera.getPosition()) - entity.getSphereRadius());
 	}
 
 	/* distance from camera to terrain */
-	public static float distanceFromCamera(ITerrain terrain, ICamera camera) {
+	public static float distanceFromCamera(Terrain terrain, Camera camera) {
 		float distance = 0;
 
 		float cX = camera.getPosition().x;

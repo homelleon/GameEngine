@@ -1,7 +1,6 @@
 package object.terrain.generator;
 
-import object.terrain.terrain.ITerrain;
-import object.terrain.terrain.Terrain;
+import object.terrain.Terrain;
 import primitive.buffer.Loader;
 import primitive.buffer.VBO;
 import primitive.texture.Texture2D;
@@ -60,11 +59,11 @@ public class TerrainGenerator {
 		this.isProcedured = true;
 	}
 	
-	public ITerrain generate(String name) {
+	public Terrain generate(String name) {
 		return isProcedured ? generateProcedured(name) : generateHeightMapped(name);
 	}
 	
-	private ITerrain generateProcedured(String name) {
+	private Terrain generateProcedured(String name) {
 		HeightsGenerator generator = new HeightsGenerator(amplitude, octaves, roughness);
 		int VERTEX_COUNT = size;
 		
@@ -95,7 +94,7 @@ public class TerrainGenerator {
 		return new Terrain(name, (int) position.x, (int) position.y, material, heights2D);
 	}
 	
-	private ITerrain generateHeightMapped(String name) {
+	private Terrain generateHeightMapped(String name) {
 		
 		int VERTEX_COUNT = heightMap.getHeight();
 		

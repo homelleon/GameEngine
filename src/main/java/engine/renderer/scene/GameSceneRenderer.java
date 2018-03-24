@@ -15,21 +15,21 @@ import control.MousePicker;
 import core.EngineMain;
 import core.debug.EngineDebug;
 import core.display.DisplayManager;
+import manager.ObjectMapManager;
 import manager.scene.IObjectManager;
-import map.objectMap.ObjectMapManager;
-import map.writer.ILevelMapWriter;
-import map.writer.LevelMapXMLWriter;
 import object.gui.group.IGUIGroup;
 import object.gui.gui.GUI;
 import object.gui.gui.IGUI;
 import object.gui.text.GUIText;
 import object.gui.texture.GUITexture;
-import object.particle.master.ParticleMaster;
+import object.particle.ParticleMaster;
 import object.water.WaterFrameBuffers;
 import primitive.texture.Texture2D;
 import renderer.main.MainRenderer;
 import renderer.water.WaterRenderer;
 import scene.Scene;
+import scene.writer.ILevelMapWriter;
+import scene.writer.LevelMapXMLWriter;
 import shader.postProcessing.Fbo;
 import shader.postProcessing.PostProcessing;
 import shader.water.WaterShader;
@@ -165,15 +165,14 @@ public class GameSceneRenderer implements ISceneRenderer {
 		scene.getCamera().getPosition().y -= distance;
 		scene.getCamera().invertPitch();
 		mainRenderer.render(scene,
-				new Vector4f(0, 1, 0, -scene.getWaters().getByName("Water").getHeight()), true);
+				new Vector4f(0, 1, 0, -scene.getWaters().getByName("Water").getHeight()));
 		scene.getCamera().getPosition().y += distance;
 		scene.getCamera().invertPitch();
 	}
 
 	private void renderWaterRefraction() {
 		waterFBOs.bindRefractionFrameBuffer();
-		mainRenderer.render(scene, new Vector4f(0, -1, 0, scene.getWaters().getByName("Water").getHeight() + 1f),
-				false);
+		mainRenderer.render(scene, new Vector4f(0, -1, 0, scene.getWaters().getByName("Water").getHeight() + 1f));
 	}
 
 	private void renderParticles() {

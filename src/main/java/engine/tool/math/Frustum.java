@@ -1,7 +1,7 @@
 package tool.math;
 
 
-import object.camera.ICamera;
+import object.camera.Camera;
 import tool.math.vector.Vector3f;
 
 public class Frustum {
@@ -125,7 +125,7 @@ public class Frustum {
 	}
 	
 	public boolean sphereInFrustumAndDsitance(Vector3f position, float radius, 
-			float startClipDistance, float endClipDistance, ICamera camera) {
+			float startClipDistance, float endClipDistance, Camera camera) {
 		float distance = Maths.distance2Points(position, camera.getPosition());
 		
 		if (distance < startClipDistance || distance > endClipDistance)

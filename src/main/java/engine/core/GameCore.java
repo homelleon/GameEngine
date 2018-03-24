@@ -1,6 +1,6 @@
 package core;
 
-import game.game.IGame;
+import core.game.IGame;
 import main.MyGame;
 
 public class GameCore {

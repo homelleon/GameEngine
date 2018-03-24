@@ -10,9 +10,9 @@ import org.lwjgl.opengl.GL12;
 import org.lwjgl.util.vector.Vector4f;
 
 import core.settings.EngineSettings;
-import manager.voxel.IChunkManager;
-import object.camera.ICamera;
-import object.light.ILight;
+import manager.voxel.ChunkManager;
+import object.camera.Camera;
+import object.light.Light;
 import object.voxel.Chunk;
 import object.voxel.data.FaceCullingData;
 import primitive.buffer.Loader;
@@ -115,8 +115,8 @@ public class VoxelRenderer {
 		texture.getDiffuseMap().setNumberOfRows(1);
 	}
 
-	public void render(IChunkManager chunkManager, Vector4f clipPlane, Collection<ILight> lights,
-			ICamera camera, Matrix4f toShadowMapSpace, Frustum frustum) {
+	public void render(ChunkManager chunkManager, Vector4f clipPlane, Collection<Light> lights,
+			Camera camera, Matrix4f toShadowMapSpace, Frustum frustum) {
 		shader.start();
 		shader.loadClipPlane(clipPlane);
 		shader.loadSkyColor(new Color(EngineSettings.RED, EngineSettings.GREEN, EngineSettings.BLUE));
@@ -147,7 +147,7 @@ public class VoxelRenderer {
 		shader.stop();
 	}
 	
-	private List<Integer> getAllBlocks(IChunkManager chunkManager, Frustum frustum, ICamera camera) {
+	private List<Integer> getAllBlocks(ChunkManager chunkManager, Frustum frustum, Camera camera) {
 		return IntStream.range(0, (int) Math.pow(chunkManager.getSize(), 3)).parallel()
 					.sorted()
 					.filter(chunkIndex -> checkVisibility(frustum, chunkManager.getChunkPositionByChunkIndex(chunkIndex), CHUNK_RADIUS, camera))
@@ -166,7 +166,7 @@ public class VoxelRenderer {
 				GL11.GL_UNSIGNED_INT, 24 * face);
 	}
 
-	private boolean checkVisibility(Frustum frustum, Vector3f position, float radius, ICamera camera) {
+	private boolean checkVisibility(Frustum frustum, Vector3f position, float radius, Camera camera) {
 		return frustum.sphereInFrustumAndDsitance(position, radius, 0, EngineSettings.RENDERING_VIEW_DISTANCE, camera);
 	}
 
@@ -197,7 +197,7 @@ public class VoxelRenderer {
 		VAO.unbind(0, 1, 2);
 	}
 	
-	private FaceCullingData isNeedBlockCulling(IChunkManager chunkManager, int index) {
+	private FaceCullingData isNeedBlockCulling(ChunkManager chunkManager, int index) {
 		FaceCullingData fcData = new FaceCullingData(index);
 		Chunk chunk = chunkManager.getChunkByGeneralIndex(index);
 		Vector3i blockIndexPosition = chunkManager.getBlockIndexVectorByGenerealIndex(index);
@@ -253,7 +253,7 @@ public class VoxelRenderer {
 		return isCovered;
 	}
 
-	private boolean isFaceCovered(IChunkManager chunker, int index, int face) {
+	private boolean isFaceCovered(ChunkManager chunker, int index, int face) {
 		boolean isCovered = false;
 		Vector3i position = chunker.getChunkIndexVector(index);
 		switch (face) {

@@ -6,9 +6,9 @@ import java.util.Map;
 
 import org.lwjgl.util.vector.Vector4f;
 
-import object.camera.ICamera;
+import object.camera.Camera;
 import object.entity.Entity;
-import object.light.ILight;
+import object.light.Light;
 import primitive.model.Model;
 import primitive.texture.Texture;
 import tool.math.Matrix4f;
@@ -24,8 +24,8 @@ public interface IEntityRendererManager {
 	
 	IEntityRendererManager addPair(IEntityRenderer renderer, Map<Model, List<Entity>> entities);
 	
-	void render(Vector4f clipPlane, Collection<ILight> lights, ICamera camera, 
-			Matrix4f toShadowMapSpace, Texture environmentMap, boolean isLowDetailed);
+	void render(Vector4f clipPlane, Collection<Light> lights, Camera camera, 
+			Matrix4f toShadowMapSpace, Texture environmentMap);
 	
 	void clean();
 

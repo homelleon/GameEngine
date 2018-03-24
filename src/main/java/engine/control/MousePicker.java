@@ -9,7 +9,7 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Vector4f;
 
 import core.settings.EngineSettings;
-import object.camera.ICamera;
+import object.camera.Camera;
 import object.entity.Entity;
 import object.entity.Player;
 import scene.Scene;
@@ -31,7 +31,7 @@ public class MousePicker {
 
 	private Matrix4f projectionMatrix;
 	private Matrix4f viewMatrix;
-	private ICamera camera;
+	private Camera camera;
 
 	/**
 	 * Mouse ray constructor.
@@ -41,7 +41,7 @@ public class MousePicker {
 	 * @param projectionMatrix
 	 *            {@link Matrix4f} value of object projection
 	 */
-	public MousePicker(ICamera camera, Matrix4f projectionMatrix) {
+	public MousePicker(Camera camera, Matrix4f projectionMatrix) {
 		this.camera = camera;
 		this.projectionMatrix = projectionMatrix;
 		this.viewMatrix = Maths.createViewMatrix(camera);
@@ -287,7 +287,7 @@ public class MousePicker {
 		Entity pickedEntity = null;
 		List<Entity> pointedEntities = new ArrayList<Entity>();
 		pointedEntities.addAll(
-			scene.getFrustumEntities().updateWithFrustum(scene.getFrustum(), camera, true).stream()
+			scene.getFrustumEntities().updateWithFrustum(scene.getFrustum(), camera).stream()
 				.filter(entity -> !(entity.getClass() == Player.class))
 				.filter(entity -> intersects(entity.getPosition(), entity.getSphereRadius()))
 //			.filter(entity -> {

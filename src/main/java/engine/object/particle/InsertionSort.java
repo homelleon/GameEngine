@@ -2,8 +2,6 @@ package object.particle;
 
 import java.util.List;
 
-import object.particle.particle.Particle;
-
 /**
  * A simple implementation of an insertion sort. I implemented this very quickly
  * the other day so it may not be perfect or the most efficient! Feel free to

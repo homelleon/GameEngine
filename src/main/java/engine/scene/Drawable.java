@@ -14,12 +14,14 @@ public abstract class Drawable<T extends Vector> extends Subject<T> {
 	protected Renderer renderer;
 	protected Shader shader;
 	protected List<Model> models = new ArrayList<Model>();
-	protected float scale = 1f;
+	protected T scale;
 	
 	protected Drawable(String name, Shader shader, List<Model> models) {
 		super(name);
 		this.shader = shader;
-		this.models.addAll(models);
+		
+		if (models != null)
+			this.models.addAll(models);
 	}
 	
 	protected Drawable(String name, Shader shader, Collection<Model> models) {
@@ -60,11 +62,11 @@ public abstract class Drawable<T extends Vector> extends Subject<T> {
 		return this;
 	}
 	
-	public float getScale() {
+	public T getScale() {
 		return scale;
 	}
 	
-	public Drawable<T> setScale(float scale) {
+	public Drawable<T> setScale(T scale) {
 		this.scale = scale;
 		return this;
 	}

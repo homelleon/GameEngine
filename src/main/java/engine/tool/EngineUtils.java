@@ -9,7 +9,7 @@ import java.util.stream.Stream;
 
 import core.settings.EngineSettings;
 import object.entity.Entity;
-import object.water.WaterTile;
+import object.water.Water;
 import primitive.buffer.Loader;
 import primitive.model.Mesh;
 import primitive.model.Model;
@@ -45,7 +45,7 @@ public class EngineUtils {
 		List<Model> models = new ArrayList<Model>();
 		OBJLoader objLoader = normal ? new OBJLoader(true) : new OBJLoader();
 		Mesh[] meshes = objLoader.load(EngineSettings.MODEL_PATH, objFile, null);
-		for(int i=0; i< meshes.length; i++) {
+		for(int i = 0; i < meshes.length; i++) {
 			Model staticModel = new Model(objFile, meshes[i],
 					new Material(textureName, Loader.getInstance().getTextureLoader().loadTexture(EngineSettings.TEXTURE_MODEL_PATH, textureName)));
 			models.add(staticModel);
@@ -127,7 +127,7 @@ public class EngineUtils {
 		int radius = (int) (r * density);
 		float invDensity = 1 / density;
 		Random random = new Random();
-		Shader unitShader = ShaderPool.getInstance().get(Shader.DECOR_ENTITY); 
+		Shader unitShader = ShaderPool.getInstance().get(Shader.ENTITY); 
 		
 		return IntStream.range(0, radius).parallel()
 				.mapToObj(j -> IntStream.range(0, radius).parallel()
@@ -146,7 +146,7 @@ public class EngineUtils {
 											x + invDensity * i, 
 											0, 
 											z + invDensity * j), 
-									new Vector3f(0, 0, 0), noise);
+									new Vector3f(0, 0, 0), new Vector3f(noise, noise, noise));
 							fieldEntity.setBaseName("fieldEntity");
 							return fieldEntity;
 						}))
@@ -154,12 +154,12 @@ public class EngineUtils {
 				.collect(Collectors.toList());
 	}
 
-	public static List<WaterTile> createWaterSurfce(Vector3f position, int size) {
-		List<WaterTile> waters = new ArrayList<WaterTile>();
+	public static List<Water> createWaterSurfce(Vector3f position, int size) {
+		List<Water> waters = new ArrayList<Water>();
 		for (int i = 0; i < size; i++) {
 			for (int j = 0; j < size; j++) {
-				WaterTile water = new WaterTile(position.x + WaterTile.TILE_SIZE * i,
-						position.y + WaterTile.TILE_SIZE * j, position.z, size);
+				Water water = new Water(position.x + Water.TILE_SIZE * i,
+						position.y + Water.TILE_SIZE * j, position.z, size);
 				waters.add(water);
 			}
 		}

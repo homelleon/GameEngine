@@ -36,7 +36,7 @@ public class Entity extends Drawable<Vector3f> {
 		this.radius = this.models.get(0).getMesh().getBoundSphere().getRadius() * scale;
 		this.position = position;
 		this.rotation = rotation;
-		this.scale = scale;
+		this.scale = new Vector3f(scale, scale, scale);
 	}
 
 	/**
@@ -51,10 +51,10 @@ public class Entity extends Drawable<Vector3f> {
 	 * @param rotZ
 	 * @param scale
 	 */
-	public Entity(String name, Shader shader, Collection<Model> models, int textureIndex, Vector3f position, Vector3f rotation, float scale) {
+	public Entity(String name, Shader shader, Collection<Model> models, int textureIndex, Vector3f position, Vector3f rotation, Vector3f scale) {
 		super(name, shader, models);
 		this.textureIndex = textureIndex;
-		this.radius = this.models.get(0).getMesh().getBoundSphere().getRadius() * scale;
+		this.radius = this.models.get(0).getMesh().getBoundSphere().getRadius() * scale.x;
 		this.position = position;
 		this.rotation = rotation;
 		this.scale = scale;
@@ -138,8 +138,8 @@ public class Entity extends Drawable<Vector3f> {
 	}
 	
 	@Override
-	public Entity setScale(float scale) {
-		this.radius =  models.get(0).getMesh().getBoundSphere().getRadius() * scale;
+	public Entity setScale(Vector3f scale) {
+		this.radius =  models.get(0).getMesh().getBoundSphere().getRadius() * scale.x;
 		return (Entity) super.setScale(scale);
 	}
 
@@ -148,7 +148,7 @@ public class Entity extends Drawable<Vector3f> {
 	}
 	
 	public Entity clone(String name) {
-		Entity entity = new Entity(name, shader, models, this.textureIndex, new Vector3f((Vector3f) this.position), new Vector3f(this.rotation), this.scale);
+		Entity entity = new Entity(name, shader, models, this.textureIndex, new Vector3f((Vector3f) this.position), new Vector3f(this.rotation), new Vector3f(this.scale));
 		entity.setBaseName(this.getName());
 		return entity;
 	}
