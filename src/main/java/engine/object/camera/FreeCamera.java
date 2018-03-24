@@ -3,7 +3,7 @@ package object.camera;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
-import core.display.DisplayManager;
+import core.DisplayManager;
 import core.settings.EngineSettings;
 import tool.math.Maths;
 import tool.math.Matrix4f;

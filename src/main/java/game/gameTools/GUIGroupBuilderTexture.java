@@ -1,16 +1,15 @@
 package gameTools;
 
-import manager.gui.IGUIManager;
-import object.gui.group.IGUIGroup;
-import object.gui.gui.builder.GUIBuilder;
-import object.gui.gui.builder.IGUIBuilder;
+import manager.gui.GUIManager;
+import object.gui.group.GUIGroup;
+import object.gui.gui.GUIBuilder;
 
 public class GUIGroupBuilderTexture implements IGUIGroupBuilderTexture {
 	
 	private String textureName;
-	private IGUIManager guiManager;
+	private GUIManager guiManager;
 	
-	public GUIGroupBuilderTexture(IGUIManager guiManager) {
+	public GUIGroupBuilderTexture(GUIManager guiManager) {
 		this.guiManager = guiManager;
 	}
 	
@@ -21,10 +20,10 @@ public class GUIGroupBuilderTexture implements IGUIGroupBuilderTexture {
 	}
 
 	@Override
-	public IGUIGroup build(String name) {
-		IGUIBuilder guiBuilder = new GUIBuilder(guiManager.getComponent())
+	public GUIGroup build(String name) {
+		GUIBuilder guiBuilder = new GUIBuilder(guiManager.getComponent())
 				.setTexture(textureName + "Text",guiManager.getComponent().getTextures().get(textureName));
-		IGUIGroup group = guiManager.getGroups().createEmpty(name + "GUIGroup");
+		GUIGroup group = guiManager.getGroups().createEmpty(name + "GUIGroup");
 		group.add(guiBuilder.build(name+"GUI"));
 		return group;
 	}

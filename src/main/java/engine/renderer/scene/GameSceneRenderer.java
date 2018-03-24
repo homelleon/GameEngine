@@ -12,23 +12,22 @@ import control.Controls;
 import control.IControls;
 import control.KeyboardGame;
 import control.MousePicker;
+import core.DisplayManager;
+import core.EngineDebug;
 import core.EngineMain;
-import core.debug.EngineDebug;
-import core.display.DisplayManager;
 import manager.ObjectMapManager;
 import manager.scene.IObjectManager;
-import object.gui.group.IGUIGroup;
+import object.gui.group.GUIGroup;
 import object.gui.gui.GUI;
-import object.gui.gui.IGUI;
 import object.gui.text.GUIText;
 import object.gui.texture.GUITexture;
 import object.particle.ParticleMaster;
 import object.water.WaterFrameBuffers;
 import primitive.texture.Texture2D;
-import renderer.main.MainRenderer;
-import renderer.water.WaterRenderer;
+import renderer.MainRenderer;
+import renderer.WaterRenderer;
 import scene.Scene;
-import scene.writer.ILevelMapWriter;
+import scene.writer.LevelMapWriter;
 import scene.writer.LevelMapXMLWriter;
 import shader.postProcessing.Fbo;
 import shader.postProcessing.PostProcessing;
@@ -43,7 +42,7 @@ import tool.openGL.OGLUtils;
  * @version 1.0
  *
  */
-public class GameSceneRenderer implements ISceneRenderer {
+public class GameSceneRenderer implements SceneRenderer {
 
 	private MainRenderer mainRenderer;
 	private WaterRenderer waterRenderer;
@@ -98,7 +97,7 @@ public class GameSceneRenderer implements ISceneRenderer {
 		textList.add(coordsText);
 		
 		String statusGUIName = "status";
-		IGUI statusInterface = new GUI(statusGUIName, textureList, textList);
+		GUI statusInterface = new GUI(statusGUIName, textureList, textList);
 		scene.getUserInterface().getGroups().createEmpty(statusGroupName);
 		scene.getUserInterface().getGroups().get(statusGroupName).add(statusInterface);
 	}
@@ -117,7 +116,7 @@ public class GameSceneRenderer implements ISceneRenderer {
 	private void checkInputs() {		
 		if (KeyboardGame.isKeyPressed(Keyboard.KEY_T)) {
 			EngineMain.pauseEngine(true);
-			ILevelMapWriter mapWriter = new LevelMapXMLWriter();
+			LevelMapWriter mapWriter = new LevelMapXMLWriter();
 			IObjectManager map = new ObjectMapManager();
 			map.getEntities().addAll(scene.getEntities().getAll());
 			map.getTerrains().addAll(scene.getTerrains().getAll());
@@ -125,7 +124,7 @@ public class GameSceneRenderer implements ISceneRenderer {
 			EngineMain.pauseEngine(false);
 		}
 		
-		IGUIGroup statusGUIGroup = scene.getUserInterface().getGroups().get(statusGroupName);
+		GUIGroup statusGUIGroup = scene.getUserInterface().getGroups().get(statusGroupName);
 		
 		if (EngineDebug.hasHardDebugPermission()) {
 			if (!statusGUIGroup.getIsVisible())

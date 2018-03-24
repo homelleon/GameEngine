@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import core.debug.EngineDebug;
+import core.EngineDebug;
 import core.settings.EngineSettings;
 import primitive.model.meshLoader.object.ModelData;
 import tool.math.vector.Vector2f;

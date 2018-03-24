@@ -2,7 +2,7 @@ package manager.octree;
 
 import java.util.stream.IntStream;
 
-import core.debug.EngineDebug;
+import core.EngineDebug;
 import tool.math.vector.Vector3f;
 
 public class VoxelOcreeTest {

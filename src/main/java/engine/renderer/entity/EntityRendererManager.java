@@ -14,27 +14,24 @@ import primitive.model.Model;
 import primitive.texture.Texture;
 import tool.math.Matrix4f;
 
-public class EntityRendererManager implements IEntityRendererManager {
+public class EntityRendererManager {
 	
-	private Map<IEntityRenderer, Map<Model, List<Entity>>> entityRenderers = 
-			new HashMap<IEntityRenderer, Map<Model, List<Entity>>>();
+	private Map<EntityRenderer, Map<Model, List<Entity>>> entityRenderers = 
+			new HashMap<EntityRenderer, Map<Model, List<Entity>>>();
 	
-	@Override
-	public EntityRendererManager addPair(IEntityRenderer renderer, Map<Model, List<Entity>> enities) {
+	public EntityRendererManager addPair(EntityRenderer renderer, Map<Model, List<Entity>> enities) {
 		this.entityRenderers.put(renderer, enities);
 		return this;
 	}
 	
-	@Override
 	public void render(Vector4f clipPlane, Collection<Light> lights, Camera camera, Matrix4f toShadowMapSpace,
 			Texture environmentMap) {
 		entityRenderers.forEach((renderer, entities) -> 
 			renderer.render(entities, clipPlane, lights, camera, toShadowMapSpace, environmentMap));
 	}
 
-	@Override
 	public void clean() {
-		this.entityRenderers.keySet().forEach(IEntityRenderer::clean);
+		this.entityRenderers.keySet().forEach(EntityRenderer::clean);
 		this.entityRenderers.values().forEach(Map::clear);
 		this.entityRenderers.clear();
 	}

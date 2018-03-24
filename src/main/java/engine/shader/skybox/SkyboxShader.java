@@ -1,8 +1,8 @@
 package shader.skybox;
 
 
+import core.DisplayManager;
 import core.EngineMain;
-import core.display.DisplayManager;
 import core.settings.EngineSettings;
 import object.camera.Camera;
 import shader.Shader;

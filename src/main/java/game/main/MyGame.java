@@ -18,10 +18,9 @@ import object.gui.element.button.IVectorInjectable;
 import object.gui.element.menu.GUIMenu;
 import object.gui.element.menu.IGUIMenu;
 import object.gui.element.object.GUIObject;
-import object.gui.group.IGUIGroup;
-import object.gui.gui.builder.GUIBuilder;
-import object.gui.gui.builder.IGUIBuilder;
-import object.gui.system.IGUIMenuSystem;
+import object.gui.group.GUIGroup;
+import object.gui.gui.GUIBuilder;
+import object.gui.system.GUIMenuSystem;
 import tool.math.vector.Color;
 import tool.math.vector.Vector2f;
 import tool.math.vector.Vector3f;
@@ -29,11 +28,11 @@ import tool.math.vector.Vector3f;
 public class MyGame extends Game {
 	
 	private String guiGroupName = "help";
-	private IGUIGroup helpGroup;
+	private GUIGroup helpGroup;
+	private GUIGroup coursorAimGroup;
 	private boolean buttonScale = false;
 	private boolean keyboardUsed = false;
-	private IGUIGroup coursorAimGroup;
-	IGUIMenuSystem menuSystem;
+	GUIMenuSystem menuSystem;
 	
 	IGUIMenu menu = new GUIMenu("menu1");
 	
@@ -45,7 +44,7 @@ public class MyGame extends Game {
 		super.__onStart();
 		
 		//--------help hints GUI-------------//
-		IGUIBuilder helpGUIBuilder = new GUIBuilder(this.gameManager.getScene().getUserInterface().getComponent());
+		GUIBuilder helpGUIBuilder = new GUIBuilder(this.gameManager.getScene().getUserInterface().getComponent());
 		helpGUIBuilder.setText("inputHintsText", this.gameManager.getTexts().get("inputHints"));
 		this.helpGroup = this.gameManager.getScene().getUserInterface().getGroups().createEmpty(guiGroupName);
 		this.helpGroup.add(helpGUIBuilder.build("help"));
@@ -59,17 +58,17 @@ public class MyGame extends Game {
 		menuSystem.add(mainMenu);
 		menuSystem.active(mainMenu.getName());
 		
-		IGUIBuilder coursorGUIBuilder = new GUIBuilder(this.gameManager.getScene().getUserInterface().getComponent())
+		GUIBuilder coursorGUIBuilder = new GUIBuilder(this.gameManager.getScene().getUserInterface().getComponent())
 				.setTexture("coursorTexture", this.gameManager.getTextures().get("CoursorAim"));
 		this.coursorAimGroup = this.gameManager.getScene().getUserInterface().getGroups().createEmpty("coursor");
 		this.coursorAimGroup.add(coursorGUIBuilder.build("coursorGUI"));
 		this.coursorAimGroup.show();
 		
-		IGUIBuilder buttonGUIBuilder = new GUIBuilder(this.gameManager.getScene().getUserInterface().getComponent());
+		GUIBuilder buttonGUIBuilder = new GUIBuilder(this.gameManager.getScene().getUserInterface().getComponent());
 		buttonGUIBuilder.setTexture("button1Texture", this.gameManager.getTextures().get("Button").clone("btnTexture1"));
 		buttonGUIBuilder.setText("button1Text", gameManager.getScene().getUserInterface()
 				.getComponent().getTexts().get("menu").clone("resumeText","Resume"));
-		IGUIGroup buttonGroup1 = this.gameManager.getScene().getUserInterface().getGroups().createEmpty("button1");
+		GUIGroup buttonGroup1 = this.gameManager.getScene().getUserInterface().getGroups().createEmpty("button1");
 		buttonGroup1.add(buttonGUIBuilder.build("button1GUI"));
 		mainMenu.add((GUIObject) buttonGroup1);
 		
@@ -80,7 +79,7 @@ public class MyGame extends Game {
 		
 		buttonGUIBuilder.setText("button2Text", gameManager.getScene().getUserInterface()
 				.getComponent().getTexts().get("menu").clone("startText", "Start"));
-		IGUIGroup buttonGroup2 = this.gameManager.getScene().getUserInterface().getGroups().createEmpty("button2");
+		GUIGroup buttonGroup2 = this.gameManager.getScene().getUserInterface().getGroups().createEmpty("button2");
 		buttonGroup2.add(buttonGUIBuilder.build("button2GUI"));
 		mainMenu.add((GUIObject) buttonGroup2);
 		
@@ -88,7 +87,7 @@ public class MyGame extends Game {
 		buttonGUIBuilder.setTexture("button3Texture", this.gameManager.getTextures().get("Button").clone("btnTexture3"));
 		buttonGUIBuilder.setText("button3Text", gameManager.getScene().getUserInterface()
 				.getComponent().getTexts().get("menu").clone("exitText", "Exit"));
-		IGUIGroup buttonGroup3 = this.gameManager.getScene().getUserInterface().getGroups().createEmpty("button3");
+		GUIGroup buttonGroup3 = this.gameManager.getScene().getUserInterface().getGroups().createEmpty("button3");
 		buttonGroup3.add(buttonGUIBuilder.build("button3GUI"));
 		mainMenu.add((GUIObject) buttonGroup3);
 		
@@ -247,25 +246,25 @@ public class MyGame extends Game {
 	@Override
 	public void __onUpdateWithPause() {
 		IGUIMenu activeMenu = menuSystem.getActivated();
-		if(EngineMain.getIsEnginePaused()) {
-			if(this.coursorAimGroup.getIsVisible()){this.coursorAimGroup.hide();}
-			if(!menuSystem.getIsVisible()){menuSystem.show();}
-			if(Mouse.getDX()>0 || Mouse.getDY()>0) {
+		if (EngineMain.getIsEnginePaused()) {
+			if (this.coursorAimGroup.getIsVisible()){this.coursorAimGroup.hide();}
+			if (!menuSystem.getIsVisible()){menuSystem.show();}
+			if (Mouse.getDX()>0 || Mouse.getDY()>0) {
 				this.keyboardUsed = false;
 			}
-			if(KeyboardGame.isKeyPressed(Keyboard.KEY_UP)) {
+			if (KeyboardGame.isKeyPressed(Keyboard.KEY_UP)) {
 				activeMenu.selectNextButton();
 				this.keyboardUsed = true;
 			}
-			else if(KeyboardGame.isKeyPressed(Keyboard.KEY_DOWN)) {
+			else if (KeyboardGame.isKeyPressed(Keyboard.KEY_DOWN)) {
 				activeMenu.selectPreviousButton();
 				this.keyboardUsed = true;
 			}
-			else if(KeyboardGame.isKeyPressed(Keyboard.KEY_RETURN)) {
+			else if (KeyboardGame.isKeyPressed(Keyboard.KEY_RETURN)) {
 				activeMenu.useButton();
 				this.keyboardUsed = true;
 			}
-			if(!this.buttonScale && !this.keyboardUsed) {
+			if (!this.buttonScale && !this.keyboardUsed) {
 				menuSystem.getActivated().getAllButtons().stream()
 				.filter(button -> button.getIsMouseOver(
 						this.gameManager.getScene().getMousePicker().getCurrentScreenPoint()))
@@ -277,7 +276,7 @@ public class MyGame extends Game {
 						this.gameManager.getScene().getMousePicker().getCurrentScreenPoint()))
 				.filter(button -> button.getIsSelected())
 				.forEach(button -> button.deselect());
-				if(MouseGame.isOncePressed(MouseGame.LEFT_CLICK)) {
+				if (MouseGame.isOncePressed(MouseGame.LEFT_CLICK)) {
 					menuSystem.getActivated().getAllButtons().stream()
 						.filter(button -> button.getIsMouseOver(
 								this.gameManager.getScene().getMousePicker().getCurrentScreenPoint()))
@@ -288,8 +287,8 @@ public class MyGame extends Game {
 				}
 			}
 		} else {
-			if(menuSystem.getIsVisible()) {menuSystem.hide();}
-			if(!this.coursorAimGroup.getIsVisible()){this.coursorAimGroup.show();}
+			if (menuSystem.getIsVisible()) {menuSystem.hide();}
+			if (!this.coursorAimGroup.getIsVisible()){this.coursorAimGroup.show();}
 		}
 		
 	}

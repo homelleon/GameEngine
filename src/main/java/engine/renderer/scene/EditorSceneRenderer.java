@@ -2,10 +2,10 @@ package renderer.scene;
 
 import control.Controls;
 import control.IControls;
-import renderer.main.MainRenderer;
+import renderer.MainRenderer;
 import scene.Scene;
 
-public class EditorSceneRenderer implements ISceneRenderer {
+public class EditorSceneRenderer implements SceneRenderer {
 	
 	private MainRenderer mainRenderer;
 	private Scene scene;

@@ -16,14 +16,14 @@ import object.gui.element.menu.IGUIMenu;
  * @see IGUIMenuSystem
  * @version 1.0.1
  */
-public class GUIMenuSystem implements IGUIMenuSystem {
+public class GUIMenuSystem {
 	
-	private static IGUIMenuSystem instance;
+	private static GUIMenuSystem instance;
 	Map<String, IGUIMenu> menus = new HashMap<String, IGUIMenu>();
 	private IGUIMenu activeMenu;
 	private boolean isVisible = false;
 	
-	public static IGUIMenuSystem getInstace() {
+	public static GUIMenuSystem getInstace() {
 		if(instance == null) {
 			instance = new GUIMenuSystem();
 		}
@@ -32,39 +32,32 @@ public class GUIMenuSystem implements IGUIMenuSystem {
 	
 	private GUIMenuSystem() {}
 	
-	@Override
 	public void add(IGUIMenu menu) {
 		this.menus.put(menu.getName(), menu);
 	}
 
-	@Override
 	public void addAll(Collection<IGUIMenu> menuList) {
 		this.menus.putAll(menuList.stream()
 				.collect(Collectors.toMap(
 						IGUIMenu::getName, Function.identity())));
 	}
 
-	@Override
 	public IGUIMenu get(String name) {
 		return this.menus.get(name);
 	}
 
-	@Override
 	public Collection<IGUIMenu> getAll() {
 		return this.menus.values();
 	}	
 
-	@Override
 	public IGUIMenu active(String name) {
 		return this.activeMenu = this.menus.get(name);
 	}	
 	
-	@Override
 	public IGUIMenu getActivated() {
 		return this.activeMenu;
 	}
 
-	@Override
 	public boolean delete(String name) {
 		if(this.menus.containsKey(name)) {
 			this.menus.remove(name);
@@ -74,13 +67,11 @@ public class GUIMenuSystem implements IGUIMenuSystem {
 		}
 	}
 
-	@Override
 	public void clean() {
 		menus.values().forEach(IGUIMenu::clean);
 		this.menus.clear();
 	}
 	
-	@Override
 	public void show(String name) {
 		if(this.menus.containsKey(name)) {
 			this.menus.get(name).show();
@@ -89,7 +80,6 @@ public class GUIMenuSystem implements IGUIMenuSystem {
 		}
 	}
 	
-	@Override
 	public void hide(String name) {
 		if(this.menus.containsKey(name)) {
 			this.menus.get(name).hide();
@@ -98,19 +88,16 @@ public class GUIMenuSystem implements IGUIMenuSystem {
 		}
 	}
 
-	@Override
 	public void show() {
 		this.isVisible = true;
 		this.menus.values().forEach(Hideable::show);
 	}
 
-	@Override
 	public void hide() {
 		this.isVisible = false;
 		this.menus.values().forEach(Hideable::hide);
 	}
 
-	@Override
 	public void switchVisibility() {
 		if(this.isVisible) {
 			this.hide();
@@ -119,7 +106,6 @@ public class GUIMenuSystem implements IGUIMenuSystem {
 		}
 	}
 
-	@Override
 	public boolean getIsVisible() {
 		return this.isVisible;
 	}

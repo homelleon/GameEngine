@@ -4,7 +4,6 @@ import object.Moveable;
 import object.bounding.BoundingQuad;
 import object.gui.element.object.IGUIObject;
 import object.gui.group.GUIGroup;
-import object.gui.group.IGUIGroup;
 import tool.math.vector.Vector2f;
 
 /**
@@ -86,7 +85,7 @@ public interface IGUIButton extends IGUIObject, Moveable<Vector2f> {
 	 * 
 	 * @return {@link GUIGroup} object
 	 */
-	IGUIGroup getGroup();
+	GUIGroup getGroup();
 	
 	/**
 	 * Sets quad is bounding over the button that can be used for verification

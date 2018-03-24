@@ -1,12 +1,7 @@
 package manager.gui;
 
-import core.debug.EngineDebug;
-import manager.gui.component.GUIComponentManager;
-import manager.gui.component.IGUIComponentManager;
-import manager.gui.group.GUIGroupManager;
-import manager.gui.group.IGUIGroupManager;
+import core.EngineDebug;
 import object.gui.system.GUIMenuSystem;
-import object.gui.system.IGUIMenuSystem;
 
 /**
  * Main graphic user interface manager that includes texture and text managers.
@@ -14,16 +9,14 @@ import object.gui.system.IGUIMenuSystem;
  * @author homelleon
  *
  */
-public class GUIManager implements IGUIManager {
+public class GUIManager {
 
 	private static final String GUI_FILE_NAME = "Interface";
 
-	private IGUIComponentManager componentManager;
-	private IGUIMenuSystem menuSystem;
-	private IGUIGroupManager groupManager;
+	private GUIComponentManager componentManager;
+	private GUIMenuSystem menuSystem;
+	private GUIGroupManager groupManager;
 	
-
-	@Override
 	public void initialize() {
 		if (EngineDebug.hasDebugPermission()) {
 			EngineDebug.printBorder();
@@ -40,27 +33,22 @@ public class GUIManager implements IGUIManager {
 		}
 	}
 	
-	@Override
-	public IGUIGroupManager getGroups() {
+	public GUIGroupManager getGroups() {
 		return groupManager;
 	}	
 	
-	@Override
-	public IGUIMenuSystem getMenus() {
+	public GUIMenuSystem getMenus() {
 		return this.menuSystem;
 	}
 
-	@Override
-	public IGUIComponentManager getComponent() {
+	public GUIComponentManager getComponent() {
 		return this.componentManager;
 	}
 
-	@Override
 	public void render() {
 		this.componentManager.render(this.getGroups().getAll());
 	}
 
-	@Override
 	public void cleanAll() {
 		if(this.menuSystem != null) {
 			this.menuSystem.clean();

@@ -4,7 +4,7 @@ import java.util.Random;
 
 import org.lwjgl.util.vector.Vector4f;
 
-import core.display.DisplayManager;
+import core.DisplayManager;
 import primitive.texture.particle.ParticleMaterial;
 import scene.Drawable;
 import shader.Shader;

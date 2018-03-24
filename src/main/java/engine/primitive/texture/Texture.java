@@ -3,7 +3,6 @@ package primitive.texture;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 
-import primitive.texture.builder.TextureBuilder;
 import tool.MyFile;
 
 public class Texture {

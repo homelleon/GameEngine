@@ -9,7 +9,7 @@ import java.util.Map.Entry;
 
 import object.camera.Camera;
 import primitive.texture.particle.ParticleMaterial;
-import renderer.particle.ParticleRenderer;
+import renderer.ParticleRenderer;
 import tool.math.Matrix4f;
 
 public class ParticleMaster {

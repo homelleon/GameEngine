@@ -1,6 +1,6 @@
 package object.particle;
 
-import core.display.DisplayManager;
+import core.DisplayManager;
 import core.settings.EngineSettings;
 import object.camera.Camera;
 import primitive.texture.particle.ParticleMaterial;

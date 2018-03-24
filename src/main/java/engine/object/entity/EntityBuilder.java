@@ -43,7 +43,7 @@ public class EntityBuilder {
 
 	public Entity build(String name) {
 		if (!models.isEmpty()) {
-			int shaderType = models.get(0).getMaterial().getNormalMap()!= null ?
+			int shaderType = models.get(0).getMaterial().getNormalMap() != null ?
 				Shader.NORMAL_ENTITY :
 				Shader.ENTITY;
 			Shader shader = ShaderPool.getInstance().get(shaderType);

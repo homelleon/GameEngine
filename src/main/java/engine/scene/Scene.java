@@ -11,7 +11,6 @@ import manager.WaterManager;
 import manager.entity.EntityManager;
 import manager.entity.FrustumEntityManager;
 import manager.gui.GUIManager;
-import manager.gui.IGUIManager;
 import manager.scene.AObjectManager;
 import manager.scene.IObjectManager;
 import manager.voxel.ChunkManager;
@@ -39,7 +38,7 @@ public class Scene extends AObjectManager {
 	private MousePicker mousePicker;
 
 	private ChunkManager chunkManager;
-	private IGUIManager uiManager = new GUIManager();
+	private GUIManager uiManager = new GUIManager();
 	private FrustumEntityManager frustumManager;
 	
 	public Scene() {
@@ -169,7 +168,7 @@ public class Scene extends AObjectManager {
 		return audioManager;
 	}
 
-	public IGUIManager getUserInterface() {
+	public GUIManager getUserInterface() {
 		return uiManager;
 	}
 

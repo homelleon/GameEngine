@@ -21,10 +21,10 @@ import manager.scene.IObjectManager;
  * Writer for creating xml file from object manager with object datas.
  * 
  * @author homelleon
- * @see ILevelMapWriter
+ * @see LevelMapWriter
  * @see IObjectManager
  */
-public class LevelMapXMLWriter implements ILevelMapWriter {
+public class LevelMapXMLWriter implements LevelMapWriter {
 	
 	private final String saveName = "levelMap1";
 

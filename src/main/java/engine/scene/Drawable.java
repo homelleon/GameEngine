@@ -5,13 +5,11 @@ import java.util.Collection;
 import java.util.List;
 
 import primitive.model.Model;
-import renderer.Renderer;
 import shader.Shader;
 import tool.math.vector.Vector;
 
 public abstract class Drawable<T extends Vector> extends Subject<T> {
 	
-	protected Renderer renderer;
 	protected Shader shader;
 	protected List<Model> models = new ArrayList<Model>();
 	protected T scale;
@@ -28,15 +26,6 @@ public abstract class Drawable<T extends Vector> extends Subject<T> {
 		super(name);
 		this.shader = shader;
 		this.models.addAll(models);
-	}
-
-	public Renderer getRenderer() {
-		return renderer;
-	}
-	
-	public Drawable<T> setRenderer(Renderer renderer) {
-		this.renderer = renderer;
-		return this;
 	}
 	
 	public Shader getShader() {

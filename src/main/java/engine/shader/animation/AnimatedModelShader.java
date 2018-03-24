@@ -1,7 +1,7 @@
 package shader.animation;
 
 import core.settings.EngineSettings;
-import renderer.animation.AnimatedModelRenderer;
+import renderer.AnimatedModelRenderer;
 import shader.Shader;
 import tool.math.Matrix4f;
 import tool.math.vector.Vector3f;

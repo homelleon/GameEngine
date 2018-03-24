@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Stream;
 
-import core.debug.EngineDebug;
+import core.EngineDebug;
 import primitive.buffer.BufferLoader;
 import primitive.buffer.Loader;
 import primitive.model.Mesh;

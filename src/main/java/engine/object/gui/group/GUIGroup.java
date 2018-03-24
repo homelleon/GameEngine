@@ -6,15 +6,15 @@ import java.util.List;
 import java.util.Map;
 
 import object.gui.element.object.GUIObject;
-import object.gui.gui.IGUI;
+import object.gui.gui.GUI;
 import tool.math.vector.Vector2f;
 
-public class GUIGroup extends GUIObject implements IGUIGroup {
+public class GUIGroup extends GUIObject {
 
 	private int priorityNumber = 0;
-	private Map<String, IGUI> guis = new HashMap<String, IGUI>();
+	private Map<String, GUI> guis = new HashMap<String, GUI>();
 
-	public GUIGroup(String name, List<IGUI> guiList) {
+	public GUIGroup(String name, List<GUI> guiList) {
 		super(name);
 		if (!guiList.isEmpty()) {
 			guiList.forEach(gui -> this.guis.put(gui.getName(), gui));
@@ -41,49 +41,41 @@ public class GUIGroup extends GUIObject implements IGUIGroup {
 		}
 	}
 
-	@Override
-	public void add(IGUI gui) {
+	public void add(GUI gui) {
 		this.guis.put(gui.getName(), gui);
 	}
 
-	@Override
-	public void addAll(List<IGUI> guiList) {
+	public void addAll(List<GUI> guiList) {
 		guiList.forEach(gui -> this.guis.put(gui.getName(), gui));
 	}
 
-	@Override
-	public IGUI get(String name) {
-		IGUI gui = null;
+	public GUI get(String name) {
+		GUI gui = null;
 		if (!guis.isEmpty()) {
 			gui = this.guis.get(name);
 		}
 		return gui;
 	}
 
-	@Override
-	public Collection<IGUI> getAll() {
+	public Collection<GUI> getAll() {
 		return guis.values();
 	}
 
-	@Override
 	public void move(Vector2f position) {
 		this.guis.values().forEach(gui -> gui.move(position));		
 	}
 
-	@Override
 	public int getPriorityNumber() {
 		return this.priorityNumber;
 	}
 
-	@Override
 	public void setPriorityNumber(int number) {
 		this.priorityNumber = number;
 	}
 
-	@Override
 	public void clean() {
 		if (!guis.isEmpty()) {
-			for (IGUI gui : guis.values()) {
+			for (GUI gui : guis.values()) {
 				gui.clean();
 			}
 		}

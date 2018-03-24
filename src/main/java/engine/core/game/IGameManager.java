@@ -1,7 +1,7 @@
 package core.game;
 
-import manager.gui.text.IGUITextManager;
-import manager.gui.texture.IGUITextureManager;
+import manager.gui.GUITextManager;
+import manager.gui.GUITextureManager;
 import scene.Scene;
 
 /**
@@ -23,13 +23,13 @@ public interface IGameManager {
 	 * 
 	 * @return {@link IGUITextureManager} object
 	 */
-	IGUITextureManager getTextures();
+	GUITextureManager getTextures();
 	
 	/**
 	 * Gets text manager.
 	 * 
 	 * @return {@link IGUITextManager} object
 	 */
-	IGUITextManager getTexts();
+	GUITextManager getTexts();
 
 }

@@ -15,7 +15,7 @@ import tool.math.vector.Vector2f;
  * @see IGUI
  *
  */
-public class GUI extends GUIObject implements IGUI {
+public class GUI extends GUIObject {
 
 	private List<GUITexture> guiTextures;
 	private List<GUIText> guiTexts;
@@ -26,13 +26,11 @@ public class GUI extends GUIObject implements IGUI {
 		this.guiTexts = guiTextList;
 	}
 
-	@Override
 	public void show() {
 		super.show();
 		this.doSwitch(true);
 	}
 
-	@Override
 	public void hide() {
 		super.hide();
 		this.doSwitch(false);
@@ -47,23 +45,19 @@ public class GUI extends GUIObject implements IGUI {
 		}
 	}
 
-	@Override
 	public List<GUIText> getTexts() {
 		return this.guiTexts;
 	}
 
-	@Override
 	public List<GUITexture> getTextures() {
 		return this.guiTextures;
 	}
-
-	@Override
+	
 	public void setTransparency(float value) {
 		this.guiTextures.forEach(texture -> texture.setTransparency(value));
 		
 	}
 
-	@Override
 	public void move(Vector2f position) {
 		for (GUITexture texture : this.guiTextures) {
 			Vector2f newPosition = Vector2f.add(texture.getPosition(), position);
@@ -76,7 +70,6 @@ public class GUI extends GUIObject implements IGUI {
 		}
 	}
 
-	@Override
 	public void clean() {
 		guiTexts.forEach(GUIText::delete);
 		guiTextures.clear();

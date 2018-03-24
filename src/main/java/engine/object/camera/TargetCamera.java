@@ -5,7 +5,7 @@ import org.lwjgl.input.Mouse;
 
 import control.KeyboardGame;
 import control.MouseGame;
-import core.loop.Loop;
+import core.Loop;
 import core.settings.EngineSettings;
 import object.entity.Player;
 import tool.math.Maths;

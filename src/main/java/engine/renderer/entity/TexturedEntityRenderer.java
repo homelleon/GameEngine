@@ -17,8 +17,7 @@ import primitive.model.Mesh;
 import primitive.model.Model;
 import primitive.texture.Texture;
 import primitive.texture.material.Material;
-import renderer.main.IMainRenderer;
-import shader.entity.textured.EntityShader;
+import shader.entity.EntityShader;
 import tool.math.Maths;
 import tool.math.Matrix4f;
 import tool.math.vector.Color;
@@ -38,7 +37,7 @@ import tool.openGL.OGLUtils;
  * @see IEntity
  * @see IMainRenderer
  */
-public class TexturedEntityRenderer implements IEntityRenderer {
+public class TexturedEntityRenderer implements EntityRenderer {
 
 	private EntityShader shader;
 	private Texture environmentMap;

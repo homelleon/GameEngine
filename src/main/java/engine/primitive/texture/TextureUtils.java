@@ -13,7 +13,6 @@ import org.lwjgl.opengl.GLContext;
 
 import de.matthiasmann.twl.utils.PNGDecoder;
 import de.matthiasmann.twl.utils.PNGDecoder.Format;
-import primitive.texture.builder.TextureBuilder;
 import tool.MyFile;
 
 public class TextureUtils {

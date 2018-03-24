@@ -1,7 +1,7 @@
 package object.gui.element.button;
 
 import object.bounding.BoundingQuad;
-import object.gui.group.IGUIGroup;
+import object.gui.group.GUIGroup;
 
 /**
  * 
@@ -11,11 +11,11 @@ import object.gui.group.IGUIGroup;
  */
 public class GUIButton extends AGUIButton {
 
-	public GUIButton(String name, IGUIGroup guiGroup) {
+	public GUIButton(String name, GUIGroup guiGroup) {
 		super(name, guiGroup);
 	}
 	
-	public GUIButton(String name, IGUIGroup guiGroup, BoundingQuad quad) {
+	public GUIButton(String name, GUIGroup guiGroup, BoundingQuad quad) {
 		super(name, guiGroup, quad);
 	}
 

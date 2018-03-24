@@ -1,7 +1,5 @@
 package core;
 
-import core.loop.ILoop;
-import core.loop.Loop;
 import core.settings.EngineSettings;
 import scene.Scene;
 
@@ -17,7 +15,7 @@ public class EngineMain {
 	
 	private static int wiredFrameMode = EngineSettings.WIRED_FRAME_NONE;
 
-	private static ILoop loopGame;
+	private static Loop loopGame;
 
 	/**
 	 * <b>Main method</b>

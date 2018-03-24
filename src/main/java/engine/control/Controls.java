@@ -2,9 +2,9 @@ package control;
 
 import org.lwjgl.input.Keyboard;
 
+import core.EngineDebug;
 import core.EngineMain;
-import core.debug.EngineDebug;
-import core.loop.Loop;
+import core.Loop;
 import core.settings.EngineSettings;
 import object.entity.Entity;
 import scene.Scene;

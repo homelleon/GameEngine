@@ -3,7 +3,7 @@ package object.animation;
 import java.util.HashMap;
 import java.util.Map;
 
-import core.display.DisplayManager;
+import core.DisplayManager;
 import object.animatedModel.AnimatedModel;
 import object.animatedModel.Joint;
 import tool.math.Matrix4f;

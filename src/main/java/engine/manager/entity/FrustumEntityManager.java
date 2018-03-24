@@ -5,7 +5,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import core.debug.EngineDebug;
+import core.EngineDebug;
 import core.settings.EngineSettings;
 import manager.octree.EntityNode;
 import object.camera.Camera;

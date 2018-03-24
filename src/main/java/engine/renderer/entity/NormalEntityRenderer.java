@@ -16,14 +16,14 @@ import primitive.model.Mesh;
 import primitive.model.Model;
 import primitive.texture.Texture;
 import primitive.texture.material.Material;
-import shader.entity.normal.NormalMappedEntityShader;
+import shader.entity.NormalMappedEntityShader;
 import tool.math.Maths;
 import tool.math.Matrix4f;
 import tool.math.vector.Color;
 import tool.math.vector.Vector2f;
 import tool.openGL.OGLUtils;
 
-public class NormalEntityRenderer implements IEntityRenderer {
+public class NormalEntityRenderer implements EntityRenderer {
 
 	private NormalMappedEntityShader shader;
 	private Texture environmentMap;

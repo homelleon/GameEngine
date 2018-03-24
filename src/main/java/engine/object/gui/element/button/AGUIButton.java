@@ -2,10 +2,10 @@ package object.gui.element.button;
 
 import org.lwjgl.opengl.Display;
 
-import core.debug.EngineDebug;
+import core.EngineDebug;
 import object.bounding.BoundingQuad;
 import object.gui.element.object.GUIObject;
-import object.gui.group.IGUIGroup;
+import object.gui.group.GUIGroup;
 import object.gui.texture.GUITexture;
 import tool.math.Maths;
 import tool.math.vector.Vector2f;
@@ -21,7 +21,7 @@ import tool.math.vector.Vector2f;
  */
 public abstract class AGUIButton extends GUIObject implements IGUIButton {
 
-	protected IGUIGroup guiGroup;
+	protected GUIGroup guiGroup;
 	protected volatile boolean isSelected = false;
 	protected IAction useAction;
 	protected IAction selectedAction;
@@ -29,7 +29,7 @@ public abstract class AGUIButton extends GUIObject implements IGUIButton {
 	protected BoundingQuad quad; 
 	protected Vector2f position = new Vector2f(0,0);
 
-	protected AGUIButton(String name, IGUIGroup guiGroup) {
+	protected AGUIButton(String name, GUIGroup guiGroup) {
 		super(name);
 		this.guiGroup = guiGroup;
 		Vector2f point1 = calculateFirstPoint();
@@ -37,7 +37,7 @@ public abstract class AGUIButton extends GUIObject implements IGUIButton {
 		this.quad = new BoundingQuad(point1, point2);		
 	}
 	
-	protected AGUIButton(String name, IGUIGroup guiGroup, BoundingQuad quad) {
+	protected AGUIButton(String name, GUIGroup guiGroup, BoundingQuad quad) {
 		super(name);
 		this.guiGroup = guiGroup;
 		this.quad = quad;
@@ -150,7 +150,7 @@ public abstract class AGUIButton extends GUIObject implements IGUIButton {
 	}
 	
 	@Override
-	public IGUIGroup getGroup() {
+	public GUIGroup getGroup() {
 		return this.guiGroup;
 	}
 	

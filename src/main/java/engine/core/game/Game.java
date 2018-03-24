@@ -6,13 +6,12 @@ import java.util.List;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 
-import core.debug.EngineDebug;
+import core.EngineDebug;
 import object.gui.gui.GUI;
-import object.gui.gui.IGUI;
 import object.gui.text.GUIText;
 import object.gui.texture.GUITexture;
 
-public abstract class Game extends Thread implements IGame {
+public abstract class Game extends Thread {
 
 	public IGameManager gameManager;
 	public int world1;
@@ -22,14 +21,13 @@ public abstract class Game extends Thread implements IGame {
 	 * 
 	 * Use "Main.getMap()" to get methods of Map and all objects on Map.
 	 */
-	@Override
 	public void __onStart() {
 		this.gameManager = new GameManager();
 
 		List<GUIText> versionTextList = new ArrayList<GUIText>();
 		List<GUITexture> versionTextureList = new ArrayList<GUITexture>();
 		versionTextList.add(this.gameManager.getScene().getUserInterface().getComponent().getTexts().get("version"));
-		IGUI versionGUI = new GUI("version", versionTextureList, versionTextList);
+		GUI versionGUI = new GUI("version", versionTextureList, versionTextList);
 
 		if (EngineDebug.hasDebugPermission()) {
 			versionGUI.show();
@@ -58,13 +56,11 @@ public abstract class Game extends Thread implements IGame {
 	 * 
 	 * Don't use while loop and etc.
 	 */
-	@Override
 	public abstract void __onUpdate();
 
 	/**
 	 * Relize game events on engine update event on pause.
 	 */
-	@Override
 	public abstract void __onUpdateWithPause();
 
 }

@@ -1,9 +1,9 @@
 package gameTools;
 
-import object.gui.group.IGUIGroup;
+import object.gui.group.GUIGroup;
 
 public interface IGUIGroupBuilderTexture {
 	
 	IGUIGroupBuilderTexture setTextureName(String name);
-	IGUIGroup build(String name);
+	GUIGroup build(String name);
 }

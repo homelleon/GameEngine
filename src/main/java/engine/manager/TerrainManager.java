@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import core.debug.EngineDebug;
+import core.EngineDebug;
 import object.terrain.Terrain;
 
 /**

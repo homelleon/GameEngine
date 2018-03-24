@@ -8,7 +8,7 @@ import org.lwjgl.input.Mouse;
 
 import control.KeyboardGame;
 import control.MouseGame;
-import core.display.DisplayManager;
+import core.DisplayManager;
 import core.settings.EngineSettings;
 import object.terrain.Terrain;
 import primitive.model.Model;

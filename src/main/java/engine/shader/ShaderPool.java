@@ -6,8 +6,8 @@ import java.util.stream.Stream;
 
 import shader.bounding.BoundingShader;
 import shader.debug.DebugShader;
-import shader.entity.normal.NormalMappedEntityShader;
-import shader.entity.textured.EntityShader;
+import shader.entity.EntityShader;
+import shader.entity.NormalMappedEntityShader;
 import shader.font.FontShader;
 import shader.gpgpu.HeightMapShader;
 import shader.gpgpu.HeightPositionShader;

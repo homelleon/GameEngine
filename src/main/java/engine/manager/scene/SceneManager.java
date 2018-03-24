@@ -6,7 +6,7 @@ import java.util.List;
 import org.lwjgl.openal.AL10;
 import org.lwjgl.openal.AL11;
 
-import core.debug.EngineDebug;
+import core.EngineDebug;
 import core.settings.EngineSettings;
 import manager.ParticleManager;
 import object.audio.AudioSource;

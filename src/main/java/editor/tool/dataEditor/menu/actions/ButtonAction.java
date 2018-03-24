@@ -6,7 +6,7 @@ import javax.swing.AbstractAction;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 
-import core.loop.Loop;
+import core.Loop;
 import tool.dataEditor.DataEditorMain;
 
 public class ButtonAction extends AbstractAction  {
