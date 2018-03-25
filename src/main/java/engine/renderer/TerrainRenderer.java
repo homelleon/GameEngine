@@ -17,9 +17,9 @@ import primitive.texture.Texture2D;
 import primitive.texture.material.TerrainMaterial;
 import primitive.texture.terrain.TerrainTexturePack;
 import shader.terrain.TerrainShader;
+import tool.GraphicUtils;
 import tool.math.Matrix4f;
 import tool.math.vector.Color;
-import tool.openGL.OGLUtils;
 
 public class TerrainRenderer {
 
@@ -41,7 +41,7 @@ public class TerrainRenderer {
 		
 		if (EngineMain.getWiredFrameMode() == EngineSettings.WIRED_FRAME_TERRAIN || 
 				EngineMain.getWiredFrameMode() == EngineSettings.WIRED_FRAME_ENTITY_TERRAIN) {
-			OGLUtils.doWiredFrame(true);
+			GraphicUtils.doWiredFrame(true);
 		}
 		
 		shader.start();
@@ -67,7 +67,7 @@ public class TerrainRenderer {
 
 		shader.stop();
 		
-		OGLUtils.doWiredFrame(false);
+		GraphicUtils.doWiredFrame(false);
 	}
 
 	public void render(Collection<Terrain> terrains, Collection<Light> lights, Camera camera) {

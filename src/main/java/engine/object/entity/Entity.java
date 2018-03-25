@@ -3,7 +3,7 @@ package object.entity;
 import java.util.Collection;
 import java.util.List;
 
-import manager.octree.EntityNode;
+import manager.entity.EntityNode;
 import primitive.model.Model;
 import scene.Drawable;
 import shader.Shader;

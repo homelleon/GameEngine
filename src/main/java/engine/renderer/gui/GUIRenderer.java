@@ -9,8 +9,8 @@ import java.util.Map;
 import java.util.stream.IntStream;
 
 import manager.gui.FontManager;
-import object.gui.group.GUIGroup;
-import object.gui.gui.GUI;
+import object.gui.GUI;
+import object.gui.GUIGroup;
 
 /**
  * Graphic user interface renderer class to render GUI groups.

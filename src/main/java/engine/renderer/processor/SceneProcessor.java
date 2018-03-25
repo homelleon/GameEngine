@@ -11,7 +11,7 @@ import primitive.model.Model;
 /**
  * 
  * @author homelleon
- * @see ConreteSceneProcessor
+ * @see SceneProcessorImpl
  */
 public interface SceneProcessor {
 

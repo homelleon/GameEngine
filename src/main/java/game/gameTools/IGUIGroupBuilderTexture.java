@@ -1,6 +1,6 @@
 package gameTools;
 
-import object.gui.group.GUIGroup;
+import object.gui.GUIGroup;
 
 public interface IGUIGroupBuilderTexture {
 	

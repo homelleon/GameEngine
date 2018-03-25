@@ -11,9 +11,9 @@ import primitive.buffer.VAO;
 import primitive.model.Mesh;
 import primitive.model.Model;
 import shader.bounding.BoundingShader;
+import tool.GraphicUtils;
 import tool.math.Maths;
 import tool.math.Matrix4f;
-import tool.openGL.OGLUtils;
 
 public class BoundingRenderer {
 
@@ -69,13 +69,13 @@ public class BoundingRenderer {
 
 	private void checkWiredFrameOn(boolean value) {
 		if (value) {
-			OGLUtils.doWiredFrame(true);
+			GraphicUtils.doWiredFrame(true);
 		}
 	}
 
 	private void checkWiredFrameOff(boolean value) {
 		if (value) {
-			OGLUtils.doWiredFrame(false);
+			GraphicUtils.doWiredFrame(false);
 		}
 	}
 

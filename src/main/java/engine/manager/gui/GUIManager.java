@@ -1,7 +1,7 @@
 package manager.gui;
 
 import core.EngineDebug;
-import object.gui.system.GUIMenuSystem;
+import object.gui.element.GUIMenuSystem;
 
 /**
  * Main graphic user interface manager that includes texture and text managers.

@@ -1,8 +1,8 @@
 package gameTools;
 
 import manager.gui.GUIManager;
-import object.gui.group.GUIGroup;
-import object.gui.gui.GUIBuilder;
+import object.gui.GUIBuilder;
+import object.gui.GUIGroup;
 
 public class GUIGroupBuilderTexture implements IGUIGroupBuilderTexture {
 	

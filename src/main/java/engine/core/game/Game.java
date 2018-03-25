@@ -7,13 +7,13 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 
 import core.EngineDebug;
-import object.gui.gui.GUI;
+import object.gui.GUI;
 import object.gui.text.GUIText;
 import object.gui.texture.GUITexture;
 
 public abstract class Game extends Thread {
 
-	public IGameManager gameManager;
+	public GameManager gameManager;
 	public int world1;
 
 	/**
@@ -22,7 +22,7 @@ public abstract class Game extends Thread {
 	 * Use "Main.getMap()" to get methods of Map and all objects on Map.
 	 */
 	public void __onStart() {
-		this.gameManager = new GameManager();
+		this.gameManager = new GameManagerImpl();
 
 		List<GUIText> versionTextList = new ArrayList<GUIText>();
 		List<GUITexture> versionTextureList = new ArrayList<GUITexture>();

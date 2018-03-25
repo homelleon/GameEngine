@@ -5,28 +5,28 @@ package tool.math.vector;
  * 
  * @author homelleon
  * @version 1.0
- * @see IVectorBuilder3
+ * @see VectorBuilder3
  */
-public class VectorBuilder3i implements IVectorBuilder3<Integer, Vector3i> {
+public class VectorBuilder3i implements VectorBuilder3<Integer, Vector3i> {
 	
 	private int x;
 	private int y;
 	private int z;
 
 	@Override
-	public IVectorBuilder3<Integer, Vector3i> setX(Integer x) {
+	public VectorBuilder3<Integer, Vector3i> setX(Integer x) {
 		this.x = x;
 		return this;
 	}
 
 	@Override
-	public IVectorBuilder3<Integer, Vector3i> setY(Integer y) {
+	public VectorBuilder3<Integer, Vector3i> setY(Integer y) {
 		this.y = y;
 		return this;
 	}
 
 	@Override
-	public IVectorBuilder3<Integer, Vector3i> setZ(Integer z) {
+	public VectorBuilder3<Integer, Vector3i> setZ(Integer z) {
 		this.z = z;
 		return this;
 	}
@@ -37,7 +37,7 @@ public class VectorBuilder3i implements IVectorBuilder3<Integer, Vector3i> {
 	}
 
 	@Override
-	public IVectorBuilder3<Integer, Vector3i> set(Integer x, Integer y, Integer z) {
+	public VectorBuilder3<Integer, Vector3i> set(Integer x, Integer y, Integer z) {
 		this.x = x;
 		this.y = y;
 		this.z = z;

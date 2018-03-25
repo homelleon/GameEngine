@@ -1,7 +1,6 @@
 package manager;
 
-import manager.scene.IObjectManager;
-import manager.scene.AObjectManager;
+import manager.scene.ObjectManager;
 
 /**
  * Map that controls entity objects to load into the editor menu.
@@ -9,4 +8,4 @@ import manager.scene.AObjectManager;
  * @author homelleon
  *
  */
-public class ObjectMapManager extends AObjectManager implements IObjectManager {}
+public class ObjectMapManager extends ObjectManager {}

@@ -1,6 +1,6 @@
 package scene.writer;
 
-import manager.scene.IObjectManager;
+import manager.scene.ObjectManager;
 
 /**
  * Provides access for writing file from object manager.
@@ -12,6 +12,6 @@ import manager.scene.IObjectManager;
  */
 public interface LevelMapWriter {
 
-	public void write(IObjectManager map);
+	public void write(ObjectManager map);
 
 }

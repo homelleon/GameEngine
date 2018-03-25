@@ -7,7 +7,7 @@ import org.w3c.dom.NodeList;
 
 import core.EngineDebug;
 import manager.ObjectMapManager;
-import manager.scene.IObjectManager;
+import manager.scene.ObjectManager;
 import object.entity.Entity;
 import tool.math.vector.Vector3f;
 import tool.xml.XMLUtils;
@@ -19,21 +19,21 @@ import tool.xml.parser.XMLParser;
  * 
  * @author homelleon
  * @see XMLParser
- * @see IObjectManager
+ * @see ObjectManager
  * @see IObjectParser
  */
-public class LevelMapXMLParser extends XMLParser implements IObjectParser<IObjectManager> {
+public class LevelMapXMLParser extends XMLParser implements IObjectParser<ObjectManager> {
 	
-	IObjectManager modelMap;
+	ObjectManager modelMap;
 	
-	public LevelMapXMLParser(Document document, IObjectManager modelMap) {
+	public LevelMapXMLParser(Document document, ObjectManager modelMap) {
 		super(document);
 		this.modelMap = modelMap;
 	}
 
 	@Override
-	public IObjectManager parse() {
-		IObjectManager levelMap = new ObjectMapManager();
+	public ObjectManager parse() {
+		ObjectManager levelMap = new ObjectMapManager();
 		levelMap.getTerrains().addAll(this.modelMap.getTerrains().getAll());
 		if(document.getDocumentElement().getNodeName().equals(XMLUtils.LEVEL_MAP)) {
 			NodeList nodeList = this.document.getDocumentElement().getChildNodes();
@@ -54,7 +54,7 @@ public class LevelMapXMLParser extends XMLParser implements IObjectParser<IObjec
 		return levelMap;	
 	}
 
-	private void parseEntities(Node node, IObjectManager levelMap) {
+	private void parseEntities(Node node, ObjectManager levelMap) {
 		if (EngineDebug.hasDebugPermission()) {
 			EngineDebug.println("Loading entities...", 1);
 		}

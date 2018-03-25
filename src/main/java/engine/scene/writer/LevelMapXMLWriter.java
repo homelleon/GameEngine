@@ -15,21 +15,21 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import core.settings.EngineSettings;
-import manager.scene.IObjectManager;
+import manager.scene.ObjectManager;
 
 /**
  * Writer for creating xml file from object manager with object datas.
  * 
  * @author homelleon
  * @see LevelMapWriter
- * @see IObjectManager
+ * @see ObjectManager
  */
 public class LevelMapXMLWriter implements LevelMapWriter {
 	
 	private final String saveName = "levelMap1";
 
 	@Override
-	public void write(IObjectManager levelMap) {
+	public void write(ObjectManager levelMap) {
 		try {
 			System.out.println("Saving level map...");
 			
@@ -54,7 +54,7 @@ public class LevelMapXMLWriter implements LevelMapWriter {
 		System.out.println("Save complete!");
 	}
 	
-	private void writeEntities(IObjectManager levelMap, Document document, Element mapElement) {
+	private void writeEntities(ObjectManager levelMap, Document document, Element mapElement) {
 		Element entities = (Element) mapElement.appendChild(document.createElement("entities"));
 		levelMap.getEntities().getAll()
 			.forEach(entity -> {
@@ -70,7 +70,7 @@ public class LevelMapXMLWriter implements LevelMapWriter {
 			});
 	}
 	
-	private void writeTerrains(IObjectManager levelMap, Document document, Element mapElement) {
+	private void writeTerrains(ObjectManager levelMap, Document document, Element mapElement) {
 		
 	}
 

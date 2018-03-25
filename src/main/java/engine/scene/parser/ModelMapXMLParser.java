@@ -9,7 +9,7 @@ import core.EngineDebug;
 import core.settings.EngineSettings;
 import manager.ObjectMapManager;
 import manager.RawManager;
-import manager.scene.IObjectManager;
+import manager.scene.ObjectManager;
 import object.entity.EntityBuilder;
 import object.terrain.Terrain;
 import object.terrain.TerrainBuilder;
@@ -28,11 +28,11 @@ import tool.xml.parser.XMLParser;
  * 
  * @see XMLParser
  * @see IObjectParser
- * @see IObjectManager
+ * @see ObjectManager
  */
-public class ModelMapXMLParser extends XMLParser implements IObjectParser<IObjectManager> {
+public class ModelMapXMLParser extends XMLParser implements IObjectParser<ObjectManager> {
 
-	private IObjectManager modelMap;
+	private ObjectManager modelMap;
 	private RawManager rawMap;
 
 	public ModelMapXMLParser(Document document, RawManager rawMap) {
@@ -42,7 +42,7 @@ public class ModelMapXMLParser extends XMLParser implements IObjectParser<IObjec
 	}
 
 	@Override
-	public IObjectManager parse() {
+	public ObjectManager parse() {
 		if(document.getDocumentElement().getNodeName().equals(XMLUtils.MODEL_MAP)) {
 			NodeList nodeList = document.getDocumentElement().getChildNodes();
 			for (int i = 0; i < nodeList.getLength(); i++) {
@@ -65,7 +65,7 @@ public class ModelMapXMLParser extends XMLParser implements IObjectParser<IObjec
 		return modelMap;
 	}
 
-	private void parseEntities(Node node, IObjectManager map) {
+	private void parseEntities(Node node, ObjectManager map) {
 		if (EngineDebug.hasDebugPermission()) {
 			EngineDebug.println("Loading entities...", 1);
 		}
@@ -98,7 +98,7 @@ public class ModelMapXMLParser extends XMLParser implements IObjectParser<IObjec
 		}
 	}
 
-	private void parseTerrains(Node node, IObjectManager map) {
+	private void parseTerrains(Node node, ObjectManager map) {
 		if (EngineDebug.hasDebugPermission()) {
 			EngineDebug.println("Loading terrains...",1);
 		}

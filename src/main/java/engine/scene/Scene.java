@@ -11,8 +11,7 @@ import manager.WaterManager;
 import manager.entity.EntityManager;
 import manager.entity.FrustumEntityManager;
 import manager.gui.GUIManager;
-import manager.scene.AObjectManager;
-import manager.scene.IObjectManager;
+import manager.scene.ObjectManager;
 import manager.voxel.ChunkManager;
 import object.audio.AudioMaster;
 import object.camera.Camera;
@@ -25,7 +24,7 @@ import primitive.texture.Texture;
 import tool.math.Frustum;
 import tool.math.vector.Vector3f;
 
-public class Scene extends AObjectManager {
+public class Scene extends ObjectManager {
 
 	private final static int CHUNK_WORLD_SIZE = 2;
 	private Player player;
@@ -49,12 +48,12 @@ public class Scene extends AObjectManager {
 		super(audioMaster);
 	}
 
-	public Scene(IObjectManager levelMap, AudioMaster audioMaster) {
+	public Scene(ObjectManager levelMap, AudioMaster audioMaster) {
 		super(audioMaster);
 		initialize(levelMap);
 	}
 	
-	private void initialize(IObjectManager levelMap) {
+	private void initialize(ObjectManager levelMap) {
 		this.getEntities().addAll(levelMap.getEntities().getAll());
 		this.getTerrains().addAll(levelMap.getTerrains().getAll());
 		this.getWaters().addAll(levelMap.getWaters().getAll());

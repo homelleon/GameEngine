@@ -47,14 +47,14 @@ void main(void) {
 
 	//transparent in diffuse texture
 	vec4 textureColour = texture(diffuseMap, pass_textureCoordinates);
-	if(textureColour.a < 0.5) {
+	if (textureColour.a < 0.5) {
 		discard;
 	}
 
 	//transparent in alpha texture
-	if(usesAlphaMap > 0.5) {
+	if (usesAlphaMap > 0.5) {
 		vec4 alphaColour = texture(alphaMap, pass_textureCoordinates);
-		if(alphaColour.r < 1) {
+		if (alphaColour.r < 1) {
 			discard;
 		}
 	}
@@ -64,10 +64,10 @@ void main(void) {
     float texelSize = 1.0 / shadowMapSize;
     float total = 0.0;
    
-    for(int x = -shadowPCFCount; x <= shadowPCFCount; x++) {
-   		for(int y = -shadowPCFCount; y <= shadowPCFCount; y++) {
+    for (int x = -shadowPCFCount; x <= shadowPCFCount; x++) {
+   		for (int y = -shadowPCFCount; y <= shadowPCFCount; y++) {
 			float objectNearestLight = texture(shadowMap, shadowCoords.xy + vec2(x, y) * texelSize).r;
-			if(shadowCoords.z > objectNearestLight + 0.002) {
+			if (shadowCoords.z > objectNearestLight + 0.003) {
 				total += 1.0;
 			}
    		}
@@ -86,14 +86,14 @@ void main(void) {
    vec3 totalSpecular = vec3(0.0);
    vec4 mapInfo = vec4(0.0);
    
-	if(usesSpecularMap > 0.5) {
+	if (usesSpecularMap > 0.5) {
 		mapInfo = normalize(texture(specularMap, pass_textureCoordinates));
-		if(mapInfo.g > 0.5) {
+		if (mapInfo.g > 0.5) {
 			mapInfo.r *= shineDamper;
 		}
 	}
    
-   for(int i = 0; i < LIGHT_MAX; i++) {
+   for (int i = 0; i < LIGHT_MAX; i++) {
 		float distance = length(toLightVector[i]);
 		float attFactor = attenuation[i].x + (attenuation[i].y * distance) + (attenuation[i].z * distance * distance);
 		vec3 unitLightVector = normalize(toLightVector[i]);	
@@ -112,8 +112,8 @@ void main(void) {
 
 	out_BrightColor = vec4(0.0);
 	
-	if(usesSpecularMap > 0.5) {
-		if(mapInfo.g > 0.5) {
+	if (usesSpecularMap > 0.5) {
+		if (mapInfo.g > 0.5) {
 			out_BrightColor = textureColour + vec4(totalSpecular, 1.0);
 		}
 	}
@@ -121,7 +121,7 @@ void main(void) {
 	out_Color = vec4(totalDiffuse, 1.0) * textureColour + vec4(totalSpecular, 1.0);
 	out_Color = mix(vec4(skyColor, 1.0), out_Color, visibility);
 	
-	if(isChosen) {
+	if (isChosen) {
 		out_Color.r *= 3;
 	}
 

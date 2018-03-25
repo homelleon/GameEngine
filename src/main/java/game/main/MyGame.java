@@ -10,17 +10,15 @@ import control.MouseGame;
 import core.EngineMain;
 import core.game.Game;
 import object.bounding.BoundingQuad;
-import object.gui.element.button.GUIButton;
-import object.gui.element.button.IAction;
-import object.gui.element.button.IGUIAnimation;
-import object.gui.element.button.IGUIButton;
-import object.gui.element.button.IVectorInjectable;
-import object.gui.element.menu.GUIMenu;
-import object.gui.element.menu.IGUIMenu;
-import object.gui.element.object.GUIObject;
-import object.gui.group.GUIGroup;
-import object.gui.gui.GUIBuilder;
-import object.gui.system.GUIMenuSystem;
+import object.gui.GUIBuilder;
+import object.gui.GUIGroup;
+import object.gui.animation.Action;
+import object.gui.animation.GUIAnimation;
+import object.gui.animation.VectorInjectable;
+import object.gui.element.GUIButton;
+import object.gui.element.GUIMenu;
+import object.gui.element.GUIMenuSystem;
+import object.gui.element.GUIObject;
 import tool.math.vector.Color;
 import tool.math.vector.Vector2f;
 import tool.math.vector.Vector3f;
@@ -34,7 +32,7 @@ public class MyGame extends Game {
 	private boolean keyboardUsed = false;
 	GUIMenuSystem menuSystem;
 	
-	IGUIMenu menu = new GUIMenu("menu1");
+	GUIMenu menu = new GUIMenu("menu1");
 	
 	/**
 	 * Action when game is just started. 
@@ -54,7 +52,7 @@ public class MyGame extends Game {
 		
 		//-----------button GUI--------------//		
 		menuSystem = this.gameManager.getScene().getUserInterface().getMenus();
-		IGUIMenu mainMenu = new GUIMenu("first menu");
+		GUIMenu mainMenu = new GUIMenu("first menu");
 		menuSystem.add(mainMenu);
 		menuSystem.active(mainMenu.getName());
 		
@@ -93,15 +91,15 @@ public class MyGame extends Game {
 		
 		BoundingQuad bQuad = new BoundingQuad(new Vector2f(-0.41f,-0.05f), new Vector2f(0.45f,0.2f)); 
 		
-		IGUIButton button1 = new GUIButton("menuButton1", buttonGroup1);
+		GUIButton button1 = new GUIButton("menuButton1", buttonGroup1);
 		button1.setBoundingArea(bQuad.clone(), false);
 		
 		button1.move(new Vector2f(0,0.4f));
 		
-		IGUIButton button2 = new GUIButton("menuButton2", buttonGroup2);
+		GUIButton button2 = new GUIButton("menuButton2", buttonGroup2);
 		button2.setBoundingArea(bQuad.clone(), false);
 		
-		IGUIButton button3 = new GUIButton("menuButton3", buttonGroup3);
+		GUIButton button3 = new GUIButton("menuButton3", buttonGroup3);
 		button3.setBoundingArea(bQuad.clone(), false);
 		button3.move(new Vector2f(0,-0.4f));
 		
@@ -109,8 +107,8 @@ public class MyGame extends Game {
 		mainMenu.add((GUIObject) button2);
 		mainMenu.add((GUIObject) button3);
 		
-		IGUIAnimation<IGUIButton> buttonAnimation = (button, time, vector)-> {
-			IVectorInjectable injection = (vec) -> {
+		GUIAnimation<GUIButton> buttonAnimation = (button, time, vector)-> {
+			VectorInjectable injection = (vec) -> {
 				IntStream.range(0, time)
 				.mapToObj(i -> button)
 				.forEach(btn -> {
@@ -135,8 +133,8 @@ public class MyGame extends Game {
 			.flatMap(gui -> gui.getTextures().stream())
 			.forEach(texture -> texture.setMixColored(false));
 		};
-		IGUIAnimation<IGUIButton> buttonSelectAnimation = (button, time, vector)-> {
-			IVectorInjectable injection = (vec) -> {
+		GUIAnimation<GUIButton> buttonSelectAnimation = (button, time, vector)-> {
+			VectorInjectable injection = (vec) -> {
 				IntStream.range(0, time)
 				.mapToObj(i -> button)
 				.forEach(btn -> {
@@ -157,8 +155,8 @@ public class MyGame extends Game {
 			injection.inject(vector);
 		};
 		
-		IGUIAnimation<IGUIButton> buttonDeselectAnimation = (button, time, vector)-> {
-			IVectorInjectable injection = (vec) -> {
+		GUIAnimation<GUIButton> buttonDeselectAnimation = (button, time, vector)-> {
+			VectorInjectable injection = (vec) -> {
 				IntStream.range(0, time)
 				.mapToObj(i -> button)
 				.forEach(btn -> {
@@ -178,44 +176,44 @@ public class MyGame extends Game {
 		
 		int time = 1;
 		Vector2f changeVector = new Vector2f(0.05f,0.05f); 
-		IAction action1 = () -> {
+		Action action1 = () -> {
 			buttonAnimation.start(button1, time, changeVector);
 			EngineMain.pauseEngine(false);
 		};
 		
-		IAction actionSelect1 = () -> {
+		Action actionSelect1 = () -> {
 			buttonSelectAnimation.start(button1, time, changeVector);
 		};
 		
-		IAction actionDeselect1 = () -> {
+		Action actionDeselect1 = () -> {
 			buttonDeselectAnimation.start(button1, time, changeVector);
 		};
 		
-		IAction action2 = () -> {
+		Action action2 = () -> {
 			buttonAnimation.start(button2, time, changeVector);
 			this.gameManager.getScene().getPlayer().setPosition(new Vector3f(0,0,0));
 		};
 		
 
-		IAction actionSelect2 = () -> {
+		Action actionSelect2 = () -> {
 			buttonSelectAnimation.start(button2, time, changeVector);
 		};
 		
-		IAction actionDeselect2 = () -> {
+		Action actionDeselect2 = () -> {
 			buttonDeselectAnimation.start(button2, time, changeVector);
 		};
 		
-		IAction action3 = () -> {
+		Action action3 = () -> {
 			buttonAnimation.start(button3, time, changeVector);
 			EngineMain.exit();
 		};
 		
 
-		IAction actionSelect3 = () -> {
+		Action actionSelect3 = () -> {
 			buttonSelectAnimation.start(button3, time, changeVector);
 		};
 		
-		IAction actionDeselect3 = () -> {
+		Action actionDeselect3 = () -> {
 			buttonDeselectAnimation.start(button3, time, changeVector);
 		};
 		
@@ -245,7 +243,7 @@ public class MyGame extends Game {
 
 	@Override
 	public void __onUpdateWithPause() {
-		IGUIMenu activeMenu = menuSystem.getActivated();
+		GUIMenu activeMenu = menuSystem.getActivated();
 		if (EngineMain.getIsEnginePaused()) {
 			if (this.coursorAimGroup.getIsVisible()){this.coursorAimGroup.hide();}
 			if (!menuSystem.getIsVisible()){menuSystem.show();}

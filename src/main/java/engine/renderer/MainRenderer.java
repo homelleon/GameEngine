@@ -22,13 +22,13 @@ import renderer.entity.EntityRendererManager;
 import renderer.entity.NormalEntityRenderer;
 import renderer.entity.TexturedEntityRenderer;
 import renderer.processor.SceneProcessor;
-import renderer.processor.ConreteSceneProcessor;
-import renderer.shadow.ShadowMapMasterRenderer;
+import renderer.processor.SceneProcessorImpl;
+import renderer.shadow.ShadowMapRenderer;
 import scene.Scene;
 import shader.Shader;
 import shader.ShaderPool;
+import tool.GraphicUtils;
 import tool.math.Matrix4f;
-import tool.openGL.OGLUtils;
 
 public class MainRenderer {
 
@@ -37,7 +37,7 @@ public class MainRenderer {
 	private SkyboxRenderer skyboxRenderer;
 	private VoxelRenderer voxelRenderer;
 	private BoundingRenderer boundingRenderer;
-	private ShadowMapMasterRenderer shadowMapRenderer;
+	private ShadowMapRenderer shadowMapRenderer;
 	private EnvironmentMapRenderer enviroRenderer;
 	
 	EntityRendererManager entityRendererManager;
@@ -54,7 +54,7 @@ public class MainRenderer {
 	private Collection<Terrain> terrains = new ArrayList<Terrain>();
 
 	public MainRenderer(Scene scene) {
-		OGLUtils.cullBackFaces(true);
+		GraphicUtils.cullBackFaces(true);
 		projectionMatrix = new Matrix4f().makeProjectionMatrix(EngineSettings.NEAR_PLANE, EngineSettings.FAR_PLANE, EngineSettings.FOV);
 		
 		entityRendererManager = new EntityRendererManager()
@@ -66,9 +66,9 @@ public class MainRenderer {
 		skyboxRenderer = new SkyboxRenderer(projectionMatrix);
 		voxelRenderer = new VoxelRenderer(projectionMatrix);
 		boundingRenderer = new BoundingRenderer(projectionMatrix);
-		shadowMapRenderer = new ShadowMapMasterRenderer(scene.getCamera());
+		shadowMapRenderer = new ShadowMapRenderer(scene.getCamera());
 		enviroRenderer = new EnvironmentMapRenderer();
-		processor = new ConreteSceneProcessor();
+		processor = new SceneProcessorImpl();
 	}
 	
 	public void render(Scene scene) {
@@ -119,13 +119,13 @@ public class MainRenderer {
 		
 		if (EngineMain.getWiredFrameMode() == EngineSettings.WIRED_FRAME_ENTITY || 
 				EngineMain.getWiredFrameMode() == EngineSettings.WIRED_FRAME_ENTITY_TERRAIN)
-			OGLUtils.doWiredFrame(true);
+			GraphicUtils.doWiredFrame(true);
 		
 		Matrix4f shadowMapMatrix = shadowMapRenderer.getToShadowMapMatrix();
 		entityRendererManager.render(clipPlane, scene.getLights().getAll(), scene.getCamera(), 
 				shadowMapMatrix, environmentMap);
 		
-		OGLUtils.doWiredFrame(false);
+		GraphicUtils.doWiredFrame(false);
 		
 		voxelRenderer.render(scene.getChunks(), clipPlane, scene.getLights().getAll(), scene.getCamera(), 
 				shadowMapMatrix, scene.getFrustum());
@@ -151,7 +151,7 @@ public class MainRenderer {
 	}
 
 	private void prepare() {
-		OGLUtils.depthTest(true);
+		GraphicUtils.depthTest(true);
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 		GL11.glClearColor(EngineSettings.RED, EngineSettings.GREEN, EngineSettings.BLUE, 1);
 		getShadowMapTexture().bind(6);

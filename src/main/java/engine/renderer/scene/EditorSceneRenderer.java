@@ -1,7 +1,7 @@
 package renderer.scene;
 
+import control.ControlsImpl;
 import control.Controls;
-import control.IControls;
 import renderer.MainRenderer;
 import scene.Scene;
 
@@ -9,13 +9,13 @@ public class EditorSceneRenderer implements SceneRenderer {
 	
 	private MainRenderer mainRenderer;
 	private Scene scene;
-	private IControls controls;
+	private Controls controls;
 
 	@Override
 	public void initialize(Scene scene) {
 		this.scene = scene;
 		this.mainRenderer = new MainRenderer(scene);
-		this.controls = new Controls();
+		this.controls = new ControlsImpl();
 	}
 
 	@Override

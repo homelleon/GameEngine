@@ -216,12 +216,21 @@ public class Maths {
 		return isOnRay;
 	}
 
-	public static boolean pointIsInQuad(Vector2f point, Vector2f quadPoint1, Vector2f quadPoint2) {
-		return ((point.x >= quadPoint1.x) &&
-				(point.x <= quadPoint2.x) &&
-				(point.y >= quadPoint1.y) &&
-				(point.y <= quadPoint2.y)) ? true : false;
+	public static boolean pointIsInQuad(Vector2f point, Vector2f minQuadPoint, Vector2f maxQuadPoint) {
+		return ((point.x >= minQuadPoint.x) &&
+				(point.x <= maxQuadPoint.x) &&
+				(point.y >= minQuadPoint.y) &&
+				(point.y <= maxQuadPoint.y)) ? true : false;
 		
+	}
+	
+	public static boolean pointIsInCube(Vector3f point, Vector3f minCubePoint, Vector3f maxCubePoint) {
+		return ((point.x >= minCubePoint.x) &&
+				(point.y >= minCubePoint.y) &&
+				(point.z >= minCubePoint.z) &&
+				(point.x < maxCubePoint.x) &&
+				(point.y < maxCubePoint.y) &&
+				(point.z < maxCubePoint.z)) ? true : false;
 	}
 	
 	public static int compare(Vector2f a, Vector2f b) {

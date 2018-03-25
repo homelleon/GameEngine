@@ -9,9 +9,9 @@ import core.settings.EngineSettings;
 import core.settings.GameSettings;
 import core.settings.SettingsXMLParser;
 import manager.RawManager;
-import manager.scene.IObjectManager;
-import manager.scene.ISceneManager;
+import manager.scene.ObjectManager;
 import manager.scene.SceneManager;
+import manager.scene.SceneManagerImpl;
 import object.audio.AudioMaster;
 import primitive.buffer.Loader;
 import renderer.scene.EditorSceneRenderer;
@@ -44,11 +44,11 @@ public class Loop {
 	
 	private SceneRenderer sceneRenderer;
 
-	private ISceneManager sceneManager;
+	private SceneManager sceneManager;
 
 	private Scene scene;
-	private IObjectManager modelMap;
-	private IObjectManager levelMap;
+	private ObjectManager modelMap;
+	private ObjectManager levelMap;
 	private RawManager rawMap;
 
 	private Game game;
@@ -91,7 +91,7 @@ public class Loop {
 		AudioMaster audioMaster = new AudioMaster();
 		scene = new Scene(levelMap, audioMaster);
 		sceneRenderer = new GameSceneRenderer();
-		sceneManager = new SceneManager();
+		sceneManager = new SceneManagerImpl();
 		sceneManager.init(scene, EngineSettings.ENGINE_MODE_GAME);
 	}
 	
@@ -101,7 +101,7 @@ public class Loop {
 		/*--------------PRE LOAD TOOLS-------------*/
 		scene = new Scene();
 		sceneRenderer = new EditorSceneRenderer();
-		sceneManager = new SceneManager();
+		sceneManager = new SceneManagerImpl();
 		sceneManager.init(scene, EngineSettings.ENGINE_MODE_EDITOR);
 	}
 
@@ -193,7 +193,7 @@ public class Loop {
 		
 		String path = EngineSettings.MAP_PATH + name + EngineSettings.EXTENSION_XML;
 		IXMLLoader xmlLoader = new XMLFileLoader(path);
-		IObjectParser<IObjectManager> mapParser = new ModelMapXMLParser(xmlLoader.load(), rawMap);
+		IObjectParser<ObjectManager> mapParser = new ModelMapXMLParser(xmlLoader.load(), rawMap);
 		modelMap = mapParser.parse();
 		mapIsLoaded = true;
 	}
@@ -214,7 +214,7 @@ public class Loop {
 		}
 		
 		IXMLLoader xmlLoader = new XMLFileLoader(EngineSettings.MAP_PATH + name + EngineSettings.EXTENSION_XML);
-		IObjectParser<IObjectManager> mapParser = new LevelMapXMLParser(xmlLoader.load(), this.modelMap);
+		IObjectParser<ObjectManager> mapParser = new LevelMapXMLParser(xmlLoader.load(), this.modelMap);
 		levelMap = mapParser.parse();
 		if (EngineDebug.hasDebugPermission()) {
 			EngineDebug.println("Total loaded entities: " + levelMap.getEntities().getAll().stream().count(), 2);

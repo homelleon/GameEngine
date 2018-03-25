@@ -7,8 +7,8 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import core.EngineDebug;
-import object.gui.group.GUIGroup;
-import object.gui.gui.GUI;
+import object.gui.GUI;
+import object.gui.GUIGroup;
 
 /**
  * Manages GUIGroups.

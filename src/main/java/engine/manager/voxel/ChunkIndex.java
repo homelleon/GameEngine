@@ -1,6 +1,6 @@
 package manager.voxel;
 
-import object.voxel.data.FaceCullingData;
+import object.voxel.FaceCullingData;
 
 /**
  * Index data for chunk creation.

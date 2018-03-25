@@ -5,7 +5,7 @@ import java.util.Collection;
 import org.w3c.dom.Document;
 
 import core.settings.EngineSettings;
-import object.gui.group.GUIGroup;
+import object.gui.GUIGroup;
 import object.gui.text.GUIText;
 import object.gui.text.GUITextReader;
 import object.gui.texture.GUITexture;

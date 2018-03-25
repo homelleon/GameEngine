@@ -14,20 +14,20 @@ import manager.voxel.ChunkManager;
 import object.camera.Camera;
 import object.light.Light;
 import object.voxel.Chunk;
-import object.voxel.data.FaceCullingData;
+import object.voxel.FaceCullingData;
 import primitive.buffer.Loader;
 import primitive.buffer.VAO;
 import primitive.model.Mesh;
 import primitive.model.Model;
 import primitive.texture.material.Material;
 import shader.voxel.VoxelShader;
+import tool.GraphicUtils;
 import tool.math.Frustum;
 import tool.math.Maths;
 import tool.math.Matrix4f;
 import tool.math.vector.Color;
 import tool.math.vector.Vector3f;
 import tool.math.vector.Vector3i;
-import tool.openGL.OGLUtils;
 
 public class VoxelRenderer {
 
@@ -186,14 +186,14 @@ public class VoxelRenderer {
 		shader.loadNumberOfRows(material.getDiffuseMap().getNumberOfRows());
 		shader.loadOffset(0.0f, 0.0f);
 		if (material.getDiffuseMap().isHasTransparency()) {
-			OGLUtils.cullBackFaces(false);
+			GraphicUtils.cullBackFaces(false);
 		}
 		shader.loadShineVariables(material.getShininess(), material.getReflectivity());
 		material.getDiffuseMap().bind(0);
 	}
 
 	private void unbindTexturedModel() {
-		OGLUtils.cullBackFaces(true);
+		GraphicUtils.cullBackFaces(true);
 		VAO.unbind(0, 1, 2);
 	}
 	

@@ -9,10 +9,10 @@ import primitive.buffer.Loader;
 import primitive.buffer.VAO;
 import primitive.model.Mesh;
 import shader.guiTexture.GUITextureShader;
+import tool.GraphicUtils;
 import tool.math.Maths;
 import tool.math.Matrix4f;
 import tool.math.vector.Vector2f;
-import tool.openGL.OGLUtils;
 
 public class GUITextureRenderer {
 
@@ -34,7 +34,7 @@ public class GUITextureRenderer {
 		vao.bind(0);
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-		OGLUtils.depthTest(false);
+		GraphicUtils.depthTest(false);
 
 		for (GUITexture guiTexture : textureList) {
 			if (guiTexture.getIsVisible()) {
@@ -48,7 +48,7 @@ public class GUITextureRenderer {
 			}
 		}
 
-		OGLUtils.depthTest(true);
+		GraphicUtils.depthTest(true);
 		GL11.glDisable(GL11.GL_BLEND);
 		VAO.unbind(0);
 		this.shader.stop();

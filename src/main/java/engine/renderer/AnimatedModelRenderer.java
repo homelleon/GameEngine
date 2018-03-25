@@ -6,8 +6,8 @@ import object.animatedModel.AnimatedModel;
 import object.camera.Camera;
 import primitive.buffer.VAO;
 import shader.animation.AnimatedModelShader;
+import tool.GraphicUtils;
 import tool.math.vector.Vector3f;
-import tool.openGL.OGLUtils;
 
 /**
  * 
@@ -73,9 +73,9 @@ public class AnimatedModelRenderer {
 		shader.start();
 		shader.loadprojectionViewMatrix(camera.getProjectionViewMatrix());
 		shader.loadLightDirection(lightDir);
-		OGLUtils.antialiasing(true);
-		OGLUtils.disableBlending();
-		OGLUtils.depthTest(true);
+		GraphicUtils.antialiasing(true);
+		GraphicUtils.disableBlending();
+		GraphicUtils.depthTest(true);
 	}
 
 	/**

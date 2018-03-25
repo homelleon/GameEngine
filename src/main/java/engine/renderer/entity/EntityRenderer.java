@@ -25,9 +25,6 @@ public interface EntityRenderer {
 			Vector4f clipPlane, Collection<Light> lights,
 			Camera camera, Matrix4f toShadowMapSpace, Texture environmentMap);
 	
-	void render(Map<Model, List<Entity>> entities, 
-			Collection<Light> lights, Camera camera, Matrix4f toShadowMapSpace);
-	
 	void clean();
 
 }

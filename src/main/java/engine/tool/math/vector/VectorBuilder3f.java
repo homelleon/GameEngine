@@ -5,28 +5,28 @@ package tool.math.vector;
  * 
  * @author homelleon
  * @version 1.0
- * @see IVectorBuilder3
+ * @see VectorBuilder3
  */
-public class VectorBuilder3f implements IVectorBuilder3<Float, Vector3f> {
+public class VectorBuilder3f implements VectorBuilder3<Float, Vector3f> {
 	
 	private float x;
 	private float y;
 	private float z;
 
 	@Override
-	public IVectorBuilder3<Float, Vector3f> setX(Float x) {
+	public VectorBuilder3<Float, Vector3f> setX(Float x) {
 		this.x = x;
 		return this;
 	}
 
 	@Override
-	public IVectorBuilder3<Float, Vector3f> setY(Float y) {
+	public VectorBuilder3<Float, Vector3f> setY(Float y) {
 		this.y = y;
 		return this;
 	}
 
 	@Override
-	public IVectorBuilder3<Float, Vector3f> setZ(Float z) {
+	public VectorBuilder3<Float, Vector3f> setZ(Float z) {
 		this.z = z;
 		return this;
 	}
@@ -37,7 +37,7 @@ public class VectorBuilder3f implements IVectorBuilder3<Float, Vector3f> {
 	}
 
 	@Override
-	public IVectorBuilder3<Float, Vector3f> set(Float x, Float y, Float z) {
+	public VectorBuilder3<Float, Vector3f> set(Float x, Float y, Float z) {
 		this.x = x;
 		this.y = y;
 		this.z = z;

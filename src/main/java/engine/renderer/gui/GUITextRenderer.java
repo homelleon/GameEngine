@@ -13,7 +13,7 @@ import object.gui.font.FontType;
 import object.gui.text.GUIText;
 import primitive.buffer.VAO;
 import shader.font.FontShader;
-import tool.openGL.OGLUtils;
+import tool.GraphicUtils;
 
 public class GUITextRenderer {
 
@@ -43,7 +43,7 @@ public class GUITextRenderer {
 	private void prepare() {
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-		OGLUtils.depthTest(false);
+		GraphicUtils.depthTest(false);
 		this.shader.start();
 	}
 
@@ -82,7 +82,7 @@ public class GUITextRenderer {
 	private void endRendering() {
 		this.shader.stop();
 		GL11.glDisable(GL11.GL_BLEND);
-		OGLUtils.depthTest(true);
+		GraphicUtils.depthTest(true);
 		this.texts.clear();
 	}
 

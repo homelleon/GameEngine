@@ -12,10 +12,10 @@ import primitive.model.Mesh;
 import primitive.model.Model;
 import primitive.texture.material.Material;
 import shader.shadow.ShadowShader;
+import tool.GraphicUtils;
 import tool.math.Maths;
 import tool.math.Matrix4f;
 import tool.math.vector.Vector2f;
-import tool.openGL.OGLUtils;
 
 public class ShadowMapEntityRenderer {
 
@@ -51,14 +51,14 @@ public class ShadowMapEntityRenderer {
 			material.getDiffuseMap().bind(0);
 			shader.loadNumberOfRows(material.getDiffuseMap().getNumberOfRows());
 			if (model.getMaterial().getDiffuseMap().isHasTransparency()) {
-				OGLUtils.cullBackFaces(false);
+				GraphicUtils.cullBackFaces(false);
 			}
 			entityList.forEach(entity -> {
 				prepareInstance(entity, camera);
 				GL11.glDrawElements(GL11.GL_TRIANGLES, mesh.getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
 			});
 			if (model.getMaterial().getDiffuseMap().isHasTransparency()) {
-				OGLUtils.cullBackFaces(true);
+				GraphicUtils.cullBackFaces(true);
 			}
 			unbindModel();
 		});

@@ -8,17 +8,17 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Vector4f;
 
+import control.ControlsImpl;
 import control.Controls;
-import control.IControls;
 import control.KeyboardGame;
 import control.MousePicker;
 import core.DisplayManager;
 import core.EngineDebug;
 import core.EngineMain;
 import manager.ObjectMapManager;
-import manager.scene.IObjectManager;
-import object.gui.group.GUIGroup;
-import object.gui.gui.GUI;
+import manager.scene.ObjectManager;
+import object.gui.GUI;
+import object.gui.GUIGroup;
 import object.gui.text.GUIText;
 import object.gui.texture.GUITexture;
 import object.particle.ParticleMaster;
@@ -32,8 +32,8 @@ import scene.writer.LevelMapXMLWriter;
 import shader.postProcessing.Fbo;
 import shader.postProcessing.PostProcessing;
 import shader.water.WaterShader;
+import tool.GraphicUtils;
 import tool.math.vector.Vector2f;
-import tool.openGL.OGLUtils;
 
 /**
  * Class that render scene objects and check controls. TODO: need to refactor
@@ -52,7 +52,7 @@ public class GameSceneRenderer implements SceneRenderer {
 	private Fbo outputFbo2;
 	private MousePicker mousePicker;
 	private Scene scene;
-	private IControls controls;
+	private Controls controls;
 	GUIText fpsText;
 	GUIText coordsText;
 	
@@ -76,7 +76,7 @@ public class GameSceneRenderer implements SceneRenderer {
 
 		mousePicker = new MousePicker(scene.getCamera(), mainRenderer.getProjectionMatrix());
 		scene.setMousePicker(mousePicker);
-		controls = new Controls();
+		controls = new ControlsImpl();
 		
 		// GUI text info
 		String fontName = "candara";
@@ -117,7 +117,7 @@ public class GameSceneRenderer implements SceneRenderer {
 		if (KeyboardGame.isKeyPressed(Keyboard.KEY_T)) {
 			EngineMain.pauseEngine(true);
 			LevelMapWriter mapWriter = new LevelMapXMLWriter();
-			IObjectManager map = new ObjectMapManager();
+			ObjectManager map = new ObjectMapManager();
 			map.getEntities().addAll(scene.getEntities().getAll());
 			map.getTerrains().addAll(scene.getTerrains().getAll());
 			mapWriter.write(map);
@@ -138,10 +138,10 @@ public class GameSceneRenderer implements SceneRenderer {
 	private void renderToScreen() {
 		waterFBOs.unbindCurrentFrameBuffer();
 		multisampleFbo.bindFrameBuffer();
-		OGLUtils.clipDistance(true);
+		GraphicUtils.clipDistance(true);
 		mainRenderer.render(scene, new Vector4f(0, 1, 0, 15));
 		ParticleMaster.renderParticles(scene.getCamera());
-		OGLUtils.clipDistance(false);		
+		GraphicUtils.clipDistance(false);		
 		waterRenderer.render(scene.getWaters().getAll(), scene.getCamera(), scene.getSun());
 		multisampleFbo.unbindFrameBuffer();
 		multisampleFbo.resolveToFbo(GL30.GL_COLOR_ATTACHMENT0, outputFbo);
@@ -152,10 +152,10 @@ public class GameSceneRenderer implements SceneRenderer {
 	}
 
 	private void renderWaterSurface() {
-		OGLUtils.clipDistance(true);
+		GraphicUtils.clipDistance(true);
 		renderWaterReflection();
 		renderWaterRefraction();
-		OGLUtils.clipDistance(false);
+		GraphicUtils.clipDistance(false);
 	}
 
 	private void renderWaterReflection() {

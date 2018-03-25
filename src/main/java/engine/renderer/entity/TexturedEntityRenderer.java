@@ -18,11 +18,12 @@ import primitive.model.Model;
 import primitive.texture.Texture;
 import primitive.texture.material.Material;
 import shader.entity.EntityShader;
+import shader.entity.NormalMappedEntityShader;
+import tool.GraphicUtils;
 import tool.math.Maths;
 import tool.math.Matrix4f;
 import tool.math.vector.Color;
 import tool.math.vector.Vector2f;
-import tool.openGL.OGLUtils;
 
 /**
  * Render engine for entities.
@@ -39,7 +40,8 @@ import tool.openGL.OGLUtils;
  */
 public class TexturedEntityRenderer implements EntityRenderer {
 
-	private EntityShader shader;
+	private EntityShader simpleShader;
+	private NormalMappedEntityShader normalShader;
 	private Texture environmentMap;
 
 	/**
@@ -54,11 +56,11 @@ public class TexturedEntityRenderer implements EntityRenderer {
 	 */
 
 	public TexturedEntityRenderer(Matrix4f projectionMatrix) {
-		this.shader = new EntityShader();
-		shader.start();
-		shader.loadProjectionMatrix(projectionMatrix);
-		shader.connectTextureUnits();
-		shader.stop();
+		this.simpleShader = new EntityShader();
+		simpleShader.start();
+		simpleShader.loadProjectionMatrix(projectionMatrix);
+		simpleShader.connectTextureUnits();
+		simpleShader.stop();
 	}
 
 	/**
@@ -87,16 +89,21 @@ public class TexturedEntityRenderer implements EntityRenderer {
 	 */
 	public void render(Map<Model, List<Entity>> entities, Vector4f clipPlane, Collection<Light> lights,
 			Camera camera, Matrix4f toShadowMapSpace, Texture environmentMap) {
-		if (!entities.isEmpty()) {
+		if (environmentMap != null)
 			this.environmentMap = environmentMap;
-			shader.start();
-			shader.loadClipPlane(clipPlane);
-			shader.loadSkyColor(new Color(EngineSettings.RED, EngineSettings.GREEN, EngineSettings.BLUE));
-			shader.loadFogDensity(EngineSettings.FOG_DENSITY);
-			shader.loadLights(lights);
-			shader.loadCamera(camera);
-			shader.loadToShadowSpaceMatrix(toShadowMapSpace);
-			shader.loadShadowVariables(EngineSettings.SHADOW_DISTANCE, EngineSettings.SHADOW_MAP_SIZE,
+		
+		if (clipPlane == null)
+			clipPlane = EngineSettings.NO_CLIP;
+		
+		if (!entities.isEmpty()) {
+			simpleShader.start();
+			simpleShader.loadClipPlane(clipPlane);
+			simpleShader.loadSkyColor(new Color(EngineSettings.RED, EngineSettings.GREEN, EngineSettings.BLUE));
+			simpleShader.loadFogDensity(EngineSettings.FOG_DENSITY);
+			simpleShader.loadLights(lights);
+			simpleShader.loadCamera(camera);
+			simpleShader.loadToShadowSpaceMatrix(toShadowMapSpace);
+			simpleShader.loadShadowVariables(EngineSettings.SHADOW_DISTANCE, EngineSettings.SHADOW_MAP_SIZE,
 					EngineSettings.SHADOW_TRANSITION_DISTANCE, EngineSettings.SHADOW_PCF);			
 			entities.forEach((model, entityList) -> {
 				prepareTexturedModel(model);
@@ -107,51 +114,12 @@ public class TexturedEntityRenderer implements EntityRenderer {
 				});
 				unbindTexturedModel();
 			});
-			shader.stop();
+			simpleShader.stop();
 		}
 	}
 
-	/**
-	 * Rendering enities for low quality scene using more complex shader
-	 * uniforms and OpenGL per indicies rendering engine
-	 * 
-	 * @param entities
-	 *            - map of {@link IEntity} list with {@link Model} key
-	 *            that have to be rendered
-	 * @param lights
-	 *            - collection of {@link Light} that effects on scene
-	 * 
-	 * @param camera
-	 *            - {@link ICamera} that represents point of view
-	 * 
-	 * @see IEntity
-	 * @see Light
-	 * @see ICamera
-	 */
-	public void render(Map<Model, List<Entity>> entities, Collection<Light> lights, Camera camera, Matrix4f toShadowMapSpace) {
-		GL11.glClearColor(1, 1, 1, 1);
-		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
-		shader.start();
-		shader.loadClipPlane(EngineSettings.NO_CLIP);
-		shader.loadSkyColor(new Color(EngineSettings.RED, EngineSettings.GREEN, EngineSettings.BLUE));
-		shader.loadFogDensity(EngineSettings.FOG_DENSITY);
-		shader.loadLights(lights);
-		shader.loadCamera(camera);
-		entities.keySet()
-			.forEach(model -> {
-				prepareLowTexturedModel(model);
-				entities.get(model)
-					.forEach(entity -> {
-						prepareInstance(entity);
-						GL11.glDrawElements(GL11.GL_TRIANGLES, model.getMesh().getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
-					});
-					unbindTexturedModel();
-			});
-		shader.stop();
-	}
-
 	public void clean() {
-		shader.clean();
+		simpleShader.clean();
 	}
  
 	/**
@@ -165,10 +133,11 @@ public class TexturedEntityRenderer implements EntityRenderer {
 		VAO vao = rawModel.getVAO();
 		vao.bind(0, 1, 2);
 		Material texture = model.getMaterial();
-		shader.loadNumberOfRows(texture.getDiffuseMap().getNumberOfRows());
-		if (texture.getDiffuseMap().isHasTransparency()) {
-			OGLUtils.cullBackFaces(false);
-		}
+		simpleShader.loadNumberOfRows(texture.getDiffuseMap().getNumberOfRows());
+		
+		if (texture.getDiffuseMap().isHasTransparency())
+			GraphicUtils.cullBackFaces(false);
+		
 		model.getMaterial().getDiffuseMap().bind(0);
 	}
 
@@ -183,23 +152,28 @@ public class TexturedEntityRenderer implements EntityRenderer {
 		VAO vao = rawModel.getVAO();
 		vao.bind(0, 1, 2);
 		Material material = model.getMaterial();
-		shader.loadNumberOfRows(material.getDiffuseMap().getNumberOfRows());
-		if (material.getDiffuseMap().isHasTransparency()) {
-			OGLUtils.cullBackFaces(false);
-		}
-		shader.loadFakeLightingVariable(material.isUseFakeLighting());
-		shader.loadShineVariables(material.getShininess(), material.getReflectivity());
-		shader.loadReflectiveFactor(material.getReflectiveFactor());
-		shader.loadRefractVariables(material.getRefractiveIndex(), material.getRefractiveFactor());
+		simpleShader.loadNumberOfRows(material.getDiffuseMap().getNumberOfRows());
+		
+		if (material.getDiffuseMap().isHasTransparency())
+			GraphicUtils.cullBackFaces(false);
+		
+		simpleShader.loadFakeLightingVariable(material.isUseFakeLighting());
+		simpleShader.loadShineVariables(material.getShininess(), material.getReflectivity());
+		simpleShader.loadReflectiveFactor(material.getReflectiveFactor());
+		simpleShader.loadRefractVariables(material.getRefractiveIndex(), material.getRefractiveFactor());
+		
 		model.getMaterial().getDiffuseMap().bind(0);
-		shader.loadUsesSpecularMap(material.getSpecularMap() !=null);
-		if (material.getSpecularMap() !=null) {
+		
+		simpleShader.loadUsesSpecularMap(material.getSpecularMap() != null);
+		
+		if (material.getSpecularMap() != null) 
 			material.getSpecularMap().bind(4);
-		}
-		shader.loadUsesAlphaMap(material.getAlphaMap() != null);
-		if(material.getAlphaMap() != null) {
+		
+		simpleShader.loadUsesAlphaMap(material.getAlphaMap() != null);
+		
+		if (material.getAlphaMap() != null)
 			material.getAlphaMap().bind(5);
-		}
+		
 		if ((material.getReflectiveFactor() > 0) || (material.getRefractiveFactor() > 0)) {
 			GL13.glActiveTexture(GL13.GL_TEXTURE7);
 			GL11.glBindTexture(GL13.GL_TEXTURE_CUBE_MAP, environmentMap.textureId);
@@ -210,7 +184,7 @@ public class TexturedEntityRenderer implements EntityRenderer {
 	 * Unbinds VBO for used model
 	 */
 	private void unbindTexturedModel() {
-		OGLUtils.cullBackFaces(true);
+		GraphicUtils.cullBackFaces(true);
 		VAO.unbind(0, 1, 2);
 	}
 
@@ -224,10 +198,10 @@ public class TexturedEntityRenderer implements EntityRenderer {
 	private void prepareInstance(Entity entity) {
 		Matrix4f transformationMatrix = Maths.createTransformationMatrix(entity.getPosition(), entity.getRotation().getX(),
 				entity.getRotation().getY(), entity.getRotation().getZ(), entity.getScale().getX());
-		shader.loadTranformationMatrix(transformationMatrix);
+		simpleShader.loadTranformationMatrix(transformationMatrix);
 		Vector2f textureOffset = entity.getTextureOffset();
-		shader.loadOffset(textureOffset.x, textureOffset.y);
-		shader.loadManipulateVariables(entity.isChosen());
+		simpleShader.loadOffset(textureOffset.x, textureOffset.y);
+		simpleShader.loadManipulateVariables(entity.isChosen());
 	}
 
 	/**
