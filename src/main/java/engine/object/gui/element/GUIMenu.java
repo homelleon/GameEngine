@@ -18,10 +18,6 @@ import object.gui.animation.Action;
  *
  */
 public class GUIMenu extends GUIObject {
-	
-	public GUIMenu(String name) {
-		super(name);
-	}
 
 	private boolean hasButtons = false;
 	private boolean wasNext = false;
@@ -31,97 +27,104 @@ public class GUIMenu extends GUIObject {
 	private ListIterator<GUIButton> buttonIterator;
 	private GUIButton selectedButton;
 	
+	public GUIMenu(String name) {
+		super(name);
+	}
+	
 	public void add(GUIObject object) {
 		this.objects.put(object.getName(), object);
-		if(object instanceof GUIButton) {
-			buttons.add((GUIButton)object);
-			this.hasButtons = true;
-			this.updateIterator();
-			this.deselectAllButtons();
-		}
+		
+		if (!(object instanceof GUIButton)) return;		
+		buttons.add((GUIButton)object);
+		this.hasButtons = true;
+		this.updateIterator();
+		this.deselectAllButtons();
 	}
 	
 	public GUIObject get(String name) {
-		return this.objects.get(name);
+		return objects.get(name);
 	}	
 
 	public List<GUIButton> getAllButtons() {
-		return this.buttons;
+		return buttons;
 	}
 	
 	public void selectNextButton() {
-		if(checkIfHassButtons()) {
-			this.deselectAllButtons();
-			if(this.buttonIterator.hasNext()) {
-				if(!wasNext) {
-					wasNext = true;
-				}
-				if(wasPrevious) {
-					this.buttonIterator.next();
-					wasPrevious = false;
-					selectNextButton();
-				} else {
-					this.selectedButton = this.buttonIterator.next();
-					this.selectedButton.select();
-				}
+		if (!getHasButtons()) return;
+		
+		deselectAllButtons();
+		if (buttonIterator.hasNext()) {
+			
+			if (!wasNext)
+				wasNext = true;
+			
+			if (wasPrevious) {
+				buttonIterator.next();
+				wasPrevious = false;
+				selectNextButton();
 			} else {
-				while(this.buttonIterator.hasPrevious()) {
-					this.buttonIterator.previous();
-				}
-				this.selectedButton = this.buttonIterator.next();
-				this.selectedButton.select();
+				selectedButton = buttonIterator.next();
+				selectedButton.select();
 			}
+			
+		} else {
+			while (buttonIterator.hasPrevious())
+				buttonIterator.previous();
+			
+			selectedButton = buttonIterator.next();
+			selectedButton.select();
 		}
 	}
 	
 	public void selectPreviousButton() {
-		if(checkIfHassButtons()) {
-			this.deselectAllButtons();
-			if(this.buttonIterator.hasPrevious()) {
-				if(!wasPrevious) {
-					wasPrevious = true;
-				}
-				if(wasNext) {
-					this.buttonIterator.previous();
-					wasNext = false;
-					selectPreviousButton();
-				} else {
-					this.selectedButton = this.buttonIterator.previous();
-					this.selectedButton.select();
-				}
+		if (!getHasButtons()) return;
+		
+		deselectAllButtons();
+		if (buttonIterator.hasPrevious()) {
+			
+			if (!wasPrevious)
+				wasPrevious = true;
+			
+			if (wasNext) {
+				buttonIterator.previous();
+				wasNext = false;
+				selectPreviousButton();
 			} else {
-				while(this.buttonIterator.hasNext()) {
-					this.buttonIterator.next();
-				}
-				this.selectedButton = this.buttonIterator.previous();
-				this.selectedButton.select();
+				selectedButton = buttonIterator.previous();
+				selectedButton.select();
 			}
+		} else {
+			while (buttonIterator.hasNext())
+				buttonIterator.next();
+			
+			selectedButton = buttonIterator.previous();
+			selectedButton.select();
 		}
 	}
 
 	public void useButton(Action action) {
-		this.selectedButton.use(action);
+		selectedButton.use(action);
 	}
 	
 	public void useButton() {
-		this.selectedButton.use();
+		selectedButton.use();
 	}
 
 	public GUIButton getSelectedButton() {
-		return this.selectedButton;
+		return selectedButton;
 	}
 	
 	public boolean getHasButtons() {
-		return this.hasButtons;
+		return hasButtons;
 	}
 
 	public void clean() {
-		this.objects.clear();
-		this.buttonIterator = null;
-		this.buttons.clear();
-		this.hasButtons = false;
-		this.wasNext = false;
-		this.wasPrevious = false;
+		objects.clear();
+		buttonIterator = null;
+		buttons.clear();
+		hasButtons = false;
+		wasNext = false;
+		wasPrevious = false;
 	}	
 	
 	@Override
@@ -137,21 +140,13 @@ public class GUIMenu extends GUIObject {
 	}
 	
 	private void updateIterator() {
-		this.buttonIterator = buttons.listIterator();		
+		buttonIterator = buttons.listIterator();		
 	}
 	
 	private void deselectAllButtons() {
-		this.buttons.stream()
+		buttons.stream()
 			.filter(GUIButton::getIsSelected)
 			.forEach(GUIButton::deselect);
-	}
-	
-	private boolean checkIfHassButtons() {
-		if(hasButtons) {
-			return true;
-		} else {
-			throw new ArrayIndexOutOfBoundsException ("There is no buttons in " + this.getName() + " menu!");
-		}
 	}
 
 }

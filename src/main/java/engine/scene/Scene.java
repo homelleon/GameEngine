@@ -21,7 +21,6 @@ import object.light.Light;
 import object.particle.ParticleSystem;
 import object.terrain.Terrain;
 import primitive.texture.Texture;
-import tool.math.Frustum;
 import tool.math.vector.Vector3f;
 
 public class Scene extends ObjectManager {
@@ -30,7 +29,6 @@ public class Scene extends ObjectManager {
 	private Player player;
 	private Camera camera;
 	private Light sun;
-	private Frustum frustum;
 
 
 	private Texture environmentMap = Texture.newEmptyCubeMap(128);
@@ -66,8 +64,7 @@ public class Scene extends ObjectManager {
 		chunkManager.getChunk(1).getBlock(0, 5, 5).setIsActive(false);
 		chunkManager.getChunk(1).getBlock(0, 4, 5).setIsActive(false);
 		chunkManager.getChunk(1).getBlock(0, 5, 6).setIsActive(false);
-		this.frustum = new Frustum();
-		this.frustumManager = new FrustumEntityManager(this.frustum);
+		this.frustumManager = new FrustumEntityManager();
 		this.frustumManager.rebuildNodes(this.getEntities().getAll());
 	}
 	
@@ -178,15 +175,6 @@ public class Scene extends ObjectManager {
 	public Scene setMousePicker(MousePicker mousePicker) {
 		this.mousePicker = mousePicker;
 		return this;
-	}
-	
-	public Scene setFrustum(Frustum frustum) {
-		this.frustum = frustum;
-		return this;
-	}
-
-	public Frustum getFrustum() {
-		return frustum;
 	}
 
 	private Vector3f spreadPointOnHeights(Vector3f position) {

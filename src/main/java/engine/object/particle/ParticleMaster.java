@@ -29,12 +29,10 @@ public class ParticleMaster {
 			while (iterator.hasNext()) {
 				Particle p = iterator.next();
 				boolean stillAlive = p.update(camera);
-				if (!stillAlive) {
-					iterator.remove();
-					if (list.isEmpty()) {
-						mapIterator.remove();
-					}
-				}
+				if (stillAlive) continue;
+				iterator.remove();
+				if (list.isEmpty()) 
+					mapIterator.remove();
 			}
 			InsertionSort.sortHighToLow(list);
 		}

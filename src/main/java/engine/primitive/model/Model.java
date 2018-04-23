@@ -15,15 +15,15 @@ public class Model {
 	}
 
 	public String getName() {
-		return this.name;
+		return name;
 	}
 
 	public Mesh getMesh() {
-		return this.mesh;
+		return mesh;
 	}
 
 	public Material getMaterial() {
-		return this.material;
+		return material;
 	}
 
 }

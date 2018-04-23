@@ -37,12 +37,10 @@ public class FontManager {
 	}
 
 	public boolean delete(String name) {
-		if (fonts.containsKey(name)) {
-			fonts.remove(name);
-			return true;
-		} else {
-			return false;
-		}
+		if (!fonts.containsKey(name)) return false;
+		
+		fonts.remove(name);
+		return true;
 	}
 
 	public void clean() {

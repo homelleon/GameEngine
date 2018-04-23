@@ -52,11 +52,9 @@ public class TerrainNode extends Node<Vector3f> {
 	}
 	
 	public void updateQuadTree(Camera camera) {
-		if(camera.getPosition().getY() > EngineSettings.TERRAIN_SCALE_Y) {
-			this.worldPosition.setY(EngineSettings.TERRAIN_SCALE_Y);
-		} else {
-			this.worldPosition.setY(camera.getPosition().getY());
-		}
+		float y = (camera.getPosition().getY() > EngineSettings.TERRAIN_SCALE_Y) ?
+				EngineSettings.TERRAIN_SCALE_Y : camera.getPosition().getY();
+		worldPosition.setY(y);
 		updateChildNodes(camera);
 		this.getChildren().stream()
 			.map(child -> (TerrainNode) child)
@@ -64,43 +62,41 @@ public class TerrainNode extends Node<Vector3f> {
 	}
 	
 	public void updateChildNodes(Camera camera) {
-		float distance = (new Vector3f(camera.getPosition()).sub(this.worldPosition)).length();
-		if(distance < EngineSettings.LOD_RANGES[this.lod]) {
-			this.addChildNodes(this.lod + 1, camera);
-		} else if(distance >= EngineSettings.LOD_RANGES[this.lod]) {
-			this.removeChildNodes();
+		float distance = (new Vector3f(camera.getPosition()).sub(worldPosition)).length();
+		if (distance < EngineSettings.LOD_RANGES[lod]) {
+			addChildNodes(lod + 1, camera);
+		} else if (distance >= EngineSettings.LOD_RANGES[lod]) {
+			removeChildNodes();
 		}
 	}
 	
 	public void removeChildren() {
-		if(!this.isLeaf()) {
-			this.setLeaf(true);
-		}
-		if(!this.getChildren().isEmpty()) {
-			this.getChildren().clear();
-		}
+		if (!isLeaf())
+			setLeaf(true);
+		
+		if (!getChildren().isEmpty())
+			getChildren().clear();
 	}
 	
 	public void render(TerrainShader shader, VAO vao) {
-		if(this.isLeaf()) {
+		if (isLeaf()) {
 			shader.loadLoDVariables(lod, index, gap, location);
 			shader.loadLocalMatrix(localTransformationMatrix);
 			GL11.glDrawArrays(GL40.GL_PATCHES, 0, 16);
 		}
-		this.getChildren().stream()
+		getChildren().stream()
 			.map(child -> (TerrainNode) child)
 			.forEach(child -> child.render(shader, vao));
 	}
 	
 	private void addChildNodes(int lod, Camera camera) {
-		if(this.isLeaf()) {
-			this.setLeaf(false);
-		}
+		if (isLeaf())
+			setLeaf(false);
 		
-		if(this.getChildren().isEmpty()) {
-			for(int i = 0; i < 2; i++) {
-				for(int j = 0; j < 2; j++) {
-					this.addChild(
+		if (getChildren().isEmpty()) {
+			for (int i = 0; i < 2; i++) {
+				for (int j = 0; j < 2; j++) {
+					addChild(
 							new TerrainNode(
 								new Vector2f(location).add(new Vector2f(i * gap / 2f, j * gap / 2f)),
 								lod,
@@ -115,12 +111,11 @@ public class TerrainNode extends Node<Vector3f> {
 	}
 	
 	private void removeChildNodes() {
-		if(!this.isLeaf()) {
-			this.setLeaf(true);
-		}
-		if(!this.getChildren().isEmpty()) {
-			this.getChildren().clear(); 
-		}
+		if (!isLeaf())
+			setLeaf(true);
+		
+		if (!getChildren().isEmpty())
+			getChildren().clear();
 	}
 
 	public int getLod() {

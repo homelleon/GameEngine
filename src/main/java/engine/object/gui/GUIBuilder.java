@@ -23,19 +23,19 @@ public class GUIBuilder {
 	}
 	
 	public GUIBuilder setTexture(String name, GUITexture texture) {
-		this.textures.add(texture);
+		textures.add(texture);
 		return this;
 	}
 	
 	public GUIBuilder setText(String name, GUIText text) {
-		this.texts.add(text);
+		texts.add(text);
 		return this;
 	}
 
 	public GUI build(String name) {
-		componentManager.getTexts().addAll(this.texts);
-		componentManager.getTextures().addAll(this.textures);
-		return new GUI(name, this.textures, this.texts);
+		componentManager.getTexts().addAll(texts);
+		componentManager.getTextures().addAll(textures);
+		return new GUI(name, textures, texts);
 	}
 
 }

@@ -34,42 +34,40 @@ public class Player extends Entity {
 	}
 
 	public void move(Collection<Terrain> terrains) {
-		this.isMoved = false;
+		isMoved = false;
 		checkInputs();
 		super.increaseRotation(0, currentTurnSpeed * DisplayManager.getFrameTimeSeconds(), 0);
 		float fowardDistance = currentForwardSpeed * DisplayManager.getFrameTimeSeconds();
 		float strafeDistance = currentStrafeSpeed * DisplayManager.getFrameTimeSeconds();
 		float speedCorrector = 1;
 
-		if (fowardDistance != 0 && strafeDistance != 0) {
+		if (fowardDistance != 0 && strafeDistance != 0)
 			speedCorrector = 2;
-		}
 
 		float dx = (float) (fowardDistance * Math.sin(Math.toRadians(super.getRotation().getY()))
 				+ (strafeDistance * Math.sin(Math.toRadians(super.getRotation().getY() + 90)))) / speedCorrector;
 		float dz = (float) (fowardDistance * Math.cos(Math.toRadians(super.getRotation().getY()))
 				+ (strafeDistance * Math.cos(Math.toRadians(super.getRotation().getY() + 90)))) / speedCorrector;
-		super.increasePosition(dx, 0, dz);
+		increasePosition(dx, 0, dz);
 		upwardsSpeed += EngineSettings.GRAVITY * DisplayManager.getFrameTimeSeconds();
-		super.increasePosition(0, upwardsSpeed * DisplayManager.getFrameTimeSeconds(), 0);
+		increasePosition(0, upwardsSpeed * DisplayManager.getFrameTimeSeconds(), 0);
 
 		float terrainHeight = 0;
 		for (Terrain terrain : terrains) {
-			terrainHeight += terrain.getHeightOfTerrain(super.getPosition().x, super.getPosition().z);
+			terrainHeight += terrain.getHeightOfTerrain(getPosition().x, getPosition().z);
 		}
 
-		if (super.getPosition().y < terrainHeight) {
+		if (getPosition().y < terrainHeight) {
 			upwardsSpeed = 0;
+			getPosition().y = terrainHeight;
 			isInAir = false;
-			super.getPosition().y = terrainHeight;
 		}
 	}
 
 	private void jump() {
-		if (!isInAir) {
-			this.upwardsSpeed = JUMP_POWER;
-			isInAir = true;
-		}
+		if (isInAir) return;
+		this.upwardsSpeed = JUMP_POWER;
+		isInAir = true;
 	}
 
 	private void checkInputs() {
@@ -77,49 +75,49 @@ public class Player extends Entity {
 			if ((KeyboardGame.isKeyDown(EngineSettings.KEY_PLAYER_MOVE_FORWARD))
 					&& (KeyboardGame.isKeyDown(EngineSettings.KEY_PLAYER_ACCELERATE)
 							|| Keyboard.isKeyDown(Keyboard.KEY_RSHIFT))) {
-				this.currentForwardSpeed = RUN_SPEED;
-				this.isMoved = true;
+				currentForwardSpeed = RUN_SPEED;
+				isMoved = true;
 			} else if (KeyboardGame.isKeyDown(EngineSettings.KEY_PLAYER_MOVE_FORWARD)) {
-				this.currentForwardSpeed = MOVE_SPEED;
-				this.isMoved = true;
+				currentForwardSpeed = MOVE_SPEED;
+				isMoved = true;
 			} else if (KeyboardGame.isKeyDown(EngineSettings.KEY_PLAYER_MOVE_BACKWARD)) {
-				this.currentForwardSpeed = -MOVE_SPEED;
-				this.isMoved = true;
+				currentForwardSpeed = -MOVE_SPEED;
+				isMoved = true;
 			} else {
-				this.currentForwardSpeed = 0;
+				currentForwardSpeed = 0;
 			}
 
 			if ((KeyboardGame.isKeyDown(EngineSettings.KEY_PLAYER_MOVE_LEFT))
 					&& (KeyboardGame.isKeyDown(EngineSettings.KEY_PLAYER_ACCELERATE)
 							|| Keyboard.isKeyDown(Keyboard.KEY_RSHIFT))) {
-				this.currentStrafeSpeed = RUN_SPEED;
-				this.isMoved = true;
+				currentStrafeSpeed = RUN_SPEED;
+				isMoved = true;
 			} else if ((KeyboardGame.isKeyDown(EngineSettings.KEY_PLAYER_MOVE_RIGHT))
 					&& (KeyboardGame.isKeyDown(EngineSettings.KEY_PLAYER_ACCELERATE)
 							|| Keyboard.isKeyDown(Keyboard.KEY_RSHIFT))) {
-				this.currentStrafeSpeed = -RUN_SPEED;
-				this.isMoved = true;
+				currentStrafeSpeed = -RUN_SPEED;
+				isMoved = true;
 			} else if (KeyboardGame.isKeyDown(EngineSettings.KEY_PLAYER_MOVE_LEFT)) {
-				this.currentStrafeSpeed = MOVE_SPEED;
-				this.isMoved = true;
+				currentStrafeSpeed = MOVE_SPEED;
+				isMoved = true;
 			} else if (KeyboardGame.isKeyDown(EngineSettings.KEY_PLAYER_MOVE_RIGHT)) {
-				this.currentStrafeSpeed = -MOVE_SPEED;
-				this.isMoved = true;
+				currentStrafeSpeed = -MOVE_SPEED;
+				isMoved = true;
 			} else {
-				this.currentStrafeSpeed = 0;
+				currentStrafeSpeed = 0;
 			}
 
 			if (KeyboardGame.isKeyDown(EngineSettings.KEY_PLAYER_JUMP)) {
 				jump();
-				this.isMoved = true;
+				isMoved = true;
 			}
 		}
 
 		if (!MouseGame.isPressed(MouseGame.MIDDLE_CLICK)) {
-			this.currentTurnSpeed = -TURN_SPEED * EngineSettings.MOUSE_X_SPEED * Mouse.getDX();
+			currentTurnSpeed = -TURN_SPEED * EngineSettings.MOUSE_X_SPEED * Mouse.getDX();
 			MouseGame.centerCoursor();
 		} else {
-			this.currentTurnSpeed = 0;
+			currentTurnSpeed = 0;
 		}
 	}
 

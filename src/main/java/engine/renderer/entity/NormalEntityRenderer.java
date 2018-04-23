@@ -16,6 +16,7 @@ import primitive.model.Mesh;
 import primitive.model.Model;
 import primitive.texture.Texture;
 import primitive.texture.material.Material;
+import scene.Scene;
 import shader.entity.NormalMappedEntityShader;
 import tool.GraphicUtils;
 import tool.math.Maths;
@@ -37,36 +38,32 @@ public class NormalEntityRenderer implements EntityRenderer {
 	}
 
 	@Override
-	public void render(Map<Model, List<Entity>> entities, Vector4f clipPlane, Collection<Light> lights,
-			Camera camera, Matrix4f toShadowMapSpace, Texture environmentMap) {
-		if(!entities.isEmpty()) {
-			shader.start();
-			shader.loadFogDensity(EngineSettings.FOG_DENSITY);
-			if (toShadowMapSpace != null) {
-				shader.loadToShadowSpaceMatrix(toShadowMapSpace);
-			}
-			shader.loadShadowVariables(EngineSettings.SHADOW_DISTANCE, EngineSettings.SHADOW_MAP_SIZE,
-					EngineSettings.SHADOW_TRANSITION_DISTANCE, EngineSettings.SHADOW_PCF);
-			prepare(clipPlane, lights, camera);
-			entities.keySet().forEach(model -> {
-				prepareTexturedModel(model);
-				entities.get(model).forEach(entity -> {
-					prepareInstance(entity);
-					GL11.glDrawElements(GL11.GL_TRIANGLES, model.getMesh().getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
-					GL11.glFlush();
-				});
-				unbindTexturedModel();
+	public void render(Map<Model, List<Entity>> entities, Scene scene, Vector4f clipPlane, Matrix4f toShadowMapSpace, Texture environmentMap) {
+		if (entities.isEmpty()) return;
+		
+		shader.start();
+		shader.loadFogDensity(EngineSettings.FOG_DENSITY);
+		
+		if (toShadowMapSpace != null)
+			shader.loadToShadowSpaceMatrix(toShadowMapSpace);
+		
+		shader.loadShadowVariables(EngineSettings.SHADOW_DISTANCE, EngineSettings.SHADOW_MAP_SIZE,
+				EngineSettings.SHADOW_TRANSITION_DISTANCE, EngineSettings.SHADOW_PCF);
+		prepare(clipPlane, scene.getLights().getAll(), scene.getCamera());
+		entities.keySet().forEach(model -> {
+			prepareTexturedModel(model);
+			entities.get(model).forEach(entity -> {
+				prepareInstance(entity);
+				GL11.glDrawElements(GL11.GL_TRIANGLES, model.getMesh().getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
+				GL11.glFlush();
 			});
-			shader.stop();
-		}
+			unbindTexturedModel();
+		});
+		shader.stop();
 	}
 
 	public void clean() {
 		shader.clean();
-	}
-	
-	private void prepareLowTexturedModel(Model model) {
-		prepareTexturedModel(model);
 	}
 
 	private void prepareTexturedModel(Model model) {

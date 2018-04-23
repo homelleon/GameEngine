@@ -23,21 +23,20 @@ public class GUITextureXMLParser extends XMLParser implements IListParser<GUITex
 	@Override
 	public List<GUITexture> parse() {
 
-		NodeList nodeList = this.document.getDocumentElement().getChildNodes();
+		NodeList nodeList = document.getDocumentElement().getChildNodes();
 		List<GUITexture> textureList = new ArrayList<GUITexture>();
 		for (int i = 0; i < nodeList.getLength(); i++) {
-			Node node = nodeList.item(i);
-			if (XMLUtils.ifNodeIsElement(node, XMLUtils.GUI_TEXTURES)) {
-				textureList = createTexture(node);
-			}
+			Node node = nodeList.item(i);			
+			if (XMLUtils.ifNodeIsElement(node, XMLUtils.GUI_TEXTURES))
+				textureList = createTexture(node);			
 		}
 		return textureList;
 	}
 
 	private List<GUITexture> createTexture(Node node) {
-		if (EngineDebug.hasDebugPermission()) {
+		if (EngineDebug.hasDebugPermission())
 			EngineDebug.println("Loading GUI textures...", 1);
-		}
+		
 		List<GUITexture> textureList = new ArrayList<GUITexture>();
 		Node guiTextures = node;
 		NodeList guiTextureList = guiTextures.getChildNodes();
@@ -57,26 +56,29 @@ public class GUITextureXMLParser extends XMLParser implements IListParser<GUITex
 				float scaleX = Float.valueOf(XMLUtils.getTagValue(scaleEl, XMLUtils.X));
 				float scaleY = Float.valueOf(XMLUtils.getTagValue(scaleEl, XMLUtils.Y));
 				Vector2f scale = new Vector2f(scaleX, scaleY);
+				
 				count++;
+				
 				if (EngineDebug.hasDebugPermission()) {
-					if (count != Integer.valueOf(id)) {
+					if (count != Integer.valueOf(id))
 						EngineDebug.printError("error id order!");
-					}
 				}
+				
 				GUITexture guiTexture =	new GUITextureBuilder()
 					   .setTextureName(textureName)
 					   .setPosition(position)
 					   .setScale(scale)
 					   .build(name);
+				
 				textureList.add(guiTexture);
-				if (EngineDebug.hasDebugPermission()) {
+				if (EngineDebug.hasDebugPermission())
 					EngineDebug.println(guiTexture.getName(), 2);
-				}
 			}
 		}
-		if (EngineDebug.hasDebugPermission()) {
+		
+		if (EngineDebug.hasDebugPermission())
 			EngineDebug.println("Succed!", 1);
-		}
+		
 		return textureList;
 	}
 

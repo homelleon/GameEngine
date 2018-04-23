@@ -9,6 +9,7 @@ import org.lwjgl.openal.AL11;
 import core.EngineDebug;
 import core.settings.EngineSettings;
 import manager.ParticleManager;
+import object.audio.AudioMaster;
 import object.audio.AudioSource;
 import object.camera.TargetCamera;
 import object.entity.Player;
@@ -30,24 +31,31 @@ import tool.math.vector.Vector3f;
  * @author homelleon
  *
  */
-public class SceneManagerImpl implements SceneManager {
+public class SceneFactoryImpl implements SceneFactory {
 
 	private String playerName = "player1";
 	private String cameraName = "cameraMain";
+	private Scene scene;
 
 	@Override
-	public void init(Scene scene, int mode) {
+	public Scene create(ObjectManager levelMap, int mode) {
 		switch(mode) {
 			case EngineSettings.ENGINE_MODE_GAME:
-				initializeGame(scene);
-				break;
+				return initializeGame(levelMap);
 			case EngineSettings.ENGINE_MODE_EDITOR:
-				initializeEditor(scene);
-				break;
+				return initializeEditor();
 		}
+		return null;
 	}
 	
-	private void initializeEditor(Scene scene) {
+	@Override
+	public Scene getScene() {
+		return scene;
+	}
+	
+	private Scene initializeEditor() {		
+		this.scene = new Scene();
+		
 		List<Model> cubeModels = EngineUtils.loadModels("xuchilbara", "xuchilbara_dif", true);
 		Shader playerShader = ShaderPool.getInstance().get(Shader.ENTITY);
 		Player player1 = new Player(
@@ -75,9 +83,19 @@ public class SceneManagerImpl implements SceneManager {
 				new Color(255, 255, 255),
 				new Vector3f(1.0f, 0, 0)));
 		scene.getLights().add(scene.getSun());
+		
+		return scene;
 	}
 	
-	private void initializeGame(Scene scene) {
+	private Scene initializeGame(ObjectManager levelMap) {
+		if (levelMap == null)
+			throw new NullPointerException("SceneManager: "
+					+ "level map has to be not null for engine with the game mode!");
+		
+		AudioMaster audioMaster = new AudioMaster();
+		
+		this.scene = new Scene(levelMap, audioMaster);
+		
 		/*------------------PLAYER-----------------*/
 //		List<Model> cubeModels = EngineUtils.loadModels("xuchilbara", "xuchilbara_dif", true);
 		List<Model> cubeModels = EngineUtils.loadModels("cube", "Cube1");
@@ -171,6 +189,8 @@ public class SceneManagerImpl implements SceneManager {
 
 		scene.spreadEntitiesOnHeights(scene.getEntities().getAll());
 		//scene.getEntities().get("Cuby4").getModel().getTexture().setReflectiveFactor(1.2f);
+		
+		return scene;
 	}
 
 }

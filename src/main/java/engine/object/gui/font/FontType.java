@@ -77,7 +77,7 @@ public class FontType {
 	 * @return {@link String} value of font name
 	 */
 	public String getName() {
-		return this.name;
+		return name;
 	}
 
 }

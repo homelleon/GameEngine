@@ -27,21 +27,24 @@ public class EntityManager extends AbstractManager<Entity> {
 	public void addPointedList(Collection<Entity> pointedList) {
 		pointedList.forEach(entity -> {
 			entity.setChosen(true);
-			this.pointedEntities.add(entity);
+			pointedEntities.add(entity);
 		});
 	}
 
 	public void setEditorList(List<Entity> editorList) {
-		if (editorList != null) {
-			this.editorEntities = editorList;
-		}
+		if (editorList == null)
+			return;
+		
+		editorEntities = editorList;
+
 	}
 	
 	public void addPointed(Entity entity) {
-		if (entity != null) {
-			entity.setChosen(true);
-			this.pointedEntities.add(entity);
-		}
+		if (entity == null)
+			return;
+		
+		entity.setChosen(true);
+		pointedEntities.add(entity);
 	}
 
 	public void addForEditor(Entity entity) {
@@ -49,11 +52,11 @@ public class EntityManager extends AbstractManager<Entity> {
 	}
 
 	public List<Entity> getPointed() {
-		return this.pointedEntities;
+		return pointedEntities;
 	}
 
 	public List<Entity> getForEditor() {
-		return this.editorEntities;
+		return editorEntities;
 	}
 
 	public Entity getForEditorByIndex(int index) {
@@ -61,15 +64,15 @@ public class EntityManager extends AbstractManager<Entity> {
 	}
 
 	public void clearPointed() {
-		this.pointedEntities
+		pointedEntities
 			.forEach(entity -> entity.setChosen(false));
-		this.pointedEntities.clear();
+		pointedEntities.clear();
 	}
 
 	public void clean() {
 		super.clean();
-		this.pointedEntities.clear();
-		this.editorEntities.clear();
+		pointedEntities.clear();
+		editorEntities.clear();
 	}
 
 

@@ -14,7 +14,9 @@ import scene.Scene;
 public class EnvironmentMapRenderer {
 	
 	public void render(Scene scene, MainRenderer renderer, Entity shinyEntity) {
+		Camera sceneCamera = scene.getCamera();
 		Camera cubeCamera = new CubeMapCamera("shinyCubeMap", shinyEntity.getPosition());
+		scene.setCamera(cubeCamera);
 		int fbo = GL30.glGenFramebuffers();
 		GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, fbo);
 		GL11.glDrawBuffer(GL30.GL_COLOR_ATTACHMENT0);
@@ -27,19 +29,19 @@ public class EnvironmentMapRenderer {
 				depthBuffer);
 
 		GL11.glViewport(0, 0, scene.getEnvironmentMap().size, scene.getEnvironmentMap().size);
-
 		for (int i = 0; i < 6; i++) {
 			GL30.glFramebufferTexture2D(GL30.GL_FRAMEBUFFER, GL30.GL_COLOR_ATTACHMENT0,
 					GL13.GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, scene.getEnvironmentMap().textureId, 0);
 			cubeCamera.switchToFace(i);
-
-			renderer.renderCubemap(scene, shinyEntity, cubeCamera);
+			
+			renderer.renderCubemap(scene, shinyEntity);
 		}
 		GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0);
 		GL11.glViewport(0, 0, Display.getWidth(), Display.getHeight());
 
 		GL30.glDeleteRenderbuffers(depthBuffer);
 		GL30.glDeleteFramebuffers(fbo);
+		scene.setCamera(sceneCamera);
 	}
 
 }

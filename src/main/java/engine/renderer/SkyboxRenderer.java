@@ -6,10 +6,10 @@ import org.lwjgl.opengl.GL13;
 import core.DisplayManager;
 import core.EngineMain;
 import core.settings.EngineSettings;
-import object.camera.Camera;
 import primitive.buffer.Loader;
 import primitive.buffer.VAO;
 import primitive.model.Mesh;
+import scene.Scene;
 import shader.skybox.SkyboxShader;
 import tool.math.Matrix4f;
 import tool.math.vector.Color;
@@ -89,9 +89,9 @@ public class SkyboxRenderer {
 		shader.stop();
 	}
 
-	public void render(Camera camera) {
+	public void render(Scene scene) {
 		shader.start();
-		shader.loadViewMatrix(camera);
+		shader.loadViewMatrix(scene.getCamera());
 		shader.loadFogColor(new Color(EngineSettings.RED, EngineSettings.GREEN, EngineSettings.BLUE));
 		VAO vao = cube.getVAO();
 		vao.bind(0);
@@ -137,7 +137,7 @@ public class SkyboxRenderer {
 	}
 
 	public int getTexture() {
-		return this.dayTexture;
+		return dayTexture;
 	}
 
 }

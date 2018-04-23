@@ -84,7 +84,7 @@ public class VBO {
 	}
 	
 	public int getId() {
-		return this.vboId;
+		return vboId;
 	}
 	
 	public int getSize() {

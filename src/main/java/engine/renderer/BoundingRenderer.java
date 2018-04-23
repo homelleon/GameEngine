@@ -21,7 +21,7 @@ public class BoundingRenderer {
 	private boolean boundingWiredFrame = true;
 
 	public BoundingRenderer(Matrix4f projectionMatrix) {
-		this.shader = new BoundingShader();
+		shader = new BoundingShader();
 		shader.start();
 		shader.loadProjectionMatrix(projectionMatrix);
 		shader.stop();
@@ -68,19 +68,15 @@ public class BoundingRenderer {
 	}
 
 	private void checkWiredFrameOn(boolean value) {
-		if (value) {
-			GraphicUtils.doWiredFrame(true);
-		}
+		if (value) GraphicUtils.doWiredFrame(true);
 	}
 
 	private void checkWiredFrameOff(boolean value) {
-		if (value) {
-			GraphicUtils.doWiredFrame(false);
-		}
+		if (value) GraphicUtils.doWiredFrame(false);
 	}
 
 	public void setWiredFrame(boolean value) {
-		this.boundingWiredFrame = value;
+		boundingWiredFrame = value;
 	}
 
 }

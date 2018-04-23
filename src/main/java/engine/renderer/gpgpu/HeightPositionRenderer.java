@@ -46,7 +46,7 @@ public class HeightPositionRenderer {
 		// map values
 		vbo.bind();
 		ByteBuffer byteBuffer = GL15.glMapBuffer(GL43.GL_SHADER_STORAGE_BUFFER, GL15.GL_READ_ONLY, null);
-		for(int i = 0; i < size * size; i++) {
+		for (int i = 0; i < size * size; i++) {
 			heights[i] = byteBuffer.asFloatBuffer().get(i) * EngineSettings.TERRAIN_SCALE_Y;
 		}
 		GL15.glUnmapBuffer(GL43.GL_SHADER_STORAGE_BUFFER);

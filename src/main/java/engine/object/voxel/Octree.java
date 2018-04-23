@@ -10,12 +10,12 @@ public class Octree {
 	public final static int MAX_DEPTH = 4;
 
 	public Octree() {
-		this.head = false;
-		this.children = new Octree[8];
+		head = false;
+		children = new Octree[8];
 	}
 
 	public boolean getHead() {
-		return this.head;
+		return head;
 	}
 
 	public void setHead(boolean head) {
@@ -23,11 +23,11 @@ public class Octree {
 	}
 
 	public Octree getChild(byte ndx) {
-		return this.children[ndx];
+		return children[ndx];
 	}
 
 	public void setChild(byte ndx, Octree child) {
-		this.children[ndx] = child;
+		children[ndx] = child;
 	}
 
 }

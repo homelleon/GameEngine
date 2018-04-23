@@ -20,12 +20,12 @@ public class TerrainBuilder {
 	}
 	
 	public TerrainBuilder setXPosition(int x) {
-		this.gridX = x;
+		gridX = x;
 		return this;
 	}
 	
 	public TerrainBuilder setZPosition(int z) {
-		this.gridZ = z;
+		gridZ = z;
 		return this;
 	}
 	
@@ -50,12 +50,9 @@ public class TerrainBuilder {
 	}
 	
 	public Terrain build(String name) {
-			TerrainGenerator generator;
-			if(heightMap != null) {
-				generator = new TerrainGenerator(size, new Vector2f(gridX, gridZ), heightMap);
-			} else {
-				generator = new TerrainGenerator(size, new Vector2f(gridX, gridZ), amplitude, octaves, roughness);
-			}
+			TerrainGenerator generator = (heightMap != null) ?
+				new TerrainGenerator(size, new Vector2f(gridX, gridZ), heightMap) :
+				new TerrainGenerator(size, new Vector2f(gridX, gridZ), amplitude, octaves, roughness);
 			return generator.generate(name);
 	}
 	

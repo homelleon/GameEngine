@@ -14,11 +14,11 @@ public class ModelPair {
 	}
 	
 	public Mesh getMesh() {
-		return this.mesh;
+		return mesh;
 	}
 	
 	public Material getMaterial() {
-		return this.material;
+		return material;
 	}	
 	
 

@@ -98,7 +98,7 @@ public class EngineDebug {
 	}
 	
 	public static void print(String text, int level) {
-		for(int i = 0; i < level; i++) {
+		for (int i = 0; i < level; i++) {
 			print(LEVEL_SEPARATOR);
 		}
 		print(text);
@@ -192,7 +192,7 @@ public class EngineDebug {
 	 * @param level int value of seprator level
 	 */
 	public static void println(String text, int level) {
-		for(int i = 0; i < level; i++) {
+		for (int i = 0; i < level; i++) {
 			print(LEVEL_SEPARATOR);
 		}
 		println(text);
@@ -205,7 +205,7 @@ public class EngineDebug {
 	 * @param level int value of seprator level
 	 */
 	public static void println(int value, int level) {
-		for(int i = 0; i < level; i++) {
+		for (int i = 0; i < level; i++) {
 			print(LEVEL_SEPARATOR);
 		}
 		println(value);
@@ -218,7 +218,7 @@ public class EngineDebug {
 	 * @param level int value of seprator level
 	 */
 	public static void println(float value, int level) {
-		for(int i = 0; i < level; i++) {
+		for (int i = 0; i < level; i++) {
 			print(LEVEL_SEPARATOR);
 		}
 		println(value);

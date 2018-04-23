@@ -287,7 +287,7 @@ public class MousePicker {
 		Entity pickedEntity = null;
 		List<Entity> pointedEntities = new ArrayList<Entity>();
 		pointedEntities.addAll(
-			scene.getFrustumEntities().updateWithFrustum(scene.getFrustum(), camera).stream()
+			scene.getFrustumEntities().updateWithFrustum(scene.getCamera().getFrustum(), camera).stream()
 				.filter(entity -> !(entity.getClass() == Player.class))
 				.filter(entity -> intersects(entity.getPosition(), entity.getSphereRadius()))
 //			.filter(entity -> {

@@ -79,15 +79,15 @@ public class BoundingBox {
 	}
 
 	public Vector3f getMin() {
-		return this.min;
+		return min;
 	}
 
 	public Vector3f getMax() {
-		return this.max;
+		return max;
 	}
 
 	public Mesh getModel() {
-		return this.model;
+		return model;
 	}
 
 }

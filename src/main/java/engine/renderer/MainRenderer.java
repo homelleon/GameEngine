@@ -12,7 +12,6 @@ import org.lwjgl.util.vector.Vector4f;
 import core.EngineDebug;
 import core.EngineMain;
 import core.settings.EngineSettings;
-import object.camera.Camera;
 import object.entity.Entity;
 import object.terrain.Terrain;
 import primitive.model.Model;
@@ -55,7 +54,8 @@ public class MainRenderer {
 
 	public MainRenderer(Scene scene) {
 		GraphicUtils.cullBackFaces(true);
-		projectionMatrix = new Matrix4f().makeProjectionMatrix(EngineSettings.NEAR_PLANE, EngineSettings.FAR_PLANE, EngineSettings.FOV);
+		projectionMatrix = new Matrix4f().makeProjectionMatrix(
+				EngineSettings.NEAR_PLANE, EngineSettings.FAR_PLANE, EngineSettings.FOV);
 		
 		entityRendererManager = new EntityRendererManager()
 			.addPair(new TexturedEntityRenderer(projectionMatrix), texturedEntities)
@@ -81,9 +81,8 @@ public class MainRenderer {
 		environmentMap = scene.getEnvironmentMap();
 		processEntities(scene, scene.getCamera().isMoved());
 		
-		if (environmentDynamic) {
+		if (environmentDynamic)
 			environmentRendered = false;
-		}
 		
 		if (!environmentRendered) {
 			enviroRenderer.render(scene, this, scene.getEntities().get("Cuby4"));
@@ -93,15 +92,13 @@ public class MainRenderer {
 		renderSceneObjects(scene, clipPlane);
 	}
 
-	public void renderCubemap(Scene scene, Entity shinyEntity, Camera camera) {
+	public void renderCubemap(Scene scene, Entity shinyEntity) {
 		scene.getEntities().delete(shinyEntity.getName());
 		processEntities(scene, true);
-		
-		entityRendererManager.render(null, scene.getLights().getAll(), camera, null, null);
-		terrainRenderer.render(terrains, scene.getLights().getAll(), camera);
-		skyboxRenderer.render(camera);
-		
-		cleanSceneObjects();
+		entityRendererManager.render(scene, null, null, null);
+		terrainRenderer.render(terrains, scene);
+		skyboxRenderer.render(scene);
+		forceDrawingAndCleanUp();
 	}
 
 	/**
@@ -112,8 +109,7 @@ public class MainRenderer {
 	 * @param isLowDistance 
 	 */
 	private void renderSceneObjects(Scene scene, Vector4f clipPlane) {
-		prepare();
-		
+		prepare();		
 		if (EngineDebug.getBoundingVisibility() != EngineDebug.BOUNDING_NONE)
 			boundingRenderer.render(texturedEntities, normalEntities, scene.getCamera());
 		
@@ -122,32 +118,27 @@ public class MainRenderer {
 			GraphicUtils.doWiredFrame(true);
 		
 		Matrix4f shadowMapMatrix = shadowMapRenderer.getToShadowMapMatrix();
-		entityRendererManager.render(clipPlane, scene.getLights().getAll(), scene.getCamera(), 
-				shadowMapMatrix, environmentMap);
+		entityRendererManager.render(scene, clipPlane, shadowMapMatrix, environmentMap);
 		
 		GraphicUtils.doWiredFrame(false);
 		
-		voxelRenderer.render(scene.getChunks(), clipPlane, scene.getLights().getAll(), scene.getCamera(), 
-				shadowMapMatrix, scene.getFrustum());
-		terrainRenderer.render(terrains, clipPlane, scene.getLights().getAll(), scene.getCamera(), 
-				shadowMapMatrix);
-		skyboxRenderer.render(scene.getCamera());	
-		
-		cleanSceneObjects();
+		voxelRenderer.render(scene, clipPlane, shadowMapMatrix);
+		terrainRenderer.render(terrains, scene, clipPlane, shadowMapMatrix);
+		skyboxRenderer.render(scene);
+		forceDrawingAndCleanUp();
 	}
 	
 	private void renderEditorSceneObjects(Scene scene) {
 		prepare();
 		Matrix4f shadowMapMatrix = shadowMapRenderer.getToShadowMapMatrix();
-		entityRendererManager.render(EngineSettings.NO_CLIP, scene.getLights().getAll(), scene.getCamera(), 
-				shadowMapMatrix, null);
-		cleanSceneObjects();
+		entityRendererManager.render(scene,	EngineSettings.NO_CLIP, shadowMapMatrix, null);
+		forceDrawingAndCleanUp();
 	}
 
 	public void renderShadows(Scene scene) {
-		processShadowEntities(scene, scene.getCamera().isMoved());
-		shadowMapRenderer.render(texturedEntities, normalEntities, terrains, scene.getSun(), scene.getCamera());
-		cleanSceneObjects();
+		processShadowEntities(scene);
+		shadowMapRenderer.render(texturedEntities, normalEntities, terrains, scene);
+		forceDrawingAndCleanUp();
 	}
 
 	private void prepare() {
@@ -162,14 +153,15 @@ public class MainRenderer {
 		frustumEntities.stream().forEach(this::processEntity);
 	}
 	
-	private void processShadowEntities(Scene scene, boolean doRebuild) {
+	private void processShadowEntities(Scene scene) {
 		List<Entity> frustumEntities = 
 				scene.getFrustumEntities().prepareShadowEntities(
-						scene, shadowMapRenderer.getToShadowMapMatrix(), doRebuild);
+						scene, shadowMapRenderer.getToShadowMapMatrix(), scene.getCamera().isMoved());
 		frustumEntities.stream().forEach(this::processEntity);
 	}
 	
-	private void cleanSceneObjects() {
+	private void forceDrawingAndCleanUp() {
+		GraphicUtils.forceDrawingAndWait();
 		texturedEntities.clear();
 		normalEntities.clear();
 		terrains.clear();
@@ -199,7 +191,7 @@ public class MainRenderer {
 	}
 	
 	private synchronized void processEntity(int type, Entity entity) {
-		switch(type) {
+		switch (type) {
 		 	case Shader.ENTITY:
 		 		processor.processEntity(entity, texturedEntities);
 		 		break;

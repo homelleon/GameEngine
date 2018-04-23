@@ -85,11 +85,10 @@ public class ParticleRenderer {
 	}
 
 	private void bindTexture(ParticleMaterial material) {
-		if (material.isAdditive()) {
+		if (material.isAdditive())
 			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
-		} else {
+		else
 			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-		}
 		material.getTexture().bind(0);
 		shader.loadNumberOfRows(material.getTexture().getNumberOfRows());
 	}

@@ -1,5 +1,6 @@
 package object.camera;
 
+import tool.math.Frustum;
 import tool.math.Matrix4f;
 import tool.math.vector.Vector3f;
 
@@ -18,6 +19,8 @@ public abstract class Camera {
 	protected float currentStrafeSpeed = 0;
 	protected float currentTurnSpeed = 0;
 	protected float currentPitchSpeed = 0;
+	
+	protected Frustum frustum;
 
 	protected String name;
 
@@ -25,6 +28,7 @@ public abstract class Camera {
 	protected boolean isMoved = true;
 
 	protected Camera(String name, Vector3f position) {
+		this.frustum = new Frustum();
 		setPosition(position);
 		this.name = name;
 	}
@@ -111,5 +115,8 @@ public abstract class Camera {
 		this.isMoved = isMoved;
 	}
 
+	public Frustum getFrustum() {
+		return frustum;
+	}
 
 }

@@ -48,15 +48,15 @@ public class ParticleSystem extends Drawable<Vector3f> {
 	}
 
 	public void setSpeedError(float error) {
-		this.speedError = error * averageSpeed;
+		speedError = error * averageSpeed;
 	}
 
 	public void setLifeError(float error) {
-		this.lifeError = error * averageLifeLength;
+		lifeError = error * averageLifeLength;
 	}
 
 	public void setScaleError(float error) {
-		this.scaleError = error * averageScale;
+		scaleError = error * averageScale;
 	}
 
 	public void generateParticles() {
@@ -67,9 +67,8 @@ public class ParticleSystem extends Drawable<Vector3f> {
 		for (int i = 0; i < count; i++) {
 			emitParticle(position);
 		}
-		if (Math.random() < partialParticle) {
+		if (Math.random() < partialParticle)
 			emitParticle(position);
-		}
 	}
 
 	private void emitParticle(Vector3f center) {

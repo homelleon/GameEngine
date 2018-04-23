@@ -25,11 +25,11 @@ public class GUITexture extends Drawable<Vector2f> {
 	}
 
 	public Texture2D getTexture() {
-		return this.texture;
+		return texture;
 	}
 	
 	public Vector2f getScale() {
-		return this.scale;
+		return scale;
 	}
 	
 	public void setMixColor(Color color) {
@@ -37,19 +37,19 @@ public class GUITexture extends Drawable<Vector2f> {
 	}
 	
 	public Color getMixColor() {
-		return this.mixColor;
+		return mixColor;
 	}
 
 	public boolean isMixColored() {
-		return this.isMixColored;
+		return isMixColored;
 	}
 
 	public void setMixColored(boolean isMixColored) {
 		this.isMixColored = isMixColored;
 	}
 	
-	public void increaseScale(Vector2f scale) {
-		this.scale = new Vector2f(this.scale.x + scale.x, this.scale.y + scale.y);
+	public void increaseScale(Vector2f value) {
+		scale = new Vector2f(scale.x + value.x, scale.y + value.y);
 	}
 	
 	/**
@@ -68,19 +68,19 @@ public class GUITexture extends Drawable<Vector2f> {
 	 * 		   false if text is invisible
 	 */
 	public float getTransparency() {
-		return this.transparency;
+		return transparency;
 	}
 
 	public boolean getIsVisible() {
-		return this.isVisible;
+		return isVisible;
 	}
 
 	public void setIsVisible(boolean value) {
-		this.isVisible = value;
+		isVisible = value;
 	}
 	
 	public GUITexture clone(String name) {
-		return new GUITexture(name, this.texture, this.position, this.scale);
+		return new GUITexture(name, texture, position, scale);
 	}
 
 }

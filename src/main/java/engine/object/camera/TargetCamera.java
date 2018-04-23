@@ -42,24 +42,22 @@ public class TargetCamera extends Camera {
 		super(name, new Vector3f(0,0,0));
 		this.player = player;
 		this.name = name;
-		if(Loop.getInstance().getEditMode()) {
+		if(Loop.getInstance().getEditMode())
 			this.angleAroundPlayer = 180;
-		}
 	}
 
 	@Override
 	public void move() {
 		super.move();
-		if(player.isMoved()) {
-			this.isMoved = true;
-		}
+		if (player.isMoved()) 
+			isMoved = true;
 		calculateZoom();
 		calculatePitchAndAngle();
 		calculateOffset();
 		float horizontalDistance = calculateHorizontalDistance();
 		float verticalDistance = calculateVerticalDistance();
 		calculateCameraPosition(horizontalDistance, verticalDistance);
-		this.yaw = 180 - (player.getRotation().getY() + angleAroundPlayer);
+		yaw = 180 - (player.getRotation().getY() + angleAroundPlayer);
 	}
 
 	// вычислить позицию камеры относительно игрока
@@ -81,29 +79,28 @@ public class TargetCamera extends Camera {
 	}
 	
 	private void calculateOffset() {
-		if(Loop.getInstance().getEditMode()) {
-			if(MouseGame.isPressed(MouseGame.RIGHT_CLICK)) {
-				this.moveOffsetX = 0;
-				this.moveOffsetY = 0;
-				this.pitch = 0;
-				this.angleAroundPlayer = 180;
-			}
-			if(KeyboardGame.isKeyDown(Keyboard.KEY_UP) && this.moveOffsetY < maxYOffset) {
-				this.moveOffsetY += this.offsetSpeed;
-				this.isMoved = true;
-			}
-			if(KeyboardGame.isKeyDown(Keyboard.KEY_DOWN) && this.moveOffsetY > minYOffset) {
-				this.moveOffsetY -= this.offsetSpeed;
-				this.isMoved = true;
-			}
-			if(KeyboardGame.isKeyDown(Keyboard.KEY_LEFT) && this.moveOffsetX > minXOffset) {
-				this.moveOffsetX -= this.offsetSpeed;
-				this.isMoved = true;
-			}
-			if(KeyboardGame.isKeyDown(Keyboard.KEY_RIGHT) && this.moveOffsetX < maxXOffset) {
-				this.moveOffsetX += this.offsetSpeed;
-				this.isMoved = true;
-			}
+		if (!Loop.getInstance().getEditMode()) return;
+		if (MouseGame.isPressed(MouseGame.RIGHT_CLICK)) {
+			moveOffsetX = 0;
+			moveOffsetY = 0;
+			pitch = 0;
+			angleAroundPlayer = 180;
+		}
+		if (KeyboardGame.isKeyDown(Keyboard.KEY_UP) && moveOffsetY < maxYOffset) {
+			moveOffsetY += this.offsetSpeed;
+			isMoved = true;
+		}
+		if (KeyboardGame.isKeyDown(Keyboard.KEY_DOWN) && moveOffsetY > minYOffset) {
+			moveOffsetY -= this.offsetSpeed;
+			isMoved = true;
+		}
+		if (KeyboardGame.isKeyDown(Keyboard.KEY_LEFT) && moveOffsetX > minXOffset) {
+			moveOffsetX -= this.offsetSpeed;
+			isMoved = true;
+		}
+		if (KeyboardGame.isKeyDown(Keyboard.KEY_RIGHT) && moveOffsetX < maxXOffset) {
+			moveOffsetX += offsetSpeed;
+			isMoved = true;
 		}
 	}
 
@@ -113,7 +110,7 @@ public class TargetCamera extends Camera {
 		if (((distanceFromPlayer < maxDistanceFromPlayer) && (zoomLevel < 0))
 				|| ((distanceFromPlayer > minDistanceFromPlayer) && (zoomLevel > 0))) {
 			distanceFromPlayer -= zoomLevel;
-			this.isMoved = true;
+			isMoved = true;
 		}
 	}
 
@@ -124,29 +121,23 @@ public class TargetCamera extends Camera {
 				(Loop.getInstance().getEditMode() && MouseGame.isPressed(MouseGame.MIDDLE_CLICK))) {
 			pitchChange = Mouse.getDY() * EngineSettings.MOUSE_Y_SPEED;
 
-			if ((pitch < maxPitch) || (pitch > minPitch)) {
+			if ((pitch < maxPitch) || (pitch > minPitch))
 				pitch -= pitchChange;
-			}
 		}
 
 		if (MouseGame.isPressed(MouseGame.MIDDLE_CLICK)) {
 			angleChange = Mouse.getDX() * EngineSettings.MOUSE_X_SPEED;
 			angleAroundPlayer += -angleChange;
-		} else if(!Loop.getInstance().getEditMode()) {
+		} else if (!Loop.getInstance().getEditMode()) {
 			angleAroundPlayer = 0;
 		}
-		if((pitchChange != 0) || (angleChange !=0)) {
-			this.isMoved = true;
-		}
+		if ((pitchChange != 0) || (angleChange !=0)) 
+			isMoved = true;
 	}
 
 	@SuppressWarnings("unused")
 	private void underWaterCalculate() {
-		if (this.position.y <= 0) {
-			isUnderWater = true;
-		} else {
-			isUnderWater = false;
-		}
+		isUnderWater = (position.y <= 0);
 	}
 
 	@Override

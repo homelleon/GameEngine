@@ -8,26 +8,26 @@ public class FaceCullingData {
 	public FaceCullingData(int index) {
 		this.index = index;
 		for (int i = 0; i < 6; i++) {
-			this.face[i] = false;
+			face[i] = false;
 		}
 	}
 
 	public FaceCullingData(boolean value) {
 		for (int i = 0; i < 6; i++) {
-			this.face[i] = value;
+			face[i] = value;
 		}
 	}
 
 	public boolean getFace(int index) {
-		return this.face[index];
+		return face[index];
 	}
 
 	public void setFaceRendering(int index, boolean value) {
-		this.face[index] = value;
+		face[index] = value;
 	}
 	
 	public int getIndex() {
-		return this.index;
+		return index;
 	}
 
 }

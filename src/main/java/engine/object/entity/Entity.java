@@ -65,20 +65,17 @@ public class Entity extends Drawable<Vector3f> {
 	 }
 	 
 	 public EntityNode getParentNode() {
-		 return this.parent;
+		 return parent;
 	 }
 	 
 	 public boolean removeParentNode() {
-		 if (hasParent()) {
-			 this.parent = null;
-			 return true;
-		 } else {
-			 return false;
-		 }
+		 if (!hasParent()) return false;
+		 this.parent = null;
+		 return true;
 	 }
 	 
 	 public boolean hasParent() {
-		 return this.parent == null ? false : true;
+		 return (parent != null);
 	 }
 
 	public synchronized void setChosen(boolean isChosen) {
@@ -86,7 +83,7 @@ public class Entity extends Drawable<Vector3f> {
 	}
 
 	public boolean isChosen() {
-		return this.isChosen;
+		return isChosen;
 	}
 
 	public boolean isVisible() {
@@ -106,50 +103,51 @@ public class Entity extends Drawable<Vector3f> {
 	}
 
 	public void increasePosition(float dx, float dy, float dz) {
-		this.position.x += dx;
-		this.position.y += dy;
-		this.position.z += dz;
+		position.x += dx;
+		position.y += dy;
+		position.z += dz;
 	}
 
 	public void move(float forwardSpeed, float strafeSpeed) {
-		this.isMoved = false;
-		if(forwardSpeed > 0 || strafeSpeed > 0) {
+		isMoved = false;
+		if (forwardSpeed > 0 || strafeSpeed > 0)
 			this.isMoved = true;
-		}
-		float dx = (float) (forwardSpeed * Math.sin(Math.toRadians(((Vector3f)this.rotation).getY()))
-				+ (strafeSpeed * Math.sin(Math.toRadians(((Vector3f) this.rotation).getY() + 90))));
-		float dz = (float) (forwardSpeed * Math.cos(Math.toRadians(((Vector3f) this.rotation).getY()))
-				+ (strafeSpeed * Math.cos(Math.toRadians(((Vector3f) this.rotation).getY() + 90))));
+		
+		float dx = (float) (forwardSpeed * Math.sin(Math.toRadians(rotation.getY()))
+				+ (strafeSpeed * Math.sin(Math.toRadians(rotation.getY() + 90))));
+		float dz = (float) (forwardSpeed * Math.cos(Math.toRadians(rotation.getY()))
+				+ (strafeSpeed * Math.cos(Math.toRadians(rotation.getY() + 90))));
 		increasePosition(dx, 0, dz);
 	}
 
 	public void increaseRotation(float dx, float dy, float dz) {
-		this.rotation.x += dx;
-		this.rotation.y += dy;
-		this.rotation.z += dz;
+		rotation.x += dx;
+		rotation.y += dy;
+		rotation.z += dz;
 	}
 	
 	public String getBaseName() {
-		return this.baseName;
+		return baseName;
 	}
 	
 	public void setBaseName(String name) {
-		this.baseName = name;
+		baseName = name;
 	}
 	
 	@Override
 	public Entity setScale(Vector3f scale) {
-		this.radius =  models.get(0).getMesh().getBoundSphere().getRadius() * scale.x;
+		radius =  models.get(0).getMesh().getBoundSphere().getRadius() * scale.x;
 		return (Entity) super.setScale(scale);
 	}
 
 	public float getSphereRadius() {
-		return this.radius;
+		return radius;
 	}
 	
 	public Entity clone(String name) {
-		Entity entity = new Entity(name, shader, models, this.textureIndex, new Vector3f((Vector3f) this.position), new Vector3f(this.rotation), new Vector3f(this.scale));
-		entity.setBaseName(this.getName());
+		Entity entity = new Entity(name, shader, models, this.textureIndex, 
+				new Vector3f(position), new Vector3f(rotation), new Vector3f(scale));
+		entity.setBaseName(getName());
 		return entity;
 	}
 
@@ -162,11 +160,11 @@ public class Entity extends Drawable<Vector3f> {
 	}
 	
 	public void delete() {
-		if (this.parent != null) {
-			this.parent.removeEntity(this.getName());
-			this.parent = null;
+		if (parent != null) {
+			parent.removeEntity(getName());
+			parent = null;
 		}
-		this.models.clear();
+		models.clear();
 	}
 
 }

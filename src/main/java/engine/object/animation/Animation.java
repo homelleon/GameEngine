@@ -11,11 +11,11 @@ public class Animation {
 	}
 
 	public float getLength() {
-		return this.lenght;
+		return lenght;
 	}
 
 	public KeyFrame[] getKeyFrames() {
-		return this.keyFrames;
+		return keyFrames;
 	}
 
 }

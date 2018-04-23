@@ -20,25 +20,24 @@ public class RawManager {
 	private Map<String, Model[]> modelGroups = new HashMap<String, Model[]>();
 
 	public void addMeshGroup(Mesh[] meshes) {
-		this.meshGroups.put(meshes[0].getName(), meshes);		
+		meshGroups.put(meshes[0].getName(), meshes);		
 	}
 
 	public List<Mesh[]> getMeshGroups() {
 		List<Mesh[]> list = new ArrayList<Mesh[]>();
-		list.addAll(this.meshGroups.values());
+		list.addAll(meshGroups.values());
 		return list;
 	}
 	
 	public Mesh[] getMeshGroup(String name) {
-		if(this.meshGroups.containsKey(name)) {
-		return this.meshGroups.get(name);
-		} else {
+		if (!meshGroups.containsKey(name)) {
 			throw new NullPointerException("There is no mesh with name " + name + " in mesh array!");
 		}
+		return meshGroups.get(name);
 	}
 
 	public void addMaterial(Material texture) {
-		this.materials.put(texture.getName(), texture);		
+		materials.put(texture.getName(), texture);		
 	}
 
 	public List<Material> getMaterials() {

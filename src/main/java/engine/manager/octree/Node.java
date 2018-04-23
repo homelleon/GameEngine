@@ -22,8 +22,8 @@ public class Node<T extends Vector> extends Subject<T> {
 	 */
 	public Node(String name) {
 		super(name);
-		this.isLeaf = true;
-		this.setChildren(new ArrayList<Node<T>>());
+		isLeaf = true;
+		setChildren(new ArrayList<Node<T>>());
 	}
 	
 	/**
@@ -32,11 +32,10 @@ public class Node<T extends Vector> extends Subject<T> {
 	 * @param child
 	 */
 	public void addChild(Node<T> child) {
-		if(this.isLeaf) {
-			this.isLeaf = false;
-		}
+		if (isLeaf)
+			isLeaf = false;
 		child.setParent(this);
-		this.children.add(child);
+		children.add(child);
 	}
 
 	/**
@@ -79,19 +78,15 @@ public class Node<T extends Vector> extends Subject<T> {
 	 * Removes all children from current node.
 	 */
 	public void removeChildren() {
-		if(!this.isLeaf) {
-			this.isLeaf = true;
-		}
-		if(this.children.size() != 0) {
-			this.children.clear();
-		}
+		if (!isLeaf) isLeaf = true;		
+		if (children.size() != 0) children.clear();
 	}
 	
 	/**
 	 * Udates current node and its children.
 	 */
 	public void update() {
-		this.children.forEach(Node::update);
+		children.forEach(Node::update);
 	}
 
 	public boolean isLeaf() {

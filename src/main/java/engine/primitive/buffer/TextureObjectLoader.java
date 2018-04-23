@@ -93,13 +93,7 @@ public class TextureObjectLoader {
 	
 	public Texture2D loadGUITexture(String path, String fileName, String format) {
 		Texture2D texture = null;
-		float bias;
-		if (path == EngineSettings.FONT_FILE_PATH) {
-			bias = 0;
-		} else {
-			bias = -2.4f;
-		}
-
+		float bias = (path == EngineSettings.FONT_FILE_PATH) ? 0 : -2.4f;		
 		String extension = EngineSettings.EXTENSION_PNG;
 
 		switch (format) {
@@ -142,14 +136,10 @@ public class TextureObjectLoader {
 	 * @return {@link String} value of texture name
 	 */
 	public String getTextureByID(int id) {
-		String name = null;
-		for (String key : textures2D.keySet()) {
-			if (textures2D.get(key).equals(id)) {
-				name = key;
-				break;
-			}
+		for (String name : textures2D.keySet()) {
+			if (textures2D.get(name).equals(id)) return name;
 		}
-		return name;
+		return null;
 	}
 	
 	/**
@@ -188,7 +178,7 @@ public class TextureObjectLoader {
 	 * @return
 	 */
 	public int loadCubeVoxelMap(String path, String[] textureFiles) {
-		return this.loadCubeMap(path, textureFiles);
+		return loadCubeMap(path, textureFiles);
 	}
 
 	private TextureData decodeTextureFile(String fileName) {
@@ -224,10 +214,9 @@ public class TextureObjectLoader {
 	
 	//TODO: need to be deleted and refactored (temper function)
 	public static Texture loadOldTexture(String path) {
-		Texture texture = null;
 		try {
 			InputStream in = Class.class.getResourceAsStream(path);
-			texture = TextureLoader.getTexture("PNG", in);
+			Texture texture = TextureLoader.getTexture("PNG", in);
 			in.close();
 			return texture;
 		} catch (Exception e) {
@@ -235,8 +224,7 @@ public class TextureObjectLoader {
 			System.err.println("Tried to load texture " + path + ", didn't work");
 			System.exit(-1);
 		}
-		return texture;
-		
+		return null;		
 	}
 
 

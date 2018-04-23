@@ -81,7 +81,7 @@ public class AudioSource extends Subject<Vector3f> {
 			master.loadSound(file);
 		}
 		this.fileName = file;
-		this.setPosition(position);
+		setPosition(position);
 	}
 
 	public void play() {

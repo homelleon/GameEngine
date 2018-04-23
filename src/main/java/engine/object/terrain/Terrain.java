@@ -5,8 +5,6 @@ import manager.octree.Node;
 import object.camera.Camera;
 import object.camera.FreeCamera;
 import primitive.texture.material.TerrainMaterial;
-import shader.Shader;
-import shader.ShaderPool;
 import tool.math.Maths;
 import tool.math.vector.Vector2f;
 import tool.math.vector.Vector3f;
@@ -31,8 +29,8 @@ public class Terrain extends Node<Vector3f> {
 
 	public Terrain(String name, int gridX, int gridZ, TerrainMaterial material, float[][] heights) {
 		super(name);
-		this.x = gridX * TERRAIN_SIZE;
-		this.z = gridZ * TERRAIN_SIZE;
+		x = gridX * TERRAIN_SIZE;
+		z = gridZ * TERRAIN_SIZE;
 		this.material = material;
 		this.heights = heights;
 		EngineSettings.lod_morph_areas = new int[EngineSettings.LOD_RANGES.length];
@@ -67,11 +65,11 @@ public class Terrain extends Node<Vector3f> {
 	}
 
 	public void setXPosition(int xPosition) {
-		this.x = xPosition * TERRAIN_SIZE;		
+		x = xPosition * TERRAIN_SIZE;		
 	}
 
 	public void setZPosition(int zPosition) {
-		this.z = zPosition * TERRAIN_SIZE;		
+		z = zPosition * TERRAIN_SIZE;		
 	}
 
 	public boolean isVisible() {
@@ -88,9 +86,10 @@ public class Terrain extends Node<Vector3f> {
 		float gridSquareSize = EngineSettings.TERRAIN_SCALE_XZ / ((float) heights.length - 1);
 		int gridX = (int) Math.floor(terrainX / gridSquareSize);
 		int gridZ = (int) Math.floor(terrainZ / gridSquareSize);
-		if (gridX >= heights.length - 1 || gridZ >= heights.length - 1 || gridX < 0 || gridZ < 0) {
+		
+		if (gridX >= heights.length - 1 || gridZ >= heights.length - 1 || gridX < 0 || gridZ < 0)
 			return EngineSettings.TERRAIN_SCALE_Y / 2;
-		}
+		
 		float xCoord = (terrainX % gridSquareSize) / gridSquareSize;
 		float zCoord = (terrainZ % gridSquareSize) / gridSquareSize;
 		float answer;
@@ -111,9 +110,9 @@ public class Terrain extends Node<Vector3f> {
 	}
 
 	public Terrain clone(String name) {
-		int gridX = (int) (this.x / TERRAIN_SIZE);
-		int gridZ = (int) (this.z / TERRAIN_SIZE);
-		return new Terrain(name, gridX, gridZ, this.material.clone(name + "Material"), this.heights.clone());
+		int gridX = (int) (x / TERRAIN_SIZE);
+		int gridZ = (int) (z / TERRAIN_SIZE);
+		return new Terrain(name, gridX, gridZ, material.clone(name + "Material"), heights.clone());
 	}
 
 }

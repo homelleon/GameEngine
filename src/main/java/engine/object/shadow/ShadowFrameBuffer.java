@@ -35,8 +35,8 @@ public class ShadowFrameBuffer {
 	 *            - the height of the shadow map in pixels.
 	 */
 	public ShadowFrameBuffer(int width, int height) {
-		this.WIDTH = width;
-		this.HEIGHT = height;
+		WIDTH = width;
+		HEIGHT = height;
 		initialiseFrameBuffer();
 	}
 

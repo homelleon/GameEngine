@@ -28,43 +28,41 @@ public class GUI extends GUIObject {
 
 	public void show() {
 		super.show();
-		this.doSwitch(true);
+		doSwitch(true);
 	}
 
 	public void hide() {
 		super.hide();
-		this.doSwitch(false);
+		doSwitch(false);
 	}
 
 	private void doSwitch(boolean value) {
-		if (!guiTextures.isEmpty()) {
+		if (!guiTextures.isEmpty())
 			guiTextures.forEach(gui -> gui.setIsVisible(value));
-		}
-		if (!guiTexts.isEmpty()) {
+		if (!guiTexts.isEmpty())
 			guiTexts.forEach(tui -> tui.setIsVisible(value));
-		}
 	}
 
 	public List<GUIText> getTexts() {
-		return this.guiTexts;
+		return guiTexts;
 	}
 
 	public List<GUITexture> getTextures() {
-		return this.guiTextures;
+		return guiTextures;
 	}
 	
 	public void setTransparency(float value) {
-		this.guiTextures.forEach(texture -> texture.setTransparency(value));
+		guiTextures.forEach(texture -> texture.setTransparency(value));
 		
 	}
 
 	public void move(Vector2f position) {
-		for (GUITexture texture : this.guiTextures) {
+		for (GUITexture texture : guiTextures) {
 			Vector2f newPosition = Vector2f.add(texture.getPosition(), position);
 			texture.setPosition(newPosition);
 		}
 
-		for (GUIText text : this.guiTexts) {
+		for (GUIText text : guiTexts) {
 			Vector2f newPosition = Vector2f.add(text.getPosition(), position);
 			text.setPosition(newPosition);
 		}

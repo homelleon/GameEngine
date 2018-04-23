@@ -17,7 +17,7 @@ public class TextXMLParser extends XMLParser implements IObjectParser<String> {
 	@Override
 	public String parse() {
 
-		NodeList nodeList = this.document.getDocumentElement().getChildNodes();
+		NodeList nodeList = document.getDocumentElement().getChildNodes();
 		String text = "";
 		for (int i = 0; i < nodeList.getLength(); i++) {
 			Node node = nodeList.item(i);

@@ -50,5 +50,13 @@ public class GraphicUtils {
 	public static void disableBlending() {
 		GL11.glDisable(GL11.GL_BLEND);
 	}
+	
+	public static void forceDrawing() {
+		GL11.glFlush();
+	}
+	
+	public static void forceDrawingAndWait() {
+		GL11.glFinish();
+	}
 
 }

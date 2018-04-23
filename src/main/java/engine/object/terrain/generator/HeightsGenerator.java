@@ -36,7 +36,7 @@ public class HeightsGenerator {
 	}
 	
 	public int getSeed() {
-		return this.seed;
+		return seed;
 	}
 
 	private float getInterpolatedNoise(float x, float z) {

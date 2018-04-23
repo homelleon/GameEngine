@@ -13,11 +13,11 @@ public class KeyFrame {
 	}
 
 	protected float getTimeStamp() {
-		return this.timeStamp;
+		return timeStamp;
 	}
 
 	protected Map<String, JointTransform> getJointKeyFrames() {
-		return this.pose;
+		return pose;
 	}
 
 }

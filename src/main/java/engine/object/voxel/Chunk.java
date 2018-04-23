@@ -49,15 +49,15 @@ public class Chunk {
 	}
 	
 	public Block[] getBlocks() {
-		return this.blocks;
+		return blocks;
 	}
 
 	public boolean getIsAcitve() {
-		return this.isActive;
+		return isActive;
 	}
 
 	public void setIsActive(boolean value) {
-		this.isActive = value;
+		isActive = value;
 	}
 
 }

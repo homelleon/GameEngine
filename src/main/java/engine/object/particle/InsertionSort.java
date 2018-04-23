@@ -23,9 +23,8 @@ public class InsertionSort {
 	public static void sortHighToLow(List<Particle> list) {
 		for (int i = 1; i < list.size(); i++) {
 			Particle item = list.get(i);
-			if (item.getDistance() > list.get(i - 1).getDistance()) {
-				sortUpHighToLow(list, i);
-			}
+			if (item.getDistance() <= list.get(i - 1).getDistance()) continue;
+			sortUpHighToLow(list, i);
 		}
 	}
 

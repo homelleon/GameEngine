@@ -1,5 +1,3 @@
 package object.bounding;
 
-public interface Bounding {
-
-}
+public interface Bounding {}

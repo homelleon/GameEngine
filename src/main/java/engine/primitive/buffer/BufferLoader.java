@@ -48,7 +48,7 @@ public class BufferLoader {
 	 */
 	public Mesh loadToVao(float[] positions, float[] normals, int[] indices) {
 		VAO vao = VAO.create();
-		this.vaos.add(vao);
+		vaos.add(vao);
 		vao.bind();
 		vao.createIndexBuffer(indices);
 		vao.createAttribute(0, 3, positions);
@@ -70,7 +70,7 @@ public class BufferLoader {
 	 */
 	public VAO loadToVAO(float[] positions, float[] textureCoords) {
 		VAO vao = VAO.create();
-		this.vaos.add(vao);
+		vaos.add(vao);
 		vao.bind();
 		vao.createAttribute(0, 2, positions);
 		vao.createAttribute(1, 2, textureCoords);
@@ -80,7 +80,7 @@ public class BufferLoader {
 	
 	public VAO loadPatchToVAO(float[] positions, int patchSize) {
 		VAO vao = VAO.create();
-		this.vaos.add(vao);
+		vaos.add(vao);
 		vao.bind();
 		vao.createPatchAttribute(0, 3, positions, patchSize);
 		VAO.unbind();
@@ -104,7 +104,7 @@ public class BufferLoader {
 	 */
 	public Mesh loadToVAO(float[] positions, float[] textureCoords, float[] normals, int[] indices) {
 		VAO vao = VAO.create();
-		this.vaos.add(vao);
+		vaos.add(vao);
 		vao.bind();
 		vao.createIndexBuffer(indices);
 		vao.createAttribute(0, 3, positions);
@@ -151,7 +151,7 @@ public class BufferLoader {
 	public Mesh loadToVAO(float[] positions, float[] textureCoords, float[] normals, float[] tangents,
 			int[] indices) {
 		VAO vao = VAO.create();
-		this.vaos.add(vao);
+		vaos.add(vao);
 		vao.bind();
 		vao.createIndexBuffer(indices);
 		vao.createAttribute(0, 3, positions);
@@ -234,7 +234,7 @@ public class BufferLoader {
 	 */
 	public Mesh loadToVAO(float[] positions, int dimensions) {
 		VAO vao = VAO.create();
-		this.vaos.add(vao);
+		vaos.add(vao);
 		vao.bind();
 		vao.createAttribute(0, dimensions, positions);
 		VAO.unbind();
@@ -250,13 +250,11 @@ public class BufferLoader {
 	 * Cleans all verticies array and buffer objects video buffer.
 	 */
 	public void clean() {
-		if(!vaos.isEmpty()) {
+		if (!vaos.isEmpty())
 			vaos.forEach(VAO::delete);
-		}
 		
-		if(!vbos.isEmpty()) {
+		if (!vbos.isEmpty())
 			vbos.forEach(VBO::delete);
-		}
 	}
 
 }

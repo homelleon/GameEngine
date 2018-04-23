@@ -128,11 +128,9 @@ public class Texture2D {
 	}
 	
 	public static void active(int location) {
-		if(location >= 0 && location < 31) {
-			GL13.glActiveTexture(GL13.GL_TEXTURE0 + location);
-		} else {
+		if(location < 0 || location >= 31) 
 			throw new IndexOutOfBoundsException("Incorrect location at texture activation!");
-		}
-			
+		
+		GL13.glActiveTexture(GL13.GL_TEXTURE0 + location);	
 	}
 }

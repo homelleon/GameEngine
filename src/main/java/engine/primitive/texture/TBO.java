@@ -47,7 +47,7 @@ public class TBO {
 		return textureBuffer;
 	}
 	
-	private TBO(){}
+	private TBO() {}
 	
 	public void bind() {
 		glBindTexture(GL_TEXTURE_BUFFER, id);
@@ -59,11 +59,10 @@ public class TBO {
 	}
 	
 	public static void active(int location) {
-		if(location >= 0 && location < 31) {
-			GL13.glActiveTexture(GL_TEXTURE0 + location);
-		} else {
+		if (location < 0 || location >= 31)
 			throw new IndexOutOfBoundsException("Incorrect location at texture activation!");
-		}			
+		
+		GL13.glActiveTexture(GL_TEXTURE0 + location);
 	}
 	
 	public void delete() {

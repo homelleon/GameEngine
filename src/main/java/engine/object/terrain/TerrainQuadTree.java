@@ -28,15 +28,13 @@ public class TerrainQuadTree extends Node<Vector3f> {
 				this.addChild(new TerrainNode(new Vector2f(i/ (float) rootNodes, j / (float) rootNodes), 0, new Vector2f(i, j), camera));
 			}
 		}
-		this.worldTransformationMatrix = new Matrix4f();
-		this.worldTransformationMatrix.translate(new Vector3f(-EngineSettings.TERRAIN_SCALE_XZ / 2f, 0, -EngineSettings.TERRAIN_SCALE_XZ / 2f));
-		this.worldTransformationMatrix.scale(new Vector3f(EngineSettings.TERRAIN_SCALE_XZ, EngineSettings.TERRAIN_SCALE_Y, EngineSettings.TERRAIN_SCALE_XZ));
+		worldTransformationMatrix = new Matrix4f();
+		worldTransformationMatrix.translate(new Vector3f(-EngineSettings.TERRAIN_SCALE_XZ / 2f, 0, -EngineSettings.TERRAIN_SCALE_XZ / 2f));
+		worldTransformationMatrix.scale(new Vector3f(EngineSettings.TERRAIN_SCALE_XZ, EngineSettings.TERRAIN_SCALE_Y, EngineSettings.TERRAIN_SCALE_XZ));
 	}
 	
 	public void updateQuadTree(Camera camera) {
-		for(Node node: getChildren()) {
-			((TerrainNode) node).updateQuadTree(camera);
-		}
+		getChildren().forEach(node -> ((TerrainNode)node).updateQuadTree(camera));
 	}
 
 	private float[] generateVertexData() {
@@ -73,7 +71,7 @@ public class TerrainQuadTree extends Node<Vector3f> {
 	}
 	
 	public Matrix4f getWorldMatrix() {
-		return this.worldTransformationMatrix;
+		return worldTransformationMatrix;
 	}
 	
 	public static int getRootNodes() {

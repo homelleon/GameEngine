@@ -27,15 +27,15 @@ public class GUITextRenderer {
 	}
 
 	public void clean() {
-		this.shader.clean();
+		shader.clean();
 	}
 
 	public void render(Collection<GUIText> textList) {
 		processText(textList);
 		prepare();
-		this.texts.keySet().forEach(font -> {
+		texts.keySet().forEach(font -> {
 			font.getTextureAtlas().bind(0);
-			this.texts.get(font).forEach(text -> renderText(text));
+			texts.get(font).forEach(text -> renderText(text));
 		});
 		endRendering();
 	}
@@ -44,24 +44,23 @@ public class GUITextRenderer {
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		GraphicUtils.depthTest(false);
-		this.shader.start();
+		shader.start();
 	}
 
 	private void processText(Collection<GUIText> textList) {
 		for (GUIText text : textList) {
-			if (text.getIsVisible()) {
-				this.loadText(text);
-			}
+			if (!text.getIsVisible()) continue;
+			loadText(text);
 		}
 	}
 
 	private void loadText(GUIText text) {
 		String fontName = text.getFont();
 		FontType font = this.fontManager.get(fontName);
-		List<GUIText> textBatch = this.texts.get(font);
+		List<GUIText> textBatch = texts.get(font);
 		if (textBatch == null) {
 			textBatch = new ArrayList<GUIText>();
-			this.texts.put(font, textBatch);
+			texts.put(font, textBatch);
 		}
 		textBatch.add(text);
 	}
@@ -69,21 +68,21 @@ public class GUITextRenderer {
 	private void renderText(GUIText text) {
 		VAO textMeshVao = text.getMesh();
 		textMeshVao.bind(0,1);
-		this.shader.loadColor(text.getColor());
-		this.shader.loadTranslation(text.getPosition());
-		this.shader.loadWidthAndEdge(text.getWidth(), text.getEdge());
-		this.shader.loadBorderWidthAndEdge(text.getBorderWidth(), text.getBorderEdge());
-		this.shader.loadOffset(text.getOffset());
-		this.shader.loadOutLineColor(text.getOutlineColor());
+		shader.loadColor(text.getColor());
+		shader.loadTranslation(text.getPosition());
+		shader.loadWidthAndEdge(text.getWidth(), text.getEdge());
+		shader.loadBorderWidthAndEdge(text.getBorderWidth(), text.getBorderEdge());
+		shader.loadOffset(text.getOffset());
+		shader.loadOutLineColor(text.getOutlineColor());
 		GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, text.getVertexCount());
 		VAO.unbind(0,1);
 	}
 
 	private void endRendering() {
-		this.shader.stop();
+		shader.stop();
 		GL11.glDisable(GL11.GL_BLEND);
 		GraphicUtils.depthTest(true);
-		this.texts.clear();
+		texts.clear();
 	}
 
 }

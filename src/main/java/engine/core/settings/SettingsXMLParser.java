@@ -32,9 +32,9 @@ public class SettingsXMLParser extends XMLParser implements IObjectParser<GameSe
 		NodeList nodeList = this.document.getDocumentElement().getChildNodes();
 		for (int i = 0; i < nodeList.getLength(); i++) {
 			Node node = nodeList.item(i);
-			if(XMLUtils.ifNodeIsElement(node, XMLUtils.MAPS)) {
+			if (XMLUtils.ifNodeIsElement(node, XMLUtils.MAPS)) {
 				NodeList settingsNodeList = node.getChildNodes(); 
-				for(int j = 0; j < settingsNodeList.getLength(); j++) {
+				for (int j = 0; j < settingsNodeList.getLength(); j++) {
 					Node mapNode = node.getChildNodes().item(j);
 					if (XMLUtils.ifNodeIsElement(mapNode, XMLUtils.LEVEL_MAP)) {
 						readLevelMapSettings(mapNode, settings);

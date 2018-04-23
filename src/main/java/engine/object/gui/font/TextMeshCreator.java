@@ -58,9 +58,8 @@ public class TextMeshCreator {
 				continue;
 			}
 
-			if (ascii == TABULATION_ASCII) {
+			if (ascii == TABULATION_ASCII)
 				continue;
-			}
 
 			Character character = metaData.getCharacter(ascii);
 			currentWord.addCharacter(character);
@@ -89,9 +88,8 @@ public class TextMeshCreator {
 
 		for (Line line : lines) {
 
-			if (text.isCentered()) {
+			if (text.isCentered())
 				curserX = (line.getMaxLength() - line.getLineLength()) / 2;
-			}
 
 			for (Word word : line.getWords()) {
 				for (Character letter : word.getCharacters()) {

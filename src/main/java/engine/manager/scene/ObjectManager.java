@@ -42,36 +42,36 @@ public abstract class ObjectManager {
 	}
 
 	public EntityManager getEntities() {
-		return this.entityManager;
+		return entityManager;
 	}
 
 	public TerrainManager getTerrains() {
-		return this.terrainManager;
+		return terrainManager;
 	}
 	
 	public ParticleManager getParticles() {
-		return this.particleManager;
+		return particleManager;
 	}
 	
 	public AudioManager getAudioSources() {
-		return this.audioManager;
+		return audioManager;
 	}
 	
 	public LightManager getLights() {
-		return this.lightManager;
+		return lightManager;
 	}
 	
 	public WaterManager getWaters() {
-		return this.waterManager;
+		return waterManager;
 	}
 	
 	public void clean() {
-		this.entityManager.clean();
-		this.terrainManager.clean();
-		this.particleManager.clean();
-		this.audioManager.clean();
-		this.lightManager.clean();
-		this.waterManager.clean();
+		entityManager.clean();
+		terrainManager.clean();
+		particleManager.clean();
+		audioManager.clean();
+		lightManager.clean();
+		waterManager.clean();
 	}
 	
 

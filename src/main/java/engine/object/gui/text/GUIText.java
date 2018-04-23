@@ -1,7 +1,5 @@
 package object.gui.text;
 
-import org.lwjgl.system.CallbackI.V;
-
 import primitive.buffer.VAO;
 import scene.Drawable;
 import shader.Shader;
@@ -81,7 +79,7 @@ public class GUIText extends Drawable<Vector2f> {
 	}
 	
 	protected void changeText(String text) {
-		this.textString = text;
+		textString = text;
 	}
 
 	/**
@@ -135,7 +133,7 @@ public class GUIText extends Drawable<Vector2f> {
 	}
 
 	public Color getOutlineColor() {
-		return this.outlineColor;
+		return outlineColor;
 	}
 
 	public void setOutlineColor(Color outlineColor) {
@@ -215,7 +213,7 @@ public class GUIText extends Drawable<Vector2f> {
 	 * @return The total number of vertices of all the text's quads.
 	 */
 	public int getVertexCount() {
-		return this.vertexCount;
+		return vertexCount;
 	}
 
 	/**
@@ -235,7 +233,7 @@ public class GUIText extends Drawable<Vector2f> {
 	 * 		   false if text is invisible
 	 */
 	public boolean getIsVisible() {
-		return this.isVisible;
+		return isVisible;
 	}
 	
 	/**
@@ -253,7 +251,7 @@ public class GUIText extends Drawable<Vector2f> {
 	 * @return float value of text transparency
 	 */
 	public float getTransparency() {
-		return this.transparency;
+		return transparency;
 	}
 
 	/**
@@ -295,19 +293,19 @@ public class GUIText extends Drawable<Vector2f> {
 	}
 	
 	public GUIText clone(String name) {
-		GUIText guiText = new GUIText(name, this.textString, this.fontSize, this.fontName, this.position, this.maxLineLength, this.centered);
-		guiText.setColor(this.color);
+		GUIText guiText = new GUIText(name, textString, fontSize, fontName, position, maxLineLength, centered);
+		guiText.setColor(color);
 		return guiText;
 	}
 	
 	public GUIText clone(String name, String text) {
-		GUIText guiText = new GUIText(name, text, this.fontSize, this.fontName, this.position, this.maxLineLength, this.centered);
-		guiText.setColor(this.color);
+		GUIText guiText = new GUIText(name, text, fontSize, fontName, position, maxLineLength, centered);
+		guiText.setColor(color);
 		return guiText;
 	}
 	
 	public void delete() {
-		this.textMeshVao.delete();
+		textMeshVao.delete();
 	}
 
 	private void makeFontSmooth() {

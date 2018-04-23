@@ -10,9 +10,9 @@ package core.settings;
 public class GameSettings {
 
 	private static GameSettings instance;
-	String modelMapName;
-	String levelMapName;
-	String rawMapName;
+	private String modelMapName;
+	private String levelMapName;
+	private String rawMapName;
 
 	private GameSettings() {}
 

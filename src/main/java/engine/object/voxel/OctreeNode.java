@@ -16,11 +16,11 @@ public class OctreeNode {
 		this.hasParent = true;
 		this.parent = parent;
 		this.hasChildren = hasChildren;
-		if (this.hasChildren) {
-			this.childrens = new OctreeNode[Octree.MAX_CHILD_COUNT];
-			for (int i = 0; i < Octree.MAX_CHILD_COUNT; i++) {
-				this.childrens[i] = new OctreeNode(this.scale / 8);
-			}
+		
+		if (!this.hasChildren) return;
+		childrens = new OctreeNode[Octree.MAX_CHILD_COUNT];
+		for (int i = 0; i < Octree.MAX_CHILD_COUNT; i++) {
+			childrens[i] = new OctreeNode(scale / 8);
 		}
 	}
 
@@ -31,40 +31,30 @@ public class OctreeNode {
 	}
 
 	public boolean addChildrens() {
-		boolean isSucced = false;
-		if (!hasChildren) {
-			this.hasChildren = true;
-			this.childrens = new OctreeNode[Octree.MAX_CHILD_COUNT];
-			for (int i = 0; i < Octree.MAX_CHILD_COUNT; i++) {
-				this.childrens[i] = new OctreeNode(this.scale / 8);
-			}
-			isSucced = true;
-		}
-		return isSucced;
+		if (hasChildren) return false;
+		hasChildren = true;
+		childrens = new OctreeNode[Octree.MAX_CHILD_COUNT];
+		for (int i = 0; i < Octree.MAX_CHILD_COUNT; i++) {
+			childrens[i] = new OctreeNode(scale / 8);
+		}		
+		return true;
 	}
 
 	public boolean deleteChildrens() {
-		boolean isSucced = false;
-		if (hasChildren) {
-			for (int i = 0; i < Octree.MAX_CHILD_COUNT; i++) {
-				this.childrens[i] = null;
-			}
-			this.childrens = null;
-			isSucced = true;
+		if (!hasChildren) return false;
+		for (int i = 0; i < Octree.MAX_CHILD_COUNT; i++) {
+			childrens[i] = null;
 		}
-		return isSucced;
+		childrens = null;
+		return true;
 	}
 
 	public boolean CheckScallable(float radius) {
-		boolean isCanBeScaled = false;
-		if (radius < (this.scale / 8) * Octree.SCALE) {
-			isCanBeScaled = true;
-		}
-		return isCanBeScaled;
+		return (radius < (scale / 8) * Octree.SCALE);
 	}
 	
 	public float getScale() {
-		return this.scale;
+		return scale;
 	}
 
 	public void setEntity(Entity entity) {

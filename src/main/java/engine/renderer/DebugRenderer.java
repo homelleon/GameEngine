@@ -4,10 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
-import org.lwjgl.opengl.GL13;
-import org.lwjgl.opengl.GL15;
-import org.lwjgl.opengl.GL20;
 
 import core.DisplayManager;
 import primitive.buffer.Loader;
@@ -23,12 +19,12 @@ public class DebugRenderer {
 	
 	public DebugRenderer() {
 		float[] positions = createPositions();
-		this.positionVAO = Loader.getInstance().getVertexLoader().loadToVAO(positions, 2).getVAO();
-		this.shader = new DebugShader();
+		positionVAO = Loader.getInstance().getVertexLoader().loadToVAO(positions, 2).getVAO();
+		shader = new DebugShader();
 	}
 	
 	public void addAttribute(VBO vbo) {
-		this.attributes.add(vbo);
+		attributes.add(vbo);
 	}
 	
 	public void render() {

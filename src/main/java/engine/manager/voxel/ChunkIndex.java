@@ -103,6 +103,6 @@ public final class ChunkIndex {
 	 * @return {@link FaceCullingData} cube face culling data
 	 */
 	public FaceCullingData getFCD() {
-		return this.fcd;
+		return fcd;
 	}
 }

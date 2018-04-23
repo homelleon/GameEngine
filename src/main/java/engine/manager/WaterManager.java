@@ -17,28 +17,25 @@ public class WaterManager {
 	Map<String, Water> waters = new HashMap<String, Water>();
 
 	public void addAll(Collection<Water> waterList) {
-		if ((waterList != null) && (!waterList.isEmpty())) {
-			waterList.forEach(water -> 
-				this.waters.put(water.getName(), water));
-		}
+		if (waterList == null || waterList.isEmpty()) return;
+		waterList.forEach(water -> waters.put(water.getName(), water));
 	}
 
 	public void add(Water water) {
-		if (water != null) {
-			this.waters.put(water.getName(), water);
-		}
+		if (water == null) return;
+		waters.put(water.getName(), water);
 	}
 
 	public Water getByName(String name) {
-		return this.waters.containsKey(name) ? this.waters.get(name) : null;
+		return waters.containsKey(name) ? waters.get(name) : null;
 	}
 
 	public Collection<Water> getAll() {
-		return this.waters.values();
+		return waters.values();
 	}
 
 	public void clean() {
-		this.waters.clear();
+		waters.clear();
 	}
 
 }

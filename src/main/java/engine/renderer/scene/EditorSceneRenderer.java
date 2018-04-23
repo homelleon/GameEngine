@@ -38,7 +38,7 @@ public class EditorSceneRenderer implements SceneRenderer {
 
 	@Override
 	public MainRenderer getMainRenderer() {
-		return this.mainRenderer;
+		return mainRenderer;
 	}
 
 	@Override

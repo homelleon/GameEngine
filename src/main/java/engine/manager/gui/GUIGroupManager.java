@@ -35,7 +35,7 @@ public class GUIGroupManager {
 	
 	public GUIGroup createEmpty(String name) {
 		GUIGroup group = new GUIGroup(name);
-		this.groups.put(group.getName(), group);
+		groups.put(group.getName(), group);
 		return group;
 	}
 
@@ -44,46 +44,43 @@ public class GUIGroupManager {
 	}
 
 	public void addAll(Collection<GUIGroup> groupList) {
-		if(groupList!=null && !groupList.isEmpty()) {
-			this.groups.putAll(
-					groupList.stream()
-						.collect(Collectors.toMap(
-								GUIGroup::getName, Function.identity())));
-		} else {
-			if(EngineDebug.hasDebugPermission()) {
-				System.err.println(
-						"Trying to add null collection value into GUIGroupManager array!");
-			}
+		if (groupList == null || groupList.isEmpty()) {
+			if (EngineDebug.hasDebugPermission())
+				System.err.println("Trying to add null collection value into GUIGroupManager array!");
+			return;
 		}
+		
+		groups.putAll(
+				groupList.stream()
+					.collect(Collectors.toMap(
+							GUIGroup::getName, Function.identity())));
 	}
 
 	public void add(GUIGroup group) {
-		this.groups.put(group.getName(), group);
+		groups.put(group.getName(), group);
 	}
 
 	public Collection<GUIGroup> getAll() {
-		return this.groups.values();
+		return groups.values();
 	}
 
 	public boolean delete(String name) {
-		if (this.groups.containsKey(name)) {
-			this.get(name).getAll().stream()
-				.flatMap(gui -> gui.getTexts().stream())
-				.forEach(text -> this.componentManager.getTexts().delete(text.getName()));
-			this.get(name).getAll().stream()
-				.flatMap(gui -> gui.getTextures().stream())
-				.forEach(texture -> this.componentManager.getTextures().delete(texture.getName()));
-			this.groups.get(name).clean();
-			this.groups.remove(name);
-			return true;
-		} else {
-			return false;
-		}
+		if (!groups.containsKey(name)) return false;
+		
+		this.get(name).getAll().stream()
+			.flatMap(gui -> gui.getTexts().stream())
+			.forEach(text -> this.componentManager.getTexts().delete(text.getName()));
+		this.get(name).getAll().stream()
+			.flatMap(gui -> gui.getTextures().stream())
+			.forEach(texture -> this.componentManager.getTextures().delete(texture.getName()));
+		groups.get(name).clean();
+		groups.remove(name);
+		return true;
 	}
 
 	public void clean() {
-		this.groups.values()
+		groups.values()
 			.forEach(group -> group.clean());
-		this.groups.clear();		
+		groups.clear();		
 	}
 }

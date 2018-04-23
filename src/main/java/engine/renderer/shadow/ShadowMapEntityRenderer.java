@@ -50,16 +50,18 @@ public class ShadowMapEntityRenderer {
 			Material material = model.getMaterial();
 			material.getDiffuseMap().bind(0);
 			shader.loadNumberOfRows(material.getDiffuseMap().getNumberOfRows());
-			if (model.getMaterial().getDiffuseMap().isHasTransparency()) {
+			
+			if (model.getMaterial().getDiffuseMap().isHasTransparency())
 				GraphicUtils.cullBackFaces(false);
-			}
+			
 			entityList.forEach(entity -> {
 				prepareInstance(entity, camera);
 				GL11.glDrawElements(GL11.GL_TRIANGLES, mesh.getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
 			});
-			if (model.getMaterial().getDiffuseMap().isHasTransparency()) {
+			
+			if (model.getMaterial().getDiffuseMap().isHasTransparency())
 				GraphicUtils.cullBackFaces(true);
-			}
+			
 			unbindModel();
 		});
 		shader.stop();

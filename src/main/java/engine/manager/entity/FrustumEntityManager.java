@@ -19,14 +19,11 @@ public class FrustumEntityManager {
 	
 	private static float NODE_CHECK_RADIUS = EngineSettings.RENDERING_VIEW_DISTANCE + EntityNode.RADIUS;
 	private List<EntityNode> entityNodes = new ArrayList<EntityNode>();
-	private Frustum frustum;
 	private List<Entity> frustumHighEntities = new ArrayList<Entity>();
 	private List<Entity> frustumLowEntities = new ArrayList<Entity>();
 	private List<Entity> frustumShadowEntities = new ArrayList<Entity>();
 
-	public FrustumEntityManager(Frustum frustum) {
-		this.frustum = frustum;
-	}
+	public FrustumEntityManager() {}
 	
 	public void rebuildNodes(Collection<Entity> entities) {
 		if (EngineDebug.hasDebugPermission()) {
@@ -115,8 +112,8 @@ public class FrustumEntityManager {
 	}
 	
 	private List<Entity> prepareEntities(Scene scene, Matrix4f projectionMatrix) {
-		frustum.extractFrustum(projectionMatrix);
-		return updateWithFrustum(frustum, scene.getCamera());
+		scene.getCamera().getFrustum().extractFrustum(projectionMatrix);
+		return updateWithFrustum(scene.getCamera().getFrustum(), scene.getCamera());
 	}
 
 	public List<Entity> getHighEntities() {

@@ -74,19 +74,16 @@ public class MetaFile {
 		String line = null;
 		try {
 			line = reader.readLine();
-		} catch (IOException e1) {
-		}
+		} catch (IOException e1) {}
 
-		if (line == null) {
+		if (line == null)
 			return false;
-		}
 
 		for (String part : line.split(SPLITTER)) {
 			String[] valuePairs = part.split("=");
 
-			if (valuePairs.length == 2) {
+			if (valuePairs.length == 2)
 				values.put(valuePairs[0], valuePairs[1]);
-			}
 		}
 		return true;
 	}
@@ -152,9 +149,9 @@ public class MetaFile {
 	 */
 	private void loadPaddingData() {
 		processNextLine();
-		this.padding = getValuesOfVariable("padding");
-		this.paddingWidth = padding[PAD_LEFT] + padding[PAD_RIGHT];
-		this.paddingHeight = padding[PAD_TOP] + padding[PAD_BOTTOM];
+		padding = getValuesOfVariable("padding");
+		paddingWidth = padding[PAD_LEFT] + padding[PAD_RIGHT];
+		paddingHeight = padding[PAD_TOP] + padding[PAD_BOTTOM];
 	}
 
 	/**
@@ -182,9 +179,8 @@ public class MetaFile {
 		while (processNextLine()) {
 			Character c = loadCharacter(imageWidth);
 
-			if (c != null) {
+			if (c != null)
 				metaData.put(c.getId(), c);
-			}
 		}
 	}
 
@@ -201,7 +197,7 @@ public class MetaFile {
 		int id = getValueOfVariable("id");
 
 		if (id == TextMeshCreator.SPACE_ASCII) {
-			this.spaceWidth = (getValueOfVariable("xadvance") - paddingWidth) * horizontalPerPixelSize;
+			spaceWidth = (getValueOfVariable("xadvance") - paddingWidth) * horizontalPerPixelSize;
 			return null;
 		}
 		double xTex = ((double) getValueOfVariable("x") + (padding[PAD_LEFT] - DESIRED_PADDING)) / imageSize;

@@ -15,14 +15,12 @@ public class Voxel extends Node<Vector3f> {
 		super("voxel");
 		this.nodeSize = nodeSize;
 		this.currentVisualLevel = parentVisualLevel - 1;
-		if(currentVisualLevel > 0) {
-			if(this.isLeaf()) {
-				this.setLeaf(false);
-			}
-			for(int x = 0; x < nodeSize; x++) {
-				for(int y = 0; y < nodeSize; y++) {
-					for(int z = 0; z < nodeSize; z++) {
-						this.addChild(new Voxel(8, new Vector3i(x,y,z), position, currentVisualLevel));
+		if (currentVisualLevel > 0) {
+			if (isLeaf()) setLeaf(false);
+			for (int x = 0; x < nodeSize; x++) {
+				for (int y = 0; y < nodeSize; y++) {
+					for (int z = 0; z < nodeSize; z++) {
+						addChild(new Voxel(8, new Vector3i(x,y,z), position, currentVisualLevel));
 					}
 				}
 			}

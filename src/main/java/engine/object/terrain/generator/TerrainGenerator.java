@@ -67,11 +67,10 @@ public class TerrainGenerator {
 		HeightsGenerator generator = new HeightsGenerator(amplitude, octaves, roughness);
 		int VERTEX_COUNT = size;
 		
-		float[][] heights2D = new float[VERTEX_COUNT][VERTEX_COUNT]; // 2 dimentional heights
+		float[][] heights2D = new float[VERTEX_COUNT][VERTEX_COUNT];
 		int count = VERTEX_COUNT * VERTEX_COUNT;
-		float[] heights1D = new float[count]; // 1 dimentional heights for buffer object
+		float[] heights1D = new float[count];
 		
-		// create and store heights
 		int vertexPointer = 0;
 		for (int i = 0; i < VERTEX_COUNT; i++) {
 			for (int j = 0; j < VERTEX_COUNT; j++) {
@@ -85,7 +84,6 @@ public class TerrainGenerator {
 		// bind vbo as texture buffer from 1 dimentional heights
 		VBO vbo = Loader.getInstance().getVertexLoader().loadToVBOasTBO(heights1D);
 		
-		// generate height and normal map
 		heightMap = generateHeightMap(size / 2, vbo);
 		normalMap = generateNormalMap(size / 2, heightMap);
 
@@ -128,9 +126,8 @@ public class TerrainGenerator {
 	}
 	
 	private float getHeight(int x, int z, float[] heights) {
-		if (x < 0 || x >= Math.sqrt(heights.length) || z < 0 || z >= Math.sqrt(heights.length)) {
+		if (x < 0 || x >= Math.sqrt(heights.length) || z < 0 || z >= Math.sqrt(heights.length))
 			return 0;
-		}
 		// TODO: implement getRGB function
 		float height = heights[(int) (z * Math.sqrt(heights.length)  + x)]; // heightMap.getRGB(x, z);
 		return height;

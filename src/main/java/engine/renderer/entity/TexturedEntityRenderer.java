@@ -1,6 +1,5 @@
 package renderer.entity;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -17,6 +16,7 @@ import primitive.model.Mesh;
 import primitive.model.Model;
 import primitive.texture.Texture;
 import primitive.texture.material.Material;
+import scene.Scene;
 import shader.entity.EntityShader;
 import shader.entity.NormalMappedEntityShader;
 import tool.GraphicUtils;
@@ -87,59 +87,40 @@ public class TexturedEntityRenderer implements EntityRenderer {
 	 * @see Camera
 	 * @see Texture
 	 */
-	public void render(Map<Model, List<Entity>> entities, Vector4f clipPlane, Collection<Light> lights,
-			Camera camera, Matrix4f toShadowMapSpace, Texture environmentMap) {
+	public void render(Map<Model, List<Entity>> entities, Scene scene, Vector4f clipPlane, Matrix4f toShadowMapSpace, Texture environmentMap) {
+		if (entities.isEmpty()) return;
+		
 		if (environmentMap != null)
 			this.environmentMap = environmentMap;
 		
 		if (clipPlane == null)
 			clipPlane = EngineSettings.NO_CLIP;
 		
-		if (!entities.isEmpty()) {
-			simpleShader.start();
-			simpleShader.loadClipPlane(clipPlane);
-			simpleShader.loadSkyColor(new Color(EngineSettings.RED, EngineSettings.GREEN, EngineSettings.BLUE));
-			simpleShader.loadFogDensity(EngineSettings.FOG_DENSITY);
-			simpleShader.loadLights(lights);
-			simpleShader.loadCamera(camera);
+		simpleShader.start();
+		simpleShader.loadClipPlane(clipPlane);
+		simpleShader.loadSkyColor(new Color(EngineSettings.RED, EngineSettings.GREEN, EngineSettings.BLUE));
+		simpleShader.loadFogDensity(EngineSettings.FOG_DENSITY);
+		simpleShader.loadLights(scene.getLights().getAll());
+		simpleShader.loadCamera(scene.getCamera());
+		if (toShadowMapSpace != null)
 			simpleShader.loadToShadowSpaceMatrix(toShadowMapSpace);
-			simpleShader.loadShadowVariables(EngineSettings.SHADOW_DISTANCE, EngineSettings.SHADOW_MAP_SIZE,
-					EngineSettings.SHADOW_TRANSITION_DISTANCE, EngineSettings.SHADOW_PCF);			
-			entities.forEach((model, entityList) -> {
-				prepareTexturedModel(model);
-				entityList.forEach(entity -> {
-						prepareInstance(entity);
-						GL11.glDrawElements(GL11.GL_TRIANGLES, model.getMesh().getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
-						GL11.glFlush();
-				});
-				unbindTexturedModel();
+		simpleShader.loadShadowVariables(EngineSettings.SHADOW_DISTANCE, EngineSettings.SHADOW_MAP_SIZE,
+				EngineSettings.SHADOW_TRANSITION_DISTANCE, EngineSettings.SHADOW_PCF);			
+		entities.forEach((model, entityList) -> {
+			prepareTexturedModel(model);
+			entityList.forEach(entity -> {
+					prepareInstance(entity);
+					GL11.glDrawElements(GL11.GL_TRIANGLES, model.getMesh().getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
 			});
-			simpleShader.stop();
-		}
+			unbindTexturedModel();
+		});
+		simpleShader.stop();
 	}
 
 	public void clean() {
 		simpleShader.clean();
 	}
  
-	/**
-	 * Prepare low quality TexturedModel for using in shader program
-	 * 
-	 * @param model
-	 *            - {@link Model} used to bind VBO attributes
-	 */
-	private void prepareLowTexturedModel(Model model) {
-		Mesh rawModel = model.getMesh();
-		VAO vao = rawModel.getVAO();
-		vao.bind(0, 1, 2);
-		Material texture = model.getMaterial();
-		simpleShader.loadNumberOfRows(texture.getDiffuseMap().getNumberOfRows());
-		
-		if (texture.getDiffuseMap().isHasTransparency())
-			GraphicUtils.cullBackFaces(false);
-		
-		model.getMaterial().getDiffuseMap().bind(0);
-	}
 
 	/**
 	 * Prepare TexturedModel for using in shader program

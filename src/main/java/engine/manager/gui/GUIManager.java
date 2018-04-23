@@ -23,9 +23,11 @@ public class GUIManager {
 			EngineDebug.printOpen("GUI Manager");
 			EngineDebug.println("Loading User Interface...");
 		}
+		
 		this.componentManager = new GUIComponentManager(GUI_FILE_NAME);
 		this.menuSystem = GUIMenuSystem.getInstace();
 		this.groupManager = new GUIGroupManager(this.componentManager);
+		
 		if (EngineDebug.hasDebugPermission()) {
 			EngineDebug.println("Loading complete!");
 			EngineDebug.printClose("GUI Manager");
@@ -38,24 +40,20 @@ public class GUIManager {
 	}	
 	
 	public GUIMenuSystem getMenus() {
-		return this.menuSystem;
+		return menuSystem;
 	}
 
 	public GUIComponentManager getComponent() {
-		return this.componentManager;
+		return componentManager;
 	}
 
 	public void render() {
-		this.componentManager.render(this.getGroups().getAll());
+		componentManager.render(this.getGroups().getAll());
 	}
 
 	public void cleanAll() {
-		if(this.menuSystem != null) {
-			this.menuSystem.clean();
-		}
-		if(this.groupManager != null) {
-			this.groupManager.clean();
-		}
+		if (menuSystem != null)	menuSystem.clean();		
+		if (groupManager != null) groupManager.clean();
 	}
 
 }

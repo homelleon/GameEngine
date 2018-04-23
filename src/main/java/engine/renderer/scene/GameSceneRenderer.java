@@ -105,8 +105,7 @@ public class GameSceneRenderer implements SceneRenderer {
 	@Override
 	public void render(boolean isPaused) {
 		checkInputs();
-		if (!isPaused) 
-			move();
+		if (!isPaused) move();
 		mainRenderer.renderShadows(scene);
 		renderParticles();
 		renderWaterSurface();

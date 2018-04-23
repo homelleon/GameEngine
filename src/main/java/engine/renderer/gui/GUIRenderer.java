@@ -31,38 +31,37 @@ public class GUIRenderer {
 	}
 
 	public void render(Collection<GUIGroup> groupCollection) {
-		for (GUIGroup group : groupCollection) {
-			processGroup(group);
-		}
+		groupCollection.forEach(this::processGroup);
+		
 		List<Integer> keys = new ArrayList<Integer>();
-		keys.addAll(this.groups.keySet());
+		keys.addAll(groups.keySet());
 		Collections.sort(keys);
 		IntStream.range(0, keys.size())
-			.mapToObj(index -> this.groups.get(keys.get(index)))
+			.mapToObj(index -> groups.get(keys.get(index)))
 			.flatMap(list -> list.stream())
 			.flatMap(group -> group.getAll().stream())
 			.filter(GUI::getIsVisible)
 			.forEach(gui -> {
-				this.textureRenderer.render(gui.getTextures());
-				this.textRenderer.render(gui.getTexts());
+				textureRenderer.render(gui.getTextures());
+				textRenderer.render(gui.getTexts());
 			});
-		this.groups.clear();
+		groups.clear();
 	}
 
 	public void cleanUp() {
-		this.textureRenderer.cleanUp();
-		this.textRenderer.clean();
+		textureRenderer.cleanUp();
+		textRenderer.clean();
 	}
 
 	private void processGroup(GUIGroup group) {
 		int priorityNumber = group.getPriorityNumber();
-		List<GUIGroup> batch = this.groups.get(priorityNumber);
+		List<GUIGroup> batch = groups.get(priorityNumber);
 		if (batch != null) {
 			batch.add(group);
 		} else {
 			List<GUIGroup> newBatch = new ArrayList<GUIGroup>();
 			newBatch.add(group);
-			this.groups.put(priorityNumber, newBatch);
+			groups.put(priorityNumber, newBatch);
 		}
 	}
 

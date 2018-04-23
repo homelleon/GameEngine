@@ -42,42 +42,32 @@ public class Mesh {
 	}
 
 	public String getName() {
-		return this.name;
+		return name;
 	}
 
 	public int getVertexCount() {
-		return this.vertexCount;
+		return vertexCount;
 	}
 
 	public BoundingSphere getBoundSphere() {
-		return this.sphere;
+		return sphere;
 	}
 
 	public BoundingBox getBBox() {
-		return this.box;
+		return box;
 	}
 	
 	@Override
 	public boolean equals(Object obj) {
-		if(obj.hashCode() != this.hashCode()) {
-			return false;
-		}
-		if(obj == this) {
-			return true;
-		}
-		if(obj == null || obj.getClass() != this.getClass()) {
-			return false;
-		}
+		if (obj.hashCode() != this.hashCode()) return false;
+		if (obj == this) return true;
+		if (obj == null || obj.getClass() != this.getClass()) return false;
+		
 		Mesh rawModel = (Mesh) obj;
-		if(rawModel.getVAO() == this.getVAO() &&
+		return (rawModel.getVAO() == this.getVAO() &&
 				rawModel.getVertexCount() == this.getVertexCount() &&
 				rawModel.getBBox() == this.getBBox() &&
-				rawModel.getBoundSphere() == this.getBoundSphere()) 
-		{
-			return true;
-		} else {
-			return false;
-		}
+				rawModel.getBoundSphere() == this.getBoundSphere());
 	}
 	
 	@Override
@@ -92,7 +82,7 @@ public class Mesh {
 	}
 	
 	public Mesh clone(String name) {
-		return new Mesh(name, this.vao, this.vertexCount, this.sphere, this.box);
+		return new Mesh(name, vao, vertexCount, sphere, box);
 	}
 
 	public VAO getVAO() {

@@ -1,6 +1,5 @@
 package renderer;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -12,7 +11,6 @@ import org.lwjgl.util.vector.Vector4f;
 import core.settings.EngineSettings;
 import manager.voxel.ChunkManager;
 import object.camera.Camera;
-import object.light.Light;
 import object.voxel.Chunk;
 import object.voxel.FaceCullingData;
 import primitive.buffer.Loader;
@@ -20,9 +18,9 @@ import primitive.buffer.VAO;
 import primitive.model.Mesh;
 import primitive.model.Model;
 import primitive.texture.material.Material;
+import scene.Scene;
 import shader.voxel.VoxelShader;
 import tool.GraphicUtils;
-import tool.math.Frustum;
 import tool.math.Maths;
 import tool.math.Matrix4f;
 import tool.math.vector.Color;
@@ -103,39 +101,38 @@ public class VoxelRenderer {
 
 	public VoxelRenderer(Matrix4f projectionMatrix) {
 		Loader loader = Loader.getInstance();
-		this.shader = new VoxelShader();
-		this.shader.start();
-		this.shader.loadProjectionMatrix(projectionMatrix);
-		this.shader.connectTextureUnits();
-		this.shader.stop();
+		shader = new VoxelShader();
+		shader.start();
+		shader.loadProjectionMatrix(projectionMatrix);
+		shader.connectTextureUnits();
+		shader.stop();
 		Mesh rawModel = loader.getVertexLoader().loadToVAO(VERTICES, TEXTURES, NORMALS, INDICES);
-		this.cube = new Model("cube", rawModel,
+		cube = new Model("cube", rawModel,
 				new Material("bark", loader.getTextureLoader().loadTexture(EngineSettings.TEXTURE_MODEL_PATH, "crate")));
-		this.texture = cube.getMaterial();
+		texture = cube.getMaterial();
 		texture.getDiffuseMap().setNumberOfRows(1);
 	}
 
-	public void render(ChunkManager chunkManager, Vector4f clipPlane, Collection<Light> lights,
-			Camera camera, Matrix4f toShadowMapSpace, Frustum frustum) {
+	public void render(Scene scene, Vector4f clipPlane, Matrix4f toShadowMapSpace) {
 		shader.start();
 		shader.loadClipPlane(clipPlane);
 		shader.loadSkyColor(new Color(EngineSettings.RED, EngineSettings.GREEN, EngineSettings.BLUE));
 		shader.loadFogDensity(EngineSettings.FOG_DENSITY);
-		shader.loadLights(lights);
-		shader.loadViewMatrix(camera);
+		shader.loadLights(scene.getLights().getAll());
+		shader.loadViewMatrix(scene.getCamera());
 		shader.loadToShadowSpaceMatrix(toShadowMapSpace);
 		shader.loadShadowVariables(EngineSettings.SHADOW_DISTANCE, EngineSettings.SHADOW_MAP_SIZE,
 				EngineSettings.SHADOW_TRANSITION_DISTANCE, EngineSettings.SHADOW_PCF);
 		prepareModel(cube.getMesh());
 		bindMaterial(texture);
 		
-		getAllBlocks(chunkManager, frustum, camera).stream()
-			.filter(generalIndex -> chunkManager.getBlockByGeneralIndex(generalIndex).getIsActive())
+		getAllBlocks(scene.getChunks(), scene.getCamera()).stream()
+			.filter(generalIndex -> scene.getChunks().getBlockByGeneralIndex(generalIndex).getIsActive())
 			.map(generalIndex -> {
-				prepareInstance(chunkManager.getBlockPositionByGeneralIndex(generalIndex));
+				prepareInstance(scene.getChunks().getBlockPositionByGeneralIndex(generalIndex));
 				return generalIndex;
 			})
-			.map(generalIndex -> isNeedBlockCulling(chunkManager, generalIndex))
+			.map(generalIndex -> isNeedBlockCulling(scene.getChunks(), generalIndex))
 			.filter(blockCullingData -> !isAllFaceCulled(blockCullingData))
 			.flatMap(blockCullingData -> IntStream.range(0, 6)
 //					.filter(face -> !blockCullingData.getFace(face))
@@ -147,10 +144,10 @@ public class VoxelRenderer {
 		shader.stop();
 	}
 	
-	private List<Integer> getAllBlocks(ChunkManager chunkManager, Frustum frustum, Camera camera) {
+	private List<Integer> getAllBlocks(ChunkManager chunkManager, Camera camera) {
 		return IntStream.range(0, (int) Math.pow(chunkManager.getSize(), 3)).parallel()
 					.sorted()
-					.filter(chunkIndex -> checkVisibility(frustum, chunkManager.getChunkPositionByChunkIndex(chunkIndex), CHUNK_RADIUS, camera))
+					.filter(chunkIndex -> checkVisibility(chunkManager.getChunkPositionByChunkIndex(chunkIndex), CHUNK_RADIUS, camera))
 					.filter(chunkIndex -> chunkManager.getChunk(chunkIndex).getIsAcitve())
 					.map(chunkIndex -> chunkIndex * (int) Math.pow(EngineSettings.VOXEL_CHUNK_SIZE, 3))
 					.flatMap(chunkIndex -> 
@@ -166,8 +163,8 @@ public class VoxelRenderer {
 				GL11.GL_UNSIGNED_INT, 24 * face);
 	}
 
-	private boolean checkVisibility(Frustum frustum, Vector3f position, float radius, Camera camera) {
-		return frustum.sphereInFrustumAndDsitance(position, radius, 0, EngineSettings.RENDERING_VIEW_DISTANCE, camera);
+	private boolean checkVisibility(Vector3f position, float radius, Camera camera) {
+		return camera.getFrustum().sphereInFrustumAndDsitance(position, radius, 0, EngineSettings.RENDERING_VIEW_DISTANCE, camera);
 	}
 
 	private synchronized void prepareInstance(Vector3f position) {
@@ -185,9 +182,10 @@ public class VoxelRenderer {
 		shader.loadFakeLightingVariable(material.isUseFakeLighting());
 		shader.loadNumberOfRows(material.getDiffuseMap().getNumberOfRows());
 		shader.loadOffset(0.0f, 0.0f);
-		if (material.getDiffuseMap().isHasTransparency()) {
+		
+		if (material.getDiffuseMap().isHasTransparency())
 			GraphicUtils.cullBackFaces(false);
-		}
+		
 		shader.loadShineVariables(material.getShininess(), material.getReflectivity());
 		material.getDiffuseMap().bind(0);
 	}
@@ -201,27 +199,21 @@ public class VoxelRenderer {
 		FaceCullingData fcData = new FaceCullingData(index);
 		Chunk chunk = chunkManager.getChunkByGeneralIndex(index);
 		Vector3i blockIndexPosition = chunkManager.getBlockIndexVectorByGenerealIndex(index);
-		for(int face = 0; face < 6; face++) {
-			if(isFaceCovered(chunk, blockIndexPosition.x, blockIndexPosition.y, blockIndexPosition.z, face)) {
+		for (int face = 0; face < 6; face++) {
+			if (isFaceCovered(chunk, blockIndexPosition.x, blockIndexPosition.y, blockIndexPosition.z, face))
 				fcData.setFaceRendering(face, true);
-			}
 		}
 		return fcData;
 	}
 
 	private boolean isAllFaceCulled(FaceCullingData fcData) {
-		boolean isAllFaceCulled = true;
 		for (int i = 0; i < 6; i++) {
-			if (!fcData.getFace(i)) {
-				isAllFaceCulled = false;
-			}
+			if (!fcData.getFace(i)) return false;
 		}
-
-		return isAllFaceCulled;
+		return true;
 	}
 
 	private boolean isFaceCovered(Chunk chunk, int x, int y, int z, int face) {
-		boolean isCovered = false;
 		Vector3i position = new Vector3i(x, y, z);
 		switch (face) {
 		case FRONT:
@@ -244,17 +236,11 @@ public class VoxelRenderer {
 			break;
 		}
 
-		if (chunk.isBlockExist(position)) {
-			if (chunk.getBlock(position).getIsActive()) {
-				isCovered = true;
-			}
-		}
-
-		return isCovered;
+		if (!chunk.isBlockExist(position)) return false;
+		return (chunk.getBlock(position).getIsActive());
 	}
 
 	private boolean isFaceCovered(ChunkManager chunker, int index, int face) {
-		boolean isCovered = false;
 		Vector3i position = chunker.getChunkIndexVector(index);
 		switch (face) {
 		case FRONT:
@@ -276,13 +262,9 @@ public class VoxelRenderer {
 			position.x += 1;
 			break;
 		}
-		if (chunker.isChunkExist(position)) {
-			if (chunker.getChunk(position).getIsAcitve()) {
-				isCovered = true;
-			}
-		}
-
-		return isCovered;
+		
+		if (!chunker.isChunkExist(position)) return false;
+		return (chunker.getChunk(position).getIsAcitve());
 	}
 
 }

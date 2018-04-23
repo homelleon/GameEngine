@@ -8,11 +8,11 @@ public class Block {
 	}
 
 	public boolean getIsActive() {
-		return this.isActive;
+		return isActive;
 	}
 
 	public void setIsActive(boolean value) {
-		this.isActive = value;
+		isActive = value;
 	}
 
 }

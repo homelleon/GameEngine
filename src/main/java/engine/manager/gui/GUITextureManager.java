@@ -24,53 +24,47 @@ public class GUITextureManager {
 	private Map<String, GUITexture> textures = new HashMap<String, GUITexture>();
 
 	public void addAll(Collection<GUITexture> guiList) {
-		if ((guiList != null) && (!guiList.isEmpty())) {
-			this.textures.putAll(
-					guiList.stream()
-						.collect(Collectors.toMap(
-								GUITexture::getName, Function.identity())));
-		} else {
-			if(EngineDebug.hasDebugPermission()) {
-				System.err.println(
-						"Trying to add null collection value into GUITextureManager array!");
+		if (guiList == null || guiList.isEmpty()) {
+			if (EngineDebug.hasDebugPermission()) {
+				System.err.println("Trying to add null collection value into GUITextureManager array!");
 			}
+			return;
 		}
+		
+		textures.putAll(
+				guiList.stream()
+					.collect(Collectors.toMap(GUITexture::getName, Function.identity()))
+			);
 	}
 
 	public void add(GUITexture guiTexture) {
-		if (guiTexture != null) {
-			this.textures.put(guiTexture.getName(), guiTexture);
-		} else {
-			if(EngineDebug.hasDebugPermission()) {
-				System.err.println(
-						"Trying to add null value into GUITextureManager array!");
-			}
+		if (guiTexture == null) {
+			if(EngineDebug.hasDebugPermission())
+				System.err.println("Trying to add null value into GUITextureManager array!");
+			return;
 		}
+		textures.put(guiTexture.getName(), guiTexture);
 	}
 
 	public GUITexture get(String name) {
-		if(this.textures.containsKey(name)) {
-			return this.textures.get(name);
-		} else {
+		if (!textures.containsKey(name))
 			throw new NullPointerException("There is no texture with name " + name + "in gui texture array!");
-		}
+		
+		return textures.get(name);
 	}
 
 	public Collection<GUITexture> getAll() {
-		return this.textures.values();
+		return textures.values();
 	}
 
 	public boolean delete(String name) {
-		if(this.textures.containsKey(name)) {
-			this.textures.remove(name);
-			return true;
-		} else {
-			return false;
-		}
+		if (!textures.containsKey(name)) return false;
+		textures.remove(name);
+		return true;
 	}
 
 	public void clean() {
-		this.textures.clear();
+		textures.clear();
 	}
 
 }

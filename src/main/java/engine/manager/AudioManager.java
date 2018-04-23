@@ -26,11 +26,10 @@ public class AudioManager extends AbstractManager<AudioSource> {
 
 	@Override
 	public void clean() {
-		this.elements.values().forEach(AudioSource::delete);
+		elements.values().forEach(AudioSource::delete);
 		super.clean();
-		if (this.audioMaster!= null) {
-			this.audioMaster.clear();
-		}
+		if (audioMaster!= null)
+			audioMaster.clear();
 	}
 
 }

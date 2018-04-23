@@ -28,8 +28,8 @@ public class GUITextureBuilder {
 
 	public GUITexture build(String name) {
 		Loader loader = Loader.getInstance();
-		Texture2D texture = loader.getTextureLoader().loadGUITexture(EngineSettings.TEXTURE_INTERFACE_PATH, this.textureName);
-		return new GUITexture(name, texture, this.position, this.scale);
+		Texture2D texture = loader.getTextureLoader().loadGUITexture(EngineSettings.TEXTURE_INTERFACE_PATH, textureName);
+		return new GUITexture(name, texture, position, scale);
 	}
 
 }

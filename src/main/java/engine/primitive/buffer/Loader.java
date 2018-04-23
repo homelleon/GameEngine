@@ -10,8 +10,7 @@ public class Loader {
 
 	private static Loader instance;
 
-	private Loader() {
-	};
+	private Loader() {};
 
 	/**
 	 * Gets instance of loader class object.
@@ -30,16 +29,16 @@ public class Loader {
 
 	
 	public TextureObjectLoader getTextureLoader() {
-		return this.textureLoader;
+		return textureLoader;
 	}
 	
 	public BufferLoader getVertexLoader() {
-		return this.vertexLoader;		
+		return vertexLoader;		
 	}
 	
 	public void clean() {
-		this.textureLoader.clean();
-		this.vertexLoader.clean();
+		textureLoader.clean();
+		vertexLoader.clean();
 	}
 
 }

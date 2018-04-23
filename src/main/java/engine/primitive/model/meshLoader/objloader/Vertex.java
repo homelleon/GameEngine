@@ -18,15 +18,15 @@ public class Vertex {
 	public Vertex(){}
 	
 	public Vertex(Vector3f pos)	{
-		this.setPos(pos);
-		this.setTextureCoord(new Vector2f(0,0));
-		this.setNormal(new Vector3f(0,0,0));
+		setPos(pos);
+		setTextureCoord(new Vector2f(0,0));
+		setNormal(new Vector3f(0,0,0));
 	}
 	
 	public Vertex(Vector3f pos, Vector2f texture) {
-		this.setPos(pos);
-		this.setTextureCoord(texture);
-		this.setNormal(new Vector3f(0,0,0));
+		setPos(pos);
+		setTextureCoord(texture);
+		setNormal(new Vector3f(0,0,0));
 	}
 
 	public Vector3f getPos() {
@@ -59,7 +59,7 @@ public class Vertex {
 	}
 	
 	public Vertex getDublicateVertex() {
-		return this.dublicateVertex;
+		return dublicateVertex;
 	}
 
 	public Vector3f getTangent() {
@@ -79,20 +79,13 @@ public class Vertex {
 	}
 	
 	public boolean equals(Object obj) {
-		if(this == obj) {
-			return true;
-		}
-		if(obj == null || getClass() != obj.getClass() || this.hashCode() != obj.hashCode()) {
-			return false;
-		}
+		if (this == obj) return true;		
+		if (obj == null || getClass() != obj.getClass() || this.hashCode() != obj.hashCode()) return false;
+		
 		Vertex other = (Vertex) obj;
-		if(this.getPos().equals(other.getPos()) &&
+		return (this.getPos().equals(other.getPos()) &&
 				this.getNormal().equals(other.getNormal()) &&
-				this.getTextureCoord().equals(other.getTextureCoord())) {
-			return true;
-		} else {
-			return false;
-		}
+				this.getTextureCoord().equals(other.getTextureCoord()));
 		
 	}
 	

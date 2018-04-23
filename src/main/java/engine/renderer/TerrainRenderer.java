@@ -6,9 +6,6 @@ import org.lwjgl.util.vector.Vector4f;
 
 import core.EngineMain;
 import core.settings.EngineSettings;
-import manager.octree.Node;
-import object.camera.Camera;
-import object.light.Light;
 import object.terrain.Terrain;
 import object.terrain.TerrainNode;
 import object.terrain.TerrainQuadTree;
@@ -16,6 +13,7 @@ import primitive.buffer.VAO;
 import primitive.texture.Texture2D;
 import primitive.texture.material.TerrainMaterial;
 import primitive.texture.terrain.TerrainTexturePack;
+import scene.Scene;
 import shader.terrain.TerrainShader;
 import tool.GraphicUtils;
 import tool.math.Matrix4f;
@@ -26,7 +24,7 @@ public class TerrainRenderer {
 	private TerrainShader shader;
 
 	public TerrainRenderer(Matrix4f projectionMatrix) {
-		this.shader = new TerrainShader();
+		shader = new TerrainShader();
 		shader.start();
 		shader.connectTextureUnits();
 		shader.loadProjectionMatrix(projectionMatrix);
@@ -36,8 +34,7 @@ public class TerrainRenderer {
 		shader.stop();
 	}
 	
-	public void render(Collection<Terrain> terrains, Vector4f clipPlane, Collection<Light> lights,
-			Camera camera, Matrix4f toShadowMapSpace) {
+	public void render(Collection<Terrain> terrains, Scene scene, Vector4f clipPlane, Matrix4f toShadowMapSpace) {
 		
 		if (EngineMain.getWiredFrameMode() == EngineSettings.WIRED_FRAME_TERRAIN || 
 				EngineMain.getWiredFrameMode() == EngineSettings.WIRED_FRAME_ENTITY_TERRAIN) {
@@ -48,20 +45,18 @@ public class TerrainRenderer {
 		shader.loadClipPlane(clipPlane);
 		shader.loadSkyColor(new Color(EngineSettings.RED, EngineSettings.GREEN, EngineSettings.BLUE));
 		shader.loadFogDensity(EngineSettings.FOG_DENSITY);
-		shader.loadLights(lights);
-		shader.loadViewMatrix(camera.getViewMatrix());
-		shader.loadCameraPosition(camera.getPosition());
+		shader.loadLights(scene.getLights().getAll());
+		shader.loadViewMatrix(scene.getCamera().getViewMatrix());
+		shader.loadCameraPosition(scene.getCamera().getPosition());
 		shader.loadToShadowSpaceMatrix(toShadowMapSpace);
 		shader.loadShadowVariables(EngineSettings.SHADOW_DISTANCE, EngineSettings.SHADOW_MAP_SIZE,
 				EngineSettings.SHADOW_TRANSITION_DISTANCE, EngineSettings.SHADOW_PCF);
 		for (Terrain terrain : terrains) {
-			if(camera.isMoved()) {
-				terrain.updateQuadTree(camera);
-			}
+			if (scene.getCamera().isMoved())
+				terrain.updateQuadTree(scene.getCamera());
 			prepareTerrain(terrain);
-			for(Node node : terrain.getQuadTree().getChildren()) {
-				((TerrainNode) node).render(shader, terrain.getQuadTree().getVao());
-			}
+			terrain.getQuadTree().getChildren()
+				.forEach(node -> ((TerrainNode) node).render(shader, terrain.getQuadTree().getVao()));
 			unbindTexture();
 		}
 
@@ -70,21 +65,20 @@ public class TerrainRenderer {
 		GraphicUtils.doWiredFrame(false);
 	}
 
-	public void render(Collection<Terrain> terrains, Collection<Light> lights, Camera camera) {
+	public void render(Collection<Terrain> terrains, Scene scene) {
 		shader.start();
 		shader.loadClipPlane(EngineSettings.NO_CLIP);
 		shader.loadSkyColor(new Color(EngineSettings.RED, EngineSettings.GREEN, EngineSettings.BLUE));
 		shader.loadFogDensity(EngineSettings.FOG_DENSITY);
-		shader.loadLights(lights);
-		shader.loadViewMatrix(camera.getViewMatrix());
-		shader.loadCameraPosition(camera.getPosition());
+		shader.loadLights(scene.getLights().getAll());
+		shader.loadViewMatrix(scene.getCamera().getViewMatrix());
+		shader.loadCameraPosition(scene.getCamera().getPosition());
 		shader.loadShadowVariables(EngineSettings.SHADOW_DISTANCE, EngineSettings.SHADOW_MAP_SIZE,
 				EngineSettings.SHADOW_TRANSITION_DISTANCE, EngineSettings.SHADOW_PCF);
 		for (Terrain terrain : terrains) {
 			prepareTerrain(terrain);
-			for(Node node : terrain.getQuadTree().getChildren()) {
-				((TerrainNode) node).render(shader, terrain.getQuadTree().getVao());
-			}
+			terrain.getQuadTree().getChildren()
+				.forEach(node -> ((TerrainNode) node).render(shader, terrain.getQuadTree().getVao()));
 			unbindTexture();
 
 		}

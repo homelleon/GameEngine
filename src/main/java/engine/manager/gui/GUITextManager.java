@@ -31,71 +31,65 @@ public class GUITextManager {
 	}
 
 	public void addAll(Collection<GUIText> textList) {
-		if ((textList != null) && (!textList.isEmpty())) {
-			textList.forEach(text -> this.add(text));
-		} else {
-			if(EngineDebug.hasDebugPermission()) {
-				System.err.println(
-						"Trying to add null collection value into GUITextManager array!");
-			}
+		if (textList == null || textList.isEmpty()) {
+			if (EngineDebug.hasDebugPermission())
+				System.err.println("Trying to add null collection value into GUITextManager array!");
+			return;
 		}
+		
+		textList.forEach(text -> add(text));
 	}
 
 	public void add(GUIText text) {
-		if (text != null) {
-			this.texts.put(text.getName(), text);
-			String font = text.getFont();
-			this.fontManager.create(font);
-			TextMeshData data = fontManager.get(font).loadText(text);
-			VAO vao = Loader.getInstance().getVertexLoader().loadToVAO(data.getVertexPositions(), data.getTextureCoords());
-			text.setMeshInfo(vao, data.getVertexCount());
-		} else {
-			if(EngineDebug.hasDebugPermission()) {
-				System.err.println(
-						"Trying to add null value into GUITextManager array!");
-			}
+		if (text == null) {
+			if (EngineDebug.hasDebugPermission())
+				System.err.println("Trying to add null value into GUITextManager array!");
+			return;
 		}
+		
+		texts.put(text.getName(), text);
+		String font = text.getFont();
+		fontManager.create(font);
+		TextMeshData data = fontManager.get(font).loadText(text);
+		VAO vao = Loader.getInstance().getVertexLoader().loadToVAO(data.getVertexPositions(), data.getTextureCoords());
+		text.setMeshInfo(vao, data.getVertexCount());
 	}
 	
 	public void changeContent(String name, String content) {
-		if(this.texts.containsKey(name)) {
-			GUIText text = this.texts.get(name);
-			text.delete();
-			TextRebuildManager.changeContent(text, content);
-			String font = text.getFont();
-			TextMeshData data = this.fontManager.get(font).loadText(text);
-			VAO vao = Loader.getInstance().getVertexLoader().loadToVAO(data.getVertexPositions(), data.getTextureCoords());
-			text.setMeshInfo(vao, data.getVertexCount());
-		} else {
-			if(EngineDebug.hasDebugPermission()) {
-				System.err.println(
-						"Can't change text because can't find text with name: " + name + "!");
-			}
+		if (!texts.containsKey(name)) {
+			if (EngineDebug.hasDebugPermission())
+				System.err.println("Can't change text because can't find text with name: " + name + "!");
+			return;
 		}
+		
+		GUIText text = texts.get(name);
+		text.delete();
+		TextRebuildManager.changeContent(text, content);
+		String font = text.getFont();
+		TextMeshData data = fontManager.get(font).loadText(text);
+		VAO vao = Loader.getInstance().getVertexLoader().loadToVAO(data.getVertexPositions(), data.getTextureCoords());
+		text.setMeshInfo(vao, data.getVertexCount());
 	}
 
 	public GUIText get(String name) {
-		return this.texts.containsKey(name) ? this.texts.get(name) : null;
+		return texts.containsKey(name) ? texts.get(name) : null;
 	}
 
 	public Collection<GUIText> getAll() {
-		return this.texts.values();
+		return texts.values();
 	}
 
 	public boolean delete(String name) {
-		if(this.texts.containsKey(name)) {
-			this.texts.get(name).delete();
-			this.texts.remove(name);
-			return true;
-		} else {
-			return false;
-		}
+		if (!texts.containsKey(name)) return false;		
+		texts.get(name).delete();
+		texts.remove(name);
+		return true;
 	}
 
 	public void clean() {
-		this.fontManager.clean();
-		this.texts.values().forEach(GUIText::delete);
-		this.texts.clear();
+		fontManager.clean();
+		texts.values().forEach(GUIText::delete);
+		texts.clear();
 	}
 
 	public FontManager getFonts() {

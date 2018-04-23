@@ -10,9 +10,8 @@ import core.settings.GameSettings;
 import core.settings.SettingsXMLParser;
 import manager.RawManager;
 import manager.scene.ObjectManager;
-import manager.scene.SceneManager;
-import manager.scene.SceneManagerImpl;
-import object.audio.AudioMaster;
+import manager.scene.SceneFactory;
+import manager.scene.SceneFactoryImpl;
 import primitive.buffer.Loader;
 import renderer.scene.EditorSceneRenderer;
 import renderer.scene.GameSceneRenderer;
@@ -43,17 +42,9 @@ public class Loop {
 	private static final String SETTINGS_NAME = "Settings";
 	
 	private SceneRenderer sceneRenderer;
-
-	private SceneManager sceneManager;
-
 	private Scene scene;
-	private ObjectManager modelMap;
-	private ObjectManager levelMap;
-	private RawManager rawMap;
-
 	private Game game;
 
-	private boolean mapIsLoaded = false;
 	private boolean isPaused = false;
 	private boolean isExit = false;
 
@@ -77,34 +68,6 @@ public class Loop {
 		this.frame = frame;
 	}
 
-	/**
-	 * Initilize display, load game settings and setup scene objects.
-	 * 
-	 * @see #prepare()
-	 */
-	private void initializeGameMode() {
-		DisplayManager.createDisplay();
-		/*--------------PRE LOAD TOOLS-------------*/
-		loadGameSettings();
-		if (!mapIsLoaded) 
-			loadModelMap("defaultModelMap");
-		AudioMaster audioMaster = new AudioMaster();
-		scene = new Scene(levelMap, audioMaster);
-		sceneRenderer = new GameSceneRenderer();
-		sceneManager = new SceneManagerImpl();
-		sceneManager.init(scene, EngineSettings.ENGINE_MODE_GAME);
-	}
-	
-	private void initializeEditorMode() {
-		DisplayManager.createDisplay(frame);
-		frame.pack();
-		/*--------------PRE LOAD TOOLS-------------*/
-		scene = new Scene();
-		sceneRenderer = new EditorSceneRenderer();
-		sceneManager = new SceneManagerImpl();
-		sceneManager.init(scene, EngineSettings.ENGINE_MODE_EDITOR);
-	}
-
 	public void run() {
 		prepare();
 		sceneRenderer.render(true);
@@ -115,15 +78,7 @@ public class Loop {
 		
 		clean();
 	}
-	
-	public void exit() {
-		isExit = true;
-	}
 
-	/**
-	 * Initialize scene, rendering system, mouse settings, and game events on
-	 * start.
-	 */
 	private void prepare() {
 		if (isEditMode) {
 			initializeEditorMode();
@@ -134,11 +89,126 @@ public class Loop {
 		sceneRenderer.initialize(scene);
 		MouseGame.initilize(3);
 		
-		if (!isEditMode) {
-			MouseGame.switchCoursorVisibility();
-			this.game = GameCore.loadGame();
-			game.__onStart();
+		if (isEditMode) return;
+		
+		MouseGame.switchCoursorVisibility();
+		this.game = GameCore.loadGame();
+		game.__onStart();
+	}
+
+	private void initializeGameMode() {
+		DisplayManager.createDisplay();
+		/*--------------PRE LOAD TOOLS-------------*/		
+		sceneRenderer = new GameSceneRenderer();
+		SceneFactory sceneFactory = new SceneFactoryImpl();		
+		scene = sceneFactory.create(loadMap(), EngineSettings.ENGINE_MODE_GAME);		
+	}
+	
+	private ObjectManager loadMap() {
+		GameSettings settings = loadGameSettings();
+		RawManager rawMap = loadRawMap(settings.getRawMapName());
+		ObjectManager modelMap = loadModelMap(settings.getModelMapName(), rawMap);
+		ObjectManager levelMap = loadLevelMap(settings.getLevelMapName(), modelMap);
+		return levelMap;
+	}
+
+	private GameSettings loadGameSettings() {
+		if (EngineDebug.hasDebugPermission()) {
+			EngineDebug.printBorder();
+			EngineDebug.printOpen("Game Settings");
+			EngineDebug.println("Loading game settings...");
 		}
+		
+		IXMLLoader xmlLoader = new XMLFileLoader(
+				EngineSettings.SETTINGS_GAME_PATH + SETTINGS_NAME + EngineSettings.EXTENSION_XML);
+		IObjectParser<GameSettings> settingsParser = new SettingsXMLParser(xmlLoader.load());
+		GameSettings settings = settingsParser.parse();
+		
+		if (EngineDebug.hasDebugPermission()) {
+			EngineDebug.println(settings.getRawMapName(), 1);
+			EngineDebug.println(settings.getModelMapName(), 1);
+			EngineDebug.println(settings.getLevelMapName(), 1);
+			EngineDebug.println("Loading complete...");
+			EngineDebug.printClose("Game Settings");
+			EngineDebug.printBorder();
+		}		
+		
+		return settings;
+	}
+	
+	private RawManager loadRawMap(String name) {
+		if (EngineDebug.hasDebugPermission()) {
+			EngineDebug.printBorder();
+			EngineDebug.printOpen("Raw map");
+			EngineDebug.println("Loading raws...");
+		}
+		
+		IXMLLoader xmlLoader = new XMLFileLoader(EngineSettings.MAP_PATH + name + EngineSettings.EXTENSION_XML);
+		IObjectParser<RawManager> mapParser = new RawMapXMLParser(xmlLoader.load());
+		RawManager rawMap = mapParser.parse();
+		
+		return rawMap;
+	}
+
+	private ObjectManager loadModelMap(String name, RawManager rawMap) {
+		if (EngineDebug.hasDebugPermission()) {
+			EngineDebug.printBorder();
+			EngineDebug.printOpen("Model map");
+			EngineDebug.println("Loading models...");
+		}
+		
+		String path = EngineSettings.MAP_PATH + name + EngineSettings.EXTENSION_XML;
+		IXMLLoader xmlLoader = new XMLFileLoader(path);
+		IObjectParser<ObjectManager> mapParser = new ModelMapXMLParser(xmlLoader.load(), rawMap);
+		ObjectManager modelMap = mapParser.parse();
+		
+		return modelMap;
+	}
+
+	private ObjectManager loadLevelMap(String name, ObjectManager modelMap) {
+		if (EngineDebug.hasDebugPermission()) {
+			EngineDebug.printBorder();
+			EngineDebug.printOpen("Level map");
+			EngineDebug.println("Loading level...");
+		}
+		
+		IXMLLoader xmlLoader = new XMLFileLoader(EngineSettings.MAP_PATH + name + EngineSettings.EXTENSION_XML);
+		IObjectParser<ObjectManager> mapParser = new LevelMapXMLParser(xmlLoader.load(), modelMap);
+		ObjectManager levelMap = mapParser.parse();
+		
+		if (EngineDebug.hasDebugPermission()) {
+			EngineDebug.println("Total loaded entities: " + levelMap.getEntities().getAll().stream().count(), 2);
+			EngineDebug.println("Total loaded terrains: " + levelMap.getTerrains().getAll().stream().count(), 2);
+		}
+		
+		return levelMap;
+	}
+	
+	private void initializeEditorMode() {
+		DisplayManager.createDisplay(frame);
+		frame.pack();
+		/*--------------PRE LOAD TOOLS-------------*/
+		sceneRenderer = new EditorSceneRenderer();
+		SceneFactory sceneFactory = new SceneFactoryImpl();
+		scene = sceneFactory.create(null, EngineSettings.ENGINE_MODE_EDITOR);
+	}
+	
+	public void exit() {
+		isExit = true;
+	}
+
+	public Scene getScene() {
+		return scene;
+	}
+
+	public void setScenePaused(boolean value) {
+		MouseGame.centerCoursor();
+		MouseGame.switchCoursorVisibility();
+		isPaused = value;
+	}
+
+	public boolean getIsScenePaused() {
+		return isPaused;
 	}
 
 	/**
@@ -165,120 +235,8 @@ public class Loop {
 	private void clean() {
 		scene.clean();
 		Loader.getInstance().clean();
-		sceneRenderer.clean();
-		
-		if(!isEditMode) {
-			levelMap.clean();
-			modelMap.clean();
-			rawMap.clean();
-		}
-		
+		sceneRenderer.clean();		
 		DisplayManager.closeDisplay();
-	}
-
-	/**
-	 * Loads map for game objects that have to be in the scene.
-	 * 
-	 * @param name
-	 *            String value of the file name
-	 * 
-	 * @see #loadGameSettings()
-	 */
-	private void loadModelMap(String name) {
-		if (EngineDebug.hasDebugPermission()) {
-			EngineDebug.printBorder();
-			EngineDebug.printOpen("Model map");
-			EngineDebug.println("Loading models...");
-		}
-		
-		String path = EngineSettings.MAP_PATH + name + EngineSettings.EXTENSION_XML;
-		IXMLLoader xmlLoader = new XMLFileLoader(path);
-		IObjectParser<ObjectManager> mapParser = new ModelMapXMLParser(xmlLoader.load(), rawMap);
-		modelMap = mapParser.parse();
-		mapIsLoaded = true;
-	}
-
-	/**
-	 * Loads object map for default editor object menu.
-	 * 
-	 * @param name
-	 *            String value of the file name
-	 * 
-	 * @see #loadGameSettings()
-	 */
-	private void loadLevelMap(String name) {
-		if (EngineDebug.hasDebugPermission()) {
-			EngineDebug.printBorder();
-			EngineDebug.printOpen("Level map");
-			EngineDebug.println("Loading level...");
-		}
-		
-		IXMLLoader xmlLoader = new XMLFileLoader(EngineSettings.MAP_PATH + name + EngineSettings.EXTENSION_XML);
-		IObjectParser<ObjectManager> mapParser = new LevelMapXMLParser(xmlLoader.load(), this.modelMap);
-		levelMap = mapParser.parse();
-		if (EngineDebug.hasDebugPermission()) {
-			EngineDebug.println("Total loaded entities: " + levelMap.getEntities().getAll().stream().count(), 2);
-			EngineDebug.println("Total loaded terrains: " + levelMap.getTerrains().getAll().stream().count(), 2);
-		}
-	}
-	
-	private void loadRawMap(String name) {
-		if (EngineDebug.hasDebugPermission()) {
-			EngineDebug.printBorder();
-			EngineDebug.printOpen("Raw map");
-			EngineDebug.println("Loading raws...");
-		}
-		
-		IXMLLoader xmlLoader = new XMLFileLoader(EngineSettings.MAP_PATH + name + EngineSettings.EXTENSION_XML);
-		IObjectParser<RawManager> mapParser = new RawMapXMLParser(xmlLoader.load());
-		rawMap = mapParser.parse();
-	}
-
-	/**
-	 * Loads game settings and sets name to map and object map. After that it
-	 * loads map and object map using name written in the game settings file.
-	 * 
-	 * @see #loadModelMap(String)
-	 * @see #loadLevelMap(String)
-	 */
-	private void loadGameSettings() {
-		if (EngineDebug.hasDebugPermission()) {
-			EngineDebug.printBorder();
-			EngineDebug.printOpen("Game Settings");
-			EngineDebug.println("Loading game settings...");
-		}
-		
-		IXMLLoader xmlLoader = new XMLFileLoader(
-				EngineSettings.SETTINGS_GAME_PATH + SETTINGS_NAME + EngineSettings.EXTENSION_XML);
-		IObjectParser<GameSettings> settingsParser = new SettingsXMLParser(xmlLoader.load());
-		GameSettings settings = settingsParser.parse();
-		
-		if (EngineDebug.hasDebugPermission()) {
-			EngineDebug.println(settings.getRawMapName(), 1);
-			EngineDebug.println(settings.getModelMapName(), 1);
-			EngineDebug.println(settings.getLevelMapName(), 1);
-			EngineDebug.println("Loading complete...");
-			EngineDebug.printClose("Game Settings");
-			EngineDebug.printBorder();
-		}
-		
-		loadRawMap(settings.getRawMapName());
-		loadModelMap(settings.getModelMapName());
-		loadLevelMap(settings.getLevelMapName());
-	}
-
-	public Scene getScene() {
-		return scene;
-	}
-
-	public void setScenePaused(boolean value) {
-		MouseGame.centerCoursor();
-		MouseGame.switchCoursorVisibility();
-		isPaused = value;
-	}
-
-	public boolean getIsScenePaused() {
-		return isPaused;
 	}
 
 }

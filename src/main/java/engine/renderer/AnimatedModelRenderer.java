@@ -26,7 +26,7 @@ public class AnimatedModelRenderer {
 	 * Initializes the shader program used for rendering animated models.
 	 */
 	public AnimatedModelRenderer() {
-		this.shader = new AnimatedModelShader();
+		shader = new AnimatedModelShader();
 	}
 
 	/**

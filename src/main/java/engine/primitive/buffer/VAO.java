@@ -15,7 +15,7 @@ public class VAO {
 
 	private static final int BYTES_PER_FLOAT = 4;
 	private static final int BYTES_PER_INT = 4;
-	public final int id;
+	private final int id;
 	private List<VBO> dataVbos = new ArrayList<VBO>();
 	private VBO indexVbo;
 	private int indexCount;
@@ -48,10 +48,10 @@ public class VAO {
 	}
 
 	public void createIndexBuffer(int[] indices) {
-		this.indexVbo = VBO.create(GL15.GL_ELEMENT_ARRAY_BUFFER);
+		indexVbo = VBO.create(GL15.GL_ELEMENT_ARRAY_BUFFER);
 		indexVbo.bind();
 		indexVbo.storeData(indices);
-		this.indexCount = indices.length;
+		indexCount = indices.length;
 	}
 
 	public void createAttribute(int attribute, int attrSize, float[] data) {
@@ -118,9 +118,8 @@ public class VAO {
 		for (VBO vbo : dataVbos) {
 			vbo.delete();
 		}
-		if(indexVbo!=null) {
+		if (indexVbo!= null)
 			indexVbo.delete();
-		}
 	}
 
 	private void bind() {

@@ -43,61 +43,61 @@ public class GUIButton extends GUIObject {
 	}
 
 	public Thread select() {
-		this.isSelected = true;
+		isSelected = true;
 		Thread thread = null;
-		if(this.selectedAction != null) {
-			thread = new Thread(this.selectedAction);
+		if (selectedAction != null) {
+			thread = new Thread(selectedAction);
 			thread.start();
 		}
-		if(EngineDebug.hasDebugPermission()) {
-			EngineDebug.println("Button " + this.name + " is selected!");
+		if (EngineDebug.hasDebugPermission()) {
+			EngineDebug.println("Button " + name + " is selected!");
 		}
 		return thread;
 	}
 	
 	public Thread select(Action action) {
 		Thread thread = null;
-		this.isSelected = true;
-		if(action != null) {			
+		isSelected = true;
+		if (action != null) {			
 			thread = new Thread(action);
 			thread.start();
 			if(EngineDebug.hasDebugPermission()) {
-				EngineDebug.println("Button " + this.name + " is selected!");
+				EngineDebug.println("Button " + name + " is selected!");
 			}
 		} else {
-			if(EngineDebug.hasDebugPermission()) {
-				EngineDebug.println("There is empty action in button " + this.name + " on selection!");
+			if (EngineDebug.hasDebugPermission()) {
+				EngineDebug.println("There is empty action in button " + name + " on selection!");
 			}
 		}
 		return thread;
 	}
 
 	public Thread deselect() {
-		this.isSelected = false;
+		isSelected = false;
 		Thread thread = null;
-		if(this.deselectedAction != null) {
-			thread = new Thread(this.deselectedAction);
+		if (deselectedAction != null) {
+			thread = new Thread(deselectedAction);
 			thread.start();
 		}
-		if(EngineDebug.hasDebugPermission()) {
-			EngineDebug.println("Button " + this.name + " is deselected!");
+		if (EngineDebug.hasDebugPermission()) {
+			EngineDebug.println("Button " + name + " is deselected!");
 		}		
 		return thread;
 	}
 	
 	public Thread deselect(Action action) {
 		Thread thread = null;
-		this.isSelected = false;
-		if(action != null) {
+		isSelected = false;
+		if (action != null) {
 			thread = new Thread(action);
 			thread.start();
 		} else {
-			if(EngineDebug.hasDebugPermission()) {
-				EngineDebug.println("There is empty action in button " + this.name + " on deselection!");
+			if (EngineDebug.hasDebugPermission()) {
+				EngineDebug.println("There is empty action in button " + name + " on deselection!");
 			}
 		}
 		if(EngineDebug.hasDebugPermission()) {
-			EngineDebug.println("Button " + this.name + " is deselected!");
+			EngineDebug.println("Button " + name + " is deselected!");
 		}
 		return thread;
 	}
@@ -109,48 +109,48 @@ public class GUIButton extends GUIObject {
 			e.printStackTrace();
 		}
 		Thread thread = null;
-		if(action != null) {
+		if (action != null) {
 			thread = new Thread(action);
 			thread.start();			
 		} else {
 			if(EngineDebug.hasDebugPermission()) {
-				EngineDebug.println("There is empty action in button " + this.name + " on using!");
+				EngineDebug.println("There is empty action in button " + name + " on using!");
 			}
 		}
 		if(EngineDebug.hasDebugPermission()) {
-			EngineDebug.println("Button " + this.name + " is used!");
+			EngineDebug.println("Button " + name + " is used!");
 		}
 		return thread;
 	}
 	
 	public Thread use() {
 		try {
-			if(this.isSelected) {
-				this.deselect().join();
+			if (isSelected) {
+				deselect().join();
 			}
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 		Thread thread = null;
-		if(useAction != null) {
-			thread = new Thread(this.useAction);
+		if (useAction != null) {
+			thread = new Thread(useAction);
 			thread.start();
 		}
-		if(EngineDebug.hasDebugPermission()) {
-			EngineDebug.println("Button " + this.name + " is used!");
+		if (EngineDebug.hasDebugPermission()) {
+			EngineDebug.println("Button " + name + " is used!");
 		}
 		return thread;
 	}
 	
 	public GUIGroup getGroup() {
-		return this.guiGroup;
+		return guiGroup;
 	}
 	
 	public void setBoundingArea(BoundingQuad quad, boolean centered) {
 		this.quad = quad;
 		if(centered) {
 			Vector2f center = 
-			this.guiGroup.getAll().stream()
+			guiGroup.getAll().stream()
 				.flatMap(list -> list.getTextures().stream())
 				.map(texture -> texture.getPosition())
 				.reduce((tPosition1, tPosition2) -> {
@@ -162,7 +162,7 @@ public class GUIButton extends GUIObject {
 	}
 	
 	public BoundingQuad getBoundingArea() {
-		return this.quad;
+		return quad;
 	}
 	
 	public void setUseAction(Action action) {
@@ -180,22 +180,22 @@ public class GUIButton extends GUIObject {
 	@Override
 	public void show() {
 		super.show();
-		this.guiGroup.show();
+		guiGroup.show();
 	}
 
 	@Override
 	public void hide() {
 		super.hide();
-		this.guiGroup.hide();
+		guiGroup.hide();
 	}
 	
 	public void move(Vector2f position) {
-		this.guiGroup.move(position);
-		this.quad.move(position);
+		guiGroup.move(position);
+		quad.move(position);
 	}
 	
 	public void increaseScale(Vector2f scale) {
-		this.guiGroup.getAll().stream()
+		guiGroup.getAll().stream()
 			.flatMap(gui -> gui.getTextures().stream())
 			.forEach(texture -> texture.increaseScale(scale));
 	}
@@ -218,7 +218,7 @@ public class GUIButton extends GUIObject {
 	 *         false if the current button is not selected
 	 */
 	public boolean getIsSelected() {
-		return this.isSelected;
+		return isSelected;
 	}
 	
 	/**
@@ -229,7 +229,7 @@ public class GUIButton extends GUIObject {
 	 * @return {@link Vector2f} left-bottom point
 	 */
 	private Vector2f calculateFirstPoint() {
-		return this.guiGroup.getAll().stream()
+		return guiGroup.getAll().stream()
 					.flatMap(gui -> gui.getTextures().stream())
 					.map(texture -> this.getTextureFirstPoint(texture))
 					.min((a,b) -> Maths.compare(a,b))
@@ -244,7 +244,7 @@ public class GUIButton extends GUIObject {
 	 * @return {@link Vector2f} right-up point
 	 */
 	private Vector2f calculateSecondPoint() {
-		return this.guiGroup.getAll().stream()
+		return guiGroup.getAll().stream()
 					.flatMap(gui -> gui.getTextures().stream())
 					.map(texture -> this.getTextureSecondPoint(texture))
 					.max((a,b) -> Maths.compare(a,b))
@@ -252,18 +252,18 @@ public class GUIButton extends GUIObject {
 	}
 	
 	private Vector2f getTextureFirstPoint(GUITexture texture) {
-		float width = texture.getTexture().getWidth()/(float)Display.getWidth();
-		float height = texture.getTexture().getHeight()/(float)Display.getHeight();
-		float x = texture.getPosition().x - width*texture.getScale().x/2;
-		float y = texture.getPosition().y - height*texture.getScale().y/2;
+		float width = texture.getTexture().getWidth() / (float)Display.getWidth();
+		float height = texture.getTexture().getHeight() / (float)Display.getHeight();
+		float x = texture.getPosition().x - width * texture.getScale().x / 2;
+		float y = texture.getPosition().y - height * texture.getScale().y / 2;
 		return new Vector2f(x, y); 
 	}
 	
 	public Vector2f getTextureSecondPoint(GUITexture texture) {
-		float width = texture.getTexture().getWidth()/(float)Display.getWidth();
-		float height = texture.getTexture().getHeight()/(float)Display.getHeight();
-		float x = texture.getPosition().x + width*texture.getScale().x/2;
-		float y = texture.getPosition().y + height*texture.getScale().y/2;
+		float width = texture.getTexture().getWidth() / (float)Display.getWidth();
+		float height = texture.getTexture().getHeight() / (float)Display.getHeight();
+		float x = texture.getPosition().x + width * texture.getScale().x / 2;
+		float y = texture.getPosition().y + height * texture.getScale().y / 2;
 		return new Vector2f(x, y); 
 	}
 

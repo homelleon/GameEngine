@@ -17,7 +17,7 @@ public class EntityBuilder {
 	private int textureIndex = 0;
 	
 	public EntityBuilder setModel(Model model) {
-		this.models.add(model);
+		models.add(model);
 		return this;
 	}
 
@@ -42,15 +42,15 @@ public class EntityBuilder {
 	}
 
 	public Entity build(String name) {
-		if (!models.isEmpty()) {
-			int shaderType = models.get(0).getMaterial().getNormalMap() != null ?
-				Shader.NORMAL_ENTITY :
-				Shader.ENTITY;
-			Shader shader = ShaderPool.getInstance().get(shaderType);
-			return new Entity(name, shader, models, textureIndex, position, rotation, new Vector3f(scale, scale, scale));
-		} else {
+		if (models.isEmpty())
 			throw new NullPointerException("No model defined for entity builder!");
-		}
+		
+		int shaderType = models.get(0).getMaterial().getNormalMap() != null ?
+			Shader.NORMAL_ENTITY :
+			Shader.ENTITY;
+		Shader shader = ShaderPool.getInstance().get(shaderType);
+		return new Entity(name, shader, models, textureIndex, position, rotation, new Vector3f(scale, scale, scale));
+
 	}
 	
 }

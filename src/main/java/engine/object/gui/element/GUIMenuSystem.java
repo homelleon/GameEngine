@@ -18,12 +18,12 @@ import object.gui.Hideable;
 public class GUIMenuSystem {
 	
 	private static GUIMenuSystem instance;
-	Map<String, GUIMenu> menus = new HashMap<String, GUIMenu>();
+	private Map<String, GUIMenu> menus = new HashMap<String, GUIMenu>();
 	private GUIMenu activeMenu;
 	private boolean isVisible = false;
 	
 	public static GUIMenuSystem getInstace() {
-		if(instance == null) {
+		if (instance == null) {
 			instance = new GUIMenuSystem();
 		}
 		return instance;
@@ -32,11 +32,11 @@ public class GUIMenuSystem {
 	private GUIMenuSystem() {}
 	
 	public void add(GUIMenu menu) {
-		this.menus.put(menu.getName(), menu);
+		menus.put(menu.getName(), menu);
 	}
 
 	public void addAll(Collection<GUIMenu> menuList) {
-		this.menus.putAll(menuList.stream()
+		menus.putAll(menuList.stream()
 				.collect(Collectors.toMap(
 						GUIMenu::getName, Function.identity())));
 	}
@@ -46,67 +46,58 @@ public class GUIMenuSystem {
 	}
 
 	public Collection<GUIMenu> getAll() {
-		return this.menus.values();
+		return menus.values();
 	}	
 
 	public GUIMenu active(String name) {
-		return this.activeMenu = this.menus.get(name);
+		return activeMenu = menus.get(name);
 	}	
 	
 	public GUIMenu getActivated() {
-		return this.activeMenu;
+		return activeMenu;
 	}
 
 	public boolean delete(String name) {
-		if(this.menus.containsKey(name)) {
-			this.menus.remove(name);
-			return true;
-		} else {
-			return false; 
-		}
+		if (!menus.containsKey(name)) return false;
+		menus.remove(name);
+		return true;
 	}
 
 	public void clean() {
 		menus.values().forEach(GUIMenu::clean);
-		this.menus.clear();
+		menus.clear();
 	}
 	
 	public void show(String name) {
-		if(this.menus.containsKey(name)) {
-			this.menus.get(name).show();
-		} else {
-			throw new NullPointerException("There is no menu with "+ name + " in menu system!");
-		}
+		if (!menus.containsKey(name)) return;
+		menus.get(name).show();
 	}
 	
 	public void hide(String name) {
-		if(this.menus.containsKey(name)) {
-			this.menus.get(name).hide();
-		} else {
-			throw new NullPointerException("There is no menu with "+ name + " in menu system!");
-		}
+		if (!menus.containsKey(name)) return;
+		menus.get(name).hide();
 	}
 
 	public void show() {
-		this.isVisible = true;
-		this.menus.values().forEach(Hideable::show);
+		isVisible = true;
+		menus.values().forEach(Hideable::show);
 	}
 
 	public void hide() {
-		this.isVisible = false;
-		this.menus.values().forEach(Hideable::hide);
+		isVisible = false;
+		menus.values().forEach(Hideable::hide);
 	}
 
 	public void switchVisibility() {
-		if(this.isVisible) {
-			this.hide();
+		if (isVisible) {
+			hide();
 		} else {
-			this.show();
+			show();
 		}
 	}
 
 	public boolean getIsVisible() {
-		return this.isVisible;
+		return isVisible;
 	}
 
 }

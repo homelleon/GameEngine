@@ -16,20 +16,20 @@ public abstract class GUIObject extends Subject<Vector2f> implements Hideable {
 	
 	@Override
 	public void show() {
-		this.isVisible = true;
+		isVisible = true;
 	}
 	
 	@Override
 	public void hide() {
-		this.isVisible = false;
+		isVisible = false;
 	}
 	
 	@Override
 	public void switchVisibility() {
-		if (this.isVisible) {
-			this.hide();
+		if (isVisible) {
+			hide();
 		} else {
-			this.show();
+			show();
 		}
 	}
 	

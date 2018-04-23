@@ -45,13 +45,10 @@ public class Line {
 		double additionalLength = word.getWordWidth();
 		additionalLength += !words.isEmpty() ? spaceSize : 0;
 
-		if (currentLineLength + additionalLength <= maxLength) {
-			words.add(word);
-			currentLineLength += additionalLength;
-			return true;
-		} else {
-			return false;
-		}
+		if (currentLineLength + additionalLength > maxLength) return false;
+		words.add(word);
+		currentLineLength += additionalLength;
+		return true;
 	}
 
 	/**

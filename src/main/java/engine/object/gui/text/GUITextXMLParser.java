@@ -41,7 +41,7 @@ public class GUITextXMLParser extends XMLParser implements IListParser<GUIText> 
 
 	@Override
 	public List<GUIText> parse() {
-		NodeList nodeList = this.document.getDocumentElement().getChildNodes();
+		NodeList nodeList = document.getDocumentElement().getChildNodes();
 		List<GUIText> textList = new ArrayList<GUIText>();
 
 		for (int i = 0; i < nodeList.getLength(); i++) {
@@ -85,7 +85,8 @@ public class GUITextXMLParser extends XMLParser implements IListParser<GUIText> 
 				float r = 0;
 				float g = 0;
 				float b = 0;
-				NodeList colorList = XMLUtils.getChildrenListByTag(guiTextEl, XMLUtils.COLOR);
+				
+				NodeList colorList = XMLUtils.getChildrenListByTag(guiTextEl, XMLUtils.COLOR);				
 				for (int k = 0; k < colorList.getLength(); k++) {
 					Node colorNode = colorList.item(k);
 					if (XMLUtils.ifNodeIsElement(colorNode, XMLUtils.RED)) {
@@ -96,30 +97,32 @@ public class GUITextXMLParser extends XMLParser implements IListParser<GUIText> 
 						b = Float.valueOf(colorNode.getChildNodes().item(0).getNodeValue());
 					}
 				}
+				
 				IXMLLoader xmlLoader = new XMLFileLoader(
 						EngineSettings.TEXT_PATH + path + EngineSettings.EXTENSION_XML);
 				IObjectParser<String> textParser = new TextXMLParser(xmlLoader.load());
 				String text = textParser.parse();
 				count++;
+				
 				if (EngineDebug.hasDebugPermission()) {
-					if (count != Integer.valueOf(id)) {
+					if (count != Integer.valueOf(id))
 						EngineDebug.printError("error id order!");
-					}
 				}
+				
 				GUITextBuilder builder = new GUITextBuilder();
 				builder.setContent(text).setFontSize(size).setFontName(fontName).setPosition(position)
 						.setLineMaxSize(maxLength).setCentered(isCentered);
 				GUIText guiText = builder.build(name);
 				guiText.setColor(new Color(r, g, b));
 				textList.add(guiText);
-				if (EngineDebug.hasDebugPermission()) {
+				
+				if (EngineDebug.hasDebugPermission())
 					EngineDebug.println(guiText.getName(), 2);
-				}
 			}
 		}
-		if (EngineDebug.hasDebugPermission()) {
+		
+		if (EngineDebug.hasDebugPermission())
 			EngineDebug.println("Succed!", 1);
-		}
 
 		return textList;
 	}

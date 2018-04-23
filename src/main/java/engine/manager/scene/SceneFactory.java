@@ -7,10 +7,10 @@ import scene.Scene;
  * Temporal interface to initialize test objects.
  * 
  * @author homelleon
- * @see SceneManagerImpl
+ * @see SceneFactoryImpl
  *
  */
-public interface SceneManager {
+public interface SceneFactory {
 
 	/**
 	 * Initialize test objects in the scene.
@@ -20,6 +20,8 @@ public interface SceneManager {
 	 * @param loader
 	 *            {@link Loader} value
 	 */
-	public void init(Scene scene, int mode);
+	public Scene create(ObjectManager levelMap, int mode);
+	
+	public Scene getScene();
 
 }

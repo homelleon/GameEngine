@@ -12,30 +12,30 @@ public class TextureBuilder {
 	private MyFile file;
 
 	public TextureBuilder(MyFile textureFile) {
-		this.file = textureFile;
+		file = textureFile;
 	}
 
 	public TextureBuilder clampEdges() {
-		this.clampEdges = true;
+		clampEdges = true;
 		return this;
 	}
 
 	public TextureBuilder normalMipMap() {
-		this.mipmap = true;
-		this.anisotropic = false;
+		mipmap = true;
+		anisotropic = false;
 		return this;
 	}
 
 	public TextureBuilder nearestFiltering() {
-		this.mipmap = false;
-		this.anisotropic = false;
-		this.nearest = true;
+		mipmap = false;
+		anisotropic = false;
+		nearest = true;
 		return this;
 	}
 
 	public TextureBuilder anisotropic() {
-		this.mipmap = true;
-		this.anisotropic = true;
+		mipmap = true;
+		anisotropic = true;
 		return this;
 	}
 

@@ -15,9 +15,8 @@ public class GUIGroup extends GUIObject {
 
 	public GUIGroup(String name, List<GUI> guiList) {
 		super(name);
-		if (!guiList.isEmpty()) {
-			guiList.forEach(gui -> this.guis.put(gui.getName(), gui));
-		}
+		if (guiList.isEmpty()) return;
+		guiList.forEach(gui -> guis.put(gui.getName(), gui));
 	}
 
 	public GUIGroup(String name) {
@@ -27,33 +26,28 @@ public class GUIGroup extends GUIObject {
 	@Override
 	public void show() {
 		super.show();
-		if (!guis.isEmpty()) {
-			this.guis.values().forEach(gui -> gui.show());
-		}
+		if (guis.isEmpty()) return;
+		guis.values().forEach(GUI::show);
 	}
 
 	@Override
 	public void hide() {
 		super.hide();
-		if (!guis.isEmpty()) {
-			this.guis.values().forEach(gui -> gui.hide());
-		}
+		if (guis.isEmpty()) return;
+		guis.values().forEach(GUI::hide);
 	}
 
 	public void add(GUI gui) {
-		this.guis.put(gui.getName(), gui);
+		guis.put(gui.getName(), gui);
 	}
 
 	public void addAll(List<GUI> guiList) {
-		guiList.forEach(gui -> this.guis.put(gui.getName(), gui));
+		guiList.forEach(gui -> guis.put(gui.getName(), gui));
 	}
 
 	public GUI get(String name) {
-		GUI gui = null;
-		if (!guis.isEmpty()) {
-			gui = this.guis.get(name);
-		}
-		return gui;
+		if (guis.isEmpty()) return null;
+		return guis.get(name);
 	}
 
 	public Collection<GUI> getAll() {
@@ -61,23 +55,20 @@ public class GUIGroup extends GUIObject {
 	}
 
 	public void move(Vector2f position) {
-		this.guis.values().forEach(gui -> gui.move(position));		
+		guis.values().forEach(gui -> gui.move(position));		
 	}
 
 	public int getPriorityNumber() {
-		return this.priorityNumber;
+		return priorityNumber;
 	}
 
 	public void setPriorityNumber(int number) {
-		this.priorityNumber = number;
+		priorityNumber = number;
 	}
 
 	public void clean() {
-		if (!guis.isEmpty()) {
-			for (GUI gui : guis.values()) {
-				gui.clean();
-			}
-		}
+		if (guis.isEmpty()) return;
+		guis.values().forEach(GUI::clean);
 		guis.clear();
 	}
 

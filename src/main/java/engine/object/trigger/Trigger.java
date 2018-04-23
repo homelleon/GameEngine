@@ -6,9 +6,9 @@ import java.util.Map;
 
 public class Trigger implements TriggerControllable {
 
-	String name;
-	Map<String, List<Condition>> conditions;
-	Map<String, List<Action>> actions;
+	private String name;
+	private Map<String, List<Condition>> conditions;
+	private Map<String, List<Action>> actions;
 
 	public Trigger(String name) {
 		this.name = name;
@@ -20,25 +20,19 @@ public class Trigger implements TriggerControllable {
 
 	@Override
 	public void doActions() {
-		if (checkConditions()) {
-			for (List<Action> batch : actions.values()) {
-				for (Action act : batch) {
-					act.doAction();
-				}
-			}
-		}
+		if (!checkConditions()) return;
+		actions.values().stream()
+			.flatMap(list -> list.stream())
+			.forEach(Action::doAction);
 	}
 
 	private boolean checkConditions() {
-		boolean satisfy = true;
 		for (List<Condition> batch : conditions.values()) {
 			for (Condition cond : batch) {
-				if (!cond.check()) {
-					satisfy = false;
-				}
+				if (!cond.check()) return false;
 			}
 		}
-		return satisfy;
+		return true;
 	}
 
 	@Override

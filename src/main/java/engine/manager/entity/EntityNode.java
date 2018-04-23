@@ -44,11 +44,7 @@ public class EntityNode extends Node<Vector3f> {
 	
 	public boolean isBounding(Entity entity) {
 		float distance = Maths.distance2Points(this.position, entity.getPosition());
-		if (distance > BIG_RADIUS) {
-			return false;
-		}
-		
-		return isInCell(entity);
+		return (distance > BIG_RADIUS) ? false : isInCell(entity);
 	}
 	
 	private boolean isInCell(Entity entity) {
@@ -66,19 +62,15 @@ public class EntityNode extends Node<Vector3f> {
 	}
 	
 	public boolean removeEntity(String name) {
-		if(namedEntityMap.containsKey(name)) {
-			Entity entity = namedEntityMap.get(name);
-			if(positionedEntityMap.containsKey(entity.getPosition())) {
-				positionedEntityMap.remove(entity.getPosition());
-				namedEntityMap.remove(name);
-				entity.removeParentNode();
-				return true;
-			} else {
-				return false;
-			}
-		} else {
-			return false;
-		}
+		if (!namedEntityMap.containsKey(name)) return false;
+		
+		Entity entity = namedEntityMap.get(name);
+		if (!positionedEntityMap.containsKey(entity.getPosition())) return false;
+		
+		positionedEntityMap.remove(entity.getPosition());
+		namedEntityMap.remove(name);
+		entity.removeParentNode();
+		return true;
 	}
 	
 	public void clean() {

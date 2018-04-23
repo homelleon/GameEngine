@@ -20,24 +20,21 @@ public class Animator {
 	}
 
 	public void doAnimation(Animation animation) {
-		this.animationTime = 0;
-		this.currentAnimation = animation;
+		animationTime = 0;
+		currentAnimation = animation;
 	}
 
 	public void update() {
-		if (this.currentAnimation == null) {
-			return;
-		}
+		if (currentAnimation == null) return;
 		increaseAnimationTime();
 		Map<String, Matrix4f> currentPose = calculateCurrentAnimationPose();
 		applyPoseToJoints(currentPose, entity.getRootJoint(), new Matrix4f());
 	}
 
 	public void increaseAnimationTime() {
-		this.animationTime += DisplayManager.getFrameTimeSeconds();
-		if (this.animationTime > this.currentAnimation.getLength()) {
-			this.animationTime %= this.currentAnimation.getLength();
-		}
+		animationTime += DisplayManager.getFrameTimeSeconds();
+		if (animationTime > currentAnimation.getLength())
+			animationTime %= currentAnimation.getLength();
 	}
 
 	private Map<String, Matrix4f> calculateCurrentAnimationPose() {
@@ -56,12 +53,12 @@ public class Animator {
 	}
 
 	private KeyFrame[] getPreviousAndNextFrames() {
-		KeyFrame[] allFrames = this.currentAnimation.getKeyFrames();
+		KeyFrame[] allFrames = currentAnimation.getKeyFrames();
 		KeyFrame previousFrame = allFrames[0];
 		KeyFrame nextFrame = allFrames[0];
 		for (int i = 1; i < allFrames.length; i++) {
 			nextFrame = allFrames[i];
-			if (nextFrame.getTimeStamp() > this.animationTime) {
+			if (nextFrame.getTimeStamp() > animationTime) {
 				break;
 			}
 			previousFrame = allFrames[i];
@@ -71,7 +68,7 @@ public class Animator {
 
 	private float calculateProgression(KeyFrame previousFrame, KeyFrame nextFrame) {
 		float totalTime = nextFrame.getTimeStamp() - previousFrame.getTimeStamp();
-		float currentTime = this.animationTime - previousFrame.getTimeStamp();
+		float currentTime = animationTime - previousFrame.getTimeStamp();
 		return currentTime / totalTime;
 	}
 

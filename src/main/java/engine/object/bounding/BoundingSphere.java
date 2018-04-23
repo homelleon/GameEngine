@@ -6,7 +6,6 @@ import tool.math.vector.Vector3f;
 public class BoundingSphere {
 
 	private float radius;
-	float[] positions;
 
 	public BoundingSphere(float[] vertecies) {
 		float maxRadius = 0;
@@ -25,6 +24,6 @@ public class BoundingSphere {
 	}
 
 	public float getRadius() {
-		return this.radius;
+		return radius;
 	}
 }

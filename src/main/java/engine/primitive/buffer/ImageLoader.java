@@ -86,9 +86,8 @@ public static int loadImage(String file) {
         IntBuffer c = BufferUtils.createIntBuffer(1);
 
         // Use info to read image metadata without decoding the entire image.
-        if (!stbi_info_from_memory(imageBuffer, w, h, c)) {
+        if (!stbi_info_from_memory(imageBuffer, w, h, c))
             throw new RuntimeException("Failed to read image information: " + stbi_failure_reason());
-        }
   
 //        System.out.println("Image width: " + w.get(0));
 //        System.out.println("Image height: " + h.get(0));
@@ -97,9 +96,9 @@ public static int loadImage(String file) {
 
         // Decode the image
         ByteBuffer image = stbi_load_from_memory(imageBuffer, w, h, c, 0);
-        if (image == null) {
+        
+        if (image == null)
             throw new RuntimeException("Failed to load image: " + stbi_failure_reason());
-        }
         
         return image;
 	}

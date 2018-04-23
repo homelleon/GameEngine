@@ -70,7 +70,7 @@ public class DisplayManager {
 				e.printStackTrace();
 			}
 			
-		} else if (frame == null) {
+		} else {
 			// режим игры
 			width = EngineSettings.DISPLAY_WIDTH;
 			height = EngineSettings.DISPLAY_HEIGHT;

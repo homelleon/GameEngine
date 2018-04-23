@@ -185,11 +185,10 @@ public class NormalMappedObjLoader {
 	private static void removeUnusedVertices(List<VertexNM> vertices) {
 		for (VertexNM vertex : vertices) {
 			vertex.averageTangents();
-
-			if (!vertex.isSet()) {
-				vertex.setTextureIndex(0);
-				vertex.setNormalIndex(0);
-			}
+			if (vertex.isSet()) continue;
+			
+			vertex.setTextureIndex(0);
+			vertex.setNormalIndex(0);
 		}
 	}
 
