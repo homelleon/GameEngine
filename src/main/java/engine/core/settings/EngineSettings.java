@@ -121,7 +121,7 @@ public class EngineSettings {
 	public final static String TEXTURE_HEIGHT_MAP_PATH = TEXTURE_PATH + "heightMap/";
 	public final static String TEXTURE_DUDV_MAP_PATH = TEXTURE_PATH + "DUDV/";
 	public final static String TEXTURE_NORMAL_MAP_PATH = TEXTURE_PATH + "normalMap/";
-	public final static String TEXTURE_SKYBOX_PATH = TEXTURE_PATH + "skybox/";
+	public final static String TEXTURE_SKYBOX_PATH = TEXTURE_PATH + "skyBox/";
 	public final static String TEXTURE_SPECULAR_MAP_PATH = TEXTURE_PATH + "specularMap/";
 	public final static String TEXTURE_ALPHA_MAP_PATH = TEXTURE_PATH + "alphaMap/";
 
