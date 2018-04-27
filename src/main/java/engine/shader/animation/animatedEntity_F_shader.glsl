@@ -1,6 +1,4 @@
 // FRAGMENT SHADER - Animated entity
-#version 150
-
 /* ===== in ====== */
 in vec2 pass_textureCoords;
 in vec3 pass_normal;

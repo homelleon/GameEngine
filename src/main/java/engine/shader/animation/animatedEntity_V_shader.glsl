@@ -1,6 +1,4 @@
 // VERTEX SHADER - Animated entity
-#version 150
-
 /* ===== in ====== */
 in vec3 in_position;
 in vec2 in_textureCoordinates;

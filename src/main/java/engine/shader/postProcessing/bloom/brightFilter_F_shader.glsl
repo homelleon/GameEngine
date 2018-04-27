@@ -1,6 +1,4 @@
 // FRAGMENT SHADER - Bright Filter PostProcessing
-#version 150
-
 /* ===== in ====== */
 in vec2 textureCoords;
 

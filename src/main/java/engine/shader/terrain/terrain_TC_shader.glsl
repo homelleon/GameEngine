@@ -1,6 +1,4 @@
 // TESSELLATION CONTROL SHADER - Terrain
-#version 430
-
 layout (vertices = 16) out;
 
 /* ===== in ====== */

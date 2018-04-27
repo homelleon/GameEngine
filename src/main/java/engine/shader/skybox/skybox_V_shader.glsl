@@ -1,6 +1,4 @@
 //VERTEX SHADER - Skybox
-#version 400
-
 /* ===== in ====== */
 in vec3 in_position;
 

@@ -1,7 +1,4 @@
 // FRAGMENT SHADER - Entity
-#version 400 core
-#define LIGHT_MAX 10
-
 /* ===== in ====== */
 
 // geometry

@@ -1,6 +1,4 @@
 // TESSELLATION EVALUATION SHADER - Terrain
-#version 430
-
 layout (quads, equal_spacing, cw) in;
 
 /* ===== in ====== */

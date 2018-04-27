@@ -1,6 +1,4 @@
 // FRAGMENT SHADER - Boundings
-#version 400 core
-
 /* ===== out ===== */
 out vec4 out_Color;
 

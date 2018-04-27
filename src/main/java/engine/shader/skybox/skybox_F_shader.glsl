@@ -1,6 +1,4 @@
 //FRAGMENT SHADER - Skybox
-#version 400
-
 /* ===== in ====== */
 in vec3 textureCoords;
 

@@ -1,6 +1,4 @@
 //FRAGMENT SHADER - Blur PostProcessing
-#version 150
-
 /*===== in ======*/
 in vec2 blurTextureCoords[11];
 

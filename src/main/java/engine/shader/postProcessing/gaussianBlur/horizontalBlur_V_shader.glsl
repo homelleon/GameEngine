@@ -1,6 +1,4 @@
 //VERTEX SHADER - Horizontal Blur PostProcessing
-#version 150
-
 /*===== in ======*/
 in vec2 in_position;
 

@@ -1,6 +1,4 @@
 // VERTEX SHADER - Voxel
-#version 400 core
-
 /* ===== in ====== */
 in vec3 in_position;
 in vec2 in_textureCoords;

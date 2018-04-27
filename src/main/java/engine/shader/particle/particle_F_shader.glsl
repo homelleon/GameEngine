@@ -1,6 +1,4 @@
 // FRAGMENT SHADER - Particle
-#version 140
-
 /* ===== in ====== */
 in vec2 textureCoords1;
 in vec2 textureCoords2;

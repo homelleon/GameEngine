@@ -33,6 +33,7 @@ import org.lwjgl.opengl.GL31;
 import org.lwjgl.opengl.GL43;
 import org.lwjgl.util.vector.Vector4f;
 
+import core.settings.EngineSettings;
 import tool.math.Matrix4f;
 import tool.math.vector.Color;
 import tool.math.vector.Vector2f;
@@ -81,8 +82,7 @@ public abstract class Shader {
 		this.type = type;
 		this.unfiroms = new HashMap<String, Integer>();
 		programID = GL20.glCreateProgram();
-		if (programID == 0)
-		{
+		if (programID == 0) {
 			System.err.println("Shader creation failed");
 			System.exit(1);
 		}
@@ -175,8 +175,18 @@ public abstract class Shader {
 			e.printStackTrace();
 			System.exit(-1);
 		}
-		int shaderID = GL20.glCreateShader(type);
-		GL20.glShaderSource(shaderID, shaderSource);
+		
+		int shaderID;
+		if (type != GL_COMPUTE_SHADER) {
+			StringBuilder commonShader = loadCommonShader();
+			shaderID = GL20.glCreateShader(type);
+			GL20.glShaderSource(shaderID, shaderSource.insert(0, commonShader.toString()));
+		} else {
+			shaderID = GL20.glCreateShader(type);
+			GL20.glShaderSource(shaderID, shaderSource);
+		}
+		System.out.println("--------");
+		System.out.println(shaderSource);
 		GL20.glCompileShader(shaderID);
 		if (GL20.glGetShaderi(shaderID, GL_COMPILE_STATUS) == GL_FALSE) {
 			System.out.println(this.getClass().getName() + " " + GL20.glGetShaderInfoLog(shaderID, 500));
@@ -187,6 +197,25 @@ public abstract class Shader {
 		return shaderID;
 
 	}
+	
+	private StringBuilder loadCommonShader() {
+		StringBuilder shaderSource = new StringBuilder();
+		try {
+			InputStream in = Class.class.getResourceAsStream(EngineSettings.COMMON_SHADER_FILE);
+			BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+			String line;
+			while ((line = reader.readLine()) != null) {
+
+				shaderSource.append(line).append("\n");
+			}
+			reader.close();
+		} catch (IOException e) {
+			System.err.println("Couldn't read file!");
+			e.printStackTrace();
+			System.exit(-1);
+		}
+		return shaderSource;
+	}
 
 	protected abstract void loadUniformLocations();
 	
@@ -196,7 +225,7 @@ public abstract class Shader {
 		if (uniformLocation == 0xFFFFFFFF) {
 			System.err.println(this.getClass().getName() + " Error: Could not find uniform: " + name);
 			new Exception().printStackTrace();
-			System.exit(1);
+//			System.exit(1);
 		}
 		
 		this.unfiroms.put(name, uniformLocation);

@@ -1,7 +1,4 @@
 // FRAGMENT SHADER - Terrain
-#version 430 core
-#define LIGHT_MAX 10 // max light source count
-
 /* ===== in ====== */
 in vec2 fs_textureCoords;
 in vec3 fs_toLightVector[LIGHT_MAX];
@@ -38,6 +35,8 @@ uniform vec3 skyColor;
 uniform float shadowMapSize;
 uniform int shadowPCFCount;
 
+const float lightSize = 0.2;
+
 /* ------------- main --------------- */
 void main(void) {
 
@@ -45,19 +44,28 @@ void main(void) {
 
    float texelSize = 1.0 / shadowMapSize;
    float total = 0.0;
+   int penumbraSearch = 1;
    
-   for(int x = -shadowPCFCount; x <= shadowPCFCount; x++) {
-   		for(int y = -shadowPCFCount; y <= shadowPCFCount; y++) {
-   				float objectNearestLight = texture(shadowMap, fs_shadowCoords.xy + vec2(x, y) * texelSize).r;
+   float shadowTexel = decodeFloat(texture(shadowMap, fs_shadowCoords.xy));
+
+//   if (fs_shadowCoords.z > shadowTexel)
+	   penumbraSearch = clamp(int((fs_shadowCoords.z - shadowTexel) * shadowPCFCount), 1, shadowPCFCount);
+
+   for (int x = -penumbraSearch; x <= penumbraSearch; x++) {
+   		for (int y = -penumbraSearch; y <= penumbraSearch; y++) {
+   				float objectNearestLight = decodeFloat(texture(shadowMap, fs_shadowCoords.xy + vec2(x, y) * texelSize));
    				if (fs_shadowCoords.z > objectNearestLight) {
    					total += 1.0;
    				}
    		}
    }
-   
-   total /= totalTexels;
 
-   float lightFactor = 1.0 - (total * fs_shadowCoords.w);
+   total /= totalTexels;
+   
+//   float objectNearestLight = texture(shadowMap, fs_shadowCoords.xy).r;
+//   total = 1.0 - clamp(exp(-4.0 * (fs_shadowCoords.z - objectNearestLight)),0.0, 1.0);
+
+   float lightFactor = 1.0 - total * 20.0;
   	
 
    vec4 blendMapColour = texture(blendMap, fs_textureCoords);

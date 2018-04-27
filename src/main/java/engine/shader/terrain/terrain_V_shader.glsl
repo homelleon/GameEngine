@@ -1,8 +1,4 @@
 // VERTEX SHADER - Terrain
-#version 430 core
-#define LOD_MAX 8 // max level of distance count
-#define LIGHT_MAX 10 // max light source count
-
 /* ===== in ====== */
 in vec3 in_position;
 
@@ -177,6 +173,6 @@ void main(void) {
    
    distance = distance - (shadowDistance - shadowTransitionDistance);
    distance = distance / shadowTransitionDistance;
-   tc_shadowCoords.w = clamp(1.0 - distance, 0.0, 1.0);
+//   tc_shadowCoords.w = clamp(1.0 - distance, 0.0, 1.0);
    
 }

@@ -14,8 +14,8 @@ import org.lwjgl.util.vector.Vector4f;
 public class EngineSettings {
 
 	/* display settings */
-	public static final int DISPLAY_WIDTH = 1024; // 1920;
-	public static final int DISPLAY_HEIGHT = 768; // 1080;
+	public static final int DISPLAY_WIDTH = 1920; // 1920;
+	public static final int DISPLAY_HEIGHT = 1080; // 1080;
 	public static final int FAR_PLANE = 100000;
 	public static final float NEAR_PLANE = 0.5f;
 	public static final int FPS_CAP = 90;
@@ -78,10 +78,10 @@ public class EngineSettings {
 	public static final float GRAVITY = -50;
 	public static final float TIME_LENGTH = 1;
 	public static final float FOG_DENSITY = 0.0022f;
-	public static final float SHADOW_DISTANCE = 150;
-	public static final int SHADOW_MAP_SIZE = 4096;
+	public static final float SHADOW_DISTANCE = 200;
+	public static final int SHADOW_MAP_SIZE = 2048;
 	public static final float SHADOW_TRANSITION_DISTANCE = SHADOW_DISTANCE;
-	public static final int SHADOW_PCF = 3;
+	public static final int SHADOW_PCF = 20;
 	public static final float RENDERING_VIEW_DISTANCE = 500;
 	public static final float DETAIL_VIEW_DISTANCE = 150;
 	public static final int MAX_LIGHTS = 10;
@@ -136,6 +136,7 @@ public class EngineSettings {
 
 	/* shaders */
 	public final static String SHADERS_PATH = "/shader/";
+	public final static String COMMON_SHADER_FILE = SHADERS_PATH + "commonShader.glsl";
 	public final static String SHADERS_ENTITY_PATH = SHADERS_PATH + "entity/";
 	public final static String SHADERS_ENTITY_TEXTURED_PATH = SHADERS_ENTITY_PATH;
 	public final static String SHADERS_ENTITY_NORMAL_PATH = SHADERS_ENTITY_PATH;

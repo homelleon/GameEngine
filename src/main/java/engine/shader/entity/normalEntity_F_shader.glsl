@@ -1,8 +1,4 @@
 // FRAGMENT SHADER - NM Entity
-#version 400 core
-
-#define LIGHT_MAX 10
-
 /* ===== in ====== */
 // geometry
 in vec2 pass_textureCoordinates;

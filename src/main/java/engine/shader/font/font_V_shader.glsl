@@ -1,6 +1,4 @@
 // VERTEX SHADER - Font
-#version 330
-
 /* ===== in ====== */
 in vec2 in_position;
 in vec2 in_textureCoords;

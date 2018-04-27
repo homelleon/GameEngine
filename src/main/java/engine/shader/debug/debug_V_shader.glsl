@@ -1,6 +1,4 @@
 // VERTEX SHADER - Debug
-#version 430 core
-
 /* ===== in ====== */
 in vec2 in_position;
 

@@ -1,6 +1,4 @@
 // FRAGMENT SHADER - Water
-#version 400 core
-
 /* ===== in ====== */
 in vec4 clipSpace;
 in vec2 textureCoords;

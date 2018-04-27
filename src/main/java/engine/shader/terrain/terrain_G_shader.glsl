@@ -1,7 +1,4 @@
 // GEOMETRY SHADER - Terrain
-#version 430
-#define LIGHT_MAX 10 // max light source count
-
 layout(triangles) in;
 layout(triangle_strip, max_vertices = 3) out;
 

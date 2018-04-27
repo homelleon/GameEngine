@@ -1,6 +1,4 @@
 // FRAGMENT SHADER - GUI Texture
-#version 140
-
 /* ===== in ====== */
 in vec2 textureCoords;
 

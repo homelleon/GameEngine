@@ -1,6 +1,4 @@
 // VERTEX SHADER - Water
-#version 400 core
-
 /* ===== in ====== */
 in vec2 in_position;
 

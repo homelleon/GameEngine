@@ -1,7 +1,4 @@
 // VERTEX SHADER - Entity
-#version 400 core
-#define LIGHT_MAX 10
-
 /* ===== in ====== */
 in vec3 in_position;
 in vec2 in_textureCoords;

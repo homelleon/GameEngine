@@ -1,6 +1,4 @@
 // VERTEX SHADER - GUI Texture
-#version 140
-
 /* ===== in ====== */
 in vec2 in_position;
 

@@ -1,6 +1,4 @@
 // FRAGMENT SHADER - Contrast PostProcessing
-#version 140
-
 /* ===== in ====== */
 in vec2 textureCoords;
 

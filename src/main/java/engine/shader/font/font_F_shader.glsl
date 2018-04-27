@@ -1,6 +1,4 @@
 // FRAGMENT SHADER - Font
-#version 330
-
 /* ===== in ====== */
 in vec2 pass_textureCoordinates;
 

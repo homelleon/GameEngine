@@ -1,6 +1,4 @@
 // VERTEX SHADER - Boundings
-#version 400 core
-
 /* ===== in ====== */
 in vec3 in_position;
 

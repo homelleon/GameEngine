@@ -1,6 +1,4 @@
 // FRAGMENT SHADER - Debug
-#version 430 core
-
 /* ===== in ====== */
 in float fs_uniform;
 /* == uniforms == */

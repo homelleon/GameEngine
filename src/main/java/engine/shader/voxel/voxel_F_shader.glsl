@@ -1,6 +1,4 @@
 // FRAGMENT SHADER - Voxel
-#version 400 core
-
 /* ===== in ====== */
 in vec2 pass_textureCoords;
 in vec3 surfaceNormal;
