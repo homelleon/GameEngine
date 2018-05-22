@@ -1,39 +1,21 @@
 package renderer.scene;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
-import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Vector4f;
 
-import control.ControlsImpl;
 import control.Controls;
-import control.KeyboardGame;
+import control.ControlsImpl;
 import control.MousePicker;
-import core.DisplayManager;
 import core.EngineDebug;
-import core.EngineMain;
-import manager.ObjectMapManager;
-import manager.scene.ObjectManager;
-import object.gui.GUI;
-import object.gui.GUIGroup;
-import object.gui.text.GUIText;
-import object.gui.texture.GUITexture;
 import object.particle.ParticleMaster;
 import object.water.WaterFrameBuffers;
-import primitive.texture.Texture2D;
 import renderer.MainRenderer;
 import renderer.WaterRenderer;
 import scene.Scene;
-import scene.writer.LevelMapWriter;
-import scene.writer.LevelMapXMLWriter;
-import shader.postProcessing.Fbo;
-import shader.postProcessing.PostProcessing;
+import shader.postprocess.Fbo;
+import shader.postprocess.PostProcessing;
 import shader.water.WaterShader;
 import tool.GraphicUtils;
-import tool.math.vector.Vector2f;
 
 /**
  * Class that render scene objects and check controls. TODO: need to refactor
@@ -47,106 +29,86 @@ public class GameSceneRenderer implements SceneRenderer {
 	private MainRenderer mainRenderer;
 	private WaterRenderer waterRenderer;
 	private WaterFrameBuffers waterFBOs;
-	private Fbo multisampleFbo;
-	private Fbo outputFbo;
-	private Fbo outputFbo2;
+	private Fbo sceneFbo;
 	private MousePicker mousePicker;
 	private Scene scene;
 	private Controls controls;
-	GUIText fpsText;
-	GUIText coordsText;
-	
-	private String statusGroupName = "statusGroup";
+	private EngineDebug debug;
 
 	@Override
 	public void initialize(Scene scene) {
 		this.scene = scene;
 		mainRenderer = new MainRenderer(scene);
-		ParticleMaster.init(mainRenderer.getProjectionMatrix());
-		multisampleFbo = new Fbo(Display.getWidth(), Display.getHeight());
-		outputFbo = new Fbo(Display.getWidth(), Display.getHeight(), Fbo.DEPTH_TEXTURE);
-		outputFbo2 = new Fbo(Display.getWidth(), Display.getHeight(), Fbo.DEPTH_TEXTURE);
+		int width = Display.getWidth();
+		int height = Display.getHeight();
+		ParticleMaster.init(scene.getCamera().getProjectionMatrix());
+		sceneFbo = new Fbo().setSize(width, height).initialize();
+
 		PostProcessing.isBloomed = true;
 		PostProcessing.isBlured = true;
 		PostProcessing.init();
 
 		waterFBOs = new WaterFrameBuffers();
 		WaterShader waterShader = new WaterShader();
-		waterRenderer = new WaterRenderer(waterShader, mainRenderer.getProjectionMatrix(), waterFBOs);
+		waterRenderer = new WaterRenderer(waterShader, scene.getCamera().getProjectionMatrix(), waterFBOs);
 
-		mousePicker = new MousePicker(scene.getCamera(), mainRenderer.getProjectionMatrix());
+		mousePicker = new MousePicker(scene.getCamera());
 		scene.setMousePicker(mousePicker);
 		controls = new ControlsImpl();
-		
-		// GUI text info
-		String fontName = "candara";
-		fpsText = createFPSText(Math.round(1 / DisplayManager.getFrameTimeSeconds()), fontName);
-		fpsText.setColor(255, 0, 0);
-		coordsText = createPickerCoordsText(mousePicker, fontName);
-		coordsText.setColor(255, 0, 0);
-		List<GUITexture> textureList = new ArrayList<GUITexture>();
-		// debug texture
-		Texture2D heightMap = scene.getTerrains().get("Terrain1").getMaterial().getHeightMap();
-		Texture2D normalMap = scene.getTerrains().get("Terrain1").getMaterial().getNormalMap();
-		GUITexture debugTexture1 = new GUITexture("debugTexture1", heightMap, new Vector2f(-0.5f, 0), new Vector2f(0.3f, 0.3f));
-		GUITexture debugTexture2 = new GUITexture("debugTexture2", normalMap, new Vector2f(0.5f, 0), new Vector2f(0.3f, 0.3f));
-		textureList.add(debugTexture1);
-		textureList.add(debugTexture2);
-		List<GUIText> textList = new ArrayList<GUIText>();
-		textList.add(fpsText);
-		textList.add(coordsText);
-		
-		String statusGUIName = "status";
-		GUI statusInterface = new GUI(statusGUIName, textureList, textList);
-		scene.getUserInterface().getGroups().createEmpty(statusGroupName);
-		scene.getUserInterface().getGroups().get(statusGroupName).add(statusInterface);
+		debug = new EngineDebug(scene);
+		debug.initialize();
+		render(true);
 	}
 
 	@Override
 	public void render(boolean isPaused) {
-		checkInputs();
-		if (!isPaused) move();
-		mainRenderer.renderShadows(scene);
+		if (!isPaused) {
+			checkInputs();
+			move();
+		}
+		renderShadows();
 		renderParticles();
 		renderWaterSurface();
-		renderToScreen();
+		renderScene();
+		debug.update();
+		renderUI();
 	}
-
+	
 	private void checkInputs() {		
-		if (KeyboardGame.isKeyPressed(Keyboard.KEY_T)) {
-			EngineMain.pauseEngine(true);
-			LevelMapWriter mapWriter = new LevelMapXMLWriter();
-			ObjectManager map = new ObjectMapManager();
-			map.getEntities().addAll(scene.getEntities().getAll());
-			map.getTerrains().addAll(scene.getTerrains().getAll());
-			mapWriter.write(map);
-			EngineMain.pauseEngine(false);
-		}
-		
-		GUIGroup statusGUIGroup = scene.getUserInterface().getGroups().get(statusGroupName);
-		
-		if (EngineDebug.hasHardDebugPermission()) {
-			if (!statusGUIGroup.getIsVisible())
-				statusGUIGroup.show();
-		} else {
-			if (statusGUIGroup.getIsVisible())
-				statusGUIGroup.hide();
+		controls.update(scene);
+	}
+	
+	private void move() {
+		scene.getPlayer().move(scene.getTerrains().getAll());
+		scene.getCamera().move();
+		if (scene.getPlayer().isMoved()) {
+			recalcuteEntityNodesChildren();
+			moveSoundListener();
 		}
 	}
+	
+	private void recalcuteEntityNodesChildren() {
+		scene.getFrustumEntities().addEntityInNodes(scene.getPlayer());
+	}
+	
+	private void moveSoundListener() {
+		scene.getAudioSources().getMaster().setListenerData(scene.getCamera().getPosition());
+	}
+	
+	private void renderShadows() {
+		mainRenderer.renderShadows(scene);
+	}
 
-	private void renderToScreen() {
+	private void renderScene() {
 		waterFBOs.unbindCurrentFrameBuffer();
-		multisampleFbo.bindFrameBuffer();
+		sceneFbo.bind();
 		GraphicUtils.clipDistance(true);
 		mainRenderer.render(scene, new Vector4f(0, 1, 0, 15));
 		ParticleMaster.renderParticles(scene.getCamera());
-		GraphicUtils.clipDistance(false);		
+		GraphicUtils.clipDistance(false);	
 		waterRenderer.render(scene.getWaters().getAll(), scene.getCamera(), scene.getSun());
-		multisampleFbo.unbindFrameBuffer();
-		multisampleFbo.resolveToFbo(GL30.GL_COLOR_ATTACHMENT0, outputFbo);
-		multisampleFbo.resolveToFbo(GL30.GL_COLOR_ATTACHMENT1, outputFbo2);
-		PostProcessing.doPostProcessing(outputFbo.getColorTexture(), outputFbo2.getColorTexture());
-		renderGUI();
+		sceneFbo.unbind();
+		PostProcessing.doPostProcessing(sceneFbo);
 		mousePicker.update();
 	}
 
@@ -178,47 +140,9 @@ public class GameSceneRenderer implements SceneRenderer {
 		scene.getParticles().get("Star").generateParticles();
 		ParticleMaster.update(scene.getCamera());
 	}
-
-	private void renderGUI() {
-		float fps = Math.round(1 / DisplayManager.getFrameTimeSeconds());
-		scene.getUserInterface().getComponent().getTexts()
-			.changeContent(fpsText.getName(), "FPS: " + String.valueOf((int) fps));
-		String coords = String.valueOf(mousePicker.getCurrentRay());
-		scene.getUserInterface().getComponent().getTexts()
-			.changeContent(coordsText.getName(), coords);
-		scene.getUserInterface().render();
-	}
-
-	private GUIText createFPSText(float FPS, String fontName) {
-		GUIText guiText = new GUIText("FPS", "FPS: " + String.valueOf((int) FPS), 2f, fontName, new Vector2f(0.65f, 0.9f),
-				0.5f, true);
-		scene.getUserInterface().getComponent().getTexts().add(guiText);
-		return guiText;
-	}
-
-	private GUIText createPickerCoordsText(MousePicker picker, String fontName) {
-		String text = String.valueOf(picker.getCurrentRay());
-		GUIText guiText = new GUIText("Coords", text, 1, fontName, new Vector2f(0.3f, 0.8f), 1f, true);
-		scene.getUserInterface().getComponent().getTexts().add(guiText);
-		return guiText;
-	}
-
-	private void move() {
-		controls.update(scene);
-		scene.getPlayer().move(scene.getTerrains().getAll());
-		scene.getCamera().move();
-		if (scene.getPlayer().isMoved()) {
-			recalcuteEntityNodesChildren();
-			moveSoundListener();
-		}		
-	}
 	
-	private void recalcuteEntityNodesChildren() {
-		scene.getFrustumEntities().addEntityInNodes(scene.getPlayer());
-	}
-	
-	private void moveSoundListener() {
-		scene.getAudioSources().getMaster().setListenerData(scene.getCamera().getPosition());
+	private void renderUI() {
+		scene.getUI().render();
 	}
 
 	@Override
@@ -230,9 +154,7 @@ public class GameSceneRenderer implements SceneRenderer {
 	public void clean() {
 		scene.clean();
 		PostProcessing.clean();
-		outputFbo.clean();
-		outputFbo2.clean();
-		multisampleFbo.clean();
+		sceneFbo.clean();
 		waterFBOs.clean();
 		mainRenderer.clean();
 	}

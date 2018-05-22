@@ -1,9 +1,10 @@
-package shader.postProcessing.gaussianBlur;
+package shader.postprocess.gaussianBlur;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 
-import shader.postProcessing.ImageRenderer;
+import primitive.texture.Texture2D;
+import shader.postprocess.ImageRenderer;
 
 public class VerticalBlur {
 
@@ -18,15 +19,15 @@ public class VerticalBlur {
 		shader.stop();
 	}
 
-	public void render(int texture) {
+	public void render(Texture2D texture) {
 		shader.start();
 		GL13.glActiveTexture(GL13.GL_TEXTURE0);
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture);
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture.getId());
 		renderer.renderQuad();
 		shader.stop();
 	}
 
-	public int getOutputTexture() {
+	public Texture2D getOutputTexture() {
 		return renderer.getOutputTexture();
 	}
 

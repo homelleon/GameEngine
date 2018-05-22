@@ -73,7 +73,7 @@ public class NormalEntityRenderer implements EntityRenderer {
 		Material material = model.getMaterial();
 		shader.loadNumberOfRows(material.getDiffuseMap().getNumberOfRows());
 		
-		if (material.getDiffuseMap().isHasTransparency())
+		if (material.getDiffuseMap().isTransparent())
 			GraphicUtils.cullBackFaces(false);
 		
 		shader.loadFakeLightingVariable(material.isUseFakeLighting());

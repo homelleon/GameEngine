@@ -96,22 +96,24 @@ public class FrustumEntityManager {
 				frustum.sphereInFrustum(entity.getPosition(), entity.getSphereRadius());
 	}
 
-	public List<Entity> processEntities(Scene scene, Matrix4f projectionMatrix, boolean toRebuild) {
+	public List<Entity> getUpdatedEntities(Scene scene, boolean toRebuild) {
 		if (toRebuild) {
-			Matrix4f projectionViewMatrix = Matrix4f.mul(projectionMatrix, scene.getCamera().getViewMatrix()); 
-			frustumHighEntities = prepareEntities(scene, projectionViewMatrix);
+			frustumHighEntities.clear();
+			Matrix4f projectionViewMatrix = scene.getCamera().getProjectionViewMatrix(); 
+			frustumHighEntities.addAll(getFrustumPassedEntities(scene, projectionViewMatrix));
 		}
 		return frustumHighEntities;
 	}
 
-	public List<Entity> prepareShadowEntities(Scene scene, Matrix4f shadowMapMatrix, boolean toRebuild) {
+	public List<Entity> getUpdatedShadowEntities(Scene scene, Matrix4f shadowMapMatrix, boolean toRebuild) {
 		if (toRebuild) {
-			frustumShadowEntities = prepareEntities(scene, shadowMapMatrix);
+			frustumShadowEntities.clear();
+			frustumShadowEntities.addAll(getFrustumPassedEntities(scene, shadowMapMatrix));
 		}
 		return frustumShadowEntities;
 	}
 	
-	private List<Entity> prepareEntities(Scene scene, Matrix4f projectionMatrix) {
+	private List<Entity> getFrustumPassedEntities(Scene scene, Matrix4f projectionMatrix) {
 		scene.getCamera().getFrustum().extractFrustum(projectionMatrix);
 		return updateWithFrustum(scene.getCamera().getFrustum(), scene.getCamera());
 	}

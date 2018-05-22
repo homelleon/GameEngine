@@ -1,4 +1,4 @@
-package shader.postProcessing;
+package shader.postprocess;
 
 import core.settings.EngineSettings;
 import shader.Shader;

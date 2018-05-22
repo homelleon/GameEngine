@@ -1,9 +1,10 @@
-package shader.postProcessing;
+package shader.postprocess;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 
 import core.settings.EngineSettings;
+import primitive.texture.Texture2D;
 
 public class ContrastChanger {
 
@@ -15,16 +16,16 @@ public class ContrastChanger {
 		renderer = new ImageRenderer();
 	}
 
-	public void render(int texture) {
+	public void render(Texture2D texture) {
 		shader.start();
 		shader.loadDisplayContrast(EngineSettings.DISPLAY_CONTRAST);
 		GL13.glActiveTexture(GL13.GL_TEXTURE0);
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture);
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture.getId());
 		renderer.renderQuad();
 		shader.stop();
 	}
 
-	public void cleanUp() {
+	public void clean() {
 		renderer.cleanUp();
 		shader.clean();
 	}

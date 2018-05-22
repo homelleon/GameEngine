@@ -219,7 +219,7 @@ public abstract class Shader {
 
 	protected abstract void loadUniformLocations();
 	
-	protected void addUniform(String name) {		
+	public void addUniform(String name) {		
 		int uniformLocation = this.getUniformLocation(name);
 		
 		if (uniformLocation == 0xFFFFFFFF) {

@@ -40,38 +40,41 @@ const float lightSize = 0.2;
 /* ------------- main --------------- */
 void main(void) {
 
-   float totalTexels = (shadowPCFCount * 2.0 + 1.0) * (shadowPCFCount * 2.0 + 1.0);
-
-   float texelSize = 1.0 / shadowMapSize;
-   float total = 0.0;
-   int penumbraSearch = 1;
+//   float totalTexels = (shadowPCFCount * 2.0 + 1.0) * (shadowPCFCount * 2.0 + 1.0);
+//
+//   float texelSize = 1.0 / shadowMapSize;
+//   float total = 0.0;
+//   int penumbraSearch = 0;
    
-   float shadowTexel = decodeFloat(texture(shadowMap, fs_shadowCoords.xy));
-
+//   float shadowTexel = decodeFloat(texture(shadowMap, fs_shadowCoords.xy));
+////   float totalTexels = 1.0;
+//
 //   if (fs_shadowCoords.z > shadowTexel)
-	   penumbraSearch = clamp(int((fs_shadowCoords.z - shadowTexel) * shadowPCFCount), 1, shadowPCFCount);
-
-   for (int x = -penumbraSearch; x <= penumbraSearch; x++) {
-   		for (int y = -penumbraSearch; y <= penumbraSearch; y++) {
-   				float objectNearestLight = decodeFloat(texture(shadowMap, fs_shadowCoords.xy + vec2(x, y) * texelSize));
-   				if (fs_shadowCoords.z > objectNearestLight) {
-   					total += 1.0;
-   				}
-   		}
-   }
-
-   total /= totalTexels;
+//	   penumbraSearch = clamp(int((2000 - shadowTexel) * 5.0 / shadowTexel), 0, shadowPCFCount);
+//
+//   for (int x = -penumbraSearch; x <= penumbraSearch; x++) {
+//   		for (int y = -penumbraSearch; y <= penumbraSearch; y++) {
+//   				float objectNearestLight = decodeFloat(texture(shadowMap, fs_shadowCoords.xy + vec2(x, y) * texelSize));
+//   				if (fs_shadowCoords.z > objectNearestLight) {
+//   					total += 1.0 - clamp(exp(-4.0 * (fs_shadowCoords.z - objectNearestLight)), 0.0, 1.0);
+////   					totalTexels += 1.0;
+//   				}
+//   		}
+//   }
+//
+//   total /= totalTexels;
    
-//   float objectNearestLight = texture(shadowMap, fs_shadowCoords.xy).r;
-//   total = 1.0 - clamp(exp(-4.0 * (fs_shadowCoords.z - objectNearestLight)),0.0, 1.0);
+//   float objectNearestLight = decodeFloat(texture(shadowMap, fs_shadowCoords.xy));
+//   total = 1.0 - clamp(exp(-4.0 * (fs_shadowCoords.z - objectNearestLight)), 0.0, 1.0);
+//   float lightFactor = 1.0 - total * 10.0;
 
-   float lightFactor = 1.0 - total * 20.0;
+   float lightFactor = fetchPCSS(shadowMap, fs_shadowCoords);
   	
 
    vec4 blendMapColour = texture(blendMap, fs_textureCoords);
    
    float backTextureAmount = 1 - (blendMapColour.r + blendMapColour.g + blendMapColour.b);
-   vec2 tiledCoords = fs_textureCoords * 1000.0;
+   vec2 tiledCoords = fs_textureCoords * 500.0;
    vec4 backgroundTextureColor = texture(backgroundTexture, tiledCoords) * backTextureAmount;
    vec4 rTextureColor = texture(rTexture, tiledCoords) * blendMapColour.r;
    vec4 gTextureColor = texture(gTexture, tiledCoords) * blendMapColour.g;

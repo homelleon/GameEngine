@@ -13,11 +13,11 @@ import shader.gpgpu.HeightMapShader;
 import shader.gpgpu.HeightPositionShader;
 import shader.gpgpu.NormalMapShader;
 import shader.guiTexture.GUITextureShader;
-import shader.postProcessing.ContrastShader;
-import shader.postProcessing.bloom.BrightFilterShader;
-import shader.postProcessing.bloom.CombineShader;
-import shader.postProcessing.gaussianBlur.HorizontalBlurShader;
-import shader.postProcessing.gaussianBlur.VerticalBlurShader;
+import shader.postprocess.ContrastShader;
+import shader.postprocess.bloom.BrightFilterShader;
+import shader.postprocess.bloom.CombineShader;
+import shader.postprocess.gaussianBlur.HorizontalBlurShader;
+import shader.postprocess.gaussianBlur.VerticalBlurShader;
 import shader.shadow.ShadowShader;
 import shader.skybox.SkyboxShader;
 import shader.terrain.TerrainShader;
@@ -31,9 +31,8 @@ public class ShaderPool {
 	private Map<Integer, Shader> shaders = new HashMap<Integer, Shader>();
 	
 	public static ShaderPool getInstance() {
-		if (instance == null) {
+		if (instance == null)
 			instance = new ShaderPool();
-		}
 		return instance;
 	}
 	

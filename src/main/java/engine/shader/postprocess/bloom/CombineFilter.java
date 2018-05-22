@@ -1,9 +1,10 @@
-package shader.postProcessing.bloom;
+package shader.postprocess.bloom;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 
-import shader.postProcessing.ImageRenderer;
+import primitive.texture.Texture2D;
+import shader.postprocess.ImageRenderer;
 
 /**
  * Post processing filter that make glow effect using Combine shader, Image
@@ -46,16 +47,16 @@ public class CombineFilter {
 	 * @param highlightTexture8
 	 *            int value of highlight texture to process
 	 */
-	public void render(int colourTexture, int highlightTexture2, int highlightTexture4, int highlightTexture8) {
+	public void render(Texture2D colourTexture, Texture2D highlightTexture2, Texture2D highlightTexture4, Texture2D highlightTexture8) {
 		shader.start();
 		GL13.glActiveTexture(GL13.GL_TEXTURE0);
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, colourTexture);
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, colourTexture.getId());
 		GL13.glActiveTexture(GL13.GL_TEXTURE1);
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, highlightTexture2);
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, highlightTexture2.getId());
 		GL13.glActiveTexture(GL13.GL_TEXTURE2);
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, highlightTexture4);
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, highlightTexture4.getId());
 		GL13.glActiveTexture(GL13.GL_TEXTURE3);
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, highlightTexture8);
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, highlightTexture8.getId());
 		renderer.renderQuad();
 		shader.stop();
 	}
@@ -63,7 +64,7 @@ public class CombineFilter {
 	/**
 	 * Method that clean CombineShader and ImageRenderer objects.
 	 */
-	public void cleanUp() {
+	public void clean() {
 		renderer.cleanUp();
 		shader.clean();
 	}

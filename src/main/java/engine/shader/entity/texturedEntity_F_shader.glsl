@@ -55,8 +55,8 @@ void main(void) {
 
 	// transparent in alpha texture
 	if (usesAlphaMap > 0.5) {
-		vec4 alphaColour = texture(alphaMap, pass_textureCoordinates);
-		if (alphaColour.r < 1) {
+		vec4 alphaColor = texture(alphaMap, pass_textureCoordinates);
+		if (alphaColor.r < 1) {
 			discard;
 		}
 	}
@@ -68,8 +68,8 @@ void main(void) {
 
     for (int x = -shadowPCFCount; x <= shadowPCFCount; x++) {
    		 for (int y = -shadowPCFCount; y <= shadowPCFCount; y++) {
-   				 float objectNearestLight = texture(shadowMap, shadowCoords.xy + vec2(x, y) * texelSize).r;
-   			 	 if (shadowCoords.z > objectNearestLight + 0.003) {
+   				 float objectNearestLight = decodeFloat(texture(shadowMap, shadowCoords.xy + vec2(x, y) * texelSize));
+   			 	 if (shadowCoords.z > objectNearestLight + SHADOW_BIAS) {
    			 		 total += 1.0;
    			 	 }
    		 }

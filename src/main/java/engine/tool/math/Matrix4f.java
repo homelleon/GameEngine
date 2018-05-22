@@ -207,7 +207,7 @@ public class Matrix4f {
 		return this;
 	}
 	
-	public Matrix4f makeProjectionMatrix(float nearPlane, float farPlane, float fov) {
+	public Matrix4f createProjectionMatrix(float fov, float nearPlane, float farPlane) {
 		this.setIdentity();
 		float aspectRatio = (float) Display.getWidth() / (float) Display.getHeight();
 		float y_scale = (float) (1f / Math.tan(Math.toRadians(fov / 2f)));
@@ -541,5 +541,9 @@ public class Matrix4f {
 		this.m[3][3] = matrix.m[3][3];
 		
 		return this;
+	}
+	
+	public Matrix4f clone() {
+		return new Matrix4f().load(this);
 	}
 }

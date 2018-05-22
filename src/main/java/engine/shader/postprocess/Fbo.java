@@ -1,5 +1,5 @@
 
-package shader.postProcessing;
+package shader.postprocess;
 
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
@@ -13,6 +13,7 @@ import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 
 import core.settings.EngineSettings;
+import primitive.texture.Texture2D;
 
 public class Fbo {
 
@@ -20,10 +21,12 @@ public class Fbo {
 	public static final int DEPTH_TEXTURE = 1;
 	public static final int DEPTH_RENDER_BUFFER = 2;
 
-	private final int width;
-	private final int height;
+	private int width = 1;
+	private int height = 1;
 
 	private int frameBuffer;
+	
+	private int depthBufferType = NONE;
 
 	private boolean isMultisampledAndMultiTaregeted = false;
 
@@ -46,18 +49,26 @@ public class Fbo {
 	 *            - an int indicating the type of depth buffer attachment that
 	 *            this FBO should use.
 	 */
-	public Fbo(int width, int height, int depthBufferType) {
-		this.width = width;
-		this.height = height;
+	public Fbo(int depthBufferType) {
 		this.isMultisampledAndMultiTaregeted = false;
-		initialiseFrameBuffer(depthBufferType);
+		this.depthBufferType = depthBufferType; 
+		
 	}
 
-	public Fbo(int width, int height) {
+	public Fbo() {
+		this.isMultisampledAndMultiTaregeted = true;
+		this.depthBufferType = DEPTH_RENDER_BUFFER;
+	}
+	
+	public Fbo setSize(int width, int height) {
 		this.width = width;
 		this.height = height;
-		this.isMultisampledAndMultiTaregeted = true;
-		initialiseFrameBuffer(DEPTH_RENDER_BUFFER);
+		return this;
+	}
+	
+	public Fbo initialize() {
+		initialiseFrameBuffer(depthBufferType);
+		return this;
 	}
 
 	/**
@@ -76,7 +87,7 @@ public class Fbo {
 	 * Binds the frame buffer, setting it as the current render target. Anything
 	 * rendered after this will be rendered to this FBO, and not to the screen.
 	 */
-	public void bindFrameBuffer() {
+	public void bind() {
 		GL30.glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, frameBuffer);
 		GL11.glViewport(0, 0, width, height);
 	}
@@ -86,7 +97,7 @@ public class Fbo {
 	 * render target. Anything rendered after this will be rendered to the
 	 * screen, and not this FBO.
 	 */
-	public void unbindFrameBuffer() {
+	public void unbind() {
 		GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0);
 		GL11.glViewport(0, 0, Display.getWidth(), Display.getHeight());
 	}
@@ -103,24 +114,24 @@ public class Fbo {
 	/**
 	 * @return The ID of the texture containing the colour buffer of the FBO.
 	 */
-	public int getColorTexture() {
-		return colorTexture;
+	public Texture2D getColorTexture() {
+		return Texture2D.create(width, height, colorTexture);
 	}
 
 	/**
 	 * @return The texture containing the FBOs depth buffer.
 	 */
-	public int getDepthTexture() {
-		return depthTexture;
+	public Texture2D getDepthTexture() {
+		return Texture2D.create(width, height, depthTexture);
 	}
 
-	public void resolveToFbo(int readBuffer, Fbo outputFbo) {
+	public void resolveToFbo(int attachment, Fbo outputFbo) {
 		GL30.glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, outputFbo.frameBuffer);
 		GL30.glBindFramebuffer(GL30.GL_READ_FRAMEBUFFER, this.frameBuffer);
-		GL11.glReadBuffer(readBuffer);
+		GL11.glReadBuffer(attachment);
 		GL30.glBlitFramebuffer(0, 0, width, height, 0, 0, outputFbo.width, outputFbo.height,
 				GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT, GL11.GL_NEAREST);
-		this.unbindFrameBuffer();
+		this.unbind();
 	}
 
 	public void resolveToScreen() {
@@ -129,7 +140,7 @@ public class Fbo {
 		GL11.glDrawBuffer(GL11.GL_BACK);
 		GL30.glBlitFramebuffer(0, 0, width, height, 0, 0, Display.getWidth(), Display.getHeight(),
 				GL11.GL_COLOR_BUFFER_BIT, GL11.GL_NEAREST);
-		this.unbindFrameBuffer();
+		this.unbind();
 	}
 
 	/**
@@ -153,7 +164,7 @@ public class Fbo {
 		} else if (type == DEPTH_TEXTURE) {
 			createDepthTextureAttachment();
 		}
-		unbindFrameBuffer();
+		unbind();
 	}
 
 	/**

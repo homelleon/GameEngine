@@ -1,9 +1,10 @@
-package shader.postProcessing.bloom;
+package shader.postprocess.bloom;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 
-import shader.postProcessing.ImageRenderer;
+import primitive.texture.Texture2D;
+import shader.postprocess.ImageRenderer;
 
 /**
  * Postprocessing filter that change brightness of the scene.
@@ -21,19 +22,19 @@ public class BrightFilter {
 		renderer = new ImageRenderer(width, height);
 	}
 
-	public void render(int texture) {
+	public void render(Texture2D texture) {
 		shader.start();
 		GL13.glActiveTexture(GL13.GL_TEXTURE0);
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture);
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture.getId());
 		renderer.renderQuad();
 		shader.stop();
 	}
 
-	public int getOutputTexture() {
+	public Texture2D getOutputTexture() {
 		return renderer.getOutputTexture();
 	}
 
-	public void cleanUp() {
+	public void clean() {
 		renderer.cleanUp();
 		shader.clean();
 	}

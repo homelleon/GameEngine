@@ -23,17 +23,23 @@ public class Texture2D {
 	private int numberOfRows = 1;
 	private boolean hasTransparency = false;
 	
-	public static Texture2D create(int width, int height, int numberOfRows, boolean hasTransparency) {
+	public static Texture2D create(int width, int height) {
 		Texture2D texture = new Texture2D();
 		texture.generate();
 		texture.width = width;
 		texture.height = height;
-		texture.numberOfRows = numberOfRows;
-		texture.hasTransparency = hasTransparency;
 		return texture;
 	}
 	
-	private Texture2D(){}
+	public static Texture2D create(int width, int height, int id) {
+		Texture2D texture = new Texture2D();
+		texture.id = id;
+		texture.width = width;
+		texture.height = height;
+		return texture;
+	}
+	
+	private Texture2D() {}
 	
 	
 	public Texture2D(String name, String file) {
@@ -119,11 +125,11 @@ public class Texture2D {
 		this.numberOfRows = numberOfRows;
 	}
 
-	public boolean isHasTransparency() {
+	public boolean isTransparent() {
 		return hasTransparency;
 	}
 
-	public void setHasTransparency(boolean hasTransparency)	{
+	public void setTransparent(boolean hasTransparency)	{
 		this.hasTransparency = hasTransparency;
 	}
 	

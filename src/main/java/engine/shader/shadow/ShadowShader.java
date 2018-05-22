@@ -16,9 +16,11 @@ public class ShadowShader extends Shader {
 	//----uniforms
 	//matrix
 	private static final String UNIFORM_MVP_MATRIX = "ModelViewProjection";
+	private static final String UNIFORM_MODEL_MATRIX = "ModelProjection";
 	//texture coords variables
 	private static final String UNIFORM_OFFSET = "offset";
 	private static final String UNIFORM_NUMBER_OF_ROWS = "numberOfRows";
+	private static final String UNIFORM_DEPTH_RANGE = "depthRange";
 	
 	public ShadowShader() {
 		super(Shader.SHADOW);
@@ -29,30 +31,40 @@ public class ShadowShader extends Shader {
 
 	@Override
 	protected void bindAttributes() {
-		super.bindAttribute(0, ATTRIBUTE_POSITION);
-		super.bindAttribute(1, ATTRIBUTE_TEXTURE_COORDINATES);
+		bindAttribute(0, ATTRIBUTE_POSITION);
+		bindAttribute(1, ATTRIBUTE_TEXTURE_COORDINATES);
 	}
 
 	@Override
 	protected void loadUniformLocations() {
 		//matrix
-		super.addUniform(UNIFORM_MVP_MATRIX);
+		addUniform(UNIFORM_MVP_MATRIX);
+		addUniform(UNIFORM_MODEL_MATRIX);
 		//texture coords variables
-		super.addUniform(UNIFORM_OFFSET);
-		super.addUniform(UNIFORM_NUMBER_OF_ROWS);
+		addUniform(UNIFORM_OFFSET);
+		addUniform(UNIFORM_NUMBER_OF_ROWS);
+		addUniform(UNIFORM_DEPTH_RANGE);
 
+	}
+	
+	public void loadDepthRange(float depthRange) {
+		loadFloat(UNIFORM_DEPTH_RANGE, depthRange);
 	}
 
 	public void loadMvpMatrix(Matrix4f mvpMatrix) {
-		super.loadMatrix(UNIFORM_MVP_MATRIX, mvpMatrix);
+		loadMatrix(UNIFORM_MVP_MATRIX, mvpMatrix);
+	}
+	
+	public void loadModelMatrix(Matrix4f modelMatrix) {
+		loadMatrix(UNIFORM_MODEL_MATRIX, modelMatrix);
 	}
 
 	public void loadNumberOfRows(int numberOfRows) {
-		super.loadFloat(UNIFORM_NUMBER_OF_ROWS, numberOfRows);
+		loadFloat(UNIFORM_NUMBER_OF_ROWS, numberOfRows);
 	}
 
 	public void loadOffset(float x, float y) {
-		super.load2DVector(UNIFORM_OFFSET, new Vector2f(x, y));
+		load2DVector(UNIFORM_OFFSET, new Vector2f(x, y));
 	}
 
 }

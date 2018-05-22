@@ -119,7 +119,7 @@ public class EngineUtils {
 		objectModel.getMaterial().getDiffuseMap().setNumberOfRows(1);
 		objectModel.getMaterial().setShininess(1);
 		objectModel.getMaterial().setReflectivity(0);
-		objectModel.getMaterial().getDiffuseMap().setHasTransparency(true);
+		objectModel.getMaterial().getDiffuseMap().setTransparent(true);
 		objectModel.getMaterial().setUseFakeLighting(true);
 		if (density == 0) {
 			density = (float) 0.01;

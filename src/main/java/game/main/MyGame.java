@@ -42,50 +42,50 @@ public class MyGame extends Game {
 		super.__onStart();
 		
 		//--------help hints GUI-------------//
-		GUIBuilder helpGUIBuilder = new GUIBuilder(this.gameManager.getScene().getUserInterface().getComponent());
+		GUIBuilder helpGUIBuilder = new GUIBuilder(this.gameManager.getScene().getUI().getComponent());
 		helpGUIBuilder.setText("inputHintsText", this.gameManager.getTexts().get("inputHints"));
-		this.helpGroup = this.gameManager.getScene().getUserInterface().getGroups().createEmpty(guiGroupName);
+		this.helpGroup = this.gameManager.getScene().getUI().getGroups().createEmpty(guiGroupName);
 		this.helpGroup.add(helpGUIBuilder.build("help"));
-		helpGUIBuilder = new GUIBuilder(this.gameManager.getScene().getUserInterface().getComponent());
+		helpGUIBuilder = new GUIBuilder(this.gameManager.getScene().getUI().getComponent());
 		helpGUIBuilder.setText("versionText", this.gameManager.getTexts().get("version"));
 		this.helpGroup.add(helpGUIBuilder.build("version"));
 		
 		//-----------button GUI--------------//		
-		menuSystem = this.gameManager.getScene().getUserInterface().getMenus();
+		menuSystem = this.gameManager.getScene().getUI().getMenus();
 		GUIMenu mainMenu = new GUIMenu("first menu");
 		menuSystem.add(mainMenu);
 		menuSystem.active(mainMenu.getName());
 		
-		GUIBuilder coursorGUIBuilder = new GUIBuilder(this.gameManager.getScene().getUserInterface().getComponent())
+		GUIBuilder coursorGUIBuilder = new GUIBuilder(this.gameManager.getScene().getUI().getComponent())
 				.setTexture("coursorTexture", this.gameManager.getTextures().get("CoursorAim"));
-		this.coursorAimGroup = this.gameManager.getScene().getUserInterface().getGroups().createEmpty("coursor");
+		this.coursorAimGroup = this.gameManager.getScene().getUI().getGroups().createEmpty("coursor");
 		this.coursorAimGroup.add(coursorGUIBuilder.build("coursorGUI"));
 		this.coursorAimGroup.show();
 		
-		GUIBuilder buttonGUIBuilder = new GUIBuilder(this.gameManager.getScene().getUserInterface().getComponent());
+		GUIBuilder buttonGUIBuilder = new GUIBuilder(this.gameManager.getScene().getUI().getComponent());
 		buttonGUIBuilder.setTexture("button1Texture", this.gameManager.getTextures().get("Button").clone("btnTexture1"));
-		buttonGUIBuilder.setText("button1Text", gameManager.getScene().getUserInterface()
+		buttonGUIBuilder.setText("button1Text", gameManager.getScene().getUI()
 				.getComponent().getTexts().get("menu").clone("resumeText","Resume"));
-		GUIGroup buttonGroup1 = this.gameManager.getScene().getUserInterface().getGroups().createEmpty("button1");
+		GUIGroup buttonGroup1 = this.gameManager.getScene().getUI().getGroups().createEmpty("button1");
 		buttonGroup1.add(buttonGUIBuilder.build("button1GUI"));
 		mainMenu.add((GUIObject) buttonGroup1);
 		
 		
-		buttonGUIBuilder = new GUIBuilder(this.gameManager.getScene().getUserInterface().getComponent());
-		buttonGUIBuilder.setTexture("button2Texture", gameManager.getScene().getUserInterface()
+		buttonGUIBuilder = new GUIBuilder(this.gameManager.getScene().getUI().getComponent());
+		buttonGUIBuilder.setTexture("button2Texture", gameManager.getScene().getUI()
 				.getComponent().getTextures().get("Button").clone("btnTexture2"));
 		
-		buttonGUIBuilder.setText("button2Text", gameManager.getScene().getUserInterface()
+		buttonGUIBuilder.setText("button2Text", gameManager.getScene().getUI()
 				.getComponent().getTexts().get("menu").clone("startText", "Start"));
-		GUIGroup buttonGroup2 = this.gameManager.getScene().getUserInterface().getGroups().createEmpty("button2");
+		GUIGroup buttonGroup2 = this.gameManager.getScene().getUI().getGroups().createEmpty("button2");
 		buttonGroup2.add(buttonGUIBuilder.build("button2GUI"));
 		mainMenu.add((GUIObject) buttonGroup2);
 		
-		buttonGUIBuilder = new GUIBuilder(this.gameManager.getScene().getUserInterface().getComponent());
+		buttonGUIBuilder = new GUIBuilder(this.gameManager.getScene().getUI().getComponent());
 		buttonGUIBuilder.setTexture("button3Texture", this.gameManager.getTextures().get("Button").clone("btnTexture3"));
-		buttonGUIBuilder.setText("button3Text", gameManager.getScene().getUserInterface()
+		buttonGUIBuilder.setText("button3Text", gameManager.getScene().getUI()
 				.getComponent().getTexts().get("menu").clone("exitText", "Exit"));
-		GUIGroup buttonGroup3 = this.gameManager.getScene().getUserInterface().getGroups().createEmpty("button3");
+		GUIGroup buttonGroup3 = this.gameManager.getScene().getUI().getGroups().createEmpty("button3");
 		buttonGroup3.add(buttonGUIBuilder.build("button3GUI"));
 		mainMenu.add((GUIObject) buttonGroup3);
 		

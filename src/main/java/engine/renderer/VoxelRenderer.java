@@ -183,7 +183,7 @@ public class VoxelRenderer {
 		shader.loadNumberOfRows(material.getDiffuseMap().getNumberOfRows());
 		shader.loadOffset(0.0f, 0.0f);
 		
-		if (material.getDiffuseMap().isHasTransparency())
+		if (material.getDiffuseMap().isTransparent())
 			GraphicUtils.cullBackFaces(false);
 		
 		shader.loadShineVariables(material.getShininess(), material.getReflectivity());

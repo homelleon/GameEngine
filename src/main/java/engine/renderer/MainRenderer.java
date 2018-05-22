@@ -31,7 +31,6 @@ import tool.math.Matrix4f;
 
 public class MainRenderer {
 
-	private Matrix4f projectionMatrix;
 	private TerrainRenderer terrainRenderer;
 	private SkyboxRenderer skyboxRenderer;
 	private VoxelRenderer voxelRenderer;
@@ -54,8 +53,7 @@ public class MainRenderer {
 
 	public MainRenderer(Scene scene) {
 		GraphicUtils.cullBackFaces(true);
-		projectionMatrix = new Matrix4f().makeProjectionMatrix(
-				EngineSettings.NEAR_PLANE, EngineSettings.FAR_PLANE, EngineSettings.FOV);
+		Matrix4f projectionMatrix = scene.getCamera().getProjectionMatrix();
 		
 		entityRendererManager = new EntityRendererManager()
 			.addPair(new TexturedEntityRenderer(projectionMatrix), texturedEntities)
@@ -149,13 +147,13 @@ public class MainRenderer {
 	}
 	
 	private void processEntities(Scene scene, boolean doRebuild) {
-		List<Entity> frustumEntities = scene.getFrustumEntities().processEntities(scene, projectionMatrix, doRebuild);
+		List<Entity> frustumEntities = scene.getFrustumEntities().getUpdatedEntities(scene, doRebuild);
 		frustumEntities.stream().forEach(this::processEntity);
 	}
 	
 	private void processShadowEntities(Scene scene) {
 		List<Entity> frustumEntities = 
-				scene.getFrustumEntities().prepareShadowEntities(
+				scene.getFrustumEntities().getUpdatedShadowEntities(
 						scene, shadowMapRenderer.getToShadowMapMatrix(), scene.getCamera().isMoved());
 		frustumEntities.stream().forEach(this::processEntity);
 	}
@@ -174,10 +172,6 @@ public class MainRenderer {
 		ShaderPool.getInstance().clean();
 	}
 
-	public Matrix4f getProjectionMatrix() {
-		return projectionMatrix;
-	}
-
 	private Texture2D getShadowMapTexture() {
 		return shadowMapRenderer.getShadowMap();
 	}
@@ -190,7 +184,7 @@ public class MainRenderer {
 		processEntity(entity.getShader().getType(), entity);
 	}
 	
-	private synchronized void processEntity(int type, Entity entity) {
+	private void processEntity(int type, Entity entity) {
 		switch (type) {
 		 	case Shader.ENTITY:
 		 		processor.processEntity(entity, texturedEntities);

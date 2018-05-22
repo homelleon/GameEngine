@@ -77,7 +77,11 @@ public class SceneFactoryImpl implements SceneFactory {
 						EngineSettings.TEXTURE_SPECULAR_MAP_PATH, "xuchilbara_spec"));
 		scene.setPlayer(player1);
 		scene.getEntities().add(player1);
-		scene.setCamera(new TargetCamera(cameraName, player1));
+		
+		TargetCamera camera = new TargetCamera(cameraName, EngineSettings.FOV, EngineSettings.NEAR_PLANE, EngineSettings.FAR_PLANE);
+		camera.setTarget(player1);
+		
+		scene.setCamera(camera);
 		scene.setSun(new Light("Sun",
 				new Vector3f(1000, 5000, 1000), 
 				new Color(255, 255, 255),
@@ -130,7 +134,7 @@ public class SceneFactoryImpl implements SceneFactory {
 		});
 
 		/*--------------UI-------------------*/
-		scene.getUserInterface().initialize();
+		scene.getUI().initialize();
 		/*--------------TEXT----------------*/
 
 		/*--------------AUDIO----------------*/
@@ -161,7 +165,11 @@ public class SceneFactoryImpl implements SceneFactory {
 		scene.getEntities().addAll(EngineUtils.createObjectField(500, 500, 1000, 4, 0.1f));
 		scene.getEntities().getAll()
 			.forEach(entity -> scene.getFrustumEntities().addEntityInNodes(entity));
-		scene.setCamera(new TargetCamera(cameraName, player1));
+		
+		TargetCamera camera = new TargetCamera(cameraName, EngineSettings.FOV, EngineSettings.NEAR_PLANE, EngineSettings.FAR_PLANE);
+		camera.setTarget(player1);
+		
+		scene.setCamera(camera);
 		
 		// light
 		scene.setSun(new Light("Sun", 

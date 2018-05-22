@@ -26,7 +26,7 @@ public abstract class Game extends Thread {
 
 		List<GUIText> versionTextList = new ArrayList<GUIText>();
 		List<GUITexture> versionTextureList = new ArrayList<GUITexture>();
-		versionTextList.add(this.gameManager.getScene().getUserInterface().getComponent().getTexts().get("version"));
+		versionTextList.add(this.gameManager.getScene().getUI().getComponent().getTexts().get("version"));
 		GUI versionGUI = new GUI("version", versionTextureList, versionTextList);
 
 		if (EngineDebug.hasDebugPermission()) {

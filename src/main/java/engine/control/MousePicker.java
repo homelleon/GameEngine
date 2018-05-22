@@ -41,9 +41,9 @@ public class MousePicker {
 	 * @param projectionMatrix
 	 *            {@link Matrix4f} value of object projection
 	 */
-	public MousePicker(Camera camera, Matrix4f projectionMatrix) {
+	public MousePicker(Camera camera) {
 		this.camera = camera;
-		this.projectionMatrix = projectionMatrix;
+		this.projectionMatrix = camera.getProjectionMatrix();
 		this.viewMatrix = Maths.createViewMatrix(camera);
 	}
 

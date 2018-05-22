@@ -2,12 +2,15 @@ package control;
 
 import org.lwjgl.input.Keyboard;
 
-import core.EngineDebug;
 import core.EngineMain;
 import core.Loop;
 import core.settings.EngineSettings;
+import manager.ObjectMapManager;
+import manager.scene.ObjectManager;
 import object.entity.Entity;
 import scene.Scene;
+import scene.writer.LevelMapWriter;
+import scene.writer.LevelMapXMLWriter;
 
 /**
  * Engine UI and object controls.
@@ -26,35 +29,29 @@ public class ControlsImpl implements Controls {
 
 	@Override
 	public void update(Scene scene) {
-		debugControls();
 		pointedEntitiesControls(scene);
-		sceneControls();
-	}
-	
-	private void debugControls() {		
-		if(EngineDebug.hasDebugPermission()) {
-			if (KeyboardGame.isKeyPressed(EngineSettings.KEY_DEBUG_INFORMATION)) {
-				EngineDebug.switchDebugPermission();
-			}
-			
-			if (KeyboardGame.isKeyPressed(EngineSettings.KEY_DEBUG_BOUNDING_BOX)) {
-				EngineDebug.switchBounding();
-			}
-			
-			if(KeyboardGame.isKeyPressed(EngineSettings.KEY_DEBUG_WIRED_FRAME)) {
-				EngineMain.switchWiredFrameMode();
-			}
-		}
+		sceneControls(scene);
 	}
 
-	private void sceneControls() {
+	private void sceneControls(Scene scene) {
 		if(KeyboardGame.isKeyPressed(Keyboard.KEY_ESCAPE)) {
 			if(!Loop.getInstance().getEditMode()) {
 				EngineMain.exit();
 			}
 		}
+		
 		if (KeyboardGame.isKeyPressed(EngineSettings.KEY_PAUSE)) {
 			EngineMain.pauseEngine(!EngineMain.getIsEnginePaused());
+		}
+		
+		if (KeyboardGame.isKeyPressed(EngineSettings.KEY_SAVE)) {
+			EngineMain.pauseEngine(true);
+			LevelMapWriter mapWriter = new LevelMapXMLWriter();
+			ObjectManager map = new ObjectMapManager();
+			map.getEntities().addAll(scene.getEntities().getAll());
+			map.getTerrains().addAll(scene.getTerrains().getAll());
+			mapWriter.write(map);
+			EngineMain.pauseEngine(false);
 		}
 		
 	}

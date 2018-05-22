@@ -1,5 +1,20 @@
 package core;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import control.KeyboardGame;
+import control.MousePicker;
+import core.settings.EngineSettings;
+import object.gui.GUI;
+import object.gui.GUIGroup;
+import object.gui.text.GUIText;
+import object.gui.texture.GUITexture;
+import primitive.texture.Texture2D;
+import scene.Scene;
+import tool.math.vector.Color;
+import tool.math.vector.Vector2f;
+
 /**
  * Game engine debug util.
  * 
@@ -23,7 +38,97 @@ public class EngineDebug {
 	public static final int BOUNDING_SPHERE = 2;			// Bounding sphere is visible
 	public static final int BOUNDING_BOX_AND_SPHERE = 3;	// Bounding sphere and box are visible
 	private static int boundingMode = BOUNDING_NONE;		// Bounding shape visbility status field
+	
+	private String statusGroupName = "statusGroup";
+	private Scene scene;
+	GUIText fpsText;
+	GUIText coordsText;
+	
+	public EngineDebug(Scene scene) {
+		this.scene = scene;
+	}
+	
+	public void initialize() {
+		// debug text
+		String fontName = "candara";
+		Color fontColor = new Color(255, 0, 0);
+		
+		fpsText = createFPSText(Math.round(1 / DisplayManager.getFrameTimeSeconds()), fontName);
+		fpsText.setColor(fontColor);
+		
+		coordsText = createPickerCoordsText(scene.getMousePicker(), fontName);
+		coordsText.setColor(fontColor);
+		
+		// debug texture
+		List<GUITexture> textureList = new ArrayList<GUITexture>();
+		
+		/* terrain */
+		Texture2D heightMap = scene.getTerrains().get("Terrain1").getMaterial().getHeightMap();
+		Texture2D normalMap = scene.getTerrains().get("Terrain1").getMaterial().getNormalMap();
+		GUITexture debugTexture1 = new GUITexture("debugTexture1", heightMap, new Vector2f(-0.5f, 0), new Vector2f(0.3f, 0.3f));
+		GUITexture debugTexture2 = new GUITexture("debugTexture2", normalMap, new Vector2f(0.5f, 0), new Vector2f(0.3f, 0.3f));
+		textureList.add(debugTexture1);
+		textureList.add(debugTexture2);
+		List<GUIText> textList = new ArrayList<GUIText>();
+		textList.add(fpsText);
+		textList.add(coordsText);
+		/* end */
+		
+		String statusGUIName = "status";
+		GUI statusInterface = new GUI(statusGUIName, textureList, textList);
+		scene.getUI().getGroups().createEmpty(statusGroupName);
+		scene.getUI().getGroups().get(statusGroupName).add(statusInterface);
+	}
+	
+	private GUIText createFPSText(float FPS, String fontName) {
+		GUIText guiText = new GUIText("FPS", "FPS: " + String.valueOf((int) FPS), 2f, fontName, new Vector2f(0.65f, 0.9f),
+				0.5f, true);
+		scene.getUI().getComponent().getTexts().add(guiText);
+		return guiText;
+	}
 
+	private GUIText createPickerCoordsText(MousePicker picker, String fontName) {
+		String text = String.valueOf(picker.getCurrentRay());
+		GUIText guiText = new GUIText("Coords", text, 1, fontName, new Vector2f(0.3f, 0.8f), 1f, true);
+		scene.getUI().getComponent().getTexts().add(guiText);
+		return guiText;
+	}
+	
+	public void update() {
+		checkInputs();
+		float fps = Math.round(1 / DisplayManager.getFrameTimeSeconds());
+		scene.getUI().getComponent().getTexts()
+			.changeContent(fpsText.getName(), "FPS: " + String.valueOf((int) fps));
+		String coords = String.valueOf(scene.getMousePicker().getCurrentRay());
+		scene.getUI().getComponent().getTexts()
+			.changeContent(coordsText.getName(), coords);
+	}
+	
+	private void checkInputs() {
+		GUIGroup statusGUIGroup = scene.getUI().getGroups().get(statusGroupName);
+		
+		if (EngineDebug.hasHardDebugPermission()) {
+			if (!statusGUIGroup.getIsVisible())
+				statusGUIGroup.show();
+		} else {
+			if (statusGUIGroup.getIsVisible())
+				statusGUIGroup.hide();
+		}
+		
+		if (EngineDebug.hasDebugPermission()) {
+			if (KeyboardGame.isKeyPressed(EngineSettings.KEY_DEBUG_INFORMATION)) {
+				EngineDebug.switchDebugPermission();
+			}
+			
+			if (KeyboardGame.isKeyPressed(EngineSettings.KEY_DEBUG_BOUNDING_BOX)) {
+				EngineDebug.switchBounding();
+			}
+			
+			if (KeyboardGame.isKeyPressed(EngineSettings.KEY_DEBUG_WIRED_FRAME)) {
+				EngineMain.switchWiredFrameMode();
+			}
+		}
+	}
 	/**
 	 * Changes bounding surface mode.
 	 */

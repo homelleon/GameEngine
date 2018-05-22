@@ -164,7 +164,7 @@ public class Scene extends ObjectManager {
 		return audioManager;
 	}
 
-	public GUIManager getUserInterface() {
+	public GUIManager getUI() {
 		return uiManager;
 	}
 

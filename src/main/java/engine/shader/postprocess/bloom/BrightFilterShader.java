@@ -1,4 +1,4 @@
-package shader.postProcessing.bloom;
+package shader.postprocess.bloom;
 
 import core.settings.EngineSettings;
 import shader.Shader;

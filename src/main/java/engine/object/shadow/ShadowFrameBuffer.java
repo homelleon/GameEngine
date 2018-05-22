@@ -122,7 +122,7 @@ public class ShadowFrameBuffer {
 	 */
 	private static Texture2D createDepthBufferAttachment(int width, int height) 
 	{
-		Texture2D texture = Texture2D.create(width, height, 1, false);
+		Texture2D texture = Texture2D.create(width, height);
 		texture.bind();
 		GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL14.GL_DEPTH_COMPONENT16, 
 				width, height, 0, GL11.GL_DEPTH_COMPONENT,

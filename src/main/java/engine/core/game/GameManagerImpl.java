@@ -13,8 +13,8 @@ public class GameManagerImpl implements GameManager {
 
 	public GameManagerImpl() {
 		this.scene = EngineMain.getScene();
-		this.textManager = scene.getUserInterface().getComponent().getTexts();
-		this.textureManager = scene.getUserInterface().getComponent().getTextures();
+		this.textManager = scene.getUI().getComponent().getTexts();
+		this.textureManager = scene.getUI().getComponent().getTextures();
 	}
 
 	@Override

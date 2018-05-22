@@ -1,6 +1,5 @@
 package object.camera;
 
-import tool.math.Matrix4f;
 import tool.math.vector.Vector3f;
 
 public class CubeMapCamera extends Camera {
@@ -15,14 +14,9 @@ public class CubeMapCamera extends Camera {
 	private static final float FOV = 90;// don't change!
 	private static final float ASPECT_RATIO = 1;
 
-	private Matrix4f projectionMatrix = new Matrix4f();
-	private Matrix4f viewMatrix = new Matrix4f();
-	private Matrix4f projectionViewMatrix = new Matrix4f();
-
-	public CubeMapCamera(String name, Vector3f position) {
-		super(name, position);
+	public CubeMapCamera(String name) {
+		super(name);
 		this.pitch = 0;
-		this.position = position;
 		createProjectionMatrix();
 	}
 	
@@ -31,7 +25,6 @@ public class CubeMapCamera extends Camera {
 		// nothing
 	}
 
-	@Override
 	public void switchToFace(int faceIndex) {
 		switch (faceIndex) {
 		case 0:
@@ -60,21 +53,6 @@ public class CubeMapCamera extends Camera {
 			break;
 		}
 		updateViewMatrix();
-	}
-
-	@Override
-	public Matrix4f getViewMatrix() {
-		return viewMatrix;
-	}
-
-	@Override
-	public Matrix4f getProjectionMatrix() {
-		return projectionMatrix;
-	}
-
-	@Override
-	public Matrix4f getProjectionViewMatrix() {
-		return projectionViewMatrix;
 	}
 
 	/**

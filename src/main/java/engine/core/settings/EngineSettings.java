@@ -40,6 +40,8 @@ public class EngineSettings {
 	public static final int KEY_EXIT = Keyboard.KEY_ESCAPE;
 	public static final int KEY_APPLY = Keyboard.KEY_INSERT;
 	public static final int KEY_PAUSE = Keyboard.KEY_PAUSE;
+	public static final int KEY_SAVE = Keyboard.KEY_F6;
+	public static final int KEY_LOAD = Keyboard.KEY_F8;
 
 	/* player control */
 	public static final int KEY_PLAYER_MOVE_FORWARD = Keyboard.KEY_W;
@@ -78,12 +80,18 @@ public class EngineSettings {
 	public static final float GRAVITY = -50;
 	public static final float TIME_LENGTH = 1;
 	public static final float FOG_DENSITY = 0.0022f;
+	
+	/* shadows */
 	public static final float SHADOW_DISTANCE = 200;
 	public static final int SHADOW_MAP_SIZE = 2048;
 	public static final float SHADOW_TRANSITION_DISTANCE = SHADOW_DISTANCE;
-	public static final int SHADOW_PCF = 20;
+	public static final int SHADOW_PCF = 15;
+	
+	/* view distance */
 	public static final float RENDERING_VIEW_DISTANCE = 500;
 	public static final float DETAIL_VIEW_DISTANCE = 150;
+	
+	/* light */
 	public static final int MAX_LIGHTS = 10;
 	
 	/* terrain settings */
@@ -136,7 +144,7 @@ public class EngineSettings {
 
 	/* shaders */
 	public final static String SHADERS_PATH = "/shader/";
-	public final static String COMMON_SHADER_FILE = SHADERS_PATH + "commonShader.glsl";
+	public final static String COMMON_SHADER_FILE = SHADERS_PATH + "shader.glsl";
 	public final static String SHADERS_ENTITY_PATH = SHADERS_PATH + "entity/";
 	public final static String SHADERS_ENTITY_TEXTURED_PATH = SHADERS_ENTITY_PATH;
 	public final static String SHADERS_ENTITY_NORMAL_PATH = SHADERS_ENTITY_PATH;
@@ -149,7 +157,7 @@ public class EngineSettings {
 	public final static String SHADERS_PARTICLE_PATH = SHADERS_PATH + "particle/";
 	public final static String SHADERS_SHADOW_PATH = SHADERS_PATH + "shadow/";
 	public final static String SHADERS_FONT_PATH = SHADERS_PATH + "font/";
-	public final static String SHADERS_POST_PROCESSING_PATH = SHADERS_PATH + "postProcessing/";
+	public final static String SHADERS_POST_PROCESSING_PATH = SHADERS_PATH + "postprocess/";
 	public final static String SHADERS_BLUR_PATH = SHADERS_POST_PROCESSING_PATH + "gaussianBlur/";
 	public final static String SHADERS_BLOOM_PATH = SHADERS_POST_PROCESSING_PATH + "bloom/";
 	public final static String SHADERS_ANIMATION_PATH = SHADERS_PATH + "animation/";

@@ -1,6 +1,7 @@
 package object.camera;
 
 import tool.math.Frustum;
+import tool.math.Maths;
 import tool.math.Matrix4f;
 import tool.math.vector.Vector3f;
 
@@ -14,6 +15,12 @@ public abstract class Camera {
 	protected float pitch = 20;
 	protected float yaw = 0;
 	protected float roll;
+	
+	protected float nearPlane = 1.0f;
+	protected float farPlane = 10.0f;
+	
+	protected Matrix4f projectionMatrix = new Matrix4f();
+	protected Matrix4f viewMatrix = new Matrix4f();
 
 	protected float currentForwardSpeed = 0;
 	protected float currentStrafeSpeed = 0;
@@ -27,14 +34,30 @@ public abstract class Camera {
 	protected boolean isUnderWater = false;
 	protected boolean isMoved = true;
 
-	protected Camera(String name, Vector3f position) {
+	protected Camera(String name) {
 		this.frustum = new Frustum();
-		setPosition(position);
 		this.name = name;
+		viewMatrix = Maths.createViewMatrix(this);
 	}
 	
 	public String getName() {
 		return name;
+	}
+	
+	public void setNearPlane(float value) {
+		nearPlane = value;
+	}
+	
+	public float getNearPlane() {
+		return nearPlane;
+	}
+	
+	public void setFarPlane(float value) {
+		farPlane = value;
+	}
+	
+	public float getFarPlane() {
+		return farPlane;
 	}
 
 	// установить позицию камеры
@@ -98,14 +121,17 @@ public abstract class Camera {
 		return roll;
 	}
 
-	// переключить между поворотами камеры
-	public abstract void switchToFace(int faceIndex);
+	public Matrix4f getViewMatrix() {
+		return Maths.createViewMatrix(this);
+	};
 
-	public abstract Matrix4f getViewMatrix();
-
-	public abstract Matrix4f getProjectionMatrix();
+	public Matrix4f getProjectionMatrix() {
+		return projectionMatrix.clone();
+	};
 	
-	public abstract Matrix4f getProjectionViewMatrix();
+	public Matrix4f getProjectionViewMatrix() {
+		return Matrix4f.mul(getProjectionMatrix(), getViewMatrix());
+	};
 
 	public boolean isMoved() {
 		return isMoved;

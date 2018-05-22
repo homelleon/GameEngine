@@ -135,7 +135,7 @@ public class TexturedEntityRenderer implements EntityRenderer {
 		Material material = model.getMaterial();
 		simpleShader.loadNumberOfRows(material.getDiffuseMap().getNumberOfRows());
 		
-		if (material.getDiffuseMap().isHasTransparency())
+		if (material.getDiffuseMap().isTransparent())
 			GraphicUtils.cullBackFaces(false);
 		
 		simpleShader.loadFakeLightingVariable(material.isUseFakeLighting());

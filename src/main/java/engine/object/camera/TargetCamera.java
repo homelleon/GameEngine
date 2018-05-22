@@ -7,17 +7,10 @@ import control.KeyboardGame;
 import control.MouseGame;
 import core.Loop;
 import core.settings.EngineSettings;
+import object.entity.Entity;
 import object.entity.Player;
-import tool.math.Maths;
-import tool.math.Matrix4f;
-import tool.math.vector.Vector3f;
 
-public class TargetCamera extends Camera {
-
-	/*
-	 * CameraPlayer - камера для игрока
-	 * 
-	 */
+public class TargetCamera extends PerspectiveCamera {
 
 	private final float maxDistanceFromPlayer = 100;
 	private final float minDistanceFromPlayer = 0;
@@ -36,38 +29,39 @@ public class TargetCamera extends Camera {
 	private float moveOffsetY = 5;
 	private float moveOffsetX = 0;
 
-	private Player player;
+	private Entity target;
 
-	public TargetCamera(String name, Player player) {
-		super(name, new Vector3f(0,0,0));
-		this.player = player;
-		this.name = name;
-		if(Loop.getInstance().getEditMode())
-			this.angleAroundPlayer = 180;
+	public TargetCamera(String name, float fov, float nearPlane, float farPlane) {
+		super(name, fov, nearPlane, farPlane);
+		if (Loop.getInstance().getEditMode())
+			this.angleAroundPlayer = 180;		
+	}
+	
+	public void setTarget(Entity target) {
+		this.target = target;
 	}
 
-	@Override
 	public void move() {
 		super.move();
-		if (player.isMoved()) 
-			isMoved = true;
+		if (((Player) target).isMoved()) 
+			setMoved(true);
 		calculateZoom();
 		calculatePitchAndAngle();
 		calculateOffset();
 		float horizontalDistance = calculateHorizontalDistance();
 		float verticalDistance = calculateVerticalDistance();
 		calculateCameraPosition(horizontalDistance, verticalDistance);
-		yaw = 180 - (player.getRotation().getY() + angleAroundPlayer);
+		setYaw(180 - (target.getRotation().getY() + angleAroundPlayer));
 	}
 
 	// вычислить позицию камеры относительно игрока
 	private void calculateCameraPosition(float horizDistance, float verticDistance) {
-		float theta = player.getRotation().getY() + angleAroundPlayer;
+		float theta = target.getRotation().getY() + angleAroundPlayer;
 		float offsetX = (float) (horizDistance * Math.sin(Math.toRadians(theta)));
 		float offsetZ = (float) (horizDistance * Math.cos(Math.toRadians(theta)));
-		position.x = (float) (player.getPosition().x - offsetX + moveOffsetX * Math.sin(player.getRotation().getY()));
-		position.z = (float) (player.getPosition().z - offsetZ + moveOffsetX * Math.cos(player.getRotation().getY()));
-		position.y = player.getPosition().y + moveOffsetY + verticDistance;
+		position.setX((float) (target.getPosition().getX() - offsetX + moveOffsetX * Math.sin(target.getRotation().getY())));
+		position.setZ((float) (target.getPosition().getZ() - offsetZ + moveOffsetX * Math.cos(target.getRotation().getY())));
+		position.setY(target.getPosition().getY() + moveOffsetY + verticDistance);
 	}
 
 	private float calculateHorizontalDistance() {
@@ -83,24 +77,24 @@ public class TargetCamera extends Camera {
 		if (MouseGame.isPressed(MouseGame.RIGHT_CLICK)) {
 			moveOffsetX = 0;
 			moveOffsetY = 0;
-			pitch = 0;
+			setPitch(0);;
 			angleAroundPlayer = 180;
 		}
 		if (KeyboardGame.isKeyDown(Keyboard.KEY_UP) && moveOffsetY < maxYOffset) {
 			moveOffsetY += this.offsetSpeed;
-			isMoved = true;
+			setMoved(true);
 		}
 		if (KeyboardGame.isKeyDown(Keyboard.KEY_DOWN) && moveOffsetY > minYOffset) {
 			moveOffsetY -= this.offsetSpeed;
-			isMoved = true;
+			setMoved(true);
 		}
 		if (KeyboardGame.isKeyDown(Keyboard.KEY_LEFT) && moveOffsetX > minXOffset) {
 			moveOffsetX -= this.offsetSpeed;
-			isMoved = true;
+			setMoved(true);
 		}
 		if (KeyboardGame.isKeyDown(Keyboard.KEY_RIGHT) && moveOffsetX < maxXOffset) {
 			moveOffsetX += offsetSpeed;
-			isMoved = true;
+			setMoved(true);
 		}
 	}
 
@@ -110,7 +104,7 @@ public class TargetCamera extends Camera {
 		if (((distanceFromPlayer < maxDistanceFromPlayer) && (zoomLevel < 0))
 				|| ((distanceFromPlayer > minDistanceFromPlayer) && (zoomLevel > 0))) {
 			distanceFromPlayer -= zoomLevel;
-			isMoved = true;
+			setMoved(true);
 		}
 	}
 
@@ -132,33 +126,7 @@ public class TargetCamera extends Camera {
 			angleAroundPlayer = 0;
 		}
 		if ((pitchChange != 0) || (angleChange !=0)) 
-			isMoved = true;
-	}
-
-	@SuppressWarnings("unused")
-	private void underWaterCalculate() {
-		isUnderWater = (position.y <= 0);
-	}
-
-	@Override
-	public Matrix4f getViewMatrix() {
-		return Maths.createViewMatrix(this);
-	}
-
-	@Override
-	public Matrix4f getProjectionMatrix() {
-		return null;
-	}
-
-	@Override
-	public Matrix4f getProjectionViewMatrix() {
-		return null;
-	}
-
-	@Override
-	public void switchToFace(int faceIndex) {
-		// do nothing
-		
+			setMoved(true);
 	}
 
 }

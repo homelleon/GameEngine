@@ -15,7 +15,8 @@ public class EnvironmentMapRenderer {
 	
 	public void render(Scene scene, MainRenderer renderer, Entity shinyEntity) {
 		Camera sceneCamera = scene.getCamera();
-		Camera cubeCamera = new CubeMapCamera("shinyCubeMap", shinyEntity.getPosition());
+		Camera cubeCamera = new CubeMapCamera("shinyCubeMap");
+		cubeCamera.setPosition(shinyEntity.getPosition());
 		scene.setCamera(cubeCamera);
 		int fbo = GL30.glGenFramebuffers();
 		GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, fbo);
@@ -32,7 +33,7 @@ public class EnvironmentMapRenderer {
 		for (int i = 0; i < 6; i++) {
 			GL30.glFramebufferTexture2D(GL30.GL_FRAMEBUFFER, GL30.GL_COLOR_ATTACHMENT0,
 					GL13.GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, scene.getEnvironmentMap().textureId, 0);
-			cubeCamera.switchToFace(i);
+			((CubeMapCamera) cubeCamera).switchToFace(i);
 			
 			renderer.renderCubemap(scene, shinyEntity);
 		}

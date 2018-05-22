@@ -5,16 +5,11 @@ import org.lwjgl.input.Mouse;
 
 import core.DisplayManager;
 import core.settings.EngineSettings;
-import tool.math.Maths;
-import tool.math.Matrix4f;
-import tool.math.vector.Vector3f;
 
-public class FreeCamera extends Camera {
+public class FreeCamera extends PerspectiveCamera {
 
-	public FreeCamera(String name, Vector3f position) {
-		super(name, position);
-		this.setPosition(position);
-		this.name = name;
+	public FreeCamera(String name, float fov, float nearPlane, float farPlane) {
+		super(name, fov, nearPlane, farPlane);
 	}
 	
 	@Override
@@ -84,27 +79,6 @@ public class FreeCamera extends Camera {
 			currentTurnSpeed = 0;
 			currentPitchSpeed = 0;
 		}
-	}
-
-
-	@Override
-	public Matrix4f getViewMatrix() {
-		return Maths.createViewMatrix(this);
-	}
-
-	@Override
-	public Matrix4f getProjectionMatrix() {
-		return null;
-	}
-
-	@Override
-	public Matrix4f getProjectionViewMatrix() {
-		return null;
-	}
-
-	@Override
-	public void switchToFace(int faceIndex) {
-		//do nothing		
 	}
 
 }
