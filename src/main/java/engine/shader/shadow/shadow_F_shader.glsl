@@ -13,12 +13,11 @@ uniform float depthRange;
 /* ------------- main --------------- */
 void main(void) {
 
-	float linearDepth = worldPosition.z * (1.0 / depthRange);
+	float linearDepth = length(worldPosition) * (1.0 / depthRange);
 
 	float alpha = texture(modelTexture, textureCoords).a;
-	if (alpha < 0.5) {
+	if (alpha < 0.5)
 		discard;
-	}
 	
 	out_Colour = encodeFloat(linearDepth);
 

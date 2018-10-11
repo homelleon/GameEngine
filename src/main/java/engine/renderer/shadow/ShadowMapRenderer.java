@@ -75,6 +75,7 @@ public class ShadowMapRenderer {
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
 		GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT);
 		shader.start();
+		shader.loadDepthRange(box.getLength() - 0.1f);
 	}
 	
 	private void finish() {

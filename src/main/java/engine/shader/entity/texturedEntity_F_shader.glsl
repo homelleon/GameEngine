@@ -48,17 +48,15 @@ uniform float refractiveFactor;
 void main(void) {
 
 	//transparent in diffuse texture
-	vec4 textureColour = texture(diffuseMap, pass_textureCoordinates);
-	if (textureColour.a < 0.5) {
+	vec4 textureColor = texture(diffuseMap, pass_textureCoordinates);
+	if (textureColor.a < 0.5)
 		discard;
-	}
 
 	// transparent in alpha texture
 	if (usesAlphaMap > 0.5) {
 		vec4 alphaColor = texture(alphaMap, pass_textureCoordinates);
-		if (alphaColor.r < 1) {
+		if (alphaColor.r < 1)
 			discard;
-		}
 	}
 
 	float totalTexels = (shadowPCFCount * 2.0 + 1.0) * (shadowPCFCount * 2.0 + 1.0);
@@ -69,9 +67,8 @@ void main(void) {
     for (int x = -shadowPCFCount; x <= shadowPCFCount; x++) {
    		 for (int y = -shadowPCFCount; y <= shadowPCFCount; y++) {
    				 float objectNearestLight = decodeFloat(texture(shadowMap, shadowCoords.xy + vec2(x, y) * texelSize));
-   			 	 if (shadowCoords.z > objectNearestLight + SHADOW_BIAS) {
+   			 	 if (shadowCoords.z > objectNearestLight + SHADOW_BIAS)
    			 		 total += 1.0;
-   			 	 }
    		 }
     }
 
@@ -82,8 +79,8 @@ void main(void) {
     vec3 unitNormal = normalize(surfaceNormal);
     vec3 unitVectorToCamera = normalize(toCameraVector);
 
-    vec3 totalDiffuse = vec3(0.0);
-    vec3 totalSpecular = vec3(0.0);
+    vec4 totalDiffuse = vec4(0.0, 0.0, 0.0, 1.0);
+    vec4 totalSpecular = vec4(0.0, 0.0, 0.0, 1.0);
 
 	for (int i = 0; i < LIGHT_MAX; i++) {
 		float distance = length(toLightVector[i]);
@@ -96,36 +93,37 @@ void main(void) {
 		float specularFactor = dot(reflectedLightDirection, unitVectorToCamera);
 		specularFactor = max(specularFactor,0.0);
 		float dampedFactor = pow(specularFactor, shineDamper);
-		totalDiffuse = totalDiffuse + (brightness * lightColor[i]) / attFactor;
-		totalSpecular = totalSpecular + (dampedFactor * reflectivity * lightColor[i]) / attFactor;
+		totalDiffuse.rgb = totalDiffuse.rgb + (brightness * lightColor[i]) / attFactor;
+		totalSpecular.rgb = totalSpecular.rgb + (dampedFactor * reflectivity * lightColor[i]) / attFactor;
 	}
-	totalDiffuse = max(totalDiffuse * lightFactor, 0.4);
+	totalDiffuse.rgb = max(totalDiffuse.rgb * lightFactor, 0.4);
 
 	out_BrightColor = vec4(0.0);
 	if (usesSpecularMap > 0.5) {
 		vec4 mapInfo = texture(specularMap, pass_textureCoordinates);
 		totalSpecular *= mapInfo.r;
 		if (mapInfo.g > 0.5) {
-			out_BrightColor = textureColour + vec4(totalSpecular, 1.0);
-			totalDiffuse = vec3(1.0);
+			out_BrightColor = textureColor + totalSpecular;
+			totalDiffuse = vec4(1.0);
 		}
 	}
 
 	vec4 reflectedColour = texture(enviroMap, reflectedVector);
 	vec4 refractedColour = texture(enviroMap, refractedVector);
 
-	out_Color = textureColour;
+	vec4 totalColor = textureColor;
 
-	if (isChosen) {
-		out_Color.r *= 3;
-	}
+	if (isChosen)
+		totalColor.r *= 3;
 
-	out_Color = mix(out_Color, refractedColour, refractiveFactor);
-	out_Color = mix(out_Color, reflectedColour, reflectiveFactor);
+	totalColor = mix(totalColor, refractedColour, refractiveFactor);
+	totalColor = mix(totalColor, reflectedColour, reflectiveFactor);
 
-	out_Color = vec4(totalDiffuse, 1.0) * out_Color + vec4(totalSpecular, 1.0);
+	totalColor = phongModelColor(totalColor, totalDiffuse, totalSpecular);
 
-	out_Color = mix(vec4(skyColor, 1.0), out_Color, fogVisibility);
+	totalColor = mix(vec4(skyColor, 1.0), totalColor, fogVisibility);
+
+	out_Color = totalColor;
 
 	
 }

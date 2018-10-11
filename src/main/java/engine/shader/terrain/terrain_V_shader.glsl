@@ -41,28 +41,23 @@ float morphLatitude(vec2 position) {
 
 	if (index == vec2(0, 0)) {
 		float morph = frac.x - frac.y;
-		if(morph > 0) {
+		if (morph > 0)
 			return morph;
-		}
 	}
-
 	if (index == vec2(1, 0)) {
 		float morph = gap - frac.x - frac.y;
-		if(morph > 0) {
+		if (morph > 0)
 			return morph;
-		}
 	}
 	if (index == vec2(0, 1)) {
 		float morph = frac.x + frac.y - gap;
-		if(morph > 0) {
+		if (morph > 0)
 			return -morph;
-		}
 	}
 	if (index == vec2(1, 1)) {
 		float morph = frac.y - frac.x;
-		if(morph > 0) {
+		if (morph > 0)
 			return -morph;
-		}
 	}
 	return 0;
 }
@@ -73,28 +68,23 @@ float morphLongitude(vec2 position) {
 
 	if (index == vec2(0, 0)) {
 		float morph = frac.y - frac.x;
-		if(morph > 0) {
+		if (morph > 0)
 			return -morph;
-		}
 	}
-
 	if (index == vec2(1, 0)) {
 		float morph = frac.y - (gap - frac.x);
-		if(morph > 0) {
+		if (morph > 0)
 			return morph;
-		}
 	}
 	if (index == vec2(0, 1)) {
 		float morph = gap - frac.y - frac.x;
-		if(morph > 0) {
+		if (morph > 0)
 			return -morph;
-		}
 	}
 	if (index == vec2(1, 1)) {
 		float morph = frac.x - frac.y;
-		if(morph > 0) {
+		if (morph > 0)
 			return morph;
-		}
 	}
 	return 0;
 }
@@ -110,37 +100,28 @@ vec2 morph(vec2 localPosition, int morph_area) {
 	if (index == vec2(0, 0)) {
 		fixPointLatitude = location + vec2(gap, 0);
 		fixPointLongitude = location + vec2(0, gap);
-	}
-	else if (index == vec2(1, 0)) {
+	} else if (index == vec2(1, 0)) {
 		fixPointLatitude = location;
 		fixPointLongitude = location + vec2(gap, gap);
-	}
-	else if (index == vec2(0, 1)) {
+	} else if (index == vec2(0, 1)) {
 		fixPointLatitude = location + vec2(gap, gap);
 		fixPointLongitude = location;
-	}
-	else if (index == vec2(1, 1)) {
+	} else if (index == vec2(1, 1)) {
 		fixPointLatitude = location + vec2(0, gap);
 		fixPointLongitude = location + vec2(gap, 0);
 	}
 
-	float planarFactor = 0;
-	if (cameraPosition.y > abs(scaleY)) {
-		planarFactor = 1;
-	} else {
-		planarFactor = cameraPosition.y / abs(scaleY);
-	}
+	float planarFactor = cameraPosition.y > abs(scaleY) ? 1 : cameraPosition.y / abs(scaleY);
 
 	distLatitude = length(cameraPosition - (World *
 			vec4(fixPointLatitude.x, planarFactor, fixPointLatitude.y, 1)).xyz);
 	distLongitude = length(cameraPosition - (World *
 			vec4(fixPointLongitude.x, planarFactor, fixPointLongitude.y, 1)).xyz);
-	if (distLatitude > morph_area) {
+
+	if (distLatitude > morph_area)
 		morphing.x = morphLatitude(localPosition.xy);
-	}
-	if (distLongitude > morph_area) {
+	if (distLongitude > morph_area)
 		morphing.y = morphLongitude(localPosition.xy);
-	}
 
 	return morphing;
 }
@@ -150,9 +131,8 @@ void main(void) {
 
    vec3 localPosition = (Local * vec4(in_position, 1.0)).xyz;
 
-   if (lod > 0.0) {
+   if (lod > 0.0)
 	  localPosition.xz += morph(localPosition.xz, lod_morph_area[lod-1]);
-   }
 
    float height = texture(heightMap, localPosition.xz).r;
    localPosition.y = height;
