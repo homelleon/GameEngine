@@ -18,8 +18,8 @@ import tool.math.vector.Vector3f;
 public class EntityShader extends Shader {
 	
 	//----shaders
-	private static final String VERTEX_FILE = EngineSettings.SHADERS_ENTITY_TEXTURED_PATH + "texturedEntity_V_shader.glsl";
-	private static final String FRAGMENT_FILE = EngineSettings.SHADERS_ENTITY_TEXTURED_PATH + "texturedEntity_F_shader.glsl";
+	private static final String VERTEX_FILE = EngineSettings.SHADERS_ENTITY_TEXTURED_PATH + "entity_V_shader.glsl";
+	private static final String FRAGMENT_FILE = EngineSettings.SHADERS_ENTITY_TEXTURED_PATH + "entity_F_shader.glsl";
 	//----attributes
 	private static final String ATTRIBUTE_OUT_COLOR = "out_Color";
 	private static final String ATTRIBUTE_OUT_BRIGHT_COLOR = "out_BrightColor";

@@ -73,14 +73,14 @@ public abstract class Shader {
 	private int computeShaderID;
 	private int type = -1;
 	
-	private Map<String, Integer> unfiroms;
+	private Map<String, Integer> uniforms;
 	private Map<String, UniformBlock> blockUniforms;
 	
 	private static FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer(16);
 
 	protected Shader(int type) {
 		this.type = type;
-		this.unfiroms = new HashMap<String, Integer>();
+		this.uniforms = new HashMap<String, Integer>();
 		programID = GL20.glCreateProgram();
 		if (programID == 0) {
 			System.err.println("Shader creation failed");
@@ -133,6 +133,7 @@ public abstract class Shader {
 			System.exit(1);
 		}
 		loadUniformLocations();
+		System.out.println("uniforms: " + uniforms.size());
 	}
 	
 	protected void addVertexShader(String text) {
@@ -185,8 +186,7 @@ public abstract class Shader {
 			shaderID = GL20.glCreateShader(type);
 			GL20.glShaderSource(shaderID, shaderSource);
 		}
-		System.out.println("--------");
-		System.out.println(shaderSource);
+		
 		GL20.glCompileShader(shaderID);
 		if (GL20.glGetShaderi(shaderID, GL_COMPILE_STATUS) == GL_FALSE) {
 			System.out.println(this.getClass().getName() + " " + GL20.glGetShaderInfoLog(shaderID, 500));
@@ -228,7 +228,7 @@ public abstract class Shader {
 //			System.exit(1);
 		}
 		
-		this.unfiroms.put(name, uniformLocation);
+		this.uniforms.put(name, uniformLocation);
 	}
 	
 	protected void addSSBO(String name) {
@@ -239,7 +239,7 @@ public abstract class Shader {
 			new Exception().printStackTrace();
 			System.exit(1);
 		}
-		this.unfiroms.put(name, bufferLocation);
+		this.uniforms.put(name, bufferLocation);
 	}
 	
 	protected void addBlockUniform(String blockName, int valueType, String ...uniformNames) {
@@ -270,38 +270,38 @@ public abstract class Shader {
 	}
 
 	protected void loadInt(String name, int value) {
-		int uniformLocation = this.unfiroms.get(name);
+		int uniformLocation = this.uniforms.get(name);
 		GL20.glUniform1i(uniformLocation, value);
 	}
 
 	protected void loadFloat(String name, float value) {
-		int uniformLocation = this.unfiroms.get(name);
+		int uniformLocation = this.uniforms.get(name);
 		GL20.glUniform1f(uniformLocation, value);
 	}
 
 	protected void load3DVector(String name, Vector3f vector) {
-		int uniformLocation = this.unfiroms.get(name);
+		int uniformLocation = this.uniforms.get(name);
 		GL20.glUniform3f(uniformLocation, vector.x, vector.y, vector.z);
 	}
 	
 	protected void loadColor(String name, Color color) {
 		Color oglColor = color.getOGL();
-		int uniformLocation = this.unfiroms.get(name);
+		int uniformLocation = this.uniforms.get(name);
 		GL20.glUniform3f(uniformLocation, oglColor.r, oglColor.g, oglColor.b);
 	}
 
 	protected void load2DVector(String name, Vector2f vector) {
-		int uniformLocation = this.unfiroms.get(name);
+		int uniformLocation = this.uniforms.get(name);
 		GL20.glUniform2f(uniformLocation, vector.x, vector.y);
 	}
 
 	protected void load4DVector(String name, Vector4f vector) {
-		int uniformLocation = this.unfiroms.get(name);
+		int uniformLocation = this.uniforms.get(name);
 		GL20.glUniform4f(uniformLocation, vector.x, vector.y, vector.z, vector.w);
 	}
 
 	protected void loadBoolean(String name, boolean value) {
-		int uniformLocation = this.unfiroms.get(name);
+		int uniformLocation = this.uniforms.get(name);
 		float toLoad = 0;
 		if (value) {
 			toLoad = 1;
@@ -310,7 +310,7 @@ public abstract class Shader {
 	}
 
 	protected void loadMatrix(String name, Matrix4f matrix) {
-		int uniformLocation = this.unfiroms.get(name);
+		int uniformLocation = this.uniforms.get(name);
 		matrix.store(matrixBuffer);
 		matrixBuffer.flip();
 		GL20.glUniformMatrix4(uniformLocation, false, matrixBuffer);
@@ -339,7 +339,7 @@ public abstract class Shader {
 	}
 	
 	private void bindUniformBlock(String blockName, int blockBinding) {
-		glUniformBlockBinding(programID, this.unfiroms.get(blockName), blockBinding);
+		glUniformBlockBinding(programID, this.uniforms.get(blockName), blockBinding);
 	}
 	
 	private int getUniformBlockParam(int blockLocation, int parameter) {

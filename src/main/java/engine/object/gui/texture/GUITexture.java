@@ -18,7 +18,7 @@ public class GUITexture extends Drawable<Vector2f> {
 	private float transparency = 0;
 
 	public GUITexture(String name, Texture2D texture, Vector2f position, Vector2f scale) {
-		super(name, ShaderPool.getInstance().get(Shader.GUI_TEXTURE), null);
+		super(name, ShaderPool.INSTANCE.get(Shader.GUI_TEXTURE), null);
 		this.texture = texture;
 		this.position = position;
 		this.scale = scale;

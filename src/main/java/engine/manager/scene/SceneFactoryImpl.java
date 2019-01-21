@@ -57,7 +57,7 @@ public class SceneFactoryImpl implements SceneFactory {
 		this.scene = new Scene();
 		
 		List<Model> cubeModels = EngineUtils.loadModels("xuchilbara", "xuchilbara_dif", true);
-		Shader playerShader = ShaderPool.getInstance().get(Shader.ENTITY);
+		Shader playerShader = ShaderPool.INSTANCE.get(Shader.ENTITY);
 		Player player1 = new Player(
 				playerName,
 				playerShader,
@@ -107,7 +107,7 @@ public class SceneFactoryImpl implements SceneFactory {
 		if (EngineDebug.hasDebugPermission())
 			EngineDebug.println(cubeModels.get(0).getName(), 2);
 		
-		Shader playerShader = ShaderPool.getInstance().get(Shader.ENTITY);
+		Shader playerShader = ShaderPool.INSTANCE.get(Shader.ENTITY);
 		Player player1 = new Player(
 				playerName,
 				playerShader,

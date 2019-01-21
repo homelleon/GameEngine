@@ -37,11 +37,10 @@ public class LevelMapXMLParser extends XMLParser implements IObjectParser<Object
 		levelMap.getTerrains().addAll(this.modelMap.getTerrains().getAll());
 		if(document.getDocumentElement().getNodeName().equals(XMLUtils.LEVEL_MAP)) {
 			NodeList nodeList = this.document.getDocumentElement().getChildNodes();
-			for(int i = 0; i < nodeList.getLength(); i++) {
+			for (int i = 0; i < nodeList.getLength(); i++) {
 				Node node = nodeList.item(i);			
-				if(XMLUtils.ifNodeIsElement(node, XMLUtils.ENTITIES)) {
+				if (XMLUtils.ifNodeIsElement(node, XMLUtils.ENTITIES))
 					parseEntities(node, levelMap);
-				}
 			}
 			if (EngineDebug.hasDebugPermission()) {
 				EngineDebug.println("Level complete!");
@@ -55,9 +54,9 @@ public class LevelMapXMLParser extends XMLParser implements IObjectParser<Object
 	}
 
 	private void parseEntities(Node node, ObjectManager levelMap) {
-		if (EngineDebug.hasDebugPermission()) {
+		if (EngineDebug.hasDebugPermission())
 			EngineDebug.println("Loading entities...", 1);
-		}
+		
 		Node entities = node;
 		NodeList entityList = entities.getChildNodes();
 		for (int j = 0; j < entityList.getLength(); j++) {
@@ -78,13 +77,11 @@ public class LevelMapXMLParser extends XMLParser implements IObjectParser<Object
 				entityClone.setPosition(position);
 				entityClone.setScale(new Vector3f(scale, scale, scale));
 				levelMap.getEntities().add(entityClone);
-				if (EngineDebug.hasDebugPermission()) {
+				if (EngineDebug.hasDebugPermission())
 					EngineDebug.println(levelMap.getEntities().get(name).getName(), 2);
-				}
 			}
 		}
-		if (EngineDebug.hasDebugPermission()) {
+		if (EngineDebug.hasDebugPermission())
 			EngineDebug.println("Succed!", 1);
-		}
 	}
 }

@@ -169,7 +169,7 @@ public class MainRenderer {
 		entityRendererManager.clean();
 		terrainRenderer.clean();
 		shadowMapRenderer.clean();
-		ShaderPool.getInstance().clean();
+		ShaderPool.INSTANCE.clean();
 	}
 
 	private Texture2D getShadowMapTexture() {

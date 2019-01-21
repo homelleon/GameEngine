@@ -26,15 +26,9 @@ import shader.water.WaterShader;
 
 public class ShaderPool {
 	
-	private static ShaderPool instance;
+	public static final ShaderPool INSTANCE = new ShaderPool();
 	
 	private Map<Integer, Shader> shaders = new HashMap<Integer, Shader>();
-	
-	public static ShaderPool getInstance() {
-		if (instance == null)
-			instance = new ShaderPool();
-		return instance;
-	}
 	
 	public Shader get(int type) {
 		return shaders.get(type);

@@ -16,7 +16,6 @@ public class ShadowShader extends Shader {
 	//----uniforms
 	//matrix
 	private static final String UNIFORM_MVP_MATRIX = "ModelViewProjection";
-	private static final String UNIFORM_MODEL_MATRIX = "ModelProjection";
 	//texture coords variables
 	private static final String UNIFORM_OFFSET = "offset";
 	private static final String UNIFORM_NUMBER_OF_ROWS = "numberOfRows";
@@ -39,7 +38,6 @@ public class ShadowShader extends Shader {
 	protected void loadUniformLocations() {
 		//matrix
 		addUniform(UNIFORM_MVP_MATRIX);
-		addUniform(UNIFORM_MODEL_MATRIX);
 		//texture coords variables
 		addUniform(UNIFORM_OFFSET);
 		addUniform(UNIFORM_NUMBER_OF_ROWS);
@@ -53,10 +51,6 @@ public class ShadowShader extends Shader {
 
 	public void loadMvpMatrix(Matrix4f mvpMatrix) {
 		loadMatrix(UNIFORM_MVP_MATRIX, mvpMatrix);
-	}
-	
-	public void loadModelMatrix(Matrix4f modelMatrix) {
-		loadMatrix(UNIFORM_MODEL_MATRIX, modelMatrix);
 	}
 
 	public void loadNumberOfRows(int numberOfRows) {

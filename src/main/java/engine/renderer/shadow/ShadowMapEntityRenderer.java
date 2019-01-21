@@ -97,7 +97,7 @@ public class ShadowMapEntityRenderer {
 		Matrix4f transformationMatrix = Maths.createTransformationMatrix(entity.getPosition(), entity.getRotation().getX(),
 				entity.getRotation().getY(), entity.getRotation().getZ(), entity.getScale().getX());
 		Matrix4f mvpMatrix = Matrix4f.mul(projectionViewMatrix, transformationMatrix);
-		shader.loadModelMatrix(transformationMatrix);
+//		shader.loadModelMatrix(transformationMatrix);
 		shader.loadDepthRange(1.0f);
 		shader.loadMvpMatrix(mvpMatrix);
 		Vector2f textureOffset = entity.getTextureOffset();

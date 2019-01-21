@@ -48,7 +48,7 @@ public class EntityBuilder {
 		int shaderType = models.get(0).getMaterial().getNormalMap() != null ?
 			Shader.NORMAL_ENTITY :
 			Shader.ENTITY;
-		Shader shader = ShaderPool.getInstance().get(shaderType);
+		Shader shader = ShaderPool.INSTANCE.get(shaderType);
 		return new Entity(name, shader, models, textureIndex, position, rotation, new Vector3f(scale, scale, scale));
 
 	}

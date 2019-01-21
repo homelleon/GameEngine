@@ -29,7 +29,7 @@ public class EngineMain {
 	}
 	
 	/**
-	 * Intialize stopping the engine.
+	 * Initialize stopping the engine.
 	 */
 	public static void exit() {
 		loopGame.exit();

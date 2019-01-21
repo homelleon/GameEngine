@@ -21,8 +21,8 @@ out vec4 out_BrightColor;
 uniform sampler2D diffuseMap;
 uniform sampler2D specularMap;
 uniform sampler2D alphaMap;
-uniform samplerCube enviroMap;
 uniform sampler2D shadowMap;
+uniform samplerCube enviroMap;
 
 // boolean flags
 uniform float usesAlphaMap;
@@ -108,16 +108,16 @@ void main(void) {
 		}
 	}
 
-	vec4 reflectedColour = texture(enviroMap, reflectedVector);
-	vec4 refractedColour = texture(enviroMap, refractedVector);
-
 	vec4 totalColor = textureColor;
 
 	if (isChosen)
 		totalColor.r *= 3;
 
-	totalColor = mix(totalColor, refractedColour, refractiveFactor);
-	totalColor = mix(totalColor, reflectedColour, reflectiveFactor);
+	vec4 reflectedColor = texture(enviroMap, reflectedVector);
+//	vec4 refractedColor = texture(enviroMap, refractedVector);
+
+//	totalColor = mix(totalColor, refractedColor, refractiveFactor);
+	totalColor = mix(totalColor, reflectedColor, reflectiveFactor);
 
 	totalColor = phongModelColor(totalColor, totalDiffuse, totalSpecular);
 

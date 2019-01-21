@@ -68,7 +68,7 @@ public class GUIText extends Drawable<Vector2f> {
 	 */
 	public GUIText(String name, String text, float fontSize, String fontName, Vector2f position, float maxLineLength,
 			boolean centered) {
-		super(name, ShaderPool.getInstance().get(Shader.FONT), null);
+		super(name, ShaderPool.INSTANCE.get(Shader.FONT), null);
 		this.textString = text;
 		this.fontSize = fontSize;
 		this.fontName = fontName;

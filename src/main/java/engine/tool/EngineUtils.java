@@ -127,7 +127,7 @@ public class EngineUtils {
 		int radius = (int) (r * density);
 		float invDensity = 1 / density;
 		Random random = new Random();
-		Shader unitShader = ShaderPool.getInstance().get(Shader.ENTITY); 
+		Shader unitShader = ShaderPool.INSTANCE.get(Shader.ENTITY); 
 		
 		return IntStream.range(0, radius).parallel()
 				.mapToObj(j -> IntStream.range(0, radius).parallel()

@@ -60,7 +60,8 @@ vec4 phongModelColor(vec4 baseColor, vec4 diffuseColor, vec4 specularColor) {
 // hard
 float fetchHardShadows(sampler2D shadowMap, vec4 shadowLookup, float toLightDistance) {
 	float distance = shadowLookup.z;
-	vec2 coords = shadowLookup.xy / shadowLookup.w;
+//	vec2 coords = shadowLookup.xy / shadowLookup.w;
+	vec2 coords = shadowLookup.xy / 1;
 	if (sampleBorderCheck(coords))
 		return 0.0;
 

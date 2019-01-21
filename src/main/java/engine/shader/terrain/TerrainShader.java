@@ -43,7 +43,7 @@ public class TerrainShader extends Shader {
 	private static final String UNIFORM_TESSELLATION_SLOPE = "tessellationSlope";
 	private static final String UNIFORM_TESSELLATION_SHIFT = "tessellationShift";
 	private static final String UNIFORM_LOD_MORPH_AREA = "lod_morph_area";
-	//shine varibles
+	//shine variables
 	private static final String UNIFORM_SHINE_DAMPER = "shineDamper";
 	private static final String UNIFORM_REFLECTIVITY = "reflectivity";
 	//ambient variables
@@ -126,12 +126,12 @@ public class TerrainShader extends Shader {
 		this.addUniform(UNIFORM_NORMAL_MAP);
 		//clip plane
 		this.addUniform(UNIFORM_CLIP_PLANE);
-		//shadow variables
-		this.addUniform(UNIFORM_TO_SHADOW_MAP_SPACE);		
+		//shadow variables	
 		this.addUniform(UNIFORM_SHADOW_DISTANCE);
-		this.addUniform(UNIFORM_SHADOW_MAP_SIZE);
+		this.addUniform(UNIFORM_TO_SHADOW_MAP_SPACE);	
+//		this.addUniform(UNIFORM_SHADOW_MAP_SIZE);
 		this.addUniform(UNIFORM_SHADOW_TRANSITION_DISTANCE);
-		this.addUniform(UNIFORM_SHADOW_PCF_COUNT);
+//		this.addUniform(UNIFORM_SHADOW_PCF_COUNT);
 		//light
 		for (int i = 0; i < EngineSettings.MAX_LIGHTS; i++) {
 			this.addUniform(UNIFORM_LIGHT_POSITION + "[" + i + "]");
@@ -181,9 +181,9 @@ public class TerrainShader extends Shader {
 
 	public void loadShadowVariables(float shadowDistance, float size, float transitionDistance, int pcfCount) {
 		this.loadFloat(UNIFORM_SHADOW_DISTANCE, shadowDistance);
-		this.loadFloat(UNIFORM_SHADOW_MAP_SIZE, size);
+//		this.loadFloat(UNIFORM_SHADOW_MAP_SIZE, size);
 		this.loadFloat(UNIFORM_SHADOW_TRANSITION_DISTANCE, transitionDistance);
-		this.loadInt(UNIFORM_SHADOW_PCF_COUNT, pcfCount);
+//		this.loadInt(UNIFORM_SHADOW_PCF_COUNT, pcfCount);
 	}
 
 	public void loadSkyColor(Color color) {

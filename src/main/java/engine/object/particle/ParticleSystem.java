@@ -28,7 +28,7 @@ public class ParticleSystem extends Drawable<Vector3f> {
 
 	public ParticleSystem(String name, ParticleMaterial texture, float pps, float speed, float gravityComplient,
 			float lifeLength, float scale) {
-		super(name, ShaderPool.getInstance().get(Shader.PARTICLE), null);
+		super(name, ShaderPool.INSTANCE.get(Shader.PARTICLE), null);
 		this.pps = pps;
 		this.averageSpeed = speed;
 		this.gravityComplient = gravityComplient;
